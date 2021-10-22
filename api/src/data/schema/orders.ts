@@ -40,11 +40,12 @@ export const types = `
   input OrderItemInput {
     productId: String!
     count: Int!
+    unitPrice: Float!
   }
 `;
 
 export const mutations = `
-  ordersAdd(items: [OrderItemInput]): Order
+  ordersAdd(items: [OrderItemInput], totalAmount: Float!): Order
 `;
 
 export const queries = `

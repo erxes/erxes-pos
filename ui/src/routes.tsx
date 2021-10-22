@@ -19,6 +19,12 @@ const Unsubscribe = asyncComponent(() =>
   )
 );
 
+const Pos = asyncComponent(() =>
+  import(
+    /* webpackChunkName: "Pos" */ 'modules/orders/containers/PosContainer'
+  )
+);
+
 export const unsubscribe = ({ location }) => {
   const queryParams = queryString.parse(location.search);
 
@@ -40,8 +46,6 @@ const renderRoutes = currentUser => {
     sessionStorage.setItem('sessioncode', Math.random().toString());
   }
 
-  console.log(currentUser, 'cucucu')
-
   if (currentUser) {
     const { plugins, pluginRoutes, specialPluginRoutes } = pluginsOfRoutes(
       currentUser
@@ -52,6 +56,13 @@ const renderRoutes = currentUser => {
         <MainLayout currentUser={currentUser} plugins={plugins}>
           {specialPluginRoutes}
           {pluginRoutes}
+
+          <Route
+            key="/pos"
+            exact={true}
+            path="/"
+            component={Pos}
+          />
 
           <Route
             key="/confirmation"

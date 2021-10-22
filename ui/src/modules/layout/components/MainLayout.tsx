@@ -5,6 +5,7 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { Layout, MainWrapper } from '../styles';
 import DetectBrowser from './DetectBrowser';
+import Navigation from './Navigation';
 
 interface IProps extends IRouterProps {
   currentUser?: IUser;
@@ -39,15 +40,20 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
   };
 
   render() {
-    const { children } = this.props;
+    const { children, currentUser } = this.props;
     const { isCollapsed } = this.state;
 
-    console.log('mamama')
-    
     return (
       <>
         <div id="anti-clickjack" style={{ display: 'none' }} />
         <Layout>
+          {currentUser && (
+            <Navigation
+              currentUser={currentUser}
+              collapsed={isCollapsed}
+              onCollapseNavigation={this.onCollapseNavigation}
+            />
+          )}
           <MainWrapper collapsed={isCollapsed}>
             {children}
           </MainWrapper>

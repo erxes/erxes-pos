@@ -5,9 +5,12 @@ import * as dayjs from 'dayjs';
 
 const orderMutations = {
   async ordersAdd(_root, doc: IOrderInput) {
-    const { items } = doc;
+    const { items, totalAmount } = doc;
     const now = dayjs().format('YYYYMMDD').toString();
-    const order = await Orders.createOrder({ number: `${now}-${Math.random().toString()}` });
+    const order = await Orders.createOrder({
+      number: `${now}-${Math.random().toString()}`,
+      totalAmount
+    });
 
     for (const item of items) {
       await OrderItems.createOrderItem(item);

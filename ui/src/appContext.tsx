@@ -61,8 +61,6 @@ export class AppProvider extends React.Component<
   public render() {
     const { currentUser, currentLanguage } = this.state;
 
-    console.log(this.state, 'sssss')
-
     return (
       <AppContext.Provider
         value={{

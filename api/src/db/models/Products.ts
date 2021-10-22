@@ -55,13 +55,6 @@ export const loadProductClass = () => {
     public static async createProduct(doc: IProduct) {
       await this.checkCodeDuplication(doc.code);
 
-      if (doc.categoryCode) {
-        const category = await ProductCategories.getProductCatogery({
-          code: doc.categoryCode
-        });
-        doc.categoryId = category._id;
-      }
-
       return Products.create(doc);
     }
 

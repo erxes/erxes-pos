@@ -7,14 +7,12 @@ import { field, schemaCreatedAt } from "./utils";
 export interface IProduct {
   name: string;
   categoryId?: string;
-  categoryCode?: string;
   type?: string;
   description?: string;
   sku?: string;
   unitPrice?: number;
   code: string;
   customFieldsData?: ICustomField[];
-  productId?: string;
   tagIds?: string[];
   attachment?: any;
   status?: string;

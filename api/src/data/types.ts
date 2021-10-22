@@ -13,5 +13,6 @@ export interface IOrderItemInput {
 }
 
 export interface IOrderInput {
-  items: [IOrderItemInput]
+  items: [IOrderItemInput];
+  totalAmount: number;
 }
