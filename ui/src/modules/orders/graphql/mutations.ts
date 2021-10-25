@@ -1,6 +1,6 @@
 const ordersAdd = `
-  mutation ordersAdd($items: [OrderItemInput], $totalAmount: Float!) {
-    ordersAdd(items: $items, totalAmount: $totalAmount) {
+  mutation ordersAdd($items: [OrderItemInput], $totalAmount: Float!, $type: String!) {
+    ordersAdd(items: $items, totalAmount: $totalAmount, type: $type) {
       _id
     }
   }

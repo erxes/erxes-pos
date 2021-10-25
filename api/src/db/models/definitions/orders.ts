@@ -1,5 +1,6 @@
 import { Document, Schema } from 'mongoose';
 import { field, schemaCreatedAt, getNumberFieldDefinition } from './utils';
+import { ORDER_TYPES } from './constants';
 
 export interface IOrder {
   status: string;
@@ -18,6 +19,7 @@ export interface IOrder {
   billId: string;
   registerNumber: string;
   oldBillId: string;
+  type: string;
 }
 
 export interface IOrderDocument extends Document, IOrder {
@@ -41,5 +43,11 @@ export const orderSchema = new Schema({
   billType: { type: String, label: 'Ebarimt receiver entity type' },
   billId: { type: String, label: 'Bill id' },
   registerNumber: { type: String, label: 'Register number of the entity' },
-  oldBillId: { type: String, label: 'Previous bill id if it is changed' }
+  oldBillId: { type: String, label: 'Previous bill id if it is changed' },
+  type: {
+    type: String,
+    label: 'Choice to take, eat or save the order',
+    enum: ORDER_TYPES.ALL,
+    default: ORDER_TYPES.EAT
+  }
 });

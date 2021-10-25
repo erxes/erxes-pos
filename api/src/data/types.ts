@@ -15,4 +15,5 @@ export interface IOrderItemInput {
 export interface IOrderInput {
   items: [IOrderItemInput];
   totalAmount: number;
+  type: string;
 }

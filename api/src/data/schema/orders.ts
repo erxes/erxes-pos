@@ -45,7 +45,7 @@ export const types = `
 `;
 
 export const mutations = `
-  ordersAdd(items: [OrderItemInput], totalAmount: Float!): Order
+  ordersAdd(items: [OrderItemInput], totalAmount: Float!, type: String!): Order
 `;
 
 export const queries = `
