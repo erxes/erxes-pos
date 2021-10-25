@@ -106,7 +106,6 @@ httpServer.listen(PORT, () => {
 
   initApolloServer().then(apolloServer => {
     apolloServer.applyMiddleware({ app, path: '/graphql', cors: corsOptions });
-    console.log('uauauaau')
 
     // subscriptions server
     apolloServer.installSubscriptionHandlers(httpServer);

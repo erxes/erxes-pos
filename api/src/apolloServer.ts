@@ -10,8 +10,6 @@ const { NODE_ENV } = process.env;
 
 let playground: PlaygroundConfig = true;
 
-console.log(NODE_ENV, 'nonono')
-
 if (NODE_ENV !== 'production') {
   playground = {
     settings: {
