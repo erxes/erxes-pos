@@ -14,8 +14,8 @@ type FinalProps = Props & FetchConfigsMutationResponse;
 const InitialSetupContainer = (props: FinalProps) => {
   const { fetchConfigsMutation } = props;
 
-  const fetchConfigs = () => {
-    fetchConfigsMutation()
+  const fetchConfigs = (token: string) => {
+    fetchConfigsMutation({ variables: { token } })
       .then(() => {
         window.location.reload();
       })

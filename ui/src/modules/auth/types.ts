@@ -68,5 +68,5 @@ export type CurrentUserQueryResponse = {
 };
 
 export type FetchConfigsMutationResponse = {
-  fetchConfigsMutation: () => Promise<any>;
+  fetchConfigsMutation: ({ variables: { token } }) => Promise<any>;
 };

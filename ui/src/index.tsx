@@ -25,7 +25,7 @@ fetch(`${envs.REACT_APP_API_URL}/initial-setup?envs=${JSON.stringify(envs)}`, {
   .then(response => response.text())
   .then(res => {
     const apolloClient = require('./apolloClient').default;
-    const { OwnerDescription } = require('modules/auth/components/InitialSetup');
+    const { Description } = require('modules/auth/components/InitialSetup');
     const InitialSetup = require('modules/auth/containers/InitialSetup').default;
     const Routes = require('./routes').default;
     const AuthLayout = require('modules/layout/components/AuthLayout').default;
@@ -37,7 +37,7 @@ fetch(`${envs.REACT_APP_API_URL}/initial-setup?envs=${JSON.stringify(envs)}`, {
         <AuthLayout
           col={{ first: 5, second: 6 }}
           content={<InitialSetup />}
-          description={<OwnerDescription />}
+          description={<Description />}
         />
       );
     }

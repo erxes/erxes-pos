@@ -1,13 +1,14 @@
+import { FormControl, FormGroup } from 'modules/common/components/form';
 import Button from 'modules/common/components/Button';
 import { __ } from 'modules/common/utils';
 import React from 'react';
 import { AuthBox } from '../styles';
 
 type Props = {
-  fetchConfigs: () => void;
+  fetchConfigs: (token: string) => void;
 };
 
-export const OwnerDescription = () => {
+export const Description = () => {
   return (
     <>
       <h1>{__('Welcome to erxes POS')}</h1>
@@ -23,17 +24,33 @@ export const OwnerDescription = () => {
 
 const OwnerSetup = (props: Props) => {
   const { fetchConfigs } = props;
+  const [token, setToken] = React.useState('');
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    fetchConfigs();
+    fetchConfigs(token);
+  };
+
+  const handleToken = e => {
+    e.preventDefault();
+
+    setToken(e.target.value);
   };
 
   return (
     <AuthBox>
       <h2>{__('Initial Configuration')}</h2>
       <form onSubmit={handleSubmit}>
+        <FormGroup>
+          <FormControl
+            placeholder="Erxes POS token"
+            type="text"
+            name="token"
+            onChange={handleToken}
+            required={true}
+          />
+        </FormGroup>
         <Button
           btnStyle="success"
           type="submit"

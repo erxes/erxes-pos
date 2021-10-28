@@ -6,13 +6,13 @@ import { sendRequest } from '../../utils';
 dotenv.config();
 
 const configMutations = {
-  async configsFetch() {
-    const { ERXES_API_DOMAIN, POS_TOKEN = '' } = process.env;
+  async configsFetch(_root, { token }) {
+    const { ERXES_API_DOMAIN } = process.env;
 
     const response = await sendRequest({
       url: `${ERXES_API_DOMAIN}/pos`,
       method: 'get',
-      headers: { 'POS-TOKEN': POS_TOKEN }
+      headers: { 'POS-TOKEN': token }
     });
 
     console.log(response, 'rererer')

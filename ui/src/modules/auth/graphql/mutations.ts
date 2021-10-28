@@ -17,8 +17,8 @@ const resetPassword = `
 `;
 
 const configsFetch = `
-  mutation configsFetch {
-    configsFetch {
+  mutation configsFetch($token: String!) {
+    configsFetch(token: $token) {
       _id
     }
   }

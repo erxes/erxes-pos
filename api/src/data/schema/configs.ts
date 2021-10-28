@@ -15,9 +15,10 @@ export const types = `
     formSectionTitle: String
     formIntegrationIds: [String]
     brandId: String
+    token: String
   }
 `;
 
 export const mutations = `
-  configsFetch: Config
+  configsFetch(token: String!): Config
 `;
