@@ -12,6 +12,7 @@ import {
 import { types as CompanyTypes } from './company';
 import { types as CustomerTypes } from './customer';
 import { types as OrderTypes, mutations as OrderMutations, queries as OrderQueries } from './orders';
+import { types as ConfigTypes, mutations as ConfigMutations } from './configs';
 
 export let types = `
   scalar JSON
@@ -21,6 +22,7 @@ export let types = `
   ${CompanyTypes}
   ${CustomerTypes}
   ${OrderTypes}
+  ${ConfigTypes}
 `;
 
 export let queries = `
@@ -32,6 +34,7 @@ export let queries = `
 export let mutations = `
   ${UserMutations}
   ${OrderMutations}
+  ${ConfigMutations}
 `;
 
 export default { mutations, queries, types };

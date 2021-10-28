@@ -25,6 +25,7 @@
     "jsonwebtoken": "^8.5.1",
     "meteor-random": "^0.0.3",
     "mongoose": "5.7.5",
+    "requestify": "^0.2.5",
     "sha256": "^0.2.0",
     "ts-node": "^10.2.1"
   },

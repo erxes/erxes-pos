@@ -12,7 +12,7 @@ import {
   routeErrorHandling
 } from './data/utils';
 import { connect, mongoStatus } from './db/connection';
-import Users from './db/models/Users';
+import { Configs } from './db/models/Configs';
 import {
   debugError,
   debugInit
@@ -56,10 +56,10 @@ app.use(cors(corsOptions));
 app.get(
   '/initial-setup',
   routeErrorHandling(async (req: any, res) => {
-    const userCount = await Users.countDocuments();
+    const configCount = await Configs.countDocuments();
 
-    if (userCount === 0) {
-      return res.send('no owner');
+    if (configCount === 0) {
+      return res.send('no config found');
     }
 
     const envMaps = JSON.parse(req.query.envs || '{}');
@@ -71,7 +71,6 @@ app.get(
     return res.send('success');
   })
 );
-
 
 app.use(userMiddleware);
 

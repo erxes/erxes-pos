@@ -1,4 +1,3 @@
-// import '@nateradebaugh/react-datetime/dist/css/styles.css';
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import dayjs from 'dayjs';
 import localizedFormat from 'dayjs/plugin/localizedFormat';
@@ -26,18 +25,18 @@ fetch(`${envs.REACT_APP_API_URL}/initial-setup?envs=${JSON.stringify(envs)}`, {
   .then(response => response.text())
   .then(res => {
     const apolloClient = require('./apolloClient').default;
-    const { OwnerDescription } = require('modules/auth/components/OwnerSetup');
-    const OwnerSetup = require('modules/auth/containers/OwnerSetup').default;
+    const { OwnerDescription } = require('modules/auth/components/InitialSetup');
+    const InitialSetup = require('modules/auth/containers/InitialSetup').default;
     const Routes = require('./routes').default;
     const AuthLayout = require('modules/layout/components/AuthLayout').default;
 
     let body = <Routes />;
 
-    if (res === 'no owner') {
+    if (res === 'no config found') {
       body = (
         <AuthLayout
           col={{ first: 5, second: 6 }}
-          content={<OwnerSetup />}
+          content={<InitialSetup />}
           description={<OwnerDescription />}
         />
       );

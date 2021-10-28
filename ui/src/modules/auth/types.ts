@@ -67,6 +67,6 @@ export type CurrentUserQueryResponse = {
   refetch: () => void;
 };
 
-export type CreateOwnerMutationResponse = {
-  createOwnerMutation: (params: { variables: IOwner }) => Promise<any>;
+export type FetchConfigsMutationResponse = {
+  fetchConfigsMutation: () => Promise<any>;
 };

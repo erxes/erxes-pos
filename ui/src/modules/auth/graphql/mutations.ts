@@ -16,9 +16,11 @@ const resetPassword = `
   }
 `;
 
-const createOwner = `
-  mutation usersCreateOwner($email: String!, $password: String!, $firstName: String!, $lastName: String, $purpose: String, $subscribeEmail: Boolean) {
-    usersCreateOwner(email: $email, password: $password, firstName: $firstName, lastName: $lastName, purpose: $purpose, subscribeEmail: $subscribeEmail)
+const configsFetch = `
+  mutation configsFetch {
+    configsFetch {
+      _id
+    }
   }
 `;
 
@@ -26,5 +28,5 @@ export default {
   login,
   forgotPassword,
   resetPassword,
-  createOwner
+  configsFetch
 };

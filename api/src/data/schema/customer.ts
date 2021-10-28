@@ -1,5 +1,3 @@
-// TODO: remove customer's email and phone field after customCommand
-
 export const types = `
   type CustomerConnectionChangedResponse {
     _id: String!
