@@ -14,6 +14,7 @@ export interface IConfig {
   kioskMachine: any;
   formSectionTitle: string;
   formIntegrationIds: string[];
+  token?: string;
 }
 
 export interface IConfigDocument extends Document, IConfig {
@@ -41,7 +42,8 @@ export const configSchema = new Schema({
   kitchenScreen: { type: Object },
   formSectionTitle: { type: String },
   formIntegrationIds: { type: [String] },
-  brandId: { type: String }
+  brandId: { type: String },
+  token: { type: String, label: 'Token generated at erxes-api' }
 });
 
 export const productGroupSchema = new Schema({

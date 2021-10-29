@@ -52,7 +52,7 @@ export const loadProductClass = () => {
     /**
      * Create a product
      */
-    public static async createProduct(doc: IProduct) {
+    public static async createProduct(doc: IProduct | IProductDocument) {
       await this.checkCodeDuplication(doc.code);
 
       return Products.create(doc);
@@ -140,7 +140,7 @@ export const loadProductCategoryClass = () => {
       }
     }
 
-    public static async createProductCategory(doc: IProductCategory) {
+    public static async createProductCategory(doc: IProductCategory | IProductCategoryDocument) {
       await this.checkCodeDuplication(doc.code);
 
       const parentCategory = await ProductCategories.findOne({

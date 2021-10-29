@@ -12,12 +12,15 @@ class Config {
     return pos;
   }
 
-  public static async createConfig(user, doc: IConfig) {
+  public static async createConfig(token: string) {
     try {
-      return Configs.create({
-        userId: user._id,
-        ...doc,
-      });
+      const config = await Configs.findOne({ token });
+
+      if (config) {
+        throw new Error(`Config already exists with the following token: ${token}`)
+      }
+
+      return Configs.create({ token });
     } catch (e) {
       throw new Error(`Can not create POS config: ${e.message}`);
     }
