@@ -5,6 +5,7 @@ import queryString from 'query-string';
 import React from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import AuthRoutes from './modules/auth/routes';
+import OrderRoutes from './modules/orders/routes';
 import { IUser } from './modules/auth/types';
 
 const MainLayout = asyncComponent(() =>
@@ -16,12 +17,6 @@ const MainLayout = asyncComponent(() =>
 const Unsubscribe = asyncComponent(() =>
   import(
     /* webpackChunkName: "Unsubscribe" */ 'modules/auth/containers/Unsubscribe'
-  )
-);
-
-const Pos = asyncComponent(() =>
-  import(
-    /* webpackChunkName: "Pos" */ 'modules/orders/containers/PosContainer'
   )
 );
 
@@ -56,13 +51,7 @@ const renderRoutes = currentUser => {
         <MainLayout currentUser={currentUser} plugins={plugins}>
           {specialPluginRoutes}
           {pluginRoutes}
-
-          <Route
-            key="/pos"
-            exact={true}
-            path="/"
-            component={Pos}
-          />
+          <OrderRoutes />
 
           <Route
             key="/confirmation"

@@ -91,8 +91,6 @@ export default class Pos extends React.Component<Props, State> {
   render() {
     const { items, totalAmount } = this.state;
 
-    console.log(this.state.type, 'tatat')
-
     return (
       <PosContainer>
         <Column><ProductsContainer setItems={this.setItems} items={items} /></Column>
