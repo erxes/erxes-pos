@@ -22,7 +22,16 @@ const products = `
   }
 `;
 
+const orderDetail = `
+  query orderDetail($_id: String) {
+    orderDetail(_id: $_id) {
+      _id
+    }
+  }
+`;
+
 export default {
   productCategories,
-  products
+  products,
+  orderDetail
 };

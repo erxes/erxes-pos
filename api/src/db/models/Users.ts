@@ -276,10 +276,6 @@ export const loadClass = () => {
         refreshToken
       };
     }
-
-    public static getCodeString(code: number) {
-      return ('00' + code).slice(-3);
-    }
   }
 
   userSchema.loadClass(User);
