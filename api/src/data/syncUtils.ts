@@ -10,7 +10,8 @@ export const importUsers = async (users: IUserDocument[], isAdmin: boolean = fal
       email: user.email,
       password: user.password,
       isOwner: user.isOwner || isAdmin,
-      isActive: user.isActive
+      isActive: user.isActive,
+      details: user.details
     });
   }
 };
