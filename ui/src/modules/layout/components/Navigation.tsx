@@ -1,9 +1,9 @@
-import { IUser } from 'modules/auth/types';
-import WithPermission from 'modules/common/components/WithPermission';
-import { __, getEnv, setBadge } from 'modules/common/utils';
-import { pluginsOfNavigations } from 'pluginUtils';
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { IUser } from "modules/auth/types";
+import WithPermission from "modules/common/components/WithPermission";
+import { __, setBadge } from "modules/common/utils";
+import { pluginsOfNavigations } from "pluginUtils";
+import React from "react";
+import { NavLink } from "react-router-dom";
 import {
   LeftNavigation,
   NavIcon,
@@ -14,12 +14,10 @@ import {
   SubNavItem,
   DropSubNav,
   DropSubNavItem,
-  ExpandIcon
-} from '../styles';
-import Tip from 'modules/common/components/Tip';
-import Icon from 'modules/common/components/Icon';
-
-const { REACT_APP_DASHBOARD_URL } = getEnv();
+  ExpandIcon,
+} from "../styles";
+import Tip from "modules/common/components/Tip";
+import Icon from "modules/common/components/Icon";
 
 export interface ISubNav {
   permission: string;
@@ -41,25 +39,25 @@ class Navigation extends React.Component<IProps> {
     const unreadCount = nextProps.unreadConversationsCount;
 
     if (unreadCount !== this.props.unreadConversationsCount) {
-      setBadge(unreadCount, __('Team Inbox').toString());
+      setBadge(unreadCount, __("Team Inbox").toString());
     }
   }
 
-  getLink = url => {
-    const storageValue = window.localStorage.getItem('pagination:perPage');
+  getLink = (url) => {
+    const storageValue = window.localStorage.getItem("pagination:perPage");
 
     let parsedStorageValue;
 
     try {
-      parsedStorageValue = JSON.parse(storageValue || '');
+      parsedStorageValue = JSON.parse(storageValue || "");
     } catch {
       parsedStorageValue = {};
     }
 
-    if (url.includes('?')) {
-      const pathname = url.split('?')[0];
+    if (url.includes("?")) {
+      const pathname = url.split("?")[0];
 
-      if (!url.includes('perPage') && parsedStorageValue[pathname]) {
+      if (!url.includes("perPage") && parsedStorageValue[pathname]) {
         return `${url}&perPage=${parsedStorageValue[pathname]}`;
       }
       return url;
@@ -96,7 +94,7 @@ class Navigation extends React.Component<IProps> {
     }
 
     const urlParams = new URLSearchParams(window.location.search);
-    const parent = urlParams.get('parent');
+    const parent = urlParams.get("parent");
 
     if (
       collapsed &&
@@ -168,8 +166,8 @@ class Navigation extends React.Component<IProps> {
 
   renderCollapse() {
     const { onCollapseNavigation, collapsed } = this.props;
-    const icon = collapsed ? 'angle-double-left' : 'angle-double-right';
-    const tooltipText = collapsed ? 'Collapse menu' : 'Expand menu';
+    const icon = collapsed ? "angle-double-left" : "angle-double-right";
+    const tooltipText = collapsed ? "Collapse menu" : "Expand menu";
 
     return (
       <Tip placement="right" text={__(tooltipText)}>
@@ -182,7 +180,7 @@ class Navigation extends React.Component<IProps> {
 
   render() {
     const { collapsed } = this.props;
-    const logo = collapsed ? 'logo.png' : 'erxes.png';
+    const logo = collapsed ? "logo.png" : "erxes.png";
 
     return (
       <LeftNavigation collapsed={collapsed}>
@@ -191,35 +189,6 @@ class Navigation extends React.Component<IProps> {
         </NavLink>
         {this.renderCollapse()}
         <Nav id="navigation" collapsed={collapsed}>
-          {this.renderNavItem(
-            'showConversations',
-            __('Managament'),
-            '/task',
-            'icon-laptop',
-            [
-              {
-                permission: 'showConversations',
-                link: '/task',
-                value: 'Task',
-                icon: 'icon-file-check-alt'
-              },
-              REACT_APP_DASHBOARD_URL !== 'undefined'
-                ? {
-                    permission: 'showDashboards',
-                    link: '/dashboard',
-                    value: 'Reports',
-                    icon: 'icon-dashboard'
-                  }
-                : ({} as ISubNav),
-              {
-                permission: 'showCalendars',
-                link: '/calendar',
-                value: 'Calendar',
-                icon: 'icon-calendar-alt'
-              }
-            ]
-          )}
-
           {pluginsOfNavigations(this.renderNavItem)}
         </Nav>
       </LeftNavigation>

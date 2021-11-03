@@ -10,11 +10,15 @@
       content="Web site created using create-react-app"
     />
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="shortcut icon" id="favicon" href="%PUBLIC_URL%/logo192.png" />
     <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
     -->
     <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+    <!-- for blank page -->
+    <link rel="stylesheet" href="/style.min.css" />
     <!--
       Notice the use of %PUBLIC_URL% in the tags above.
       It will be replaced with the URL of the `public` folder during the build.
@@ -36,14 +40,16 @@
           return window.env[name];
         }
 
-        if (defaultValue.includes('REACT_APP')) {
-          return '';
+        if (defaultValue.includes("REACT_APP")) {
+          return "";
         }
 
-        return defaultValue || '';
+        return defaultValue || "";
       };
 
-      window.envMaps = [{ name: 'REACT_APP_API_URL', processValue: '%REACT_APP_API_URL%' }];
+      window.envMaps = [
+        { name: "REACT_APP_API_URL", processValue: "%REACT_APP_API_URL%" },
+      ];
 
       for (var i = 0; i < window.envMaps.length; i++) {
         var envMap = window.envMaps[i];
