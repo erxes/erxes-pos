@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 
 import { Configs } from '../../../db/models/Configs';
 import { sendRequest } from '../../utils';
-import { importUsers, importProducts } from '../../syncUtils';
+import { importUsers, importProducts, importCustomers } from '../../syncUtils';
 
 dotenv.config();
 
@@ -19,7 +19,7 @@ const configMutations = {
     });
 
     if (response) {
-      const { pos = {}, adminUsers = [], cashiers = [], productGroups = [] } = response;
+      const { pos = {}, adminUsers = [], cashiers = [], productGroups = [], customers = [] } = response;
 
       await Configs.updateConfig(config._id, {
         name: pos.name,
@@ -28,11 +28,13 @@ const configMutations = {
         productDetails: pos.productDetails,
         adminIds: pos.adminIds,
         cashierIds: pos.cashierIds,
+        uiOptions: pos.uiOptions
       });
 
       await importUsers(adminUsers, true);
       await importUsers(cashiers, false);
       await importProducts(productGroups);
+      await importCustomers(customers);
     }
 
     return config;

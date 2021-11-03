@@ -16,6 +16,7 @@ export const types = `
     formIntegrationIds: [String]
     brandId: String
     token: String
+    uiOptions: JSON
   }
 `;
 

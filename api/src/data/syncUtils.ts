@@ -1,6 +1,8 @@
 import { Products, ProductCategories } from '../db/models/Products';
 import Users from '../db/models/Users';
+import Customers from '../db/models/Customers';
 import { IUserDocument } from '../db/models/definitions/users';
+import { ICustomerDocument } from '../db/models/definitions/customers';
 
 export const importUsers = async (users: IUserDocument[], isAdmin: boolean = false) => {
   for (const user of users) {
@@ -45,4 +47,10 @@ export const importProducts = async (groups: any = []) => {
       }
     }
   } // end group loop
+};
+
+export const importCustomers = async (customers: ICustomerDocument[]) => {
+  for (const customer of customers) {
+    await Customers.createCustomer(customer);
+  }
 };

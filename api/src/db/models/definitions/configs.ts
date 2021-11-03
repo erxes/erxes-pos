@@ -15,6 +15,7 @@ export interface IConfig {
   formSectionTitle: string;
   formIntegrationIds: string[];
   token?: string;
+  uiOptions: any;
 }
 
 export interface IConfigDocument extends Document, IConfig {
@@ -43,7 +44,8 @@ export const configSchema = new Schema({
   formSectionTitle: { type: String },
   formIntegrationIds: { type: [String] },
   brandId: { type: String },
-  token: { type: String, label: 'Token generated at erxes-api' }
+  token: { type: String, label: 'Token generated at erxes-api' },
+  uiOptions: { type: Object, label: 'Logo & color configs' }
 });
 
 export const productGroupSchema = new Schema({
