@@ -50,4 +50,5 @@ export const mutations = `
 
 export const queries = `
   orders: [Order]
+  orderDetail(_id: String): Order
 `;

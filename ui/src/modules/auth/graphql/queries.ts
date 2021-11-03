@@ -6,6 +6,15 @@ export const currentUser = `
       username
       email
       isOwner
+
+      details {
+        avatar
+        fullName
+        shortName
+        position
+        description
+        operatorPhone
+      }
     }
   }
 `;

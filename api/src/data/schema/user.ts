@@ -1,4 +1,16 @@
 export const types = `
+  type UserDetailsType {
+    avatar: String
+    fullName: String
+    shortName: String
+    birthDate: Date
+    position: String
+    workStartedDate: Date
+    location: String
+    description: String
+    operatorPhone: String
+  }
+
   type User {
     _id: String!
     createdAt: Date
@@ -6,6 +18,7 @@ export const types = `
     email: String
     isActive: Boolean
     isOwner: Boolean
+    details: UserDetailsType
   }
 `;
 

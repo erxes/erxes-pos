@@ -28,7 +28,7 @@ export interface IUserModel extends Model<IUserDocument> {
   getSecret(): string;
   generateToken(): { token: string; expires: Date };
   createUser(doc: IUser): Promise<IUserDocument>;
-  createOrUpdateUser(doc: IUser): Promise<IUserDocument>;
+  createOrUpdateUser(doc: IUser | IUserDocument): Promise<IUserDocument>;
   setUserActiveOrInactive(_id: string): Promise<IUserDocument>;
   generatePassword(password: string): Promise<string>;
   comparePassword(password: string, userPassword: string): boolean;
@@ -275,10 +275,6 @@ export const loadClass = () => {
         token,
         refreshToken
       };
-    }
-
-    public static getCodeString(code: number) {
-      return ('00' + code).slice(-3);
     }
   }
 

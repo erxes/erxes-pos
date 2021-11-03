@@ -4,6 +4,10 @@ const commonFields = `
   code
 `;
 
+const orderFields = `
+  number
+`;
+
 const productCategories = `
   query productCategories {
     productCategories {
@@ -22,7 +26,27 @@ const products = `
   }
 `;
 
+const orderDetail = `
+  query orderDetail($_id: String) {
+    orderDetail(_id: $_id) {
+      _id
+      ${orderFields}
+    }
+  }
+`;
+
+const orders = `
+  query orders {
+    orders {
+      _id
+      ${orderFields}
+    }
+  }
+`;
+
 export default {
   productCategories,
-  products
+  products,
+  orderDetail,
+  orders
 };
