@@ -10,7 +10,7 @@ import Calculation from "./Calculation";
 import Search from "../containers/layout/Search";
 import { IUser } from "modules/auth/types";
 import { PosContainer, MainContent } from "../styles";
-import { FlexJustify } from "modules/common/styles/main";
+import { FlexBetween } from "modules/common/styles/main";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -99,15 +99,15 @@ export default class Pos extends React.Component<Props, State> {
         <Row>
           <Col md={6}>
             <MainContent hasBackground={true}>
-              <FlexJustify>
+              <FlexBetween>
                 <NameCard user={user} avatarSize={40} />
                 <Search />
-              </FlexJustify>
+              </FlexBetween>
               <ProductsContainer setItems={this.setItems} items={items} />
             </MainContent>
           </Col>
           <Col sm={3}>
-            <MainContent>
+            <MainContent noPadding={true}>
               <Stage items={items} changeItemCount={this.changeItemCount} />
             </MainContent>
           </Col>

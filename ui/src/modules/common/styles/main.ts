@@ -397,7 +397,7 @@ const FlexCenter = styled.div`
   justify-content: center;
 `;
 
-const FlexJustify = styled(FlexCenter)`
+const FlexBetween = styled(FlexCenter)`
   justify-content: space-between;
 `;
 
@@ -408,7 +408,7 @@ export {
   FullContent,
   ModalFooter,
   FlexCenter,
-  FlexJustify,
+  FlexBetween,
   InfoWrapper,
   Links,
   FormWrapper,

@@ -1,6 +1,6 @@
 import React from "react";
 import { IProduct, IOrderItemInput } from "../types";
-import { Item } from "../styles";
+import { Item, ProductLabel } from "../styles";
 
 type Props = {
   product: IProduct;
@@ -30,7 +30,7 @@ export default function ProductItem(props: Props) {
           <div dangerouslySetInnerHTML={{ __html: description || "" }} />
         </p>
       </div>
-      <span>Үлдэгдэл: 3ш</span>
+      <ProductLabel>Үлдэгдэл: 3ш</ProductLabel>
     </Item>
   );
 }

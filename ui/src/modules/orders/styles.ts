@@ -12,8 +12,11 @@ export const Column = styled.div`
   border: 1px solid #ddd;
 `;
 
-export const MainContent = styledTS<{ hasBackground?: boolean }>(styled.div)`
-  padding: 20px ${dimensions.coreSpacing + 10}px;
+export const MainContent = styledTS<{
+  hasBackground?: boolean;
+  noPadding?: boolean;
+}>(styled.div)`
+  padding: ${(props) => (props.noPadding ? 0 : "20px 30px")};
   background: ${(props) => props.hasBackground && colors.colorWhite};
   height: 100vh;
 `;
@@ -67,24 +70,24 @@ export const Item = styled.div`
   flex-shrink: 0;
   cursor: pointer;
   margin: 0 20px 20px 0;
-  transition: all ease .3s;
-  position: relative
+  transition: all ease 0.3s;
+  position: relative;
 
   > div {
     > img {
       width: 120px;
       max-height: 120px;
     }
-  
+
     > strong {
       font-size: 20px;
     }
-  
+
     > h4 {
       font-size: 14px;
       margin: 10px 0 5px;
     }
-  
+
     p {
       line-height: 16px;
       font-size: 12px;
@@ -93,16 +96,31 @@ export const Item = styled.div`
     }
   }
 
-  > span {
-    background: ${colors.colorSecondary}
-    color: ${colors.colorWhite};
-    padding: 8px 15px;
-    border-radius: 5px;
-    font-size: 12px;
-    margin-top: 20px;
-  }
-
   &:hover {
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.28);
+  }
+`;
+
+export const ProductLabel = styled.div`
+  background: ${colors.colorSecondary}
+  color: ${colors.colorWhite};
+  padding: 8px 15px;
+  border-radius: 5px;
+  font-size: 12px;
+  margin-top: 20px;
+  text-align: center;
+  font-weight: 500;
+`;
+
+export const Stages = styled.div`
+  height: 100%;
+`;
+
+export const StageContent = styled.div`
+  margin-top: ${dimensions.coreSpacing}px;
+
+  > b {
+    margin-bottom: ${dimensions.unitSpacing}px;
+    display: block;
   }
 `;
