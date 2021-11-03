@@ -15,9 +15,12 @@ export const Column = styled.div`
 export const MainContent = styledTS<{
   hasBackground?: boolean;
   noPadding?: boolean;
+  hasShadow?: boolean;
 }>(styled.div)`
   padding: ${(props) => (props.noPadding ? 0 : "20px 30px")};
   background: ${(props) => props.hasBackground && colors.colorWhite};
+  box-shadow: ${(props) =>
+    props.hasShadow && "rgb(217, 226, 236) 0px 0px 24px 0px;"};
   height: 100vh;
 `;
 
@@ -30,6 +33,8 @@ export const ProductCategories = styled.div`
 export const ProductsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
+  max-height: 800px;
+  overflow: auto;
 `;
 
 export const ProductCategory = styledTS<{ isActive?: boolean }>(styled.div)`
@@ -99,12 +104,28 @@ export const Item = styled.div`
   &:hover {
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.28);
   }
+
+  @media (min-width: 480px) {
+    flex-basis: 50%;
+  }
+
+  @media (min-width: 768px) {
+    flex-basis: 33.3333333%;
+  }
+
+  @media (min-width: 1170px) {
+    flex-basis: 25%;
+  }
+
+  @media (min-width: 1400px) {
+    flex-basis: 22%;
+  }
 `;
 
 export const ProductLabel = styled.div`
   background: ${colors.colorSecondary}
   color: ${colors.colorWhite};
-  padding: 8px 15px;
+  padding: 12px 15px;
   border-radius: 5px;
   font-size: 12px;
   margin-top: 20px;

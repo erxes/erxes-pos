@@ -401,6 +401,13 @@ const FlexBetween = styled(FlexCenter)`
   justify-content: space-between;
 `;
 
+const ColumnBetween = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+`;
+
 export {
   Actions,
   PopoverButton,
@@ -425,6 +432,7 @@ export {
   TabContent,
   ButtonRelated,
   SimpleButton,
+  ColumnBetween,
   TopHeader,
   Title,
   Count,

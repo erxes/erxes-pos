@@ -1,6 +1,7 @@
 import React from "react";
 import { IProduct, IOrderItemInput } from "../types";
 import { Item, ProductLabel } from "../styles";
+import { formatNumber } from "modules/utils";
 
 type Props = {
   product: IProduct;
@@ -24,7 +25,7 @@ export default function ProductItem(props: Props) {
           }
           alt={name}
         />
-        <strong>{Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮</strong>
+        <strong>{formatNumber(unitPrice || 0)}₮</strong>
         <h4>{name}</h4>
         <p>
           <div dangerouslySetInnerHTML={{ __html: description || "" }} />

@@ -13,15 +13,6 @@ const Item = styled.div`
   margin-bottom: 10px;
 `;
 
-const Text = styled.div`
-  padding: 10px;
-
-  > span {
-    color: #616e7c;
-    font-size: 11px;
-  }
-`;
-
 const Close = styled(FlexCenter)`
   background: #e4ebf1;
   width: 35px;
@@ -38,6 +29,19 @@ const Close = styled(FlexCenter)`
     i {
       font-size: 14px;
     }
+  }
+`;
+
+export const Text = styled.div`
+  padding: 10px;
+
+  > div {
+    line-height: 13px;
+  }
+
+  > span {
+    color: #616e7c;
+    font-size: 11px;
   }
 `;
 

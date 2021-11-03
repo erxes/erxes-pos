@@ -112,7 +112,7 @@ export default class Pos extends React.Component<Props, State> {
             </MainContent>
           </Col>
           <Col sm={3}>
-            <MainContent>
+            <MainContent hasBackground={true} hasShadow={true} noPadding={true}>
               <Calculation
                 totalAmount={totalAmount}
                 makePayment={this.makePayment}
