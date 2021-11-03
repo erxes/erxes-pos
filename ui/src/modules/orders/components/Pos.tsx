@@ -9,7 +9,7 @@ import Stage from "./Stage";
 import Calculation from "./Calculation";
 import Search from "../containers/layout/Search";
 import { IUser } from "modules/auth/types";
-import { PosContainer, Column, MainContent } from "../styles";
+import { PosContainer, MainContent } from "../styles";
 import { FlexJustify } from "modules/common/styles/main";
 
 const ProductsContainer = AsyncComponent(
@@ -107,30 +107,20 @@ export default class Pos extends React.Component<Props, State> {
             </MainContent>
           </Col>
           <Col sm={3}>
-            <MainContent>2 of 3 (wider)</MainContent>
+            <MainContent>
+              <Stage items={items} changeItemCount={this.changeItemCount} />
+            </MainContent>
           </Col>
           <Col sm={3}>
-            <MainContent>3 of 3</MainContent>
+            <MainContent>
+              <Calculation
+                totalAmount={totalAmount}
+                makePayment={this.makePayment}
+                setOrderState={this.setOrderState}
+              />
+            </MainContent>
           </Col>
         </Row>
-      </PosContainer>
-    );
-
-    return (
-      <PosContainer>
-        <Column>
-          <ProductsContainer setItems={this.setItems} items={items} />
-        </Column>
-        <Column>
-          <Stage items={items} changeItemCount={this.changeItemCount} />
-        </Column>
-        <Column>
-          <Calculation
-            totalAmount={totalAmount}
-            makePayment={this.makePayment}
-            setOrderState={this.setOrderState}
-          />
-        </Column>
       </PosContainer>
     );
   }

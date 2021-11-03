@@ -1,20 +1,27 @@
-import { Route } from 'react-router-dom';
+import { Route } from "react-router-dom";
 
-import asyncComponent from 'modules/common/components/AsyncComponent';
-import React from 'react';
+import asyncComponent from "modules/common/components/AsyncComponent";
+import React from "react";
 
-const Pos = asyncComponent(() =>
-  import(
-    /* webpackChunkName: "Pos" */ 'modules/orders/containers/PosContainer'
-  )
+const Pos = asyncComponent(
+  () =>
+    import(
+      /* webpackChunkName: "Pos" */ "modules/orders/containers/PosContainer"
+    )
 );
 
-const OrderDetail = asyncComponent(() =>
-  import(/* webpackChunkName: "OrderDetail" */ 'modules/orders/containers/ReceiptContainer')
+const OrderDetail = asyncComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OrderDetail" */ "modules/orders/containers/ReceiptContainer"
+    )
 );
 
-const OrderList = asyncComponent(() =>
-  import(/* webpackChunkName: "OrderList" */ 'modules/orders/containers/OrderListContainer')
+const OrderList = asyncComponent(
+  () =>
+    import(
+      /* webpackChunkName: "OrderList" */ "modules/orders/containers/OrderListContainer"
+    )
 );
 
 const detail = ({ match }) => {
@@ -26,12 +33,7 @@ const detail = ({ match }) => {
 const routes = () => {
   return (
     <React.Fragment>
-      <Route
-        key="/orders"
-        exact={true}
-        path="/orders"
-        component={OrderList}
-      />
+      <Route key="/orders" exact={true} path="/orders" component={OrderList} />
 
       <Route
         key="/orders/:id"
@@ -40,12 +42,7 @@ const routes = () => {
         component={detail}
       />
 
-      <Route
-        key="/pos"
-        exact={true}
-        path="/pos"
-        component={Pos}
-      />
+      <Route key="/pos" exact={true} path="/pos" component={Pos} />
     </React.Fragment>
   );
 };

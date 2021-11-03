@@ -1,30 +1,15 @@
-import React from 'react';
-import { IProduct, IOrderItemInput } from '../types';
-import styled from 'styled-components';
-
-const Item = styled.div`
-  border: 1px solid #ddd;
-  padding: 5px;
-  margin: 5px;
-  max-height: 100px;
-  display: flex;
-  justify-content: space-between;
-
-  &:hover {
-    background-color: #fff;
-    color: #000;
-    cursor: pointer;
-  }
-`;
+import React from "react";
+import { IProduct, IOrderItemInput } from "../types";
+import { Item } from "../styles";
 
 type Props = {
   product: IProduct;
   addItem: (item: IOrderItemInput) => void;
-}
+};
 
 export default function ProductItem(props: Props) {
   const { product, addItem } = props;
-  const { attachment, name, unitPrice } = product;
+  const { attachment, name, unitPrice, description } = product;
 
   const onClick = () => {
     addItem({ productId: product._id, count: 1, productName: product.name });
@@ -32,9 +17,20 @@ export default function ProductItem(props: Props) {
 
   return (
     <Item onClick={onClick}>
-      <img src={attachment} alt={attachment} />
-      <strong>{name}</strong>
-      <span>{unitPrice || 0}</span>
+      <div>
+        <img
+          src={
+            attachment || "https://office.erxes.io/images/icons/erxes-16.svg"
+          }
+          alt={name}
+        />
+        <strong>{Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮</strong>
+        <h4>{name}</h4>
+        <p>
+          <div dangerouslySetInnerHTML={{ __html: description || "" }} />
+        </p>
+      </div>
+      <span>Үлдэгдэл: 3ш</span>
     </Item>
   );
 }

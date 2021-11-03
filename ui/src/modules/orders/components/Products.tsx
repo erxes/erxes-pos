@@ -1,12 +1,8 @@
 import React from "react";
-import styled from "styled-components";
 import { IOrderItemInput, IProduct } from "../types";
 import CategoryItem from "./CategoryItem";
 import ProductItem from "./ProductItem";
-
-const ProductsWrapper = styled.div`
-  overflow: scroll;
-`;
+import { ProductCategories, ProductsWrapper } from "../styles";
 
 type Props = {
   productCategories: any;
@@ -19,9 +15,13 @@ export default class Products extends React.Component<Props> {
   renderCategories() {
     const { productCategories } = this.props;
 
-    return productCategories.map((cat) => (
-      <CategoryItem name={cat.name} key={cat._id} />
-    ));
+    return (
+      <ProductCategories>
+        {productCategories.map((cat) => (
+          <CategoryItem category={cat} key={cat._id} />
+        ))}
+      </ProductCategories>
+    );
   }
 
   addItem(item: IProduct, count: number) {
@@ -59,7 +59,6 @@ export default class Products extends React.Component<Props> {
   }
 
   render() {
-    console.log(this.props);
     return (
       <>
         {this.renderCategories()}
