@@ -13,6 +13,10 @@ const OrderDetail = asyncComponent(() =>
   import(/* webpackChunkName: "OrderDetail" */ 'modules/orders/containers/ReceiptContainer')
 );
 
+const OrderList = asyncComponent(() =>
+  import(/* webpackChunkName: "OrderList" */ 'modules/orders/containers/OrderListContainer')
+);
+
 const detail = ({ match }) => {
   const id = match.params.id;
 
@@ -22,6 +26,13 @@ const detail = ({ match }) => {
 const routes = () => {
   return (
     <React.Fragment>
+      <Route
+        key="/orders"
+        exact={true}
+        path="/orders"
+        component={OrderList}
+      />
+
       <Route
         key="/orders/:id"
         exact={true}

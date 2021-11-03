@@ -1,4 +1,5 @@
 export interface IOrder {
+  _id: string;
   status: string;
   createdAt: Date;
   paidDate: Date;
