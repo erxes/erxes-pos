@@ -23,3 +23,7 @@ export const types = `
 export const mutations = `
   configsFetch(token: String!): Config
 `;
+
+export const queries = `
+  currentConfig: Config
+`;

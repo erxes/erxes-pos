@@ -1,4 +1,4 @@
-export const currentUser = `
+const currentUser = `
   query currentUser {
     currentUser {
       _id
@@ -19,10 +19,34 @@ export const currentUser = `
   }
 `;
 
-export const userChanged = `
+const userChanged = `
 	subscription userChanged($userId: String) {
 		userChanged(userId: $userId)
   }
 `;
 
-export default { currentUser, userChanged };
+const currentConfig = `
+  query currentConfig {
+    currentConfig {
+      _id
+      name
+      description
+      userId
+      createdAt
+      integrationId
+      productDetails
+      adminIds
+      cashierIds
+      waitingScreen
+      kioskMachine
+      kitchenScreen
+      formSectionTitle
+      formIntegrationIds
+      brandId
+      token
+      uiOptions
+    }
+  }
+`;
+
+export default { currentUser, userChanged, currentConfig };

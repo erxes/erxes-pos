@@ -5,18 +5,20 @@ import { storeConstantToStore } from '../../../utils';
 import { withProps } from '../../utils';
 import React from 'react';
 import { graphql } from 'react-apollo';
-import { currentUser } from '../graphql/queries';
+import { queries } from '../graphql/index';
 import { CurrentUserQueryResponse } from '../types';
+import { CurrentConfigQueryResponse } from '../../../types';
 
 type Props = {
   currentUserQuery: CurrentUserQueryResponse;
+  currentConfigQuery: CurrentConfigQueryResponse
 };
 
 const withCurrentUser = Component => {
   const Container = (props: Props) => {
-    const { currentUserQuery } = props;
+    const { currentUserQuery, currentConfigQuery } = props;
 
-    if (currentUserQuery.loading) {
+    if (currentUserQuery.loading || currentConfigQuery.loading) {
       return <Spinner />;
     }
 
@@ -34,7 +36,8 @@ const withCurrentUser = Component => {
 
     const updatedProps = {
       ...props,
-      currentUser
+      currentUser,
+      currentConfig: currentConfigQuery.currentConfig
     };
 
     if (currentUser) {
@@ -48,8 +51,11 @@ const withCurrentUser = Component => {
 
   return withProps<{}>(
     compose(
-      graphql<{}, CurrentUserQueryResponse>(gql(currentUser), {
+      graphql<CurrentUserQueryResponse>(gql(queries.currentUser), {
         name: 'currentUserQuery'
+      }),
+      graphql<CurrentConfigQueryResponse>(gql(queries.currentConfig), {
+        name: 'currentConfigQuery'
       })
     )(Container)
   );

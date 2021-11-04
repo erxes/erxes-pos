@@ -1,27 +1,32 @@
 // import dayjs from 'dayjs';
 // import T from 'i18n-react';
-import { IUser } from './types';
+import { IUser, IConfig } from './types';
 import React from 'react';
 
 interface IState {
   currentUser?: IUser;
   plugins?;
   currentLanguage: string;
+  currentConfig?: IConfig;
 }
 
 interface IStore extends IState {
   currentUser?: IUser;
+  currentConfig?: IConfig;
   changeLanguage: (languageCode: string) => void;
+}
+
+interface IProps {
+  currentUser?: IUser;
+  plugins?: any;
+  currentConfig?: IConfig;
 }
 
 const AppContext = React.createContext({} as IStore);
 
 export const AppConsumer = AppContext.Consumer;
 
-export class AppProvider extends React.Component<
-  { currentUser?: IUser, plugins?  },
-  IState
-> {
+export class AppProvider extends React.Component<IProps, IState> {
   constructor(props) {
     super(props);
 
@@ -30,7 +35,8 @@ export class AppProvider extends React.Component<
 
     this.state = {
       currentUser: props.currentUser,
-      currentLanguage
+      currentLanguage,
+      currentConfig: props.currentConfig
     };
 
     // this.setLocale(currentLanguage);
@@ -59,7 +65,7 @@ export class AppProvider extends React.Component<
   };
 
   public render() {
-    const { currentUser, currentLanguage } = this.state;
+    const { currentUser, currentLanguage, currentConfig } = this.state;
 
     return (
       <AppContext.Provider
@@ -67,7 +73,8 @@ export class AppProvider extends React.Component<
           currentUser,
           plugins: this.props.plugins,
           currentLanguage,
-          changeLanguage: this.changeLanguage
+          changeLanguage: this.changeLanguage,
+          currentConfig
         }}
       >
         {this.props.children}

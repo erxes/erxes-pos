@@ -10,7 +10,7 @@ export interface IConfig {
   adminIds: string[];
   cashierIds: string[];
   kitchenScreen: any;
-  waitinScreen: any;
+  waitingScreen: any;
   kioskMachine: any;
   formSectionTitle: string;
   formIntegrationIds: string[];

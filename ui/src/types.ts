@@ -25,10 +25,8 @@ export type AllUsersQueryResponse = {
 
 export type CurrentUserQueryResponse = {
   currentUser: IUser;
-  loading: boolean;
   subscribeToMore: any;
-  refetch: () => void;
-};
+} & QueryResponse;
 
 export type UsersQueryResponse = {
   users: IUser[];
@@ -62,3 +60,25 @@ export interface ISubNav {
   icon: string;
   additional?: boolean;
 };
+
+export interface IConfig {
+  _id: string;
+  name: string;
+  description?: string;
+  brandId: string;
+  tagIds?: string[];
+  productDetails: string[];
+  adminIds: string[];
+  cashierIds: string[];
+  kitchenScreen: any;
+  waitingScreen: any;
+  kioskMachine: any;
+  formSectionTitle: string;
+  formIntegrationIds: string[];
+  token?: string;
+  uiOptions: any;
+};
+
+export type CurrentConfigQueryResponse = {
+  currentConfig: IConfig;
+} & QueryResponse;
