@@ -4,14 +4,19 @@ import { FlexCenter } from "modules/common/styles/main";
 
 type Props = {
   category: any;
+  activeCategoryId: string;
+  onClickCategory: (activeCategoryId: string) => void;
 };
 
 export default function CategoryItem(props: Props) {
-  const { category } = props;
+  const { category, onClickCategory, activeCategoryId } = props;
   const { name } = category;
 
   return (
-    <ProductCategory>
+    <ProductCategory
+      isActive={category._id === activeCategoryId}
+      onClick={() => onClickCategory(category._id)}
+    >
       <FlexCenter>
         <img src="https://flagcdn.com/24x18/mn.png" alt={name} />
         {name}

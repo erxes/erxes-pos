@@ -42,7 +42,7 @@ const routes = () => {
         component={detail}
       />
 
-      <Route key="/pos" exact={true} path="/pos" component={Pos} />
+      <Route key="/" exact={true} path="/" component={Pos} />
     </React.Fragment>
   );
 };

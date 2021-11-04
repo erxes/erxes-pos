@@ -11,14 +11,34 @@ type Props = {
   items: IOrderItemInput[];
 };
 
-export default class Products extends React.Component<Props> {
+export default class Products extends React.Component<
+  Props,
+  { activeCategoryId: string }
+> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      activeCategoryId: (props.productCategories || [])[0]._id,
+    };
+  }
+
+  onClickCategory = (activeCategoryId: string) => {
+    this.setState({ activeCategoryId });
+  };
+
   renderCategories() {
     const { productCategories } = this.props;
 
     return (
       <ProductCategories>
         {productCategories.map((cat) => (
-          <CategoryItem category={cat} key={cat._id} />
+          <CategoryItem
+            category={cat}
+            key={cat._id}
+            activeCategoryId={this.state.activeCategoryId}
+            onClickCategory={this.onClickCategory}
+          />
         ))}
       </ProductCategories>
     );
@@ -49,13 +69,19 @@ export default class Products extends React.Component<Props> {
   renderProducts() {
     const { products } = this.props;
 
-    return products.map((product) => (
-      <ProductItem
-        product={product}
-        key={product._id}
-        addItem={this.addItem.bind(this, product, 1)}
-      />
-    ));
+    return products.map((product) => {
+      if (product.categoryId !== this.state.activeCategoryId) {
+        return null;
+      }
+
+      return (
+        <ProductItem
+          product={product}
+          key={product._id}
+          addItem={this.addItem.bind(this, product, 1)}
+        />
+      );
+    });
   }
 
   render() {

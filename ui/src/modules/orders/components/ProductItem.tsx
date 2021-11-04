@@ -1,6 +1,6 @@
 import React from "react";
 import { IProduct, IOrderItemInput } from "../types";
-import { Item, ProductLabel } from "../styles";
+import { Item } from "../styles";
 import { formatNumber } from "modules/utils";
 
 type Props = {
@@ -31,7 +31,6 @@ export default function ProductItem(props: Props) {
           <div dangerouslySetInnerHTML={{ __html: description || "" }} />
         </p>
       </div>
-      <ProductLabel>Үлдэгдэл: 3ш</ProductLabel>
     </Item>
   );
 }
