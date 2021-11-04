@@ -70,17 +70,19 @@ const MainWrapper = styledTS<{ collapsed: boolean }>(styled.div)`
   transition: width .3s;
 `;
 
-const Authlayout = styled.div`
+const Authlayout = styledTS<{ hasConfig: boolean }>(styled.div)`
   height: 100%;
   overflow: auto;
   position: relative;
-  background: ${colors.colorPrimaryDark} url("/images/stars.png") repeat top
-    center;
+  background: ${(props) =>
+    !props.hasConfig &&
+    `#5629B6 url("/images/stars.png") repeat top
+  center`};
   flex: 1;
   display: flex;
 
   &:before {
-    content: "";
+    content: ${(props) => !props.hasConfig && '""'};
     position: absolute;
     width: 100%;
     height: 100%;
@@ -99,7 +101,7 @@ const AuthContent = styled.div`
   margin: auto;
 `;
 
-const AuthDescription = styled.div`
+const AuthDescription = styledTS<{ hasConfig: boolean }>(styled.div)`
   margin: 20px 0;
 
   img {
@@ -111,25 +113,25 @@ const AuthDescription = styled.div`
     font-weight: bold;
     font-size: 34px;
     margin: 10px 0 30px;
-    color: ${colors.colorWhite};
+    color: ${(props) => !props.hasConfig && colors.colorWhite};
   }
 
   h2 {
     font-size: 24px;
-    color: rgba(255, 255, 255, 0.9);
+    color: ${(props) => !props.hasConfig && "rgba(255, 255, 255, 0.9)"};
     line-height: 1.4em;
     font-weight: 500;
   }
 
   p {
-    color: rgba(255, 255, 255, 0.7);
+    color: ${(props) => !props.hasConfig && "rgba(255, 255, 255, 0.7)"};
     margin-bottom: 50px;
     font-size: 18px;
     line-height: 1.8em;
   }
 
   a {
-    color: rgba(255, 255, 255, 0.7);
+    color: ${(props) => !props.hasConfig && "rgba(255, 255, 255, 0.7)"};
     &:hover {
       color: ${colors.colorWhite};
     }

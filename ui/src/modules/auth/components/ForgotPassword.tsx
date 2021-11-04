@@ -1,12 +1,14 @@
-import Button from 'modules/common/components/Button';
-import FormControl from 'modules/common/components/form/Control';
-import FormGroup from 'modules/common/components/form/Group';
-import { __ } from 'modules/common/utils';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { AuthBox, Links } from '../styles';
+import Button from "modules/common/components/Button";
+import FormControl from "modules/common/components/form/Control";
+import FormGroup from "modules/common/components/form/Group";
+import { __ } from "modules/common/utils";
+import React from "react";
+import { Link } from "react-router-dom";
+import { AuthBox, Links } from "../styles";
+import { IConfig } from "types";
 
 type Props = {
+  currentConfig: IConfig;
   forgotPassword: (
     doc: { email: string },
     callback: (e: Error) => void
@@ -17,35 +19,38 @@ class ForgotPassword extends React.Component<Props, { email: string }> {
   constructor(props) {
     super(props);
 
-    this.state = { email: '' };
+    this.state = { email: "" };
   }
 
-  handleSubmit = e => {
+  handleSubmit = (e) => {
     e.preventDefault();
 
     const { email } = this.state;
 
-    this.props.forgotPassword({ email }, err => {
+    this.props.forgotPassword({ email }, (err) => {
       if (!err) {
-        window.location.href = '/sign-in';
+        window.location.href = "/sign-in";
       }
     });
   };
 
-  handleEmailChange = e => {
+  handleEmailChange = (e) => {
     e.preventDefault();
     this.setState({ email: e.target.value });
   };
 
   render() {
+    const { currentConfig } = this.props;
+    const { colors } = currentConfig.uiOptions || ({} as any);
+
     return (
-      <AuthBox>
-        <h2>{__('Reset your password')}</h2>
+      <AuthBox mainColor={colors.primary}>
+        <h2>{__("Reset your password")}</h2>
         <form onSubmit={this.handleSubmit}>
           <FormGroup>
             <FormControl
               type="email"
-              placeholder={__('registered@email.com')}
+              placeholder={__("registered@email.com")}
               value={this.state.email}
               required={true}
               onChange={this.handleEmailChange}
@@ -56,7 +61,7 @@ class ForgotPassword extends React.Component<Props, { email: string }> {
           </Button>
         </form>
         <Links>
-          <Link to="/sign-in">{__('Sign in')}</Link>
+          <Link to="/sign-in">{__("Sign in")}</Link>
         </Links>
       </AuthBox>
     );

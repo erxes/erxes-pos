@@ -1,20 +1,20 @@
-import gql from 'graphql-tag';
-import * as compose from 'lodash.flowright';
-import Spinner from '../../common/components/Spinner';
-import { storeConstantToStore } from '../../../utils';
-import { withProps } from '../../utils';
-import React from 'react';
-import { graphql } from 'react-apollo';
-import { queries } from '../graphql/index';
-import { CurrentUserQueryResponse } from '../types';
-import { CurrentConfigQueryResponse } from '../../../types';
+import gql from "graphql-tag";
+import * as compose from "lodash.flowright";
+import Spinner from "../../common/components/Spinner";
+import { storeConstantToStore } from "../../../utils";
+import { withProps } from "../../utils";
+import React from "react";
+import { graphql } from "react-apollo";
+import { queries } from "../graphql/index";
+import { CurrentUserQueryResponse } from "../types";
+import { CurrentConfigQueryResponse } from "../../../types";
 
 type Props = {
   currentUserQuery: CurrentUserQueryResponse;
-  currentConfigQuery: CurrentConfigQueryResponse
+  currentConfigQuery: CurrentConfigQueryResponse;
 };
 
-const withCurrentUser = Component => {
+const withCurrentUser = (Component) => {
   const Container = (props: Props) => {
     const { currentUserQuery, currentConfigQuery } = props;
 
@@ -37,13 +37,13 @@ const withCurrentUser = Component => {
     const updatedProps = {
       ...props,
       currentUser,
-      currentConfig: currentConfigQuery.currentConfig
+      currentConfig: currentConfigQuery.currentConfig,
     };
 
     if (currentUser) {
       const constants = currentUser.configsConstants || [];
 
-      constants.forEach(c => storeConstantToStore(c.key, c.values));
+      constants.forEach((c) => storeConstantToStore(c.key, c.values));
     }
 
     return <Component {...updatedProps} />;
@@ -52,10 +52,10 @@ const withCurrentUser = Component => {
   return withProps<{}>(
     compose(
       graphql<CurrentUserQueryResponse>(gql(queries.currentUser), {
-        name: 'currentUserQuery'
+        name: "currentUserQuery",
       }),
       graphql<CurrentConfigQueryResponse>(gql(queries.currentConfig), {
-        name: 'currentConfigQuery'
+        name: "currentConfigQuery",
       })
     )(Container)
   );

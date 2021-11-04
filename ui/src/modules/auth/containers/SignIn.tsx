@@ -1,20 +1,25 @@
-import apolloClient from 'apolloClient';
-import { __ } from 'modules/common/utils';
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import ButtonMutate from '../../common/components/ButtonMutate';
-import { IButtonMutateProps, IRouterProps } from '../../../types';
-import SignIn from '../components/SignIn';
-import { mutations } from '../graphql';
+import apolloClient from "apolloClient";
+import { __ } from "modules/common/utils";
+import React from "react";
+import { withRouter } from "react-router-dom";
+import ButtonMutate from "../../common/components/ButtonMutate";
+import { IButtonMutateProps, IRouterProps, IConfig } from "../../../types";
+import SignIn from "../components/SignIn";
+import { mutations } from "../graphql";
+import withCurrentUser from "./withCurrentUser";
 
-const SignInContainer = (props: IRouterProps) => {
+type Props = {
+  currentConfig: IConfig;
+} & IRouterProps;
+
+const SignInContainer = (props: Props) => {
   const { history } = props;
 
   const renderButton = ({ values, isSubmitted }: IButtonMutateProps) => {
     const callbackResponse = () => {
       apolloClient.resetStore();
 
-      history.push('/?signedIn=true');
+      history.push("/?signedIn=true");
 
       window.location.reload();
     };
@@ -29,17 +34,17 @@ const SignInContainer = (props: IRouterProps) => {
         block={true}
         icon="none"
       >
-        {__('Sign in')}
+        {__("Sign in")}
       </ButtonMutate>
     );
   };
 
   const updatedProps = {
     ...props,
-    renderButton
+    renderButton,
   };
 
   return <SignIn {...updatedProps} />;
 };
 
-export default withRouter(SignInContainer);
+export default withCurrentUser(withRouter(SignInContainer));

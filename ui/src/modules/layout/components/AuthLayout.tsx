@@ -1,18 +1,21 @@
-import Button from 'modules/common/components/Button';
-import { __, bustIframe } from 'modules/common/utils';
-import React from 'react';
-import Col from 'react-bootstrap/Col';
-import Container from 'react-bootstrap/Container';
+import Button from "modules/common/components/Button";
+import { __, bustIframe } from "modules/common/utils";
+import React from "react";
+import Col from "react-bootstrap/Col";
+import Container from "react-bootstrap/Container";
 import {
   AuthContent,
   AuthDescription,
   Authlayout,
   CenterContent,
-  MobileRecommend
-} from '../styles';
+  MobileRecommend,
+} from "../styles";
+import { IConfig } from "types";
+import withCurrentUser from "modules/auth/containers/withCurrentUser";
 
 type Props = {
   content: React.ReactNode;
+  currentConfig: IConfig;
   description?: React.ReactNode;
   col?: { first: number; second: number };
 };
@@ -23,11 +26,11 @@ class AuthLayout extends React.Component<Props, {}> {
       <MobileRecommend>
         <CenterContent>
           <div>
-            <b>{__('erxes Inc')}</b>
+            <b>{__("erxes Inc")}</b>
             <div>{__(desciption)}</div>
           </div>
           <Button btnStyle="link" size="small" href={link}>
-            {__('Get')}
+            {__("Get")}
           </Button>
         </CenterContent>
       </MobileRecommend>
@@ -35,12 +38,15 @@ class AuthLayout extends React.Component<Props, {}> {
   }
 
   renderDesciption() {
-    const { description } = this.props;
+    const { description, currentConfig } = this.props;
+    const { uiOptions, name } = currentConfig || ({} as IConfig);
+
+    const logo = uiOptions.logo || "/images/logo.png";
 
     if (description) {
       return (
         <>
-          <img src="/images/logo.png" alt="erxes" />
+          <img src="/images/logo.png" alt={"erxes"} />
           {description}
         </>
       );
@@ -48,14 +54,9 @@ class AuthLayout extends React.Component<Props, {}> {
 
     return (
       <>
-        <img src="/images/logo.png" alt="erxes" />
-        <h1>{__('Open Source POS system')}</h1>
-        <p>
-          {__(
-            'Collaborates with erxes'
-          )}
-        </p>
-        <a href={__('Homepage link')}>« {__('Go to home page')}</a>
+        <img src={logo} alt={name || "erxes"} />
+        <h1>{name || __("Open Source POS system")}</h1>
+        <p>{currentConfig.description || __("Collaborates with erxes")}</p>
       </>
     );
   }
@@ -66,14 +67,23 @@ class AuthLayout extends React.Component<Props, {}> {
   }
 
   render() {
-    const { content, col = { first: 6, second: 5 } } = this.props;
+    const {
+      content,
+      col = { first: 6, second: 5 },
+      currentConfig,
+    } = this.props;
 
     return (
-      <Authlayout className="auth-container">
+      <Authlayout
+        className="auth-container"
+        hasConfig={currentConfig ? true : false}
+      >
         <AuthContent>
           <Container>
             <Col md={col.first}>
-              <AuthDescription>{this.renderDesciption()}</AuthDescription>
+              <AuthDescription hasConfig={currentConfig ? true : false}>
+                {this.renderDesciption()}
+              </AuthDescription>
             </Col>
             <Col md={{ span: col.second, offset: 1 }}>{content}</Col>
           </Container>
@@ -83,4 +93,4 @@ class AuthLayout extends React.Component<Props, {}> {
   }
 }
 
-export default AuthLayout;
+export default withCurrentUser(AuthLayout);

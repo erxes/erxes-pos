@@ -1,17 +1,23 @@
-import asyncComponent from 'modules/common/components/AsyncComponent';
-import React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import asyncComponent from "modules/common/components/AsyncComponent";
+import React from "react";
+import { Route, Switch } from "react-router-dom";
 
-const AuthLayout = asyncComponent(() =>
-  import(/* webpackChunkName: "AuthLayout" */ '../layout/components/AuthLayout')
+const AuthLayout = asyncComponent(
+  () =>
+    import(
+      /* webpackChunkName: "AuthLayout" */ "../layout/components/AuthLayout"
+    )
 );
 
-const ForgotPassword = asyncComponent(() =>
-  import(/* webpackChunkName: "ForgotPassword" */ './containers/ForgotPassword')
+const ForgotPassword = asyncComponent(
+  () =>
+    import(
+      /* webpackChunkName: "ForgotPassword" */ "./containers/ForgotPassword"
+    )
 );
 
-const SignIn = asyncComponent(() =>
-  import(/* webpackChunkName: "SignIn" */ './containers/SignIn')
+const SignIn = asyncComponent(
+  () => import(/* webpackChunkName: "SignIn" */ "./containers/SignIn")
 );
 
 const signIn = () => <AuthLayout content={<SignIn />} />;

@@ -1,18 +1,19 @@
-import FormControl from 'modules/common/components/form/Control';
-import Form from 'modules/common/components/form/Form';
-import FormGroup from 'modules/common/components/form/Group';
-import { IButtonMutateProps } from '../../../types';
-import { __ } from 'modules/common/utils';
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { AuthBox, Links } from '../styles';
+import FormControl from "modules/common/components/form/Control";
+import Form from "modules/common/components/form/Form";
+import FormGroup from "modules/common/components/form/Group";
+import { IButtonMutateProps, IConfig } from "../../../types";
+import { __ } from "modules/common/utils";
+import React from "react";
+import { Link } from "react-router-dom";
+import { AuthBox, Links } from "../styles";
 
 type Props = {
   renderButton: (props: IButtonMutateProps) => JSX.Element;
+  currentConfig: IConfig;
 };
 
 class SignIn extends React.Component<Props> {
-  renderContent = formProps => {
+  renderContent = (formProps) => {
     const { values, isSubmitted } = formProps;
 
     return (
@@ -21,7 +22,7 @@ class SignIn extends React.Component<Props> {
           <FormControl
             {...formProps}
             name="email"
-            placeholder={__('registered@email.com')}
+            placeholder={__("registered@email.com")}
             required={true}
           />
         </FormGroup>
@@ -31,26 +32,29 @@ class SignIn extends React.Component<Props> {
             {...formProps}
             name="password"
             type="password"
-            placeholder={__('password')}
+            placeholder={__("password")}
             required={true}
           />
         </FormGroup>
 
         {this.props.renderButton({
           values,
-          isSubmitted
+          isSubmitted,
         })}
       </>
     );
   };
 
   render() {
+    const { currentConfig } = this.props;
+    const { colors } = currentConfig.uiOptions || ({} as any);
+
     return (
-      <AuthBox>
-        <h2>{__('Sign in')}</h2>
+      <AuthBox mainColor={colors.primary}>
+        <h2>{__("Sign in")}</h2>
         <Form renderContent={this.renderContent} />
         <Links>
-          <Link to="/forgot-password">{__('Forgot password?')}</Link>
+          <Link to="/forgot-password">{__("Forgot password?")}</Link>
         </Links>
       </AuthBox>
     );

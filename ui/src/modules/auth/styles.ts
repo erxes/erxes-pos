@@ -1,14 +1,16 @@
-import { colors, dimensions, typography } from 'modules/common/styles';
-import styled from 'styled-components';
+import { colors, dimensions, typography } from "modules/common/styles";
+import styled from "styled-components";
+import styledTS from "styled-components-ts";
 
-const AuthBox = styled.div`
+const AuthBox = styledTS<{ mainColor?: string }>(styled.div)`
   background-color: ${colors.colorWhite};
   padding: 70px 60px;
   box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 20px 3px;
   border-radius: 2px;
 
   h2 {
-    color: ${colors.colorPrimary};
+    color: ${(props) =>
+      props.mainColor ? props.mainColor : colors.colorPrimary};
     font-size: 30px;
     font-weight: 400;
     margin: 0 0 50px;
@@ -36,6 +38,7 @@ const AuthBox = styled.div`
     font-weight: 600;
     margin-top: 50px;
     border: 0;
+    background: ${(props) => props.mainColor && props.mainColor};
   }
 
   @media (max-width: 768px) {

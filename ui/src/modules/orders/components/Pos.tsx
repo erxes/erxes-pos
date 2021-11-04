@@ -86,21 +86,13 @@ export default class Pos extends React.Component<Props, State> {
     const { currentUser } = this.props;
     const { items, totalAmount } = this.state;
 
-    const user = {
-      email: currentUser.email,
-      details: {
-        avatar: "https://avatars3.githubusercontent.com/u/23444147?s=120&v=4",
-        fullName: "Anu Ujin Bat-Ulzii",
-      },
-    };
-
     return (
       <PosContainer>
         <Row>
           <Col md={6}>
             <MainContent hasBackground={true}>
               <FlexBetween>
-                <NameCard user={user} avatarSize={40} />
+                <NameCard user={currentUser} avatarSize={40} />
                 <Search />
               </FlexBetween>
               <ProductsContainer setItems={this.setItems} items={items} />
