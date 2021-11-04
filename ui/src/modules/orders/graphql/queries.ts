@@ -22,6 +22,8 @@ const products = `
       ${commonFields}
       categoryId
       unitPrice
+      type
+      description
     }
   }
 `;
@@ -48,5 +50,5 @@ export default {
   productCategories,
   products,
   orderDetail,
-  orders
+  orders,
 };

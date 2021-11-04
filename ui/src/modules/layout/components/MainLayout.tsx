@@ -1,11 +1,11 @@
-import { IUser } from 'modules/auth/types';
-import { IRouterProps } from '../../../types';
-import { bustIframe } from 'modules/common/utils';
-import React from 'react';
-import { withRouter } from 'react-router-dom';
-import { Layout, MainWrapper } from '../styles';
-import DetectBrowser from './DetectBrowser';
-import Navigation from './Navigation';
+import { IUser } from "modules/auth/types";
+import { IRouterProps } from "../../../types";
+import { bustIframe } from "modules/common/utils";
+import React from "react";
+import { withRouter } from "react-router-dom";
+import { Layout, MainWrapper } from "../styles";
+import DetectBrowser from "./DetectBrowser";
+import Navigation from "./Navigation";
 
 interface IProps extends IRouterProps {
   currentUser?: IUser;
@@ -15,18 +15,18 @@ interface IProps extends IRouterProps {
 class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
   constructor(props) {
     super(props);
-    const hasWideNav = localStorage.getItem('navigation');
+    const hasWideNav = localStorage.getItem("navigation");
 
     this.state = {
-      isCollapsed: hasWideNav ? (hasWideNav === 'true' ? true : false) : false
+      isCollapsed: hasWideNav ? (hasWideNav === "true" ? true : false) : false,
     };
   }
 
   componentDidMount() {
     const { history, currentUser } = this.props;
 
-    if (history.location.pathname !== '/reset-password' && !currentUser) {
-      history.push('/sign-in');
+    if (history.location.pathname !== "/reset-password" && !currentUser) {
+      history.push("/sign-in");
     }
 
     // click-jack attack defense
@@ -35,7 +35,7 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
 
   onCollapseNavigation = () => {
     this.setState({ isCollapsed: !this.state.isCollapsed }, () => {
-      localStorage.setItem('navigation', this.state.isCollapsed.toString());
+      localStorage.setItem("navigation", this.state.isCollapsed.toString());
     });
   };
 
@@ -45,7 +45,7 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
 
     return (
       <>
-        <div id="anti-clickjack" style={{ display: 'none' }} />
+        <div id="anti-clickjack" style={{ display: "none" }} />
         <Layout>
           {currentUser && (
             <Navigation
@@ -54,9 +54,7 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
               onCollapseNavigation={this.onCollapseNavigation}
             />
           )}
-          <MainWrapper collapsed={isCollapsed}>
-            {children}
-          </MainWrapper>
+          <MainWrapper collapsed={isCollapsed}>{children}</MainWrapper>
           <DetectBrowser />
         </Layout>
       </>

@@ -1,6 +1,6 @@
-import { injectGlobal} from 'styled-components';
-import { robotAnimation } from './animations';
-import { colors, typography } from './';
+import { injectGlobal } from "styled-components";
+import { robotAnimation } from "./animations";
+import { colors, typography } from "./";
 
 const style = `
 html {
@@ -49,6 +49,11 @@ a:hover {
 .text-warning {
   color: ${colors.colorCoreYellow} !important;
 }
+
+.flex {
+  display: flex;
+}
+
 /* override */
 
 .modal-backdrop {
