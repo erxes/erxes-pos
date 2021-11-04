@@ -131,6 +131,7 @@ export const ProductLabel = styled.div`
   margin-top: 20px;
   text-align: center;
   font-weight: 500;
+  cursor: pointer;
 `;
 
 export const Stages = styled.div`
@@ -144,4 +145,36 @@ export const StageContent = styled.div`
     margin-bottom: ${dimensions.unitSpacing}px;
     display: block;
   }
+`;
+
+export const Drawer = styledTS<{ show: boolean }>(styled.div)`
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  transition: all ease .3s;
+  display: ${(props) => !props.show && "none"};
+
+  > div {
+    height: 100%;
+    width: 40%;
+  }
+`;
+
+export const LeftMenuContainer = styled.div`
+  position: relative;
+  height: 100%;
+  background: ${colors.bgLight};
+  white-space: normal;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 12px 24px -6px rgba(9, 30, 66, 0.25),
+    0 0 0 1px rgba(9, 30, 66, 0.08);
+`;
+
+export const DrawerContent = styled.div`
+  padding: 30px;
 `;

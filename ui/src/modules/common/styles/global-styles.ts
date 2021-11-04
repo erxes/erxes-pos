@@ -227,23 +227,23 @@ a:hover {
 }
 
 
-.slide-in-right-appear,
-.slide-in-right-enter {
+.slide-in-left-appear,
+.slide-in-left-enter {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateX(-30px);
 }
 
-.slide-in-right-appear-active,
-.slide-in-right-enter-active {
+.slide-in-left-appear-active,
+.slide-in-left-enter-active {
   opacity: 1;
   transform: translateX(0);
   transition: all 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 
-.slide-in-right-exit,
-.slide-in-right-exit-active {
+.slide-in-left-exit,
+.slide-in-left-exit-active {
   opacity: 0;
-  transform: translateX(30px);
+  transform: translateX(-30px);
   transition: all 300ms cubic-bezier(0.445, 0.05, 0.55, 0.95);
 }
 

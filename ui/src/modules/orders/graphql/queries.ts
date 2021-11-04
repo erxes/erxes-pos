@@ -6,6 +6,11 @@ const commonFields = `
 
 const orderFields = `
   number
+  status
+  cardAmount
+  cashAmount
+  finalAmount
+  registerNumber
 `;
 
 const productCategories = `

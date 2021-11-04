@@ -7,6 +7,7 @@ import EmptyState from "modules/common/components/EmptyState";
 type Props = {
   items: IOrderItemInput[];
   changeItemCount: (item: IOrderItemInput) => void;
+  onClickDrawer: (drawerContentType: string) => void;
 };
 
 export default class Stage extends React.Component<Props> {
@@ -39,7 +40,9 @@ export default class Stage extends React.Component<Props> {
   render() {
     return (
       <Stages>
-        <ProductLabel>Захиалга хайх</ProductLabel>
+        <ProductLabel onClick={() => this.props.onClickDrawer("order")}>
+          Захиалга хайх
+        </ProductLabel>
         {this.renderItems()}
       </Stages>
     );

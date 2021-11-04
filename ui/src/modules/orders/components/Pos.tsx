@@ -3,15 +3,23 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import NameCard from "modules/common/components/nameCard/NameCard";
 import AsyncComponent from "modules/common/components/AsyncComponent";
+import RTG from "react-transition-group";
 import { IOrderItemInput } from "../types";
 import { ORDER_TYPES } from "../../../constants";
 import Stage from "./Stage";
 import Calculation from "./Calculation";
 import Search from "../containers/layout/Search";
 import { IUser } from "modules/auth/types";
-import { PosContainer, MainContent } from "../styles";
+import {
+  PosContainer,
+  MainContent,
+  LeftMenuContainer,
+  Drawer,
+  DrawerContent,
+} from "../styles";
 import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
+import OrderListContainer from "../containers/drawer/OrderListContainer";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -27,6 +35,8 @@ type State = {
   items: IOrderItemInput[];
   totalAmount: number;
   type: string;
+  drawerContentType: string;
+  showMenu: boolean;
 };
 
 const getTotalAmount = (items: IOrderItemInput[]) => {
@@ -40,20 +50,50 @@ const getTotalAmount = (items: IOrderItemInput[]) => {
 };
 
 export default class Pos extends React.Component<Props, State> {
+  private wrapperRef;
+
   constructor(props: Props) {
     super(props);
 
     this.state = {
       items: [],
       totalAmount: 0,
+      showMenu: false,
       type: ORDER_TYPES.EAT,
+      drawerContentType: "",
     };
   }
+
+  setWrapperRef = (node) => {
+    this.wrapperRef = node;
+  };
 
   setItems = (items: IOrderItemInput[]) => {
     let total = getTotalAmount(items);
 
     this.setState({ items, totalAmount: total });
+  };
+
+  componentDidMount() {
+    document.addEventListener("click", this.handleClickOutside, true);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener("click", this.handleClickOutside, true);
+  }
+
+  handleClickOutside = (event) => {
+    if (
+      this.wrapperRef &&
+      !this.wrapperRef.contains(event.target) &&
+      this.state.showMenu
+    ) {
+      this.setState({ showMenu: false });
+    }
+  };
+
+  toggleDrawer = (drawerContentType: string) => {
+    this.setState({ showMenu: !this.state.showMenu, drawerContentType });
   };
 
   changeItemCount = (item: IOrderItemInput) => {
@@ -84,38 +124,73 @@ export default class Pos extends React.Component<Props, State> {
     makePayment({ items: currentItems, totalAmount, type });
   };
 
+  renderDrawerContent() {
+    const { drawerContentType } = this.state;
+
+    if (drawerContentType === "order") {
+      return <OrderListContainer />;
+    }
+
+    return <div>khhjk</div>;
+  }
+
   render() {
     const { currentUser } = this.props;
     const { items, totalAmount } = this.state;
 
     return (
-      <PosContainer>
-        <Row>
-          <Col md={6}>
-            <MainContent hasBackground={true}>
-              <FlexBetween>
-                <NameCard user={currentUser} avatarSize={40} />
-                <Search />
-              </FlexBetween>
-              <ProductsContainer setItems={this.setItems} items={items} />
-            </MainContent>
-          </Col>
-          <Col sm={3}>
-            <MainContent noPadding={true}>
-              <Stage items={items} changeItemCount={this.changeItemCount} />
-            </MainContent>
-          </Col>
-          <Col sm={3}>
-            <MainContent hasBackground={true} hasShadow={true} noPadding={true}>
-              <Calculation
-                totalAmount={totalAmount}
-                makePayment={this.makePayment}
-                setOrderState={this.setOrderState}
-              />
-            </MainContent>
-          </Col>
-        </Row>
-      </PosContainer>
+      <>
+        <PosContainer>
+          <Row>
+            <Col md={6}>
+              <MainContent hasBackground={true}>
+                <FlexBetween>
+                  <NameCard user={currentUser} avatarSize={40} />
+                  <Search />
+                </FlexBetween>
+                <ProductsContainer setItems={this.setItems} items={items} />
+              </MainContent>
+            </Col>
+            <Col sm={3}>
+              <MainContent noPadding={true}>
+                <Stage
+                  items={items}
+                  changeItemCount={this.changeItemCount}
+                  onClickDrawer={this.toggleDrawer}
+                />
+              </MainContent>
+            </Col>
+            <Col sm={3}>
+              <MainContent
+                hasBackground={true}
+                hasShadow={true}
+                noPadding={true}
+              >
+                <Calculation
+                  totalAmount={totalAmount}
+                  makePayment={this.makePayment}
+                  setOrderState={this.setOrderState}
+                />
+              </MainContent>
+            </Col>
+          </Row>
+        </PosContainer>
+
+        <Drawer show={this.state.showMenu}>
+          <div ref={this.setWrapperRef}>
+            <RTG.CSSTransition
+              in={this.state.showMenu}
+              timeout={300}
+              classNames="slide-in-left"
+              unmountOnExit={true}
+            >
+              <LeftMenuContainer>
+                <DrawerContent>{this.renderDrawerContent()}</DrawerContent>
+              </LeftMenuContainer>
+            </RTG.CSSTransition>
+          </div>
+        </Drawer>
+      </>
     );
   }
 }
