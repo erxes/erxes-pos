@@ -1,5 +1,5 @@
 import Button from "modules/common/components/Button";
-import { __, bustIframe } from "modules/common/utils";
+import { __, bustIframe, setTitle } from "modules/common/utils";
 import React from "react";
 import Col from "react-bootstrap/Col";
 import Container from "react-bootstrap/Container";
@@ -21,6 +21,27 @@ type Props = {
 };
 
 class AuthLayout extends React.Component<Props, {}> {
+  setTitle(title) {
+    const favicon = document.getElementById("favicon") as HTMLAnchorElement;
+    const { uiOptions } = this.props.currentConfig || ({} as IConfig);
+
+    setTitle(
+      title,
+      title === `${__("Team Inbox")}` && document.title.startsWith("(1)")
+    );
+    favicon.href = uiOptions.favIcon || "/favicon.png";
+  }
+
+  componentDidMount() {
+    // click-jack attack defense
+    bustIframe();
+    this.setTitle(this.props.currentConfig.name || "erxes Inc");
+  }
+
+  componentDidUpdate() {
+    this.setTitle(this.props.currentConfig.name || "erxes Inc");
+  }
+
   renderContent(desciption: string, link: string) {
     return (
       <MobileRecommend>
@@ -59,11 +80,6 @@ class AuthLayout extends React.Component<Props, {}> {
         <p>{currentConfig.description || __("Collaborates with erxes")}</p>
       </>
     );
-  }
-
-  componentDidMount() {
-    // click-jack attack defense
-    bustIframe();
   }
 
   render() {
