@@ -11,6 +11,7 @@ import Search from "../containers/layout/Search";
 import { IUser } from "modules/auth/types";
 import { PosContainer, MainContent } from "../styles";
 import { FlexBetween } from "modules/common/styles/main";
+import { IConfig } from "types";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -19,6 +20,7 @@ const ProductsContainer = AsyncComponent(
 type Props = {
   makePayment: (params) => void;
   currentUser: IUser;
+  currentConfig: IConfig;
 };
 
 type State = {

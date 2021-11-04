@@ -1,4 +1,6 @@
 import React from "react";
+import { IConfig } from "types";
+import { setTitle } from "./common/utils";
 
 export function withProps<IProps>(
   Wrapped: new (props: IProps) => React.Component<IProps>
@@ -12,4 +14,16 @@ export function withProps<IProps>(
 
 export const formatNumber = (num: number) => {
   return Number((num || 0).toFixed(1)).toLocaleString();
+};
+
+export const setHeader = (currentConfig: IConfig) => {
+  const favicon = document.getElementById("favicon") as HTMLAnchorElement;
+  const title = currentConfig.name || "erxes Inc";
+  const { uiOptions = {} } = currentConfig || ({} as IConfig);
+
+  setTitle(
+    title,
+    title === `${"Team Inbox"}` && document.title.startsWith("(1)")
+  );
+  favicon.href = uiOptions.favIcon || "/favicon.png";
 };

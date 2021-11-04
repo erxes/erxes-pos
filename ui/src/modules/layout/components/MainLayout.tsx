@@ -1,15 +1,19 @@
 import { IUser } from "modules/auth/types";
-import { IRouterProps } from "../../../types";
+import { IRouterProps, IConfig } from "../../../types";
 import { bustIframe } from "modules/common/utils";
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Layout, MainWrapper } from "../styles";
+import { Layout, MainWrapper, Bottom, NavItem, NavIcon } from "../styles";
 import DetectBrowser from "./DetectBrowser";
 import Navigation from "./Navigation";
+import { setHeader } from "modules/utils";
+import Tip from "modules/common/components/Tip";
 
 interface IProps extends IRouterProps {
   currentUser?: IUser;
+  currentConfig?: IConfig;
   children: React.ReactNode;
+  logout: () => void;
 }
 
 class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
@@ -23,7 +27,7 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
   }
 
   componentDidMount() {
-    const { history, currentUser } = this.props;
+    const { history, currentUser, currentConfig } = this.props;
 
     if (history.location.pathname !== "/reset-password" && !currentUser) {
       history.push("/sign-in");
@@ -31,6 +35,11 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
 
     // click-jack attack defense
     bustIframe();
+    setHeader(currentConfig || ({} as IConfig));
+  }
+
+  componentDidUpdate() {
+    setHeader(this.props.currentConfig || ({} as IConfig));
   }
 
   onCollapseNavigation = () => {
@@ -40,7 +49,7 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
   };
 
   render() {
-    const { children, currentUser } = this.props;
+    const { children, currentUser, currentConfig, logout } = this.props;
     const { isCollapsed } = this.state;
 
     return (
@@ -50,6 +59,7 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
           {currentUser && (
             <Navigation
               currentUser={currentUser}
+              options={currentConfig ? currentConfig.uiOptions : {}}
               collapsed={isCollapsed}
               onCollapseNavigation={this.onCollapseNavigation}
             />
@@ -57,6 +67,14 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
           <MainWrapper collapsed={isCollapsed}>{children}</MainWrapper>
           <DetectBrowser />
         </Layout>
+
+        <Bottom onClick={logout}>
+          <Tip placement="right" key={Math.random()} text="Sign out">
+            <NavItem>
+              <NavIcon className="icon-logout-2" />
+            </NavItem>
+          </Tip>
+        </Bottom>
       </>
     );
   }

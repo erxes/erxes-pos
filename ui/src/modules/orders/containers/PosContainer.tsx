@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import * as compose from "lodash.flowright";
 import React from "react";
 import { Alert } from "modules/common/utils";
-import { IRouterProps } from "../../../types";
+import { IRouterProps, IConfig } from "../../../types";
 import { withProps } from "../../utils";
 import { mutations } from "../graphql/index";
 import Pos from "../components/Pos";
@@ -15,6 +15,7 @@ import { IUser } from "modules/auth/types";
 type Props = {
   ordersAddMutation: OrdersAddMutationResponse;
   currentUser: IUser;
+  currentConfig: IConfig;
 } & IRouterProps;
 
 class PosContainer extends React.Component<Props> {

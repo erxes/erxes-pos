@@ -14,10 +14,8 @@ import {
   SubNavItem,
   DropSubNav,
   DropSubNavItem,
-  ExpandIcon,
 } from "../styles";
 import Tip from "modules/common/components/Tip";
-import Icon from "modules/common/components/Icon";
 
 export interface ISubNav {
   permission: string;
@@ -32,6 +30,7 @@ type IProps = {
   collapsed: boolean;
   onCollapseNavigation: () => void;
   currentUser: IUser;
+  options: any;
 };
 
 class Navigation extends React.Component<IProps> {
@@ -164,30 +163,15 @@ class Navigation extends React.Component<IProps> {
     );
   };
 
-  renderCollapse() {
-    const { onCollapseNavigation, collapsed } = this.props;
-    const icon = collapsed ? "angle-double-left" : "angle-double-right";
-    const tooltipText = collapsed ? "Collapse menu" : "Expand menu";
-
-    return (
-      <Tip placement="right" text={__(tooltipText)}>
-        <ExpandIcon onClick={onCollapseNavigation} collapsed={collapsed}>
-          <Icon icon={icon} size={22} />
-        </ExpandIcon>
-      </Tip>
-    );
-  }
-
   render() {
-    const { collapsed } = this.props;
+    const { collapsed, options } = this.props;
     const logo = collapsed ? "logo.png" : "erxes.png";
 
     return (
-      <LeftNavigation collapsed={collapsed}>
+      <LeftNavigation collapsed={collapsed} color={options.colors.primary}>
         <NavLink to="/">
-          <img src={`/images/${logo}`} alt="logo" />
+          <img src={options.logo || `/images/${logo}`} alt="logo" />
         </NavLink>
-        {this.renderCollapse()}
         <Nav id="navigation" collapsed={collapsed}>
           {pluginsOfNavigations(this.renderNavItem)}
         </Nav>

@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AuthRoutes from "./modules/auth/routes";
 import OrderRoutes from "./modules/orders/routes";
 import { IUser } from "./modules/auth/types";
+import { IConfig } from "types";
 
 const MainLayout = asyncComponent(
   () =>
@@ -28,7 +29,7 @@ export const unsubscribe = ({ location }) => {
   return <Unsubscribe queryParams={queryParams} />;
 };
 
-const renderRoutes = (currentUser) => {
+const renderRoutes = (currentUser, currentConfig) => {
   const userConfirmation = ({ location }) => {
     const queryParams = queryString.parse(location.search);
 
@@ -52,7 +53,11 @@ const renderRoutes = (currentUser) => {
 
     return (
       <>
-        <MainLayout currentUser={currentUser} plugins={plugins}>
+        <MainLayout
+          currentUser={currentUser}
+          currentConfig={currentConfig}
+          plugins={plugins}
+        >
           {specialPluginRoutes}
           {pluginRoutes}
           <OrderRoutes />
@@ -81,7 +86,13 @@ const renderRoutes = (currentUser) => {
   );
 };
 
-const Routes = ({ currentUser }: { currentUser: IUser }) => (
+const Routes = ({
+  currentUser,
+  currentConfig,
+}: {
+  currentUser: IUser;
+  currentConfig: IConfig;
+}) => (
   <Router>
     <>
       <Route
@@ -91,7 +102,7 @@ const Routes = ({ currentUser }: { currentUser: IUser }) => (
         component={unsubscribe}
       />
 
-      {renderRoutes(currentUser)}
+      {renderRoutes(currentUser, currentConfig)}
     </>
   </Router>
 );

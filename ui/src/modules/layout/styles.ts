@@ -173,10 +173,13 @@ const PasswordWithEye = styled.div`
   }
 `;
 
-const LeftNavigation = styledTS<{ collapsed: boolean }>(styled.aside)`
+const LeftNavigation = styledTS<{ collapsed: boolean; color?: string }>(
+  styled.aside
+)`
   width: ${(props) =>
     props.collapsed ? wideNavigation : dimensions.headerSpacingWide}px;
-  background: ${colors.colorPrimaryDark};
+  background: ${(props) =>
+    props.color ? props.color : colors.colorPrimaryDark};
   box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.1);
   z-index: 11;
   flex-shrink: 0;
@@ -204,7 +207,7 @@ const LeftNavigation = styledTS<{ collapsed: boolean }>(styled.aside)`
   }
 `;
 
-const Nav = styledTS<{ collapsed: boolean }>(styled.nav)`
+const Nav = styledTS<{ collapsed: boolean; color?: string }>(styled.nav)`
   display: block;
   margin-top: ${dimensions.unitSpacing / 2}px;
   height: calc(100% - 130px);
@@ -509,6 +512,22 @@ const ExpandIcon = styledTS<{ collapsed: boolean }>(styled.div)`
     }
   }
 }
+`;
+
+export const Bottom = styled.div`
+  position: fixed;
+  bottom: 0px;
+  width: 70px;
+  padding: 10px 0;
+  text-align: center;
+  z-index: 15;
+  align-items: center;
+  transition: all ease 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.06);
+  }
 `;
 
 export {
