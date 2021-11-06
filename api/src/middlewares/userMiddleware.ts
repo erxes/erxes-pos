@@ -7,7 +7,7 @@ import Users from '../db/models/Users';
  * @param {Function} next - Next function
  */
 const userMiddleware = async (req, _res, next) => {
-  const token = req.cookies['auth-token'];
+  const token = req.cookies['pos-auth-token'];
 
   if (token) {
     try {

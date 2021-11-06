@@ -15,7 +15,7 @@ const login = async (args: ILogin, res: express.Response, secure: boolean) => {
 
   const { token } = response;
 
-  res.cookie('auth-token', token, authCookieOptions(secure));
+  res.cookie('pos-auth-token', token, authCookieOptions(secure));
 
   return 'loggedIn';
 };
@@ -59,7 +59,7 @@ const userMutations = {
   },
 
   async logout(_root, _args, { res }) {
-    res.clearCookie('auth-token');
+    res.clearCookie('pos-auth-token');
     return 'loggedout';
   }
 };
