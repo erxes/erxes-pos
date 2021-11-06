@@ -40,6 +40,7 @@ export interface IProductCategory {
 }
 
 export interface IOrderItemInput {
+  _id: string;
   count: number;
   productId: string;
   productName: string;

@@ -29,7 +29,7 @@ export default class Stage extends React.Component<Props> {
         {items.map((i) => (
           <StageItem
             item={i}
-            key={`${i.productId}-${Math.random()}`}
+            key={`${i._id}`}
             changeItemCount={changeItemCount}
           />
         ))}

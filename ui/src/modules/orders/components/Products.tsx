@@ -50,6 +50,7 @@ export default class Products extends React.Component<
     const exists = items.find((i) => i.productId === item._id);
 
     const doc = {
+      _id: Math.random().toString(),
       productId: item._id,
       productName: item.name,
       unitPrice: item.unitPrice || 0,

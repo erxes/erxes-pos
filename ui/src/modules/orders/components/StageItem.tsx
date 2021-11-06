@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { IOrderItemInput } from "../types";
 import { FlexBetween, FlexCenter } from "modules/common/styles/main";
+import { confirm } from "modules/common/utils";
 import Icon from "modules/common/components/Icon";
 import Quantity from "./Quantity";
 
@@ -64,7 +65,14 @@ export default class StageItem extends React.Component<Props> {
   }
 
   render() {
-    const { productName, unitPrice, count } = this.props.item;
+    const { item, changeItemCount } = this.props;
+    const { productName, unitPrice, count } = item;
+
+    const onRemoveItem = () => {
+      confirm("Are you sure").then(() => {
+        changeItemCount({ ...item, count: 0 })
+      });
+    };
 
     return (
       <Item>
@@ -82,7 +90,7 @@ export default class StageItem extends React.Component<Props> {
               value={count || 0}
               onChange={this.onChange}
             />
-            <Close>
+            <Close onClick={onRemoveItem}>
               <Icon icon="cancel-1" />
             </Close>
           </FlexCenter>

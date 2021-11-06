@@ -100,7 +100,13 @@ export default class Pos extends React.Component<Props, State> {
     const excludedList = this.state.items.filter(
       (i) => i.productId !== item.productId
     );
-    const items = [...excludedList, item];
+
+    const items = [...excludedList];
+
+    if (item.count > 0) {
+      items.push(item);
+    }
+
     const totalAmount = getTotalAmount(items);
 
     this.setState({ items, totalAmount });

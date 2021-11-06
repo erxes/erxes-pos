@@ -13,7 +13,12 @@ export default function ProductItem(props: Props) {
   const { attachment, name, unitPrice, description } = product;
 
   const onClick = () => {
-    addItem({ productId: product._id, count: 1, productName: product.name });
+    addItem({
+      productId: product._id,
+      count: 1,
+      productName: product.name,
+      _id: Math.random().toString()
+    });
   };
 
   return (
@@ -27,9 +32,9 @@ export default function ProductItem(props: Props) {
         />
         <strong>{formatNumber(unitPrice || 0)}₮</strong>
         <h4>{name}</h4>
-        <p>
-          <div dangerouslySetInnerHTML={{ __html: description || "" }} />
-        </p>
+        <div>
+          <p dangerouslySetInnerHTML={{ __html: description || "" }} />
+        </div>
       </div>
     </Item>
   );
