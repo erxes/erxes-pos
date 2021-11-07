@@ -37,7 +37,9 @@ export const ProductsWrapper = styled.div`
   overflow: auto;
 `;
 
-export const ProductCategory = styledTS<{ isActive?: boolean }>(styled.div)`
+export const ProductCategory = styledTS<{ isActive?: boolean; color?: string }>(
+  styled.div
+)`
   box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.1);
   border-radius: 25px;
   font-size: 11px;
@@ -45,7 +47,11 @@ export const ProductCategory = styledTS<{ isActive?: boolean }>(styled.div)`
   margin: 0 10px 10px 0;
   padding: ${dimensions.unitSpacing}px 15px;
   background: ${(props) =>
-    props.isActive ? colors.colorSecondary : colors.colorWhite};
+    props.isActive
+      ? props.color
+        ? props.color
+        : colors.colorSecondary
+      : colors.colorWhite};
   cursor: pointer;
   color: ${(props) => props.isActive && colors.colorWhite};
   transition: all ease .3s;
@@ -122,8 +128,8 @@ export const Item = styled.div`
   }
 `;
 
-export const ProductLabel = styled.div`
-  background: ${colors.colorSecondary}
+export const ProductLabel = styledTS<{ color?: string }>(styled.div)`
+  background: ${(props) => (props.color ? props.color : colors.colorSecondary)}
   color: ${colors.colorWhite};
   padding: 12px 15px;
   border-radius: 5px;

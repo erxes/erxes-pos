@@ -48,6 +48,7 @@ export const Text = styled.div`
 
 type Props = {
   item: IOrderItemInput;
+  color: string;
   changeItemCount: (item: IOrderItemInput) => void;
 };
 
@@ -65,12 +66,12 @@ export default class StageItem extends React.Component<Props> {
   }
 
   render() {
-    const { item, changeItemCount } = this.props;
+    const { item, changeItemCount, color } = this.props;
     const { productName, unitPrice, count } = item;
 
     const onRemoveItem = () => {
       confirm("Are you sure").then(() => {
-        changeItemCount({ ...item, count: 0 })
+        changeItemCount({ ...item, count: 0 });
       });
     };
 
@@ -89,6 +90,7 @@ export default class StageItem extends React.Component<Props> {
               max={1000}
               value={count || 0}
               onChange={this.onChange}
+              color={color}
             />
             <Close onClick={onRemoveItem}>
               <Icon icon="cancel-1" />

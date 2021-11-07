@@ -24,7 +24,9 @@ const Wrapper = styled.div`
   }
 `;
 
-const Button = styledTS<{ disabled: boolean }>(styled(FlexCenter))`
+const Button = styledTS<{ disabled: boolean; color?: string }>(
+  styled(FlexCenter)
+)`
   width: 20px;
   height: 20px;
   margin: 0 8px;
@@ -39,7 +41,7 @@ const Button = styledTS<{ disabled: boolean }>(styled(FlexCenter))`
     }
 
     &.icon-plus {
-      color: #6569df;
+      color: ${(props) => (props.color ? props.color : "#6569df")};
     }
   }
 `;
@@ -48,6 +50,7 @@ type Props = {
   step?: number;
   max?: number;
   value: number;
+  color: string;
   onChange: (value: number) => void;
 };
 
@@ -58,7 +61,7 @@ const formatNumber = (num: number) => {
 };
 
 const Quantity = (props: Props) => {
-  const { value, step = 1, onChange, max } = props;
+  const { value, step = 1, onChange, max, color } = props;
   const [inputValue, setInputValue] = useState(formatNumber(value));
 
   useEffect(() => {
@@ -111,7 +114,11 @@ const Quantity = (props: Props) => {
         value={inputValue}
         onChange={onChangeInput}
       />
-      <Button disabled={isDisabled(true)} onClick={() => onChangeByStep(true)}>
+      <Button
+        disabled={isDisabled(true)}
+        onClick={() => onChangeByStep(true)}
+        color={color}
+      >
         <Icon icon="plus" />
       </Button>
     </Wrapper>

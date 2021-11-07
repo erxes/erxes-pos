@@ -10,21 +10,24 @@ import { withProps } from "../../../utils";
 import { queries } from "../../graphql/index";
 import OrderList from "../../components/drawer/OrderList";
 
-type Props = {};
+type Props = {
+  options: any;
+};
 
 type FinalProps = {
   ordersQuery: any;
-} & IRouterProps;
+} & IRouterProps &
+  Props;
 
 class OrderListContainer extends React.Component<FinalProps> {
   render() {
-    const { ordersQuery } = this.props;
+    const { ordersQuery, options } = this.props;
 
     if (ordersQuery.loading) {
       return <Spinner />;
     }
 
-    return <OrderList orders={ordersQuery.orders || []} />;
+    return <OrderList orders={ordersQuery.orders || []} options={options} />;
   }
 }
 

@@ -131,17 +131,21 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   renderDrawerContent() {
-    const { drawerContentType } = this.state;
+    const { currentConfig } = this.props;
 
-    if (drawerContentType === "order") {
-      return <OrderListContainer />;
+    if (this.state.drawerContentType === "order") {
+      return (
+        <OrderListContainer
+          options={currentConfig ? currentConfig.uiOptions : {}}
+        />
+      );
     }
 
     return <div>khhjk</div>;
   }
 
   render() {
-    const { currentUser } = this.props;
+    const { currentUser, currentConfig } = this.props;
     const { items, totalAmount } = this.state;
 
     return (
@@ -163,6 +167,7 @@ export default class Pos extends React.Component<Props, State> {
                   items={items}
                   changeItemCount={this.changeItemCount}
                   onClickDrawer={this.toggleDrawer}
+                  options={currentConfig ? currentConfig.uiOptions : {}}
                 />
               </MainContent>
             </Col>
@@ -176,6 +181,7 @@ export default class Pos extends React.Component<Props, State> {
                   totalAmount={totalAmount}
                   makePayment={this.makePayment}
                   setOrderState={this.setOrderState}
+                  options={currentConfig ? currentConfig.uiOptions : {}}
                 />
               </MainContent>
             </Col>

@@ -8,11 +8,12 @@ type Props = {
   items: IOrderItemInput[];
   changeItemCount: (item: IOrderItemInput) => void;
   onClickDrawer: (drawerContentType: string) => void;
+  options: any;
 };
 
 export default class Stage extends React.Component<Props> {
   renderItems() {
-    const { items, changeItemCount } = this.props;
+    const { items, changeItemCount, options } = this.props;
 
     if (!items || items.length === 0) {
       return (
@@ -31,6 +32,7 @@ export default class Stage extends React.Component<Props> {
             item={i}
             key={`${i._id}`}
             changeItemCount={changeItemCount}
+            color={options.colors.primary || ""}
           />
         ))}
       </StageContent>
@@ -38,9 +40,14 @@ export default class Stage extends React.Component<Props> {
   }
 
   render() {
+    const { onClickDrawer, options } = this.props;
+
     return (
       <Stages>
-        <ProductLabel onClick={() => this.props.onClickDrawer("order")}>
+        <ProductLabel
+          onClick={() => onClickDrawer("order")}
+          color={options.colors.primary}
+        >
           Захиалга хайх
         </ProductLabel>
         {this.renderItems()}

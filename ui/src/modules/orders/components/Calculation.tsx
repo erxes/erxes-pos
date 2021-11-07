@@ -24,24 +24,30 @@ const Description = styled.div`
   margin-bottom: 10px;
 `;
 
-const Amount = styledTS<{ odd?: boolean }>(styled(FlexBetween))`
+const Amount = styledTS<{ color?: string }>(styled(FlexBetween))`
   border: 1px solid #cbd2d9;
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
   font-weight: 600;
-  border-color:${(props) => props.odd && "#6569df"}
-  color:${(props) => props.odd && "#6569df"}
+  border-color:${(props) => props.color && props.color}
+  color:${(props) => props.color && props.color}
 `;
 
 const ButtonWrapper = styled.div`
   margin-bottom: 30px;
+
+  > button {
+    margin-bottom: 10px;
+    margin-left: 0;
+  }
 `;
 
 type Props = {
   totalAmount: number;
   makePayment: (params: any) => void;
   setOrderState: (name: string, value: any) => void;
+  options: any;
 };
 
 export default class Calculation extends React.Component<Props> {
@@ -58,12 +64,14 @@ export default class Calculation extends React.Component<Props> {
   }
 
   render() {
-    const { totalAmount, makePayment } = this.props;
+    const { totalAmount, makePayment, options } = this.props;
 
     return (
       <>
         <Wrapper>
-          <ProductLabel>Calculation</ProductLabel>
+          <ProductLabel color={options.colors.primary}>
+            Calculation
+          </ProductLabel>
           <ColumnBetween>
             <div>
               <FormGroup>
@@ -100,20 +108,17 @@ export default class Calculation extends React.Component<Props> {
                 </FormControl>
               </FormGroup>
               <Amount>
-                <span>Discount</span>
-                {formatNumber(0)}₮
-              </Amount>
-              <Amount>
                 <span>Total</span>
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
-              <Amount odd={true}>
+              <Amount color={options.colors.primary}>
                 <span>Amount to pay</span>
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
 
-              <ProductLabel>Төлбөрийн хэрэгсэл</ProductLabel>
-              <ProductLabel>Баримт хэвлэх</ProductLabel>
+              <ProductLabel color={options.colors.primary}>
+                Баримт хэвлэх
+              </ProductLabel>
 
               <StageContent>
                 <Amount>
@@ -128,12 +133,20 @@ export default class Calculation extends React.Component<Props> {
             </div>
             <ButtonWrapper>
               <Button
-                btnStyle="success"
+                btnStyle="warning"
                 onClick={makePayment}
                 icon="check-circle"
                 block
               >
                 Make Order
+              </Button>
+              <Button
+                btnStyle="success"
+                // onClick={makePayment}
+                icon="dollar-alt"
+                block
+              >
+                Pay the bill
               </Button>
             </ButtonWrapper>
           </ColumnBetween>

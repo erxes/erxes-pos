@@ -3,12 +3,14 @@ import { IOrderItemInput, IProduct } from "../types";
 import CategoryItem from "./CategoryItem";
 import ProductItem from "./ProductItem";
 import { ProductCategories, ProductsWrapper } from "../styles";
+import { IConfig } from "types";
 
 type Props = {
   productCategories: any;
   products: any;
   setItems: (items: IOrderItemInput[]) => void;
   items: IOrderItemInput[];
+  currentConfig: IConfig;
 };
 
 export default class Products extends React.Component<
@@ -28,7 +30,7 @@ export default class Products extends React.Component<
   };
 
   renderCategories() {
-    const { productCategories } = this.props;
+    const { productCategories, currentConfig } = this.props;
 
     return (
       <ProductCategories>
@@ -38,6 +40,7 @@ export default class Products extends React.Component<
             key={cat._id}
             activeCategoryId={this.state.activeCategoryId}
             onClickCategory={this.onClickCategory}
+            options={currentConfig ? currentConfig.uiOptions : {}}
           />
         ))}
       </ProductCategories>
