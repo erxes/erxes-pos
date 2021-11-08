@@ -18,12 +18,11 @@ export const formatNumber = (num: number) => {
 
 export const setHeader = (currentConfig: IConfig) => {
   const favicon = document.getElementById("favicon") as HTMLAnchorElement;
-  const title = currentConfig.name || "erxes Inc";
-  const { uiOptions = {} } = currentConfig || ({} as IConfig);
+  const { uiOptions = {}, name = "erxes Inc" } = currentConfig || ({} as IConfig);
 
   setTitle(
-    title,
-    title === `${"Team Inbox"}` && document.title.startsWith("(1)")
+    name,
+    name === `${"Team Inbox"}` && document.title.startsWith("(1)")
   );
   favicon.href = uiOptions.favIcon || "/favicon.png";
 };
