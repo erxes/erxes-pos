@@ -84,47 +84,45 @@ export const Item = styled.div`
   transition: all ease 0.3s;
   position: relative;
 
-  > div {
-    > img {
-      width: 120px;
-      max-height: 120px;
-    }
+  > img {
+    width: 120px;
+    max-height: 120px;
+  }
 
-    > strong {
-      font-size: 20px;
-    }
+  > strong {
+    font-size: 20px;
+  }
 
-    > h4 {
-      font-size: 14px;
-      margin: 10px 0 5px;
-    }
+  > h4 {
+    font-size: 14px;
+    margin: 10px 0 5px;
+  }
 
-    p {
-      line-height: 16px;
-      font-size: 12px;
-      color: #888;
-      margin: 0;
-    }
+  p {
+    line-height: 16px;
+    font-size: 12px;
+    color: #888;
+    margin: 0;
   }
 
   &:hover {
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.28);
   }
 
-  @media (min-width: 480px) {
-    flex-basis: 50%;
+  @media (max-width: 1600px) {
+    flex-basis: 30%;
   }
 
-  @media (min-width: 768px) {
-    flex-basis: 33.3333333%;
+  @media (max-width: 1450px) {
+    flex-basis: 28%;
   }
 
-  @media (min-width: 1170px) {
-    flex-basis: 25%;
+  @media (max-width: 1350px) {
+    flex-basis: 45%;
   }
 
-  @media (min-width: 1400px) {
-    flex-basis: 22%;
+  @media (max-width: 1050px) {
+    flex-basis: 42%;
   }
 `;
 
