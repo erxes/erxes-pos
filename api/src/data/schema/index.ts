@@ -10,7 +10,7 @@ import {
 } from './product';
 
 import { types as CompanyTypes } from './company';
-import { types as CustomerTypes } from './customer';
+import { types as CustomerTypes, queries as CustomerQueries } from './customer';
 import { types as OrderTypes, mutations as OrderMutations, queries as OrderQueries } from './orders';
 import { types as ConfigTypes, mutations as ConfigMutations, queries as ConfigQueries } from './configs';
 
@@ -30,6 +30,7 @@ export let queries = `
   ${ProductQueries}
   ${OrderQueries}
   ${ConfigQueries}
+  ${CustomerQueries}
 `;
 
 export let mutations = `

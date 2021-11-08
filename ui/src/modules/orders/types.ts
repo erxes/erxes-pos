@@ -49,4 +49,58 @@ export interface IOrderItemInput {
 
 export type OrdersAddMutationResponse = ({
   variables: any
-}) => void;
+}) => Promise<any>;
+
+export interface ICustomer {
+  state?: 'visitor' | 'lead' | 'customer';
+
+  scopeBrandIds?: string[];
+  firstName?: string;
+  lastName?: string;
+  middleName?: string;
+  birthDate?: Date;
+  sex?: number;
+  primaryEmail?: string;
+  emails?: string[];
+  avatar?: string;
+  primaryPhone?: string;
+  phones?: string[];
+
+  ownerId?: string;
+  position?: string;
+  department?: string;
+  leadStatus?: string;
+  hasAuthority?: string;
+  description?: string;
+  doNotDisturb?: string;
+  isSubscribed?: string;
+  emailValidationStatus?: string;
+  phoneValidationStatus?: string;
+  links?: any;
+  relatedIntegrationIds?: string[];
+  integrationId?: string;
+  tagIds?: string[];
+
+  // TODO migrate after remove 1row
+  companyIds?: string[];
+
+  mergedIds?: string[];
+  status?: string;
+  customFieldsData?: any;
+  trackedData?: any;
+  location?: any;
+  visitorContactInfo?: any;
+  deviceTokens?: string[];
+  code?: string;
+  isOnline?: boolean;
+  lastSeenAt?: Date;
+  sessionCount?: number;
+  visitorId?: string;
+
+  _id: string;
+  profileScore?: number;
+  score?: number;
+  createdAt: Date;
+  modifiedAt: Date;
+  searchText?: string;
+}

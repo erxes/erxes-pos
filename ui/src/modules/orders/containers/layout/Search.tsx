@@ -1,7 +1,8 @@
-// import client from "apolloClient";
-// import gql from "graphql-tag";
+import client from "apolloClient";
+import gql from "graphql-tag";
 import React from "react";
 import Search from "../../components/layout/Search";
+import { queries as customerQueries } from '../../graphql/index';
 
 class SearchContainer extends React.Component<
   { full?: boolean },
@@ -21,26 +22,24 @@ class SearchContainer extends React.Component<
     if (e.key === "Enter") {
       e.preventDefault();
 
-      const value = e.currentTarget.value;
+      const searchValue = e.currentTarget.value;
 
-      if (!value) {
+      if (!searchValue) {
         return this.setState({ results: null });
       }
 
       this.setState({ loading: true });
 
-      //   client
-      //     .query({
-      //       query: gql(queries.search),
-      //       variables: {
-      //         value,
-      //       },
-      //     })
-      //     .then(({ data, loading }) => {
-      //       if (!loading && data.search) {
-      //         this.setState({ results: data.search, loading: false });
-      //       }
-      //     });
+        client
+          .query({
+            query: gql(customerQueries.customers),
+            variables: { searchValue },
+          })
+          .then(({ data, loading }) => {
+            if (!loading && data.search) {
+              this.setState({ results: data.search, loading: false });
+            }
+          });
     }
   };
 

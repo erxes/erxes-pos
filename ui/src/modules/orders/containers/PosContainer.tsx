@@ -23,9 +23,11 @@ class PosContainer extends React.Component<Props> {
     const { ordersAddMutation } = this.props;
 
     const makePayment = (params: any) => {
-      ordersAddMutation({ variables: params });
-
-      return Alert.success("Order has been created");
+      ordersAddMutation({ variables: params }).then(() => {
+        return Alert.success("Order has been created");
+      }).catch(e => {
+        return Alert.error(e.message);
+      });
     };
 
     const updatedProps = { ...this.props, makePayment };

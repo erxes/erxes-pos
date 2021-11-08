@@ -60,12 +60,12 @@ type Props = {
 
 export default class OrderList extends React.Component<Props> {
   renderItem(order, key) {
-    // const { number } = order;
+    const { number } = order;
 
     return (
       <OrderBox color={this.props.options.colors.primary} key={key}>
         <FlexCenter>
-          Number: <b>{0}</b>
+          Number: <b>{number}</b>
         </FlexCenter>
         <FlexCenter>
           <Icon icon="wallet" size={20} /> <b>{formatNumber(200000)}₮</b>
@@ -76,7 +76,7 @@ export default class OrderList extends React.Component<Props> {
   }
 
   render() {
-    const { orders } = this.props;
+    const { orders = [] } = this.props;
 
     return (
       <>

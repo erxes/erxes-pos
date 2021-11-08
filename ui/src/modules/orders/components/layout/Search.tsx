@@ -211,8 +211,6 @@ class Search extends React.Component<
     const keys = Object.keys(highlights);
 
     return keys.map((key, index) => {
-      const source = item.source;
-
       let keyText = key;
 
       if (keyText === "firstName") {
@@ -240,34 +238,6 @@ class Search extends React.Component<
       }
 
       let href = "#";
-
-      if (module === "conversationMessages") {
-        href = `/inbox/index?_id=${source.conversationId}`;
-      }
-
-      if (module === "contacts") {
-        href = `/contacts/details/${source._id}`;
-      }
-
-      if (module === "companies") {
-        href = `/companies/details/${source._id}`;
-      }
-
-      if (module === "engageMessages") {
-        href = `/campaigns/show/${source._id}`;
-      }
-
-      if (module === "deals") {
-        href = `/deal/board?id=${source.boardId}&itemId=${source._id}&pipelineId=${source.pipelineId}`;
-      }
-
-      if (module === "tasks") {
-        href = `/task/board?id=${source.boardId}&itemId=${source._id}&pipelineId=${source.pipelineId}`;
-      }
-
-      if (module === "tickets") {
-        href = `/ticket/board?id=${source.boardId}&itemId=${source._id}&pipelineId=${source.pipelineId}`;
-      }
 
       return (
         <li key={index}>

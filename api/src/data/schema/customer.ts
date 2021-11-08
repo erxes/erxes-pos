@@ -1,9 +1,4 @@
 export const types = `
-  type CustomerConnectionChangedResponse {
-    _id: String!
-    status: String!
-  }
-
   type Customer {
     _id: String!
     state: String
@@ -79,13 +74,11 @@ const queryParams = `
   leadStatus: String
   sortField: String
   sortDirection: Int
-  sex:Int
+  sex: Int
   birthDate: Date
 `;
 
 export const queries = `
-  customersMain(${queryParams}): CustomersListResponse
   customers(${queryParams}): [Customer]
-  customerCounts(${queryParams}, only: String, source: String): JSON
   customerDetail(_id: String!): Customer
 `;

@@ -16,4 +16,5 @@ export interface IOrderInput {
   items: [IOrderItemInput];
   totalAmount: number;
   type: string;
+  customerId?: string;
 }

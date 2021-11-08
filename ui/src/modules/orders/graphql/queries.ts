@@ -51,9 +51,22 @@ const orders = `
   }
 `;
 
+const customers = `
+  query customers($searchValue: String) {
+    customers(searchValue: $searchValue) {
+      _id
+      primaryPhone
+      firstName
+      primaryEmail
+      code
+    }
+  }
+`;
+
 export default {
   productCategories,
   products,
   orderDetail,
   orders,
+  customers
 };

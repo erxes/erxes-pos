@@ -45,10 +45,10 @@ export const types = `
 `;
 
 export const mutations = `
-  ordersAdd(items: [OrderItemInput], totalAmount: Float!, type: String!): Order
+  ordersAdd(items: [OrderItemInput], totalAmount: Float!, type: String!, customerId: String): Order
 `;
 
 export const queries = `
-  orders: [Order]
+  orders(number: String): [Order]
   orderDetail(_id: String): Order
 `;

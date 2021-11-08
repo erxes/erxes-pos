@@ -82,3 +82,9 @@ export interface IConfig {
 export type CurrentConfigQueryResponse = {
   currentConfig: IConfig;
 } & QueryResponse;
+
+export type IOption = {
+  label: string;
+  value: string;
+  avatar?: string;
+};
