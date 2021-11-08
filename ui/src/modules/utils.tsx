@@ -18,8 +18,8 @@ export const formatNumber = (num: number) => {
 
 export const setHeader = (currentConfig: IConfig) => {
   const favicon = document.getElementById("favicon") as HTMLAnchorElement;
-  const title = currentConfig.name || "erxes Inc";
-  const { uiOptions = {} } = currentConfig || ({} as IConfig);
+  const { uiOptions = {}, name } = currentConfig || ({} as IConfig);
+  const title = name || "erxes Inc";
 
   setTitle(
     title,
