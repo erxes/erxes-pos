@@ -4,7 +4,7 @@ import React from "react";
 import Search from "../../components/layout/Search";
 
 class SearchContainer extends React.Component<
-  {},
+  { full?: boolean },
   { results; loading: boolean }
 > {
   constructor(props) {
@@ -51,6 +51,7 @@ class SearchContainer extends React.Component<
         results={this.state.results}
         loading={this.state.loading}
         clearSearch={this.clearSearch}
+        full={this.props.full}
       />
     );
   }

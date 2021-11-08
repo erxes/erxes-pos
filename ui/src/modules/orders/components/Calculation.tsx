@@ -47,6 +47,7 @@ type Props = {
   totalAmount: number;
   makePayment: (params: any) => void;
   setOrderState: (name: string, value: any) => void;
+  onClickDrawer: (drawerContentType: string) => void;
   options: any;
 };
 
@@ -64,7 +65,7 @@ export default class Calculation extends React.Component<Props> {
   }
 
   render() {
-    const { totalAmount, makePayment, options } = this.props;
+    const { totalAmount, makePayment, options, onClickDrawer } = this.props;
 
     return (
       <>
@@ -117,16 +118,16 @@ export default class Calculation extends React.Component<Props> {
               </Amount>
 
               <ProductLabel color={options.colors.primary}>
-                Баримт хэвлэх
+                Print receipt
               </ProductLabel>
 
               <StageContent>
                 <Amount>
-                  <span>Төлсөн дүн</span>
+                  <span>Paid amount</span>
                   {formatNumber(0)}₮
                 </Amount>
                 <Amount>
-                  <span>Хариулт</span>
+                  <span>Change</span>
                   {formatNumber(0)}₮
                 </Amount>
               </StageContent>
@@ -142,7 +143,7 @@ export default class Calculation extends React.Component<Props> {
               </Button>
               <Button
                 btnStyle="success"
-                // onClick={makePayment}
+                onClick={() => onClickDrawer("payment")}
                 icon="dollar-alt"
                 block
               >

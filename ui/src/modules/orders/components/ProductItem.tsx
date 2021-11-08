@@ -17,24 +17,20 @@ export default function ProductItem(props: Props) {
       productId: product._id,
       count: 1,
       productName: product.name,
-      _id: Math.random().toString()
+      _id: Math.random().toString(),
     });
   };
 
   return (
     <Item onClick={onClick}>
+      <img
+        src={attachment || "https://office.erxes.io/images/icons/erxes-16.svg"}
+        alt={name}
+      />
+      <strong>{formatNumber(unitPrice || 0)}₮</strong>
+      <h4>{name}</h4>
       <div>
-        <img
-          src={
-            attachment || "https://office.erxes.io/images/icons/erxes-16.svg"
-          }
-          alt={name}
-        />
-        <strong>{formatNumber(unitPrice || 0)}₮</strong>
-        <h4>{name}</h4>
-        <div>
-          <p dangerouslySetInnerHTML={{ __html: description || "" }} />
-        </div>
+        <p dangerouslySetInnerHTML={{ __html: description || "" }} />
       </div>
     </Item>
   );

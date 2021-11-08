@@ -8,7 +8,9 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import styledTS from "styled-components-ts";
 
-const MainContainer = styledTS<{ active?: boolean }>(styled.div)`
+const MainContainer = styledTS<{ active?: boolean; full?: boolean }>(
+  styled.div
+)`
   background-color: ${(props) =>
     props.active ? colors.colorWhite : colors.bgMain};
   border: 1px solid ${(props) =>
@@ -17,7 +19,14 @@ const MainContainer = styledTS<{ active?: boolean }>(styled.div)`
   height: 32px;
   position: relative;
   transition: .3s all;
-  width: ${(props) => (props.active ? "280px" : "120px")};
+  width: ${(props) =>
+    props.active
+      ? props.full
+        ? "100%"
+        : "280px"
+      : props.full
+      ? "100%"
+      : "120px"};
   display: flex;
   padding: 0 ${dimensions.unitSpacing}px;
   align-items: center;
@@ -147,6 +156,7 @@ type Props = {
   clearSearch: () => void;
   results;
   loading: boolean;
+  full?: boolean;
 };
 
 class Search extends React.Component<
@@ -381,6 +391,7 @@ class Search extends React.Component<
         innerRef={this.setWrapperRef}
         active={this.state.showInput}
         onClick={this.openInput}
+        full={this.props.full}
       >
         {this.renderInput()}
         {this.renderResults()}

@@ -22,6 +22,8 @@ const OrderBox = styledTS<{ color?: string }>(styled.div)`
   border-radius: 8px;
   width: 31.333%;
   display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
@@ -34,6 +36,8 @@ const OrderBox = styledTS<{ color?: string }>(styled.div)`
     b {
       margin-left: 5px;
       color: ${(props) => (props.color ? props.color : "#6569df")};
+      word-break: break-word;
+      line-height: 15px;
     }
   }
 
@@ -76,7 +80,7 @@ export default class OrderList extends React.Component<Props> {
 
     return (
       <>
-        <Search />
+        <Search full={true} />
         <Orders>
           {orders.map((order, index) => this.renderItem(order, index))}
         </Orders>
