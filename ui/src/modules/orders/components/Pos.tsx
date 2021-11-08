@@ -20,6 +20,7 @@ import {
 import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
 import OrderListContainer from "../containers/drawer/OrderListContainer";
+import PaymentForm from "./drawer/PaymentForm";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -132,8 +133,9 @@ export default class Pos extends React.Component<Props, State> {
 
   renderDrawerContent() {
     const { currentConfig } = this.props;
+    const { drawerContentType, totalAmount } = this.state;
 
-    if (this.state.drawerContentType === "order") {
+    if (drawerContentType === "order") {
       return (
         <OrderListContainer
           options={currentConfig ? currentConfig.uiOptions : {}}
@@ -141,12 +143,22 @@ export default class Pos extends React.Component<Props, State> {
       );
     }
 
-    return <div>khhjk</div>;
+    if (drawerContentType === "payment") {
+      return (
+        <PaymentForm
+          options={currentConfig ? currentConfig.uiOptions : {}}
+          totalAmount={totalAmount}
+          closeDrawer={this.toggleDrawer}
+        />
+      );
+    }
+
+    return null;
   }
 
   render() {
     const { currentUser, currentConfig } = this.props;
-    const { items, totalAmount } = this.state;
+    const { items, totalAmount, showMenu } = this.state;
 
     return (
       <>
@@ -181,6 +193,7 @@ export default class Pos extends React.Component<Props, State> {
                   totalAmount={totalAmount}
                   makePayment={this.makePayment}
                   setOrderState={this.setOrderState}
+                  onClickDrawer={this.toggleDrawer}
                   options={currentConfig ? currentConfig.uiOptions : {}}
                 />
               </MainContent>
@@ -188,10 +201,10 @@ export default class Pos extends React.Component<Props, State> {
           </Row>
         </PosContainer>
 
-        <Drawer show={this.state.showMenu}>
+        <Drawer show={showMenu}>
           <div ref={this.setWrapperRef}>
             <RTG.CSSTransition
-              in={this.state.showMenu}
+              in={showMenu}
               timeout={300}
               classNames="slide-in-left"
               unmountOnExit={true}

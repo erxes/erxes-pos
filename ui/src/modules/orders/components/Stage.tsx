@@ -48,7 +48,7 @@ export default class Stage extends React.Component<Props> {
           onClick={() => onClickDrawer("order")}
           color={options.colors.primary}
         >
-          Захиалга хайх
+          Find orders
         </ProductLabel>
         {this.renderItems()}
       </Stages>
