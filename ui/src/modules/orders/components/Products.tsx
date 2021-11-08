@@ -21,7 +21,7 @@ export default class Products extends React.Component<
     super(props);
 
     this.state = {
-      activeCategoryId: (props.productCategories || [])[0]._id,
+      activeCategoryId: ((props.productCategories || [])[0] || {})._id,
     };
   }
 
