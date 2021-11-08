@@ -80,7 +80,7 @@ export default class OrderList extends React.Component<Props> {
 
     return (
       <>
-        <Search />
+        <Search full={true} />
         <Orders>
           {orders.map((order, index) => this.renderItem(order, index))}
         </Orders>
