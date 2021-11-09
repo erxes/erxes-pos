@@ -8,7 +8,7 @@ import { IOrderItemInput } from "../types";
 import { ORDER_TYPES } from "../../../constants";
 import Stage from "./Stage";
 import Calculation from "./Calculation";
-import Search from "../containers/layout/Search";
+import OrderSearch from "../containers/layout/OrderSearch";
 import { IUser } from "modules/auth/types";
 import {
   PosContainer,
@@ -138,7 +138,7 @@ export default class Pos extends React.Component<Props, State> {
 
     if (drawerContentType === "order") {
       return (
-        <Search options={currentConfig.uiOptions} />
+        <OrderSearch options={currentConfig.uiOptions} />
       );
     }
 
