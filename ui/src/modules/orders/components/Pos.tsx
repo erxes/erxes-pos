@@ -19,7 +19,6 @@ import {
 } from "../styles";
 import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
-import OrderListContainer from "../containers/drawer/OrderListContainer";
 import PaymentForm from "./drawer/PaymentForm";
 
 const ProductsContainer = AsyncComponent(
@@ -139,9 +138,7 @@ export default class Pos extends React.Component<Props, State> {
 
     if (drawerContentType === "order") {
       return (
-        <OrderListContainer
-          options={currentConfig ? currentConfig.uiOptions : {}}
-        />
+        <Search options={currentConfig.uiOptions} />
       );
     }
 
@@ -170,7 +167,6 @@ export default class Pos extends React.Component<Props, State> {
               <MainContent hasBackground={true}>
                 <FlexBetween>
                   <NameCard user={currentUser} avatarSize={40} />
-                  <Search />
                 </FlexBetween>
                 <ProductsContainer setItems={this.setItems} items={items} />
               </MainContent>

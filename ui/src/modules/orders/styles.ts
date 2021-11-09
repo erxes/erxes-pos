@@ -182,3 +182,100 @@ export const LeftMenuContainer = styled.div`
 export const DrawerContent = styled.div`
   padding: 30px;
 `;
+
+/**
+ * Order search components shown in drawer
+ */
+export const Orders = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+`;
+
+export const OrderBox = styledTS<{ color?: string }>(styled.div)`
+  background: #fff;
+  padding: 20px;
+  text-align: center;
+  margin: 0 20px 20px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  width: 31.333%;
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  flex-direction: column;
+  justify-content: center;
+  cursor: pointer;
+
+  > div {
+    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 15px;
+
+    b {
+      margin-left: 5px;
+      color: ${(props) => (props.color ? props.color : "#6569df")};
+      word-break: break-word;
+      line-height: 15px;
+    }
+  }
+
+  label {
+    background:${(props) => (props.color ? props.color : "#6569df")};
+    color: #fff;
+    padding: 5px;
+    border-radius: 8px;
+  }
+
+  &:nth-child(3n) {
+    margin-right: 0;
+  }
+`;
+
+export const OrderListWrapper = styledTS<{ active?: boolean; full?: boolean }>(
+  styled.div
+)`
+  background-color: ${(props) =>
+    props.active ? colors.colorWhite : colors.bgMain};
+  border: 1px solid ${(props) =>
+    props.active ? colors.borderDarker : colors.bgMain};
+  border-radius: 35px;
+  height: 32px;
+  position: relative;
+  transition: .3s all;
+  width: ${(props) =>
+    props.active
+      ? props.full
+        ? "100%"
+        : "280px"
+      : props.full
+      ? "100%"
+      : "120px"};
+  display: flex;
+  padding: 0 ${dimensions.unitSpacing}px;
+  align-items: center;
+  position: relative;
+
+  > span {
+    color: ${colors.colorCoreGray};
+    padding-left: ${dimensions.unitSpacing}px;
+  }
+  
+  i {
+    cursor: pointer;
+    color: ${colors.colorCoreDarkGray};
+  }
+
+  input {
+    background: 0 0;
+    border: none;
+    padding: 5px ${dimensions.unitSpacing}px;
+    flex: 1;
+    height: 100%;
+    outline: 0;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+`;

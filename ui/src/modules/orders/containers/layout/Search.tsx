@@ -1,21 +1,29 @@
 import client from "apolloClient";
 import gql from "graphql-tag";
 import React from "react";
-import Search from "../../components/layout/Search";
-import { queries as customerQueries } from '../../graphql/index';
+import { queries } from '../../graphql/index';
+import SearchInput from "modules/orders/components/SearchInput";
+import OrderItem from "modules/orders/components/drawer/OrderItem";
+import { Orders } from "modules/orders/styles";
 
-class SearchContainer extends React.Component<
-  { full?: boolean },
-  { results; loading: boolean }
-> {
+type Props = {
+  options: any;
+}
+
+type State = {
+  results;
+  loading: boolean;
+}
+
+export default class SearchContainer extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
-    this.state = { results: null, loading: false };
+    this.state = { results: [], loading: false };
   }
 
   clearSearch = () => {
-    this.setState({ results: null });
+    this.setState({ results: [] });
   };
 
   onSearch = (e) => {
@@ -25,35 +33,38 @@ class SearchContainer extends React.Component<
       const searchValue = e.currentTarget.value;
 
       if (!searchValue) {
-        return this.setState({ results: null });
+        return this.setState({ results: [] });
       }
 
       this.setState({ loading: true });
 
-        client
-          .query({
-            query: gql(customerQueries.customers),
-            variables: { searchValue },
-          })
-          .then(({ data, loading }) => {
-            if (!loading && data.search) {
-              this.setState({ results: data.search, loading: false });
-            }
-          });
+      client
+        .query({
+          query: gql(queries.orders),
+          variables: { searchValue },
+        })
+        .then(({ data, loading }) => {
+          if (!loading && data.orders) {
+            this.setState({ results: data.orders, loading: false });
+          }
+        });
     }
   };
 
   render() {
+    const { results = [] } = this.state;
+
     return (
-      <Search
-        onSearch={this.onSearch}
-        results={this.state.results}
-        loading={this.state.loading}
-        clearSearch={this.clearSearch}
-        full={this.props.full}
-      />
+      <>
+        <SearchInput
+          onSearch={this.onSearch}
+          clearSearch={this.clearSearch}
+          placeholder="Search"
+        />
+        <Orders>
+          {results.map((order) => <OrderItem order={order} options={this.props.options} key={order._id} />)}
+        </Orders>
+      </>
     );
   }
 }
-
-export default SearchContainer;
