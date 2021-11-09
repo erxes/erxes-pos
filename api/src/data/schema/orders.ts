@@ -49,6 +49,6 @@ export const mutations = `
 `;
 
 export const queries = `
-  orders(number: String): [Order]
+  orders(searchValue: String, page: Int, perPage: Int): [Order]
   orderDetail(_id: String): Order
 `;

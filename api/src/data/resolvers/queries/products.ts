@@ -2,6 +2,17 @@ import { ProductCategories, Products } from '../../../db/models/Products';
 import { PRODUCT_STATUSES } from '../../../db/models/definitions/constants';
 import { escapeRegExp, paginate } from '../../utils';
 
+interface IProductParams {
+  ids: string[];
+  excludeIds: boolean;
+  type: string;
+  categoryId: string;
+  searchValue: string;
+  tag: string;
+  page: number;
+  perPage: number;
+}
+
 const productQueries = {
   async products(
     _root,
@@ -13,16 +24,7 @@ const productQueries = {
       ids,
       excludeIds,
       ...paginationArgs
-    }: {
-      ids: string[];
-      excludeIds: boolean;
-      type: string;
-      categoryId: string;
-      searchValue: string;
-      tag: string;
-      page: number;
-      perPage: number;
-    }
+    }: IProductParams
   ) {
     const filter: any = { status: { $ne: PRODUCT_STATUSES.DELETED } };
 
@@ -32,7 +34,7 @@ const productQueries = {
 
     if (categoryId) {
       const category = await ProductCategories.getProductCatogery({
-        _id: categoryId
+        _id: categoryId,
       });
       const product_category_ids = await ProductCategories.find(
         { order: { $regex: new RegExp(category.order) } },
@@ -53,20 +55,17 @@ const productQueries = {
     if (searchValue) {
       const fields = [
         {
-          name: { $in: [new RegExp(`.*${escapeRegExp(searchValue)}.*`, 'i')] }
+          name: { $in: [new RegExp(`.*${escapeRegExp(searchValue)}.*`, 'i')] },
         },
-        { code: { $in: [new RegExp(`.*${escapeRegExp(searchValue)}.*`, 'i')] } }
+        {
+          code: { $in: [new RegExp(`.*${escapeRegExp(searchValue)}.*`, 'i')] },
+        },
       ];
 
       filter.$or = fields;
     }
 
-    return paginate(
-      Products.find(filter)
-        .sort('code')
-        .lean(),
-      paginationArgs
-    );
+    return paginate(Products.find(filter).sort('code').lean(), paginationArgs);
   },
 
   /**
@@ -74,7 +73,7 @@ const productQueries = {
    */
   productsTotalCount(_root, { type }: { type: string }) {
     const filter: any = {
-      status: { $ne: PRODUCT_STATUSES.DELETED }
+      status: { $ne: PRODUCT_STATUSES.DELETED },
     };
 
     if (type) {
@@ -98,9 +97,7 @@ const productQueries = {
       filter.name = new RegExp(`.*${searchValue}.*`, 'i');
     }
 
-    return ProductCategories.find(filter)
-      .sort({ order: 1 })
-      .lean();
+    return ProductCategories.find(filter).sort({ order: 1 }).lean();
   },
 
   productCategoriesTotalCount(_root) {
@@ -113,7 +110,7 @@ const productQueries = {
 
   productCategoryDetail(_root, { _id }: { _id: string }) {
     return ProductCategories.findOne({ _id }).lean();
-  }
+  },
 };
 
 export default productQueries;

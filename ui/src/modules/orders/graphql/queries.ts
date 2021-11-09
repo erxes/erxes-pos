@@ -9,8 +9,10 @@ const orderFields = `
   status
   cardAmount
   cashAmount
+  totalAmount
   finalAmount
   registerNumber
+  customerId
 `;
 
 const productCategories = `
@@ -43,8 +45,8 @@ const orderDetail = `
 `;
 
 const orders = `
-  query orders {
-    orders {
+  query orders($searchValue: String, $page: Int, $perPage: Int) {
+    orders(searchValue: $searchValue, page: $page, perPage: $perPage) {
       _id
       ${orderFields}
     }
