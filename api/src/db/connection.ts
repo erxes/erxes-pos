@@ -5,7 +5,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 import mongoose = require('mongoose');
 import resolvers from '../data/resolvers';
 import { mutations, queries, types } from '../data/schema';
-import { getEnv } from '../data/utils';
+import { getEnv } from '../data/utils/commonUtils';
 import { debugDb } from '../debuggers';
 import { userFactory } from './factories';
 

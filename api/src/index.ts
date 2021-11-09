@@ -10,7 +10,7 @@ import {
   authCookieOptions,
   getEnv,
   routeErrorHandling
-} from './data/utils';
+} from './data/utils/commonUtils';
 import { connect, mongoStatus } from './db/connection';
 import { Configs } from './db/models/Configs';
 import {

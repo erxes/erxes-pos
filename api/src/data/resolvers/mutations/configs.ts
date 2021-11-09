@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv';
 
 import { Configs } from '../../../db/models/Configs';
-import { sendRequest } from '../../utils';
+import { sendRequest } from '../../utils/commonUtils';
 import { importUsers, importProducts, importCustomers } from '../../syncUtils';
 
 dotenv.config();

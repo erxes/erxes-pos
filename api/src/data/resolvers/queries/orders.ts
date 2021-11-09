@@ -1,5 +1,5 @@
 import { Orders } from '../../../db/models/Orders';
-import { escapeRegExp, paginate } from '../../utils';
+import { escapeRegExp, paginate } from '../../utils/commonUtils';
 
 interface ISearchParams {
   searchValue?: string;

@@ -1,6 +1,6 @@
 import { ProductCategories, Products } from '../../../db/models/Products';
 import { PRODUCT_STATUSES } from '../../../db/models/definitions/constants';
-import { escapeRegExp, paginate } from '../../utils';
+import { escapeRegExp, paginate } from '../../utils/commonUtils';
 
 interface IProductParams {
   ids: string[];

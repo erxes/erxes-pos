@@ -2,7 +2,7 @@ import * as express from 'express';
 import Users from '../../../db/models/Users';
 import { IUser } from '../../../db/models/definitions/users';
 import { IContext } from '../../types';
-import { authCookieOptions } from '../../utils';
+import { authCookieOptions } from '../../utils/commonUtils';
 
 interface ILogin {
   email: string;
