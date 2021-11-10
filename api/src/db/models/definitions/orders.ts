@@ -31,7 +31,7 @@ export const orderSchema = new Schema({
   createdAt: schemaCreatedAt,
   status: { type: String, label: 'Status of the order' },
   paidDate: { type: Date, label: 'Paid date' },
-  number: { type: String, label: 'Order number' },
+  number: { type: String, label: 'Order number', unique: true },
   customerId: { type: String, label: 'Customer' },
   cardAmount: getNumberFieldDefinition({ positive: true, label: 'Card amount' }),
   cashAmount: getNumberFieldDefinition({ positive: true, label: 'Cash amount' }),

@@ -1,7 +1,7 @@
 import { Orders } from '../../../db/models/Orders';
 import { OrderItems } from '../../../db/models/OrderItems';
 import { IOrderInput } from '../../types';
-import * as dayjs from 'dayjs';
+import { generateOrderNumber } from '../../utils/orderUtils';
 
 const orderMutations = {
   async ordersAdd(_root, doc: IOrderInput) {
@@ -11,9 +11,8 @@ const orderMutations = {
       throw new Error('Products missing in order. Please add products');
     }
 
-    const now = dayjs().format('YYYYMMDD').toString();
     const order = await Orders.createOrder({
-      number: `${now}-${Math.random().toString()}`,
+      number: await generateOrderNumber(),
       totalAmount,
       type,
       customerId
