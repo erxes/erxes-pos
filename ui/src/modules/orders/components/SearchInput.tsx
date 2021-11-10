@@ -2,6 +2,7 @@ import React from 'react';
 
 import Icon from "modules/common/components/Icon";
 import { __ } from "modules/common/utils";
+import { SearchInputWrapper } from '../styles';
 
 type Props = {
   onSearch: (e: any) => void;
@@ -40,7 +41,7 @@ export default class SearchInput extends React.Component<Props, State> {
     };
 
     return (
-      <>
+      <SearchInputWrapper full={true}>
         <Icon icon="search-1" size={18} />
         {showInput ? (
           <>
@@ -56,7 +57,7 @@ export default class SearchInput extends React.Component<Props, State> {
         ) : (
           <span>{__(placeholder)}...</span>
         )}
-      </>
+      </SearchInputWrapper>
     );
   } // end render()
 }

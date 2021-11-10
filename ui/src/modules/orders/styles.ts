@@ -232,7 +232,7 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   }
 `;
 
-export const OrderListWrapper = styledTS<{ active?: boolean; full?: boolean }>(
+export const SearchInputWrapper = styledTS<{ active?: boolean; full?: boolean }>(
   styled.div
 )`
   background-color: ${(props) =>
