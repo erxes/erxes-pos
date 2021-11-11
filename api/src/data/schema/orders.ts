@@ -35,6 +35,10 @@ export const types = `
     billId: String
     registerNumber: String
     oldBillId: String
+    type: String
+
+    items: [OrderItem]
+    customer: Customer
   }
 
   input OrderItemInput {

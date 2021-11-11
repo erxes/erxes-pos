@@ -1,3 +1,16 @@
+import { QueryResponse } from "types";
+
+export interface IOrderItem {
+  _id: string;
+  createdAt?: Date;
+  productId: string;
+  count: number;
+  unitPrice: number;
+  discountAmount?: number;
+  discountPercent?: number;
+  orderId: string;
+}
+
 export interface IOrder {
   _id: string;
   status: string;
@@ -16,6 +29,9 @@ export interface IOrder {
   billId: string;
   registerNumber: string;
   oldBillId: string;
+
+  items: IOrderItem[];
+  customer?: ICustomer;
 };
 
 export interface IProduct {
@@ -50,6 +66,10 @@ export interface IOrderItemInput {
 export type OrdersAddMutationResponse = ({
   variables: any
 }) => Promise<any>;
+
+export type OrderDetailQueryResponse = {
+  orderDetail: IOrder;
+} & QueryResponse
 
 export interface ICustomer {
   state?: 'visitor' | 'lead' | 'customer';

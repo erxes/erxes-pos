@@ -1,6 +1,8 @@
 import { Document, Schema } from 'mongoose';
 import { field, schemaCreatedAt, getNumberFieldDefinition } from './utils';
 import { ORDER_TYPES } from './constants';
+import { IOrderItemDocument } from './orderItems';
+import { ICustomerDocument } from './customers';
 
 export interface IOrder {
   status: string;
@@ -24,7 +26,11 @@ export interface IOrder {
 
 export interface IOrderDocument extends Document, IOrder {
   _id: string;
+  items: IOrderItemDocument[];
+  customer?: ICustomerDocument;
 }
+
+const commonAttributes = { positive: true, default: 0 };
 
 export const orderSchema = new Schema({
   _id: field({ pkey: true }),
@@ -33,13 +39,13 @@ export const orderSchema = new Schema({
   paidDate: { type: Date, label: 'Paid date' },
   number: { type: String, label: 'Order number', unique: true },
   customerId: { type: String, label: 'Customer' },
-  cardAmount: getNumberFieldDefinition({ positive: true, label: 'Card amount' }),
-  cashAmount: getNumberFieldDefinition({ positive: true, label: 'Cash amount' }),
-  mobileAmount: getNumberFieldDefinition({ positive: true, label: 'Mobile amount' }),
-  totalAmount: getNumberFieldDefinition({ positive: true, label: 'Total amount before tax' }),
-  finalAmount: getNumberFieldDefinition({ positive: true, label: 'Final amount after tax' }),
+  cardAmount: getNumberFieldDefinition({ ...commonAttributes, label: 'Card amount' }),
+  cashAmount: getNumberFieldDefinition({ ...commonAttributes, label: 'Cash amount' }),
+  mobileAmount: getNumberFieldDefinition({ ...commonAttributes, label: 'Mobile amount' }),
+  totalAmount: getNumberFieldDefinition({ ...commonAttributes, label: 'Total amount before tax' }),
+  finalAmount: getNumberFieldDefinition({ ...commonAttributes, label: 'Final amount after tax' }),
   shouldPrintEbarimt: { type: Boolean, label: 'Should print ebarimt for this order' },
-  printedEbarimt: { type: Boolean, label: 'Printed ebarimt' },
+  printedEbarimt: { type: Boolean, label: 'Printed ebarimt', default: false },
   billType: { type: String, label: 'Ebarimt receiver entity type' },
   billId: { type: String, label: 'Bill id' },
   registerNumber: { type: String, label: 'Register number of the entity' },

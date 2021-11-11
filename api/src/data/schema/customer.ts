@@ -80,5 +80,5 @@ const queryParams = `
 
 export const queries = `
   customers(${queryParams}): [Customer]
-  customerDetail(_id: String!): Customer
+  customerDetail(_id: String): Customer
 `;
