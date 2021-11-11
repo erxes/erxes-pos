@@ -10,5 +10,8 @@ export const generateOrderNumber = async (): Promise<string> => {
     createdAt: { $gte: today.toDate(), $lt: tomorrow.toDate() },
   });
 
-  return String(orderCountToday + 1).padStart(4, '0');
+  const dateString = today.format('YYYYMMDD').toString();
+  const number = String(orderCountToday + 1).padStart(4, '0');
+
+  return `${dateString}_${number}`;
 };
