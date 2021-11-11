@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import * as compose from "lodash.flowright";
 import React from "react";
 import { withProps } from "../../utils";
-import { IRouterProps, IConfig } from "../../../types";
+import { IRouterProps, IConfig, ProductCategoriesQueryResponse, ProductsQueryResponse } from "../../../types";
 import { IOrderItemInput } from "../types";
 import { queries } from "../graphql/index";
 import Products from "../components/Products";
@@ -12,8 +12,8 @@ import Spinner from "modules/common/components/Spinner";
 import withCurrentUser from "modules/auth/containers/withCurrentUser";
 
 type Props = {
-  productCategoriesQuery: any;
-  productsQuery: any;
+  productCategoriesQuery: ProductCategoriesQueryResponse;
+  productsQuery: ProductsQueryResponse;
   setItems: (items: IOrderItemInput[]) => void;
   items: IOrderItemInput[];
   currentConfig: IConfig;

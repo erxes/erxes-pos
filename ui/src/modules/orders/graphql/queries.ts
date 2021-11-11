@@ -5,14 +5,32 @@ const commonFields = `
 `;
 
 const orderFields = `
+  _id
+  createdAt
   number
   status
+  paidDate
   cardAmount
+  mobileAmount
   cashAmount
   totalAmount
   finalAmount
   registerNumber
   customerId
+  printedEbarimt
+  billType
+  billId
+  registerNumber
+  oldBillId
+  type
+`;
+
+const customerFields = `
+  _id
+  primaryPhone
+  firstName
+  primaryEmail
+  code
 `;
 
 const productCategories = `
@@ -38,8 +56,15 @@ const products = `
 const orderDetail = `
   query orderDetail($_id: String) {
     orderDetail(_id: $_id) {
-      _id
       ${orderFields}
+
+      items {
+        _id
+      }
+
+      customer {
+        ${customerFields}
+      }
     }
   }
 `;
@@ -47,7 +72,6 @@ const orderDetail = `
 const orders = `
   query orders($searchValue: String, $page: Int, $perPage: Int) {
     orders(searchValue: $searchValue, page: $page, perPage: $perPage) {
-      _id
       ${orderFields}
     }
   }
@@ -56,11 +80,7 @@ const orders = `
 const customers = `
   query customers($searchValue: String) {
     customers(searchValue: $searchValue) {
-      _id
-      primaryPhone
-      firstName
-      primaryEmail
-      code
+      ${customerFields}
     }
   }
 `;

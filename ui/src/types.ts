@@ -88,3 +88,45 @@ export type IOption = {
   value: string;
   avatar?: string;
 };
+
+export interface ICustomField {
+  field: string;
+  value: any;
+  stringValue?: string;
+  numberValue?: number;
+  dateValue?: Date;
+}
+
+export interface IProduct {
+  name: string;
+  categoryId?: string;
+  type?: string;
+  description?: string;
+  sku?: string;
+  unitPrice?: number;
+  code: string;
+  customFieldsData?: ICustomField[];
+  tagIds?: string[];
+  attachment?: any;
+  status?: string;
+  vendorId?: string;
+  vendorCode?: string;
+
+  mergedIds?: string[];
+}
+
+export type ProductsQueryResponse = {
+  products: IProduct[];
+} & QueryResponse;
+
+export interface IProductCategory {
+  name: string;
+  code: string;
+  order: string;
+  description?: string;
+  parentId?: string;
+}
+
+export type ProductCategoriesQueryResponse = {
+  productCategories: IProductCategory[];
+} & QueryResponse;
