@@ -2,9 +2,10 @@ import { Orders } from '../../../db/models/Orders';
 import { OrderItems } from '../../../db/models/OrderItems';
 import { IOrderInput } from '../../types';
 import { generateOrderNumber } from '../../utils/orderUtils';
+import { IContext } from '../../types';
 
 const orderMutations = {
-  async ordersAdd(_root, doc: IOrderInput) {
+  async ordersAdd(_root, doc: IOrderInput, { user }: IContext) {
     const { items = [], totalAmount, type, customerId } = doc;
 
     if (items.length < 1) {
@@ -15,7 +16,8 @@ const orderMutations = {
       number: await generateOrderNumber(),
       totalAmount,
       type,
-      customerId
+      customerId,
+      userId: user._id
     });
 
     for (const item of items) {

@@ -62,6 +62,13 @@ const orderDetail = `
         _id
       }
 
+      user {
+        details {
+          fullName
+          shortName
+        }
+      }
+
       customer {
         ${customerFields}
       }

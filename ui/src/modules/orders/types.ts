@@ -1,3 +1,4 @@
+import { IUser } from "modules/auth/types";
 import { QueryResponse } from "types";
 
 export interface IOrderItem {
@@ -32,6 +33,7 @@ export interface IOrder {
 
   items: IOrderItem[];
   customer?: ICustomer;
+  user: IUser
 };
 
 export interface IProduct {

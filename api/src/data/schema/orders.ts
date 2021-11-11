@@ -39,6 +39,7 @@ export const types = `
 
     items: [OrderItem]
     customer: Customer
+    user: User
   }
 
   input OrderItemInput {

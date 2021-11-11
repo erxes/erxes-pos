@@ -28,6 +28,7 @@ export interface IOrderDocument extends Document, IOrder {
   _id: string;
   items: IOrderItemDocument[];
   customer?: ICustomerDocument;
+  userId: string;
 }
 
 const commonAttributes = { positive: true, default: 0 };
@@ -55,5 +56,6 @@ export const orderSchema = new Schema({
     label: 'Choice to take, eat or save the order',
     enum: ORDER_TYPES.ALL,
     default: ORDER_TYPES.EAT
-  }
+  },
+  userId: { type: String, label: 'Created user id' }
 });
