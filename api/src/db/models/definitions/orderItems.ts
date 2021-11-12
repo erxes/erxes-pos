@@ -13,6 +13,7 @@ export interface IOrderItem {
 
 export interface IOrderItemDocument extends Document, IOrderItem {
   _id: string;
+  productName: string;
 }
 
 export const orderItemSchema = new Schema({

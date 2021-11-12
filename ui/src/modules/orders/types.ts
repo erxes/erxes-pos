@@ -10,6 +10,7 @@ export interface IOrderItem {
   discountAmount?: number;
   discountPercent?: number;
   orderId: string;
+  productName: string;
 }
 
 export interface IOrder {

@@ -60,6 +60,10 @@ const orderDetail = `
 
       items {
         _id
+        unitPrice
+        orderId
+        productName
+        count
       }
 
       user {

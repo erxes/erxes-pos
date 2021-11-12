@@ -18,6 +18,8 @@ export const types = `
     unitPrice: Float
     discountAmount: Float
     discountPercent: Float
+
+    productName: String
   }
 
   type Order {
