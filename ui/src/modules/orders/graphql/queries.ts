@@ -49,6 +49,7 @@ const products = `
       unitPrice
       type
       description
+      attachment
     }
   }
 `;

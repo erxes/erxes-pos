@@ -24,6 +24,7 @@ export const types = `
     createdAt: Date
     tagIds: [String]
     vendorId: String
+    attachment: JSON
 
     category: ProductCategory
     vendor: Company

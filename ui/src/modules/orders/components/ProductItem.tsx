@@ -21,10 +21,12 @@ export default function ProductItem(props: Props) {
     });
   };
 
+  const attachmentUrl = attachment && attachment.url ? attachment.url : "https://office.erxes.io/images/icons/erxes-16.svg";
+
   return (
     <Item onClick={onClick}>
       <img
-        src={attachment || "https://office.erxes.io/images/icons/erxes-16.svg"}
+        src={attachmentUrl}
         alt={name}
       />
       <strong>{formatNumber(unitPrice || 0)}₮</strong>
