@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 import { FlexCenter } from "modules/common/styles/main";
 import { OrderBox } from 'modules/orders/styles';
@@ -14,9 +15,9 @@ type Props = {
 export default function OrderItem({ options, order }: Props) {
   return (
     <OrderBox color={options.colors.primary} key={order._id}>
-      <FlexCenter>
-        Number: <b>{order.number}</b>
-      </FlexCenter>
+      <Link to={`/orders/${order._id}`} target='_blank'>
+        <FlexCenter><b>#{order.number}</b></FlexCenter>
+      </Link>
       <FlexCenter>
         <Icon icon="wallet" size={20} /> <b>{formatNumber(order.totalAmount)}₮</b>
       </FlexCenter>

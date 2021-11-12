@@ -10,7 +10,7 @@ type Props = {
 
 export default function ProductItem(props: Props) {
   const { product, addItem } = props;
-  const { attachment, name, unitPrice, description } = product;
+  const { attachment, name, unitPrice } = product;
 
   const onClick = () => {
     addItem({
@@ -29,9 +29,6 @@ export default function ProductItem(props: Props) {
       />
       <strong>{formatNumber(unitPrice || 0)}₮</strong>
       <h4>{name}</h4>
-      <div>
-        <p dangerouslySetInnerHTML={{ __html: description || "" }} />
-      </div>
     </Item>
   );
 }
