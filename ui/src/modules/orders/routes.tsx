@@ -10,17 +10,14 @@ const Pos = asyncComponent(
     )
 );
 
-const OrderDetail = asyncComponent(
-  () =>
-    import(
-      /* webpackChunkName: "OrderDetail" */ "modules/orders/containers/ReceiptContainer"
-    )
+const ReceiptContainer = asyncComponent(
+  () => import(/* webpackChunkName: "Receipt" */ "modules/orders/containers/ReceiptContainer")
 );
 
 const detail = ({ match }) => {
   const id = match.params.id;
 
-  return <OrderDetail id={id} />;
+  return <ReceiptContainer id={id} />;
 };
 
 const routes = () => {

@@ -279,3 +279,15 @@ export const SearchInputWrapper = styledTS<{ active?: boolean; full?: boolean }>
     }
   }
 `;
+
+export const ReceiptWrapper = styled.div`
+  width: 300px;
+  padding: 15px 20px 30px;
+  color: #222;
+  background-color: #fff;
+
+  img {
+    max-width: 100%;
+    height: 120px;
+  }
+`;

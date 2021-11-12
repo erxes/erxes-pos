@@ -22,7 +22,7 @@ interface IProps {
   currentConfig?: IConfig;
 }
 
-const AppContext = React.createContext({} as IStore);
+export const AppContext = React.createContext({} as IStore);
 
 export const AppConsumer = AppContext.Consumer;
 
