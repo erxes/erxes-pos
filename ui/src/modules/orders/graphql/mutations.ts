@@ -6,4 +6,12 @@ const ordersAdd = `
   }
 `;
 
-export default { ordersAdd };
+const ordersMakePayment = `
+  mutation ordersMakePayment($_id: String!, $doc: OrderPaymentInput) {
+    ordersMakePayment(_id: $_id, doc: $doc) {
+      _id
+    }
+  }
+`;
+
+export default { ordersAdd, ordersMakePayment };
