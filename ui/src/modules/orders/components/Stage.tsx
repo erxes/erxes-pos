@@ -1,4 +1,5 @@
 import React from "react";
+import { __ } from "modules/common/utils";
 import { IOrderItemInput } from "../types";
 import StageItem from "./StageItem";
 import { Stages, ProductLabel, StageContent } from "../styles";
@@ -26,7 +27,7 @@ export default class Stage extends React.Component<Props> {
 
     return (
       <StageContent>
-        <b>Selected products</b>
+        <b>{__("Selected products")}</b>
         {items.map((i) => (
           <StageItem
             item={i}
@@ -48,7 +49,7 @@ export default class Stage extends React.Component<Props> {
           onClick={() => onClickDrawer("order")}
           color={options.colors.primary}
         >
-          Find orders
+          {__("Find orders")}
         </ProductLabel>
         {this.renderItems()}
       </Stages>

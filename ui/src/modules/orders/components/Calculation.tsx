@@ -116,8 +116,8 @@ export default class Calculation extends React.Component<Props, State> {
             <div>
               <FormGroup>
                 <StageContent>
-                  <ControlLabel>Choose type</ControlLabel>
-                  <Description>Choose type from following options</Description>
+                  <ControlLabel>{__("Choose type")}</ControlLabel>
+                  <Description>{__("Choose from the following options")}</Description>
                 </StageContent>
                 <FormControl
                   componentClass="radio"
@@ -148,25 +148,25 @@ export default class Calculation extends React.Component<Props, State> {
                 </FormControl>
               </FormGroup>
               <Amount>
-                <span>Total</span>
+                <span>{__("Total")}</span>
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
               <Amount color={options.colors.primary}>
-                <span>Amount to pay</span>
+                <span>{__("Amount to pay")}</span>
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
 
               <ProductLabel color={options.colors.primary}>
-                Print receipt
+                {__("Print receipt")}
               </ProductLabel>
 
               <StageContent>
                 <Amount>
-                  <span>Paid amount</span>
+                  <span>{__("Paid amount")}</span>
                   {formatNumber(0)}₮
                 </Amount>
                 <Amount>
-                  <span>Change</span>
+                  <span>{__("Change amount")}</span>
                   {formatNumber(0)}₮
                 </Amount>
               </StageContent>
@@ -178,7 +178,7 @@ export default class Calculation extends React.Component<Props, State> {
                 icon="check-circle"
                 block
               >
-                Make Order
+                {__("Make an order")}
               </Button>
               <Button
                 btnStyle="success"
@@ -186,7 +186,7 @@ export default class Calculation extends React.Component<Props, State> {
                 icon="dollar-alt"
                 block
               >
-                Pay the bill
+                {__("Pay the bill")}
               </Button>
             </ButtonWrapper>
           </ColumnBetween>

@@ -51,7 +51,6 @@ export class AppProvider extends React.Component<IProps, IState> {
 
     import(`locales/${currentLanguage}.json`)
       .then(data => {
-        console.log(data, 'dadada')
         const translations = data.default;
         T.setTexts(translations);
       })
