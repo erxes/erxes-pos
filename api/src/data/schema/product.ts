@@ -1,10 +1,15 @@
+const commonFieldDefs = `
+  _id: String!
+  name: String
+  description: String
+  attachment: JSON
+  code: String
+`;
+
 export const types = `
   type ProductCategory {
-    _id: String!
-    name: String
-    description: String
+    ${commonFieldDefs}
     parentId: String
-    code: String!
     order: String!
 
     isRoot: Boolean
@@ -12,11 +17,8 @@ export const types = `
   }
 
   type Product {
-    _id: String!
-    name: String
-    code: String
+    ${commonFieldDefs}
     type: String
-    description: String
     sku: String
     unitPrice: Float
     categoryId: String
@@ -24,7 +26,6 @@ export const types = `
     createdAt: Date
     tagIds: [String]
     vendorId: String
-    attachment: JSON
 
     category: ProductCategory
     vendor: Company

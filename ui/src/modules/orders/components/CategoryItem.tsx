@@ -1,9 +1,10 @@
 import React from "react";
 import { ProductCategory } from "../styles";
 import { FlexCenter } from "modules/common/styles/main";
+import { IProductCategory } from '../types';
 
 type Props = {
-  category: any;
+  category: IProductCategory;
   options: any;
   activeCategoryId: string;
   onClickCategory: (activeCategoryId: string) => void;
@@ -11,7 +12,8 @@ type Props = {
 
 export default function CategoryItem(props: Props) {
   const { category, onClickCategory, activeCategoryId, options } = props;
-  const { name } = category;
+  const { name, attachment } = category;
+  const imgUrl = attachment && attachment.url ? attachment.url : 'https://flagcdn.com/24x18/mn.png';
 
   return (
     <ProductCategory
@@ -20,7 +22,7 @@ export default function CategoryItem(props: Props) {
       color={options.colors.primary}
     >
       <FlexCenter>
-        <img src="https://flagcdn.com/24x18/mn.png" alt={name} />
+        <img src={imgUrl} alt={name} />
         {name}
       </FlexCenter>
     </ProductCategory>

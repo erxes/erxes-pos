@@ -2,6 +2,7 @@ const commonFields = `
   _id
   name
   code
+  attachment
 `;
 
 const orderFields = `

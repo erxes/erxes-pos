@@ -4,21 +4,30 @@ import { ICompany } from "./companies";
 import { PRODUCT_STATUSES, PRODUCT_TYPES } from "./constants";
 import { field, schemaCreatedAt } from "./utils";
 
-export interface IProduct {
+interface IAttachment {
+  url: string;
   name: string;
+  type: string;
+  size: number;
+};
+
+interface IProductCommonFields {
+  name: string;
+  code: string;
+  description?: string;
+  attachment?: IAttachment;
+}
+
+export interface IProduct extends IProductCommonFields {
   categoryId?: string;
   type?: string;
-  description?: string;
   sku?: string;
   unitPrice?: number;
-  code: string;
   customFieldsData?: ICustomField[];
   tagIds?: string[];
-  attachment?: any;
   status?: string;
   vendorId?: string;
   vendorCode?: string;
-
   mergedIds?: string[];
 }
 
@@ -28,11 +37,8 @@ export interface IProductDocument extends IProduct, Document {
   vendor?: ICompany;
 }
 
-export interface IProductCategory {
-  name: string;
-  code: string;
+export interface IProductCategory extends IProductCommonFields {
   order: string;
-  description?: string;
   parentId?: string;
 }
 
@@ -41,10 +47,16 @@ export interface IProductCategoryDocument extends IProductCategory, Document {
   createdAt: Date;
 }
 
-export const productSchema = new Schema({
-  _id: field({ pkey: true }),
+const productCommonSchema = {
   name: field({ type: String, label: "Name" }),
   code: field({ type: String, unique: true, label: "Code" }),
+  description: field({ type: String, optional: true, label: "Description" }),
+  attachment: field({ type: attachmentSchema }),
+  createdAt: schemaCreatedAt,
+};
+
+export const productSchema = new Schema({
+  _id: field({ pkey: true }),
   categoryId: field({ type: String, label: "Category" }),
   type: field({
     type: String,
@@ -58,7 +70,6 @@ export const productSchema = new Schema({
     label: "Tags",
     index: true,
   }),
-  description: field({ type: String, optional: true, label: "Description" }),
   sku: field({ type: String, optional: true, label: "Stock keeping unit" }),
   unitPrice: field({ type: Number, optional: true, label: "Unit price" }),
   customFieldsData: field({
@@ -66,8 +77,6 @@ export const productSchema = new Schema({
     optional: true,
     label: "Custom fields data",
   }),
-  createdAt: schemaCreatedAt,
-  attachment: field({ type: attachmentSchema }),
   status: field({
     type: String,
     enum: PRODUCT_STATUSES.ALL,
@@ -79,14 +88,12 @@ export const productSchema = new Schema({
   }),
   vendorId: field({ type: String, optional: true, label: "Vendor" }),
   mergedIds: field({ type: [String], optional: true }),
+  ...productCommonSchema
 });
 
 export const productCategorySchema = new Schema({
   _id: field({ pkey: true }),
-  name: field({ type: String, label: "Name" }),
-  code: field({ type: String, unique: true, label: "Code" }),
   order: field({ type: String, label: "Order" }),
   parentId: field({ type: String, optional: true, label: "Parent" }),
-  description: field({ type: String, optional: true, label: "Description" }),
-  createdAt: schemaCreatedAt,
+  ...productCommonSchema
 });

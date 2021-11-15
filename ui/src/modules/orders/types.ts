@@ -37,24 +37,23 @@ export interface IOrder {
   user: IUser
 };
 
-export interface IProduct {
+interface IProductCommonFields {
   _id: string;
   name: string;
+  code: string;
+  description?: string;
+  attachment?: IAttachment;
+}
+
+export interface IProduct extends IProductCommonFields {
   categoryId?: string;
   type?: string;
-  description?: string;
   unitPrice?: number;
-  code: string;
-  attachment?: any;
   status?: string;
 }
 
-export interface IProductCategory {
-  _id: string;
-  name: string;
-  code: string;
+export interface IProductCategory extends IProductCommonFields {
   order: string;
-  description?: string;
   parentId?: string;
 }
 
@@ -127,3 +126,10 @@ export interface ICustomer {
   modifiedAt: Date;
   searchText?: string;
 }
+
+export interface IAttachment {
+  url: string;
+  name: string;
+  type: string;
+  size: number;
+};

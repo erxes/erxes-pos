@@ -32,6 +32,7 @@ export const importProducts = async (groups: any = []) => {
         order: category.order,
         description: category.description,
         parentId: category.parentId,
+        attachment: category.attachment
       });
 
       for (const product of products) {
@@ -43,6 +44,7 @@ export const importProducts = async (groups: any = []) => {
           description: product.description,
           unitPrice: product.unitPrice,
           code: product.code,
+          attachment: product.attachment
         });
       }
     }
