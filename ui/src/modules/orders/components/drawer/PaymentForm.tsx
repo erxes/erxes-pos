@@ -3,7 +3,6 @@ import styled from "styled-components";
 import FormControl from "modules/common/components/form/Control";
 import { FlexCenter } from "modules/common/styles/main";
 import Button from "modules/common/components/Button";
-// import styledTS from "styled-components-ts";
 
 const PaymentWrapper = styled.div`
   margin: 50px 21%;
