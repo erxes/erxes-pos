@@ -1,5 +1,5 @@
-// import dayjs from 'dayjs';
-// import T from 'i18n-react';
+import dayjs from 'dayjs';
+import T from 'i18n-react';
 import { IUser, IConfig } from './types';
 import React from 'react';
 
@@ -31,7 +31,7 @@ export class AppProvider extends React.Component<IProps, IState> {
     super(props);
 
     // initiliaze locale ======
-    const currentLanguage = localStorage.getItem('currentLanguage') || 'en';
+    const currentLanguage = localStorage.getItem('currentLanguage') || 'mn';
 
     this.state = {
       currentUser: props.currentUser,
@@ -39,27 +39,28 @@ export class AppProvider extends React.Component<IProps, IState> {
       currentConfig: props.currentConfig
     };
 
-    // this.setLocale(currentLanguage);
+    this.setLocale(currentLanguage);
   }
 
-  // setLocale = (currentLanguage: string): void => {
-  //   if (currentLanguage !== 'mn') {
-  //     import(`dayjs/locale/${currentLanguage}`)
-  //       .then(() => dayjs.locale(currentLanguage))
-  //       .catch(_ => dayjs.locale('en'));
-  //   }
+  setLocale = (currentLanguage: string): void => {
+    if (currentLanguage !== 'mn') {
+      import(`dayjs/locale/${currentLanguage}`)
+        .then(() => dayjs.locale(currentLanguage))
+        .catch(_ => dayjs.locale('en'));
+    }
 
-  //   import(`locales/${currentLanguage}.json`)
-  //     .then(data => {
-  //       const translations = data.default;
-  //       T.setTexts(translations);
-  //     })
-  //     .catch(e => console.log(e)); // tslint:disable-line
-  // };
+    import(`locales/${currentLanguage}.json`)
+      .then(data => {
+        console.log(data, 'dadada')
+        const translations = data.default;
+        T.setTexts(translations);
+      })
+      .catch(e => console.log(e)); // tslint:disable-line
+  };
 
   changeLanguage = (languageCode): void => {
     if (this.state.currentLanguage !== languageCode) {
-      localStorage.setItem('currentLanguage', languageCode || 'en');
+      localStorage.setItem('currentLanguage', languageCode || 'mn');
       window.location.reload();
     }
   };

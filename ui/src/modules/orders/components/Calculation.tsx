@@ -101,7 +101,7 @@ export default class Calculation extends React.Component<Props, State> {
       <>
         <Wrapper>
           <ProductLabel color={options.colors.primary}>
-            Identify a customer
+            {__("Identify a customer")}
           </ProductLabel>
           <SelectWithSearch
               name="customerId"
