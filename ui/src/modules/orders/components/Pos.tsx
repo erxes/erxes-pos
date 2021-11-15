@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import NameCard from "modules/common/components/nameCard/NameCard";
 import AsyncComponent from "modules/common/components/AsyncComponent";
 import RTG from "react-transition-group";
-import { IOrderItemInput } from "../types";
+import { IOrder, IOrderItemInput } from "../types";
 import { ORDER_TYPES } from "../../../constants";
 import Stage from "./Stage";
 import Calculation from "./Calculation";
@@ -29,6 +29,7 @@ type Props = {
   makePayment: (params) => void;
   currentUser: IUser;
   currentConfig: IConfig;
+  order: IOrder | null;
 };
 
 type State = {

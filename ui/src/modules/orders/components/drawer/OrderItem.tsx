@@ -15,7 +15,7 @@ type Props = {
 export default function OrderItem({ options, order }: Props) {
   return (
     <OrderBox color={options.colors.primary} key={order._id}>
-      <Link to={`/orders/${order._id}`} target='_blank'>
+      <Link to={`/order-receipt/${order._id}`} target='_blank'>
         <FlexCenter><b>#{order.number}</b></FlexCenter>
       </Link>
       <FlexCenter>
