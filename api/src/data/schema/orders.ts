@@ -9,6 +9,14 @@ const orderFields = `
   number: String
 `;
 
+const paymentInputDefs = `
+  cardAmount: Float
+  cashAmount: Float
+  mobileAmount: Float
+  billType: String
+  registerNumber: String
+`;
+
 export const types = `
   type OrderItem {
     ${commonFields}
@@ -25,17 +33,14 @@ export const types = `
   type Order {
     ${commonFields}
     ${orderFields}
+    ${paymentInputDefs}
+
     paidDate: Date
-    cardAmount: Float
-    cashAmount: Float
-    mobileAmount: Float
     totalAmount: Float
     finalAmount: Float
     shouldPrintEbarimt: Boolean
     printedEbarimt: Boolean
-    billType: String
     billId: String
-    registerNumber: String
     oldBillId: String
     type: String
 
@@ -49,10 +54,15 @@ export const types = `
     count: Int!
     unitPrice: Float!
   }
+
+  input OrderPaymentInput {
+    ${paymentInputDefs}
+  }
 `;
 
 export const mutations = `
   ordersAdd(items: [OrderItemInput], totalAmount: Float!, type: String!, customerId: String): Order
+  ordersMakePayment(_id: String!, doc: OrderPaymentInput): Order
 `;
 
 export const queries = `
