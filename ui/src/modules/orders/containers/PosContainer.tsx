@@ -8,13 +8,14 @@ import { IRouterProps, IConfig } from "../../../types";
 import { withProps } from "../../utils";
 import { mutations, queries } from "../graphql/index";
 import Pos from "../components/Pos";
-import { OrdersAddMutationResponse, OrderDetailQueryResponse } from "../types";
+import { OrdersAddMutationResponse, OrdersEditMutationResponse, OrderDetailQueryResponse } from "../types";
 import withCurrentUser from "modules/auth/containers/withCurrentUser";
 import { IUser } from "modules/auth/types";
 import Spinner from "modules/common/components/Spinner";
 
 type Props = {
   ordersAddMutation: OrdersAddMutationResponse;
+  ordersEditMutation: OrdersEditMutationResponse;
   currentUser: IUser;
   currentConfig: IConfig;
   qp: any;
@@ -23,13 +24,13 @@ type Props = {
 
 class PosContainer extends React.Component<Props> {
   render() {
-    const { ordersAddMutation, orderDetailQuery, qp } = this.props;
+    const { ordersAddMutation, ordersEditMutation, orderDetailQuery, qp } = this.props;
 
     if (qp && qp.id && orderDetailQuery.loading) {
       return <Spinner />;
     }
 
-    const makePayment = (params: any) => {
+    const createOrder = (params: any) => {
       ordersAddMutation({ variables: params }).then(({ data }) => {
         if (data && data.ordersAdd && data.ordersAdd.number) {
           return Alert.success(`Order ${data.ordersAdd.number} has been created successfully.`);
@@ -39,7 +40,22 @@ class PosContainer extends React.Component<Props> {
       });
     };
 
-    const updatedProps = { ...this.props, makePayment, order: qp && qp.id ? orderDetailQuery.orderDetail : null };
+    const updateOrder = (params: any) => {
+      ordersEditMutation({ variables: params }).then(({ data }) => {
+        if (data && data.ordersEdit && data.ordersEdit._id) {
+          return Alert.success(`Order has been updated successfully.`);
+        }
+      }).catch(e => {
+        return Alert.error(e.message);
+      });
+    };
+
+    const updatedProps = {
+      ...this.props,
+      createOrder,
+      updateOrder,
+      order: qp && qp.id ? orderDetailQuery.orderDetail : null
+    };
 
     return <Pos {...updatedProps} />;
   }
@@ -49,6 +65,9 @@ export default withProps<Props>(
   compose(
     graphql<Props, OrdersAddMutationResponse>(gql(mutations.ordersAdd), {
       name: "ordersAddMutation",
+    }),
+    graphql<Props, OrdersEditMutationResponse>(gql(mutations.ordersEdit), {
+      name: 'ordersEditMutation'
     }),
     graphql<Props>(gql(queries.orderDetail), {
       name: 'orderDetailQuery',

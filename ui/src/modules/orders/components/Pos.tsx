@@ -26,10 +26,11 @@ const ProductsContainer = AsyncComponent(
 );
 
 type Props = {
-  makePayment: (params) => void;
+  createOrder: (params) => void;
   currentUser: IUser;
   currentConfig: IConfig;
   order: IOrder | null;
+  updateOrder: (params) => void;
 };
 
 type State = {
@@ -57,13 +58,15 @@ export default class Pos extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    const { order } = props;
+
     this.state = {
-      items: [],
-      totalAmount: 0,
+      items: order ? order.items : [],
+      totalAmount: order ? getTotalAmount(order.items) : 0,
       showMenu: false,
-      type: ORDER_TYPES.EAT,
+      type: order && order.type ? order.type : ORDER_TYPES.EAT,
       drawerContentType: "",
-      customerId: ""
+      customerId: order && order.customerId ? order.customerId : ""
     };
   }
 
@@ -72,9 +75,7 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   setItems = (items: IOrderItemInput[]) => {
-    let total = getTotalAmount(items);
-
-    this.setState({ items, totalAmount: total });
+    this.setState({ items, totalAmount: getTotalAmount(items) });
   };
 
   componentDidMount() {
@@ -120,18 +121,35 @@ export default class Pos extends React.Component<Props, State> {
     this.setState({ [name]: value } as Pick<State, keyof State>);
   };
 
-  makePayment = () => {
-    const { makePayment } = this.props;
+  addOrder = () => {
+    const { createOrder } = this.props;
     const { totalAmount, type, items, customerId } = this.state;
 
     const currentItems = items.map((item) => ({
+      _id: item._id,
       productId: item.productId,
       count: item.count,
       unitPrice: item.unitPrice,
     }));
 
-    makePayment({ items: currentItems, totalAmount, type, customerId });
+    createOrder({ items: currentItems, totalAmount, type, customerId });
   };
+
+  editOrder = () => {
+    const { updateOrder, order } = this.props;
+    const { totalAmount, type, items, customerId } = this.state;
+
+    if (order && order._id) {
+      const currentItems = items.map((item) => ({
+        _id: item._id,
+        productId: item.productId,
+        count: item.count,
+        unitPrice: item.unitPrice,
+      }));
+  
+      updateOrder({ _id: order._id, items: currentItems, totalAmount, type, customerId });
+    }
+  }
 
   renderDrawerContent() {
     const { currentConfig } = this.props;
@@ -157,7 +175,7 @@ export default class Pos extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentUser, currentConfig } = this.props;
+    const { currentUser, currentConfig, order } = this.props;
     const { items, totalAmount, showMenu } = this.state;
 
     return (
@@ -190,10 +208,12 @@ export default class Pos extends React.Component<Props, State> {
               >
                 <Calculation
                   totalAmount={totalAmount}
-                  makePayment={this.makePayment}
+                  addOrder={this.addOrder}
+                  editOrder={this.editOrder}
                   setOrderState={this.setOrderState}
                   onClickDrawer={this.toggleDrawer}
                   options={currentConfig ? currentConfig.uiOptions : {}}
+                  order={order}
                 />
               </MainContent>
             </Col>
@@ -216,5 +236,5 @@ export default class Pos extends React.Component<Props, State> {
         </Drawer>
       </>
     );
-  }
+  } // end render()
 }

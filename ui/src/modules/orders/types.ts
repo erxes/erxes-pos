@@ -31,6 +31,7 @@ export interface IOrder {
   billId: string;
   registerNumber: string;
   oldBillId: string;
+  type: string;
 
   items: IOrderItem[];
   customer?: ICustomer;
@@ -66,6 +67,10 @@ export interface IOrderItemInput {
 }
 
 export type OrdersAddMutationResponse = ({
+  variables: any
+}) => Promise<any>;
+
+export type OrdersEditMutationResponse = ({
   variables: any
 }) => Promise<any>;
 

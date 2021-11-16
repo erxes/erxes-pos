@@ -23,8 +23,10 @@ class Order {
     return Orders.create(doc);
   }
 
-  public static updateOrder(_id: string, doc: IOrder) {
-    return Orders.updateOne({ _id }, { $set: doc });
+  public static async updateOrder(_id: string, doc: IOrder) {
+    await Orders.updateOne({ _id }, { $set: doc });
+
+    return Orders.findOne({ _id });
   }
 
   public static async deleteOrder(_id: string) {

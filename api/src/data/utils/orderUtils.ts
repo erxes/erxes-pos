@@ -2,7 +2,10 @@ import * as dayjs from 'dayjs';
 import { IOrder } from '../../db/models/definitions/orders';
 
 import { Orders } from '../../db/models/Orders';
+import { OrderItems } from '../../db/models/OrderItems';
+import { Products } from '../../db/models/Products';
 import { IPayment } from '../resolvers/mutations/orders';
+import { IOrderInput, IOrderItemInput } from '../types';
 
 export const generateOrderNumber = async (): Promise<string> => {
   const today = dayjs().hour(0).minute(0).second(0);
@@ -18,6 +21,19 @@ export const generateOrderNumber = async (): Promise<string> => {
   return `${dateString}_${number}`;
 };
 
+export const validateOrder = async (doc: IOrderInput) => {
+  const { items = [] } = doc;
+
+  if (items.length < 1) {
+    throw new Error('Products missing in order. Please add products');
+  }
+
+  for (const item of items) {
+    // will throw error if product is not found
+    await Products.getProduct({ _id: item.productId });
+  }
+};
+
 export const validateOrderPayment = (order: IOrder, doc: IPayment) => {
   const { cardAmount = 0, cashAmount = 0, mobileAmount = 0 } = doc;
 
@@ -26,4 +42,36 @@ export const validateOrderPayment = (order: IOrder, doc: IPayment) => {
   if (total !== order.totalAmount) {
     throw new Error(`Paid amount does not match order's total amount`);
   }
+};
+
+export const updateOrderItems = async (orderId: string, items: IOrderItemInput[]) => {
+  const itemIds = items.map(item => item._id);
+
+  await OrderItems.deleteMany({ orderId, _id: { $nin: itemIds } });
+
+  for (const item of items) {
+    const found = await OrderItems.findOne({ _id: item._id });
+
+    if (found) {
+      await OrderItems.updateOrderItem(found._id, { count: item.count });
+    } else {
+      const doc = {
+        productId: item.productId,
+        count: item.count,
+        orderId
+      };
+
+      await OrderItems.createOrderItem(doc);
+    }
+  }
+};
+
+export const getTotalAmount = (items: IOrderItemInput[] = []): number => {
+  let total = 0;
+
+  for (const item of items) {
+    total += (item.count || 0) * (item.unitPrice || 0);
+  }
+
+  return total;
 };

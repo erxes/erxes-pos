@@ -66,6 +66,7 @@ const orderDetail = `
         orderId
         productName
         count
+        productId
       }
 
       user {

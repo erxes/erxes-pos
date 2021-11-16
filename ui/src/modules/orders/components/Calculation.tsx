@@ -12,7 +12,7 @@ import ControlLabel from "modules/common/components/form/Label";
 import { FlexBetween, ColumnBetween } from "modules/common/styles/main";
 import { formatNumber } from "modules/utils";
 import Button from "modules/common/components/Button";
-import { ICustomer } from '../types';
+import { ICustomer, IOrder } from '../types';
 import queries from '../graphql/queries';
 
 const Wrapper = styled.div`
@@ -61,10 +61,12 @@ const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
 
 type Props = {
   totalAmount: number;
-  makePayment: (params: any) => void;
+  addOrder: (params: any) => void;
   setOrderState: (name: string, value: any) => void;
   onClickDrawer: (drawerContentType: string) => void;
   options: any;
+  editOrder: (params) => void;
+  order: IOrder | null;
 };
 
 type State = {
@@ -88,8 +90,46 @@ export default class Calculation extends React.Component<Props, State> {
     this.props.setOrderState("type", value);
   }
 
+  renderEditButton() {
+    const { editOrder, order } = this.props;
+
+    if (!order) {
+      return null;
+    }
+
+    return (
+      <Button
+        btnStyle="success"
+        onClick={editOrder}
+        icon="check-circle"
+        block
+      >
+        {__("Edit order")}
+      </Button>
+    );
+  }
+
+  renderAddButton() {
+    const { addOrder, order } = this.props;
+
+    if (order && order._id) {
+      return null;
+    }
+
+    return (
+      <Button
+        btnStyle="success"
+        onClick={addOrder}
+        icon="check-circle"
+        block
+      >
+        {__("Make an order")}
+      </Button>
+    );
+  }
+
   render() {
-    const { totalAmount, makePayment, options, onClickDrawer, setOrderState } = this.props;
+    const { totalAmount, options, onClickDrawer, setOrderState } = this.props;
 
     const onSelectCustomer = (customerId) => {
       this.setState({ customerId });
@@ -172,16 +212,10 @@ export default class Calculation extends React.Component<Props, State> {
               </StageContent>
             </div>
             <ButtonWrapper>
+              {this.renderAddButton()}
+              {this.renderEditButton()}
               <Button
-                btnStyle="warning"
-                onClick={makePayment}
-                icon="check-circle"
-                block
-              >
-                {__("Make an order")}
-              </Button>
-              <Button
-                btnStyle="success"
+                style={{ backgroundColor: options.colors.primary }}
                 onClick={() => onClickDrawer("payment")}
                 icon="dollar-alt"
                 block

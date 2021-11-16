@@ -17,6 +17,13 @@ const paymentInputDefs = `
   registerNumber: String
 `;
 
+const addEditParams = `
+  items: [OrderItemInput],
+  totalAmount: Float!,
+  type: String!,
+  customerId: String
+`;
+
 export const types = `
   type OrderItem {
     ${commonFields}
@@ -50,6 +57,7 @@ export const types = `
   }
 
   input OrderItemInput {
+    _id: String
     productId: String!
     count: Int!
     unitPrice: Float!
@@ -61,7 +69,8 @@ export const types = `
 `;
 
 export const mutations = `
-  ordersAdd(items: [OrderItemInput], totalAmount: Float!, type: String!, customerId: String): Order
+  ordersAdd(${addEditParams}): Order
+  ordersEdit(_id: String!, ${addEditParams}): Order
   ordersMakePayment(_id: String!, doc: OrderPaymentInput): Order
 `;
 

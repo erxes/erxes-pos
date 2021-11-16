@@ -8,8 +8,10 @@ export interface IContext {
 }
 
 export interface IOrderItemInput {
-  productId: String;
+  _id: string;
+  productId: string;
   count: number;
+  unitPrice: number;
 }
 
 export interface IOrderInput {

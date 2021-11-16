@@ -1,7 +1,13 @@
 import { Orders } from '../../../db/models/Orders';
 import { OrderItems } from '../../../db/models/OrderItems';
 import { IOrderInput } from '../../types';
-import { generateOrderNumber, validateOrderPayment } from '../../utils/orderUtils';
+import {
+  generateOrderNumber,
+  validateOrderPayment,
+  validateOrder,
+  updateOrderItems,
+  getTotalAmount,
+} from '../../utils/orderUtils';
 import { IContext } from '../../types';
 
 export interface IPayment {
@@ -17,13 +23,15 @@ export interface IPaymentParams {
   doc: IPayment;
 }
 
+interface IOrderEditParams extends IOrderInput {
+  _id: string;
+}
+
 const orderMutations = {
   async ordersAdd(_root, doc: IOrderInput, { user }: IContext) {
     const { items = [], totalAmount, type, customerId } = doc;
 
-    if (items.length < 1) {
-      throw new Error('Products missing in order. Please add products');
-    }
+    await validateOrder(doc);
 
     const order = await Orders.createOrder({
       number: await generateOrderNumber(),
@@ -38,6 +46,21 @@ const orderMutations = {
     }
 
     return order;
+  },
+  async ordersEdit(_root, doc: IOrderEditParams) {
+    await Orders.getOrder(doc._id);
+
+    await validateOrder(doc);
+
+    await updateOrderItems(doc._id, doc.items);
+
+    const updatedOrder = await Orders.updateOrder(doc._id, {
+      customerId: doc.customerId,
+      type: doc.type,
+      totalAmount: getTotalAmount(doc.items),
+    });
+
+    return updatedOrder;
   },
   async ordersMakePayment(_root, { _id, doc }: IPaymentParams) {
     const order = await Orders.getOrder(_id);
