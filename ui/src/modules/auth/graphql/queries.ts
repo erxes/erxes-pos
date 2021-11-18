@@ -45,6 +45,15 @@ const currentConfig = `
       brandId
       token
       uiOptions
+
+      ebarimtConfig {
+        companyRD
+        hasVat
+        hasCitytax
+        vatPercent
+        cityTaxPercent
+        companyName
+      }
     }
   }
 `;
