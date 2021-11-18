@@ -28,7 +28,8 @@ const configMutations = {
         productDetails: pos.productDetails,
         adminIds: pos.adminIds,
         cashierIds: pos.cashierIds,
-        uiOptions: pos.uiOptions
+        uiOptions: pos.uiOptions,
+        ebarimtConfig: pos.ebarimtConfig
       });
 
       await importUsers(adminUsers, true);

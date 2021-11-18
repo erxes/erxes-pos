@@ -1,6 +1,19 @@
 import { Document, Schema } from 'mongoose';
 import { field, schemaCreatedAt } from './utils';
 
+interface IEbarimtConfig {
+  companyName: string;
+  ebarimtUrl: string;
+  checkCompanyUrl: string;
+  hasVat: boolean;
+  hasCitytax: boolean;
+  districtCode: number;
+  companyRD: string;
+  defaultGSCode: string;
+  vatPercent: number;
+  cityTaxPercent: number;
+}
+
 export interface IConfig {
   name: string;
   description?: string;
@@ -16,6 +29,7 @@ export interface IConfig {
   formIntegrationIds: string[];
   token?: string;
   uiOptions: any;
+  ebarimtConfig: IEbarimtConfig;
 }
 
 export interface IConfigDocument extends Document, IConfig {
@@ -27,6 +41,22 @@ export interface IProductGroup {}
 export interface IProductGroupDocument extends Document, IProductGroup {
   _id: string;
 }
+
+const ebarimtConfigSchema = new Schema(
+  {
+    companyName: field({ type: String, label: 'Company name' }),
+    ebarimtUrl: field({ type: String, label: 'Ebarimt server url' }),
+    checkCompanyUrl: field({ type: String, label: 'Company info url' }),
+    hasVat: field({ type: Boolean }),
+    hasCitytax: field({ type: Boolean }),
+    districtCode: field({ type: String, label: 'Province or district code' }),
+    companyRD: field({ type: String, label: 'Company register number' }),
+    defaultGSCode: field({ type: String, label: 'Default inventory code' }),
+    vatPercent: field({ type: String, label: 'Vat percent' }),
+    cityTaxPercent: field({ type: String, label: 'UB city tax percent' }),
+  },
+  { _id: false }
+);
 
 export const configSchema = new Schema({
   _id: field({ pkey: true }),
@@ -45,7 +75,8 @@ export const configSchema = new Schema({
   formIntegrationIds: { type: [String] },
   brandId: { type: String },
   token: { type: String, label: 'Token generated at erxes-api' },
-  uiOptions: { type: Object, label: 'Logo & color configs' }
+  uiOptions: { type: Object, label: 'Logo & color configs' },
+  ebarimtConfig: ebarimtConfigSchema,
 });
 
 export const productGroupSchema = new Schema({
