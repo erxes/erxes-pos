@@ -14,6 +14,7 @@ import { formatNumber } from "modules/utils";
 import Button from "modules/common/components/Button";
 import { ICustomer, IOrder } from "../types";
 import queries from "../graphql/queries";
+import NameCard from "modules/common/components/nameCard/NameCard";
 
 const Wrapper = styled.div`
   display: flex;
@@ -50,6 +51,10 @@ const ButtonWrapper = styled.div`
     margin-bottom: 10px;
     margin-left: 0;
   }
+`;
+
+const CustomerWrapper = styled.div`
+  margin: 20px 0;
 `;
 
 // get user options for react-select-plus
@@ -139,6 +144,13 @@ export default class Calculation extends React.Component<Props, State> {
           >
             {__("Identify a customer")}
           </ProductLabel>
+          <CustomerWrapper>
+            <NameCard
+              user={{ details: { fullName: "James Smith" } }}
+              secondLine="SSS"
+              avatarSize={50}
+            />
+          </CustomerWrapper>
           <SelectWithSearch
             name="customerId"
             queryName="customers"
