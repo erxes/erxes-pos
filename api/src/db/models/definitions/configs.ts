@@ -14,6 +14,17 @@ interface IEbarimtConfig {
   cityTaxPercent: number;
 }
 
+interface IConfigColors {
+  [key: string]: string;
+}
+
+interface IUIOptions {
+  colors: IConfigColors;
+  logo: string;
+  bgImage: string;
+  favIcon: string;
+}
+
 export interface IConfig {
   name: string;
   description?: string;
@@ -28,7 +39,7 @@ export interface IConfig {
   formSectionTitle: string;
   formIntegrationIds: string[];
   token?: string;
-  uiOptions: any;
+  uiOptions: IUIOptions;
   ebarimtConfig: IEbarimtConfig;
 }
 

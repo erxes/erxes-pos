@@ -1,4 +1,11 @@
 export const types = `
+  type UIOptions {
+    colors: JSON
+    logo: String
+    bgImage: String
+    favIcon: String
+  }
+
   type EbarimtConfig {
     companyName: String
     ebarimtUrl: String
@@ -29,7 +36,7 @@ export const types = `
     formIntegrationIds: [String]
     brandId: String
     token: String
-    uiOptions: JSON
+    uiOptions: UIOptions
     ebarimtConfig: EbarimtConfig
   }
 `;
