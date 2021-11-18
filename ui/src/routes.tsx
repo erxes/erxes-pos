@@ -3,7 +3,8 @@ import asyncComponent from "modules/common/components/AsyncComponent";
 import { pluginsOfRoutes } from "pluginUtils";
 import queryString from "query-string";
 import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { MemoryRouter, Route, Switch } from "react-router-dom";
+// import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AuthRoutes from "./modules/auth/routes";
 import OrderRoutes from "./modules/orders/routes";
 import { IUser } from "./modules/auth/types";
@@ -93,7 +94,7 @@ const Routes = ({
   currentUser: IUser;
   currentConfig: IConfig;
 }) => (
-  <Router>
+  <MemoryRouter>
     <>
       <Route
         key="/unsubscribe"
@@ -104,7 +105,7 @@ const Routes = ({
 
       {renderRoutes(currentUser, currentConfig)}
     </>
-  </Router>
+  </MemoryRouter>
 );
 
 export default withCurrentUser(Routes);

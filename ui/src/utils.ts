@@ -12,3 +12,8 @@ export const getEnv = (): any => {
 export const storeConstantToStore = (key, values) => {
   localStorage.setItem(`config:${key}`, JSON.stringify(values));
 };
+
+export const isElectron = () => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  return userAgent.indexOf(' electron/') !== -1;
+};
