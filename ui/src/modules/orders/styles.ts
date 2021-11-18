@@ -181,6 +181,7 @@ export const LeftMenuContainer = styled.div`
 
 export const DrawerContent = styled.div`
   padding: 30px;
+  height: 100%;
 `;
 
 /**

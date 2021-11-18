@@ -85,15 +85,13 @@ export default class Calculation extends React.Component<Props, State> {
     this.state = {
       customerId: "",
     };
-
-    this.onChange = this.onChange.bind(this);
   }
 
-  onChange(e) {
+  onChange = (e) => {
     const value = (e.target as HTMLInputElement).value;
 
     this.props.setOrderState("type", value);
-  }
+  };
 
   renderEditButton() {
     const { editOrder, order } = this.props;

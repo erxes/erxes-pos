@@ -18,5 +18,8 @@
   "Cancel": "Cancel",
   "Done": "Done",
   "Phone number": "Phone number",
-  "Check": "Check"
+  "Check": "Check",
+  "Organization": "Organization",
+  "Person": "Person",
+  "Choose the payment method": "Choose the payment method"
 }

@@ -40,12 +40,13 @@ const KeyPad = styled(FlexCenter)`
 
 const Title = styled.h2`
   text-align: center;
+  margin-bottom: 40px;
 `;
 
 const Input = styledTS<{ color?: string }>(styled.div)`
   display: flex;
   align-items: center;
-  width: 60%;
+  width: 70%;
   margin-right: 10px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -68,13 +69,24 @@ const Input = styledTS<{ color?: string }>(styled.div)`
   }
 `;
 
+const Header = styled(FlexCenter)`
+  margin: 50px 0 40px 0;
+
+  > label {
+    margin-right: 20px;
+    font-size: 16px;
+  }
+`;
+
 type Props = {
   options: any;
   closeDrawer: any;
   totalAmount?: number;
   title?: string;
   isPayment?: boolean;
+  header?: React.ReactNode;
   extraButton?: React.ReactNode;
+  onSuccess: () => void;
 };
 
 class CalculationForm extends React.Component<Props, { inputValue: string }> {
@@ -110,6 +122,10 @@ class CalculationForm extends React.Component<Props, { inputValue: string }> {
     });
   };
 
+  onSuccess = () => {
+    this.props.onSuccess();
+  };
+
   renderKeyPad(key, num) {
     return (
       <KeyPad key={key} onClick={() => this.onChangeKeyPad(num.toString())}>
@@ -119,11 +135,12 @@ class CalculationForm extends React.Component<Props, { inputValue: string }> {
   }
 
   render() {
-    const { title, extraButton, isPayment, options } = this.props;
-    console.log(options);
+    const { title, extraButton, isPayment, options, header } = this.props;
+
     return (
       <>
         {title && <Title>{__(title)}</Title>}
+        {header && <Header>{header}</Header>}
         <FlexCenter>
           <Input color={options.colors.primary}>
             <FormControl
@@ -160,6 +177,7 @@ class CalculationForm extends React.Component<Props, { inputValue: string }> {
               style={{ backgroundColor: options.colors.primary }}
               icon="check-circle"
               block
+              onClick={this.onSuccess}
             >
               Done
             </Button>
