@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv';
 
 import { Configs } from '../../../db/models/Configs';
 import { sendRequest } from '../../utils/commonUtils';
-import { importUsers, importProducts, importCustomers } from '../../syncUtils';
+import { importUsers, importProducts, importCustomers, validateConfig } from '../../syncUtils';
 
 dotenv.config();
 
@@ -20,6 +20,8 @@ const configMutations = {
 
     if (response) {
       const { pos = {}, adminUsers = [], cashiers = [], productGroups = [], customers = [] } = response;
+
+      validateConfig(pos);
 
       await Configs.updateConfig(config._id, {
         name: pos.name,

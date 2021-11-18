@@ -3,6 +3,7 @@ import Users from '../db/models/Users';
 import Customers from '../db/models/Customers';
 import { IUserDocument } from '../db/models/definitions/users';
 import { ICustomerDocument } from '../db/models/definitions/customers';
+import { IConfig } from '../db/models/definitions/configs';
 
 export const importUsers = async (users: IUserDocument[], isAdmin: boolean = false) => {
   for (const user of users) {
@@ -54,5 +55,17 @@ export const importProducts = async (groups: any = []) => {
 export const importCustomers = async (customers: ICustomerDocument[]) => {
   for (const customer of customers) {
     await Customers.createCustomer(customer);
+  }
+};
+
+export const validateConfig = (config: IConfig) => {
+  const { adminIds = [], cashierIds = [], name } = config;
+
+  if (!name) {
+    throw new Error('POS name missing');
+  }
+
+  if (adminIds.length + cashierIds.length === 0) {
+    throw new Error('Admin & cashier user list empty');
   }
 };
