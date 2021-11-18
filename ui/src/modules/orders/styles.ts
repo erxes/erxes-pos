@@ -232,9 +232,10 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   }
 `;
 
-export const SearchInputWrapper = styledTS<{ active?: boolean; full?: boolean }>(
-  styled.div
-)`
+export const SearchInputWrapper = styledTS<{
+  active?: boolean;
+  full?: boolean;
+}>(styled.div)`
   background-color: ${(props) =>
     props.active ? colors.colorWhite : colors.bgMain};
   border: 1px solid ${(props) =>
@@ -289,5 +290,14 @@ export const ReceiptWrapper = styled.div`
   img {
     max-width: 100%;
     height: 120px;
+  }
+`;
+
+export const FlexColumn = styled.div`
+  display: flex;
+  flex-direction: column;
+
+  > label {
+    margin-bottom: 5px;
   }
 `;

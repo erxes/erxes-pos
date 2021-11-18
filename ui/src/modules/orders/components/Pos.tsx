@@ -20,6 +20,7 @@ import {
 import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
 import PaymentForm from "./drawer/PaymentForm";
+import FindCustomer from "../containers/FindCustomer";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -66,7 +67,7 @@ export default class Pos extends React.Component<Props, State> {
       showMenu: false,
       type: order && order.type ? order.type : ORDER_TYPES.EAT,
       drawerContentType: "",
-      customerId: order && order.customerId ? order.customerId : ""
+      customerId: order && order.customerId ? order.customerId : "",
     };
   }
 
@@ -146,32 +147,43 @@ export default class Pos extends React.Component<Props, State> {
         count: item.count,
         unitPrice: item.unitPrice,
       }));
-  
-      updateOrder({ _id: order._id, items: currentItems, totalAmount, type, customerId });
+
+      updateOrder({
+        _id: order._id,
+        items: currentItems,
+        totalAmount,
+        type,
+        customerId,
+      });
     }
-  }
+  };
 
   renderDrawerContent() {
     const { currentConfig } = this.props;
     const { drawerContentType, totalAmount } = this.state;
 
-    if (drawerContentType === "order") {
-      return (
-        <OrderSearch options={currentConfig.uiOptions} />
-      );
+    switch (drawerContentType) {
+      case "order":
+        return <OrderSearch options={currentConfig.uiOptions} />;
+      case "payment":
+        return (
+          <PaymentForm
+            options={currentConfig ? currentConfig.uiOptions : {}}
+            totalAmount={totalAmount}
+            closeDrawer={this.toggleDrawer}
+          />
+        );
+      case "customer":
+        return (
+          <FindCustomer
+            options={currentConfig ? currentConfig.uiOptions : {}}
+            totalAmount={totalAmount}
+            closeDrawer={this.toggleDrawer}
+          />
+        );
+      default:
+        return null;
     }
-
-    if (drawerContentType === "payment") {
-      return (
-        <PaymentForm
-          options={currentConfig ? currentConfig.uiOptions : {}}
-          totalAmount={totalAmount}
-          closeDrawer={this.toggleDrawer}
-        />
-      );
-    }
-
-    return <div>empty content</div>;
   }
 
   render() {
@@ -236,5 +248,5 @@ export default class Pos extends React.Component<Props, State> {
         </Drawer>
       </>
     );
-  } // end render()
+  }
 }

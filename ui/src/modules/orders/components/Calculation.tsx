@@ -7,19 +7,24 @@ import SelectWithSearch from "modules/common/components/SelectWithSearch";
 import { __ } from "modules/common/utils";
 import { IOption } from "types";
 import { ORDER_TYPES } from "../../../constants";
-import { ProductLabel, StageContent } from "../styles";
+import { ProductLabel, StageContent, FlexColumn } from "../styles";
 import ControlLabel from "modules/common/components/form/Label";
 import { FlexBetween, ColumnBetween } from "modules/common/styles/main";
 import { formatNumber } from "modules/utils";
 import Button from "modules/common/components/Button";
-import { ICustomer, IOrder } from '../types';
-import queries from '../graphql/queries';
+import { ICustomer, IOrder } from "../types";
+import queries from "../graphql/queries";
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
   height: 100%;
+
+  button {
+    padding: 10px 20px;
+    border-radius: 8px;
+  }
 `;
 
 const Description = styled.div`
@@ -49,15 +54,15 @@ const ButtonWrapper = styled.div`
 
 // get user options for react-select-plus
 const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
-  return array.map(item => {
+  return array.map((item) => {
     const customer = item || ({} as ICustomer);
 
     return {
-      value: customer._id || '',
-      label: customer.firstName || customer.primaryEmail || ''
+      value: customer._id || "",
+      label: customer.firstName || customer.primaryEmail || "",
     };
   });
-}
+};
 
 type Props = {
   totalAmount: number;
@@ -71,14 +76,14 @@ type Props = {
 
 type State = {
   customerId: string;
-}
+};
 
 export default class Calculation extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      customerId: ''
+      customerId: "",
     };
 
     this.onChange = this.onChange.bind(this);
@@ -98,12 +103,7 @@ export default class Calculation extends React.Component<Props, State> {
     }
 
     return (
-      <Button
-        btnStyle="success"
-        onClick={editOrder}
-        icon="check-circle"
-        block
-      >
+      <Button btnStyle="success" onClick={editOrder} icon="check-circle" block>
         {__("Edit order")}
       </Button>
     );
@@ -117,12 +117,7 @@ export default class Calculation extends React.Component<Props, State> {
     }
 
     return (
-      <Button
-        btnStyle="success"
-        onClick={addOrder}
-        icon="check-circle"
-        block
-      >
+      <Button btnStyle="success" onClick={addOrder} icon="check-circle" block>
         {__("Make an order")}
       </Button>
     );
@@ -135,57 +130,64 @@ export default class Calculation extends React.Component<Props, State> {
       this.setState({ customerId });
 
       setOrderState("customerId", customerId);
-    }
+    };
 
     return (
       <>
         <Wrapper>
-          <ProductLabel color={options.colors.primary}>
+          <ProductLabel
+            color={options.colors.primary}
+            onClick={() => onClickDrawer("customer")}
+          >
             {__("Identify a customer")}
           </ProductLabel>
           <SelectWithSearch
-              name="customerId"
-              queryName="customers"
-              label="Select customer"
-              initialValue={this.state.customerId}
-              onSelect={onSelectCustomer}
-              generateOptions={generateLabelOptions}
-              customQuery={queries.customers}
-            />
+            name="customerId"
+            queryName="customers"
+            label="Select customer"
+            initialValue={this.state.customerId}
+            onSelect={onSelectCustomer}
+            generateOptions={generateLabelOptions}
+            customQuery={queries.customers}
+          />
           <ColumnBetween>
             <div>
               <FormGroup>
                 <StageContent>
                   <ControlLabel>{__("Choose type")}</ControlLabel>
-                  <Description>{__("Choose from the following options")}</Description>
+                  <Description>
+                    {__("Choose from the following options")}
+                  </Description>
                 </StageContent>
-                <FormControl
-                  componentClass="radio"
-                  value={ORDER_TYPES.TAKE}
-                  inline={true}
-                  name="type"
-                  onChange={this.onChange}
-                >
-                  {__("Take")}
-                </FormControl>
-                <FormControl
-                  componentClass="radio"
-                  value={ORDER_TYPES.EAT}
-                  inline={true}
-                  name="type"
-                  onChange={this.onChange}
-                >
-                  {__("Eat")}
-                </FormControl>
-                <FormControl
-                  componentClass="radio"
-                  value={ORDER_TYPES.SAVE}
-                  inline={true}
-                  name="type"
-                  onChange={this.onChange}
-                >
-                  {__("Save")}
-                </FormControl>
+                <FlexColumn>
+                  <FormControl
+                    componentClass="radio"
+                    value={ORDER_TYPES.TAKE}
+                    inline={true}
+                    name="type"
+                    onChange={this.onChange}
+                  >
+                    {__("Take")}
+                  </FormControl>
+                  <FormControl
+                    componentClass="radio"
+                    value={ORDER_TYPES.EAT}
+                    inline={true}
+                    name="type"
+                    onChange={this.onChange}
+                  >
+                    {__("Eat")}
+                  </FormControl>
+                  <FormControl
+                    componentClass="radio"
+                    value={ORDER_TYPES.SAVE}
+                    inline={true}
+                    name="type"
+                    onChange={this.onChange}
+                  >
+                    {__("Save")}
+                  </FormControl>
+                </FlexColumn>
               </FormGroup>
               <Amount>
                 <span>{__("Total")}</span>

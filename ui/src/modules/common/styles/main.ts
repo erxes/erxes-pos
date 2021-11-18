@@ -395,6 +395,11 @@ const FlexCenter = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  button {
+    padding: 10px 20px;
+    border-radius: 8px;
+  }
 `;
 
 const FlexBetween = styled(FlexCenter)`
