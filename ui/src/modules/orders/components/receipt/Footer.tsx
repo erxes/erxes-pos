@@ -1,8 +1,11 @@
-import React from 'react';
+import React from "react";
+import { FooterWrapper } from "./styles";
+import Button from "modules/common/components/Button";
 
 type Props = {
   print: () => void;
   ebarimt: any;
+  color: string;
 };
 
 export default class Footer extends React.Component<Props> {
@@ -18,7 +21,7 @@ export default class Footer extends React.Component<Props> {
   }
 
   render() {
-    const { ebarimt, print } = this.props;
+    const { ebarimt, print, color } = this.props;
     // const {
     //   phone,
     //   email,
@@ -27,7 +30,7 @@ export default class Footer extends React.Component<Props> {
     // } = this.context.company.configGeneral;
 
     return (
-      <div>
+      <FooterWrapper>
         {ebarimt.lottery ? (
           <div className="lottery">Сугалаа: {ebarimt.lottery}</div>
         ) : null}
@@ -58,11 +61,11 @@ export default class Footer extends React.Component<Props> {
           <span>_____________________</span>
         </p>
         <div className="text-center">
-          <button className="btn btn-primary btn-print" onClick={print}>
+          <Button onClick={print} style={{ backgroundColor: color }}>
             Хэвлэх
-          </button>
+          </Button>
         </div>
-      </div>
+      </FooterWrapper>
     );
   }
 }

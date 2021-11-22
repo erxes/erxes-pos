@@ -1,8 +1,9 @@
-import React from 'react';
-import dayjs from 'dayjs';
-import { IOrder } from 'modules/orders/types';
-import { ICustomer } from '../../types';
-import { IUser } from 'modules/auth/types';
+import React from "react";
+import dayjs from "dayjs";
+import { IOrder } from "modules/orders/types";
+import { ICustomer } from "../../types";
+import { IUser } from "modules/auth/types";
+import { HeaderWrapper } from "./styles";
 
 type Props = {
   ebarimt?: any;
@@ -10,14 +11,14 @@ type Props = {
   order: IOrder;
   logo: string;
   name: string;
-}
+};
 
 export default class Header extends React.Component<Props> {
   renderField(text, data) {
     if (text && data) {
       return (
         <p>
-          <label>{text}:</label> {data}
+          <b>{text}:</b> {data}
         </p>
       );
     }
@@ -32,7 +33,7 @@ export default class Header extends React.Component<Props> {
 
     return (
       <p className="customer">
-        <label>Харилцагч:</label>
+        <b>Харилцагч:</b>
         {customer.code ? <span>Код: {customer.code}</span> : null}
         <span>Нэр: {customer.firstName}</span>
       </p>
@@ -46,17 +47,18 @@ export default class Header extends React.Component<Props> {
 
     return (
       <p className="worker">
-        <label>Ажилтан: </label>
+        <b>Ажилтан: </b>
         <span>{worker.details ? worker.details.fullName : worker.email}</span>
-      </p>);
+      </p>
+    );
   }
 
   render() {
     const { order, ebarimt, ebarimtError, logo, name } = this.props;
 
     return (
-      <div>
-        <div className="text-center receipt-logo">
+      <HeaderWrapper className="block">
+        <div className="receipt-logo">
           <img src={logo} alt={name} />
         </div>
         {ebarimtError ? <div>{ebarimtError}</div> : null}
@@ -65,26 +67,28 @@ export default class Header extends React.Component<Props> {
             <b>{name}</b>
           </h5>
           <p>
-            <label>&#8470;:</label>
+            <b>&#8470;:</b>
             <span>{order.number}</span>
           </p>
           <div className="ebarimt">
-            {this.renderField('ТТД', ebarimt && ebarimt.ttd)}
-            {this.renderField('ДДТД', (ebarimt && ebarimt.billId) || order.billId)}
+            {this.renderField("ТТД", ebarimt && ebarimt.ttd)}
+            {this.renderField(
+              "ДДТД",
+              (ebarimt && ebarimt.billId) || order.billId
+            )}
           </div>
           <p>
-            <label>Огноо:</label>
-            {order.paidDate ? (<span>
-              {dayjs(order.paidDate)
-                .format('YYYY.MM.DD HH:mm')}
-            </span>) : null}
+            <b>Огноо:</b>
+            {order.paidDate ? (
+              <span>{dayjs(order.paidDate).format("YYYY.MM.DD HH:mm")}</span>
+            ) : null}
           </p>
           {this.renderWorker(order.user)}
 
           {this.renderCustomer(order.customer)}
           <div className="clearfix" />
         </div>
-      </div>
+      </HeaderWrapper>
     );
   } // end render()
 }

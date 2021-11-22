@@ -307,18 +307,6 @@ export const SearchInputWrapper = styledTS<{
   }
 `;
 
-export const ReceiptWrapper = styled.div`
-  width: 300px;
-  padding: 15px 20px 30px;
-  color: #222;
-  background-color: #fff;
-
-  img {
-    max-width: 100%;
-    height: 120px;
-  }
-`;
-
 export const FlexColumn = styled.div`
   display: flex;
   flex-direction: column;
