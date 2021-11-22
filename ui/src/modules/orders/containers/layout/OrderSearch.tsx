@@ -30,7 +30,7 @@ type FinalProps = {
 
 class SearchContainer extends React.Component<FinalProps> {
   clearSearch = () => {
-    router.setParams(this.props.history, { searchValue: "" });
+    router.setParams(this.props.history, { orderSearch: "" });
   };
 
   onSearch = (e) => {
@@ -39,7 +39,7 @@ class SearchContainer extends React.Component<FinalProps> {
 
       const searchValue = e.currentTarget.value;
 
-      router.setParams(this.props.history, { searchValue });
+      router.setParams(this.props.history, { orderSearch: searchValue });
     }
   };
 
@@ -74,7 +74,7 @@ const WithSearchContainer = withProps<WithProps>(
     graphql<WithProps, OrderQueryResponse>(gql(queries.orders), {
       name: "ordersQuery",
       options: ({ queryParams }: { queryParams: any }) => ({
-        variables: { searchValue: queryParams.searchValue },
+        variables: { searchValue: queryParams.orderSearch },
       }),
     })
   )(SearchContainer)

@@ -21,6 +21,7 @@ import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
 import PaymentForm from "./drawer/PaymentForm";
 import FindCustomer from "../containers/FindCustomer";
+import ProductSearch from "../containers/ProductSearch";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -198,6 +199,7 @@ export default class Pos extends React.Component<Props, State> {
               <MainContent hasBackground={true}>
                 <FlexBetween>
                   <NameCard user={currentUser} avatarSize={40} />
+                  <ProductSearch />
                 </FlexBetween>
                 <ProductsContainer setItems={this.setItems} items={items} />
               </MainContent>

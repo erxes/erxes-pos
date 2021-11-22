@@ -350,3 +350,7 @@ export const Input = styledTS<{ color?: string }>(styled.div)`
     }
   }
 `;
+
+export const ProductSearch = styled.div`
+  width: 70%;
+`;
