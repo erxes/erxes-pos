@@ -1,9 +1,9 @@
-import { Products, ProductCategories } from '../db/models/Products';
-import Users from '../db/models/Users';
-import Customers from '../db/models/Customers';
-import { IUserDocument } from '../db/models/definitions/users';
-import { ICustomerDocument } from '../db/models/definitions/customers';
-import { IConfig } from '../db/models/definitions/configs';
+import { Products, ProductCategories } from '../../db/models/Products';
+import Users from '../../db/models/Users';
+import Customers from '../../db/models/Customers';
+import { IUserDocument } from '../../db/models/definitions/users';
+import { ICustomerDocument } from '../../db/models/definitions/customers';
+import { IConfig } from '../../db/models/definitions/configs';
 
 export const importUsers = async (users: IUserDocument[], isAdmin: boolean = false) => {
   for (const user of users) {
