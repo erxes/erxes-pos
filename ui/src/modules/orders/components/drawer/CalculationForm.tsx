@@ -1,4 +1,5 @@
 import React from "react";
+import NumberFormat from "react-number-format";
 import styled from "styled-components";
 import FormControl from "modules/common/components/form/Control";
 import { FlexCenter } from "modules/common/styles/main";
@@ -169,7 +170,7 @@ class CalculationForm extends React.Component<Props, State> {
     //   byCard || byCard !== "0" ? Number(totalAmount) - Number(byCard) : inCash;
 
     const hasChange = Number(inCash) > Number(totalAmount) ? true : false;
-
+    console.log(hasChange);
     return (
       <FormHead>
         <Amount color={options.colors.primary}>
@@ -179,10 +180,13 @@ class CalculationForm extends React.Component<Props, State> {
         <FormGroup>
           <ControlLabel>By Card</ControlLabel>
           <Input color={options.colors.primary}>
-            <FormControl
+            <NumberFormat
               name="byCard"
-              type="number"
               value={byCard}
+              thousandSeparator={true}
+              prefix="₮"
+              className="some"
+              inputmode="numeric"
               onChange={onChangeCard}
               onClick={() => this.handleClick("byCard")}
             />
@@ -194,10 +198,13 @@ class CalculationForm extends React.Component<Props, State> {
         <FormGroup>
           <ControlLabel>In Cash</ControlLabel>
           <Input color={options.colors.primary}>
-            <FormControl
+            <NumberFormat
               name="inCash"
-              type="number"
               value={inCash}
+              thousandSeparator={true}
+              prefix="₮"
+              className="some"
+              inputmode="numeric"
               onChange={onChangeCash}
               onClick={() => this.handleClick("inCash")}
             />
@@ -207,16 +214,10 @@ class CalculationForm extends React.Component<Props, State> {
           </Input>
         </FormGroup>
         {hasChange && (
-          <FormGroup>
-            <ControlLabel>Хариулт</ControlLabel>
-            <Input color={options.colors.primary}>
-              <FormControl
-                name="change"
-                value={Number(inCash) - Number(totalAmount)}
-                disabled
-              />
-            </Input>
-          </FormGroup>
+          <Amount>
+            <span>{__("Хариулт")}</span>
+            {formatNumber(Number(inCash) - Number(totalAmount))}₮
+          </Amount>
         )}
         <HeaderRow>
           <ControlLabel>{__("Э-Баримт")}:</ControlLabel> &ensp;

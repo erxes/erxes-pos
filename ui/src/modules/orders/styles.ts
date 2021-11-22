@@ -337,6 +337,17 @@ export const Input = styledTS<{ color?: string }>(styled.div)`
   input {
     border: 0;
     font-size: 14px;
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 10px 0;
+    color: #444;
+    background: none;
+    transition: all 0.3s ease;
+
+    &:focus {
+      outline: 0;
+    }
   }
 
   > div {
