@@ -219,10 +219,16 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   justify-content: center;
   cursor: pointer;
 
-  > div {
+  div {
     margin-bottom: 10px;
     font-weight: 500;
     font-size: 15px;
+
+    span {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #686868;
+    }
 
     b {
       margin-left: 5px;
@@ -230,6 +236,10 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
       word-break: break-word;
       line-height: 15px;
     }
+  }
+
+  a {
+    color: #444;
   }
 
   label {
@@ -241,6 +251,10 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
 
   &:nth-child(3n) {
     margin-right: 0;
+  }
+
+  @media (max-width: 1500px) {
+    width: 45.333%;
   }
 `;
 
