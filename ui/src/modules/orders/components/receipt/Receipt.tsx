@@ -13,7 +13,7 @@ type Props = {
 
 export default function OrderReceipt({ order }: Props) {
   const { currentConfig } = useContext(AppContext);
-  console.log(currentConfig);
+
   const logo =
     currentConfig && currentConfig.uiOptions && currentConfig.uiOptions.logo;
   const name = currentConfig && currentConfig.name ? currentConfig.name : "";
