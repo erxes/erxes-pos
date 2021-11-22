@@ -7,16 +7,15 @@ import SelectWithSearch from "modules/common/components/SelectWithSearch";
 import { __ } from "modules/common/utils";
 import { IOption } from "types";
 import { ORDER_TYPES } from "../../../constants";
-import { ProductLabel, StageContent, FlexColumn } from "../styles";
+import { StageContent, FlexColumn } from "../styles";
 import ControlLabel from "modules/common/components/form/Label";
 import { FlexBetween, ColumnBetween } from "modules/common/styles/main";
 import { formatNumber } from "modules/utils";
 import Button from "modules/common/components/Button";
 import { ICustomer, IOrder } from "../types";
 import queries from "../graphql/queries";
-import NameCard from "modules/common/components/nameCard/NameCard";
 
-const Wrapper = styled.div`
+const Wrapper = styledTS<{ color?: string }>(styled.div)`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
@@ -26,6 +25,10 @@ const Wrapper = styled.div`
     padding: 10px 20px;
     border-radius: 8px;
   }
+
+  .ioevLe:checked + span:before, .hCqfzh .react-toggle--checked .react-toggle-track {
+    background-color: ${(props) => props.color && props.color};
+  }
 `;
 
 const Description = styled.div`
@@ -34,7 +37,7 @@ const Description = styled.div`
   margin-bottom: 10px;
 `;
 
-const Amount = styledTS<{ color?: string }>(styled(FlexBetween))`
+export const Amount = styledTS<{ color?: string }>(styled(FlexBetween))`
   border: 1px solid #cbd2d9;
   border-radius: 8px;
   padding: 10px;
@@ -53,18 +56,17 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const CustomerWrapper = styled.div`
-  margin: 20px 0;
-`;
-
 // get user options for react-select-plus
 const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
   return array.map((item) => {
-    const customer = item || ({} as ICustomer);
+    const { _id, firstName, primaryEmail, primaryPhone, code } =
+      item || ({} as ICustomer);
+
+    const value = firstName || primaryEmail || primaryPhone || code || "";
 
     return {
-      value: customer._id || "",
-      label: customer.firstName || customer.primaryEmail || "",
+      value: _id || value,
+      label: value,
     };
   });
 };
@@ -77,6 +79,7 @@ type Props = {
   options: any;
   editOrder: (params) => void;
   order: IOrder | null;
+  type: string;
 };
 
 type State = {
@@ -127,7 +130,13 @@ export default class Calculation extends React.Component<Props, State> {
   }
 
   render() {
-    const { totalAmount, options, onClickDrawer, setOrderState } = this.props;
+    const {
+      totalAmount,
+      options,
+      onClickDrawer,
+      setOrderState,
+      type,
+    } = this.props;
 
     const onSelectCustomer = (customerId) => {
       this.setState({ customerId });
@@ -137,20 +146,11 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <>
-        <Wrapper>
-          <ProductLabel
-            color={options.colors.primary}
-            onClick={() => onClickDrawer("customer")}
-          >
-            {__("Identify a customer")}
-          </ProductLabel>
-          <CustomerWrapper>
-            <NameCard
-              user={{ details: { fullName: "James Smith" } }}
-              secondLine="SSS"
-              avatarSize={50}
-            />
-          </CustomerWrapper>
+        <Wrapper color={options.colors.primary}>
+          <StageContent>
+            <ControlLabel>{__("Identify a customer")}</ControlLabel>
+            <Description>{__("Choose customer from select")}</Description>
+          </StageContent>
           <SelectWithSearch
             name="customerId"
             queryName="customers"
@@ -173,6 +173,7 @@ export default class Calculation extends React.Component<Props, State> {
                   <FormControl
                     componentClass="radio"
                     value={ORDER_TYPES.TAKE}
+                    checked={type === ORDER_TYPES.TAKE}
                     inline={true}
                     name="type"
                     onChange={this.onChange}
@@ -182,6 +183,7 @@ export default class Calculation extends React.Component<Props, State> {
                   <FormControl
                     componentClass="radio"
                     value={ORDER_TYPES.EAT}
+                    checked={type === ORDER_TYPES.EAT}
                     inline={true}
                     name="type"
                     onChange={this.onChange}
@@ -191,6 +193,7 @@ export default class Calculation extends React.Component<Props, State> {
                   <FormControl
                     componentClass="radio"
                     value={ORDER_TYPES.SAVE}
+                    checked={type === ORDER_TYPES.SAVE}
                     inline={true}
                     name="type"
                     onChange={this.onChange}
@@ -203,12 +206,20 @@ export default class Calculation extends React.Component<Props, State> {
                 <span>{__("Total")}</span>
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
+              <Amount>
+                <span>{__("VAT")}</span>
+                {formatNumber(0)}₮
+              </Amount>
+              <Amount>
+                <span>{__("CCT")}</span>
+                {formatNumber(0)}₮
+              </Amount>
               <Amount color={options.colors.primary}>
                 <span>{__("Amount to pay")}</span>
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
 
-              <ProductLabel color={options.colors.primary}>
+              {/* <ProductLabel color={options.colors.primary}>
                 {__("Print receipt")}
               </ProductLabel>
 
@@ -221,7 +232,7 @@ export default class Calculation extends React.Component<Props, State> {
                   <span>{__("Change amount")}</span>
                   {formatNumber(0)}₮
                 </Amount>
-              </StageContent>
+              </StageContent> */}
             </div>
             <ButtonWrapper>
               {this.renderAddButton()}
@@ -231,6 +242,7 @@ export default class Calculation extends React.Component<Props, State> {
                 onClick={() => onClickDrawer("payment")}
                 icon="dollar-alt"
                 block
+                // disabled={!totalAmount || totalAmount === 0 ? true : false}
               >
                 {__("Pay the bill")}
               </Button>

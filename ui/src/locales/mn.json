@@ -8,7 +8,7 @@
   "Change amount": "Хариулт дүн",
   "Paid amount": "Төлсөн дүн",
   "Make an order": "Захиалах",
-  "Pay the bill": "Төлбөр төлөх",
+  "Pay the bill": "Тооцоо хийх",
   "Total": "Нийт",
   "Find orders": "Захиалга хайх",
   "Take": "Авч явах",
@@ -21,5 +21,10 @@
   "Check": "Шалгах",
   "Organization": "Байгууллага",
   "Person": "Хувь хүн",
-  "Choose the payment method": "Та төлбөрийн сонголтоо хийнэ үү"
+  "Choose the payment method": "Та төлбөрийн сонголтоо хийнэ үү",
+  "Choose customer from select": "Хэрэглэгчээ сонгоно уу",
+  "VAT": "НӨАТ (10%)",
+  "CCT": "НХАТ (1%)",
+  "By Card": "Картаар",
+  "In Cash": "Бэлнээр"
 }

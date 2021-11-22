@@ -188,7 +188,7 @@ export default class Pos extends React.Component<Props, State> {
 
   render() {
     const { currentUser, currentConfig, order } = this.props;
-    const { items, totalAmount, showMenu } = this.state;
+    const { items, totalAmount, showMenu, type } = this.state;
 
     return (
       <>
@@ -226,6 +226,7 @@ export default class Pos extends React.Component<Props, State> {
                   onClickDrawer={this.toggleDrawer}
                   options={currentConfig ? currentConfig.uiOptions : {}}
                   order={order}
+                  type={type}
                 />
               </MainContent>
             </Col>
@@ -241,7 +242,11 @@ export default class Pos extends React.Component<Props, State> {
               unmountOnExit={true}
             >
               <LeftMenuContainer>
-                <DrawerContent>{this.renderDrawerContent()}</DrawerContent>
+                <DrawerContent
+                  options={currentConfig ? currentConfig.uiOptions : {}}
+                >
+                  {this.renderDrawerContent()}
+                </DrawerContent>
               </LeftMenuContainer>
             </RTG.CSSTransition>
           </div>
