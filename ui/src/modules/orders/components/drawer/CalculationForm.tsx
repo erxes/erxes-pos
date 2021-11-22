@@ -170,7 +170,7 @@ class CalculationForm extends React.Component<Props, State> {
     //   byCard || byCard !== "0" ? Number(totalAmount) - Number(byCard) : inCash;
 
     const hasChange = Number(inCash) > Number(totalAmount) ? true : false;
-    console.log(hasChange);
+
     return (
       <FormHead>
         <Amount color={options.colors.primary}>
