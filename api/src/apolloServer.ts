@@ -2,6 +2,7 @@ import { ApolloServer, gql, PlaygroundConfig } from 'apollo-server-express';
 import * as dotenv from 'dotenv';
 import resolvers from './data/resolvers';
 import * as typeDefDetails from './data/schema';
+import { Configs } from './db/models/Configs';
 
 // load environment variables
 dotenv.config();
@@ -44,7 +45,7 @@ export const initApolloServer = async () => {
     resolvers,
     playground,
     uploads: false,
-    context: ({ req, res, connection }) => {
+    context: async ({ req, res, connection }) => {
       let user = req && req.user ? req.user : null;
 
       if (!req) {
@@ -63,7 +64,8 @@ export const initApolloServer = async () => {
         requestInfo: {
           secure: req.secure,
           cookies: req.cookies
-        }
+        },
+        config: await Configs.findOne()
       };
     }
   });

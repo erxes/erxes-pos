@@ -77,4 +77,5 @@ export const mutations = `
 export const queries = `
   orders(searchValue: String, page: Int, perPage: Int): [Order]
   orderDetail(_id: String): Order
+  ordersCheckCompany(registerNumber: String!): JSON
 `;

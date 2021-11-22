@@ -1,5 +1,6 @@
 import { Orders } from '../../../db/models/Orders';
-import { escapeRegExp, paginate } from '../../utils/commonUtils';
+import { IContext } from '../../types';
+import { escapeRegExp, paginate, sendRequest } from '../../utils/commonUtils';
 
 interface ISearchParams {
   searchValue?: string;
@@ -19,6 +20,25 @@ const orderQueries = {
   },
   orderDetail(_root, { _id }) {
     return Orders.findOne({ _id });
+  },
+  async ordersCheckCompany(_root, { registerNumber }, { config }: IContext) {
+    if (!registerNumber) {
+      throw new Error('Company register number required for checking');
+    }
+
+    const url = config && config.ebarimtConfig && config.ebarimtConfig.checkCompanyUrl;
+
+    if (url) {
+      const response = await sendRequest({
+        url,
+        method: 'GET',
+        params: { regno: registerNumber }
+      });
+
+      return response;
+    }
+
+    return { error: 'ebarimt config error', message: 'Check company url is not configured' };
   }
 };
 
