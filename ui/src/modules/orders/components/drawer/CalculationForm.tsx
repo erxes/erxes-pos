@@ -85,8 +85,8 @@ type Props = {
 
 type State = {
   inputValue: string;
-  inCash: number | null;
-  byCard: number | null;
+  inCash: string;
+  byCard: string;
   FType: string;
   showE: boolean;
   activeInput: string;
@@ -98,8 +98,8 @@ class CalculationForm extends React.Component<Props, State> {
 
     this.state = {
       inputValue: props.totalAmount || "",
-      byCard: null,
-      inCash: props.totalAmount || null,
+      byCard: "",
+      inCash: props.totalAmount || "",
       FType: "person",
       showE: true,
       activeInput: "inCash",
@@ -140,7 +140,7 @@ class CalculationForm extends React.Component<Props, State> {
   };
 
   reset = (key: string) => {
-    this.setState({ [key]: 0 } as any);
+    this.setState({ [key]: "" } as any);
   };
 
   onSuccess = () => {
@@ -156,7 +156,7 @@ class CalculationForm extends React.Component<Props, State> {
   }
 
   renderFormHead() {
-    const { FType, showE } = this.state;
+    const { FType, showE, inCash, byCard } = this.state;
     const { options, totalAmount } = this.props;
 
     const onChangeCard = (e) =>
@@ -164,6 +164,11 @@ class CalculationForm extends React.Component<Props, State> {
 
     const onChangeCash = (e) =>
       this.handleInput("inCash", (e.target as HTMLInputElement).value);
+
+    // const cash =
+    //   byCard || byCard !== "0" ? Number(totalAmount) - Number(byCard) : inCash;
+
+    const hasChange = Number(inCash) > Number(totalAmount) ? true : false;
 
     return (
       <FormHead>
@@ -177,7 +182,7 @@ class CalculationForm extends React.Component<Props, State> {
             <FormControl
               name="byCard"
               type="number"
-              value={this.state.byCard}
+              value={byCard}
               onChange={onChangeCard}
               onClick={() => this.handleClick("byCard")}
             />
@@ -192,7 +197,7 @@ class CalculationForm extends React.Component<Props, State> {
             <FormControl
               name="inCash"
               type="number"
-              value={this.state.inCash}
+              value={inCash}
               onChange={onChangeCash}
               onClick={() => this.handleClick("inCash")}
             />
@@ -201,6 +206,18 @@ class CalculationForm extends React.Component<Props, State> {
             </div>
           </Input>
         </FormGroup>
+        {hasChange && (
+          <FormGroup>
+            <ControlLabel>Хариулт</ControlLabel>
+            <Input color={options.colors.primary}>
+              <FormControl
+                name="change"
+                value={Number(inCash) - Number(totalAmount)}
+                disabled
+              />
+            </Input>
+          </FormGroup>
+        )}
         <HeaderRow>
           <ControlLabel>{__("Э-Баримт")}:</ControlLabel> &ensp;
           <Toggle

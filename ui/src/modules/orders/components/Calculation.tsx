@@ -219,10 +219,10 @@ export default class Calculation extends React.Component<Props, State> {
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
 
-              {/* <ProductLabel color={options.colors.primary}>
+              {/*  <ProductLabel color={options.colors.primary}>
                 {__("Print receipt")}
               </ProductLabel>
-
+              
               <StageContent>
                 <Amount>
                   <span>{__("Paid amount")}</span>
@@ -242,7 +242,7 @@ export default class Calculation extends React.Component<Props, State> {
                 onClick={() => onClickDrawer("payment")}
                 icon="dollar-alt"
                 block
-                // disabled={!totalAmount || totalAmount === 0 ? true : false}
+                disabled={!totalAmount || totalAmount === 0 ? true : false}
               >
                 {__("Pay the bill")}
               </Button>

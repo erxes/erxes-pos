@@ -1,5 +1,4 @@
 import React from "react";
-import { __ } from "modules/common/utils";
 import PaymentType from "./PaymentType";
 import CalculationForm from "modules/orders/components/drawer/CalculationForm";
 
@@ -24,7 +23,7 @@ class PaymentForm extends React.Component<Props, State> {
 
   onSuccess = () => {
     console.log("Do smth");
-    this.setState({ showPaymentType: !this.state.showPaymentType });
+    // this.setState({ showPaymentType: !this.state.showPaymentType });
   };
 
   render() {
