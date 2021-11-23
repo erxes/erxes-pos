@@ -1,7 +1,7 @@
 import { Document, Schema } from 'mongoose';
-import { field, schemaCreatedAt } from './utils';
+import { field, getDateFieldDefinition } from './utils';
 
-interface IEbarimtConfig {
+export interface IEbarimtConfig {
   companyName: string;
   ebarimtUrl: string;
   checkCompanyUrl: string;
@@ -71,10 +71,10 @@ const ebarimtConfigSchema = new Schema(
 
 export const configSchema = new Schema({
   _id: field({ pkey: true }),
-  name: { type: String, label: 'name' },
-  description: { type: String, label: 'description' },
-  userId: { type: String, optional: true, label: 'created by' },
-  createdAt: schemaCreatedAt,
+  name: { type: String, label: 'Name' },
+  description: { type: String, label: 'Description' },
+  userId: { type: String, optional: true, label: 'Created by' },
+  createdAt: getDateFieldDefinition('Created at'),
   integrationId: { type: String, label: 'Erxes integration' },
   productDetails: { type: [String] },
   adminIds: { type: [String] },

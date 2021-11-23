@@ -18,10 +18,10 @@ export const field = options => {
   return options;
 };
 
-export const schemaCreatedAt = field({
+export const getDateFieldDefinition = (label: string) => field({
   type: Date,
   default: new Date(),
-  label: "Created at",
+  label,
 });
 
 /**
