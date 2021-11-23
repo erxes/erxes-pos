@@ -21,6 +21,7 @@ import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
 import PaymentForm from "./drawer/PaymentForm";
 import FindCustomer from "../containers/FindCustomer";
+import ProductSearch from "../containers/ProductSearch";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -188,7 +189,7 @@ export default class Pos extends React.Component<Props, State> {
 
   render() {
     const { currentUser, currentConfig, order } = this.props;
-    const { items, totalAmount, showMenu } = this.state;
+    const { items, totalAmount, showMenu, type } = this.state;
 
     return (
       <>
@@ -198,6 +199,7 @@ export default class Pos extends React.Component<Props, State> {
               <MainContent hasBackground={true}>
                 <FlexBetween>
                   <NameCard user={currentUser} avatarSize={40} />
+                  <ProductSearch />
                 </FlexBetween>
                 <ProductsContainer setItems={this.setItems} items={items} />
               </MainContent>
@@ -226,6 +228,7 @@ export default class Pos extends React.Component<Props, State> {
                   onClickDrawer={this.toggleDrawer}
                   options={currentConfig ? currentConfig.uiOptions : {}}
                   order={order}
+                  type={type}
                 />
               </MainContent>
             </Col>
@@ -241,7 +244,11 @@ export default class Pos extends React.Component<Props, State> {
               unmountOnExit={true}
             >
               <LeftMenuContainer>
-                <DrawerContent>{this.renderDrawerContent()}</DrawerContent>
+                <DrawerContent
+                  options={currentConfig ? currentConfig.uiOptions : {}}
+                >
+                  {this.renderDrawerContent()}
+                </DrawerContent>
               </LeftMenuContainer>
             </RTG.CSSTransition>
           </div>

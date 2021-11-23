@@ -35,8 +35,8 @@ export interface IOrder {
 
   items: IOrderItem[];
   customer?: ICustomer;
-  user: IUser
-};
+  user: IUser;
+}
 
 interface IProductCommonFields {
   _id: string;
@@ -66,20 +66,20 @@ export interface IOrderItemInput {
   unitPrice?: number;
 }
 
-export type OrdersAddMutationResponse = ({
-  variables: any
-}) => Promise<any>;
+export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;
 
-export type OrdersEditMutationResponse = ({
-  variables: any
-}) => Promise<any>;
+export type OrdersEditMutationResponse = ({ variables: any }) => Promise<any>;
 
 export type OrderDetailQueryResponse = {
   orderDetail: IOrder;
-} & QueryResponse
+} & QueryResponse;
+
+export type OrderQueryResponse = {
+  orders: IOrder[];
+} & QueryResponse;
 
 export interface ICustomer {
-  state?: 'visitor' | 'lead' | 'customer';
+  state?: "visitor" | "lead" | "customer";
 
   scopeBrandIds?: string[];
   firstName?: string;
@@ -137,4 +137,4 @@ export interface IAttachment {
   name: string;
   type: string;
   size: number;
-};
+}

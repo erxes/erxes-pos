@@ -61,6 +61,7 @@
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.11.0",
     "react-markdown": "^3.3.0",
+    "react-number-format": "^4.8.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "^3.0.1",
     "react-select-plus": "^1.0.0-rc.5",

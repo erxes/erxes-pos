@@ -1,29 +1,36 @@
-import client from "apolloClient";
+// import client from "apolloClient";
 import gql from "graphql-tag";
+import * as compose from "lodash.flowright";
 import React from "react";
-import { queries } from '../../graphql/index';
+import { queries } from "../../graphql/index";
 import SearchInput from "modules/orders/components/SearchInput";
 import OrderItem from "modules/orders/components/drawer/OrderItem";
 import { Orders } from "modules/orders/styles";
+import { withProps, router } from "modules/common/utils";
+import { graphql } from "react-apollo";
+import { OrderQueryResponse } from "modules/orders/types";
+import { IRouterProps } from "types";
+import { withRouter } from "react-router-dom";
+import queryString from "query-string";
+import Spinner from "modules/common/components/Spinner";
 
 type Props = {
   options: any;
-}
+};
 
-type State = {
-  results;
-  loading: boolean;
-}
+type WithProps = {
+  history: any;
+  queryParams: any;
+};
 
-export default class SearchContainer extends React.Component<Props, State> {
-  constructor(props) {
-    super(props);
+type FinalProps = {
+  ordersQuery: OrderQueryResponse;
+} & Props &
+  WithProps;
 
-    this.state = { results: [], loading: false };
-  }
-
+class SearchContainer extends React.Component<FinalProps> {
   clearSearch = () => {
-    this.setState({ results: [] });
+    router.setParams(this.props.history, { orderSearch: "" });
   };
 
   onSearch = (e) => {
@@ -32,28 +39,23 @@ export default class SearchContainer extends React.Component<Props, State> {
 
       const searchValue = e.currentTarget.value;
 
-      if (!searchValue) {
-        return this.setState({ results: [] });
-      }
-
-      this.setState({ loading: true });
-
-      client
-        .query({
-          query: gql(queries.orders),
-          variables: { searchValue },
-        })
-        .then(({ data, loading }) => {
-          if (!loading && data.orders) {
-            this.setState({ results: data.orders, loading: false });
-          }
-        });
+      router.setParams(this.props.history, { orderSearch: searchValue });
     }
   };
 
-  render() {
-    const { results = [] } = this.state;
+  renderContent() {
+    const { ordersQuery } = this.props;
 
+    if (ordersQuery.loading) {
+      return <Spinner />;
+    }
+
+    return ordersQuery.orders.map((order) => (
+      <OrderItem key={order._id} order={order} options={this.props.options} />
+    ));
+  }
+
+  render() {
     return (
       <>
         <SearchInput
@@ -61,10 +63,30 @@ export default class SearchContainer extends React.Component<Props, State> {
           clearSearch={this.clearSearch}
           placeholder="Search"
         />
-        <Orders>
-          {results.map((order) => <OrderItem order={order} options={this.props.options} key={order._id} />)}
-        </Orders>
+        <Orders>{this.renderContent()}</Orders>
       </>
     );
   }
 }
+
+const WithSearchContainer = withProps<WithProps>(
+  compose(
+    graphql<WithProps, OrderQueryResponse>(gql(queries.orders), {
+      name: "ordersQuery",
+      options: ({ queryParams }: { queryParams: any }) => ({
+        variables: { searchValue: queryParams.orderSearch },
+      }),
+    })
+  )(SearchContainer)
+);
+
+const WithQueryParams = (props: IRouterProps & Props) => {
+  const { location } = props;
+  const queryParams = queryString.parse(location.search);
+
+  const extendedProps = { ...props, queryParams };
+
+  return <WithSearchContainer {...extendedProps} />;
+};
+
+export default withRouter<IRouterProps & Props>(WithQueryParams);

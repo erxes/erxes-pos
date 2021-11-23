@@ -90,11 +90,11 @@ export const Item = styled.div`
   }
 
   > strong {
-    font-size: 20px;
+    font-size: 18px;
   }
 
   > h4 {
-    font-size: 14px;
+    font-size: 13px;
     margin: 10px 0 5px;
   }
 
@@ -179,9 +179,20 @@ export const LeftMenuContainer = styled.div`
     0 0 0 1px rgba(9, 30, 66, 0.08);
 `;
 
-export const DrawerContent = styled.div`
+export const DrawerContent = styledTS<{ options?: any }>(styled.div)`
   padding: 30px;
   height: 100%;
+  overflow: auto;
+
+  .ioevLe:checked + span:before, .react-toggle--checked .react-toggle-track {
+    background-color: ${(props) =>
+      props.options && props.options.colors.primary} !important;
+  }
+
+  .react-toggle--checked .react-toggle-thumb, .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
+    border-color: ${(props) =>
+      props.options && props.options.colors.primary} !important;
+  }
 `;
 
 /**
@@ -208,10 +219,16 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   justify-content: center;
   cursor: pointer;
 
-  > div {
+  div {
     margin-bottom: 10px;
     font-weight: 500;
     font-size: 15px;
+
+    span {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #686868;
+    }
 
     b {
       margin-left: 5px;
@@ -219,6 +236,10 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
       word-break: break-word;
       line-height: 15px;
     }
+  }
+
+  a {
+    color: #444;
   }
 
   label {
@@ -230,6 +251,10 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
 
   &:nth-child(3n) {
     margin-right: 0;
+  }
+
+  @media (max-width: 1500px) {
+    width: 45.333%;
   }
 `;
 
@@ -282,18 +307,6 @@ export const SearchInputWrapper = styledTS<{
   }
 `;
 
-export const ReceiptWrapper = styled.div`
-  width: 300px;
-  padding: 15px 20px 30px;
-  color: #222;
-  background-color: #fff;
-
-  img {
-    max-width: 100%;
-    height: 120px;
-  }
-`;
-
 export const FlexColumn = styled.div`
   display: flex;
   flex-direction: column;
@@ -301,4 +314,54 @@ export const FlexColumn = styled.div`
   > label {
     margin-bottom: 5px;
   }
+`;
+
+export const FormHead = styled.div`
+  padding: 0 30px 20px;
+
+  .jbyscQ {
+    margin-bottom: 20px;
+  }
+`;
+
+export const Input = styledTS<{ color?: string }>(styled.div)`
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 3px 10px;
+  flex: 1;
+  margin-top: 5px;
+
+  input {
+    border: 0;
+    font-size: 14px;
+    display: block;
+    width: 100%;
+    height: 34px;
+    padding: 10px 0;
+    color: #444;
+    background: none;
+    transition: all 0.3s ease;
+
+    &:focus {
+      outline: 0;
+    }
+  }
+
+  > div {
+    cursor: pointer;
+    margin-left: 10px;
+
+    &:hover {
+      i {
+        color: ${(props) => props.color && props.color}
+      }
+    }
+  }
+`;
+
+export const ProductSearch = styled.div`
+  width: 70%;
 `;
