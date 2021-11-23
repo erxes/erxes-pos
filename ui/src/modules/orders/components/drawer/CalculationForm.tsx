@@ -15,6 +15,7 @@ import Toggle from "../../../common/components/Toggle";
 
 const PaymentWrapper = styled.div`
   margin: 20px 21%;
+  text-align: center;
 
   button {
     padding: 10px 20px;
@@ -27,7 +28,7 @@ const PaymentWrapper = styled.div`
 `;
 
 const KeyBoard = styled.div`
-  display: grid;
+  display: inline-grid;
   justify-content: center;
   grid-auto-flow: row;
   grid-template-columns: repeat(3, 1fr);
@@ -36,10 +37,10 @@ const KeyBoard = styled.div`
 `;
 
 const KeyPad = styled(FlexCenter)`
-  width: 100px;
-  height: 100px;
-  border-radius: 100px;
-  line-height: 100px;
+  width: 95px;
+  height: 95px;
+  border-radius: 95px;
+  line-height: 95px;
   background: #eee;
   margin: 8px;
   font-size: 32px;
