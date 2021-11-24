@@ -1,5 +1,7 @@
+import { debugError } from '../../../debuggers';
 import { Orders } from '../../../db/models/Orders';
 import { OrderItems } from '../../../db/models/OrderItems';
+import { PutResponses } from '../../../db/models/PutResponses';
 import { IOrderInput } from '../../types';
 import {
   generateOrderNumber,
@@ -7,6 +9,8 @@ import {
   validateOrder,
   updateOrderItems,
   getTotalAmount,
+  prepareEbarimtData,
+  getDistrictName
 } from '../../utils/orderUtils';
 import { IContext } from '../../types';
 
@@ -62,10 +66,24 @@ const orderMutations = {
 
     return updatedOrder;
   },
-  async ordersMakePayment(_root, { _id, doc }: IPaymentParams) {
+  async ordersMakePayment(_root, { _id, doc }: IPaymentParams, { config }: IContext) {
     const order = await Orders.getOrder(_id);
+    const items = await OrderItems.find({ orderId: order._id }).lean();
 
     await validateOrderPayment(order, doc);
+
+    const data = await prepareEbarimtData(order, config.ebarimtConfig, items, doc.billType, doc.registerNumber);
+
+    const ebarimtConfig = {
+      ...config.ebarimtConfig,
+      districtName: getDistrictName(config.ebarimtConfig.districtCode),
+    };
+
+    try {
+      await PutResponses.putData(data, ebarimtConfig);
+    } catch (e) {
+      debugError(e);
+    }
 
     await Orders.updateOne(
       { _id: order._id },
