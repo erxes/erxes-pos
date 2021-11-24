@@ -218,21 +218,6 @@ export default class Calculation extends React.Component<Props, State> {
                 <span>{__("Amount to pay")}</span>
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
-
-              {/*  <ProductLabel color={options.colors.primary}>
-                {__("Print receipt")}
-              </ProductLabel>
-              
-              <StageContent>
-                <Amount>
-                  <span>{__("Paid amount")}</span>
-                  {formatNumber(0)}₮
-                </Amount>
-                <Amount>
-                  <span>{__("Change amount")}</span>
-                  {formatNumber(0)}₮
-                </Amount>
-              </StageContent> */}
             </div>
             <ButtonWrapper>
               {this.renderAddButton()}
@@ -251,5 +236,5 @@ export default class Calculation extends React.Component<Props, State> {
         </Wrapper>
       </>
     );
-  }
+  } // end render()
 }

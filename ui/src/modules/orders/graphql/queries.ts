@@ -99,10 +99,17 @@ const customers = `
   }
 `;
 
+const ordersCheckCompany = `
+  query ordersCheckCompany($registerNumber: String!) {
+    ordersCheckCompany(registerNumber: $registerNumber)
+  }
+`;
+
 export default {
   productCategories,
   products,
   orderDetail,
   orders,
-  customers
+  customers,
+  ordersCheckCompany
 };

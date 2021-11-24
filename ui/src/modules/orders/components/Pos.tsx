@@ -20,7 +20,6 @@ import {
 import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
 import PaymentForm from "./drawer/PaymentForm";
-import FindCustomer from "../containers/FindCustomer";
 import ProductSearch from "../containers/ProductSearch";
 
 const ProductsContainer = AsyncComponent(
@@ -169,14 +168,6 @@ export default class Pos extends React.Component<Props, State> {
       case "payment":
         return (
           <PaymentForm
-            options={currentConfig ? currentConfig.uiOptions : {}}
-            totalAmount={totalAmount}
-            closeDrawer={this.toggleDrawer}
-          />
-        );
-      case "customer":
-        return (
-          <FindCustomer
             options={currentConfig ? currentConfig.uiOptions : {}}
             totalAmount={totalAmount}
             closeDrawer={this.toggleDrawer}

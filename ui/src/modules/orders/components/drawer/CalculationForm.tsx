@@ -94,6 +94,11 @@ type State = {
   activeInput: string;
 };
 
+const PAYMENT_INPUT = {
+  IN_CASH: 'inCash',
+  BY_CARD: 'byCard'
+};
+
 class CalculationForm extends React.Component<Props, State> {
   constructor(props) {
     super(props);
@@ -104,7 +109,7 @@ class CalculationForm extends React.Component<Props, State> {
       inCash: props.totalAmount || "",
       FType: "person",
       showE: true,
-      activeInput: "inCash",
+      activeInput: PAYMENT_INPUT.IN_CASH,
     };
   }
 
@@ -162,13 +167,10 @@ class CalculationForm extends React.Component<Props, State> {
     const { options, totalAmount } = this.props;
 
     const onChangeCard = (e) =>
-      this.handleInput("byCard", (e.target as HTMLInputElement).value);
+      this.handleInput(PAYMENT_INPUT.BY_CARD, (e.target as HTMLInputElement).value);
 
     const onChangeCash = (e) =>
-      this.handleInput("inCash", (e.target as HTMLInputElement).value);
-
-    // const cash =
-    //   byCard || byCard !== "0" ? Number(totalAmount) - Number(byCard) : inCash;
+      this.handleInput(PAYMENT_INPUT.IN_CASH, (e.target as HTMLInputElement).value);
 
     const hasChange = Number(inCash) > Number(totalAmount) ? true : false;
 
@@ -179,7 +181,7 @@ class CalculationForm extends React.Component<Props, State> {
           {formatNumber(totalAmount || 0)}₮
         </Amount>
         <FormGroup>
-          <ControlLabel>By Card</ControlLabel>
+          <ControlLabel>{__("By Card")}</ControlLabel>
           <Input color={options.colors.primary}>
             <NumberFormat
               name="byCard"
@@ -189,15 +191,15 @@ class CalculationForm extends React.Component<Props, State> {
               className="some"
               inputmode="numeric"
               onChange={onChangeCard}
-              onClick={() => this.handleClick("byCard")}
+              onClick={() => this.handleClick(PAYMENT_INPUT.BY_CARD)}
             />
-            <div onClick={() => this.reset("byCard")}>
+            <div onClick={() => this.reset(PAYMENT_INPUT.BY_CARD)}>
               <Icon icon="cancel" size={13} />
             </div>
           </Input>
         </FormGroup>
         <FormGroup>
-          <ControlLabel>In Cash</ControlLabel>
+          <ControlLabel>{__("In Cash")}</ControlLabel>
           <Input color={options.colors.primary}>
             <NumberFormat
               name="inCash"
@@ -207,21 +209,21 @@ class CalculationForm extends React.Component<Props, State> {
               className="some"
               inputmode="numeric"
               onChange={onChangeCash}
-              onClick={() => this.handleClick("inCash")}
+              onClick={() => this.handleClick(PAYMENT_INPUT.IN_CASH)}
             />
-            <div onClick={() => this.reset("inCash")}>
+            <div onClick={() => this.reset(PAYMENT_INPUT.IN_CASH)}>
               <Icon icon="cancel" size={13} />
             </div>
           </Input>
         </FormGroup>
         {hasChange && (
           <Amount>
-            <span>{__("Хариулт")}</span>
+            <span>{__("Change amount")}</span>
             {formatNumber(Number(inCash) - Number(totalAmount))}₮
           </Amount>
         )}
         <HeaderRow>
-          <ControlLabel>{__("Э-Баримт")}:</ControlLabel> &ensp;
+          <ControlLabel>{__("E-barimt")}:</ControlLabel> &ensp;
           <Toggle
             checked={showE}
             icons={{
@@ -291,7 +293,7 @@ class CalculationForm extends React.Component<Props, State> {
                 </Input>
                 {this.state.FType === "organization" && (
                   <Button style={{ backgroundColor: options.colors.primary }}>
-                    Check
+                    {__("Check")}
                   </Button>
                 )}
               </FlexCenter>
