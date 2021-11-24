@@ -7,7 +7,7 @@ export interface IEbarimtConfig {
   checkCompanyUrl: string;
   hasVat: boolean;
   hasCitytax: boolean;
-  districtCode: number;
+  districtCode: string;
   companyRD: string;
   defaultGSCode: string;
   vatPercent: number;

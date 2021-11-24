@@ -65,7 +65,7 @@ export const initApolloServer = async () => {
           secure: req.secure,
           cookies: req.cookies
         },
-        config: await Configs.findOne()
+        config: await Configs.findOne().lean()
       };
     }
   });

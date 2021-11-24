@@ -24,30 +24,9 @@ export const importProducts = async (groups: any = []) => {
     const categories = group.categories || [];
 
     for (const category of categories) {
-      const products = category.products || [];
+      await ProductCategories.createProductCategory(category);
 
-      await ProductCategories.createProductCategory({
-        _id: category._id,
-        name: category.name,
-        code: category.code,
-        order: category.order,
-        description: category.description,
-        parentId: category.parentId,
-        attachment: category.attachment
-      });
-
-      for (const product of products) {
-        await Products.createProduct({
-          _id: product._id,
-          name: product.name,
-          categoryId: product.categoryId,
-          type: product.type,
-          description: product.description,
-          unitPrice: product.unitPrice,
-          code: product.code,
-          attachment: product.attachment
-        });
-      }
+      await Products.insertMany(category.products || []);
     }
   } // end group loop
 };
