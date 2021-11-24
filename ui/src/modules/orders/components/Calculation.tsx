@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import styledTS from "styled-components-ts";
 import FormControl from "modules/common/components/form/Control";
@@ -129,6 +130,20 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
+  renderReceiptButton() {
+    const { order } = this.props;
+
+    if (!order) {
+      return null;
+    }
+
+    return (
+      <Button icon="print" btnStyle="warning" block>
+        <Link to={`/order-receipt/${order._id}`} target="_blank">{__("Print receipt")}</Link>
+      </Button>
+    );
+  }
+
   render() {
     const {
       totalAmount,
@@ -222,6 +237,7 @@ export default class Calculation extends React.Component<Props, State> {
             <ButtonWrapper>
               {this.renderAddButton()}
               {this.renderEditButton()}
+              {this.renderReceiptButton()}
               <Button
                 style={{ backgroundColor: options.colors.primary }}
                 onClick={() => onClickDrawer("payment")}
