@@ -1,5 +1,4 @@
 import styled from "styled-components";
-// import styledTS from "styled-components-ts";
 import { dimensions, colors } from "modules/common/styles";
 
 export const HeaderWrapper = styled.div`

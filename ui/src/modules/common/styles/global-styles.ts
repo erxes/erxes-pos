@@ -1159,6 +1159,11 @@ a:hover {
     flex-wrap: wrap;
     justify-content: flex-start;
   }
+
+  /* qr & bar code */
+  #bar-code {
+    width: 100%;
+  }
 `;
 
 const globalStyle = [`${style}`] as any;

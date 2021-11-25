@@ -14,6 +14,10 @@ type Props = {
 export default function OrderReceipt({ order }: Props) {
   const { currentConfig } = useContext(AppContext);
 
+  if (!order) {
+    return null;
+  }
+
   const logo =
     currentConfig && currentConfig.uiOptions && currentConfig.uiOptions.logo;
   const name = currentConfig && currentConfig.name ? currentConfig.name : "";
@@ -27,7 +31,7 @@ export default function OrderReceipt({ order }: Props) {
       <Header order={order} logo={logo} name={name} />
       <Body items={order.items} />
       <Amount order={order} />
-      <Footer ebarimt={{}} print={() => {}} color={color} />
+      <Footer ebarimt={{}} print={() => {}} color={color} order={order} />
     </ReceiptWrapper>
   );
 }
