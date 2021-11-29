@@ -32,6 +32,7 @@ type Props = {
   currentConfig: IConfig;
   order: IOrder | null;
   updateOrder: (params) => void;
+  makePayment: (params) => void;
 };
 
 type State = {
@@ -159,18 +160,19 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   renderDrawerContent() {
-    const { currentConfig } = this.props;
+    const { currentConfig, makePayment } = this.props;
     const { drawerContentType, totalAmount } = this.state;
 
     switch (drawerContentType) {
       case "order":
-        return <OrderSearch options={currentConfig.uiOptions} />;
+        return <OrderSearch />;
       case "payment":
         return (
           <PaymentForm
             options={currentConfig ? currentConfig.uiOptions : {}}
             totalAmount={totalAmount}
             closeDrawer={this.toggleDrawer}
+            makePayment={makePayment}
           />
         );
       default:

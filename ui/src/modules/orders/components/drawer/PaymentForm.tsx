@@ -6,6 +6,7 @@ type Props = {
   options: any;
   totalAmount: number;
   closeDrawer: any;
+  makePayment: any;
 };
 
 type State = {
@@ -23,7 +24,7 @@ class PaymentForm extends React.Component<Props, State> {
 
   onSuccess = () => {
     console.log("Do smth");
-    // this.setState({ showPaymentType: !this.state.showPaymentType });
+    this.props.makePayment();
   };
 
   render() {

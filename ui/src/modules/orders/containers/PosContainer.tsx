@@ -20,11 +20,12 @@ type Props = {
   currentConfig: IConfig;
   qp: any;
   orderDetailQuery: OrderDetailQueryResponse;
+  makePaymentMutation: any;
 } & IRouterProps;
 
 class PosContainer extends React.Component<Props> {
   render() {
-    const { ordersAddMutation, ordersEditMutation, orderDetailQuery, qp } = this.props;
+    const { ordersAddMutation, ordersEditMutation, makePaymentMutation, orderDetailQuery, qp } = this.props;
 
     if (qp && qp.id && orderDetailQuery.loading) {
       return <Spinner />;
@@ -50,10 +51,19 @@ class PosContainer extends React.Component<Props> {
       });
     };
 
+    const makePayment = (params: any) => {
+      makePaymentMutation({ variables: params }).then(({ data }) => {
+        console.log(data, 'mmmmm')
+      }).catch(e => {
+        console.log(e, 'eeeee')
+      });
+    };
+
     const updatedProps = {
       ...this.props,
       createOrder,
       updateOrder,
+      makePayment,
       order: qp && qp.id ? orderDetailQuery.orderDetail : null
     };
 
@@ -72,6 +82,9 @@ export default withProps<Props>(
     graphql<Props>(gql(queries.orderDetail), {
       name: 'orderDetailQuery',
       options: ({ qp }) => ({ variables: { _id: qp && qp.id } })
+    }),
+    graphql<Props>(gql(mutations.ordersMakePayment), {
+      name: 'makePaymentMutation'
     })
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );

@@ -14,9 +14,7 @@ import { withRouter } from "react-router-dom";
 import queryString from "query-string";
 import Spinner from "modules/common/components/Spinner";
 
-type Props = {
-  options: any;
-};
+type Props = {};
 
 type WithProps = {
   history: any;
@@ -51,7 +49,7 @@ class SearchContainer extends React.Component<FinalProps> {
     }
 
     return ordersQuery.orders.map((order) => (
-      <OrderItem key={order._id} order={order} options={this.props.options} />
+      <OrderItem key={order._id} order={order} />
     ));
   }
 
