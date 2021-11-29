@@ -81,7 +81,7 @@ export default withProps<Props>(
     }),
     graphql<Props>(gql(queries.orderDetail), {
       name: 'orderDetailQuery',
-      options: ({ qp }) => ({ variables: { _id: qp && qp.id } })
+      options: ({ qp }) => ({ variables: { _id: qp && qp.id }, fetchPolicy: 'network-only' })
     }),
     graphql<Props>(gql(mutations.ordersMakePayment), {
       name: 'makePaymentMutation'

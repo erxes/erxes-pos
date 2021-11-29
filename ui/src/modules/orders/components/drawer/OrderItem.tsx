@@ -26,7 +26,7 @@ export default function OrderItem({ order }: Props) {
 
   return (
     <OrderBox color={options.colors.primary} key={order._id}>
-      <Link to={`/order-receipt/${order._id}`} target="_blank">
+      <Link to={`/pos?id=${order._id}`}>
         <FlexCenter>
           <span>{__("Number")}:</span> <b>{number[1]}</b>
         </FlexCenter>

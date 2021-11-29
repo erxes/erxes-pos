@@ -31,9 +31,9 @@ const routes = () => {
   return (
     <React.Fragment>
       <Route
-        key="/orders/:id"
+        key="/pos"
         exact={true}
-        path="/orders/:id"
+        path="/pos"
         component={Pos}
       />
       
