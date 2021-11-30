@@ -1,5 +1,5 @@
 import { Document, Schema } from "mongoose";
-import { field, schemaCreatedAt } from "./utils";
+import { field, getDateFieldDefinition } from "./utils";
 
 interface IDetail {
   avatar?: string;
@@ -49,7 +49,7 @@ const detailSchema = new Schema(
 // User schema
 export const userSchema = new Schema({
   _id: field({ pkey: true }),
-  createdAt: schemaCreatedAt,
+  createdAt: getDateFieldDefinition('Created at'),
   username: field({ type: String, label: "Username" }),
   password: field({ type: String }),
   isOwner: field({ type: Boolean, label: "Is owner" }),

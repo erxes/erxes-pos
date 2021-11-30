@@ -44,7 +44,21 @@ const currentConfig = `
       formIntegrationIds
       brandId
       token
-      uiOptions
+      uiOptions {
+        colors
+        bgImage
+        logo
+        favIcon
+      }
+
+      ebarimtConfig {
+        companyRD
+        hasVat
+        hasCitytax
+        vatPercent
+        cityTaxPercent
+        companyName
+      }
     }
   }
 `;

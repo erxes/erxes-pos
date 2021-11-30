@@ -61,6 +61,19 @@ export interface ISubNav {
   additional?: boolean;
 };
 
+interface IEbarimtConfig {
+  companyName: string;
+  ebarimtUrl: string;
+  checkCompanyUrl: string;
+  hasVat: boolean;
+  hasCitytax: boolean;
+  districtCode: number;
+  companyRD: string;
+  defaultGSCode: string;
+  vatPercent: number;
+  cityTaxPercent: number;
+}
+
 export interface IConfig {
   _id: string;
   name: string;
@@ -77,6 +90,7 @@ export interface IConfig {
   formIntegrationIds: string[];
   token?: string;
   uiOptions: any;
+  ebarimtConfig: IEbarimtConfig;
 };
 
 export type CurrentConfigQueryResponse = {

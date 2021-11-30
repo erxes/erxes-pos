@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 type Props = {
   text: string;
@@ -8,12 +8,12 @@ type Props = {
 
 export default function LocaleField({ text, data, type }: Props) {
   if (text && data) {
-    if (type === 'bold') {
+    if (type === "bold") {
       return (
         <p>
-          <label>{text}:</label>
+          <b>{text}:</b>
           <strong>
-            {' '}
+            {" "}
             <span className="totalCount">
               {data.toLocaleString(undefined, {
                 minimumFractionDigits: 2,
@@ -26,10 +26,10 @@ export default function LocaleField({ text, data, type }: Props) {
       );
     }
 
-    if (type === 'big') {
+    if (type === "big") {
       return (
         <p>
-          <label className="big">{text}:</label>
+          <b className="big">{text}:</b>
           <span>
             {data.toLocaleString(undefined, {
               minimumFractionDigits: 2,
@@ -43,7 +43,7 @@ export default function LocaleField({ text, data, type }: Props) {
 
     return (
       <p>
-        <label>{text}:</label>
+        <b>{text}:</b>
         <span>
           {data.toLocaleString(undefined, {
             minimumFractionDigits: 2,

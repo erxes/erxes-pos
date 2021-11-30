@@ -1,6 +1,7 @@
 import Customers from "../../db/models/Customers";
 import { IOrderDocument } from "../../db/models/definitions/orders";
 import { OrderItems } from "../../db/models/OrderItems";
+import { PutResponses } from "../../db/models/PutResponses";
 import Users from "../../db/models/Users";
 
 export default {
@@ -12,5 +13,8 @@ export default {
   },
   user(order: IOrderDocument) {
     return Users.findOne({ _id: order.userId });
+  },
+  putResponses(order: IOrderDocument) {
+    return PutResponses.find({ contentId: order._id }).sort({ createdAt: -1 }).lean()
   }
 };

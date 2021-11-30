@@ -2,7 +2,7 @@ import { Document, Schema } from "mongoose";
 import { attachmentSchema, ICustomField, customFieldSchema } from "./common";
 import { ICompany } from "./companies";
 import { PRODUCT_STATUSES, PRODUCT_TYPES } from "./constants";
-import { field, schemaCreatedAt } from "./utils";
+import { field, getDateFieldDefinition } from "./utils";
 
 interface IAttachment {
   url: string;
@@ -52,7 +52,7 @@ const productCommonSchema = {
   code: field({ type: String, unique: true, label: "Code" }),
   description: field({ type: String, optional: true, label: "Description" }),
   attachment: field({ type: attachmentSchema }),
-  createdAt: schemaCreatedAt,
+  createdAt: getDateFieldDefinition('Created at'),
 };
 
 export const productSchema = new Schema({

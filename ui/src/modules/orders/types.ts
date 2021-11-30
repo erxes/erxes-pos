@@ -35,8 +35,9 @@ export interface IOrder {
 
   items: IOrderItem[];
   customer?: ICustomer;
-  user: IUser
-};
+  user: IUser;
+  putResponses?: IPutResponse[];
+}
 
 interface IProductCommonFields {
   _id: string;
@@ -66,20 +67,20 @@ export interface IOrderItemInput {
   unitPrice?: number;
 }
 
-export type OrdersAddMutationResponse = ({
-  variables: any
-}) => Promise<any>;
+export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;
 
-export type OrdersEditMutationResponse = ({
-  variables: any
-}) => Promise<any>;
+export type OrdersEditMutationResponse = ({ variables: any }) => Promise<any>;
 
 export type OrderDetailQueryResponse = {
   orderDetail: IOrder;
-} & QueryResponse
+} & QueryResponse;
+
+export type OrderQueryResponse = {
+  orders: IOrder[];
+} & QueryResponse;
 
 export interface ICustomer {
-  state?: 'visitor' | 'lead' | 'customer';
+  state?: "visitor" | "lead" | "customer";
 
   scopeBrandIds?: string[];
   firstName?: string;
@@ -137,4 +138,33 @@ export interface IAttachment {
   name: string;
   type: string;
   size: number;
-};
+}
+
+export interface IPutResponse {
+  createdAt: Date;
+  contentType: string;
+  contentId: string;
+  success: string;
+  billId: string;
+  date: string;
+  macAddress: string;
+  internalCode: string;
+  billType: string;
+  lotteryWarningMsg: string;
+  errorCode: string;
+  message: string;
+  getInformation: string;
+  taxType: string;
+  qrData: string;
+  lottery: string;
+  sendInfo: object;
+  stocks: object;
+  amount: string;
+  vat: string;
+  cityTax: string;
+  returnBillId: string;
+  cashAmount: string;
+  nonCashAmount: string;
+  registerNumber: string;
+  customerName: string;
+}

@@ -14,5 +14,20 @@
   "Take": "Take",
   "Eat": "Eat",
   "Save": "Save",
-  "Edit order": "Edit order"
+  "Edit order": "Edit order",
+  "Cancel": "Cancel",
+  "Done": "Done",
+  "Phone number": "Phone number",
+  "Check": "Check",
+  "Organization": "Organization",
+  "Person": "Person",
+  "Choose the payment method": "Choose the payment method",
+  "Find customer": "Find customer",
+  "Choose customer from select": "Choose customer from select",
+  "VAT": "VAT (10%)",
+  "CCT": "CCT (1%)",
+  "By Card": "By Card",
+  "In Cash": "In Cash",
+  "E-barimt": "E-barimt",
+  "Number": "Number"
 }

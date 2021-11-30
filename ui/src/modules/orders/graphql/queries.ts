@@ -55,6 +55,22 @@ const products = `
   }
 `;
 
+const putResponseFields = `
+  date
+  vat
+  cityTax
+  registerNo
+  billId
+  lottery
+  qrData
+  success
+  lotteryWarningMsg
+  errorCode
+  message
+  getInformation
+  returnBillId
+`;
+
 const orderDetail = `
   query orderDetail($_id: String) {
     orderDetail(_id: $_id) {
@@ -79,6 +95,10 @@ const orderDetail = `
       customer {
         ${customerFields}
       }
+
+      putResponses {
+        ${putResponseFields}
+      }
     }
   }
 `;
@@ -99,10 +119,17 @@ const customers = `
   }
 `;
 
+const ordersCheckCompany = `
+  query ordersCheckCompany($registerNumber: String!) {
+    ordersCheckCompany(registerNumber: $registerNumber)
+  }
+`;
+
 export default {
   productCategories,
   products,
   orderDetail,
   orders,
-  customers
+  customers,
+  ordersCheckCompany
 };

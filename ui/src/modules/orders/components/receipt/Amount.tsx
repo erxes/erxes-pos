@@ -1,10 +1,11 @@
-import { IOrder } from 'modules/orders/types';
-import React from 'react';
+import { IOrder } from "modules/orders/types";
+import React from "react";
 
-import LocaleField from './LocaleField';
+import LocaleField from "./LocaleField";
+import { AmountContainer } from "./styles";
 
 type Props = {
-  order: IOrder
+  order: IOrder;
 };
 
 export default class Amount extends React.Component<Props> {
@@ -12,27 +13,27 @@ export default class Amount extends React.Component<Props> {
     const { order } = this.props;
 
     return (
-      <div>
+      <AmountContainer className="block">
         <div className="order-amounts">
           {/* <LocaleField text="Tax" data={this.props.taxAmount} /> */}
-            <div>
-              <div className="sep" />
-              <LocaleField text="Дүн" data={order.totalAmount} />
-              <div className="sep" />
-              {/* <LocaleField
+          <div>
+            <div className="sep" />
+            <LocaleField text="Дүн" data={order.totalAmount} />
+            <div className="sep" />
+            {/* <LocaleField
                 text="Цэвэр дүн"
                 data={totalAmount * 100 / (100 + percent)}
               /> */}
-              {/* <LocaleField
+            {/* <LocaleField
                 text={`Service Charge (${
                   this.context.company.configGeneral.serviceChargePercent
                 }%)`}
                 data={amount.serviceChargeAmount}
               /> */}
-              {/* <LocaleField text="НӨАТ (10%)" data={amount.vatAmount} /> */}
-              {/* <LocaleField text="НХАТ (1%)" data={amount.cityTaxAmount} /> */}
-              <LocaleField text="Нийт дүн" data={order.finalAmount} />
-            </div>
+            {/* <LocaleField text="НӨАТ (10%)" data={amount.vatAmount} /> */}
+            {/* <LocaleField text="НХАТ (1%)" data={amount.cityTaxAmount} /> */}
+            <LocaleField text="Нийт дүн" data={order.finalAmount} />
+          </div>
           <div className="sep" />
           {/* <p>
             <label>ТАНЫ ТӨЛӨХ ДҮН:</label>
@@ -47,12 +48,12 @@ export default class Amount extends React.Component<Props> {
               </span>
             </strong>
           </p> */}
-          {order.status === 'paid' ? <div className="sep" /> : null}
+          {order.status === "paid" ? <div className="sep" /> : null}
           <LocaleField text="Бэлнээр" data={order.cashAmount} />
           <LocaleField text="Картаар" data={order.cardAmount} />
           <LocaleField text="Мобайл" data={order.mobileAmount} />
         </div>
-      </div>
+      </AmountContainer>
     );
   } // end render()
 }

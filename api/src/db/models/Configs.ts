@@ -44,35 +44,3 @@ class Config {
 configSchema.loadClass(Config);
 
 export const Configs = model('configs', configSchema);
-
-// product group
-// class ProductGroup {
-//   public static async groups(models, posId: string) {
-//     return models.ProductGroups.find({ posId }).lean();
-//   }
-
-//   public static async groupsAdd(models, user, name, description) {
-//     return models.ProductGroups.create({
-//       userId: user._id,
-//       name,
-//       description,
-//       createdAt: new Date(),
-//     });
-//   }
-
-//   public static async groupsEdit(models, _id, doc) {
-//     const group = await models.ProductGroups.findOne({ _id }).lean();
-
-//     if (!group) {
-//       throw new Error('group not found');
-//     }
-
-//     await models.ProductGroups.updateOne({ _id }, { $set: doc });
-
-//     return await models.ProductGroups.findOne({ _id }).lean();
-//   }
-
-//   public static async groupsRemove(models, _id: string) {
-//     return models.ProductGroups.deleteOne({ _id });
-//   }
-// }

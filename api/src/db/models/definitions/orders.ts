@@ -1,5 +1,5 @@
 import { Document, Schema } from 'mongoose';
-import { field, schemaCreatedAt, getNumberFieldDefinition } from './utils';
+import { field, getDateFieldDefinition, getNumberFieldDefinition } from './utils';
 import { ORDER_TYPES } from './constants';
 import { IOrderItemDocument } from './orderItems';
 import { ICustomerDocument } from './customers';
@@ -35,7 +35,7 @@ const commonAttributes = { positive: true, default: 0 };
 
 export const orderSchema = new Schema({
   _id: field({ pkey: true }),
-  createdAt: schemaCreatedAt,
+  createdAt: getDateFieldDefinition('Created at'),
   status: { type: String, label: 'Status of the order' },
   paidDate: { type: Date, label: 'Paid date' },
   number: { type: String, label: 'Order number', unique: true },

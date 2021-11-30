@@ -3,13 +3,24 @@ import { withRouter } from "react-router-dom";
 import gql from "graphql-tag";
 import * as compose from "lodash.flowright";
 import React from "react";
+import queryString from "query-string";
 import { withProps } from "../../utils";
-import { IRouterProps, IConfig, ProductCategoriesQueryResponse, ProductsQueryResponse } from "../../../types";
+import {
+  IRouterProps,
+  IConfig,
+  ProductCategoriesQueryResponse,
+  ProductsQueryResponse,
+} from "../../../types";
 import { IOrderItemInput } from "../types";
 import { queries } from "../graphql/index";
 import Products from "../components/Products";
 import Spinner from "modules/common/components/Spinner";
 import withCurrentUser from "modules/auth/containers/withCurrentUser";
+
+type WithProps = {
+  history: any;
+  queryParams: any;
+};
 
 type Props = {
   productCategoriesQuery: ProductCategoriesQueryResponse;
@@ -17,7 +28,8 @@ type Props = {
   setItems: (items: IOrderItemInput[]) => void;
   items: IOrderItemInput[];
   currentConfig: IConfig;
-} & IRouterProps;
+} & IRouterProps &
+  WithProps;
 
 class ProductsContainer extends React.Component<Props> {
   render() {
@@ -37,13 +49,27 @@ class ProductsContainer extends React.Component<Props> {
   }
 }
 
-export default withProps<Props>(
+const WithSearchContainer = withProps<WithProps>(
   compose(
-    graphql<Props>(gql(queries.productCategories), {
+    graphql<WithProps>(gql(queries.productCategories), {
       name: "productCategoriesQuery",
     }),
-    graphql<Props, {}>(gql(queries.products), {
+    graphql<WithProps, {}>(gql(queries.products), {
       name: "productsQuery",
+      options: ({ queryParams }: { queryParams: any }) => ({
+        variables: { searchValue: queryParams.productSearch },
+      }),
     })
   )(withCurrentUser(withRouter<Props>(ProductsContainer)))
 );
+
+const WithQueryParams = (props: IRouterProps & Props) => {
+  const { location } = props;
+  const queryParams = queryString.parse(location.search);
+
+  const extendedProps = { ...props, queryParams };
+
+  return <WithSearchContainer {...extendedProps} />;
+};
+
+export default withRouter<IRouterProps & Props>(WithQueryParams);

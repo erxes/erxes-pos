@@ -1,5 +1,5 @@
 import { Document, Schema } from 'mongoose';
-import { field, schemaCreatedAt, getNumberFieldDefinition } from './utils';
+import { field, getDateFieldDefinition, getNumberFieldDefinition } from './utils';
 
 export interface IOrderItem {
   createdAt?: Date;
@@ -18,7 +18,7 @@ export interface IOrderItemDocument extends Document, IOrderItem {
 
 export const orderItemSchema = new Schema({
   _id: field({ pkey: true }),
-  createdAt: schemaCreatedAt,
+  createdAt: getDateFieldDefinition('Created at'),
   productId: { type: String, label: 'Product' },
   count: getNumberFieldDefinition({ label: 'Count', positive: true }),
   unitPrice: getNumberFieldDefinition({ label: 'Unit price', positive: true }),

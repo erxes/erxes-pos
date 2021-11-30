@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import styledTS from "styled-components-ts";
 import FormControl from "modules/common/components/form/Control";
@@ -7,19 +8,28 @@ import SelectWithSearch from "modules/common/components/SelectWithSearch";
 import { __ } from "modules/common/utils";
 import { IOption } from "types";
 import { ORDER_TYPES } from "../../../constants";
-import { ProductLabel, StageContent } from "../styles";
+import { StageContent, FlexColumn } from "../styles";
 import ControlLabel from "modules/common/components/form/Label";
 import { FlexBetween, ColumnBetween } from "modules/common/styles/main";
 import { formatNumber } from "modules/utils";
 import Button from "modules/common/components/Button";
-import { ICustomer, IOrder } from '../types';
-import queries from '../graphql/queries';
+import { ICustomer, IOrder } from "../types";
+import queries from "../graphql/queries";
 
-const Wrapper = styled.div`
+const Wrapper = styledTS<{ color?: string }>(styled.div)`
   display: flex;
   flex-direction: column;
   padding: 0 20px;
   height: 100%;
+
+  button {
+    padding: 10px 20px;
+    border-radius: 8px;
+  }
+
+  .ioevLe:checked + span:before, .hCqfzh .react-toggle--checked .react-toggle-track {
+    background-color: ${(props) => props.color && props.color};
+  }
 `;
 
 const Description = styled.div`
@@ -28,7 +38,7 @@ const Description = styled.div`
   margin-bottom: 10px;
 `;
 
-const Amount = styledTS<{ color?: string }>(styled(FlexBetween))`
+export const Amount = styledTS<{ color?: string }>(styled(FlexBetween))`
   border: 1px solid #cbd2d9;
   border-radius: 8px;
   padding: 10px;
@@ -49,15 +59,18 @@ const ButtonWrapper = styled.div`
 
 // get user options for react-select-plus
 const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
-  return array.map(item => {
-    const customer = item || ({} as ICustomer);
+  return array.map((item) => {
+    const { _id, firstName, primaryEmail, primaryPhone, code } =
+      item || ({} as ICustomer);
+
+    const value = firstName || primaryEmail || primaryPhone || code || "";
 
     return {
-      value: customer._id || '',
-      label: customer.firstName || customer.primaryEmail || ''
+      value: _id || value,
+      label: value,
     };
   });
-}
+};
 
 type Props = {
   totalAmount: number;
@@ -67,28 +80,27 @@ type Props = {
   options: any;
   editOrder: (params) => void;
   order: IOrder | null;
+  type: string;
 };
 
 type State = {
   customerId: string;
-}
+};
 
 export default class Calculation extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      customerId: ''
+      customerId: "",
     };
-
-    this.onChange = this.onChange.bind(this);
   }
 
-  onChange(e) {
+  onChange = (e) => {
     const value = (e.target as HTMLInputElement).value;
 
     this.props.setOrderState("type", value);
-  }
+  };
 
   renderEditButton() {
     const { editOrder, order } = this.props;
@@ -98,12 +110,7 @@ export default class Calculation extends React.Component<Props, State> {
     }
 
     return (
-      <Button
-        btnStyle="success"
-        onClick={editOrder}
-        icon="check-circle"
-        block
-      >
+      <Button btnStyle="success" onClick={editOrder} icon="check-circle" block>
         {__("Edit order")}
       </Button>
     );
@@ -117,108 +124,126 @@ export default class Calculation extends React.Component<Props, State> {
     }
 
     return (
-      <Button
-        btnStyle="success"
-        onClick={addOrder}
-        icon="check-circle"
-        block
-      >
+      <Button btnStyle="success" onClick={addOrder} icon="check-circle" block>
         {__("Make an order")}
       </Button>
     );
   }
 
+  renderReceiptButton() {
+    const { order } = this.props;
+
+    if (!order) {
+      return null;
+    }
+
+    return (
+      <Button icon="print" btnStyle="warning" block>
+        <Link to={`/order-receipt/${order._id}`} target="_blank">{__("Print receipt")}</Link>
+      </Button>
+    );
+  }
+
   render() {
-    const { totalAmount, options, onClickDrawer, setOrderState } = this.props;
+    const {
+      totalAmount,
+      options,
+      onClickDrawer,
+      setOrderState,
+      type,
+    } = this.props;
 
     const onSelectCustomer = (customerId) => {
       this.setState({ customerId });
 
       setOrderState("customerId", customerId);
-    }
+    };
 
     return (
       <>
-        <Wrapper>
-          <ProductLabel color={options.colors.primary}>
-            {__("Identify a customer")}
-          </ProductLabel>
+        <Wrapper color={options.colors.primary}>
+          <StageContent>
+            <ControlLabel>{__("Identify a customer")}</ControlLabel>
+            <Description>{__("Choose customer from select")}</Description>
+          </StageContent>
           <SelectWithSearch
-              name="customerId"
-              queryName="customers"
-              label="Select customer"
-              initialValue={this.state.customerId}
-              onSelect={onSelectCustomer}
-              generateOptions={generateLabelOptions}
-              customQuery={queries.customers}
-            />
+            name="customerId"
+            queryName="customers"
+            label="Select customer"
+            initialValue={this.state.customerId}
+            onSelect={onSelectCustomer}
+            generateOptions={generateLabelOptions}
+            customQuery={queries.customers}
+          />
           <ColumnBetween>
             <div>
               <FormGroup>
                 <StageContent>
                   <ControlLabel>{__("Choose type")}</ControlLabel>
-                  <Description>{__("Choose from the following options")}</Description>
+                  <Description>
+                    {__("Choose from the following options")}
+                  </Description>
                 </StageContent>
-                <FormControl
-                  componentClass="radio"
-                  value={ORDER_TYPES.TAKE}
-                  inline={true}
-                  name="type"
-                  onChange={this.onChange}
-                >
-                  {__("Take")}
-                </FormControl>
-                <FormControl
-                  componentClass="radio"
-                  value={ORDER_TYPES.EAT}
-                  inline={true}
-                  name="type"
-                  onChange={this.onChange}
-                >
-                  {__("Eat")}
-                </FormControl>
-                <FormControl
-                  componentClass="radio"
-                  value={ORDER_TYPES.SAVE}
-                  inline={true}
-                  name="type"
-                  onChange={this.onChange}
-                >
-                  {__("Save")}
-                </FormControl>
+                <FlexColumn>
+                  <FormControl
+                    componentClass="radio"
+                    value={ORDER_TYPES.TAKE}
+                    checked={type === ORDER_TYPES.TAKE}
+                    inline={true}
+                    name="type"
+                    onChange={this.onChange}
+                  >
+                    {__("Take")}
+                  </FormControl>
+                  <FormControl
+                    componentClass="radio"
+                    value={ORDER_TYPES.EAT}
+                    checked={type === ORDER_TYPES.EAT}
+                    inline={true}
+                    name="type"
+                    onChange={this.onChange}
+                  >
+                    {__("Eat")}
+                  </FormControl>
+                  <FormControl
+                    componentClass="radio"
+                    value={ORDER_TYPES.SAVE}
+                    checked={type === ORDER_TYPES.SAVE}
+                    inline={true}
+                    name="type"
+                    onChange={this.onChange}
+                  >
+                    {__("Save")}
+                  </FormControl>
+                </FlexColumn>
               </FormGroup>
               <Amount>
                 <span>{__("Total")}</span>
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
+              <Amount>
+                <span>{__("VAT")}</span>
+                {formatNumber(0)}₮
+              </Amount>
+              <Amount>
+                <span>{__("CCT")}</span>
+                {formatNumber(0)}₮
+              </Amount>
               <Amount color={options.colors.primary}>
                 <span>{__("Amount to pay")}</span>
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
-
-              <ProductLabel color={options.colors.primary}>
-                {__("Print receipt")}
-              </ProductLabel>
-
-              <StageContent>
-                <Amount>
-                  <span>{__("Paid amount")}</span>
-                  {formatNumber(0)}₮
-                </Amount>
-                <Amount>
-                  <span>{__("Change amount")}</span>
-                  {formatNumber(0)}₮
-                </Amount>
-              </StageContent>
             </div>
             <ButtonWrapper>
               {this.renderAddButton()}
               {this.renderEditButton()}
+              {this.renderReceiptButton()}
               <Button
                 style={{ backgroundColor: options.colors.primary }}
                 onClick={() => onClickDrawer("payment")}
                 icon="dollar-alt"
                 block
+                disabled={!totalAmount || totalAmount === 0 ? true : false}
               >
                 {__("Pay the bill")}
               </Button>
@@ -227,5 +252,5 @@ export default class Calculation extends React.Component<Props, State> {
         </Wrapper>
       </>
     );
-  }
+  } // end render()
 }

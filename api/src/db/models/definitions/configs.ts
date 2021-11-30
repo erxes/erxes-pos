@@ -1,5 +1,29 @@
 import { Document, Schema } from 'mongoose';
-import { field, schemaCreatedAt } from './utils';
+import { field, getDateFieldDefinition } from './utils';
+
+export interface IEbarimtConfig {
+  companyName: string;
+  ebarimtUrl: string;
+  checkCompanyUrl: string;
+  hasVat: boolean;
+  hasCitytax: boolean;
+  districtCode: string;
+  companyRD: string;
+  defaultGSCode: string;
+  vatPercent: number;
+  cityTaxPercent: number;
+}
+
+interface IConfigColors {
+  [key: string]: string;
+}
+
+interface IUIOptions {
+  colors: IConfigColors;
+  logo: string;
+  bgImage: string;
+  favIcon: string;
+}
 
 export interface IConfig {
   name: string;
@@ -15,7 +39,8 @@ export interface IConfig {
   formSectionTitle: string;
   formIntegrationIds: string[];
   token?: string;
-  uiOptions: any;
+  uiOptions: IUIOptions;
+  ebarimtConfig: IEbarimtConfig;
 }
 
 export interface IConfigDocument extends Document, IConfig {
@@ -28,12 +53,28 @@ export interface IProductGroupDocument extends Document, IProductGroup {
   _id: string;
 }
 
+const ebarimtConfigSchema = new Schema(
+  {
+    companyName: field({ type: String, label: 'Company name' }),
+    ebarimtUrl: field({ type: String, label: 'Ebarimt server url' }),
+    checkCompanyUrl: field({ type: String, label: 'Company info url' }),
+    hasVat: field({ type: Boolean }),
+    hasCitytax: field({ type: Boolean }),
+    districtCode: field({ type: String, label: 'Province or district code' }),
+    companyRD: field({ type: String, label: 'Company register number' }),
+    defaultGSCode: field({ type: String, label: 'Default inventory code' }),
+    vatPercent: field({ type: String, label: 'Vat percent' }),
+    cityTaxPercent: field({ type: String, label: 'UB city tax percent' }),
+  },
+  { _id: false }
+);
+
 export const configSchema = new Schema({
   _id: field({ pkey: true }),
-  name: { type: String, label: 'name' },
-  description: { type: String, label: 'description' },
-  userId: { type: String, optional: true, label: 'created by' },
-  createdAt: schemaCreatedAt,
+  name: { type: String, label: 'Name' },
+  description: { type: String, label: 'Description' },
+  userId: { type: String, optional: true, label: 'Created by' },
+  createdAt: getDateFieldDefinition('Created at'),
   integrationId: { type: String, label: 'Erxes integration' },
   productDetails: { type: [String] },
   adminIds: { type: [String] },
@@ -45,7 +86,8 @@ export const configSchema = new Schema({
   formIntegrationIds: { type: [String] },
   brandId: { type: String },
   token: { type: String, label: 'Token generated at erxes-api' },
-  uiOptions: { type: Object, label: 'Logo & color configs' }
+  uiOptions: { type: Object, label: 'Logo & color configs' },
+  ebarimtConfig: ebarimtConfigSchema,
 });
 
 export const productGroupSchema = new Schema({
