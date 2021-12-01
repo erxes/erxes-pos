@@ -1,5 +1,7 @@
 const { app, BrowserWindow, screen: electronScreen } = require('electron');
 const isDev = require('electron-is-dev');
+const path = require('path');
+const url = require('url');
 
 const createMainWindow = () => {
   let mainWindow = new BrowserWindow({
@@ -12,9 +14,15 @@ const createMainWindow = () => {
     },
   });
 
+  const prodUrl = url.format({
+    pathname: path.join(__dirname, '../build/index.html'),
+    protocol: 'file:',
+    slashes: true
+  });
+
   const startURL = isDev
     ? 'http://localhost:7000'
-    : `file://${path.join(__dirname, '../build/index.html')}`;
+    : prodUrl;
 
   mainWindow.loadURL(startURL);
 
