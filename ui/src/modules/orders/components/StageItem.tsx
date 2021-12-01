@@ -4,6 +4,7 @@ import { IOrderItemInput } from "../types";
 import { FlexBetween, FlexCenter } from "modules/common/styles/main";
 import { confirm } from "modules/common/utils";
 import Icon from "modules/common/components/Icon";
+import { __ } from "modules/common/utils";
 import Quantity from "./Quantity";
 
 const Item = styled.div`
@@ -70,7 +71,7 @@ export default class StageItem extends React.Component<Props> {
     const { productName, unitPrice, count } = item;
 
     const onRemoveItem = () => {
-      confirm("Are you sure").then(() => {
+      confirm(`${__("Are you sure")}?`).then(() => {
         changeItemCount({ ...item, count: 0 });
       });
     };
@@ -99,5 +100,5 @@ export default class StageItem extends React.Component<Props> {
         </FlexBetween>
       </Item>
     );
-  }
+  } // end render()
 }

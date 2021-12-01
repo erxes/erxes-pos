@@ -46,7 +46,12 @@ const orderMutations = {
     });
 
     for (const item of items) {
-      await OrderItems.createOrderItem({ ...item, orderId: order._id });
+      await OrderItems.createOrderItem({
+        count: item.count,
+        productId: item.productId,
+        unitPrice: item.unitPrice,
+        orderId: order._id
+      });
     }
 
     return order;
