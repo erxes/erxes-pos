@@ -64,7 +64,7 @@ export default class Products extends React.Component<
     } else {
       currentItems = items.filter((i) => i.productId !== item._id);
 
-      currentItems.push({ count: exists.count + count, ...doc });
+      currentItems.push({ ...doc, count: exists.count + count, _id: exists._id });
     }
 
     setItems(currentItems);

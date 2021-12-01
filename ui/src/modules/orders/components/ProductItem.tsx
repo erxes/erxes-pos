@@ -18,6 +18,7 @@ export default function ProductItem(props: Props) {
       count: 1,
       productName: product.name,
       _id: Math.random().toString(),
+      unitPrice: product.unitPrice
     });
   };
 

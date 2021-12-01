@@ -71,13 +71,12 @@ export const updateOrderItems = async (
     if (found) {
       await OrderItems.updateOrderItem(found._id, { count: item.count });
     } else {
-      const doc = {
+      await OrderItems.createOrderItem({
         productId: item.productId,
         count: item.count,
         orderId,
-      };
-
-      await OrderItems.createOrderItem(doc);
+        unitPrice: item.unitPrice
+      });
     }
   }
 };
