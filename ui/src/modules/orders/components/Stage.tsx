@@ -20,7 +20,7 @@ export default class Stage extends React.Component<Props> {
       return (
         <EmptyState
           image="/images/actions/8.svg"
-          text="Add some reservations!"
+          text={__("Add some reservations")}
         />
       );
     }
