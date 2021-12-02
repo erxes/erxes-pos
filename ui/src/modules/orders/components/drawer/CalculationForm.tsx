@@ -196,6 +196,18 @@ class CalculationForm extends React.Component<Props, State> {
 
     const hasChange = Number(inCash) > Number(totalAmount) ? true : false;
 
+    const inputProps: any = {
+      allowNegative: false,
+      thousandSeparator: true,
+      prefix: "₮",
+      inputMode: "numeric",
+    };
+
+    if (totalAmount) {
+      // limit input by total amount
+      inputProps.isAllowed = ({ floatValue }) => floatValue <= totalAmount;
+    }
+
     return (
       <FormHead>
         <Amount color={options.colors.primary}>
@@ -208,12 +220,9 @@ class CalculationForm extends React.Component<Props, State> {
             <NumberFormat
               name="byCard"
               value={byCard}
-              thousandSeparator={true}
-              prefix="₮"
-              className="some"
-              inputMode="numeric"
               onChange={onChangeCard}
               onClick={() => this.handleClick(PAYMENT_INPUT.BY_CARD)}
+              {...inputProps}
             />
             <div onClick={() => this.reset(PAYMENT_INPUT.BY_CARD)}>
               <Icon icon="cancel" size={13} />
@@ -226,12 +235,9 @@ class CalculationForm extends React.Component<Props, State> {
             <NumberFormat
               name="inCash"
               value={inCash}
-              thousandSeparator={true}
-              prefix="₮"
-              className="some"
-              inputMode="numeric"
               onChange={onChangeCash}
               onClick={() => this.handleClick(PAYMENT_INPUT.IN_CASH)}
+              {...inputProps}
             />
             <div onClick={() => this.reset(PAYMENT_INPUT.IN_CASH)}>
               <Icon icon="cancel" size={13} />
