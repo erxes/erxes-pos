@@ -1,17 +1,22 @@
 import React from "react";
 import NumberFormat from "react-number-format";
 import styled from "styled-components";
+import gql from 'graphql-tag';
+import apolloClient from 'apolloClient';
+
+import { Alert } from "modules/common/utils";
 import FormControl from "modules/common/components/form/Control";
 import { FlexCenter } from "modules/common/styles/main";
 import Button from "modules/common/components/Button";
-import { __ } from "../../../common/utils";
+import { __ } from "modules/common/utils";
 import Icon from "erxes-ui/lib/components/Icon";
 import { Input, FormHead } from "modules/orders/styles";
 import { Amount } from "modules/orders/components/Calculation";
 import { formatNumber } from "modules/utils";
-import FormGroup from "../../../common/components/form/Group";
-import ControlLabel from "../../../common/components/form/Label";
-import Toggle from "../../../common/components/Toggle";
+import FormGroup from "modules/common/components/form/Group";
+import ControlLabel from "modules/common/components/form/Label";
+import Toggle from "modules/common/components/Toggle";
+import { queries } from '../../graphql/index';
 
 const PaymentWrapper = styled.div`
   margin: 20px 21%;
@@ -83,10 +88,11 @@ type Props = {
   header?: React.ReactNode;
   extraButton?: React.ReactNode;
   onSuccess: () => void;
+  setOrderState: (name: string, value: any) => void;
 };
 
 type State = {
-  inputValue: string;
+  registerNumber: string;
   inCash: string;
   byCard: string;
   FType: string;
@@ -104,7 +110,7 @@ class CalculationForm extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      inputValue: props.totalAmount || "",
+      registerNumber: "",
       byCard: "",
       inCash: props.totalAmount || "",
       FType: "person",
@@ -154,6 +160,22 @@ class CalculationForm extends React.Component<Props, State> {
     this.props.onSuccess();
   };
 
+  checkOrganization() {
+    apolloClient.query({
+      query: gql(queries.ordersCheckCompany),
+      variables: { registerNumber: this.state.registerNumber }
+    }).then(({ data, errors }) => {
+      if (errors) {
+        Alert.error(errors.toString())
+      }
+
+      if (data && data.ordersCheckCompany) {
+        Alert.success(data.ordersCheckCompany.name);
+        this.props.setOrderState('registerNumber', this.state.registerNumber);
+      }
+    });
+  }
+
   renderKeyPad(key, num) {
     return (
       <KeyPad key={key} onClick={() => this.onChangeKeyPad(num.toString())}>
@@ -189,7 +211,7 @@ class CalculationForm extends React.Component<Props, State> {
               thousandSeparator={true}
               prefix="₮"
               className="some"
-              inputmode="numeric"
+              inputMode="numeric"
               onChange={onChangeCard}
               onClick={() => this.handleClick(PAYMENT_INPUT.BY_CARD)}
             />
@@ -207,7 +229,7 @@ class CalculationForm extends React.Component<Props, State> {
               thousandSeparator={true}
               prefix="₮"
               className="some"
-              inputmode="numeric"
+              inputMode="numeric"
               onChange={onChangeCash}
               onClick={() => this.handleClick(PAYMENT_INPUT.IN_CASH)}
             />
@@ -265,11 +287,11 @@ class CalculationForm extends React.Component<Props, State> {
   render() {
     const { title, isPayment, options } = this.props;
 
-    const onChangeInput = (e) =>
-      this.handleInput(
-        "inputValue",
-        (e.currentTarget as HTMLInputElement).value
-      );
+    const onBlur = (e) => {
+      const value = (e.target as HTMLInputElement).value;
+
+      this.setState({ registerNumber: value });
+    }
 
     return (
       <>
@@ -282,17 +304,16 @@ class CalculationForm extends React.Component<Props, State> {
                 <Input color={options.colors.primary}>
                   <FormControl
                     type="text"
-                    name="inputValue"
-                    value={this.state.inputValue}
-                    onChange={onChangeInput}
-                    onClick={() => this.handleClick("inputValue")}
+                    name="registerNumber"
+                    onBlur={onBlur}
+                    defaultValue={this.state.registerNumber}
                   />
-                  <div onClick={() => this.reset("inputValue")}>
+                  <div onClick={() => this.reset("registerNumber")}>
                     <Icon icon="cancel" size={13} />
                   </div>
                 </Input>
                 {this.state.FType === "organization" && (
-                  <Button style={{ backgroundColor: options.colors.primary }}>
+                  <Button style={{ backgroundColor: options.colors.primary }} onClick={() => this.checkOrganization()}>
                     {__("Check")}
                   </Button>
                 )}

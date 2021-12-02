@@ -42,6 +42,7 @@ type State = {
   drawerContentType: string;
   showMenu: boolean;
   customerId: string;
+  registerNumber: string;
 };
 
 const getTotalAmount = (items: IOrderItemInput[]) => {
@@ -69,6 +70,7 @@ export default class Pos extends React.Component<Props, State> {
       type: order && order.type ? order.type : ORDER_TYPES.EAT,
       drawerContentType: "",
       customerId: order && order.customerId ? order.customerId : "",
+      registerNumber: ''
     };
   }
 
@@ -173,6 +175,7 @@ export default class Pos extends React.Component<Props, State> {
             totalAmount={totalAmount}
             closeDrawer={this.toggleDrawer}
             makePayment={makePayment}
+            setOrderState={this.setOrderState}
           />
         );
       default:
@@ -248,5 +251,5 @@ export default class Pos extends React.Component<Props, State> {
         </Drawer>
       </>
     );
-  }
+  } // end render()
 }
