@@ -1,8 +1,10 @@
 import React from "react";
 import PaymentType from "./PaymentType";
 import CalculationForm from "modules/orders/components/drawer/CalculationForm";
+import { IPaymentParams } from "modules/orders/containers/PosContainer";
 
 type Props = {
+  orderId: string;
   options: any;
   totalAmount: number;
   closeDrawer: any;
@@ -23,19 +25,24 @@ class PaymentForm extends React.Component<Props, State> {
     };
   }
 
-  onSuccess = () => {
-    console.log("Do smth");
-    this.props.makePayment();
+  handlePayment = (params: IPaymentParams) => {
+    const { orderId, makePayment } = this.props;
+
+    makePayment(orderId, params);
   };
 
   render() {
-    const { options } = this.props;
+    const { options, orderId } = this.props;
+
+    if (!orderId) {
+      return null;
+    }
 
     if (this.state.showPaymentType) {
       return <PaymentType color={options.colors.primary} />;
     }
 
-    return <CalculationForm {...this.props} onSuccess={this.onSuccess} />;
+    return <CalculationForm {...this.props} handlePayment={this.handlePayment} />;
   }
 }
 

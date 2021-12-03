@@ -102,7 +102,7 @@ export const types = `
 export const mutations = `
   ordersAdd(${addEditParams}): Order
   ordersEdit(_id: String!, ${addEditParams}): Order
-  ordersMakePayment(_id: String!, doc: OrderPaymentInput): Order
+  ordersMakePayment(_id: String!, doc: OrderPaymentInput): PutResponse
 `;
 
 export const queries = `

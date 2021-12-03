@@ -137,7 +137,6 @@ export class PutData<IListArgs extends IPutDataArgs>{
   }
 
   public async run() {
-    // console.log(this.config, 'fififififi');
     const url = this.config.ebarimtUrl || '';
     const rd = this.config.companyRD || '';
 

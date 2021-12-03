@@ -3,7 +3,7 @@ import { withRouter } from "react-router-dom";
 import gql from "graphql-tag";
 import * as compose from "lodash.flowright";
 import React from "react";
-import { Alert } from "modules/common/utils";
+import { Alert, __ } from "modules/common/utils";
 import { IRouterProps, IConfig } from "../../../types";
 import { withProps } from "../../utils";
 import { mutations, queries } from "../graphql/index";
@@ -22,6 +22,14 @@ type Props = {
   orderDetailQuery: OrderDetailQueryResponse;
   makePaymentMutation: any;
 } & IRouterProps;
+
+export interface IPaymentParams {
+  cardAmount?: number;
+  cashAmount?: number;
+  mobileAmount?: number;
+  billType: string;
+  registerNumber?: string;
+}
 
 class PosContainer extends React.Component<Props> {
   render() {
@@ -51,11 +59,28 @@ class PosContainer extends React.Component<Props> {
       });
     };
 
-    const makePayment = (params: any) => {
-      makePaymentMutation({ variables: params }).then(({ data }) => {
-        console.log(data, 'mmmmm')
+    const makePayment = (_id: string, params: IPaymentParams) => {
+      makePaymentMutation({ variables: { doc: params, _id } }).then(({ data }) => {
+        if (data.ordersMakePayment) {
+          const resp = data.ordersMakePayment;
+
+          if (resp.success === 'true') {
+            return Alert.success(__('Payment successful'));
+          }
+          if (resp.message) {
+            return Alert.warning(resp.message);
+          }
+          if (resp.lotteryWarningMsg) {
+            return Alert.warning(resp.lotteryWarningMsg);
+          }
+          if (resp.getInformation) {
+            return Alert.warning(resp.getInformation);
+          }
+        }
+      }).then(() => {
+        window.location.href = `/order-receipt/${_id}`;
       }).catch(e => {
-        console.log(e, 'eeeee')
+        Alert.error(e.message);
       });
     };
 

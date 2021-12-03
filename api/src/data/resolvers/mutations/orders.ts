@@ -85,17 +85,21 @@ const orderMutations = {
     };
 
     try {
-      await PutResponses.putData(data, ebarimtConfig);
+      const response = await PutResponses.putData(data, ebarimtConfig);
+
+      if (response && response.success === 'true') {
+        await Orders.updateOne(
+          { _id: order._id },
+          { $set: { ...doc, paidDate: new Date() } }
+        );
+      }
+
+      return response;
     } catch (e) {
       debugError(e);
+
+      return e;
     }
-
-    await Orders.updateOne(
-      { _id: order._id },
-      { $set: { ...doc, paidDate: new Date() } }
-    );
-
-    return Orders.findOne({ _id });
   },
 };
 

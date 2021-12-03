@@ -21,6 +21,7 @@ import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
 import PaymentForm from "./drawer/PaymentForm";
 import ProductSearch from "../containers/ProductSearch";
+import { IPaymentParams } from "../containers/PosContainer";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -32,7 +33,7 @@ type Props = {
   currentConfig: IConfig;
   order: IOrder | null;
   updateOrder: (params) => void;
-  makePayment: (params) => void;
+  makePayment: (_id: string, params: IPaymentParams) => void;
 };
 
 type State = {
@@ -162,7 +163,7 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   renderDrawerContent() {
-    const { currentConfig, makePayment } = this.props;
+    const { currentConfig, makePayment, order } = this.props;
     const { drawerContentType, totalAmount } = this.state;
 
     switch (drawerContentType) {
@@ -171,6 +172,7 @@ export default class Pos extends React.Component<Props, State> {
       case "payment":
         return (
           <PaymentForm
+            orderId={order ? order._id : ''}
             options={currentConfig ? currentConfig.uiOptions : {}}
             totalAmount={totalAmount}
             closeDrawer={this.toggleDrawer}

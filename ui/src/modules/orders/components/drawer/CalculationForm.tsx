@@ -17,6 +17,7 @@ import FormGroup from "modules/common/components/form/Group";
 import ControlLabel from "modules/common/components/form/Label";
 import Toggle from "modules/common/components/Toggle";
 import { queries } from '../../graphql/index';
+import { IPaymentParams } from "modules/orders/containers/PosContainer";
 
 const PaymentWrapper = styled.div`
   margin: 20px 21%;
@@ -80,6 +81,7 @@ const HeaderRow = styled(FlexCenter)`
 `;
 
 type Props = {
+  orderId: string;
   options: any;
   closeDrawer: any;
   totalAmount?: number;
@@ -87,22 +89,24 @@ type Props = {
   isPayment?: boolean;
   header?: React.ReactNode;
   extraButton?: React.ReactNode;
-  onSuccess: () => void;
+  handlePayment: (params: IPaymentParams) => void;
   setOrderState: (name: string, value: any) => void;
 };
 
 type State = {
-  registerNumber: string;
-  inCash: string;
-  byCard: string;
-  FType: string;
   showE: boolean;
   activeInput: string;
+} & IPaymentParams;
+
+// НӨАТ-н баримтын төрөл
+const BILL_TYPES = {
+  CITIZEN: '1', // иргэнд өгөх баримт
+  ENTITY: '3', // байгууллагад өгөх баримт
 };
 
-const PAYMENT_INPUT = {
-  IN_CASH: 'inCash',
-  BY_CARD: 'byCard'
+const PAYMENT_TYPES = {
+  CARD: 'cardAmount',
+  CASH: 'cashAmount'
 };
 
 class CalculationForm extends React.Component<Props, State> {
@@ -110,20 +114,14 @@ class CalculationForm extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      registerNumber: "",
-      byCard: "",
-      inCash: props.totalAmount || "",
-      FType: "person",
       showE: true,
-      activeInput: PAYMENT_INPUT.IN_CASH,
+      activeInput: PAYMENT_TYPES.CASH,
+      // payment doc
+      registerNumber: "",
+      billType: BILL_TYPES.CITIZEN,
+      cashAmount: props.totalAmount,
     };
   }
-
-  onChange = (e) => {
-    const FType = (e.target as HTMLInputElement).value;
-
-    this.setState({ FType });
-  };
 
   onSwitchHandler = (e) => {
     this.setState({ showE: e.target.checked });
@@ -134,9 +132,7 @@ class CalculationForm extends React.Component<Props, State> {
     const val = this.state[activeInput];
 
     if (num === "CE") {
-      return this.setState({
-        [activeInput]: val.slice(0, -1),
-      } as any);
+      return this.setState({ [activeInput]: 0 } as any);
     }
 
     return this.setState({
@@ -144,20 +140,19 @@ class CalculationForm extends React.Component<Props, State> {
     } as any);
   };
 
-  handleClick = (activeInput: string) => {
-    this.setState({ activeInput });
-  };
-
-  handleInput = (name: string, value: any) => {
-    this.setState({ [name]: value } as any);
-  };
-
   reset = (key: string) => {
-    this.setState({ [key]: "" } as any);
+    this.setState({ [key]: key === 'registerNumber' ? '' : 0 } as any);
   };
 
-  onSuccess = () => {
-    this.props.onSuccess();
+  handleSubmit = () => {
+    const { registerNumber, billType, cardAmount, cashAmount } = this.state;
+
+    this.props.handlePayment({
+      registerNumber,
+      cardAmount,
+      cashAmount,
+      billType
+    });
   };
 
   checkOrganization() {
@@ -185,16 +180,8 @@ class CalculationForm extends React.Component<Props, State> {
   }
 
   renderFormHead() {
-    const { FType, showE, inCash, byCard } = this.state;
+    const { showE, billType, cashAmount, cardAmount } = this.state;
     const { options, totalAmount } = this.props;
-
-    const onChangeCard = (e) =>
-      this.handleInput(PAYMENT_INPUT.BY_CARD, (e.target as HTMLInputElement).value);
-
-    const onChangeCash = (e) =>
-      this.handleInput(PAYMENT_INPUT.IN_CASH, (e.target as HTMLInputElement).value);
-
-    const hasChange = Number(inCash) > Number(totalAmount) ? true : false;
 
     const inputProps: any = {
       allowNegative: false,
@@ -203,10 +190,20 @@ class CalculationForm extends React.Component<Props, State> {
       inputMode: "numeric",
     };
 
-    if (totalAmount) {
-      // limit input by total amount
-      inputProps.isAllowed = ({ floatValue }) => floatValue <= totalAmount;
-    }
+    const handleInput = (name: string, value: number | undefined) => {
+      this.setState({ [name]: value } as any);
+    };
+
+    // for updating card & cash amount from either input or numpad
+    const handleClick = (activeInput: string) => {
+      this.setState({ activeInput });
+    };
+
+    const onBillTypeChange = (e) => {
+      const billType = (e.target as HTMLInputElement).value;
+
+      this.setState({ billType });
+    };
 
     return (
       <FormHead>
@@ -218,13 +215,13 @@ class CalculationForm extends React.Component<Props, State> {
           <ControlLabel>{__("By Card")}</ControlLabel>
           <Input color={options.colors.primary}>
             <NumberFormat
-              name="byCard"
-              value={byCard}
-              onChange={onChangeCard}
-              onClick={() => this.handleClick(PAYMENT_INPUT.BY_CARD)}
+              name="cardAmount"
+              value={cardAmount}
+              onValueChange={(values) => handleInput(PAYMENT_TYPES.CARD, values.floatValue)}
+              onClick={() => handleClick(PAYMENT_TYPES.CARD)}
               {...inputProps}
             />
-            <div onClick={() => this.reset(PAYMENT_INPUT.BY_CARD)}>
+            <div onClick={() => this.reset(PAYMENT_TYPES.CARD)}>
               <Icon icon="cancel" size={13} />
             </div>
           </Input>
@@ -233,23 +230,17 @@ class CalculationForm extends React.Component<Props, State> {
           <ControlLabel>{__("In Cash")}</ControlLabel>
           <Input color={options.colors.primary}>
             <NumberFormat
-              name="inCash"
-              value={inCash}
-              onChange={onChangeCash}
-              onClick={() => this.handleClick(PAYMENT_INPUT.IN_CASH)}
+              name="cashAmount"
+              value={cashAmount}
+              onValueChange={(values) => handleInput(PAYMENT_TYPES.CASH, values.floatValue)}
+              onClick={() => handleClick(PAYMENT_TYPES.CASH)}
               {...inputProps}
             />
-            <div onClick={() => this.reset(PAYMENT_INPUT.IN_CASH)}>
+            <div onClick={() => this.reset(PAYMENT_TYPES.CASH)}>
               <Icon icon="cancel" size={13} />
             </div>
           </Input>
         </FormGroup>
-        {hasChange && (
-          <Amount>
-            <span>{__("Change amount")}</span>
-            {formatNumber(Number(inCash) - Number(totalAmount))}₮
-          </Amount>
-        )}
         <HeaderRow>
           <ControlLabel>{__("E-barimt")}:</ControlLabel> &ensp;
           <Toggle
@@ -265,22 +256,22 @@ class CalculationForm extends React.Component<Props, State> {
           <>
             <FormControl
               componentClass="radio"
-              value="person"
+              value={BILL_TYPES.CITIZEN}
               inline={true}
-              name="FType"
-              checked={FType === "person"}
-              onChange={this.onChange}
+              name="billType"
+              checked={billType === BILL_TYPES.CITIZEN}
+              onChange={onBillTypeChange}
             >
               {__("Person")}
             </FormControl>
             &ensp;&ensp;
             <FormControl
               componentClass="radio"
-              value="organization"
+              value={BILL_TYPES.ENTITY}
               inline={true}
-              name="FType"
-              checked={FType === "organization"}
-              onChange={this.onChange}
+              name="billType"
+              checked={billType === BILL_TYPES.ENTITY}
+              onChange={onBillTypeChange}
             >
               {__("Organization")}
             </FormControl>
@@ -293,7 +284,7 @@ class CalculationForm extends React.Component<Props, State> {
   render() {
     const { title, isPayment, options } = this.props;
 
-    const onBlur = (e) => {
+    const onChangeReg = (e) => {
       const value = (e.target as HTMLInputElement).value;
 
       this.setState({ registerNumber: value });
@@ -304,21 +295,21 @@ class CalculationForm extends React.Component<Props, State> {
         {title && <Title>{__(title)}</Title>}
         <Header>
           {this.renderFormHead()}
-          {this.state.showE && this.state.FType === "organization" && (
+          {this.state.showE && this.state.billType === BILL_TYPES.ENTITY && (
             <FormHead>
               <FlexCenter>
                 <Input color={options.colors.primary}>
                   <FormControl
                     type="text"
                     name="registerNumber"
-                    onBlur={onBlur}
-                    defaultValue={this.state.registerNumber}
+                    onChange={onChangeReg}
+                    value={this.state.registerNumber}
                   />
                   <div onClick={() => this.reset("registerNumber")}>
                     <Icon icon="cancel" size={13} />
                   </div>
                 </Input>
-                {this.state.FType === "organization" && (
+                {this.state.billType === BILL_TYPES.ENTITY && (
                   <Button style={{ backgroundColor: options.colors.primary }} onClick={() => this.checkOrganization()}>
                     {__("Check")}
                   </Button>
@@ -343,21 +334,21 @@ class CalculationForm extends React.Component<Props, State> {
               block
               onClick={() => this.props.closeDrawer("payment")}
             >
-              Cancel
+              {__("Cancel")}
             </Button>
             <Button
               style={{ backgroundColor: options.colors.primary }}
               icon="check-circle"
               block
-              onClick={this.onSuccess}
+              onClick={this.handleSubmit}
             >
-              Done
+              {__("Done")}
             </Button>
           </FlexCenter>
         </PaymentWrapper>
       </>
     );
-  }
+  } // end render()
 }
 
 export default CalculationForm;
