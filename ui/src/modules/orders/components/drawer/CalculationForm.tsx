@@ -90,7 +90,6 @@ type Props = {
   header?: React.ReactNode;
   extraButton?: React.ReactNode;
   handlePayment: (params: IPaymentParams) => void;
-  setOrderState: (name: string, value: any) => void;
 };
 
 type State = {
@@ -166,7 +165,6 @@ class CalculationForm extends React.Component<Props, State> {
 
       if (data && data.ordersCheckCompany) {
         Alert.success(data.ordersCheckCompany.name);
-        this.props.setOrderState('registerNumber', this.state.registerNumber);
       }
     });
   }

@@ -9,7 +9,6 @@ type Props = {
   totalAmount: number;
   closeDrawer: any;
   makePayment: any;
-  setOrderState: (name: string, value: any) => void;
 };
 
 type State = {

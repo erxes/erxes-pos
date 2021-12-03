@@ -177,7 +177,6 @@ export default class Pos extends React.Component<Props, State> {
             totalAmount={totalAmount}
             closeDrawer={this.toggleDrawer}
             makePayment={makePayment}
-            setOrderState={this.setOrderState}
           />
         );
       default:
