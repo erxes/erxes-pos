@@ -2,7 +2,12 @@ import * as dotenv from 'dotenv';
 
 import { Configs } from '../../../db/models/Configs';
 import { sendRequest } from '../../utils/commonUtils';
-import { importCustomers, importUsers, importProducts, validateConfig } from '../../utils/syncUtils';
+import {
+  importCustomers,
+  importUsers,
+  importProducts,
+  validateConfig,
+} from '../../utils/syncUtils';
 
 dotenv.config();
 
@@ -15,11 +20,18 @@ const configMutations = {
     const response = await sendRequest({
       url: `${ERXES_API_DOMAIN}/pos`,
       method: 'get',
-      headers: { 'POS-TOKEN': token }
+      headers: { 'POS-TOKEN': token },
     });
 
     if (response) {
-      const { pos = {}, adminUsers = [], cashiers = [], productGroups = [], customers = [] } = response;
+      const {
+        pos = {},
+        adminUsers = [],
+        cashiers = [],
+        productGroups = [],
+        customers = [],
+        qpayConfig,
+      } = response;
 
       validateConfig(pos);
 
@@ -31,7 +43,8 @@ const configMutations = {
         adminIds: pos.adminIds,
         cashierIds: pos.cashierIds,
         uiOptions: pos.uiOptions,
-        ebarimtConfig: pos.ebarimtConfig
+        ebarimtConfig: pos.ebarimtConfig,
+        qpayConfig,
       });
 
       await importUsers(adminUsers, true);
@@ -41,7 +54,7 @@ const configMutations = {
     }
 
     return config;
-  }
+  },
 };
 
 export default configMutations;

@@ -14,6 +14,14 @@ export interface IEbarimtConfig {
   cityTaxPercent: number;
 }
 
+export interface IQPayConfig {
+  url: string;
+  callbackUrl: string;
+  username: string;
+  password: string;
+  invoiceCode: string;
+}
+
 interface IConfigColors {
   [key: string]: string;
 }
@@ -41,6 +49,7 @@ export interface IConfig {
   token?: string;
   uiOptions: IUIOptions;
   ebarimtConfig: IEbarimtConfig;
+  qpayConfig: IQPayConfig;
 }
 
 export interface IConfigDocument extends Document, IConfig {
@@ -69,6 +78,17 @@ const ebarimtConfigSchema = new Schema(
   { _id: false }
 );
 
+const qpayConfigSchema = new Schema(
+  {
+    url: { type: String, label: 'QPay url' },
+    callbackUrl: { type: String, label: 'Callback url' },
+    username: { type: String, label: 'QPay username' },
+    password: { type: String, label: 'QPay password' },
+    invoiceCode: { type: String, label: 'QPay invoice' },
+  },
+  { _id: false }
+);
+
 export const configSchema = new Schema({
   _id: field({ pkey: true }),
   name: { type: String, label: 'Name' },
@@ -88,6 +108,7 @@ export const configSchema = new Schema({
   token: { type: String, label: 'Token generated at erxes-api' },
   uiOptions: { type: Object, label: 'Logo & color configs' },
   ebarimtConfig: ebarimtConfigSchema,
+  qpayConfig: qpayConfigSchema
 });
 
 export const productGroupSchema = new Schema({

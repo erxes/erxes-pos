@@ -19,6 +19,14 @@ export const types = `
     cityTaxPercent: Int
   }
 
+  type QPayConfig {
+    url: String
+    callbackUrl: String
+    username: String
+    password: String
+    invoiceCode: String
+  }
+
   type Config {
     _id: String
     name: String
@@ -38,6 +46,7 @@ export const types = `
     token: String
     uiOptions: UIOptions
     ebarimtConfig: EbarimtConfig
+    qpayConfig: QPayConfig
   }
 `;
 

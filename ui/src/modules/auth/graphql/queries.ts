@@ -59,6 +59,14 @@ const currentConfig = `
         cityTaxPercent
         companyName
       }
+
+      qpayConfig {
+        url
+        callbackUrl
+        username
+        password
+        invoiceCode
+      }
     }
   }
 `;
