@@ -34,6 +34,8 @@
     "typescript": "^3.6.4"
   },
   "scripts": {
-    "dev": "DEBUG=pos-api* NODE_ENV=development node_modules/.bin/ts-node-dev --respawn --ignore-watch node_modules -- src"
+    "start": "node dist",
+    "dev": "DEBUG=pos-api* NODE_ENV=development node_modules/.bin/ts-node-dev --respawn --ignore-watch node_modules -- src",
+    "build": "tsc -p tsconfig.prod.json"
   }
 }

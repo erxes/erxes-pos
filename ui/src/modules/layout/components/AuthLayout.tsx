@@ -52,7 +52,7 @@ class AuthLayout extends React.Component<Props, {}> {
     const { description, currentConfig } = this.props;
     const { uiOptions = {}, name = "" } = currentConfig || ({} as IConfig);
 
-    const logo = uiOptions.logo || "/images/logo.png";
+    const logo = uiOptions ? uiOptions.logo : '' || "/images/logo.png";
 
     if (description) {
       return (

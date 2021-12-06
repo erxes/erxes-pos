@@ -25,5 +25,5 @@ export const setHeader = (currentConfig: IConfig) => {
     name,
     name === `${"Team Inbox"}` && document.title.startsWith("(1)")
   );
-  favicon.href = uiOptions.favIcon || "/favicon.png";
+  favicon.href = uiOptions ? uiOptions.favIcon : '' || "/favicon.png";
 };
