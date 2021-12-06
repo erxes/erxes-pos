@@ -56,5 +56,5 @@ jobs:
         run: |
           cd api
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          docker build -t erxes/erxes-pos-api:${GITHUB_REF#refs/heads/} -f api.Dockerfile .
+          docker build -t erxes/erxes-pos-api:${GITHUB_REF#refs/heads/} -f Dockerfile.dev .
           docker push erxes/erxes-pos-api:${GITHUB_REF#refs/heads/}
