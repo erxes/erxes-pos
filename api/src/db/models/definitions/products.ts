@@ -70,7 +70,7 @@ export const productSchema = new Schema({
     label: "Tags",
     index: true,
   }),
-  sku: field({ type: String, optional: true, label: "Stock keeping unit" }),
+  sku: field({ type: String, optional: true, label: "Stock keeping unit", default: 'ш' }),
   unitPrice: field({ type: Number, optional: true, label: "Unit price" }),
   customFieldsData: field({
     type: [customFieldSchema],
