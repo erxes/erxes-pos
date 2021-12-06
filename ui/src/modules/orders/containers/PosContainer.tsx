@@ -42,7 +42,13 @@ class PosContainer extends React.Component<Props> {
     const createOrder = (params: any) => {
       ordersAddMutation({ variables: params }).then(({ data }) => {
         if (data && data.ordersAdd && data.ordersAdd.number) {
-          return Alert.success(`Order ${data.ordersAdd.number} has been created successfully.`);
+          Alert.success(`Order ${data.ordersAdd.number} has been created successfully.`);
+        }
+
+        return data.ordersAdd;
+      }).then((order) => {
+        if (order && order._id) {
+          window.location.href = `/pos?id=${order._id}`;
         }
       }).catch(e => {
         return Alert.error(e.message);

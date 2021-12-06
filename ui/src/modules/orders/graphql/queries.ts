@@ -125,11 +125,18 @@ const ordersCheckCompany = `
   }
 `;
 
+const fetchRemoteInvoice = `
+  query fetchRemoteInvoice($orderId: String!) {
+    fetchRemoteInvoice(orderId: $orderId)
+  }
+`;
+
 export default {
   productCategories,
   products,
   orderDetail,
   orders,
   customers,
-  ordersCheckCompany
+  ordersCheckCompany,
+  fetchRemoteInvoice
 };

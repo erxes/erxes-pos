@@ -63,38 +63,30 @@ const Card = styled.div`
 
 type Props = {
   color: string;
+  togglePaymentType: () => void;
+  toggleQpay: () => void;
 };
 
 class PaymentType extends React.Component<Props> {
   render() {
+    const { color, togglePaymentType, toggleQpay } = this.props;
+
     return (
       <TypeWrapper>
         <h2>{__("Choose the payment method")}</h2>
 
-        <Cards color={this.props.color}>
+        <Cards color={color}>
           <Card>
-            <div>
+            <div onClick={() => togglePaymentType()}>
               <img src="/images/payment2.png" alt="payment" />
             </div>
-            <p>Бэлэн</p>
+            <p>{__("In cash or by card")}</p>
           </Card>
           <Card>
-            <div>
-              <img src="/images/payment4.png" alt="payment" />
-            </div>
-            <p>Картаар төлөх</p>
-          </Card>
-          <Card>
-            <div>
-              <img src="/images/payment3.png" alt="payment" />
-            </div>
-            <p>Social Pay</p>
-          </Card>
-          <Card>
-            <div>
+            <div onClick={() => toggleQpay()}>
               <img src="/images/payment1.png" alt="payment" />
             </div>
-            <p>QPay</p>
+            <p>{__("Pay with QPay")}</p>
           </Card>
         </Cards>
       </TypeWrapper>

@@ -98,7 +98,7 @@ type State = {
 } & IPaymentParams;
 
 // НӨАТ-н баримтын төрөл
-const BILL_TYPES = {
+export const BILL_TYPES = {
   CITIZEN: '1', // иргэнд өгөх баримт
   ENTITY: '3', // байгууллагад өгөх баримт
 };

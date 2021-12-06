@@ -144,14 +144,28 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
+  renderPaymentButton() {
+    const { order, onClickDrawer, options, totalAmount } = this.props;
+
+    if (!order || (order && order.paidDate)) {
+      return null;
+    }
+
+    return (
+      <Button
+        style={{ backgroundColor: options.colors.primary }}
+        onClick={() => onClickDrawer("payment")}
+        icon="dollar-alt"
+        block
+        disabled={!totalAmount || totalAmount === 0 ? true : false}
+      >
+        {__("Pay the bill")}
+      </Button>
+    );
+  }
+
   render() {
-    const {
-      totalAmount,
-      options,
-      onClickDrawer,
-      setOrderState,
-      type,
-    } = this.props;
+    const { totalAmount, options, setOrderState, type } = this.props;
 
     const onSelectCustomer = (customerId) => {
       this.setState({ customerId });
@@ -238,15 +252,7 @@ export default class Calculation extends React.Component<Props, State> {
               {this.renderAddButton()}
               {this.renderEditButton()}
               {this.renderReceiptButton()}
-              <Button
-                style={{ backgroundColor: options.colors.primary }}
-                onClick={() => onClickDrawer("payment")}
-                icon="dollar-alt"
-                block
-                disabled={!totalAmount || totalAmount === 0 ? true : false}
-              >
-                {__("Pay the bill")}
-              </Button>
+              {this.renderPaymentButton()}
             </ButtonWrapper>
           </ColumnBetween>
         </Wrapper>

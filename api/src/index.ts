@@ -9,14 +9,13 @@ import { initApolloServer } from './apolloServer';
 import {
   authCookieOptions,
   getEnv,
-  routeErrorHandling
+  routeErrorHandling,
 } from './data/utils/commonUtils';
 import { connect, mongoStatus } from './db/connection';
 import { Configs } from './db/models/Configs';
-import {
-  debugError,
-  debugInit
-} from './debuggers';
+import { QPayInvoices } from './db/models/QPayInvoices';
+import { Orders } from './db/models/Orders';
+import { debugError, debugInit } from './debuggers';
 import userMiddleware from './middlewares/userMiddleware';
 
 // load environment variables
@@ -38,7 +37,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(
   express.json({
-    limit: '15mb'
+    limit: '15mb',
   })
 );
 
@@ -46,9 +45,7 @@ app.use(cookieParser());
 
 const corsOptions = {
   credentials: true,
-  origin: [
-    MAIN_APP_DOMAIN,
-  ]
+  origin: [MAIN_APP_DOMAIN],
 };
 
 app.use(cors(corsOptions));
@@ -83,6 +80,31 @@ app.get('/health', async (_req, res) => {
   res.end('ok');
 });
 
+// qpay invoice callback
+app.get('/payments', async (req) => {
+  const { payment_id, qpay_payment_id } = req.query;
+
+  if (payment_id && qpay_payment_id) {
+    const order = await Orders.findOne({ _id: payment_id });
+
+    if (order) {
+      await Orders.updateOne(
+        { _id: order._id },
+        { $set: { paidDate: new Date() } }
+      );
+    }
+
+    const invoice = await QPayInvoices.findOne({ senderInvoiceNo: payment_id });
+
+    if (invoice) {
+      await QPayInvoices.updateOne(
+        { _id: invoice._id },
+        { $set: { qpayPaymentId: qpay_payment_id, paymentDate: new Date() } }
+      );
+    }
+  }
+});
+
 // Error handling middleware
 app.use((error, _req, res, _next) => {
   debugError(error.message);
@@ -103,7 +125,7 @@ httpServer.listen(PORT, () => {
     mongoUrl = TEST_MONGO_URL;
   }
 
-  initApolloServer().then(apolloServer => {
+  initApolloServer().then((apolloServer) => {
     apolloServer.applyMiddleware({ app, path: '/graphql', cors: corsOptions });
 
     // subscriptions server
@@ -111,11 +133,13 @@ httpServer.listen(PORT, () => {
   });
 
   // connect to mongo database
-  connect(mongoUrl).then(async () => {
-    debugInit(`GraphQL Server is now running on ${PORT}`);
-  }).catch(e => {
-    debugError(`Error occured while starting init: ${e.message}`);
-  });;
+  connect(mongoUrl)
+    .then(async () => {
+      debugInit(`GraphQL Server is now running on ${PORT}`);
+    })
+    .catch((e) => {
+      debugError(`Error occured while starting init: ${e.message}`);
+    });
 });
 
 // GRACEFULL SHUTDOWN
@@ -123,7 +147,7 @@ process.stdin.resume(); // so the program will not close instantly
 
 // If the Node process ends, close the Mongoose connection
 if (NODE_ENV === 'production') {
-  (['SIGINT', 'SIGTERM'] as NodeJS.Signals[]).forEach(sig => {
+  (['SIGINT', 'SIGTERM'] as NodeJS.Signals[]).forEach((sig) => {
     process.on(sig, () => {
       // Stops the server from accepting new connections and finishes existing connections.
       httpServer.close((error: Error | undefined) => {

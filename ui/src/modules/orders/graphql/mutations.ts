@@ -4,6 +4,7 @@ const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, cu
 const ordersAdd = `
   mutation ordersAdd(${addEditParamDefs}) {
     ordersAdd(${addEditParams}) {
+      _id
       number
     }
   }
@@ -29,4 +30,10 @@ const ordersEdit = `
   }
 `;
 
-export default { ordersAdd, ordersMakePayment, ordersEdit };
+const createQpaySimpleInvoice = `
+  mutation createQpaySimpleInvoice($orderId: String!) {
+    createQpaySimpleInvoice(orderId: $orderId)
+  }
+`;
+
+export default { ordersAdd, ordersMakePayment, ordersEdit, createQpaySimpleInvoice };

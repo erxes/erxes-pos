@@ -32,5 +32,8 @@
   "Number": "Number",
   "Are you sure": "Are you sure",
   "Add some reservations": "Add some reservations",
-  "Payment successful": "Payment successful"
+  "Payment successful": "Payment successful",
+  "In cash or by card": "In cash or by card",
+  "Pay with QPay": "Pay with QPay",
+  "Scan the QR code below with payment app to continue": "Scan the QR code below with payment app to continue"
 }

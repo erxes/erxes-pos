@@ -31,5 +31,8 @@
   "Number": "Дугаар",
   "Are you sure": "Та итгэлтэй байна уу",
   "Add some reservations": "Бүтээгдэхүүн сонгоно уу",
-  "Payment successful": "Төлбөр амжилттай төлөгдлөө"
+  "Payment successful": "Төлбөр амжилттай төлөгдлөө",
+  "In cash or by card": "Бэлнээр болон картаар төлөх",
+  "Pay with QPay": "QPay-ээр төлөх",
+  "Scan the QR code below with payment app to continue": "Гар утасны апп-аар доорх QR кодыг уншуулна уу"
 }

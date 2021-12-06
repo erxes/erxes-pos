@@ -170,13 +170,14 @@ export default class Pos extends React.Component<Props, State> {
       case "order":
         return <OrderSearch />;
       case "payment":
-        return (
+        return order && (
           <PaymentForm
             orderId={order ? order._id : ''}
             options={currentConfig ? currentConfig.uiOptions : {}}
             totalAmount={totalAmount}
             closeDrawer={this.toggleDrawer}
             makePayment={makePayment}
+            order={order}
           />
         );
       default:
