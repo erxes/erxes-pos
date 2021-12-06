@@ -1,4 +1,4 @@
-name: UI CI
+name: POS UI CI
 
 on:
   push:
@@ -6,28 +6,22 @@ on:
       - '**'
     paths:
       - 'ui/**'
-      - '.github/ui.yaml'
-      - '!ui/nginx/**'
+      - '.github/workflows/ui.yaml'
   pull_request:
     branches:
       - main
     paths:
       - 'ui/**'
-      - '.github/ui.yaml'
-      - '!ui/nginx/**'
+      - '.github/workflows/ui.yaml'
 
 jobs:
-  pos-ui:
+  erxes-pos-ui:
     runs-on: ubuntu-18.04
 
-    steps:
-      - name: Configure sysctl limits
-        run: |
-          sudo swapoff -a
-          sudo sysctl -w vm.swappiness=1
-          sudo sysctl -w fs.file-max=262144
-          sudo sysctl -w vm.max_map_count=262144
+    # name: Node ${{ matrix.node-version }}
 
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
       - name: Use Node.js 12.19.x
@@ -40,12 +34,14 @@ jobs:
         id: yarn-cache-dir-path
         run: echo "::set-output name=dir::$(yarn cache dir)"
 
-      - uses: actions/cache@v2
+      - name: Cache Node.js modules
         id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
+        uses: actions/cache@v2
         with:
           path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
           key: ${{ runner.os }}-yarn-ui-${{ hashFiles('yarn.lock', 'ui/yarn.lock') }}
           restore-keys: |
+            ${{ runner.os }}-yarn-ui-${{ hashFiles('ui/**/yarn.lock') }}
             ${{ runner.os }}-yarn-ui-
             ${{ runner.os }}-yarn-
 
@@ -57,10 +53,8 @@ jobs:
 
       - name: Build docker image
         if: github.event_name == 'push' && ( github.ref == 'refs/heads/main' )
-        env:
-          BASE_IMAGE: erxes/erxes:base-1.18-alpine
         run: |
           cd ui
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          DOCKER_BUILDKIT=1 docker build --build-arg BASE_IMAGE=$BASE_IMAGE -t erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/} -f ui.Dockerfile .
+          docker build -t erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/} -f Dockerfile.dev .
           docker push erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/}
