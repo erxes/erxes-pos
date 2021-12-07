@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { dimensions, colors } from "modules/common/styles";
+import { colors } from "modules/common/styles";
 
 export const HeaderWrapper = styled.div`
   .receipt-logo,
@@ -15,8 +15,8 @@ export const HeaderWrapper = styled.div`
 
 export const ReceiptWrapper = styled.div`
   width: 300px;
-  padding: 15px ${dimensions.coreSpacing}px 30px;
-  color: #222;
+  padding: 15px;
+  color: #000;
   background-color: ${colors.colorWhite};
   font-size: 11px;
 

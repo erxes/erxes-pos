@@ -64,11 +64,11 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
               onCollapseNavigation={this.onCollapseNavigation}
             />
           )}
-          <MainWrapper collapsed={isCollapsed}>{children}</MainWrapper>
+          <MainWrapper collapsed={isCollapsed} className="main-wrapper">{children}</MainWrapper>
           <DetectBrowser />
         </Layout>
 
-        <Bottom onClick={logout}>
+        <Bottom onClick={logout} className="logout">
           <Tip placement="right" key={Math.random()} text="Sign out">
             <NavItem>
               <NavIcon className="icon-logout-2" />

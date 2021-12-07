@@ -1,0 +1,15 @@
+@media print {
+  body {
+    margin: 0;
+    color: #000;
+    background-color: #fff;
+  }
+
+  header, footer, aside, nav, form, iframe, .btn-print, .logout {
+    display: none;
+  }
+
+  .main-wrapper {
+    padding: 0;
+  }
+}

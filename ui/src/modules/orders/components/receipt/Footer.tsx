@@ -96,7 +96,7 @@ export default class Footer extends React.Component<Props> {
           <label>Гарын үсэг:</label>
           <span>_____________________</span>
         </p>
-        <div className="text-center">
+        <div className="text-center btn-print">
           <Button onClick={print} style={{ backgroundColor: color }}>
             Хэвлэх
           </Button>
