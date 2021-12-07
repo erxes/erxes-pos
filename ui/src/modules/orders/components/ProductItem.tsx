@@ -22,14 +22,14 @@ export default function ProductItem(props: Props) {
     });
   };
 
-  const attachmentUrl = attachment && attachment.url ? attachment.url : "https://office.erxes.io/images/icons/erxes-16.svg";
+  const attachmentUrl = attachment && attachment.url ? attachment.url : "";
 
   return (
     <Item onClick={onClick}>
-      <img
+      {attachmentUrl && <img
         src={attachmentUrl}
         alt={name}
-      />
+      />}
       <strong>{formatNumber(unitPrice || 0)}₮</strong>
       <h4>{name}</h4>
     </Item>
