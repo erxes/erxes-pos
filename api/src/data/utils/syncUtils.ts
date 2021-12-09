@@ -6,7 +6,10 @@ import { ICustomerDocument } from '../../db/models/definitions/customers';
 import { IConfig } from '../../db/models/definitions/configs';
 import { PRODUCT_STATUSES } from '../../db/models/definitions/constants';
 
-export const importUsers = async (users: IUserDocument[], isAdmin: boolean = false) => {
+export const importUsers = async (
+  users: IUserDocument[],
+  isAdmin: boolean = false
+) => {
   for (const user of users) {
     await Users.createOrUpdateUser({
       _id: user._id,
@@ -15,7 +18,7 @@ export const importUsers = async (users: IUserDocument[], isAdmin: boolean = fal
       password: user.password,
       isOwner: user.isOwner || isAdmin,
       isActive: user.isActive,
-      details: user.details
+      details: user.details,
     });
   }
 };
@@ -53,7 +56,7 @@ export const validateConfig = (config: IConfig) => {
 // receive product data through message broker
 export const receiveProduct = async (data) => {
   const { action = '', object = {}, updatedDocument = {} } = data;
-  
+
   if (action === 'create') {
     return Products.createProduct(object);
   }
@@ -71,14 +74,17 @@ export const receiveProduct = async (data) => {
     if (!isUsed) {
       await Products.deleteOne({ _id: product._id });
     } else {
-      await Products.updateOne({ _id: product._id }, { $set: { status: PRODUCT_STATUSES.DELETED } });
+      await Products.updateOne(
+        { _id: product._id },
+        { $set: { status: PRODUCT_STATUSES.DELETED } }
+      );
     }
   }
 };
 
 export const receiveProductCategory = async (data) => {
   const { action = '', object = {}, updatedDocument = {} } = data;
-  
+
   if (action === 'create') {
     return ProductCategories.createProduct(object);
   }
@@ -86,7 +92,10 @@ export const receiveProductCategory = async (data) => {
   const category = await ProductCategories.findOne({ _id: object._id });
 
   if (action === 'update' && category) {
-    return ProductCategories.updateProductCategory(category._id, updatedDocument);
+    return ProductCategories.updateProductCategory(
+      category._id,
+      updatedDocument
+    );
   }
 
   if (action === 'delete') {
@@ -96,7 +105,7 @@ export const receiveProductCategory = async (data) => {
 
 export const receiveCustomer = async (data) => {
   const { action = '', object = {}, updatedDocument = {} } = data;
-  
+
   if (action === 'create') {
     return Customers.createCustomer(object);
   }
@@ -109,5 +118,34 @@ export const receiveCustomer = async (data) => {
 
   if (action === 'delete') {
     return Customers.removeCustomer(customer._id);
+  }
+};
+
+export const receiveUser = async (data) => {
+  const { action = '', object = {}, updatedDocument = {} } = data;
+  const userId =
+    updatedDocument && updatedDocument._id ? updatedDocument._id : '';
+
+  // user create logic will be implemented in pos config changes
+  const user = await Users.findOne({ _id: userId });
+
+  if (action === 'update' && user) {
+    return Users.updateOne(
+      { _id: userId },
+      {
+        $set: {
+          username: updatedDocument.username,
+          password: updatedDocument.password,
+          isOwner: updatedDocument.isOwner,
+          email: updatedDocument.email,
+          isActive: updatedDocument.isActive,
+          details: updatedDocument.details,
+        },
+      }
+    );
+  }
+
+  if (action === 'delete' && object._id) {
+    return Users.updateOne({ _id: object._id }, { $set: { isActive: false } });
   }
 };

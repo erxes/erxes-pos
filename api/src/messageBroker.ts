@@ -1,6 +1,11 @@
 import * as dotenv from 'dotenv';
 import messageBroker from 'erxes-message-broker';
-import { receiveCustomer, receiveProduct, receiveProductCategory } from './data/utils/syncUtils';
+import {
+  receiveCustomer,
+  receiveProduct,
+  receiveProductCategory,
+  receiveUser,
+} from './data/utils/syncUtils';
 
 dotenv.config();
 
@@ -15,7 +20,7 @@ export const initBroker = async server => {
 
   const { consumeQueue } = client;
 
-  consumeQueue('pos:crudData', async data => {
+  consumeQueue('pos:crudData', async (data) => {
     if (data) {
       switch (data.type) {
         case 'product':
@@ -26,6 +31,9 @@ export const initBroker = async server => {
           break;
         case 'customer':
           await receiveCustomer(data);
+          break;
+        case 'user':
+          await receiveUser(data);
           break;
         default:
           break;
