@@ -17,6 +17,7 @@ import { QPayInvoices } from './db/models/QPayInvoices';
 import { Orders } from './db/models/Orders';
 import { debugError, debugInit } from './debuggers';
 import userMiddleware from './middlewares/userMiddleware';
+import { initBroker } from './messageBroker';
 
 // load environment variables
 dotenv.config();
@@ -140,6 +141,12 @@ httpServer.listen(PORT, () => {
     .catch((e) => {
       debugError(`Error occured while starting init: ${e.message}`);
     });
+
+  initBroker(httpServer).then(() => {
+    debugInit('Message broker has started.')
+  }).catch(e => {
+    debugError(`Error occurred when starting message broker: ${e.message}`);
+  });
 });
 
 // GRACEFULL SHUTDOWN

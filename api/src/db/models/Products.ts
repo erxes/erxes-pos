@@ -9,6 +9,7 @@ import {
   productSchema
 } from './definitions/products';
 import { IUserDocument } from './definitions/users';
+import { OrderItems } from './OrderItems';
 
 export interface IProductModel extends Model<IProductDocument> {
   updateProductCategory(
@@ -20,10 +21,7 @@ export interface IProductModel extends Model<IProductDocument> {
   createProduct(doc: IProduct): Promise<IProductDocument>;
   updateProduct(_id: string, doc: IProduct): Promise<IProductDocument>;
   removeProducts(_ids: string[]): Promise<{ n: number; ok: number }>;
-  mergeProducts(
-    productIds: string[],
-    productFields: IProduct
-  ): Promise<IProductDocument>;
+  isUsed(_id: string): Promise<boolean>;
 }
 
 export const loadProductClass = () => {
@@ -99,7 +97,13 @@ export const loadProductClass = () => {
 
       return response;
     }
-  }
+
+    public static async isUsed(_id: string) {
+      const count = await OrderItems.countDocuments({ productId: _id });
+
+      return count > 0;
+    }
+  } // end Product class
 
   productSchema.loadClass(Product);
 
