@@ -4,6 +4,7 @@ import JsBarcode from 'jsbarcode';
 import { FooterWrapper } from "./styles";
 import Button from "modules/common/components/Button";
 import { IOrder } from "modules/orders/types";
+import { __ } from 'modules/common/utils';
 
 type Props = {
   print: () => void;
@@ -59,46 +60,26 @@ export default class Footer extends React.Component<Props> {
 
     return (
       this.putResponse.lottery ? (
-        <div className="lottery">Сугалаа: {this.putResponse.lottery}</div>
+        <div className="lottery">{__("Lottery")}: {this.putResponse.lottery}</div>
       ) : null
     )
   }
 
   render() {
-    const { ebarimt, print, color } = this.props;
-    // const {
-    //   phone,
-    //   email,
-    //   address,
-    //   receiptText,
-    // } = this.context.company.configGeneral;
+    const { color } = this.props;
 
     return (
       <FooterWrapper>
         <p id="error-message" className='error-message'></p>
         {this.renderLotteryCode()}
-        {ebarimt.qrData ? (
-          <div>
-            <div className="info">
-              {/* {this.renderField('Утас', phone)} */}
-              {/* {this.renderField('Имэйл', email)} */}
-              {/* {this.renderField('Хаяг', address)} */}
-              {/* {receiptText ? (
-                <div className="text-center total">
-                  <p>{receiptText}</p>
-                </div>
-              ) : null} */}
-            </div>
-          </div>
-        ) : null}
         {this.renderQrAndBarCode()}
         <p className="signature">
-          <label>Гарын үсэг:</label>
+          <label>{__("Signature")}:</label>
           <span>_____________________</span>
         </p>
         <div className="text-center btn-print">
-          <Button onClick={print} style={{ backgroundColor: color }}>
-            Хэвлэх
+          <Button onClick={() => window.print()} style={{ backgroundColor: color }}>
+            {__("Print")}
           </Button>
         </div>
       </FooterWrapper>
