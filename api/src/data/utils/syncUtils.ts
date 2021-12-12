@@ -1,4 +1,5 @@
 import { Products, ProductCategories } from '../../db/models/Products';
+import { Configs } from '../../db/models/Configs';
 import Users from '../../db/models/Users';
 import Customers from '../../db/models/Customers';
 import { IUserDocument } from '../../db/models/definitions/users';
@@ -40,6 +41,18 @@ export const importCustomers = async (customers: ICustomerDocument[]) => {
     await Customers.createCustomer(customer);
   }
 };
+
+// Pos config created in main erxes differs from here
+export const extractConfig = (doc) => ({
+  name: doc.name,
+  description: doc.description,
+  brandId: doc.brandId,
+  productDetails: doc.productDetails,
+  adminIds: doc.adminIds,
+  cashierIds: doc.cashierIds,
+  uiOptions: doc.uiOptions,
+  ebarimtConfig: doc.ebarimtConfig,
+});
 
 export const validateConfig = (config: IConfig) => {
   const { adminIds = [], cashierIds = [], name } = config;
@@ -147,5 +160,32 @@ export const receiveUser = async (data) => {
 
   if (action === 'delete' && object._id) {
     return Users.updateOne({ _id: object._id }, { $set: { isActive: false } });
+  }
+};
+
+export const receivePosConfig = async (data) => {
+  const {
+    updatedDocument = {},
+    action = '',
+    adminUsers = [],
+    cashierUsers = [],
+  } = data;
+
+  const config = await Configs.getConfig({ token: updatedDocument.token });
+
+  if (action === 'update' && config) {
+    const adminIds = updatedDocument.adminIds || [];
+    const cashierIds = updatedDocument.cashierIds || [];
+
+    await Configs.updateConfig(config._id, extractConfig(updatedDocument));
+
+    // set not found users inactive
+    await Users.updateMany(
+      { _id: { $nin: [...adminIds, ...cashierIds] } },
+      { $set: { isActive: false } }
+    );
+
+    await importUsers(adminUsers, true);
+    await importUsers(cashierUsers, false);
   }
 };

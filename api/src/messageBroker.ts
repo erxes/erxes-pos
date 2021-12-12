@@ -5,7 +5,9 @@ import {
   receiveProduct,
   receiveProductCategory,
   receiveUser,
+  receivePosConfig
 } from './data/utils/syncUtils';
+import { debugError } from './debuggers';
 
 dotenv.config();
 
@@ -20,26 +22,33 @@ export const initBroker = async server => {
 
   const { consumeQueue } = client;
 
-  consumeQueue('pos:crudData', async (data) => {
-    if (data) {
-      switch (data.type) {
-        case 'product':
-          await receiveProduct(data);
-          break;
-        case 'productCategory':
-          await receiveProductCategory(data);
-          break;
-        case 'customer':
-          await receiveCustomer(data);
-          break;
-        case 'user':
-          await receiveUser(data);
-          break;
-        default:
-          break;
+  try {
+    consumeQueue('pos:crudData', async (data) => {
+      if (data) {
+        switch (data.type) {
+          case 'product':
+            await receiveProduct(data);
+            break;
+          case 'productCategory':
+            await receiveProductCategory(data);
+            break;
+          case 'customer':
+            await receiveCustomer(data);
+            break;
+          case 'user':
+            await receiveUser(data);
+            break;
+          case 'pos':
+            await receivePosConfig(data);
+            break;
+          default:
+            break;
+        }
       }
-    }
-  });
+    });
+  } catch (e) {
+    debugError(`Error occurred while receiving message: ${e.message}`);
+  }
 };
 
 export default function() {

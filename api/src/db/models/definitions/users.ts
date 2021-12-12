@@ -52,7 +52,7 @@ export const userSchema = new Schema({
   createdAt: getDateFieldDefinition('Created at'),
   username: field({ type: String, label: "Username" }),
   password: field({ type: String }),
-  isOwner: field({ type: Boolean, label: "Is owner" }),
+  isOwner: field({ type: Boolean, label: "Is owner", default: false }),
   email: field({
     type: String,
     unique: true,

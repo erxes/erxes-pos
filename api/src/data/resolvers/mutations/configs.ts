@@ -7,6 +7,7 @@ import {
   importUsers,
   importProducts,
   validateConfig,
+  extractConfig
 } from '../../utils/syncUtils';
 
 dotenv.config();
@@ -35,17 +36,7 @@ const configMutations = {
 
       validateConfig(pos);
 
-      await Configs.updateConfig(config._id, {
-        name: pos.name,
-        description: pos.description,
-        brandId: pos.brandId,
-        productDetails: pos.productDetails,
-        adminIds: pos.adminIds,
-        cashierIds: pos.cashierIds,
-        uiOptions: pos.uiOptions,
-        ebarimtConfig: pos.ebarimtConfig,
-        qpayConfig,
-      });
+      await Configs.updateConfig(config._id, { ...extractConfig(pos), qpayConfig });
 
       await importUsers(adminUsers, true);
       await importUsers(cashiers, false);
