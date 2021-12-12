@@ -224,7 +224,7 @@ export default class Pos extends React.Component<Props, State> {
                   editOrder={this.editOrder}
                   setOrderState={this.setOrderState}
                   onClickDrawer={this.toggleDrawer}
-                  options={currentConfig ? currentConfig.uiOptions : {}}
+                  config={currentConfig}
                   order={order}
                   type={type}
                 />

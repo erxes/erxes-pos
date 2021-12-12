@@ -1,5 +1,5 @@
 import React from "react";
-import { IConfig } from "types";
+import { IConfig, IEbarimtConfig } from "types";
 import { setTitle } from "./common/utils";
 
 export function withProps<IProps>(
@@ -26,4 +26,27 @@ export const setHeader = (currentConfig: IConfig) => {
     name === `${"Team Inbox"}` && document.title.startsWith("(1)")
   );
   favicon.href = uiOptions ? uiOptions.favIcon : '' || "/favicon.png";
+};
+
+export const calcTaxAmount = (amount: number, config?: IEbarimtConfig) => {
+  let taxPercent = 0;
+
+  if (!config) {
+    return {
+      vatAmount: 0,
+      cityTaxAmount: 0
+    };
+  }
+
+  if (config.hasVat) {
+    taxPercent += 10;
+  }
+  if (config.hasCitytax) {
+    taxPercent += 1;
+  }
+
+  return {
+    vatAmount: amount / (100 + taxPercent) * 10,
+    cityTaxAmount: amount / (100 + taxPercent) * 1
+  };
 };

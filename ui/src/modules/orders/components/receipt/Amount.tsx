@@ -1,6 +1,8 @@
-import { IOrder } from "modules/orders/types";
 import React from "react";
 
+import { AppContext } from "appContext";
+import { IOrder } from "modules/orders/types";
+import { calcTaxAmount } from "modules/utils";
 import LocaleField from "./LocaleField";
 import { AmountContainer } from "./styles";
 
@@ -8,52 +10,26 @@ type Props = {
   order: IOrder;
 };
 
-export default class Amount extends React.Component<Props> {
-  render() {
-    const { order } = this.props;
+export default function Amount({ order }: Props) {
+  const { currentConfig } = React.useContext(AppContext);
+  const taxAmount = calcTaxAmount(order.totalAmount, currentConfig && currentConfig.ebarimtConfig);
 
-    return (
-      <AmountContainer className="block">
-        <div className="order-amounts">
-          {/* <LocaleField text="Tax" data={this.props.taxAmount} /> */}
-          <div>
-            <div className="sep" />
-            <LocaleField text="Дүн" data={order.totalAmount} />
-            <div className="sep" />
-            {/* <LocaleField
-                text="Цэвэр дүн"
-                data={totalAmount * 100 / (100 + percent)}
-              /> */}
-            {/* <LocaleField
-                text={`Service Charge (${
-                  this.context.company.configGeneral.serviceChargePercent
-                }%)`}
-                data={amount.serviceChargeAmount}
-              /> */}
-            {/* <LocaleField text="НӨАТ (10%)" data={amount.vatAmount} /> */}
-            {/* <LocaleField text="НХАТ (1%)" data={amount.cityTaxAmount} /> */}
-            <LocaleField text="Нийт дүн" data={order.finalAmount} />
-          </div>
+  return (
+    <AmountContainer className="block">
+      <div className="order-amounts">
+        <div>
           <div className="sep" />
-          {/* <p>
-            <label>ТАНЫ ТӨЛӨХ ДҮН:</label>
-            <strong>
-              {' '}
-              <span className="totalCount">
-                {toPay.toLocaleString(undefined, {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-                ₮
-              </span>
-            </strong>
-          </p> */}
-          {order.status === "paid" ? <div className="sep" /> : null}
-          <LocaleField text="Бэлнээр" data={order.cashAmount} />
-          <LocaleField text="Картаар" data={order.cardAmount} />
-          <LocaleField text="Мобайл" data={order.mobileAmount} />
+          <LocaleField text="Дүн" data={order.totalAmount} />
+          <div className="sep" />
+          <LocaleField text="НӨАТ (10%)" data={taxAmount.vatAmount} />
+          <LocaleField text="НХАТ (1%)" data={taxAmount.cityTaxAmount} />
         </div>
-      </AmountContainer>
-    );
-  } // end render()
+        <div className="sep" />
+        {order.status === "paid" ? <div className="sep" /> : null}
+        <LocaleField text="Бэлнээр" data={order.cashAmount} />
+        <LocaleField text="Картаар" data={order.cardAmount} />
+        <LocaleField text="Мобайл" data={order.mobileAmount} />
+      </div>
+    </AmountContainer>
+  );
 }

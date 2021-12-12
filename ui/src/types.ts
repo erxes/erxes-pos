@@ -61,7 +61,7 @@ export interface ISubNav {
   additional?: boolean;
 };
 
-interface IEbarimtConfig {
+export interface IEbarimtConfig {
   companyName: string;
   ebarimtUrl: string;
   checkCompanyUrl: string;

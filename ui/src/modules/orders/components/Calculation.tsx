@@ -6,12 +6,12 @@ import FormControl from "modules/common/components/form/Control";
 import FormGroup from "modules/common/components/form/Group";
 import SelectWithSearch from "modules/common/components/SelectWithSearch";
 import { __ } from "modules/common/utils";
-import { IOption } from "types";
+import { IConfig, IOption } from "types";
 import { ORDER_TYPES } from "../../../constants";
 import { StageContent, FlexColumn } from "../styles";
 import ControlLabel from "modules/common/components/form/Label";
 import { FlexBetween, ColumnBetween } from "modules/common/styles/main";
-import { formatNumber } from "modules/utils";
+import { formatNumber, calcTaxAmount } from "modules/utils";
 import Button from "modules/common/components/Button";
 import { ICustomer, IOrder } from "../types";
 import queries from "../graphql/queries";
@@ -77,7 +77,7 @@ type Props = {
   addOrder: (params: any) => void;
   setOrderState: (name: string, value: any) => void;
   onClickDrawer: (drawerContentType: string) => void;
-  options: any;
+  config: IConfig;
   editOrder: (params) => void;
   order: IOrder | null;
   type: string;
@@ -145,7 +145,7 @@ export default class Calculation extends React.Component<Props, State> {
   }
 
   renderPaymentButton() {
-    const { order, onClickDrawer, options, totalAmount } = this.props;
+    const { order, onClickDrawer, config, totalAmount } = this.props;
 
     if (!order || (order && order.paidDate)) {
       return null;
@@ -153,7 +153,7 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <Button
-        style={{ backgroundColor: options.colors.primary }}
+        style={{ backgroundColor: config.uiOptions.colors.primary }}
         onClick={() => onClickDrawer("payment")}
         icon="dollar-alt"
         block
@@ -165,7 +165,7 @@ export default class Calculation extends React.Component<Props, State> {
   }
 
   render() {
-    const { totalAmount, options, setOrderState, type } = this.props;
+    const { totalAmount, config, setOrderState, type } = this.props;
 
     const onSelectCustomer = (customerId) => {
       this.setState({ customerId });
@@ -173,9 +173,12 @@ export default class Calculation extends React.Component<Props, State> {
       setOrderState("customerId", customerId);
     };
 
+    const color = config.uiOptions && config.uiOptions.colors.primary;
+    const taxAmount = calcTaxAmount(totalAmount, config.ebarimtConfig);
+
     return (
       <>
-        <Wrapper color={options.colors.primary}>
+        <Wrapper color={color}>
           <StageContent>
             <ControlLabel>{__("Identify a customer")}</ControlLabel>
             <Description>{__("Choose customer from select")}</Description>
@@ -237,13 +240,13 @@ export default class Calculation extends React.Component<Props, State> {
               </Amount>
               <Amount>
                 <span>{__("VAT")}</span>
-                {formatNumber(0)}₮
+                {formatNumber(taxAmount.vatAmount)}₮
               </Amount>
               <Amount>
                 <span>{__("CCT")}</span>
-                {formatNumber(0)}₮
+                {formatNumber(taxAmount.cityTaxAmount)}₮
               </Amount>
-              <Amount color={options.colors.primary}>
+              <Amount color={color}>
                 <span>{__("Amount to pay")}</span>
                 {formatNumber(totalAmount || 0)}₮
               </Amount>
