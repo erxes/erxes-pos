@@ -1,7 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import dayjs from "dayjs";
 import { AppContext } from "appContext";
-import { FlexCenter } from "modules/common/styles/main";
+import { FlexCenter, FlexBetween } from "modules/common/styles/main";
+import Tip from "modules/common/components/Tip";
 import { OrderBox } from "modules/orders/styles";
 import Icon from "modules/common/components/Icon";
 import { formatNumber } from "modules/utils";
@@ -22,14 +24,19 @@ export default function OrderItem({ order }: Props) {
 
   const number = order.number.split("_");
   const firstLetter = order.type.charAt(0).toUpperCase();
-  const type = `${firstLetter}${order.type.substr(1, order.type.length)}`
+  const type = `${firstLetter}${order.type.substring(1, order.type.length)}`
+
+  const onClick = () => window.location.href = `/pos?id=${order._id}`;
 
   return (
-    <OrderBox color={options.colors.primary} key={order._id}>
+    <OrderBox color={options.colors.primary} key={order._id} onClick={onClick}>
       <Link to={`/pos?id=${order._id}`}>
-        <FlexCenter>
-          <span>{__("Number")}:</span> <b>{number[1]}</b>
-        </FlexCenter>
+        <FlexBetween>
+          <span>{dayjs(order.createdAt).format('YY/MM/DD')}</span>
+          <Tip text={`${__("Number")}: ${number[1]}`}>
+            <span><b>#{number[1]}</b></span>
+          </Tip>
+        </FlexBetween>
       </Link>
       <FlexCenter>
         <Icon icon="wallet" size={22} />

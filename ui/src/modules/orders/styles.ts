@@ -208,7 +208,7 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   background: #fff;
   padding: 20px;
   text-align: center;
-  margin: 0 20px 20px 0;
+  margin: 0 15px 15px 0;
   border: 1px solid #ddd;
   border-radius: 8px;
   width: 31.333%;
@@ -218,6 +218,10 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
+
+  &:hover {
+    border-color: ${(props) => (props.color ? props.color : "#6569df")};
+  }
 
   div {
     margin-bottom: 10px;
@@ -243,14 +247,9 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   }
 
   label {
-    background:${(props) => (props.color ? props.color : "#6569df")};
-    color: #fff;
+    color: ${(props) => (props.color ? props.color : "#6569df")};
     padding: 5px;
     border-radius: 8px;
-  }
-
-  &:nth-child(3n) {
-    margin-right: 0;
   }
 
   @media (max-width: 1500px) {
