@@ -38,5 +38,9 @@
   "Scan the QR code below with payment app to continue": "Scan the QR code below with payment app to continue",
   "Print": "Print",
   "Lottery": "Lottery",
-  "Signature": "Signature"
+  "Signature": "Signature",
+  "Inventory": "Inventory",
+  "Total amount": "Total amount",
+  "Price": "Price",
+  "Count": "Count"
 }

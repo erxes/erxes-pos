@@ -1,5 +1,6 @@
 import { IOrderItem } from "modules/orders/types";
 import React from "react";
+import { __ } from 'modules/common/utils';
 
 type Props = {
   items: IOrderItem[];
@@ -26,12 +27,14 @@ export default class ReceiptBody extends React.Component<Props> {
   render() {
     return (
       <table className="block">
-        <tr className="detail-row">
-          <th>Бараа</th>
-          <th>Үнэ/Тоо</th>
-          <th className="totalCount">Нийт Үнэ</th>
-        </tr>
-        {this.props.items.map((item) => this.renderItem(item))}
+        <thead>
+          <tr className="detail-row">
+            <th>{__("Inventory")}</th>
+            <th>{__("Price")}/{__("Count")}</th>
+            <th className="totalCount">{__("Total amount")}</th>
+          </tr>
+        </thead>
+        <tbody>{this.props.items.map((item) => this.renderItem(item))}</tbody>
       </table>
     );
   }

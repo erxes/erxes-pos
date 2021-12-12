@@ -37,5 +37,9 @@
   "Scan the QR code below with payment app to continue": "Гар утасны апп-аар доорх QR кодыг уншуулна уу",
   "Print": "Хэвлэх",
   "Lottery": "Сугалаа",
-  "Signature": "Гарын үсэг"
+  "Signature": "Гарын үсэг",
+  "Inventory": "Бараа",
+  "Total amount": "Нийт дүн",
+  "Price": "Үнэ",
+  "Count": "Тоо"
 }
