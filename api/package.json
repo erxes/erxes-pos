@@ -37,7 +37,7 @@
   },
   "scripts": {
     "start": "node dist",
-    "dev": "DEBUG=erxes-pos:*,erxes-message-broker:* NODE_ENV=development node_modules/.bin/ts-node-dev --respawn --ignore-watch node_modules -- src",
+    "dev": "DEBUG=pos-api:*,pos-message-broker:* NODE_ENV=development node_modules/.bin/ts-node-dev --respawn --ignore-watch node_modules -- src",
     "build": "tsc -p tsconfig.prod.json"
   }
 }
