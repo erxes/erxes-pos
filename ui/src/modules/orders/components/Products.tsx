@@ -1,13 +1,13 @@
 import React from "react";
-import { IOrderItemInput, IProduct } from "../types";
+import { IOrderItemInput, IProduct, IProductCategory } from "../types";
 import CategoryItem from "./CategoryItem";
 import ProductItem from "./ProductItem";
 import { ProductCategories, ProductsWrapper } from "../styles";
 import { IConfig } from "types";
 
 type Props = {
-  productCategories: any;
-  products: any;
+  productCategories: IProductCategory[];
+  products: IProduct[];
   setItems: (items: IOrderItemInput[]) => void;
   items: IOrderItemInput[];
   currentConfig: IConfig;

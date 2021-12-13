@@ -2,7 +2,7 @@ import styled from "styled-components";
 import styledTS from "styled-components-ts";
 import { dimensions, colors } from "modules/common/styles";
 
-export const PosContainer = styled.div`
+export const PosWrapper = styled.div`
   flex: 1;
   overflow: auto;
   position: relative;

@@ -1,5 +1,5 @@
 import { IUser } from "modules/auth/types";
-import { QueryResponse } from "types";
+import { QueryResponse, ICustomField } from "types";
 
 export interface IOrderItem {
   _id: string;
@@ -52,6 +52,13 @@ export interface IProduct extends IProductCommonFields {
   type?: string;
   unitPrice?: number;
   status?: string;
+
+  sku?: string;
+  customFieldsData?: ICustomField[];
+  tagIds?: string[];
+  vendorId?: string;
+  vendorCode?: string;
+  mergedIds?: string[];
 }
 
 export interface IProductCategory extends IProductCommonFields {

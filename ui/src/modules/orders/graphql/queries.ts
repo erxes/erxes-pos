@@ -43,8 +43,8 @@ const productCategories = `
 `;
 
 const products = `
-  query products {
-    products {
+  query products($searchValue: String) {
+    products(searchValue: $searchValue) {
       ${commonFields}
       categoryId
       unitPrice

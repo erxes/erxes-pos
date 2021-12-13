@@ -11,7 +11,7 @@ import Calculation from "./Calculation";
 import OrderSearch from "../containers/layout/OrderSearch";
 import { IUser } from "modules/auth/types";
 import {
-  PosContainer,
+  PosWrapper,
   MainContent,
   LeftMenuContainer,
   Drawer,
@@ -34,6 +34,8 @@ type Props = {
   order: IOrder | null;
   updateOrder: (params) => void;
   makePayment: (_id: string, params: IPaymentParams) => void;
+  productCategoriesQuery: any;
+  productsQuery: any;
 };
 
 type State = {
@@ -186,20 +188,25 @@ export default class Pos extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentUser, currentConfig, order } = this.props;
+    const { currentUser, currentConfig, order, productCategoriesQuery, productsQuery } = this.props;
     const { items, totalAmount, showMenu, type } = this.state;
 
     return (
       <>
-        <PosContainer>
+        <PosWrapper>
           <Row>
             <Col md={6}>
               <MainContent hasBackground={true}>
                 <FlexBetween>
                   <NameCard user={currentUser} avatarSize={40} />
-                  <ProductSearch />
+                  <ProductSearch productsQuery={productsQuery} />
                 </FlexBetween>
-                <ProductsContainer setItems={this.setItems} items={items} />
+                <ProductsContainer
+                  setItems={this.setItems}
+                  items={items}
+                  productCategoriesQuery={productCategoriesQuery}
+                  productsQuery={productsQuery}
+                />
               </MainContent>
             </Col>
             <Col sm={3}>
@@ -231,7 +238,7 @@ export default class Pos extends React.Component<Props, State> {
               </MainContent>
             </Col>
           </Row>
-        </PosContainer>
+        </PosWrapper>
 
         <Drawer show={showMenu}>
           <div ref={this.setWrapperRef}>

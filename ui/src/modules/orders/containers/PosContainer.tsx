@@ -21,6 +21,8 @@ type Props = {
   qp: any;
   orderDetailQuery: OrderDetailQueryResponse;
   makePaymentMutation: any;
+  productCategoriesQuery: any;
+  productsQuery: any;
 } & IRouterProps;
 
 export interface IPaymentParams {
@@ -116,6 +118,15 @@ export default withProps<Props>(
     }),
     graphql<Props>(gql(mutations.ordersMakePayment), {
       name: 'makePaymentMutation'
-    })
+    }),
+    graphql<Props>(gql(queries.productCategories), {
+      name: 'productCategoriesQuery'
+    }),
+    graphql<Props>(gql(queries.products), {
+      name: 'productsQuery',
+      options: ({ qp }) => ({
+        variables: { searchValue: qp && qp.searchValue ? qp.searchValue : '' }
+      })
+    }),
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );

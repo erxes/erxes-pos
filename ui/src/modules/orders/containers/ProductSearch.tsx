@@ -5,11 +5,14 @@ import { withRouter } from "react-router-dom";
 import { IRouterProps } from "types";
 import { ProductSearch } from "../styles";
 
-type Props = {} & IRouterProps;
+type Props = {
+  productsQuery: any;
+} & IRouterProps;
 
 class SearchContainer extends React.Component<Props> {
   clearSearch = () => {
-    router.setParams(this.props.history, { productSearch: "" });
+    router.setParams(this.props.history, { searchValue: "" });
+    this.props.productsQuery.refetch();
   };
 
   onSearch = (e) => {
@@ -18,7 +21,8 @@ class SearchContainer extends React.Component<Props> {
 
       const searchValue = e.currentTarget.value;
 
-      router.setParams(this.props.history, { productSearch: searchValue });
+      router.setParams(this.props.history, { searchValue });
+      this.props.productsQuery.refetch({ variables: { searchValue } });
     }
   };
 
