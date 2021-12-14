@@ -108,15 +108,17 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   changeItemCount = (item: IOrderItemInput) => {
-    const excludedList = this.state.items.filter(
-      (i) => i.productId !== item.productId
+    let items = this.state.items.map(
+      (i) => {
+        if (i.productId === item.productId) {
+          i.count = item.count;
+        }
+
+        return i;
+      }
     );
 
-    const items = [...excludedList];
-
-    if (item.count > 0) {
-      items.push(item);
-    }
+    items = items.filter(i => i.count > 0);
 
     const totalAmount = getTotalAmount(items);
 
