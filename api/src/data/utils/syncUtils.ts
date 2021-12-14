@@ -47,9 +47,9 @@ export const extractConfig = (doc) => {
   const { ERXES_API_DOMAIN } = process.env;
   const uiOptions = doc.uiOptions;
 
-  uiOptions.favIcon = `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.favIcon} `
-  uiOptions.logo = `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.logo} `
-  uiOptions.bgImage = `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.bgImage} `
+  uiOptions.favIcon = !uiOptions.favIcon.includes('http') ? `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.favIcon}` : uiOptions.favIcon;
+  uiOptions.logo = !uiOptions.logo.includes('http') ? `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.logo}` : uiOptions.logo;
+  uiOptions.bgImage = !uiOptions.bgImage.includes('http') ? `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.bgImage}` : uiOptions.bgImage;
 
   return {
     name: doc.name,
