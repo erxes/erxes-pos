@@ -43,16 +43,25 @@ export const importCustomers = async (customers: ICustomerDocument[]) => {
 };
 
 // Pos config created in main erxes differs from here
-export const extractConfig = (doc) => ({
-  name: doc.name,
-  description: doc.description,
-  brandId: doc.brandId,
-  productDetails: doc.productDetails,
-  adminIds: doc.adminIds,
-  cashierIds: doc.cashierIds,
-  uiOptions: doc.uiOptions,
-  ebarimtConfig: doc.ebarimtConfig,
-});
+export const extractConfig = (doc) => {
+  const { ERXES_API_DOMAIN } = process.env;
+  const uiOptions = doc.uiOptions;
+
+  uiOptions.favIcon = `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.favIcon} `
+  uiOptions.logo = `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.logo} `
+  uiOptions.bgImage = `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.bgImage} `
+
+  return {
+    name: doc.name,
+    description: doc.description,
+    brandId: doc.brandId,
+    productDetails: doc.productDetails,
+    adminIds: doc.adminIds,
+    cashierIds: doc.cashierIds,
+    uiOptions,
+    ebarimtConfig: doc.ebarimtConfig,
+  }
+};
 
 export const validateConfig = (config: IConfig) => {
   const { adminIds = [], cashierIds = [], name } = config;
