@@ -7,8 +7,6 @@ import { IOrder } from "modules/orders/types";
 import { __ } from 'modules/common/utils';
 
 type Props = {
-  print: () => void;
-  ebarimt: any;
   color: string;
   order: IOrder;
 };
@@ -119,6 +117,8 @@ export default class Footer extends React.Component<Props> {
             marginBottom: 30
           });
         }
+
+        window.print();
       } // end qrcode
     }
   } // end componentDidMount

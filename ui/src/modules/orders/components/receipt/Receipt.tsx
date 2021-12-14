@@ -31,7 +31,7 @@ export default function OrderReceipt({ order }: Props) {
       <Header order={order} logo={logo} name={name} />
       <Body items={order.items} />
       <Amount order={order} />
-      <Footer ebarimt={{}} print={() => {}} color={color} order={order} />
+      <Footer color={color} order={order} />
     </ReceiptWrapper>
   );
 }
