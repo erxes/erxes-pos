@@ -99,6 +99,17 @@ const orderDetail = `
       putResponses {
         ${putResponseFields}
       }
+
+      qpayInvoice {
+        qrText
+        senderInvoiceNo
+        amount
+        qpayInvoiceId
+        qpayPaymentId
+        status
+        paymentDate
+        createdAt
+      }
     }
   }
 `;

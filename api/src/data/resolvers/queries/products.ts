@@ -53,16 +53,9 @@ const productQueries = {
 
     // search =========
     if (searchValue) {
-      const fields = [
-        {
-          name: { $in: [new RegExp(`.*${escapeRegExp(searchValue)}.*`, 'i')] },
-        },
-        {
-          code: { $in: [new RegExp(`.*${escapeRegExp(searchValue)}.*`, 'i')] },
-        },
-      ];
+      const regex = new RegExp(`.*${escapeRegExp(searchValue)}.*`, 'i');
 
-      filter.$or = fields;
+      filter.$or = [{ name: { $in: [regex] } }, { code: { $in: [regex] } } ];
     }
 
     return paginate(Products.find(filter).sort('code').lean(), paginationArgs);

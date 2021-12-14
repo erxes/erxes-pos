@@ -13,6 +13,17 @@ export interface IOrderItem {
   productName: string;
 }
 
+interface IQPayInvoice {
+  _id: string;
+  senderInvoiceNo: string;
+  amount: string;
+  qpayInvoiceId: string;
+  qrText: string;
+  qpayPaymentId: string;
+  paymentDate: Date;
+  createdAt: Date;
+}
+
 export interface IOrder {
   _id: string;
   status: string;
@@ -37,6 +48,7 @@ export interface IOrder {
   customer?: ICustomer;
   user: IUser;
   putResponses?: IPutResponse[];
+  qpayInvoice: IQPayInvoice;
 }
 
 interface IProductCommonFields {

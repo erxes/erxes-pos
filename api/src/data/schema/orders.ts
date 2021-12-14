@@ -85,6 +85,7 @@ export const types = `
     customer: Customer
     user: User
     putResponses: [PutResponse]
+    qpayInvoice: QPayInvoice
   }
 
   input OrderItemInput {
