@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import styledTS from "styled-components-ts";
 import { dimensions, colors } from "modules/common/styles";
+import { rgba } from "modules/common/styles/ecolor";
 
 export const PosWrapper = styled.div`
   flex: 1;
@@ -15,6 +16,15 @@ export const PosWrapper = styled.div`
 
 export const Column = styled.div`
   border: 1px solid #ddd;
+`;
+
+export const StageItems = styled.div`
+  overflow: auto;
+  max-height: 850px;
+
+  @media (max-width: 1170px) {
+    max-height: 650px;
+  }
 `;
 
 export const MainContent = styledTS<{
@@ -274,7 +284,8 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   label {
     color: ${(props) => (props.color ? props.color : "#6569df")};
     padding: 5px;
-    border-radius: 8px;
+    border-radius: 20px;
+    background: ${(props) => rgba(props.color ? props.color : "#6569df", 0.2)}
   }
 
   @media (max-width: 1500px) {

@@ -2,7 +2,7 @@ import React from "react";
 import { __ } from "modules/common/utils";
 import { IOrderItemInput } from "../types";
 import StageItem from "./StageItem";
-import { Stages, ProductLabel, StageContent } from "../styles";
+import { Stages, ProductLabel, StageContent, StageItems } from "../styles";
 import EmptyState from "modules/common/components/EmptyState";
 
 type Props = {
@@ -28,14 +28,16 @@ export default class Stage extends React.Component<Props> {
     return (
       <StageContent>
         <b>{__("Selected products")}</b>
-        {items.map((i) => (
-          <StageItem
-            item={i}
-            key={`${i._id}`}
-            changeItemCount={changeItemCount}
-            color={options.colors.primary || ""}
-          />
-        ))}
+        <StageItems>
+          {items.map((i) => (
+            <StageItem
+              item={i}
+              key={`${i._id}`}
+              changeItemCount={changeItemCount}
+              color={options.colors.primary || ""}
+            />
+          ))}
+        </StageItems>
       </StageContent>
     );
   }

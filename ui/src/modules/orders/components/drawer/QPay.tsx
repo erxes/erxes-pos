@@ -43,7 +43,9 @@ export default class QPay extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
-    this.state = { qrText: '', errorMessage: '' };
+    const { qpayInvoice } = props.order;
+
+    this.state = { qrText: qpayInvoice && qpayInvoice.qrText ? qpayInvoice.qrText : '', errorMessage: '' };
   }
 
   renderQrCode() {
@@ -78,6 +80,14 @@ export default class QPay extends React.Component<Props, State> {
     });
   }
 
+  drawQR() {
+    const canvas = document.getElementById('qrcode');
+
+    if (canvas && this.state.qrText) {
+      QRCode.toCanvas(canvas, this.state.qrText);
+    }
+  }
+
   render() {
     const { order } = this.props;
     const { errorMessage, qrText } = this.state;
@@ -106,7 +116,7 @@ export default class QPay extends React.Component<Props, State> {
   componentDidMount() {
     const { order } = this.props;
 
-    if (!this.state.qrText && order) {
+    if (!this.state.qrText && order && !order.qpayInvoice) {
       client.mutate({ mutation: gql(mutations.createQpaySimpleInvoice), variables: { orderId: order._id } }).then(({ data }) => {
         if (data && data.createQpaySimpleInvoice) {
           this.setState({
@@ -116,14 +126,12 @@ export default class QPay extends React.Component<Props, State> {
       }).catch(e => {
         this.setState({ errorMessage: e.message });
       });
+    } else {
+      this.drawQR();
     }
   } // end componentDidMount()
 
   componentDidUpdate() {
-    const canvas = document.getElementById('qrcode');
-
-    if (canvas && this.state.qrText) {
-      QRCode.toCanvas(canvas, this.state.qrText);
-    }
+    this.drawQR();
   }
 }
