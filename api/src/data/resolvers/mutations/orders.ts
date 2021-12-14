@@ -13,6 +13,7 @@ import {
   getDistrictName
 } from '../../utils/orderUtils';
 import { IContext } from '../../types';
+import messageBroker from '../../../messageBroker';
 
 export interface IPayment {
   cardAmount?: number;
@@ -86,6 +87,11 @@ const orderMutations = {
 
     try {
       const response = await PutResponses.putData(data, ebarimtConfig);
+
+      messageBroker().sendMessage('pos-to-erxes', {
+        ...response,
+        posToken: config.token
+      });
 
       if (response && response.success === 'true') {
         await Orders.updateOne(
