@@ -140,7 +140,7 @@ export const loadProductCategoryClass = () => {
       });
 
       if (category) {
-        throw new Error('Code must be unique');
+        throw new Error(`Code must be unique ${code}`);
       }
     }
 
