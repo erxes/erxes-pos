@@ -34,19 +34,24 @@ export const calcTaxAmount = (amount: number, config?: IEbarimtConfig) => {
   if (!config) {
     return {
       vatAmount: 0,
-      cityTaxAmount: 0
+      cityTaxAmount: 0,
+      pureAmount: amount
     };
   }
 
-  if (config.hasVat) {
-    taxPercent += 10;
+  const hasVat = config.hasVat && config.vatPercent;
+  const hasCityTax = config.hasCitytax && config.cityTaxPercent;
+
+  if (hasVat) {
+    taxPercent += config.vatPercent;
   }
-  if (config.hasCitytax) {
-    taxPercent += 1;
+  if (hasCityTax) {
+    taxPercent += config.cityTaxPercent;
   }
 
   return {
-    vatAmount: amount / (100 + taxPercent) * 10,
-    cityTaxAmount: amount / (100 + taxPercent) * 1
+    vatAmount: hasVat ? (amount / (100 + taxPercent) * config.vatPercent) : 0,
+    cityTaxAmount: hasCityTax ? (amount / (100 + taxPercent) * config.cityTaxPercent) : 0,
+    pureAmount: amount / (100 + taxPercent) * 100
   };
 };

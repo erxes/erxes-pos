@@ -164,6 +164,17 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
+  renderAmount(text: string, amount: number, color?: string) {
+    const prop = { color };
+
+    return (
+      <Amount {...prop}>
+        <span>{text}</span>
+        {formatNumber(amount || 0)}₮
+      </Amount>
+    );
+  }
+
   render() {
     const { totalAmount, config, setOrderState, type } = this.props;
 
@@ -175,6 +186,8 @@ export default class Calculation extends React.Component<Props, State> {
 
     const color = config.uiOptions && config.uiOptions.colors.primary;
     const taxAmount = calcTaxAmount(totalAmount, config.ebarimtConfig);
+    const vatPercent = config.ebarimtConfig.vatPercent;
+    const cityTaxPercent = config.ebarimtConfig.cityTaxPercent;
 
     return (
       <>
@@ -234,22 +247,11 @@ export default class Calculation extends React.Component<Props, State> {
                   </FormControl>
                 </FlexColumn>
               </FormGroup>
-              <Amount>
-                <span>{__("Total")}</span>
-                {formatNumber(totalAmount || 0)}₮
-              </Amount>
-              <Amount>
-                <span>{__("VAT")}</span>
-                {formatNumber(taxAmount.vatAmount)}₮
-              </Amount>
-              <Amount>
-                <span>{__("CCT")}</span>
-                {formatNumber(taxAmount.cityTaxAmount)}₮
-              </Amount>
-              <Amount color={color}>
-                <span>{__("Amount to pay")}</span>
-                {formatNumber(totalAmount || 0)}₮
-              </Amount>
+
+              {this.renderAmount(`${__('Pure amount')}:`, taxAmount.pureAmount)}
+              {this.renderAmount(`${__("VAT")} (${vatPercent}%):`, taxAmount.vatAmount)}
+              {this.renderAmount(`${__("UB city tax")} (${cityTaxPercent}%):`, taxAmount.cityTaxAmount)}
+              {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
             </div>
             <ButtonWrapper>
               {this.renderAddButton()}
