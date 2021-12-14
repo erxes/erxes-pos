@@ -27,6 +27,7 @@ interface IPutResponse {
   nonCashAmount: string;
   registerNumber: string;
   customerName: string;
+  synced: boolean;
 }
 
 export interface IPutResponseDocument extends Document, IPutResponse {
@@ -99,4 +100,5 @@ export const putResponseSchema = new Schema({
   registerNo: { type: String, label: 'Company register number' },
   customerNo: { type: String },
   customerName: { type: String },
+  synced: { type: Boolean, default: false, label: 'synced on erxes' }
 });

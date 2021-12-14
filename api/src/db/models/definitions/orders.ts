@@ -22,6 +22,7 @@ export interface IOrder {
   registerNumber: string;
   oldBillId: string;
   type: string;
+  synced: boolean;
 }
 
 export interface IOrderDocument extends Document, IOrder {
@@ -57,5 +58,6 @@ export const orderSchema = new Schema({
     enum: ORDER_TYPES.ALL,
     default: ORDER_TYPES.EAT
   },
-  userId: { type: String, label: 'Created user id' }
+  userId: { type: String, label: 'Created user id' },
+  synced: { type: Boolean, default: false, label: 'synced on erxes' }
 });

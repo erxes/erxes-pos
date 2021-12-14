@@ -60,6 +60,7 @@ export const extractConfig = (doc) => {
     cashierIds: doc.cashierIds,
     uiOptions,
     ebarimtConfig: doc.ebarimtConfig,
+    syncInfo: doc.syncInfo
   }
 };
 

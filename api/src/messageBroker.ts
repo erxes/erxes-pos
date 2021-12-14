@@ -7,7 +7,10 @@ import {
   receiveUser,
   receivePosConfig
 } from './data/utils/syncUtils';
+import { Configs } from './db/models/Configs';
+import { Orders } from './db/models/Orders';
 import { debugError } from './debuggers';
+import { PutResponses } from './db/models/PutResponses';
 
 dotenv.config();
 
@@ -22,8 +25,11 @@ export const initBroker = async server => {
 
   const { consumeQueue } = client;
 
+  const config = await Configs.findOne().lean();
+  const syncId = (config.syncInfo || {}).id || '';
+
   try {
-    consumeQueue('pos:crudData', async (data) => {
+    consumeQueue(`pos:crudData_${syncId}`, async (data) => {
       if (data) {
         switch (data.type) {
           case 'product':
@@ -46,11 +52,19 @@ export const initBroker = async server => {
         }
       }
     });
+
+    consumeQueue(`vrpc_queue:erxes-pos-from-api_${syncId}`, async (data) => {
+      const { responseId, orderId } = data;
+      await Configs.updateOne({}, { $set: { 'syncInfo.date': new Date() } })
+      await Orders.updateOne({ _id: orderId }, { $set: { synced: true } });
+      await PutResponses.updateOne({ _id: responseId }, { $set: { synced: true } });
+
+    })
   } catch (e) {
     debugError(`Error occurred while receiving message: ${e.message}`);
   }
 };
 
-export default function() {
+export default function () {
   return client;
 };

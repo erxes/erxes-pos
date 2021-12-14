@@ -72,6 +72,7 @@ const orderMutations = {
 
     return updatedOrder;
   },
+
   async ordersMakePayment(_root, { _id, doc }: IPaymentParams, { config }: IContext) {
     const order = await Orders.getOrder(_id);
     const items = await OrderItems.find({ orderId: order._id }).lean();
@@ -88,17 +89,22 @@ const orderMutations = {
     try {
       const response = await PutResponses.putData(data, ebarimtConfig);
 
-      messageBroker().sendMessage('pos-to-erxes', {
-        ...response,
-        posToken: config.token
-      });
-
       if (response && response.success === 'true') {
         await Orders.updateOne(
           { _id: order._id },
           { $set: { ...doc, paidDate: new Date() } }
         );
       }
+
+      try {
+        messageBroker().sendMessage('vrpc_queue:erxes-pos-to-api', {
+          posToken: config.token,
+          syncId: config.syncInfo.id,
+          response,
+          order,
+          items,
+        });
+      } catch (e) { }
 
       return response;
     } catch (e) {

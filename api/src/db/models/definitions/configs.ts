@@ -33,6 +33,11 @@ interface IUIOptions {
   favIcon: string;
 }
 
+interface ISyncInfo {
+  id: string;
+  date: Date;
+}
+
 export interface IConfig {
   name: string;
   description?: string;
@@ -50,13 +55,14 @@ export interface IConfig {
   uiOptions: IUIOptions;
   ebarimtConfig: IEbarimtConfig;
   qpayConfig: IQPayConfig;
+  syncInfo: ISyncInfo;
 }
 
 export interface IConfigDocument extends Document, IConfig {
   _id: string;
 }
 
-export interface IProductGroup {}
+export interface IProductGroup { }
 
 export interface IProductGroupDocument extends Document, IProductGroup {
   _id: string;
@@ -108,7 +114,8 @@ export const configSchema = new Schema({
   token: { type: String, label: 'Token generated at erxes-api' },
   uiOptions: { type: Object, label: 'Logo & color configs' },
   ebarimtConfig: ebarimtConfigSchema,
-  qpayConfig: qpayConfigSchema
+  qpayConfig: qpayConfigSchema,
+  syncInfo: { type: Object }
 });
 
 export const productGroupSchema = new Schema({

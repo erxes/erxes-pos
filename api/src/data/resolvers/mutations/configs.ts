@@ -19,7 +19,7 @@ const configMutations = {
     const config = await Configs.createConfig(token);
 
     const response = await sendRequest({
-      url: `${ERXES_API_DOMAIN}/pos`,
+      url: `${ERXES_API_DOMAIN}/pos-init`,
       method: 'get',
       headers: { 'POS-TOKEN': token },
     });
