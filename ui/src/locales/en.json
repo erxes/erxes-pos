@@ -24,8 +24,8 @@
   "Choose the payment method": "Choose the payment method",
   "Find customer": "Find customer",
   "Choose customer from select": "Choose customer from select",
-  "VAT": "VAT (10%)",
-  "CCT": "CCT (1%)",
+  "VAT": "VAT",
+  "UB city tax": "UB city tax",
   "By Card": "By Card",
   "In Cash": "In Cash",
   "E-barimt": "E-barimt",
@@ -42,5 +42,6 @@
   "Inventory": "Inventory",
   "Total amount": "Total amount",
   "Price": "Price",
-  "Count": "Count"
+  "Count": "Count",
+  "Pure amount": "Pure amount"
 }
