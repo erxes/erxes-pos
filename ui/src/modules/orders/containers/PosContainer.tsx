@@ -86,7 +86,7 @@ class PosContainer extends React.Component<Props> {
           }
         }
       }).then(() => {
-        window.location.href = `/order-receipt/${_id}`;
+        window.open(`/order-receipt/${_id}`, '_blank');
       }).catch(e => {
         Alert.error(e.message);
       });
