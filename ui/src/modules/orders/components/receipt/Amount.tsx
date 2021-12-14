@@ -21,8 +21,8 @@ export default function Amount({ order }: Props) {
           <div className="sep" />
           <LocaleField text="Дүн" data={order.totalAmount} />
           <div className="sep" />
-          <LocaleField text="НӨАТ (10%)" data={taxAmount.vatAmount} />
-          <LocaleField text="НХАТ (1%)" data={taxAmount.cityTaxAmount} />
+          <LocaleField text="НӨАТ" data={taxAmount.vatAmount} />
+          <LocaleField text="НХАТ" data={taxAmount.cityTaxAmount} />
         </div>
         <div className="sep" />
         {order.status === "paid" ? <div className="sep" /> : null}
