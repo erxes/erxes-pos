@@ -73,7 +73,7 @@ export default class Pos extends React.Component<Props, State> {
       type: order && order.type ? order.type : ORDER_TYPES.EAT,
       drawerContentType: "",
       customerId: order && order.customerId ? order.customerId : "",
-      registerNumber: ''
+      registerNumber: "",
     };
   }
 
@@ -172,15 +172,17 @@ export default class Pos extends React.Component<Props, State> {
       case "order":
         return <OrderSearch />;
       case "payment":
-        return order && (
-          <PaymentForm
-            orderId={order ? order._id : ''}
-            options={currentConfig ? currentConfig.uiOptions : {}}
-            totalAmount={totalAmount}
-            closeDrawer={this.toggleDrawer}
-            makePayment={makePayment}
-            order={order}
-          />
+        return (
+          order && (
+            <PaymentForm
+              orderId={order ? order._id : ""}
+              options={currentConfig ? currentConfig.uiOptions : {}}
+              totalAmount={totalAmount}
+              closeDrawer={this.toggleDrawer}
+              makePayment={makePayment}
+              order={order}
+            />
+          )
         );
       default:
         return null;
@@ -188,7 +190,13 @@ export default class Pos extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentUser, currentConfig, order, productCategoriesQuery, productsQuery } = this.props;
+    const {
+      currentUser,
+      currentConfig,
+      order,
+      productCategoriesQuery,
+      productsQuery,
+    } = this.props;
     const { items, totalAmount, showMenu, type } = this.state;
 
     return (
@@ -209,7 +217,7 @@ export default class Pos extends React.Component<Props, State> {
                 />
               </MainContent>
             </Col>
-            <Col sm={3}>
+            <Col sm={3} className="no-padding">
               <MainContent noPadding={true}>
                 <Stage
                   items={items}

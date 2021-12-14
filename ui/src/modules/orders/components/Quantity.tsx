@@ -22,6 +22,10 @@ const Wrapper = styled.div`
     margin: 0;
     text-align: center;
   }
+
+  @media (max-width: 1170px) {
+    margin-right: 35px;
+  }
 `;
 
 const Button = styledTS<{ disabled: boolean; color?: string }>(

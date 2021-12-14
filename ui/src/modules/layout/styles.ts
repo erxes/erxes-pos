@@ -68,6 +68,10 @@ const MainWrapper = styledTS<{ collapsed: boolean }>(styled.div)`
     props.collapsed ? wideNavigation : dimensions.headerSpacingWide}px;
   max-width: 100%;
   transition: width .3s;
+
+  @media (max-width: 1170px) {
+    padding-left: 40px;
+  }
 `;
 
 const Authlayout = styledTS<{ hasConfig: boolean }>(styled.div)`
@@ -204,6 +208,10 @@ const LeftNavigation = styledTS<{ collapsed: boolean; color?: string }>(
         transform: scale(1.1);
       }
     }
+  }
+
+  @media (max-width: 1170px) {
+    width: 40px;
   }
 `;
 
@@ -527,6 +535,10 @@ export const Bottom = styled.div`
   &:hover {
     cursor: pointer;
     background: rgba(0, 0, 0, 0.06);
+  }
+
+  @media (max-width: 1170px) {
+    width: 40px;
   }
 `;
 

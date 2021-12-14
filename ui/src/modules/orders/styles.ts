@@ -4,8 +4,13 @@ import { dimensions, colors } from "modules/common/styles";
 
 export const PosWrapper = styled.div`
   flex: 1;
-  overflow: auto;
   position: relative;
+
+  @media (max-width: 1170px) {
+    .no-padding {
+      padding: 0;
+    }
+  }
 `;
 
 export const Column = styled.div`
@@ -22,12 +27,20 @@ export const MainContent = styledTS<{
   box-shadow: ${(props) =>
     props.hasShadow && "rgb(217, 226, 236) 0px 0px 24px 0px;"};
   height: 100vh;
+
+  @media (max-width: 1170px) {
+    padding: ${(props) => (props.noPadding ? 0 : "15px 10px")};
+  }
 `;
 
 export const ProductCategories = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin: 30px 0;
+
+  @media (max-width: 1170px) {
+    margin: 20px 0 10px 0;
+  }
 `;
 
 export const ProductsWrapper = styled.div`
@@ -35,6 +48,10 @@ export const ProductsWrapper = styled.div`
   flex-wrap: wrap;
   max-height: 800px;
   overflow: auto;
+
+  @media (max-width: 1170px) {
+    max-height: 570px;
+  }
 `;
 
 export const ProductCategory = styledTS<{ isActive?: boolean; color?: string }>(
@@ -91,6 +108,10 @@ export const Item = styled.div`
 
   > strong {
     font-size: 18px;
+
+    @media (max-width: 1170px) {
+      font-size: 16px;
+    }
   }
 
   > h4 {
@@ -123,6 +144,10 @@ export const Item = styled.div`
 
   @media (max-width: 1050px) {
     flex-basis: 42%;
+
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
   }
 `;
 
@@ -362,5 +387,5 @@ export const Input = styledTS<{ color?: string }>(styled.div)`
 `;
 
 export const ProductSearch = styled.div`
-  width: 70%;
+  width: 65%;
 `;

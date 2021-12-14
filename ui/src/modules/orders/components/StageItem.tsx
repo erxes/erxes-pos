@@ -36,6 +36,7 @@ const Close = styled(FlexCenter)`
 
 export const Text = styled.div`
   padding: 10px;
+  word-break: break-word;
 
   > div {
     line-height: 13px;
