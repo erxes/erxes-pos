@@ -72,8 +72,8 @@ const ebarimtConfigSchema = new Schema(
     districtCode: field({ type: String, label: 'Province or district code' }),
     companyRD: field({ type: String, label: 'Company register number' }),
     defaultGSCode: field({ type: String, label: 'Default inventory code' }),
-    vatPercent: field({ type: String, label: 'Vat percent' }),
-    cityTaxPercent: field({ type: String, label: 'UB city tax percent' }),
+    vatPercent: field({ type: Number, optional: true, label: 'Vat percent' }),
+    cityTaxPercent: field({ type: Number, optional: true, label: 'UB city tax percent' }),
   },
   { _id: false }
 );
