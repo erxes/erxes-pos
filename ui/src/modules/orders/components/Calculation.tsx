@@ -186,8 +186,14 @@ export default class Calculation extends React.Component<Props, State> {
 
     const color = config.uiOptions && config.uiOptions.colors.primary;
     const taxAmount = calcTaxAmount(totalAmount, config.ebarimtConfig);
-    const vatPercent = config.ebarimtConfig.vatPercent;
-    const cityTaxPercent = config.ebarimtConfig.cityTaxPercent;
+    
+    let vatPercent = 0;
+    let cityTaxPercent = 0;
+
+    if (config.ebarimtConfig) {
+      vatPercent = config.ebarimtConfig.vatPercent || 0;
+      cityTaxPercent = config.ebarimtConfig.cityTaxPercent || 0;
+    }
 
     return (
       <>
