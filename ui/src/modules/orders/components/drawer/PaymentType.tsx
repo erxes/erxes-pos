@@ -9,6 +9,10 @@ const TypeWrapper = styled.div`
   h2 {
     text-align: center;
     margin-bottom: 40px;
+
+    @media (max-width: 1250px) {
+      font-size: 25px;
+    }
   }
 `;
 
@@ -21,6 +25,11 @@ const Cards = styledTS<{ color?: string }>(styled.div)`
     color: ${(props) => props.color && props.color};
     font-size: 18px;
     font-weight: 500;
+
+    @media (max-width: 1250px) {
+      line-height: 22px;
+      font-size: 16px;  
+    }
   }
 `;
 
@@ -49,6 +58,16 @@ const Card = styled.div`
       max-height: 150px;
       max-width: 150px;
       margin-bottom: 30px;
+
+      @media (max-width: 1250px) {
+        max-height: 80px;
+        max-width: 80px;
+        margin-bottom: 20px;
+      }
+    }
+
+    @media (max-width: 1250px) {
+      height: 80px;
     }
   }
 
@@ -58,6 +77,10 @@ const Card = styled.div`
 
   &:hover {
     box-shadow: 0 6px 10px 1px rgba(136, 136, 136, 0.08);
+  }
+
+  @media (max-width: 1250px) {
+    padding: 20px;
   }
 `;
 
