@@ -15,7 +15,8 @@ const customerQueries = {
       filter.$or = [
         { primaryEmail: regex },
         { firstName: regex },
-        { code: regex }
+        { primaryPhone: regex },
+        { lastName: regex }
       ];
     }
 

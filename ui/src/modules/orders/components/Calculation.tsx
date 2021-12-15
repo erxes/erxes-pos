@@ -60,15 +60,22 @@ const ButtonWrapper = styled.div`
 // get user options for react-select-plus
 const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
   return array.map((item) => {
-    const { _id, firstName, primaryEmail, primaryPhone, code } =
+    const { _id, firstName, primaryEmail, primaryPhone, lastName } =
       item || ({} as ICustomer);
 
-    const value = firstName || primaryEmail || primaryPhone || code || "";
+    let value = firstName ? firstName.toUpperCase() : '';
 
-    return {
-      value: _id || value,
-      label: value,
-    };
+    if (lastName) {
+      value = `${value} ${lastName}`;
+    }
+    if (primaryPhone) {
+      value = `${value} (${primaryPhone})`
+    }
+    if (primaryEmail) {
+      value = `${value} /${primaryEmail}/`
+    }
+
+    return { value: _id, label: value };
   });
 };
 
@@ -205,7 +212,7 @@ export default class Calculation extends React.Component<Props, State> {
           <SelectWithSearch
             name="customerId"
             queryName="customers"
-            label="Select customer"
+            label={__("Type name, phone, or email to search")}
             initialValue={this.state.customerId}
             onSelect={onSelectCustomer}
             generateOptions={generateLabelOptions}
