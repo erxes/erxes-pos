@@ -5,7 +5,6 @@ interface IListArgs {
 }
 
 const customerQueries = {
-  // use it for customer search by email, name & code only
   async customers(_root, { searchValue }: IListArgs) {
     const filter: any = {};
 

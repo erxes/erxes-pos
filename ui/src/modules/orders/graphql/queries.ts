@@ -31,7 +31,7 @@ const customerFields = `
   primaryPhone
   firstName
   primaryEmail
-  code
+  lastName
 `;
 
 const productCategories = `
