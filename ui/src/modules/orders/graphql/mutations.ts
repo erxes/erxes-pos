@@ -30,10 +30,29 @@ const ordersEdit = `
   }
 `;
 
+const invoiceFields = `
+  qrText
+  senderInvoiceNo
+  status
+  paymentDate
+  qpayPaymentId
+  status
+`;
+
 const createQpaySimpleInvoice = `
   mutation createQpaySimpleInvoice($orderId: String!) {
-    createQpaySimpleInvoice(orderId: $orderId)
+    createQpaySimpleInvoice(orderId: $orderId) {
+      ${invoiceFields}
+    }
   }
 `;
 
-export default { ordersAdd, ordersMakePayment, ordersEdit, createQpaySimpleInvoice };
+const qpayCheckPayment = `
+  mutation qpayCheckPayment($orderId: String!) {
+    qpayCheckPayment(orderId: $orderId) {
+      ${invoiceFields}
+    }
+  }
+`;
+
+export default { ordersAdd, ordersMakePayment, ordersEdit, createQpaySimpleInvoice, qpayCheckPayment };

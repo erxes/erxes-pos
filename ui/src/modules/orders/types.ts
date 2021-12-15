@@ -13,7 +13,7 @@ export interface IOrderItem {
   productName: string;
 }
 
-interface IQPayInvoice {
+export interface IQPayInvoice {
   _id: string;
   senderInvoiceNo: string;
   amount: string;
@@ -22,6 +22,7 @@ interface IQPayInvoice {
   qpayPaymentId: string;
   paymentDate: Date;
   createdAt: Date;
+  status: string;
 }
 
 export interface IOrder {
