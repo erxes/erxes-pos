@@ -2,8 +2,10 @@ import { model } from 'mongoose';
 import { IQPayInvoice, qpayInvoiceSchema } from './definitions/qpayInvoices';
 
 class QPayInvoice {
-  public static async getInvoice(_id: string) {
-    const invoice = await QPayInvoices.findOne({ _id });
+  public static async getInvoice(orderId: string, _id?: string) {
+    const invoice = await QPayInvoices.findOne({
+      $or: [{ _id }, { senderInvoiceNo: orderId }],
+    });
 
     if (!invoice) {
       throw new Error('Invoice not found');
@@ -28,10 +30,7 @@ class QPayInvoice {
     const qpayInvoiceId = invoiceData.invoice_id;
     const qrText = invoiceData.qr_text;
 
-    await QPayInvoices.updateOne(
-      { _id },
-      { $set: { qpayInvoiceId, qrText } }
-    );
+    await QPayInvoices.updateOne({ _id }, { $set: { qpayInvoiceId, qrText } });
   }
 }
 

@@ -1,11 +1,13 @@
-import { Orders } from "../../../db/models/Orders";
-import { QPayInvoices } from "../../../db/models/QPayInvoices";
+import { Orders } from '../../../db/models/Orders';
+import { QPayInvoices } from '../../../db/models/QPayInvoices';
 import { IContext } from '../../types';
-import { fetchQPayToken, requestQPayInvoice } from '../../utils/qpayUtils';
+import {
+  fetchQPayToken,
+  requestQPayInvoice,
+  fetchInvoicePayment,
+} from '../../utils/qpayUtils';
 
 interface IInvoiceParams {
-  description: string;
-  amount: string;
   orderId: string;
 }
 
@@ -27,7 +29,7 @@ const paymentMutations = {
 
     const invoice = await QPayInvoices.createInvoice({
       senderInvoiceNo: order._id,
-      amount: order.totalAmount.toString()
+      amount: order.totalAmount.toString(),
     });
 
     const invoiceData = await requestQPayInvoice(
@@ -37,7 +39,7 @@ const paymentMutations = {
         invoice_receiver_code: 'terminal',
         invoice_description: order.number,
         amount: order.totalAmount,
-        callback_url: `${config.qpayConfig.callbackUrl}?payment_id=${order._id}`
+        callback_url: `${config.qpayConfig.callbackUrl}?payment_id=${order._id}`,
       },
       tokenInfo.access_token,
       config.qpayConfig
@@ -48,6 +50,43 @@ const paymentMutations = {
     }
 
     return invoiceData;
+  },
+  async qpayCheckPayment(
+    _root,
+    { orderId }: IInvoiceParams,
+    { config }: IContext
+  ) {
+    let invoice = await QPayInvoices.getInvoice(orderId);
+    const tokenInfo = await fetchQPayToken(config.qpayConfig);
+    const response = await fetchInvoicePayment(
+      invoice.qpayInvoiceId,
+      tokenInfo.access_token,
+      config.qpayConfig
+    );
+
+    // check payment info
+    const { rows = [], count = 0 } = response;
+
+    if (count && rows.length > 0) {
+      const row = rows.find(
+        (r) => r.payment_status === 'PAID' && r.payment_date && r.payment_id
+      );
+
+      if (row) {
+        invoice = await QPayInvoices.updateOne(
+          { _id: invoice._id },
+          {
+            $set: {
+              qpayPaymentId: row.payment_id,
+              paymentDate: row.payment_date,
+              status: row.payment_status,
+            },
+          }
+        );
+      }
+    }
+
+    return invoice;
   },
 };
 

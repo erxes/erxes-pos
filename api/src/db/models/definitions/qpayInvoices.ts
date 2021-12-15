@@ -9,6 +9,7 @@ export interface IQPayInvoice {
   qpayPaymentId: string;
   paymentDate: Date;
   createdAt: Date;
+  status: string;
 }
 
 export interface IQpayInvoiceDocument extends IQPayInvoice, Document {

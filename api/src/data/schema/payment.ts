@@ -13,7 +13,8 @@ export const types = `
 `;
 
 export const mutations = `
-  createQpaySimpleInvoice(orderId: String!): JSON
+  createQpaySimpleInvoice(orderId: String!): QPayInvoice
+  qpayCheckPayment(orderId: String!): QPayInvoice
 `;
 
 export const queries = `
