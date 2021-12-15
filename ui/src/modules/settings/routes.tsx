@@ -6,11 +6,11 @@ import React from "react";
 
 const SettingsContainer = asyncComponent(
   () => import(/* webpackChunkName: "Settings" */ "modules/settings/containers/Settings")
-
 );
 
 const Settings = ({ location }) => {
   const qp = queryString.parse(location.search);
+
   return <SettingsContainer qp={qp} />;
 };
 

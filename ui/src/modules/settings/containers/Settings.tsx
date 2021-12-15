@@ -1,16 +1,17 @@
-import * as compose from 'lodash.flowright';
-import gql from 'graphql-tag';
-import React from 'react';
+import { graphql } from "react-apollo";
+import { withRouter } from "react-router-dom";
+import * as compose from "lodash.flowright";
+import gql from "graphql-tag";
+import React from "react";
+
+import { Alert } from 'modules/common/utils';
+import { IConfig, IRouterProps } from '../../../types';
+import { withProps } from '../../utils';
+import { mutations } from '../graphql/index';
 import Settings from '../components/Settings';
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
-import { Alert } from 'modules/common/utils';
-import { graphql } from 'react-apollo';
-import { IConfig, IRouterProps } from '../../../types';
 import { IUser } from 'modules/auth/types';
-import { mutations } from '../graphql';
 import { SyncConfigMutationResponse, SyncOrdersMutationResponse } from '../types';
-import { withProps } from '../../utils';
-import { withRouter } from 'react-router-dom';
 
 type Props = {
   syncConfigMutation: SyncConfigMutationResponse;

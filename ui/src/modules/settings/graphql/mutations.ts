@@ -1,6 +1,6 @@
 const syncOrders = `
-  mutation syncOrders() {
-    syncOrders()
+  mutation syncOrders {
+    syncOrders
   }
 `;
 
