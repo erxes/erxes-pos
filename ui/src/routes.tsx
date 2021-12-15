@@ -5,6 +5,7 @@ import queryString from "query-string";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import AuthRoutes from "./modules/auth/routes";
+import SettingsRoutes from "./modules/settings/routes";
 import OrderRoutes from "./modules/orders/routes";
 import { IUser } from "./modules/auth/types";
 import { IConfig } from "types";
@@ -61,7 +62,7 @@ const renderRoutes = (currentUser, currentConfig) => {
           {specialPluginRoutes}
           {pluginRoutes}
           <OrderRoutes />
-
+          <SettingsRoutes />
           <Route
             key="/confirmation"
             exact={true}

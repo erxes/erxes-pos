@@ -163,6 +163,19 @@ class Navigation extends React.Component<IProps> {
     );
   };
 
+  renderSyncMenu() {
+    const { currentUser } = this.props;
+
+    if (!currentUser) {
+      return ''
+    }
+    return (
+      <NavLink to="/settings">
+        <NavIcon className={'icon-sync-exclamation'} />
+      </NavLink>
+    )
+  }
+
   render() {
     const { collapsed, options } = this.props;
     const logo = collapsed ? "logo.png" : "erxes.png";
@@ -172,6 +185,7 @@ class Navigation extends React.Component<IProps> {
         <NavLink to="/">
           <img src={options.logo || `/images/${logo}`} alt="logo" />
         </NavLink>
+        {this.renderSyncMenu()}
         <Nav id="navigation" collapsed={collapsed}>
           {pluginsOfNavigations(this.renderNavItem)}
         </Nav>
