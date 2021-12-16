@@ -41,12 +41,8 @@ export const queries = `
     type: String,
     categoryId: String,
     searchValue: String,
-    tag: String,
     page: Int,
-    perPage: Int ids: [String],
-    excludeIds: Boolean,
-    pipelineId: String,
-    boardId: String
+    perPage: Int,
   ): [Product]
   productsTotalCount(type: String): Int
   productDetail(_id: String): Product

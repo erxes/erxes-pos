@@ -1,9 +1,11 @@
 import React from "react";
+
+import { router } from "modules/common/utils";
 import { IOrderItemInput, IProduct, IProductCategory } from "../types";
 import CategoryItem from "./CategoryItem";
 import ProductItem from "./ProductItem";
 import { ProductCategories, ProductsWrapper } from "../styles";
-import { IConfig } from "types";
+import { IConfig, IRouterProps } from "types";
 
 type Props = {
   productCategories: IProductCategory[];
@@ -11,40 +13,33 @@ type Props = {
   setItems: (items: IOrderItemInput[]) => void;
   items: IOrderItemInput[];
   currentConfig: IConfig;
-};
+  qp: any;
+  productsQuery: any;
+} & IRouterProps;
 
-export default class Products extends React.Component<
-  Props,
-  { activeCategoryId: string }
-> {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activeCategoryId: ((props.productCategories || [])[0] || {})._id,
-    };
-  }
-
+export default class Products extends React.Component<Props> {
   onClickCategory = (activeCategoryId: string) => {
-    this.setState({ activeCategoryId });
+    const { qp, history, productsQuery } = this.props;
+    const variables = { ...qp, categoryId: activeCategoryId };
+
+    router.setParams(history, variables);
+    productsQuery.refetch({ variables });
   };
 
   renderCategories() {
-    const { productCategories, currentConfig } = this.props;
+    const { productCategories, qp } = this.props;
+    const catId = qp && qp.categoryId ? qp.categoryId : '';
 
-    return (
-      <ProductCategories>
-        {productCategories.map((cat) => (
-          <CategoryItem
-            category={cat}
-            key={cat._id}
-            activeCategoryId={this.state.activeCategoryId}
-            onClickCategory={this.onClickCategory}
-            options={currentConfig ? currentConfig.uiOptions : {}}
-          />
-        ))}
-      </ProductCategories>
-    );
+    const categories = productCategories.map((cat) => (
+      <CategoryItem
+        category={cat}
+        key={cat._id}
+        activeCategoryId={catId}
+        onClickCategory={this.onClickCategory}
+      />
+    ));
+
+    return (<ProductCategories>{categories}</ProductCategories>);
   }
 
   addItem(item: IProduct, count: number) {
@@ -71,13 +66,9 @@ export default class Products extends React.Component<
   }
 
   renderProducts() {
-    const { products } = this.props;
+    const { products = [] } = this.props;
 
     return products.map((product) => {
-      if (product.categoryId !== this.state.activeCategoryId) {
-        return null;
-      }
-
       return (
         <ProductItem
           product={product}

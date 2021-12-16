@@ -123,7 +123,7 @@ export const loadProductClass = () => {
 };
 
 export interface IProductCategoryModel extends Model<IProductCategoryDocument> {
-  getProductCatogery(selector: any): Promise<IProductCategoryDocument>;
+  getProductCategory(selector: any): Promise<IProductCategoryDocument>;
   createProductCategory(
     doc: IProductCategory
   ): Promise<IProductCategoryDocument>;
@@ -136,7 +136,7 @@ export interface IProductCategoryModel extends Model<IProductCategoryDocument> {
 
 export const loadProductCategoryClass = () => {
   class ProductCategory {
-    public static async getProductCatogery(selector: any) {
+    public static async getProductCategory(selector: any) {
       const productCategory = await ProductCategories.findOne(selector);
 
       if (!productCategory) {
@@ -176,7 +176,7 @@ export const loadProductCategoryClass = () => {
       _id: string,
       doc: IProductCategory
     ) {
-      const category = await ProductCategories.getProductCatogery({ _id });
+      const category = await ProductCategories.getProductCategory({ _id });
 
       if (category.code !== doc.code) {
         await this.checkCodeDuplication(doc.code);
@@ -193,7 +193,7 @@ export const loadProductCategoryClass = () => {
       // Generatingg  order
       doc.order = await this.generateOrder(parentCategory, doc);
 
-      const productCategory = await ProductCategories.getProductCatogery({
+      const productCategory = await ProductCategories.getProductCategory({
         _id
       });
 
@@ -225,7 +225,7 @@ export const loadProductCategoryClass = () => {
      * Remove Product category
      */
     public static async removeProductCategory(_id: string) {
-      await ProductCategories.getProductCatogery({ _id });
+      await ProductCategories.getProductCategory({ _id });
 
       let count = await Products.countDocuments({
         categoryId: _id,

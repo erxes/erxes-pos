@@ -1,5 +1,7 @@
 import { withRouter } from "react-router-dom";
 import React from "react";
+import queryString from 'query-string';
+
 import {
   IRouterProps,
   IConfig,
@@ -21,7 +23,7 @@ type Props = {
 
 class ProductsContainer extends React.Component<Props> {
   render() {
-    const { productCategoriesQuery, productsQuery } = this.props;
+    const { productCategoriesQuery, productsQuery, location } = this.props;
 
     if (productCategoriesQuery.loading || productsQuery.loading) {
       return <Spinner />;
@@ -31,6 +33,7 @@ class ProductsContainer extends React.Component<Props> {
       ...this.props,
       productCategories: productCategoriesQuery.productCategories || [],
       products: productsQuery.products || [],
+      qp: queryString.parse(location.search)
     };
 
     return <Products {...updatedProps} />;

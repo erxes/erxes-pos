@@ -137,7 +137,10 @@ export default withProps<Props>(
     graphql<Props>(gql(queries.products), {
       name: 'productsQuery',
       options: ({ qp }) => ({
-        variables: { searchValue: qp && qp.searchValue ? qp.searchValue : '' }
+        variables: { 
+          searchValue: qp && qp.searchValue ? qp.searchValue : '',
+          categoryId: qp && qp.categoryId ? qp.categoryId : ''
+        }
       })
     }),
     graphql<Props>(gql(mutations.customersAdd), {

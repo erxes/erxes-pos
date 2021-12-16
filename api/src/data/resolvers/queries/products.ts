@@ -3,12 +3,9 @@ import { PRODUCT_STATUSES } from '../../../db/models/definitions/constants';
 import { escapeRegExp, paginate } from '../../utils/commonUtils';
 
 interface IProductParams {
-  ids: string[];
-  excludeIds: boolean;
   type: string;
   categoryId: string;
   searchValue: string;
-  tag: string;
   page: number;
   perPage: number;
 }
@@ -20,9 +17,6 @@ const productQueries = {
       type,
       categoryId,
       searchValue,
-      tag,
-      ids,
-      excludeIds,
       ...paginationArgs
     }: IProductParams
   ) {
@@ -33,22 +27,16 @@ const productQueries = {
     }
 
     if (categoryId) {
-      const category = await ProductCategories.getProductCatogery({
+      const category = await ProductCategories.getProductCategory({
         _id: categoryId,
       });
-      const product_category_ids = await ProductCategories.find(
+
+      const relatedCategoryIds = await ProductCategories.find(
         { order: { $regex: new RegExp(category.order) } },
         { _id: 1 }
       );
-      filter.categoryId = { $in: product_category_ids };
-    }
 
-    if (ids && ids.length > 0) {
-      filter._id = { [excludeIds ? '$nin' : '$in']: ids };
-    }
-
-    if (tag) {
-      filter.tagIds = { $in: [tag] };
+      filter.categoryId = { $in: relatedCategoryIds };
     }
 
     // search =========
