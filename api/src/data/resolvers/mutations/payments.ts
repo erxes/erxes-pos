@@ -56,7 +56,7 @@ const paymentMutations = {
     { orderId }: IInvoiceParams,
     { config }: IContext
   ) {
-    let invoice = await QPayInvoices.getInvoice(orderId);
+    const invoice = await QPayInvoices.getInvoice(orderId);
     const tokenInfo = await fetchQPayToken(config.qpayConfig);
     const response = await fetchInvoicePayment(
       invoice.qpayInvoiceId,
@@ -69,16 +69,16 @@ const paymentMutations = {
 
     if (count && rows.length > 0) {
       const row = rows.find(
-        (r) => r.payment_status === 'PAID' && r.payment_date && r.payment_id
+        (r) => r.payment_status === 'PAID' && r.payment_id
       );
 
       if (row) {
-        invoice = await QPayInvoices.updateOne(
+        await QPayInvoices.updateOne(
           { _id: invoice._id },
           {
             $set: {
               qpayPaymentId: row.payment_id,
-              paymentDate: row.payment_date,
+              paymentDate: row.payment_date || new Date(),
               status: row.payment_status,
             },
           }
@@ -86,7 +86,7 @@ const paymentMutations = {
       }
     }
 
-    return invoice;
+    return QPayInvoices.findOne({ _id: invoice._id });
   },
 };
 
