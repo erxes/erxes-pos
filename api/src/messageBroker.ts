@@ -26,6 +26,11 @@ export const initBroker = async server => {
   const { consumeQueue } = client;
 
   const config = await Configs.findOne().lean();
+
+  if (!config) {
+    throw new Error('not yet message broker');
+  }
+
   const syncId = config && config.syncInfo && config.syncInfo.id ? config.syncInfo.id : '';
 
   try {

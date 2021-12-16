@@ -3,6 +3,8 @@ import * as dotenv from 'dotenv';
 import { Configs } from '../../../db/models/Configs';
 import Customers from '../../../db/models/Customers';
 import { sendRequest } from '../../utils/commonUtils';
+import { initBroker } from '../../../messageBroker';
+import { httpServer } from '../../../index';
 import {
   importUsers,
   importProducts,
@@ -10,6 +12,7 @@ import {
   extractConfig,
   importCustomers,
 } from '../../utils/syncUtils';
+import { debugError, debugInit } from '../../../debuggers';
 
 dotenv.config();
 
@@ -44,6 +47,12 @@ const configMutations = {
       await importProducts(productGroups);
       await Customers.insertMany(customers);
     }
+
+    initBroker(httpServer).then(() => {
+      debugInit('Message broker has started.')
+    }).catch(e => {
+      debugError(`Error occurred when starting message broker: ${e.message}`);
+    });
 
     return config;
   },

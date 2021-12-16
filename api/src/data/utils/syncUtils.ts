@@ -48,7 +48,9 @@ export const importProducts = async (groups: any = []) => {
         });
       }
 
-      await Products.bulkWrite(bulkOps);
+      if (bulkOps.length) {
+        await Products.bulkWrite(bulkOps);
+      }
     }
   } // end group loop
 };
@@ -81,7 +83,9 @@ export const importCustomers = async (customers: ICustomerDocument[]) => {
     });
   }
 
-  await Customers.bulkWrite(bulkOps);
+  if (bulkOps.length) {
+    await Customers.bulkWrite(bulkOps);
+  }
 };
 
 // Pos config created in main erxes differs from here
