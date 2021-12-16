@@ -10,7 +10,7 @@ import {
 } from './product';
 
 import { types as CompanyTypes } from './company';
-import { types as CustomerTypes, queries as CustomerQueries } from './customer';
+import { types as CustomerTypes, queries as CustomerQueries, mutations as CustomerMutations } from './customer';
 import { types as OrderTypes, mutations as OrderMutations, queries as OrderQueries } from './orders';
 import { types as ConfigTypes, mutations as ConfigMutations, queries as ConfigQueries } from './configs';
 import { types as PaymentTypes, mutations as PaymentMutations, queries as PaymentQueries } from './payment';
@@ -41,6 +41,7 @@ export let mutations = `
   ${OrderMutations}
   ${ConfigMutations}
   ${PaymentMutations}
+  ${CustomerMutations}
 `;
 
 export default { mutations, queries, types };

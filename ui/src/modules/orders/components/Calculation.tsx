@@ -5,6 +5,8 @@ import styledTS from "styled-components-ts";
 import FormControl from "modules/common/components/form/Control";
 import FormGroup from "modules/common/components/form/Group";
 import SelectWithSearch from "modules/common/components/SelectWithSearch";
+import Icon from "modules/common/components/Icon";
+import { FlexRow } from "modules/common/components/filterableList/styles";
 import { __ } from "modules/common/utils";
 import { IConfig, IOption } from "types";
 import { ORDER_TYPES } from "../../../constants";
@@ -183,7 +185,7 @@ export default class Calculation extends React.Component<Props, State> {
   }
 
   render() {
-    const { totalAmount, config, setOrderState, type } = this.props;
+    const { totalAmount, config, setOrderState, type, onClickDrawer } = this.props;
 
     const onSelectCustomer = (customerId) => {
       this.setState({ customerId });
@@ -202,22 +204,31 @@ export default class Calculation extends React.Component<Props, State> {
       cityTaxPercent = config.ebarimtConfig.cityTaxPercent || 0;
     }
 
+    const btnStyle = { padding: "4px 10px" };
+
     return (
       <>
         <Wrapper color={color}>
           <StageContent>
-            <ControlLabel>{__("Identify a customer")}</ControlLabel>
-            <Description>{__("Choose customer from select")}</Description>
+            <FlexRow>
+              <div>
+                <ControlLabel>{__("Identify a customer")}</ControlLabel>
+                <Description>{__("Choose customer from select")}</Description>
+              </div>
+              <Button onClick={() => onClickDrawer('customer')} style={btnStyle} btnStyle="success">
+                <Icon icon="plus" />
+              </Button>
+            </FlexRow>
           </StageContent>
-          <SelectWithSearch
-            name="customerId"
-            queryName="customers"
-            label={__("Type name, phone, or email to search")}
-            initialValue={this.state.customerId}
-            onSelect={onSelectCustomer}
-            generateOptions={generateLabelOptions}
-            customQuery={queries.customers}
-          />
+            <SelectWithSearch
+              name="customerId"
+              queryName="customers"
+              label={__("Type name, phone, or email to search")}
+              initialValue={this.state.customerId}
+              onSelect={onSelectCustomer}
+              generateOptions={generateLabelOptions}
+              customQuery={queries.customers}
+            />
           <ColumnBetween>
             <div>
               <FormGroup>

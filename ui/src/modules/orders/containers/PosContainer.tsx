@@ -23,6 +23,7 @@ type Props = {
   makePaymentMutation: any;
   productCategoriesQuery: any;
   productsQuery: any;
+  customersAddMutation: any;
 } & IRouterProps;
 
 export interface IPaymentParams {
@@ -35,7 +36,7 @@ export interface IPaymentParams {
 
 class PosContainer extends React.Component<Props> {
   render() {
-    const { ordersAddMutation, ordersEditMutation, makePaymentMutation, orderDetailQuery, qp } = this.props;
+    const { ordersAddMutation, ordersEditMutation, makePaymentMutation, orderDetailQuery, qp, customersAddMutation } = this.props;
 
     if (qp && qp.id && orderDetailQuery.loading) {
       return <Spinner />;
@@ -92,11 +93,22 @@ class PosContainer extends React.Component<Props> {
       });
     };
 
+    const addCustomer = (params: any) => {
+      customersAddMutation({ variables: params }).then(({ data }) => {
+        if (data && data.customersAdd && data.customersAdd._id) {
+          Alert.success('Customer successfully created.');
+        }
+      }).catch(e => {
+        Alert.error(e.message);
+      });
+    };
+
     const updatedProps = {
       ...this.props,
       createOrder,
       updateOrder,
       makePayment,
+      addCustomer,
       order: qp && qp.id ? orderDetailQuery.orderDetail : null
     };
 
@@ -128,5 +140,8 @@ export default withProps<Props>(
         variables: { searchValue: qp && qp.searchValue ? qp.searchValue : '' }
       })
     }),
+    graphql<Props>(gql(mutations.customersAdd), {
+      name: 'customersAddMutation'
+    })
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );

@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import NameCard from "modules/common/components/nameCard/NameCard";
 import AsyncComponent from "modules/common/components/AsyncComponent";
 import RTG from "react-transition-group";
-import { IOrder, IOrderItemInput } from "../types";
+import { ICustomerParams, IOrder, IOrderItemInput } from "../types";
 import { ORDER_TYPES } from "../../../constants";
 import Stage from "./Stage";
 import Calculation from "./Calculation";
@@ -20,6 +20,7 @@ import {
 import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
 import PaymentForm from "./drawer/PaymentForm";
+import CustomerForm from "./drawer/CustomerForm";
 import ProductSearch from "../containers/ProductSearch";
 import { IPaymentParams } from "../containers/PosContainer";
 
@@ -36,6 +37,7 @@ type Props = {
   makePayment: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
   productsQuery: any;
+  addCustomer: (params: ICustomerParams) => void;
 };
 
 type State = {
@@ -167,7 +169,7 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   renderDrawerContent() {
-    const { currentConfig, makePayment, order } = this.props;
+    const { currentConfig, makePayment, order, addCustomer } = this.props;
     const { drawerContentType, totalAmount } = this.state;
 
     switch (drawerContentType) {
@@ -186,6 +188,8 @@ export default class Pos extends React.Component<Props, State> {
             />
           )
         );
+      case "customer":
+        return (<CustomerForm addCustomer={addCustomer} toggleDrawer={this.toggleDrawer}></CustomerForm>);
       default:
         return null;
     }

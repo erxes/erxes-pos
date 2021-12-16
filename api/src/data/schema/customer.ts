@@ -82,3 +82,15 @@ export const queries = `
   customers(${queryParams}): [Customer]
   customerDetail(_id: String): Customer
 `;
+
+const mutationParams = `
+  firstName: String
+  lastName: String
+  email: String
+  phone: String
+  sex: Int
+`;
+
+export const mutations = `
+  customersAdd(${mutationParams}): Customer
+`;

@@ -188,3 +188,11 @@ export interface IPutResponse {
   registerNumber: string;
   customerName: string;
 }
+
+export interface ICustomerParams {
+  firstName: string;
+  lastName: string;
+  phone: string;
+  email?: string;
+  sex?: number;
+}

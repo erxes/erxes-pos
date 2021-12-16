@@ -17,7 +17,7 @@
   "Edit order": "Захиалга засах",
   "Cancel": "Болих",
   "Done": "Болсон",
-  "Phone number": "ААН-н дугаар / Утасны дугаар",
+  "Phone number": "Утасны дугаар",
   "Check": "Шалгах",
   "Organization": "Байгууллага",
   "Person": "Хувь хүн",
@@ -44,5 +44,9 @@
   "Count": "Тоо",
   "Pure amount": "Цэвэр дүн",
   "Check payment": "Төлбөр шалгах",
-  "Type name, phone, or email to search": "Нэр, утас, имэйлээр хайна уу"
+  "Type name, phone, or email to search": "Нэр, утас, имэйлээр хайна уу",
+  "Register": "Бүртгэх",
+  "Last name": "Овог",
+  "First name": "Нэр",
+  "Email address": "Цахим шуудангийн хаяг"
 }

@@ -55,4 +55,19 @@ const qpayCheckPayment = `
   }
 `;
 
-export default { ordersAdd, ordersMakePayment, ordersEdit, createQpaySimpleInvoice, qpayCheckPayment };
+const customersAdd = `
+  mutation customersAdd($firstName: String, $lastName: String, $email: String, $phone: String) {
+    customersAdd(firstName: $firstName, lastName: $lastName, email: $email, phone: $phone) {
+      _id
+    }
+  }
+`;
+
+export default {
+  ordersAdd,
+  ordersMakePayment,
+  ordersEdit,
+  createQpaySimpleInvoice,
+  qpayCheckPayment,
+  customersAdd,
+};
