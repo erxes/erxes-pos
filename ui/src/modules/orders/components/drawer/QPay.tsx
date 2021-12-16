@@ -167,7 +167,7 @@ export default class QPay extends React.Component<Props, State> {
     const { invoice } = this.state;
     const { order } = this.props;
 
-    if (!invoice.qrText && order && !order.qpayInvoice) {
+    if (!invoice && order) {
       client.mutate({ mutation: gql(mutations.createQpaySimpleInvoice), variables: { orderId: order._id } }).then(({ data }) => {
         if (data && data.createQpaySimpleInvoice) {
           this.setState({ invoice: data.createQpaySimpleInvoice });
@@ -178,7 +178,7 @@ export default class QPay extends React.Component<Props, State> {
     } else {
       this.drawQR();
     }
-  } // end componentDidMount()
+  }
 
   componentDidUpdate() {
     this.drawQR();

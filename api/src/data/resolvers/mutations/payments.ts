@@ -49,7 +49,7 @@ const paymentMutations = {
       await QPayInvoices.updateInvoice(invoice._id, invoiceData);
     }
 
-    return invoiceData;
+    return QPayInvoices.findOne({ _id: invoice._id });
   },
   async qpayCheckPayment(
     _root,
