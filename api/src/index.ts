@@ -113,7 +113,7 @@ app.use((error, _req, res, _next) => {
 });
 
 // Wrap the Express server
-const httpServer = createServer(app);
+export const httpServer = createServer(app);
 
 const PORT = getEnv({ name: 'PORT' });
 const MONGO_URL = getEnv({ name: 'MONGO_URL' });
