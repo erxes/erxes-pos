@@ -8,10 +8,10 @@ type Props = {
   onSearch: (e: any) => void;
   clearSearch: () => void;
   placeholder: string;
+  searchValue?: string;
 };
 
 type State = {
-  // showInput: boolean;
   searchValue: string;
 };
 
@@ -20,8 +20,7 @@ export default class SearchInput extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      // showInput: true,
-      searchValue: "",
+      searchValue: props.searchValue || "",
     };
   }
 
@@ -33,8 +32,7 @@ export default class SearchInput extends React.Component<Props, State> {
       this.setState({ searchValue: e.target.value });
     };
 
-    const closeInput = (e) => {
-      // e.stopPropagation();
+    const closeInput = () => {
       this.setState({ searchValue: "" });
 
       clearSearch();
@@ -47,7 +45,7 @@ export default class SearchInput extends React.Component<Props, State> {
           <>
             <input
               placeholder={__(placeholder)}
-              value={searchValue}
+              defaultValue={searchValue}
               autoFocus={true}
               onKeyDown={onSearch}
               onChange={handleInput}

@@ -1,17 +1,17 @@
-// import client from "apolloClient";
 import gql from "graphql-tag";
 import * as compose from "lodash.flowright";
 import React from "react";
+import { withRouter } from "react-router-dom";
+import { graphql } from "react-apollo";
+import queryString from "query-string";
+
 import { queries } from "../../graphql/index";
 import SearchInput from "modules/orders/components/SearchInput";
 import OrderItem from "modules/orders/components/drawer/OrderItem";
 import { Orders } from "modules/orders/styles";
 import { withProps, router } from "modules/common/utils";
-import { graphql } from "react-apollo";
 import { OrderQueryResponse } from "modules/orders/types";
 import { IRouterProps } from "types";
-import { withRouter } from "react-router-dom";
-import queryString from "query-string";
 import Spinner from "modules/common/components/Spinner";
 
 type Props = {};

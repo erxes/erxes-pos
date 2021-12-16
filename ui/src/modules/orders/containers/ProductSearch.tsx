@@ -1,4 +1,6 @@
 import React from "react";
+import queryString from 'query-string';
+
 import SearchInput from "modules/orders/components/SearchInput";
 import { router } from "modules/common/utils";
 import { withRouter } from "react-router-dom";
@@ -27,12 +29,17 @@ class SearchContainer extends React.Component<Props> {
   };
 
   render() {
+    const { location } = this.props;
+
+    const qp = queryString.parse(location.search);
+
     return (
       <ProductSearch>
         <SearchInput
           onSearch={this.onSearch}
           clearSearch={this.clearSearch}
-          placeholder="Search"
+          placeholder="Search products"
+          searchValue={qp.searchValue || ''}
         />
       </ProductSearch>
     );
