@@ -1,13 +1,14 @@
 import * as dotenv from 'dotenv';
 
 import { Configs } from '../../../db/models/Configs';
+import Customers from '../../../db/models/Customers';
 import { sendRequest } from '../../utils/commonUtils';
 import {
-  importCustomers,
   importUsers,
   importProducts,
   validateConfig,
-  extractConfig
+  extractConfig,
+  importCustomers,
 } from '../../utils/syncUtils';
 
 dotenv.config();
@@ -41,7 +42,7 @@ const configMutations = {
       await importUsers(adminUsers, true);
       await importUsers(cashiers, false);
       await importProducts(productGroups);
-      await importCustomers(customers);
+      await Customers.insertMany(customers);
     }
 
     return config;

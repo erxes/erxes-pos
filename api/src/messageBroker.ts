@@ -26,7 +26,7 @@ export const initBroker = async server => {
   const { consumeQueue } = client;
 
   const config = await Configs.findOne().lean();
-  const syncId = (config.syncInfo || {}).id || '';
+  const syncId = config && config.syncInfo && config.syncInfo.id ? config.syncInfo.id : '';
 
   try {
     consumeQueue(`pos:crudData_${syncId}`, async (data) => {

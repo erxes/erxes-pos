@@ -55,14 +55,16 @@ export const CUSTOMER_SELECT_OPTIONS = {
     { label: 'Unknown', value: 'unknown' },
     { label: 'Disposable', value: 'disposable' },
     { label: 'Catch all', value: 'catchall' },
-    { label: 'Bad syntax', value: 'badsyntax' }
+    { label: 'Bad syntax', value: 'badsyntax' },
+    { label: 'Not checked', value: 'Not checked' }
   ],
   PHONE_VALIDATION_STATUSES: [
     { label: 'Valid', value: 'valid' },
     { label: 'Invalid', value: 'invalid' },
     { label: 'Unknown', value: 'unknown' },
     { label: 'Can receive sms', value: 'receives_sms' },
-    { label: 'Unverifiable', value: 'unverifiable' }
+    { label: 'Unverifiable', value: 'unverifiable' },
+    { label: 'Accept all unverifiable', value: 'accept_all_unverifiable' },
   ],
   LEAD_STATUS_TYPES: [
     { label: 'New', value: 'new' },
@@ -70,7 +72,11 @@ export const CUSTOMER_SELECT_OPTIONS = {
     { label: 'Working', value: 'inProgress' },
     { label: 'Bad Timing', value: 'badTiming' },
     { label: 'Unqualified', value: 'unqualified' },
-    { label: 'Unknown', value: '' }
+    { label: 'Unknown', value: '' },
+    { label: 'Connected', value: 'connected' },
+    { label: 'Open', value: 'open' },
+    { label: 'Open deal', value: 'openDeal' },
+    { label: 'Working', value: 'working' }
   ],
   STATUSES,
   DO_NOT_DISTURB: [
