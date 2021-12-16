@@ -31,7 +31,16 @@ export const importProducts = async (groups: any = []) => {
     for (const category of categories) {
       await ProductCategories.createProductCategory(category);
 
-      await Products.insertMany(category.products || []);
+      const products = (category.products || []).map(product => {
+        // sku must be set as below to print ebarimt
+        if (!product.sku) {
+          product.sku = 'ш';
+        }
+
+        return product;
+      });
+
+      await Products.insertMany(products);
     }
   } // end group loop
 };
@@ -45,11 +54,19 @@ export const importCustomers = async (customers: ICustomerDocument[]) => {
 // Pos config created in main erxes differs from here
 export const extractConfig = (doc) => {
   const { ERXES_API_DOMAIN } = process.env;
-  const uiOptions = doc.uiOptions;
+  const { uiOptions = { favIcon: '', logo: '', bgImage: '' } } = doc;
 
-  uiOptions.favIcon = !uiOptions.favIcon.includes('http') ? `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.favIcon}` : uiOptions.favIcon;
-  uiOptions.logo = !uiOptions.logo.includes('http') ? `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.logo}` : uiOptions.logo;
-  uiOptions.bgImage = !uiOptions.bgImage.includes('http') ? `${ERXES_API_DOMAIN}/read-file?key=${uiOptions.bgImage}` : uiOptions.bgImage;
+  const FILE_PATH = `${ERXES_API_DOMAIN}/read-file`;
+
+  uiOptions.favIcon = !uiOptions.favIcon.includes('http')
+    ? `${FILE_PATH}?key=${uiOptions.favIcon}`
+    : uiOptions.favIcon;
+  uiOptions.logo = !uiOptions.logo.includes('http')
+    ? `${FILE_PATH}?key=${uiOptions.logo}`
+    : uiOptions.logo;
+  uiOptions.bgImage = !uiOptions.bgImage.includes('http')
+    ? `${FILE_PATH}?key=${uiOptions.bgImage}`
+    : uiOptions.bgImage;
 
   return {
     name: doc.name,
@@ -60,8 +77,8 @@ export const extractConfig = (doc) => {
     cashierIds: doc.cashierIds,
     uiOptions,
     ebarimtConfig: doc.ebarimtConfig,
-    syncInfo: doc.syncInfo
-  }
+    syncInfo: doc.syncInfo,
+  };
 };
 
 export const validateConfig = (config: IConfig) => {

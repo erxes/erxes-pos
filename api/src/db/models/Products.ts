@@ -11,6 +11,14 @@ import {
 import { IUserDocument } from './definitions/users';
 import { OrderItems } from './OrderItems';
 
+const checkSKU = (doc: IProduct) => {
+  if (!doc.sku) {
+    doc.sku = 'ш';
+  }
+
+  return doc;
+};
+
 export interface IProductModel extends Model<IProductDocument> {
   updateProductCategory(
     productIds: any,
@@ -53,7 +61,7 @@ export const loadProductClass = () => {
     public static async createProduct(doc: IProduct | IProductDocument) {
       await this.checkCodeDuplication(doc.code);
 
-      return Products.create(doc);
+      return Products.create({ ...checkSKU(doc) });
     }
 
     /**
@@ -66,7 +74,7 @@ export const loadProductClass = () => {
         await this.checkCodeDuplication(doc.code);
       }
 
-      await Products.updateOne({ _id }, { $set: doc });
+      await Products.updateOne({ _id }, { $set: { ...checkSKU(doc) } });
 
       return Products.findOne({ _id });
     }
