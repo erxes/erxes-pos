@@ -67,6 +67,7 @@ const currentConfig = `
         password
         invoiceCode
       }
+      syncInfo
     }
   }
 `;

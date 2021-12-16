@@ -5,7 +5,6 @@ import Customers from '../../db/models/Customers';
 import { IUserDocument } from '../../db/models/definitions/users';
 import { ICustomerDocument } from '../../db/models/definitions/customers';
 import { IConfig } from '../../db/models/definitions/configs';
-import { PRODUCT_STATUSES } from '../../db/models/definitions/constants';
 
 export const importUsers = async (
   users: IUserDocument[],
@@ -29,17 +28,60 @@ export const importProducts = async (groups: any = []) => {
     const categories = group.categories || [];
 
     for (const category of categories) {
-      await ProductCategories.createProductCategory(category);
+      await ProductCategories.updateOne({ _id: category._id }, { $set: { ...category, products: undefined } }, { upsert: true });
 
-      await Products.insertMany(category.products || []);
+      let bulkOps: Array<{
+        updateOne: {
+          filter: { _id: string };
+          update: any;
+          upsert: true;
+        };
+      }> = [];
+
+      for (const product of category.products) {
+        bulkOps.push({
+          updateOne: {
+            filter: { _id: product._id },
+            update: { $set: { ...product } },
+            upsert: true
+          }
+        });
+      }
+
+      await Products.bulkWrite(bulkOps);
     }
   } // end group loop
 };
 
 export const importCustomers = async (customers: ICustomerDocument[]) => {
+  let bulkOps: Array<{
+    updateOne: {
+      filter: { _id: string };
+      update: any;
+      upsert: true;
+    };
+  }> = [];
+
+  let counter = 0;
   for (const customer of customers) {
-    await Customers.createCustomer(customer);
+    if (counter > 1000) {
+      counter = 0;
+      await Customers.bulkWrite(bulkOps);
+      bulkOps = []
+    }
+
+    counter += 1;
+
+    bulkOps.push({
+      updateOne: {
+        filter: { _id: customer._id },
+        update: { $set: { ...customer } },
+        upsert: true
+      }
+    });
   }
+
+  await Customers.bulkWrite(bulkOps);
 };
 
 // Pos config created in main erxes differs from here
@@ -60,7 +102,6 @@ export const extractConfig = (doc) => {
     cashierIds: doc.cashierIds,
     uiOptions,
     ebarimtConfig: doc.ebarimtConfig,
-    syncInfo: doc.syncInfo
   }
 };
 
@@ -92,16 +133,7 @@ export const receiveProduct = async (data) => {
 
   if (action === 'delete') {
     // check usage
-    const isUsed = await Products.isUsed(product._id);
-
-    if (!isUsed) {
-      await Products.deleteOne({ _id: product._id });
-    } else {
-      await Products.updateOne(
-        { _id: product._id },
-        { $set: { status: PRODUCT_STATUSES.DELETED } }
-      );
-    }
+    return Products.removeProducts([object._id])
   }
 };
 

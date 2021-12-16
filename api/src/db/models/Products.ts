@@ -80,7 +80,11 @@ export const loadProductClass = () => {
       let response = 'deleted';
 
       for (const id of _ids) {
-        usedIds.push(id);
+        if (await this.isUsed(id)) {
+          usedIds.push(id);
+        } else {
+          unUsedIds.push(id)
+        }
       }
 
       if (usedIds.length > 0) {

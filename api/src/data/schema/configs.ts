@@ -47,11 +47,14 @@ export const types = `
     uiOptions: UIOptions
     ebarimtConfig: EbarimtConfig
     qpayConfig: QPayConfig
+    syncInfo: JSON
   }
 `;
 
 export const mutations = `
   configsFetch(token: String!): Config
+  syncConfig(type: String!): JSON
+  syncOrders: JSON
 `;
 
 export const queries = `

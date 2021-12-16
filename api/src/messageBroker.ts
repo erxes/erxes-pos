@@ -55,7 +55,7 @@ export const initBroker = async server => {
 
     consumeQueue(`vrpc_queue:erxes-pos-from-api_${syncId}`, async (data) => {
       const { responseId, orderId } = data;
-      await Configs.updateOne({}, { $set: { 'syncInfo.date': new Date() } })
+      await Configs.updateOne({}, { $set: { 'syncInfo.date': new Date() } });
       await Orders.updateOne({ _id: orderId }, { $set: { synced: true } });
       await PutResponses.updateOne({ _id: responseId }, { $set: { synced: true } });
 

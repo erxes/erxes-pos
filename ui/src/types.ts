@@ -93,6 +93,7 @@ export interface IConfig {
   token?: string;
   uiOptions: any;
   ebarimtConfig: IEbarimtConfig;
+  syncInfo: any;
 };
 
 export type CurrentConfigQueryResponse = {

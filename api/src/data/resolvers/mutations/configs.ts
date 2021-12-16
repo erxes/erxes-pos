@@ -36,7 +36,7 @@ const configMutations = {
 
       validateConfig(pos);
 
-      await Configs.updateConfig(config._id, { ...extractConfig(pos), qpayConfig });
+      await Configs.updateConfig(config._id, { ...extractConfig(pos), syncInfo: pos.syncInfo, qpayConfig });
 
       await importUsers(adminUsers, true);
       await importUsers(cashiers, false);
@@ -46,6 +46,53 @@ const configMutations = {
 
     return config;
   },
+
+  async syncConfig(_root, { type }) {
+    const { ERXES_API_DOMAIN } = process.env;
+
+    const config = await Configs.findOne({}).lean();
+
+    const response = await sendRequest({
+      url: `${ERXES_API_DOMAIN}/pos-sync-config`,
+      method: 'get',
+      headers: { 'POS-TOKEN': config.token || '' },
+      body: { syncId: config.syncInfo.id, type }
+    });
+
+    if (!response) {
+      return;
+    }
+
+    switch (type) {
+      case 'config':
+        const {
+          pos = {},
+          adminUsers = [],
+          cashiers = [],
+          qpayConfig,
+        } = response;
+        await Configs.updateConfig(config._id, { ...extractConfig(pos), qpayConfig });
+
+        await importUsers(adminUsers, true);
+        await importUsers(cashiers, false);
+
+        break;
+      case 'products':
+        const { productGroups = [] } = response;
+        await importProducts(productGroups);
+        break;
+      case 'customers':
+        const { customers = [] } = response;
+        await importCustomers(customers);
+        break;
+    }
+
+    return 'success'
+  },
+
+  async syncOrders(_root, _param) {
+    return 'success'
+  }
 };
 
 export default configMutations;
