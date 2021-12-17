@@ -38,24 +38,32 @@ const orderMutations = {
 
     await validateOrder(doc);
 
-    const order = await Orders.createOrder({
+    const orderDoc = {
       number: await generateOrderNumber(),
       totalAmount,
       type,
       customerId,
       userId: user._id,
-    });
+    };
 
-    for (const item of items) {
-      await OrderItems.createOrderItem({
-        count: item.count,
-        productId: item.productId,
-        unitPrice: item.unitPrice,
-        orderId: order._id
-      });
+    try {
+      const order = await Orders.createOrder(orderDoc);
+  
+      for (const item of items) {
+        await OrderItems.createOrderItem({
+          count: item.count,
+          productId: item.productId,
+          unitPrice: item.unitPrice,
+          orderId: order._id
+        });
+      }
+  
+      return order;
+    } catch (e) {
+      debugError(`Error occurred when creating order: ${JSON.stringify(orderDoc)}`);
+
+      return e;
     }
-
-    return order;
   },
   async ordersEdit(_root, doc: IOrderEditParams) {
     await Orders.getOrder(doc._id);
