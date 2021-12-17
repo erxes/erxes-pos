@@ -122,7 +122,6 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   margin: 0 20px 20px 0;
   transition: all ease 0.3s;
   position: relative;
-  height: max-content;
 
   > img {
     width: ${(props) => (props.isPortrait ? "300px" : "140px")};
