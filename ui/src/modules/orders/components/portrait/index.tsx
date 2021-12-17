@@ -80,16 +80,12 @@ export default class PortraitView extends React.Component<Props, State> {
         <AppWrapper>
           <img src="/images/yoshinaya-app.png" alt="app" />
           <FlexCenter>
-            <a href="#" target="_blank">
-              <img className="app-download" src="/images/ios.png" alt="ios" />
-            </a>
-            <a href="#" target="_blank">
-              <img
-                className="app-download"
-                src="/images/android.png"
-                alt="android"
-              />
-            </a>
+            <img className="app-download" src="/images/ios.png" alt="ios" />
+            <img
+              className="app-download"
+              src="/images/android.png"
+              alt="android"
+            />
           </FlexCenter>
         </AppWrapper>
       </ChooseType>

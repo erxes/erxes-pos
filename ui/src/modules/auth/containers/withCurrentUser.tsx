@@ -19,17 +19,14 @@ const withCurrentUser = (Component) => {
     const [orientation, setPortraitOrientation] = React.useState("landscape");
     const { currentUserQuery, currentConfigQuery } = props;
 
-    React.useEffect(
-      () => {
-        if (
-          typeof window !== "undefined" &&
-          window.innerHeight > window.innerWidth
-        ) {
-          setPortraitOrientation("portrait");
-        }
-      },
-      [orientation, window] as any
-    );
+    React.useEffect(() => {
+      if (
+        typeof window !== "undefined" &&
+        window.innerHeight > window.innerWidth
+      ) {
+        setPortraitOrientation("portrait");
+      }
+    }, [setPortraitOrientation]);
 
     if (currentUserQuery.loading || currentConfigQuery.loading) {
       return <Spinner />;

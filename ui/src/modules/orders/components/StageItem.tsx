@@ -5,7 +5,6 @@ import { IOrderItemInput } from "../types";
 import { FlexBetween, FlexCenter } from "modules/common/styles/main";
 // import { confirm } from "modules/common/utils";
 import Icon from "modules/common/components/Icon";
-import { __ } from "modules/common/utils";
 import Quantity from "./Quantity";
 import { PortraitStage } from "./portrait/style";
 
