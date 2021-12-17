@@ -8,6 +8,11 @@ import { FlexCenter } from "modules/common/styles/main";
 export const LogoWrapper = styledTS<{ odd?: boolean }>(styled.div)`
   text-align: center;
   padding: ${(props) => (props.odd ? "50px 0 20px" : "50px")};
+
+  > img {
+    max-width: 400px;
+    max-height: 220px;
+  }
 `;
 
 export const Footer = styledTS<{ color?: string }>(styled.div)`

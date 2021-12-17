@@ -20,7 +20,12 @@ export const Column = styled.div`
 
 export const StageItems = styled.div`
   overflow: auto;
-  max-height: 850px;
+  height: 85%;
+
+  @media (orientation: portrait) {
+    height: 85%;
+    max-height: initial;
+  }
 
   @media (max-width: 1170px and max-height: 1170px) {
     max-height: 650px;
@@ -56,7 +61,7 @@ export const ProductCategories = styled.div`
 export const ProductsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  max-height: 800px;
+  height: 80%;
   overflow: auto;
 
   @media (max-width: 1170px and max-height: 1170px) {
@@ -64,7 +69,8 @@ export const ProductsWrapper = styled.div`
   }
 
   @media (orientation: portrait) {
-    max-height: 1400px;
+    max-height: initial;
+    height: 78%;
   }
 `;
 
@@ -117,6 +123,7 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   margin: 0 20px 20px 0;
   transition: all ease 0.3s;
   position: relative;
+  height: max-content;
 
   > img {
     width: ${(props) => (props.isPortrait ? "300px" : "140px")};
@@ -157,6 +164,10 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
 
   @media (max-width: 1350px) {
     flex-basis: 45%;
+
+    &:nth-child(2n) {
+      margin-right: 0;
+    }
   }
 
   @media (max-width: 1050px) {
@@ -188,6 +199,7 @@ export const Stages = styled.div`
 
 export const StageContent = styled.div`
   margin-top: ${dimensions.coreSpacing}px;
+  height: 100%;
 
   > b {
     margin-bottom: ${dimensions.unitSpacing}px;
