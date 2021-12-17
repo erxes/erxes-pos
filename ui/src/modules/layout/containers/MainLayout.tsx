@@ -11,6 +11,7 @@ type Props = {
   currentUser?: IUser;
   currentConfig?: IConfig;
   plugins?: any;
+  orientation: string;
   children: React.ReactNode;
 };
 

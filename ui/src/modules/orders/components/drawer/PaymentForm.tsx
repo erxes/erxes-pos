@@ -2,7 +2,7 @@ import React from "react";
 import PaymentType from "./PaymentType";
 import CalculationForm from "modules/orders/components/drawer/CalculationForm";
 import { IPaymentParams } from "modules/orders/containers/PosContainer";
-import QPay from './QPay';
+import QPay from "./QPay";
 import { IOrder } from "modules/orders/types";
 
 type Props = {
@@ -12,6 +12,7 @@ type Props = {
   closeDrawer: (type: string) => void;
   makePayment: any;
   order: IOrder;
+  orientation?: string;
 };
 
 type State = {
@@ -25,7 +26,7 @@ class PaymentForm extends React.Component<Props, State> {
 
     this.state = {
       showPaymentType: true,
-      showQpay: false
+      showQpay: false,
     };
   }
 
@@ -36,7 +37,8 @@ class PaymentForm extends React.Component<Props, State> {
   };
 
   render() {
-    const { options, orderId, order } = this.props;
+    const { options, orderId, order, orientation } = this.props;
+    const isPortrait = orientation === "portrait";
 
     if (!orderId) {
       return null;
@@ -45,14 +47,14 @@ class PaymentForm extends React.Component<Props, State> {
     const togglePaymentType = () => {
       this.setState({
         showPaymentType: !this.state.showPaymentType,
-        showQpay: false
+        showQpay: false,
       });
     };
 
     const toggleQpay = () => {
       this.setState({
         showQpay: !this.state.showQpay,
-        showPaymentType: false
+        showPaymentType: false,
       });
     };
 
@@ -62,6 +64,7 @@ class PaymentForm extends React.Component<Props, State> {
           color={options.colors.primary}
           togglePaymentType={togglePaymentType}
           toggleQpay={toggleQpay}
+          isPortrait={isPortrait}
         />
       );
     }
@@ -70,7 +73,13 @@ class PaymentForm extends React.Component<Props, State> {
       return <QPay order={order} handlePayment={this.handlePayment} />;
     }
 
-    return <CalculationForm {...this.props} handlePayment={this.handlePayment} />;
+    return (
+      <CalculationForm
+        {...this.props}
+        handlePayment={this.handlePayment}
+        isPortrait={isPortrait}
+      />
+    );
   }
 }
 

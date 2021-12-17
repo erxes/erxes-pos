@@ -15,6 +15,7 @@ type Props = {
   currentConfig: IConfig;
   qp: any;
   productsQuery: any;
+  orientation: string;
 } & IRouterProps;
 
 export default class Products extends React.Component<Props> {
@@ -27,19 +28,20 @@ export default class Products extends React.Component<Props> {
   };
 
   renderCategories() {
-    const { productCategories, qp } = this.props;
-    const catId = qp && qp.categoryId ? qp.categoryId : '';
+    const { productCategories, qp, orientation } = this.props;
+    const catId = qp && qp.categoryId ? qp.categoryId : "";
 
     const categories = productCategories.map((cat) => (
       <CategoryItem
         category={cat}
         key={cat._id}
         activeCategoryId={catId}
+        orientation={orientation}
         onClickCategory={this.onClickCategory}
       />
     ));
 
-    return (<ProductCategories>{categories}</ProductCategories>);
+    return <ProductCategories>{categories}</ProductCategories>;
   }
 
   addItem(item: IProduct, count: number) {
@@ -59,20 +61,25 @@ export default class Products extends React.Component<Props> {
     } else {
       currentItems = items.filter((i) => i.productId !== item._id);
 
-      currentItems.push({ ...doc, count: exists.count + count, _id: exists._id });
+      currentItems.push({
+        ...doc,
+        count: exists.count + count,
+        _id: exists._id,
+      });
     }
 
     setItems(currentItems);
   }
 
   renderProducts() {
-    const { products = [] } = this.props;
+    const { products = [], orientation } = this.props;
 
     return products.map((product) => {
       return (
         <ProductItem
           product={product}
           key={product._id}
+          orientation={orientation}
           addItem={this.addItem.bind(this, product, 1)}
         />
       );

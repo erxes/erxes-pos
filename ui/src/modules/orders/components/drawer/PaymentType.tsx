@@ -3,37 +3,38 @@ import styledTS from "styled-components-ts";
 import styled from "styled-components";
 import { __ } from "modules/common/utils";
 
-const TypeWrapper = styled.div`
+const TypeWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   margin-top: 50px;
 
   h2 {
     text-align: center;
     margin-bottom: 40px;
+    font-size: ${(props) => props.isPortrait && "50px"};
 
-    @media (max-width: 1250px) {
+    @media (max-width: 1250px and max-height: 1250px) {
       font-size: 25px;
     }
   }
 `;
 
-const Cards = styledTS<{ color?: string }>(styled.div)`
+const Cards = styledTS<{ color?: string; isPortrait?: boolean }>(styled.div)`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
 
   p {
     color: ${(props) => props.color && props.color};
-    font-size: 18px;
+    font-size: ${(props) => (props.isPortrait ? "35px" : "18px")};
     font-weight: 500;
 
-    @media (max-width: 1250px) {
+    @media (max-width: 1250px and max-height: 1250px) {
       line-height: 22px;
       font-size: 16px;  
     }
   }
 `;
 
-const Card = styled.div`
+const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 40px 40px 30px;
@@ -42,7 +43,7 @@ const Card = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 45%;
+  width: ${(props) => (props.isPortrait ? "100%" : "45%")};
   margin: 0 20px 20px 0;
   flex-shrink: 0;
   cursor: pointer;
@@ -55,18 +56,18 @@ const Card = styled.div`
     justify-content: center;
 
     > img {
-      max-height: 150px;
-      max-width: 150px;
+      max-height: ${(props) => (props.isPortrait ? "250px" : "150px")};
+      max-width: ${(props) => (props.isPortrait ? "250px" : "150px")};
       margin-bottom: 30px;
 
-      @media (max-width: 1250px) {
+      @media (max-width: 1250px and max-height: 1250px) {
         max-height: 80px;
         max-width: 80px;
         margin-bottom: 20px;
       }
     }
 
-    @media (max-width: 1250px) {
+    @media (max-width: 1250px and max-height: 1250px) {
       height: 80px;
     }
   }
@@ -79,7 +80,7 @@ const Card = styled.div`
     box-shadow: 0 6px 10px 1px rgba(136, 136, 136, 0.08);
   }
 
-  @media (max-width: 1250px) {
+  @media (max-width: 1250px and max-height: 1250px) {
     padding: 20px;
   }
 `;
@@ -88,25 +89,26 @@ type Props = {
   color: string;
   togglePaymentType: () => void;
   toggleQpay: () => void;
+  isPortrait?: boolean;
 };
 
 class PaymentType extends React.Component<Props> {
   render() {
-    const { color, togglePaymentType, toggleQpay } = this.props;
+    const { color, togglePaymentType, toggleQpay, isPortrait } = this.props;
 
     return (
-      <TypeWrapper>
+      <TypeWrapper isPortrait={isPortrait}>
         <h2>{__("Choose the payment method")}</h2>
 
-        <Cards color={color}>
-          <Card>
-            <div onClick={() => togglePaymentType()}>
+        <Cards color={color} isPortrait={isPortrait}>
+          <Card isPortrait={isPortrait} onClick={() => togglePaymentType()}>
+            <div>
               <img src="/images/payment2.png" alt="payment" />
             </div>
             <p>{__("In cash or by card")}</p>
           </Card>
-          <Card>
-            <div onClick={() => toggleQpay()}>
+          <Card isPortrait={isPortrait} onClick={() => toggleQpay()}>
+            <div>
               <img src="/images/payment1.png" alt="payment" />
             </div>
             <p>{__("Pay with QPay")}</p>

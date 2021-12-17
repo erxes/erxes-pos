@@ -7,7 +7,7 @@ export const PosWrapper = styled.div`
   flex: 1;
   position: relative;
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     .no-padding {
       padding: 0;
     }
@@ -22,7 +22,7 @@ export const StageItems = styled.div`
   overflow: auto;
   max-height: 850px;
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     max-height: 650px;
   }
 `;
@@ -38,7 +38,7 @@ export const MainContent = styledTS<{
     props.hasShadow && "rgb(217, 226, 236) 0px 0px 24px 0px;"};
   height: 100vh;
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     padding: ${(props) => (props.noPadding ? 0 : "15px 10px")};
   }
 `;
@@ -48,7 +48,7 @@ export const ProductCategories = styled.div`
   flex-wrap: wrap;
   margin: 30px 0;
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     margin: 20px 0 10px 0;
   }
 `;
@@ -59,19 +59,25 @@ export const ProductsWrapper = styled.div`
   max-height: 800px;
   overflow: auto;
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     max-height: 570px;
+  }
+
+  @media (orientation: portrait) {
+    max-height: 1400px;
   }
 `;
 
-export const ProductCategory = styledTS<{ isActive?: boolean; color?: string }>(
-  styled.div
-)`
+export const ProductCategory = styledTS<{
+  isActive?: boolean;
+  color?: string;
+  isPortrait?: boolean;
+}>(styled.div)`
   box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 25px;
-  font-size: 11px;
+  border-radius: 30px;
+  font-size: ${(props) => (props.isPortrait ? "28px" : "11px")};
   font-weight: 500;
-  margin: 0 10px 10px 0;
+  margin: ${(props) => (props.isPortrait ? "0 20px 20px 0" : "0 10px 10px 0")};
   padding: ${dimensions.unitSpacing}px 15px;
   background: ${(props) =>
     props.isActive
@@ -82,10 +88,11 @@ export const ProductCategory = styledTS<{ isActive?: boolean; color?: string }>(
   cursor: pointer;
   color: ${(props) => props.isActive && colors.colorWhite};
   transition: all ease .3s;
+  display: flex;
 
   img {
-      max-width: 20px;
-      max-height: 20px;
+      max-width: ${(props) => (props.isPortrait ? "80px" : "40px")};
+      max-height: ${(props) => (props.isPortrait ? "80px" : "40px")};
       margin-right:  ${dimensions.unitSpacing}px;
   }
 
@@ -94,7 +101,7 @@ export const ProductCategory = styledTS<{ isActive?: boolean; color?: string }>(
   }
 `;
 
-export const Item = styled.div`
+export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
   border-radius: 24px;
   background: ${colors.colorWhite};
@@ -112,20 +119,20 @@ export const Item = styled.div`
   position: relative;
 
   > img {
-    width: 120px;
-    max-height: 120px;
+    width: ${(props) => (props.isPortrait ? "300px" : "120px")};
+    max-height: ${(props) => (props.isPortrait ? "300px" : "120px")};
   }
 
   > strong {
-    font-size: 18px;
+    font-size: ${(props) => (props.isPortrait ? "38px" : "18px")};
 
-    @media (max-width: 1170px) {
+    @media (max-width: 1170px and max-height: 1170px) {
       font-size: 16px;
     }
   }
 
   > h4 {
-    font-size: 13px;
+    font-size: ${(props) => (props.isPortrait ? "26px" : "13px")};
     margin: 10px 0 5px;
   }
 
@@ -161,12 +168,14 @@ export const Item = styled.div`
   }
 `;
 
-export const ProductLabel = styledTS<{ color?: string }>(styled.div)`
+export const ProductLabel = styledTS<{ color?: string; isPortrait?: boolean }>(
+  styled.div
+)`
   background: ${(props) => (props.color ? props.color : colors.colorSecondary)}
   color: ${colors.colorWhite};
   padding: 12px 15px;
   border-radius: 5px;
-  font-size: 12px;
+  font-size: ${(props) => (props.isPortrait ? "24px" : "12px")};
   margin-top: 20px;
   text-align: center;
   font-weight: 500;
@@ -351,8 +360,49 @@ export const FlexColumn = styled.div`
   }
 `;
 
-export const FormHead = styled.div`
+export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
   padding: 0 30px 20px;
+  font-size: ${(props) => props.isPortrait && "30px"};
+
+  label {
+    font-size: ${(props) => props.isPortrait && "24px"};
+
+    > span {
+      font-size: ${(props) => props.isPortrait && "30px"};
+
+      &:before {
+        height: ${(props) => props.isPortrait && "30px"};
+    width: ${(props) => props.isPortrait && "30px"};
+      }
+    }
+  }
+
+  input {
+    height: ${(props) => props.isPortrait && "60px"} !important;
+    font-size: ${(props) => props.isPortrait && "27px"} !important;
+  }
+
+  .icon-cancel {
+    font-size: ${(props) => props.isPortrait && "20px"};
+  }
+
+  button {
+    font-size: ${(props) => props.isPortrait && "28px"};
+  }
+
+  .react-toggle-track {
+    height: ${(props) => props.isPortrait && "40px"};
+    width: ${(props) => props.isPortrait && "90px"};
+  }
+
+  .react-toggle--checked .react-toggle-thumb {
+    left: ${(props) => props.isPortrait && "50px"};
+  }
+
+  .react-toggle-thumb {
+    height: ${(props) => props.isPortrait && "40px"};
+    width: ${(props) => props.isPortrait && "40px"};
+  }
 
   .jbyscQ {
     margin-bottom: 20px;

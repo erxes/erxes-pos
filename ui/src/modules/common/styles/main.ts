@@ -350,7 +350,7 @@ const Divider = styled.div`
   margin: 0 ${dimensions.coreSpacing}px ${dimensions.coreSpacing}px
     ${columnTitleSize}px;
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     margin-left: ${dimensions.coreSpacing}px;
   }
 `;
@@ -360,7 +360,7 @@ const Row = styled.div`
   flex-direction: row;
   padding-top: ${dimensions.coreSpacing}px;
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     flex-direction: column;
     padding-left: ${dimensions.coreSpacing}px;
   }
@@ -386,7 +386,7 @@ const RowTitle = styled.h3`
     line-height: 1.4;
   }
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     align-self: flex-start;
   }
 `;
@@ -406,11 +406,21 @@ const FlexBetween = styled(FlexCenter)`
   justify-content: space-between;
 `;
 
-const ColumnBetween = styled.div`
+const ColumnBetween = styledTS<{ orientation?: string }>(styled.div)`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  height: ${(props) => (props.orientation === "portrait" ? "90%" : "100%")};
+
+  .payment-section {
+    margin-bottom: 30px;
+    font-size: 26px;
+
+    > button {
+      font-size: 28px;
+      margin-top: 30px;
+    }
+  }
 `;
 
 export {

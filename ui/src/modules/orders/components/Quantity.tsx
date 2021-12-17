@@ -4,37 +4,41 @@ import styledTS from "styled-components-ts";
 import { FlexCenter } from "modules/common/styles/main";
 import Icon from "modules/common/components/Icon";
 
-const Wrapper = styled.div`
+const Wrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   display: flex;
   align-items: center;
   overflow: hidden;
   flex-shrink: 0;
   margin-right: 50px;
+  margin: ${(props) => props.isPortrait && "10px 0 20px 0"};
+
 
   > input {
-    font-size: 15px;
+    font-size: ${(props) => (props.isPortrait ? "28px" : "15px")};
     color: #616e7c;
     border: 1px solid #cbd2d9;
     border-radius: 4px;
     padding: 0 10px;
     font-weight: 500;
     min-width: 32px;
-    margin: 0;
+    margin:  ${(props) => (props.isPortrait ? "0 20px" : "0")};
     text-align: center;
   }
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     margin-right: 35px;
   }
 `;
 
-const Button = styledTS<{ disabled: boolean; color?: string }>(
-  styled(FlexCenter)
-)`
+const Button = styledTS<{
+  disabled: boolean;
+  color?: string;
+  isPortrait?: boolean;
+}>(styled(FlexCenter))`
   width: 20px;
   height: 20px;
   margin: 0 8px;
-  font-size: 12px;
+  font-size: ${(props) => (props.isPortrait ? "26px" : "12px")};
   color: #616E7C;
   pointer-events: ${(props) => props.disabled && "none"};
   cursor: pointer;
@@ -56,6 +60,7 @@ type Props = {
   value: number;
   color: string;
   onChange: (value: number) => void;
+  isPortrait?: boolean;
 };
 
 const formatNumber = (num: number) => {
@@ -65,8 +70,9 @@ const formatNumber = (num: number) => {
 };
 
 const Quantity = (props: Props) => {
-  const { value, step = 1, onChange, max, color } = props;
+  const { value, step = 1, onChange, max, color, isPortrait } = props;
   const [inputValue, setInputValue] = useState(formatNumber(value));
+  const widthValue = isPortrait ? 54 : 24;
 
   useEffect(() => {
     setInputValue(formatNumber(value));
@@ -105,15 +111,16 @@ const Quantity = (props: Props) => {
   };
 
   return (
-    <Wrapper>
+    <Wrapper isPortrait={isPortrait}>
       <Button
         disabled={isDisabled(false)}
         onClick={() => onChangeByStep(false)}
+        isPortrait={isPortrait}
       >
         <Icon icon="minus" />
       </Button>
       <input
-        style={{ width: inputValue.length * 9 + 24 + "px" }}
+        style={{ width: inputValue.length * 9 + widthValue + "px" }}
         type="text"
         value={inputValue}
         onChange={onChangeInput}
@@ -122,6 +129,7 @@ const Quantity = (props: Props) => {
         disabled={isDisabled(true)}
         onClick={() => onChangeByStep(true)}
         color={color}
+        isPortrait={isPortrait}
       >
         <Icon icon="plus" />
       </Button>

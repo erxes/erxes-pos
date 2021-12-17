@@ -1,6 +1,6 @@
 import { withRouter } from "react-router-dom";
 import React from "react";
-import queryString from 'query-string';
+import queryString from "query-string";
 
 import {
   IRouterProps,
@@ -19,6 +19,7 @@ type Props = {
   setItems: (items: IOrderItemInput[]) => void;
   items: IOrderItemInput[];
   currentConfig: IConfig;
+  orientation: string;
 } & IRouterProps;
 
 class ProductsContainer extends React.Component<Props> {
@@ -33,11 +34,13 @@ class ProductsContainer extends React.Component<Props> {
       ...this.props,
       productCategories: productCategoriesQuery.productCategories || [],
       products: productsQuery.products || [],
-      qp: queryString.parse(location.search)
+      qp: queryString.parse(location.search),
     };
 
     return <Products {...updatedProps} />;
   }
 }
 
-export default withCurrentUser(withRouter<IRouterProps & Props>(ProductsContainer));
+export default withCurrentUser(
+  withRouter<IRouterProps & Props>(ProductsContainer)
+);

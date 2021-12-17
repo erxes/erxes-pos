@@ -1,8 +1,9 @@
 import React from "react";
 import NumberFormat from "react-number-format";
 import styled from "styled-components";
-import gql from 'graphql-tag';
-import apolloClient from 'apolloClient';
+import styledTS from "styled-components-ts";
+import gql from "graphql-tag";
+import apolloClient from "apolloClient";
 
 import { Alert } from "modules/common/utils";
 import FormControl from "modules/common/components/form/Control";
@@ -16,19 +17,20 @@ import { formatNumber } from "modules/utils";
 import FormGroup from "modules/common/components/form/Group";
 import ControlLabel from "modules/common/components/form/Label";
 import Toggle from "modules/common/components/Toggle";
-import { queries } from '../../graphql/index';
+import { queries } from "../../graphql/index";
 import { IPaymentParams } from "modules/orders/containers/PosContainer";
 
-const PaymentWrapper = styled.div`
-  margin: 20px 21%;
+const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
+  margin: ${(props) => (props.isPortrait ? "20px 10%" : "20px 21%")};
   text-align: center;
 
   button {
-    padding: 10px 20px;
+    padding: ${(props) => (props.isPortrait ? "20px 30px" : "10px 20px")};
     border-radius: 8px;
+    font-size: ${(props) => props.isPortrait && "32px"};
   }
 
-  @media (max-width: 1600px) {
+  @media (max-width: 1600px and max-height: 1600px) {
     margin: 20px 10%;
   }
 `;
@@ -42,18 +44,18 @@ const KeyBoard = styled.div`
   margin-bottom: 30px;
 `;
 
-const KeyPad = styled(FlexCenter)`
-  width: 95px;
-  height: 95px;
-  border-radius: 95px;
-  line-height: 95px;
+const KeyPad = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
+  width: ${(props) => (props.isPortrait ? "140px" : "95px")}
+  height: ${(props) => (props.isPortrait ? "140px" : "95px")}
+  border-radius: ${(props) => (props.isPortrait ? "140px" : "95px")}
+  line-height: ${(props) => (props.isPortrait ? "140px" : "95px")}
   background: #eee;
   margin: 8px;
-  font-size: 32px;
+  font-size: ${(props) => (props.isPortrait ? "42px" : "32px")};
   font-weight: 600;
   cursor: pointer;
 
-  @media (max-width: 1600px) {
+  @media (max-width: 1600px and max-height: 1600px) {
     width: 80px;
     height: 80px;
     border-radius: 80px;
@@ -70,20 +72,22 @@ const Title = styled.h2`
 const Header = styled.div`
   margin: 30px 80px 20px;
 
-  @media (max-width: 1600px) {
+  @media (max-width: 1600px and max-height: 1600px) {
     margin: 20px 20px 0px;
   }
 `;
 
-const HeaderRow = styled(FlexCenter)`
+const HeaderRow = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
   justify-content: flex-start;
   margin-bottom: 20px;
+  margin: ${(props) => props.isPortrait && "30px 0 30px 0"};
 `;
 
 type Props = {
   orderId: string;
   options: any;
   closeDrawer: any;
+  isPortrait?: boolean;
   totalAmount?: number;
   title?: string;
   isPayment?: boolean;
@@ -99,13 +103,13 @@ type State = {
 
 // НӨАТ-н баримтын төрөл
 export const BILL_TYPES = {
-  CITIZEN: '1', // иргэнд өгөх баримт
-  ENTITY: '3', // байгууллагад өгөх баримт
+  CITIZEN: "1", // иргэнд өгөх баримт
+  ENTITY: "3", // байгууллагад өгөх баримт
 };
 
 const PAYMENT_TYPES = {
-  CARD: 'cardAmount',
-  CASH: 'cashAmount'
+  CARD: "cardAmount",
+  CASH: "cashAmount",
 };
 
 class CalculationForm extends React.Component<Props, State> {
@@ -140,7 +144,7 @@ class CalculationForm extends React.Component<Props, State> {
   };
 
   reset = (key: string) => {
-    this.setState({ [key]: key === 'registerNumber' ? '' : 0 } as any);
+    this.setState({ [key]: key === "registerNumber" ? "" : 0 } as any);
   };
 
   handleSubmit = () => {
@@ -150,28 +154,34 @@ class CalculationForm extends React.Component<Props, State> {
       registerNumber,
       cardAmount,
       cashAmount,
-      billType
+      billType,
     });
   };
 
   checkOrganization() {
-    apolloClient.query({
-      query: gql(queries.ordersCheckCompany),
-      variables: { registerNumber: this.state.registerNumber }
-    }).then(({ data, errors }) => {
-      if (errors) {
-        Alert.error(errors.toString())
-      }
+    apolloClient
+      .query({
+        query: gql(queries.ordersCheckCompany),
+        variables: { registerNumber: this.state.registerNumber },
+      })
+      .then(({ data, errors }) => {
+        if (errors) {
+          Alert.error(errors.toString());
+        }
 
-      if (data && data.ordersCheckCompany) {
-        Alert.success(data.ordersCheckCompany.name);
-      }
-    });
+        if (data && data.ordersCheckCompany) {
+          Alert.success(data.ordersCheckCompany.name);
+        }
+      });
   }
 
   renderKeyPad(key, num) {
     return (
-      <KeyPad key={key} onClick={() => this.onChangeKeyPad(num.toString())}>
+      <KeyPad
+        key={key}
+        onClick={() => this.onChangeKeyPad(num.toString())}
+        isPortrait={this.props.isPortrait}
+      >
         {num}
       </KeyPad>
     );
@@ -179,7 +189,7 @@ class CalculationForm extends React.Component<Props, State> {
 
   renderFormHead() {
     const { showE, billType, cashAmount, cardAmount } = this.state;
-    const { options, totalAmount } = this.props;
+    const { options, totalAmount, isPortrait } = this.props;
 
     const inputProps: any = {
       allowNegative: false,
@@ -204,7 +214,7 @@ class CalculationForm extends React.Component<Props, State> {
     };
 
     return (
-      <FormHead>
+      <FormHead isPortrait={isPortrait}>
         <Amount color={options.colors.primary}>
           <span>{__("Amount to pay")}</span>
           {formatNumber(totalAmount || 0)}₮
@@ -215,7 +225,9 @@ class CalculationForm extends React.Component<Props, State> {
             <NumberFormat
               name="cardAmount"
               value={cardAmount}
-              onValueChange={(values) => handleInput(PAYMENT_TYPES.CARD, values.floatValue)}
+              onValueChange={(values) =>
+                handleInput(PAYMENT_TYPES.CARD, values.floatValue)
+              }
               onClick={() => handleClick(PAYMENT_TYPES.CARD)}
               {...inputProps}
             />
@@ -230,7 +242,9 @@ class CalculationForm extends React.Component<Props, State> {
             <NumberFormat
               name="cashAmount"
               value={cashAmount}
-              onValueChange={(values) => handleInput(PAYMENT_TYPES.CASH, values.floatValue)}
+              onValueChange={(values) =>
+                handleInput(PAYMENT_TYPES.CASH, values.floatValue)
+              }
               onClick={() => handleClick(PAYMENT_TYPES.CASH)}
               {...inputProps}
             />
@@ -239,7 +253,7 @@ class CalculationForm extends React.Component<Props, State> {
             </div>
           </Input>
         </FormGroup>
-        <HeaderRow>
+        <HeaderRow isPortrait={isPortrait}>
           <ControlLabel>{__("E-barimt")}:</ControlLabel> &ensp;
           <Toggle
             checked={showE}
@@ -280,13 +294,13 @@ class CalculationForm extends React.Component<Props, State> {
   }
 
   render() {
-    const { title, isPayment, options } = this.props;
+    const { title, isPayment, options, isPortrait } = this.props;
 
     const onChangeReg = (e) => {
       const value = (e.target as HTMLInputElement).value;
 
       this.setState({ registerNumber: value });
-    }
+    };
 
     return (
       <>
@@ -294,7 +308,7 @@ class CalculationForm extends React.Component<Props, State> {
         <Header>
           {this.renderFormHead()}
           {this.state.showE && this.state.billType === BILL_TYPES.ENTITY && (
-            <FormHead>
+            <FormHead isPortrait={isPortrait}>
               <FlexCenter>
                 <Input color={options.colors.primary}>
                   <FormControl
@@ -308,7 +322,10 @@ class CalculationForm extends React.Component<Props, State> {
                   </div>
                 </Input>
                 {this.state.billType === BILL_TYPES.ENTITY && (
-                  <Button style={{ backgroundColor: options.colors.primary }} onClick={() => this.checkOrganization()}>
+                  <Button
+                    style={{ backgroundColor: options.colors.primary }}
+                    onClick={() => this.checkOrganization()}
+                  >
                     {__("Check")}
                   </Button>
                 )}
@@ -316,7 +333,7 @@ class CalculationForm extends React.Component<Props, State> {
             </FormHead>
           )}
         </Header>
-        <PaymentWrapper>
+        <PaymentWrapper isPortrait={isPortrait}>
           <KeyBoard>
             {Array.from({ length: 9 }, (_, i) => i + 1).map((num, index) =>
               this.renderKeyPad(index, num)

@@ -23,6 +23,7 @@ import PaymentForm from "./drawer/PaymentForm";
 import CustomerForm from "./drawer/CustomerForm";
 import ProductSearch from "../containers/ProductSearch";
 import { IPaymentParams } from "../containers/PosContainer";
+import PortraitView from "./portrait";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -33,6 +34,7 @@ type Props = {
   currentUser: IUser;
   currentConfig: IConfig;
   order: IOrder | null;
+  orientation: string;
   updateOrder: (params) => void;
   makePayment: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
@@ -110,17 +112,15 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   changeItemCount = (item: IOrderItemInput) => {
-    let items = this.state.items.map(
-      (i) => {
-        if (i.productId === item.productId) {
-          i.count = item.count;
-        }
-
-        return i;
+    let items = this.state.items.map((i) => {
+      if (i.productId === item.productId) {
+        i.count = item.count;
       }
-    );
 
-    items = items.filter(i => i.count > 0);
+      return i;
+    });
+
+    items = items.filter((i) => i.count > 0);
 
     const totalAmount = getTotalAmount(items);
 
@@ -189,7 +189,12 @@ export default class Pos extends React.Component<Props, State> {
           )
         );
       case "customer":
-        return (<CustomerForm addCustomer={addCustomer} toggleDrawer={this.toggleDrawer}></CustomerForm>);
+        return (
+          <CustomerForm
+            addCustomer={addCustomer}
+            toggleDrawer={this.toggleDrawer}
+          ></CustomerForm>
+        );
       default:
         return null;
     }
@@ -200,10 +205,35 @@ export default class Pos extends React.Component<Props, State> {
       currentUser,
       currentConfig,
       order,
+      orientation,
       productCategoriesQuery,
       productsQuery,
     } = this.props;
     const { items, totalAmount, showMenu, type } = this.state;
+
+    const products = (
+      <ProductsContainer
+        setItems={this.setItems}
+        items={items}
+        productCategoriesQuery={productCategoriesQuery}
+        productsQuery={productsQuery}
+        orientation={orientation}
+      />
+    );
+
+    if (orientation === "portrait") {
+      return (
+        <PortraitView
+          {...this.props}
+          products={products}
+          items={items}
+          changeItemCount={this.changeItemCount}
+          totalAmount={totalAmount}
+          addOrder={this.addOrder}
+          order={order}
+        />
+      );
+    }
 
     return (
       <>
@@ -215,12 +245,7 @@ export default class Pos extends React.Component<Props, State> {
                   <NameCard user={currentUser} avatarSize={40} />
                   <ProductSearch productsQuery={productsQuery} />
                 </FlexBetween>
-                <ProductsContainer
-                  setItems={this.setItems}
-                  items={items}
-                  productCategoriesQuery={productCategoriesQuery}
-                  productsQuery={productsQuery}
-                />
+                {products}
               </MainContent>
             </Col>
             <Col sm={3} className="no-padding">

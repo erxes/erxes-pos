@@ -69,9 +69,15 @@ const MainWrapper = styledTS<{ collapsed: boolean }>(styled.div)`
   max-width: 100%;
   transition: width .3s;
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     padding-left: 40px;
   }
+`;
+
+const PortraitWrapper = styled.div`
+  background: #fff;
+  width: 100%;
+  height: 100%;
 `;
 
 const Authlayout = styledTS<{ hasConfig: boolean }>(styled.div)`
@@ -210,7 +216,7 @@ const LeftNavigation = styledTS<{ collapsed: boolean; color?: string }>(
     }
   }
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     width: 40px;
   }
 `;
@@ -537,7 +543,7 @@ export const Bottom = styled.div`
     background: rgba(0, 0, 0, 0.06);
   }
 
-  @media (max-width: 1170px) {
+  @media (max-width: 1170px and max-height: 1170px) {
     width: 40px;
   }
 `;
@@ -582,4 +588,5 @@ export {
   DropSubNavItem,
   DropNav,
   ExpandIcon,
+  PortraitWrapper,
 };

@@ -30,7 +30,7 @@ export const unsubscribe = ({ location }) => {
   return <Unsubscribe queryParams={queryParams} />;
 };
 
-const renderRoutes = (currentUser, currentConfig) => {
+const renderRoutes = (currentUser, currentConfig, orientation) => {
   const userConfirmation = ({ location }) => {
     const queryParams = queryString.parse(location.search);
 
@@ -56,6 +56,7 @@ const renderRoutes = (currentUser, currentConfig) => {
       <>
         <MainLayout
           currentUser={currentUser}
+          orientation={orientation}
           currentConfig={currentConfig}
           plugins={plugins}
         >
@@ -90,9 +91,11 @@ const renderRoutes = (currentUser, currentConfig) => {
 const Routes = ({
   currentUser,
   currentConfig,
+  orientation,
 }: {
   currentUser: IUser;
   currentConfig: IConfig;
+  orientation: string;
 }) => (
   <Router>
     <>
@@ -103,7 +106,7 @@ const Routes = ({
         component={unsubscribe}
       />
 
-      {renderRoutes(currentUser, currentConfig)}
+      {renderRoutes(currentUser, currentConfig, orientation)}
     </>
   </Router>
 );

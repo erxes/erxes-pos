@@ -16,7 +16,20 @@ type Props = {
 
 const withCurrentUser = (Component) => {
   const Container = (props: Props) => {
+    const [orientation, setPortraitOrientation] = React.useState("landscape");
     const { currentUserQuery, currentConfigQuery } = props;
+
+    React.useEffect(
+      () => {
+        if (
+          typeof window !== "undefined" &&
+          window.innerHeight > window.innerWidth
+        ) {
+          setPortraitOrientation("portrait");
+        }
+      },
+      [orientation, window] as any
+    );
 
     if (currentUserQuery.loading || currentConfigQuery.loading) {
       return <Spinner />;
@@ -24,19 +37,10 @@ const withCurrentUser = (Component) => {
 
     const currentUser = currentUserQuery.currentUser;
 
-    // useEffect(() => {
-    //   currentUserQuery.subscribeToMore({
-    //     document: gql(userChanged),
-    //     variables: { userId: currentUser ? currentUser._id : null },
-    //     updateQuery: () => {
-    //       currentUserQuery.refetch();
-    //     }
-    //   });
-    // });
-
     const updatedProps = {
       ...props,
       currentUser,
+      orientation,
       currentConfig: currentConfigQuery.currentConfig,
     };
 

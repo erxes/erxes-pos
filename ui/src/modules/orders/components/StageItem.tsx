@@ -1,11 +1,13 @@
 import React from "react";
 import styled from "styled-components";
+import styledTS from "styled-components-ts";
 import { IOrderItemInput } from "../types";
 import { FlexBetween, FlexCenter } from "modules/common/styles/main";
 import { confirm } from "modules/common/utils";
 import Icon from "modules/common/components/Icon";
 import { __ } from "modules/common/utils";
 import Quantity from "./Quantity";
+import { PortraitStage } from "./portrait/style";
 
 const Item = styled.div`
   background: #fff;
@@ -15,17 +17,19 @@ const Item = styled.div`
   margin-bottom: 10px;
 `;
 
-const Close = styled(FlexCenter)`
-  background: #e4ebf1;
-  width: 35px;
+const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
+  background: ${(props) => !props.isPortrait && "#e4ebf1"};
+  width: ${(props) => (props.isPortrait ? "50px" : "35px")};
+  height: ${(props) => props.isPortrait && "50px"};
   position: absolute;
-  right: 0;
-  top: 0;
-  bottom: 0;
+  right: ${(props) => (props.isPortrait ? "10px" : "0")};
+  top: ${(props) => (props.isPortrait ? "10px" : "0")};
+  bottom: ${(props) => (props.isPortrait ? "auto" : "0")};
   cursor: pointer;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   transition: all ease 0.3s;
+  font-size: ${(props) => props.isPortrait && "40px"};
 
   &:hover {
     i {
@@ -34,23 +38,25 @@ const Close = styled(FlexCenter)`
   }
 `;
 
-export const Text = styled.div`
+export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
   padding: 10px;
   word-break: break-word;
+  font-size: ${(props) => props.isPortrait && "26px"};
 
   > div {
-    line-height: 13px;
+    line-height: ${(props) => (props.isPortrait ? "25px" : "13px")};
   }
 
   > span {
     color: #616e7c;
-    font-size: 11px;
+    font-size: ${(props) => (props.isPortrait ? "22px" : "11px")};
   }
 `;
 
 type Props = {
   item: IOrderItemInput;
   color: string;
+  orientation?: string;
   changeItemCount: (item: IOrderItemInput) => void;
 };
 
@@ -68,14 +74,51 @@ export default class StageItem extends React.Component<Props> {
   }
 
   render() {
-    const { item, changeItemCount, color } = this.props;
+    const { item, changeItemCount, color, orientation } = this.props;
     const { productName, unitPrice, count } = item;
+    const isPortrait = orientation === "portrait";
 
     const onRemoveItem = () => {
       confirm(`${__("Are you sure")}?`).then(() => {
         changeItemCount({ ...item, count: 0 });
       });
     };
+
+    if (orientation && isPortrait) {
+      return (
+        <Item>
+          <PortraitStage>
+            <img
+              src={
+                "https://yoshinoyabucket.s3.us-east-2.amazonaws.com/0.12592724587805204%6019-Copya.png"
+              }
+              alt={productName}
+            />
+            <Text isPortrait={isPortrait}>
+              <div>
+                <b>{productName}</b>
+              </div>
+              <span>
+                {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
+              </span>
+            </Text>
+            <FlexCenter>
+              <Quantity
+                step={1}
+                max={1000}
+                value={count || 0}
+                onChange={this.onChange}
+                color={color}
+                isPortrait={isPortrait}
+              />
+            </FlexCenter>
+            <Close onClick={onRemoveItem} isPortrait={isPortrait}>
+              <Icon icon="cancel-1" />
+            </Close>
+          </PortraitStage>
+        </Item>
+      );
+    }
 
     return (
       <Item>

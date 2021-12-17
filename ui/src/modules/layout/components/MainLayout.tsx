@@ -3,7 +3,14 @@ import { IRouterProps, IConfig } from "../../../types";
 import { bustIframe } from "modules/common/utils";
 import React from "react";
 import { withRouter } from "react-router-dom";
-import { Layout, MainWrapper, Bottom, NavItem, NavIcon } from "../styles";
+import {
+  Layout,
+  MainWrapper,
+  Bottom,
+  NavItem,
+  NavIcon,
+  PortraitWrapper,
+} from "../styles";
 import DetectBrowser from "./DetectBrowser";
 import Navigation from "./Navigation";
 import { setHeader } from "modules/utils";
@@ -12,6 +19,7 @@ import Tip from "modules/common/components/Tip";
 interface IProps extends IRouterProps {
   currentUser?: IUser;
   currentConfig?: IConfig;
+  orientation: string;
   children: React.ReactNode;
   logout: () => void;
 }
@@ -49,8 +57,25 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
   };
 
   render() {
-    const { children, currentUser, currentConfig, logout } = this.props;
+    const {
+      children,
+      currentUser,
+      currentConfig,
+      logout,
+      orientation,
+    } = this.props;
     const { isCollapsed } = this.state;
+
+    if (orientation === "portrait") {
+      return (
+        <>
+          <div id="anti-clickjack" style={{ display: "none" }} />
+          <Layout>
+            <PortraitWrapper>{children}</PortraitWrapper>
+          </Layout>
+        </>
+      );
+    }
 
     return (
       <>
@@ -64,7 +89,9 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
               onCollapseNavigation={this.onCollapseNavigation}
             />
           )}
-          <MainWrapper collapsed={isCollapsed} className="main-wrapper">{children}</MainWrapper>
+          <MainWrapper collapsed={isCollapsed} className="main-wrapper">
+            {children}
+          </MainWrapper>
           <DetectBrowser />
         </Layout>
 
