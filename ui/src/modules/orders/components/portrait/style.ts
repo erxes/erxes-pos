@@ -125,7 +125,7 @@ export const AppWrapper = styled.div`
 export const Products = styled.div`
   background: ${colors.colorWhite};
   height: 100%;
-  padding: 0 20px;
+  padding: 0 10px;
 `;
 
 export const Title = styled.div`
