@@ -3,7 +3,7 @@ import styled from "styled-components";
 import styledTS from "styled-components-ts";
 import { IOrderItemInput } from "../types";
 import { FlexBetween, FlexCenter } from "modules/common/styles/main";
-import { confirm } from "modules/common/utils";
+// import { confirm } from "modules/common/utils";
 import Icon from "modules/common/components/Icon";
 import { __ } from "modules/common/utils";
 import Quantity from "./Quantity";
@@ -79,9 +79,9 @@ export default class StageItem extends React.Component<Props> {
     const isPortrait = orientation === "portrait";
 
     const onRemoveItem = () => {
-      confirm(`${__("Are you sure")}?`).then(() => {
-        changeItemCount({ ...item, count: 0 });
-      });
+      // confirm(`${__("Are you sure")}?`).then(() => {
+      changeItemCount({ ...item, count: 0 });
+      // });
     };
 
     if (orientation && isPortrait) {

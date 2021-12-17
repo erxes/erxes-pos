@@ -110,7 +110,7 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  padding: ${dimensions.coreSpacing}px ${dimensions.unitSpacing}px;
+  padding: ${dimensions.unitSpacing}px;
   flex-basis: 22%;
   flex-shrink: 0;
   cursor: pointer;
@@ -119,8 +119,8 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   position: relative;
 
   > img {
-    width: ${(props) => (props.isPortrait ? "300px" : "120px")};
-    max-height: ${(props) => (props.isPortrait ? "300px" : "120px")};
+    width: ${(props) => (props.isPortrait ? "300px" : "140px")};
+    max-height: ${(props) => (props.isPortrait ? "300px" : "140px")};
   }
 
   > strong {
