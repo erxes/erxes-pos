@@ -85,6 +85,7 @@ export interface IOrderItemInput {
   productId: string;
   productName: string;
   unitPrice?: number;
+  productImgUrl?: string;
 }
 
 export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;

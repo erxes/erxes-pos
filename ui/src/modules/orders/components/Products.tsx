@@ -54,6 +54,7 @@ export default class Products extends React.Component<Props> {
       productId: item._id,
       productName: item.name,
       unitPrice: item.unitPrice || 0,
+      productImgUrl: item.attachment && item.attachment.url ? item.attachment.url : ''
     };
 
     if (!exists) {

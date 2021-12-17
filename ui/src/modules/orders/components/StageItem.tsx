@@ -3,7 +3,6 @@ import styled from "styled-components";
 import styledTS from "styled-components-ts";
 import { IOrderItemInput } from "../types";
 import { FlexBetween, FlexCenter } from "modules/common/styles/main";
-// import { confirm } from "modules/common/utils";
 import Icon from "modules/common/components/Icon";
 import Quantity from "./Quantity";
 import { PortraitStage } from "./portrait/style";
@@ -78,21 +77,15 @@ export default class StageItem extends React.Component<Props> {
     const isPortrait = orientation === "portrait";
 
     const onRemoveItem = () => {
-      // confirm(`${__("Are you sure")}?`).then(() => {
       changeItemCount({ ...item, count: 0 });
-      // });
     };
 
     if (orientation && isPortrait) {
       return (
         <Item>
           <PortraitStage>
-            <img
-              src={
-                "https://yoshinoyabucket.s3.us-east-2.amazonaws.com/0.12592724587805204%6019-Copya.png"
-              }
-              alt={productName}
-            />
+            {item.productImgUrl && (
+              <img src={item.productImgUrl} alt={productName} />)}
             <Text isPortrait={isPortrait}>
               <div>
                 <b>{productName}</b>
