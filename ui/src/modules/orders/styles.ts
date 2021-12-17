@@ -61,7 +61,7 @@ export const ProductCategories = styled.div`
 export const ProductsWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  height: 80%;
+  max-height: 80%;
   overflow: auto;
 
   @media (max-width: 1170px and max-height: 1170px) {
@@ -69,8 +69,7 @@ export const ProductsWrapper = styled.div`
   }
 
   @media (orientation: portrait) {
-    max-height: initial;
-    height: 78%;
+    max-height: 78%;
   }
 `;
 
@@ -197,9 +196,9 @@ export const Stages = styled.div`
   height: 100%;
 `;
 
-export const StageContent = styled.div`
+export const StageContent = styledTS<{ odd?: boolean }>(styled.div)`
   margin-top: ${dimensions.coreSpacing}px;
-  height: 100%;
+  height: ${(props) => props.odd && "100%"};
 
   > b {
     margin-bottom: ${dimensions.unitSpacing}px;

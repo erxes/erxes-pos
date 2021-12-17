@@ -27,14 +27,7 @@ export default function ProductItem(props: Props) {
 
   return (
     <Item onClick={onClick} isPortrait={orientation === "portrait"}>
-      {attachmentUrl && (
-        <img
-          src={
-            "https://yoshinoyabucket.s3.us-east-2.amazonaws.com/0.12592724587805204%6019-Copya.png"
-          }
-          alt={name}
-        />
-      )}
+      {attachmentUrl && <img src={attachmentUrl} alt={name} />}
       <strong>{formatNumber(unitPrice || 0)}₮</strong>
       <h4>{name}</h4>
     </Item>

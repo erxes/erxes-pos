@@ -46,6 +46,7 @@ export const ChooseType = styled.div`
 export const PortraitListWrapper = styled.div`
   background: ${colors.bgMain};
   height: 100%;
+  padding: 0 20px;
 
   .col-md-4 {
     width: 35% !important;

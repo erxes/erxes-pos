@@ -26,7 +26,7 @@ export default class Stage extends React.Component<Props> {
     }
 
     return (
-      <StageContent>
+      <StageContent odd={true}>
         <b>{__("Selected products")}</b>
         <StageItems>
           {items.map((i) => (
