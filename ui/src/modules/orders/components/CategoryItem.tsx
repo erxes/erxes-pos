@@ -19,8 +19,8 @@ export default function CategoryItem(props: Props) {
 
   const imgUrl =
     attachment && attachment.url
-      ? attachment.url
-      : "https://flagcdn.com/24x18/mn.png";
+      ? `http://localhost:3300/read-file?key=${attachment.url}`
+      : "images/no-category.jpg";
 
   const color =
     currentConfig &&
@@ -38,7 +38,9 @@ export default function CategoryItem(props: Props) {
       isPortrait={isPortrait}
     >
       <FlexCenter>
-        <img src={imgUrl} alt={name} />
+        <div className="image-wrapper">
+          <img src={imgUrl} alt={name} />
+        </div>
         {name}
       </FlexCenter>
     </ProductCategory>

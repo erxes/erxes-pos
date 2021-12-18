@@ -83,7 +83,7 @@ export const ProductCategory = styledTS<{
   font-size: ${(props) => (props.isPortrait ? "28px" : "11px")};
   font-weight: 500;
   margin: ${(props) => (props.isPortrait ? "0 20px 20px 0" : "0 10px 10px 0")};
-  padding: ${dimensions.unitSpacing}px 15px;
+  padding: ${dimensions.unitSpacing - 4}px 15px;
   background: ${(props) =>
     props.isActive
       ? props.color
@@ -95,10 +95,19 @@ export const ProductCategory = styledTS<{
   transition: all ease .3s;
   display: flex;
 
-  img {
-      max-width: ${(props) => (props.isPortrait ? "80px" : "40px")};
-      max-height: ${(props) => (props.isPortrait ? "80px" : "40px")};
-      margin-right:  ${dimensions.unitSpacing}px;
+  .image-wrapper {
+    width: ${(props) => (props.isPortrait ? "70px" : "30px")};
+    height: ${(props) => (props.isPortrait ? "70px" : "30px")};
+    margin-right:  ${dimensions.unitSpacing}px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
   }
 
   &:hover {
@@ -115,7 +124,7 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  padding: ${dimensions.unitSpacing}px;
+  padding: 10px 10px 20px 10px;
   flex-basis: 22%;
   flex-shrink: 0;
   cursor: pointer;
@@ -123,9 +132,19 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   transition: all ease 0.3s;
   position: relative;
 
-  > img {
-    width: ${(props) => (props.isPortrait ? "300px" : "140px")};
-    max-height: ${(props) => (props.isPortrait ? "300px" : "140px")};
+  .image-wrapper {
+    width: ${(props) => (props.isPortrait ? "280px" : "120px")};
+    height: ${(props) => (props.isPortrait ? "280px" : "120px")};
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    > img {
+      max-width: 100%;
+      max-height: 100%;
+    } 
   }
 
   > strong {

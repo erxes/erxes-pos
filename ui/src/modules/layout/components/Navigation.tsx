@@ -167,13 +167,13 @@ class Navigation extends React.Component<IProps> {
     const { currentUser } = this.props;
 
     if (!currentUser) {
-      return ''
+      return "";
     }
     return (
       <NavLink to="/settings">
-        <NavIcon className={'icon-sync-exclamation'} />
+        <NavIcon className={"icon-sync-exclamation"} />
       </NavLink>
-    )
+    );
   }
 
   render() {

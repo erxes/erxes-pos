@@ -11,7 +11,7 @@ export const LogoWrapper = styledTS<{ odd?: boolean }>(styled.div)`
 
   img {
     max-width: 400px;
-    max-height: 220px;
+    max-height: 120px;
   }
 `;
 
@@ -125,7 +125,7 @@ export const AppWrapper = styled.div`
 export const Products = styled.div`
   background: ${colors.colorWhite};
   height: 100%;
-  padding: 0 10px;
+  padding: 0 10px 0 20px;
 `;
 
 export const Title = styled.div`

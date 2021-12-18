@@ -21,13 +21,22 @@ export default function ProductItem(props: Props) {
       productName: product.name,
       _id: Math.random().toString(),
       unitPrice: product.unitPrice,
-      productImgUrl: attachmentUrl
+      productImgUrl: attachmentUrl,
     });
   };
 
   return (
     <Item onClick={onClick} isPortrait={orientation === "portrait"}>
-      {attachmentUrl && <img src={attachmentUrl} alt={name} />}
+      <div className="image-wrapper">
+        <img
+          src={
+            attachmentUrl
+              ? `http://localhost:3300/read-file?key=${attachmentUrl}`
+              : "images/no-category.jpg"
+          }
+          alt={name}
+        />
+      </div>
       <strong>{formatNumber(unitPrice || 0)}₮</strong>
       <h4>{name}</h4>
     </Item>
