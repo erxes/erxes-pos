@@ -34,8 +34,12 @@ class SettingsContainer extends React.Component<Props> {
 
     const syncOrders = () => {
       syncOrdersMutation().then(({ data }) => {
-        if (data) {
-          return Alert.success(`Order has been updated successfully.`);
+        const { syncOrders } = data
+        if (syncOrders) {
+          if (syncOrders.sumCount > syncOrders.syncedCount) {
+            return Alert.success(`${syncOrders.syncedCount} order has been synced successfully. But less count ${syncOrders.sumCount - syncOrders.syncedCount}`);
+          }
+          return Alert.success(`${syncOrders.syncedCount} order has been synced successfully`);
         }
       }).catch(e => {
         return Alert.error(e.message);
