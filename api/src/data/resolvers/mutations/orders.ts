@@ -46,6 +46,15 @@ const orderMutations = {
       userId: user._id,
     };
 
+    const exists = await Orders.findOne({ number: orderDoc.number });
+
+    if (exists) {
+      const parts = orderDoc.number.split('_');
+      const number = Number(orderDoc.number.substring(orderDoc.number.indexOf('_') + 1, orderDoc.number.length));
+
+      orderDoc.number = `${parts[0]}_${String(number + 1).padStart(4, '0')}`
+    }
+
     try {
       const order = await Orders.createOrder(orderDoc);
   
