@@ -1,19 +1,12 @@
-import {
-  mutations as UserMutations,
-  queries as UserQueries,
-  types as UserTypes
-} from './user';
-
-import {
-  queries as ProductQueries,
-  types as ProductTypes
-} from './product';
-
+import { mutations as UserMutations, queries as UserQueries, types as UserTypes } from './user';
+import { mutations as CustomerMutations, queries as CustomerQueries, types as CustomerTypes } from './customer';
+import { mutations as OrderMutations, queries as OrderQueries, types as OrderTypes } from './orders';
+import { mutations as ConfigMutations, queries as ConfigQueries, types as ConfigTypes } from './configs';
+import { mutations as PaymentMutations, queries as PaymentQueries, types as PaymentTypes } from './payment';
+import { queries as ProductQueries, types as ProductTypes } from './product';
 import { types as CompanyTypes } from './company';
-import { types as CustomerTypes, queries as CustomerQueries, mutations as CustomerMutations } from './customer';
-import { types as OrderTypes, mutations as OrderMutations, queries as OrderQueries } from './orders';
-import { types as ConfigTypes, mutations as ConfigMutations, queries as ConfigQueries } from './configs';
-import { types as PaymentTypes, mutations as PaymentMutations, queries as PaymentQueries } from './payment';
+
+
 
 export let types = `
   scalar JSON

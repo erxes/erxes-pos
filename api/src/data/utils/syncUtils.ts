@@ -23,6 +23,32 @@ export const importUsers = async (
   }
 };
 
+export const preImportProducts = async (groups: any = []) => {
+  let importProductIds: string[] = [];
+  const importProductCatIds: string[] = []
+  const oldAllProducts = await Products.find({}, { _id: 1 }).lean();
+  const oldProductIds = oldAllProducts.map(p => (p._id))
+  const oldAllProductCats = await ProductCategories.find({}, { _id: 1 }).lean();
+  const oldCategoryIds = oldAllProductCats.map(p => (p._id))
+
+  for (const group of groups) {
+    const categories = group.categories || [];
+
+    for (const category of categories) {
+      importProductCatIds.push(category._id);
+      importProductIds = importProductIds.concat(category.products.map(p => (p._id)))
+    }
+  } // end group loop
+
+  const removeProductIds = oldProductIds.filter(id => (!importProductIds.includes(id)));
+  await Products.removeProducts(removeProductIds);
+
+  const removeCategoryIds = oldCategoryIds.filter(id => (!importProductCatIds.includes(id)));
+  for (const catId of removeCategoryIds) {
+    await ProductCategories.removeProductCategory(catId);
+  }
+}
+
 export const importProducts = async (groups: any = []) => {
   for (const group of groups) {
     const categories = group.categories || [];
@@ -54,6 +80,16 @@ export const importProducts = async (groups: any = []) => {
     }
   } // end group loop
 };
+
+export const preImportCustomers = async (customers) => {
+  const importCustomerIds = customers.map(c => (c._id));
+
+  const removeCustomers = await Customers.find({ _id: { $nin: importCustomerIds } }).lean();
+
+  for (const customer of removeCustomers) {
+    await Customers.removeCustomer(customer._id)
+  }
+}
 
 export const importCustomers = async (customers: ICustomerDocument[]) => {
   let bulkOps: Array<{

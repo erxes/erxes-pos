@@ -1,18 +1,24 @@
 import * as dotenv from 'dotenv';
-
-import { Configs } from '../../../db/models/Configs';
 import Customers from '../../../db/models/Customers';
-import { sendRequest } from '../../utils/commonUtils';
-import { initBroker } from '../../../messageBroker';
+import { Configs } from '../../../db/models/Configs';
+import { debugError, debugInit } from '../../../debuggers';
 import { httpServer } from '../../../index';
+import { initBroker } from '../../../messageBroker';
+import { IOrderItem } from '../../../db/models/definitions/orderItems';
+import { OrderItems } from '../../../db/models/OrderItems';
+import { Orders } from '../../../db/models/Orders';
+import { PutResponses } from '../../../db/models/PutResponses';
+import { sendRequest } from '../../utils/commonUtils';
+
 import {
   importUsers,
   importProducts,
   validateConfig,
   extractConfig,
   importCustomers,
+  preImportProducts,
+  preImportCustomers,
 } from '../../utils/syncUtils';
-import { debugError, debugInit } from '../../../debuggers';
 
 dotenv.config();
 
@@ -89,10 +95,12 @@ const configMutations = {
         break;
       case 'products':
         const { productGroups = [] } = response;
+        await preImportProducts(productGroups);
         await importProducts(productGroups);
         break;
       case 'customers':
         const { customers = [] } = response;
+        await preImportCustomers(customers);
         await importCustomers(customers);
         break;
     }
@@ -101,7 +109,57 @@ const configMutations = {
   },
 
   async syncOrders(_root, _param) {
-    return 'success'
+    const { ERXES_API_DOMAIN } = process.env;
+
+    const orderFilter = { synced: false, paidDate: { $exists: true, $ne: null } };
+    let sumCount = await Orders.find({ ...orderFilter }).count();
+    const orders = await Orders.find({ ...orderFilter }).sort({ paidDate: 1 }).limit(100).lean();
+
+    let kind = 'order';
+    let putResponses = [];
+
+    if (orders.length) {
+      const orderIds = orders.map(o => o._id)
+      const orderItems: IOrderItem[] = await OrderItems.find({ orderId: { $in: orderIds } }).lean();
+
+      for (const order of orders) {
+        order.items = (orderItems || []).filter(item => (item.orderId === order._id))
+      }
+
+      putResponses = await PutResponses.find({ contentId: { $in: orderIds }, synced: false }).lean();
+    } else {
+      kind = 'putResponse'
+      sumCount = await PutResponses.find({ synced: false }).count();
+      putResponses = await PutResponses.find({ synced: false }).sort({ paidDate: 1 }).limit(100).lean();
+    }
+
+    const config = await Configs.getConfig({});
+
+    try {
+      const response = await sendRequest({
+        url: `${ERXES_API_DOMAIN}/pos-sync-orders`,
+        method: 'post',
+        headers: { 'POS-TOKEN': config.token || '' },
+        body: { syncId: config.syncInfo.id, orders, putResponses }
+      });
+
+      const { error, resOrderIds, putResponseIds } = response;
+
+      if (error) {
+        throw new Error(error)
+      }
+
+      await Orders.updateMany({ _id: { $in: resOrderIds } }, { $set: { synced: true } });
+      await PutResponses.updateMany({ _id: { $in: putResponseIds } }, { $set: { synced: true } });
+    } catch (e) {
+      throw new Error(e.message);
+    }
+
+    return {
+      kind,
+      sumCount,
+      syncedCount: orders.length,
+    }
   }
 };
 
