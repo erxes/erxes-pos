@@ -210,7 +210,7 @@ export default class Pos extends React.Component<Props, State> {
       productCategoriesQuery,
       productsQuery,
     } = this.props;
-    const { items, totalAmount, showMenu, type } = this.state;
+    const { items, totalAmount, showMenu, type, customerId } = this.state;
 
     const products = (
       <ProductsContainer
@@ -234,6 +234,7 @@ export default class Pos extends React.Component<Props, State> {
           editOrder={this.editOrder}
           order={order}
           setOrderState={this.setOrderState}
+          customerId={customerId}
         />
       );
     }

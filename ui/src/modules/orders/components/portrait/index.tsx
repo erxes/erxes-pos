@@ -39,6 +39,7 @@ type Props = {
   editOrder: (params: any) => void;
   setOrderState: (name: string, value: any) => void;
   qp: any;
+  customerId: string;
 };
 
 type State = {

@@ -12,6 +12,7 @@ import {
   Title,
   Empty,
 } from "./style";
+import SelectWithSearch from "modules/common/components/SelectWithSearch";
 import { ProductLabel, StageItems } from "modules/orders/styles";
 import { __ } from "modules/common/utils";
 import StageItem from "../StageItem";
@@ -20,6 +21,8 @@ import { Amount } from "../Calculation";
 import { formatNumber } from "modules/utils";
 import Button from "modules/common/components/Button";
 import EmptyState from "modules/common/components/EmptyState";
+import { queries } from '../../graphql/index';
+import { generateLabelOptions } from '../Calculation';
 
 type Props = {
   currentConfig: IConfig;
@@ -32,6 +35,8 @@ type Props = {
   onClickDrawer: (drawerContentType: string) => void;
   addOrder: (params: any) => void;
   editOrder: (params: any) => void;
+  customerId: string;
+  setOrderState: (name: string, value: any) => void;
 };
 
 type State = {
@@ -141,8 +146,12 @@ export default class PortraitList extends React.Component<Props, State> {
   }
 
   render() {
-    const { products, currentConfig, orientation } = this.props;
+    const { products, currentConfig, orientation, customerId, setOrderState } = this.props;
     const { colors, logo } = currentConfig.uiOptions || ({} as any);
+
+    const onSelectCustomer = (customerId) => {
+      setOrderState("customerId", customerId);
+    };
 
     return (
       <>
@@ -165,6 +174,15 @@ export default class PortraitList extends React.Component<Props, State> {
               >
                 {__("Identify a customer")}
               </ProductLabel>
+              <SelectWithSearch
+                name="customerId"
+                queryName="customers"
+                label={__("Type name, phone, or email to search")}
+                initialValue={customerId}
+                onSelect={onSelectCustomer}
+                generateOptions={generateLabelOptions}
+                customQuery={queries.customers}
+              />
 
               <Title>Таны захиалга</Title>
               {this.renderOrders()}

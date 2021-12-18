@@ -60,7 +60,7 @@ const ButtonWrapper = styled.div`
 `;
 
 // get user options for react-select-plus
-const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
+export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
   return array.map((item) => {
     const { _id, firstName, primaryEmail, primaryPhone, lastName } =
       item || ({} as ICustomer);
