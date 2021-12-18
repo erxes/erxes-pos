@@ -41,7 +41,7 @@ export const generateOrderNumber = async (): Promise<string> => {
     number = String(orderCountToday + 2).padStart(4, '0');
 
     order = await Orders.findOne({ number: `${dateString}_${number}` })
-  } while (order)
+  } while (!order)
 
   return `${dateString}_${number}`;
 };
