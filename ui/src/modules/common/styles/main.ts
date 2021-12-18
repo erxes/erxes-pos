@@ -350,7 +350,7 @@ const Divider = styled.div`
   margin: 0 ${dimensions.coreSpacing}px ${dimensions.coreSpacing}px
     ${columnTitleSize}px;
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation: landscape) {
     margin-left: ${dimensions.coreSpacing}px;
   }
 `;
@@ -360,7 +360,7 @@ const Row = styled.div`
   flex-direction: row;
   padding-top: ${dimensions.coreSpacing}px;
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation: landscape) {
     flex-direction: column;
     padding-left: ${dimensions.coreSpacing}px;
   }
@@ -386,7 +386,7 @@ const RowTitle = styled.h3`
     line-height: 1.4;
   }
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation: landscape) {
     align-self: flex-start;
   }
 `;

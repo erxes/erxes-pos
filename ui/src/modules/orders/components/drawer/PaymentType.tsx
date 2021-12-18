@@ -11,7 +11,7 @@ const TypeWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
     margin-bottom: 40px;
     font-size: ${(props) => props.isPortrait && "50px"};
 
-    @media (max-width: 1250px and max-height: 1250px) {
+    @media (max-width: 1250px) and (orientation:landscape) {
       font-size: 25px;
     }
   }
@@ -27,7 +27,7 @@ const Cards = styledTS<{ color?: string; isPortrait?: boolean }>(styled.div)`
     font-size: ${(props) => (props.isPortrait ? "35px" : "18px")};
     font-weight: 500;
 
-    @media (max-width: 1250px and max-height: 1250px) {
+    @media (max-width: 1250px) and (orientation:landscape) {
       line-height: 22px;
       font-size: 16px;  
     }
@@ -60,14 +60,14 @@ const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
       max-width: ${(props) => (props.isPortrait ? "250px" : "150px")};
       margin-bottom: 30px;
 
-      @media (max-width: 1250px and max-height: 1250px) {
+      @media (max-width: 1250px) and (orientation:landscape) {
         max-height: 80px;
         max-width: 80px;
         margin-bottom: 20px;
       }
     }
 
-    @media (max-width: 1250px and max-height: 1250px) {
+    @media (max-width: 1250px) and (orientation:landscape) {
       height: 80px;
     }
   }
@@ -80,7 +80,7 @@ const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
     box-shadow: 0 6px 10px 1px rgba(136, 136, 136, 0.08);
   }
 
-  @media (max-width: 1250px and max-height: 1250px) {
+  @media (max-width: 1250px) and (orientation:landscape) {
     padding: 20px;
   }
 `;

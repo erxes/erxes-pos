@@ -85,10 +85,7 @@ export default class StageItem extends React.Component<Props> {
         <Item>
           <PortraitStage>
             {item.productImgUrl && (
-              <img
-                src={`http://localhost:3300/read-file?key=${item.productImgUrl}`}
-                alt={productName}
-              />
+              <img src={item.productImgUrl} alt={productName} />
             )}
             <Text isPortrait={isPortrait}>
               <div>

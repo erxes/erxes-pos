@@ -25,7 +25,7 @@ const Wrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
     text-align: center;
   }
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation:landscape) {
     margin-right: 35px;
   }
 `;

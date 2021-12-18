@@ -7,7 +7,7 @@ export const PosWrapper = styled.div`
   flex: 1;
   position: relative;
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation: landscape) {
     .no-padding {
       padding: 0;
     }
@@ -27,7 +27,7 @@ export const StageItems = styled.div`
     max-height: initial;
   }
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation: landscape) {
     max-height: 650px;
   }
 `;
@@ -43,7 +43,7 @@ export const MainContent = styledTS<{
     props.hasShadow && "rgb(217, 226, 236) 0px 0px 24px 0px;"};
   height: 100vh;
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation:landscape) {
     padding: ${(props) => (props.noPadding ? 0 : "15px 10px")};
   }
 `;
@@ -53,7 +53,7 @@ export const ProductCategories = styled.div`
   flex-wrap: wrap;
   margin: 30px 0;
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation: landscape) {
     margin: 20px 0 10px 0;
   }
 `;
@@ -64,12 +64,12 @@ export const ProductsWrapper = styled.div`
   max-height: 80%;
   overflow: auto;
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation: landscape) {
     max-height: 570px;
   }
 
   @media (orientation: portrait) {
-    max-height: 78%;
+    max-height: 75%;
   }
 `;
 
@@ -124,7 +124,8 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   justify-content: space-between;
   align-items: center;
   text-align: center;
-  padding: 10px 10px 20px 10px;
+  padding: 10px;
+  padding-bottom: ${(props) => props.isPortrait && "20px"};
   flex-basis: 22%;
   flex-shrink: 0;
   cursor: pointer;
@@ -145,12 +146,17 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
       max-width: 100%;
       max-height: 100%;
     } 
+
+    @media (max-width: 1200px) and (orientation:landscape) {
+      width: 100px;
+      height: 100px;
+    }
   }
 
   > strong {
     font-size: ${(props) => (props.isPortrait ? "38px" : "18px")};
 
-    @media (max-width: 1170px and max-height: 1170px) {
+    @media (max-width: 1170px) and (orientation:landscape) {
       font-size: 16px;
     }
   }
@@ -171,24 +177,16 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.28);
   }
 
-  @media (max-width: 1600px) {
+  @media (max-width: 1600px) and (min-width: 1011px) and (orientation:landscape)  {
     flex-basis: 30%;
-  }
 
-  @media (max-width: 1450px) {
-    flex-basis: 28%;
-  }
-
-  @media (max-width: 1350px) {
-    flex-basis: 45%;
-
-    &:nth-child(2n) {
+    &:nth-child(3n) {
       margin-right: 0;
     }
   }
 
-  @media (max-width: 1050px) {
-    flex-basis: 42%;
+  @media (max-width: 1010px) {
+    flex-basis: 43%;
 
     &:nth-child(2n) {
       margin-right: 0;

@@ -29,11 +29,7 @@ export default function ProductItem(props: Props) {
     <Item onClick={onClick} isPortrait={orientation === "portrait"}>
       <div className="image-wrapper">
         <img
-          src={
-            attachmentUrl
-              ? `http://localhost:3300/read-file?key=${attachmentUrl}`
-              : "images/no-category.jpg"
-          }
+          src={attachmentUrl ? attachmentUrl : "images/no-category.jpg"}
           alt={name}
         />
       </div>

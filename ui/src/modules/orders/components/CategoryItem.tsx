@@ -18,9 +18,7 @@ export default function CategoryItem(props: Props) {
   const { name, attachment } = category;
 
   const imgUrl =
-    attachment && attachment.url
-      ? `http://localhost:3300/read-file?key=${attachment.url}`
-      : "images/no-category.jpg";
+    attachment && attachment.url ? attachment.url : "images/no-category.jpg";
 
   const color =
     currentConfig &&

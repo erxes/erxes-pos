@@ -69,7 +69,7 @@ const MainWrapper = styledTS<{ collapsed: boolean }>(styled.div)`
   max-width: 100%;
   transition: width .3s;
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation:landscape) {
     padding-left: 40px;
   }
 `;
@@ -216,7 +216,7 @@ const LeftNavigation = styledTS<{ collapsed: boolean; color?: string }>(
     }
   }
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation:landscape) {
     width: 40px;
   }
 `;
@@ -543,7 +543,7 @@ export const Bottom = styled.div`
     background: rgba(0, 0, 0, 0.06);
   }
 
-  @media (max-width: 1170px and max-height: 1170px) {
+  @media (max-width: 1170px) and (orientation: landscape) {
     width: 40px;
   }
 `;

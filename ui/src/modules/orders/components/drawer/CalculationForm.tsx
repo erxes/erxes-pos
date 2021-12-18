@@ -30,7 +30,7 @@ const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
     font-size: ${(props) => props.isPortrait && "32px"};
   }
 
-  @media (max-width: 1600px and max-height: 1600px) {
+  @media (max-width: 1600px) and (orientation:landscape) {
     margin: 20px 10%;
   }
 `;
@@ -55,7 +55,7 @@ const KeyPad = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
   font-weight: 600;
   cursor: pointer;
 
-  @media (max-width: 1600px and max-height: 1600px) {
+  @media (max-width: 1600px) and (orientation:landscape) {
     width: 80px;
     height: 80px;
     border-radius: 80px;
@@ -72,7 +72,7 @@ const Title = styled.h2`
 const Header = styled.div`
   margin: 30px 80px 20px;
 
-  @media (max-width: 1600px and max-height: 1600px) {
+  @media (max-width: 1600px) and (orientation: landscape) {
     margin: 20px 20px 0px;
   }
 `;
