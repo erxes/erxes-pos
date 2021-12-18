@@ -46,7 +46,6 @@ export const ChooseType = styled.div`
 export const PortraitListWrapper = styled.div`
   background: ${colors.bgMain};
   height: 100%;
-  padding: 0 20px;
 
   .col-md-4 {
     width: 35% !important;
@@ -126,6 +125,7 @@ export const AppWrapper = styled.div`
 export const Products = styled.div`
   background: ${colors.colorWhite};
   height: 100%;
+  padding: 0 10px;
 `;
 
 export const Title = styled.div`
