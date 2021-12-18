@@ -1,8 +1,10 @@
 import React from "react";
-import { IOrder, IOrderItemInput } from "../../types";
 import { IConfig } from "types";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import { Link } from 'react-router-dom';
+
+import { IOrder, IOrderItemInput } from "../../types";
 import {
   PortraitListWrapper,
   LogoWrapper,
@@ -28,6 +30,8 @@ type Props = {
   totalAmount: number;
   changeItemCount: (item: IOrderItemInput) => void;
   onClickDrawer: (drawerContentType: string) => void;
+  addOrder: (params: any) => void;
+  editOrder: (params: any) => void;
 };
 
 type State = {
@@ -35,6 +39,34 @@ type State = {
 };
 
 export default class PortraitList extends React.Component<Props, State> {
+  renderAddButton() {
+    const { addOrder, order } = this.props;
+
+    if (order && order._id) {
+      return null;
+    }
+
+    return (
+      <Button btnStyle="success" onClick={addOrder} icon="check-circle" block>
+        {__("Make an order")}
+      </Button>
+    );
+  }
+
+  renderEditButton() {
+    const { editOrder, order } = this.props;
+
+    if (!order) {
+      return null;
+    }
+
+    return (
+      <Button btnStyle="success" onClick={editOrder} icon="check-circle" block>
+        {__("Edit order")}
+      </Button>
+    );
+  }
+
   renderPaymentButton() {
     const { order, onClickDrawer, totalAmount, currentConfig } = this.props;
 
@@ -94,6 +126,8 @@ export default class PortraitList extends React.Component<Props, State> {
             <span>{__("Total amount")}</span>
             {formatNumber(totalAmount || 0)}₮
           </Amount>
+          {this.renderAddButton()}
+          {this.renderEditButton()}
           {this.renderPaymentButton()}
         </div>
       </ColumnBetween>
@@ -111,7 +145,9 @@ export default class PortraitList extends React.Component<Props, State> {
             <Col md={8}>
               <Products>
                 <LogoWrapper odd={true}>
-                  <img src={logo ? logo : `/images/logo-dark.png`} alt="logo" />
+                  <Link to="/">
+                    <img src={logo ? logo : `/images/logo-dark.png`} alt="logo" />
+                  </Link>
                 </LogoWrapper>
                 {products}
               </Products>

@@ -1,8 +1,10 @@
 import React from "react";
+import Modal from "react-bootstrap/Modal";
+import { Link } from 'react-router-dom';
+
 import { ICustomerParams, IOrder, IOrderItemInput } from "../../types";
 import { IUser } from "modules/auth/types";
 import { IConfig } from "types";
-import Modal from "react-bootstrap/Modal";
 import { IPaymentParams } from "../../containers/PosContainer";
 import {
   LogoWrapper,
@@ -15,6 +17,7 @@ import {
 import PaymentForm from "../drawer/PaymentForm";
 import Icon from "modules/common/components/Icon";
 import { FlexCenter } from "modules/common/styles/main";
+import { __ } from 'modules/common/utils';
 import PortraitList from "./PortraitList";
 
 type Props = {
@@ -33,6 +36,8 @@ type Props = {
   addCustomer: (params: ICustomerParams) => void;
   changeItemCount: (item: IOrderItemInput) => void;
   addOrder: (params: any) => void;
+  editOrder: (params: any) => void;
+  qp: any;
 };
 
 type State = {
@@ -57,7 +62,6 @@ export default class PortraitView extends React.Component<Props, State> {
   };
 
   handleModal = (modalContentType: string) => {
-    console.log("here", modalContentType);
     this.setState({ showModal: !this.state.showModal, modalContentType });
   };
 
@@ -70,11 +74,11 @@ export default class PortraitView extends React.Component<Props, State> {
         <FlexCenter>
           <Type color={color} onClick={() => this.onClickType("take")}>
             <img src="images/type1.png" alt="type" />
-            Авч явах
+            {__("Take")}
           </Type>
           <Type color={color} onClick={() => this.onClickType("eat")}>
             <img src="images/type2.png" alt="type" />
-            Сууж зооглох
+            {__("Eat")}
           </Type>
         </FlexCenter>
         <AppWrapper>
@@ -123,11 +127,11 @@ export default class PortraitView extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentConfig, products, items, changeItemCount } = this.props;
+    const { currentConfig, products, items, changeItemCount, qp } = this.props;
     const { showModal, type } = this.state;
     const { colors, logo } = currentConfig.uiOptions || ({} as any);
 
-    if (type) {
+    if (type || (qp && qp.id)) {
       return (
         <>
           <PortraitList
@@ -153,7 +157,9 @@ export default class PortraitView extends React.Component<Props, State> {
     return (
       <PortraitViewWrapper>
         <LogoWrapper>
-          <img src={logo ? logo : `/images/logo-dark.png`} alt="logo" />
+          <Link to="/">
+            <img src={logo ? logo : `/images/logo-dark.png`} alt="logo" />
+          </Link>
         </LogoWrapper>
         {this.renderContent(colors.primary)}
         <Footer color={colors.primary}>

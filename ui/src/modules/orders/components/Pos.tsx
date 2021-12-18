@@ -40,6 +40,7 @@ type Props = {
   productCategoriesQuery: any;
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
+  qp: any;
 };
 
 type State = {
@@ -230,6 +231,7 @@ export default class Pos extends React.Component<Props, State> {
           changeItemCount={this.changeItemCount}
           totalAmount={totalAmount}
           addOrder={this.addOrder}
+          editOrder={this.editOrder}
           order={order}
         />
       );
