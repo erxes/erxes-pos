@@ -12,8 +12,7 @@ import {
   Title,
   Empty,
 } from "./style";
-import SelectWithSearch from "modules/common/components/SelectWithSearch";
-import { ProductLabel, StageItems } from "modules/orders/styles";
+import { StageItems } from "modules/orders/styles";
 import { __ } from "modules/common/utils";
 import StageItem from "../StageItem";
 import { ColumnBetween } from "modules/common/styles/main";
@@ -21,8 +20,6 @@ import { Amount } from "../Calculation";
 import { formatNumber } from "modules/utils";
 import Button from "modules/common/components/Button";
 import EmptyState from "modules/common/components/EmptyState";
-import { queries } from '../../graphql/index';
-import { generateLabelOptions } from '../Calculation';
 
 type Props = {
   currentConfig: IConfig;
@@ -146,12 +143,8 @@ export default class PortraitList extends React.Component<Props, State> {
   }
 
   render() {
-    const { products, currentConfig, orientation, customerId, setOrderState } = this.props;
-    const { colors, logo } = currentConfig.uiOptions || ({} as any);
-
-    const onSelectCustomer = (customerId) => {
-      setOrderState("customerId", customerId);
-    };
+    const { products, currentConfig } = this.props;
+    const { logo } = currentConfig.uiOptions || ({} as any);
 
     return (
       <>
@@ -168,22 +161,6 @@ export default class PortraitList extends React.Component<Props, State> {
               </Products>
             </Col>
             <Col md={4}>
-              <ProductLabel
-                color={colors.primary}
-                isPortrait={orientation === "portrait"}
-              >
-                {__("Identify a customer")}
-              </ProductLabel>
-              <SelectWithSearch
-                name="customerId"
-                queryName="customers"
-                label={__("Type name, phone, or email to search")}
-                initialValue={customerId}
-                onSelect={onSelectCustomer}
-                generateOptions={generateLabelOptions}
-                customQuery={queries.customers}
-              />
-
               <Title>Таны захиалга</Title>
               {this.renderOrders()}
             </Col>
