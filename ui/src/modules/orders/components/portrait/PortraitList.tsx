@@ -74,9 +74,15 @@ export default class PortraitList extends React.Component<Props, State> {
       return null;
     }
 
+    const style: any = {};
+
+    if (currentConfig && currentConfig.uiOptions && currentConfig.uiOptions.colors) {
+      style.backgroundColor = currentConfig.uiOptions.colors.primary;
+    }
+
     return (
       <Button
-        style={{ backgroundColor: currentConfig.uiOptions.colors.primary }}
+        style={style}
         onClick={() => onClickDrawer("payment")}
         icon="dollar-alt"
         block
