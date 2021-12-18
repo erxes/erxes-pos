@@ -37,6 +37,7 @@ type Props = {
   changeItemCount: (item: IOrderItemInput) => void;
   addOrder: (params: any) => void;
   editOrder: (params: any) => void;
+  setOrderState: (name: string, value: any) => void;
   qp: any;
 };
 
@@ -59,6 +60,7 @@ export default class PortraitView extends React.Component<Props, State> {
 
   onClickType = (type: string) => {
     this.setState({ type });
+    this.props.setOrderState('type', type);
   };
 
   handleModal = (modalContentType: string) => {

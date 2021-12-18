@@ -233,6 +233,7 @@ export default class Pos extends React.Component<Props, State> {
           addOrder={this.addOrder}
           editOrder={this.editOrder}
           order={order}
+          setOrderState={this.setOrderState}
         />
       );
     }
