@@ -20,6 +20,8 @@ const customerMutations = {
         ...params,
         emailValidationStatus: 'valid',
         phoneValidationStatus: 'valid',
+        primaryEmail: params.email,
+        primaryPhone: params.phone
       },
     });
 

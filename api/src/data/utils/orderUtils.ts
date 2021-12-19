@@ -29,19 +29,7 @@ export const generateOrderNumber = async (): Promise<string> => {
   });
 
   const dateString = today.format('YYYYMMDD').toString();
-  let number = String(orderCountToday + 1).padStart(4, '0');
-
-  let order = await Orders.findOne({ number: `${dateString}_${number}` });
-
-  if (!order) {
-    return `${dateString}_${number}`;
-  }
-
-  do {
-    number = String(orderCountToday + 2).padStart(4, '0');
-
-    order = await Orders.findOne({ number: `${dateString}_${number}` })
-  } while (!order)
+  const number = String(orderCountToday + 1).padStart(4, '0');
 
   return `${dateString}_${number}`;
 };
