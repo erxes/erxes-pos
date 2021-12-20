@@ -251,7 +251,7 @@ export const LeftMenuContainer = styled.div`
 `;
 
 export const DrawerContent = styledTS<{ options?: any }>(styled.div)`
-  padding: 30px;
+  padding: 20px;
   height: 100%;
   overflow: auto;
 

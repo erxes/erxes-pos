@@ -56,10 +56,10 @@ const KeyPad = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
   cursor: pointer;
 
   @media (max-width: 1600px) and (orientation:landscape) {
-    width: 80px;
-    height: 80px;
-    border-radius: 80px;
-    line-height: 80px;
+    width: 70px;
+    height: 70px;
+    border-radius: 70px;
+    line-height: 70px;
     font-size: 28px;
   }
 `;
