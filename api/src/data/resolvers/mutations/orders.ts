@@ -1,4 +1,4 @@
-import { debugError } from '../../../debuggers';
+import { debugError, debugExternalApi } from '../../../debuggers';
 import { Orders } from '../../../db/models/Orders';
 import { OrderItems } from '../../../db/models/OrderItems';
 import { PutResponses } from '../../../db/models/PutResponses';
@@ -10,8 +10,9 @@ import {
   updateOrderItems,
   getTotalAmount,
   prepareEbarimtData,
-  getDistrictName
+  getDistrictName,
 } from '../../utils/orderUtils';
+import { checkConnection, sendTransaction } from '../../utils/cardUtils';
 import { IContext } from '../../types';
 import messageBroker from '../../../messageBroker';
 
@@ -50,26 +51,33 @@ const orderMutations = {
 
     if (exists) {
       const parts = orderDoc.number.split('_');
-      const number = Number(orderDoc.number.substring(orderDoc.number.indexOf('_') + 1, orderDoc.number.length));
+      const number = Number(
+        orderDoc.number.substring(
+          orderDoc.number.indexOf('_') + 1,
+          orderDoc.number.length
+        )
+      );
 
-      orderDoc.number = `${parts[0]}_${String(number + 1).padStart(4, '0')}`
+      orderDoc.number = `${parts[0]}_${String(number + 1).padStart(4, '0')}`;
     }
 
     try {
       const order = await Orders.createOrder(orderDoc);
-  
+
       for (const item of items) {
         await OrderItems.createOrderItem({
           count: item.count,
           productId: item.productId,
           unitPrice: item.unitPrice,
-          orderId: order._id
+          orderId: order._id,
         });
       }
-  
+
       return order;
     } catch (e) {
-      debugError(`Error occurred when creating order: ${JSON.stringify(orderDoc)}`);
+      debugError(
+        `Error occurred when creating order: ${JSON.stringify(orderDoc)}`
+      );
 
       return e;
     }
@@ -90,13 +98,38 @@ const orderMutations = {
     return updatedOrder;
   },
 
-  async ordersMakePayment(_root, { _id, doc }: IPaymentParams, { config }: IContext) {
+  async ordersMakePayment(
+    _root,
+    { _id, doc }: IPaymentParams,
+    { config }: IContext
+  ) {
     const order = await Orders.getOrder(_id);
     const items = await OrderItems.find({ orderId: order._id }).lean();
 
     await validateOrderPayment(order, doc);
 
-    const data = await prepareEbarimtData(order, config.ebarimtConfig, items, doc.billType, doc.registerNumber);
+    // databank section
+    if (doc.cardAmount) {
+      const connected = await checkConnection();
+
+      if (connected) {
+        const trResponse = await sendTransaction({
+          orderNumber: order.number,
+          amount: doc.cardAmount,
+          billType: doc.billType,
+        });
+
+        debugExternalApi(`Transaction response: ${JSON.stringify(trResponse)}`);
+      }
+    }
+
+    const data = await prepareEbarimtData(
+      order,
+      config.ebarimtConfig,
+      items,
+      doc.billType,
+      doc.registerNumber
+    );
 
     const ebarimtConfig = {
       ...config.ebarimtConfig,
@@ -121,7 +154,7 @@ const orderMutations = {
           order,
           items,
         });
-      } catch (e) { }
+      } catch (e) {}
 
       return response;
     } catch (e) {
