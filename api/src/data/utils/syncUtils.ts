@@ -127,19 +127,25 @@ export const importCustomers = async (customers: ICustomerDocument[]) => {
 // Pos config created in main erxes differs from here
 export const extractConfig = (doc) => {
   const { ERXES_API_DOMAIN } = process.env;
-  const { uiOptions = { favIcon: '', logo: '', bgImage: '' } } = doc;
+  const { uiOptions = { favIcon: '', logo: '', bgImage: '', receiptIcon: '' } } = doc;
 
   const FILE_PATH = `${ERXES_API_DOMAIN}/read-file`;
 
   uiOptions.favIcon = !uiOptions.favIcon.includes('http')
     ? `${FILE_PATH}?key=${uiOptions.favIcon}`
     : uiOptions.favIcon;
+
   uiOptions.logo = !uiOptions.logo.includes('http')
     ? `${FILE_PATH}?key=${uiOptions.logo}`
     : uiOptions.logo;
+
   uiOptions.bgImage = !uiOptions.bgImage.includes('http')
     ? `${FILE_PATH}?key=${uiOptions.bgImage}`
     : uiOptions.bgImage;
+
+  uiOptions.receiptIcon = !uiOptions.receiptIcon.includes('http')
+    ? `${FILE_PATH}?key=${uiOptions.receiptIcon}`
+    : uiOptions.receiptIcon;
 
   return {
     name: doc.name,

@@ -31,6 +31,7 @@ interface IUIOptions {
   logo: string;
   bgImage: string;
   favIcon: string;
+  receiptIcon: string;
 }
 
 interface ISyncInfo {

@@ -19,7 +19,7 @@ export default function OrderReceipt({ order }: Props) {
   }
 
   const logo =
-    currentConfig && currentConfig.uiOptions && currentConfig.uiOptions.logo;
+    currentConfig && currentConfig.uiOptions && currentConfig.uiOptions.receiptIcon;
   const name = currentConfig && currentConfig.name ? currentConfig.name : "";
   const color =
     currentConfig &&

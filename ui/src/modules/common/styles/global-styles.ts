@@ -89,10 +89,10 @@ a:hover {
   }
 }
 
-.modal-1000w { 
+.modal-1000w {
   width: 100%;
   max-width: 1000px;
-  
+
   @media screen and (min-width: 992px) {
     width: 1000px;
     max-width: 1000px;
@@ -379,7 +379,7 @@ a:hover {
 
 .bs-popover-bottom > .arrow::before,
 .bs-popover-bottom-start > .arrow::before,
-.bs-popover-bottom-end > .arrow::before, 
+.bs-popover-bottom-end > .arrow::before,
 .bs-popover-auto[x-placement^="bottom"] > .arrow::before {
   top: 0;
   border-width: 0 0.5rem 0.5rem 0.5rem;
@@ -576,7 +576,7 @@ a:hover {
   color: ${colors.colorPrimaryDark};
 }
 
-.Select-arrow-zone { 
+.Select-arrow-zone {
   width: 20px;
 }
 
@@ -684,10 +684,10 @@ a:hover {
   border-bottom: 7px solid ${colors.colorSecondary} !important;
 }
 
-.rdtPicker .rdtDay:hover, 
-.rdtPicker .rdtHour:hover, 
-.rdtPicker .rdtMinute:hover, 
-.rdtPicker .rdtSecond:hover, 
+.rdtPicker .rdtDay:hover,
+.rdtPicker .rdtHour:hover,
+.rdtPicker .rdtMinute:hover,
+.rdtPicker .rdtSecond:hover,
 .rdtPicker .rdtTimeToggle:hover {
   border-radius: 8px;
 }
@@ -780,7 +780,7 @@ a:hover {
   transform: scale(0);
   bottom: 100%;
   bottom: calc(100% + 2px);
-  top: auto !important; 
+  top: auto !important;
   max-height: 300px;
   overflow: auto;
   border-radius: 3px;
@@ -1040,19 +1040,19 @@ a:hover {
   width: 10px;
   height: 10px;
   background: transparent;
-}                                                                                                                                         
+}
 
 ::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.1); 
+  background-color: rgba(0, 0, 0, 0.1);
   border-width: 0px;
   border-style: solid;
   border-color: transparent;
   border-image: initial;
   transition: background-color 200ms linear 0s;
-} 
+}
 
-::-webkit-scrollbar-button, 
-::-webkit-scrollbar-corner, 
+::-webkit-scrollbar-button,
+::-webkit-scrollbar-corner,
 ::-webkit-scrollbar-resizer {
   display: none;
 }
@@ -1151,7 +1151,7 @@ a:hover {
   .modal-li{
     display: flex;
   }
-  
+
   .modal-items-list {
     height: auto;
     width: 100%;
