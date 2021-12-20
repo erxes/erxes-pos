@@ -87,27 +87,32 @@ const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
 
 type Props = {
   color: string;
-  togglePaymentType: () => void;
-  toggleQpay: () => void;
+  togglePaymentType: (type: string) => void;
   isPortrait?: boolean;
 };
 
 class PaymentType extends React.Component<Props> {
   render() {
-    const { color, togglePaymentType, toggleQpay, isPortrait } = this.props;
+    const { color, togglePaymentType, isPortrait } = this.props;
 
     return (
       <TypeWrapper isPortrait={isPortrait}>
         <h2>{__("Choose the payment method")}</h2>
 
         <Cards color={color} isPortrait={isPortrait}>
-          <Card isPortrait={isPortrait} onClick={() => togglePaymentType()}>
+          <Card isPortrait={isPortrait} onClick={() => togglePaymentType('cash')}>
             <div>
               <img src="/images/payment2.png" alt="payment" />
             </div>
-            <p>{__("In cash or by card")}</p>
+            <p>{__("In Cash")}</p>
           </Card>
-          <Card isPortrait={isPortrait} onClick={() => toggleQpay()}>
+          <Card isPortrait={isPortrait} onClick={() => togglePaymentType('card')}>
+            <div>
+              <img src="/images/payment4.png" alt="payment" />
+            </div>
+            <p>{__("By Card")}</p>
+          </Card>
+          <Card isPortrait={isPortrait} onClick={() => togglePaymentType('qpay')}>
             <div>
               <img src="/images/payment1.png" alt="payment" />
             </div>
