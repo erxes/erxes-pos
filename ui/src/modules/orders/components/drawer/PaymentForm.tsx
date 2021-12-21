@@ -16,18 +16,14 @@ type Props = {
 };
 
 type State = {
-  showPaymentType: boolean;
-  showQpay: boolean;
+  paymentType: string;
 };
 
 class PaymentForm extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
-    this.state = {
-      showPaymentType: true,
-      showQpay: false,
-    };
+    this.state = { paymentType: '' };
   }
 
   handlePayment = (params: IPaymentParams) => {
@@ -37,6 +33,7 @@ class PaymentForm extends React.Component<Props, State> {
   };
 
   render() {
+    const { paymentType } = this.state;
     const { options, orderId, order, orientation } = this.props;
     const isPortrait = orientation === "portrait";
 
@@ -44,32 +41,21 @@ class PaymentForm extends React.Component<Props, State> {
       return null;
     }
 
-    const togglePaymentType = () => {
-      this.setState({
-        showPaymentType: !this.state.showPaymentType,
-        showQpay: false,
-      });
+    const togglePaymentType = (paymentType: string) => {
+      this.setState({ paymentType });
     };
 
-    const toggleQpay = () => {
-      this.setState({
-        showQpay: !this.state.showQpay,
-        showPaymentType: false,
-      });
-    };
-
-    if (this.state.showPaymentType) {
+    if (!paymentType) {
       return (
         <PaymentType
           color={options.colors.primary}
           togglePaymentType={togglePaymentType}
-          toggleQpay={toggleQpay}
           isPortrait={isPortrait}
         />
       );
     }
 
-    if (this.state.showQpay) {
+    if (paymentType === 'qpay') {
       return <QPay order={order} handlePayment={this.handlePayment} />;
     }
 
@@ -78,6 +64,7 @@ class PaymentForm extends React.Component<Props, State> {
         {...this.props}
         handlePayment={this.handlePayment}
         isPortrait={isPortrait}
+        paymentMethod={paymentType}
       />
     );
   }

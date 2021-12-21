@@ -16,20 +16,19 @@ import { Amount } from "modules/orders/components/Calculation";
 import { formatNumber } from "modules/utils";
 import FormGroup from "modules/common/components/form/Group";
 import ControlLabel from "modules/common/components/form/Label";
-import Toggle from "modules/common/components/Toggle";
 import { queries } from "../../graphql/index";
 import { IPaymentParams } from "modules/orders/containers/PosContainer";
+import CardForm from './CardForm';
+import Ebarimt from './Ebarimt';
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   margin: ${(props) => (props.isPortrait ? "20px 10%" : "20px 21%")};
   text-align: center;
-
   button {
     padding: ${(props) => (props.isPortrait ? "20px 30px" : "10px 20px")};
     border-radius: 8px;
     font-size: ${(props) => props.isPortrait && "32px"};
   }
-
   @media (max-width: 1600px) and (orientation:landscape) {
     margin: 20px 10%;
   }
@@ -54,7 +53,6 @@ const KeyPad = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
   font-size: ${(props) => (props.isPortrait ? "42px" : "32px")};
   font-weight: 600;
   cursor: pointer;
-
   @media (max-width: 1600px) and (orientation:landscape) {
     width: 70px;
     height: 70px;
@@ -71,16 +69,9 @@ const Title = styled.h2`
 
 const Header = styled.div`
   margin: 30px 80px 20px;
-
   @media (max-width: 1600px) and (orientation: landscape) {
     margin: 20px 20px 0px;
   }
-`;
-
-const HeaderRow = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
-  justify-content: flex-start;
-  margin-bottom: 20px;
-  margin: ${(props) => props.isPortrait && "30px 0 30px 0"};
 `;
 
 type Props = {
@@ -94,6 +85,7 @@ type Props = {
   header?: React.ReactNode;
   extraButton?: React.ReactNode;
   handlePayment: (params: IPaymentParams) => void;
+  paymentMethod: string;
 };
 
 type State = {
@@ -125,10 +117,6 @@ class CalculationForm extends React.Component<Props, State> {
       cashAmount: props.totalAmount,
     };
   }
-
-  onSwitchHandler = (e) => {
-    this.setState({ showE: e.target.checked });
-  };
 
   onChangeKeyPad = (num) => {
     const { activeInput } = this.state;
@@ -188,8 +176,8 @@ class CalculationForm extends React.Component<Props, State> {
   }
 
   renderFormHead() {
-    const { showE, billType, cashAmount, cardAmount } = this.state;
-    const { options, totalAmount, isPortrait } = this.props;
+    const { showE, billType, cashAmount, cardAmount = 0 } = this.state;
+    const { options, totalAmount, isPortrait, paymentMethod } = this.props;
 
     const inputProps: any = {
       allowNegative: false,
@@ -213,82 +201,46 @@ class CalculationForm extends React.Component<Props, State> {
       this.setState({ billType });
     };
 
+    const onStateChange = (key: string, value: any) => {
+      this.setState({ [key]: value } as Pick<State, keyof State>);
+    };
+
     return (
       <FormHead isPortrait={isPortrait}>
         <Amount color={options.colors.primary}>
           <span>{__("Amount to pay")}</span>
           {formatNumber(totalAmount || 0)}₮
         </Amount>
-        <FormGroup>
-          <ControlLabel>{__("By Card")}</ControlLabel>
-          <Input color={options.colors.primary}>
-            <NumberFormat
-              name="cardAmount"
-              value={cardAmount}
-              onValueChange={(values) =>
-                handleInput(PAYMENT_TYPES.CARD, values.floatValue)
-              }
-              onClick={() => handleClick(PAYMENT_TYPES.CARD)}
-              {...inputProps}
-            />
-            <div onClick={() => this.reset(PAYMENT_TYPES.CARD)}>
-              <Icon icon="cancel" size={13} />
-            </div>
-          </Input>
-        </FormGroup>
-        <FormGroup>
-          <ControlLabel>{__("In Cash")}</ControlLabel>
-          <Input color={options.colors.primary}>
-            <NumberFormat
-              name="cashAmount"
-              value={cashAmount}
-              onValueChange={(values) =>
-                handleInput(PAYMENT_TYPES.CASH, values.floatValue)
-              }
-              onClick={() => handleClick(PAYMENT_TYPES.CASH)}
-              {...inputProps}
-            />
-            <div onClick={() => this.reset(PAYMENT_TYPES.CASH)}>
-              <Icon icon="cancel" size={13} />
-            </div>
-          </Input>
-        </FormGroup>
-        <HeaderRow isPortrait={isPortrait}>
-          <ControlLabel>{__("E-barimt")}:</ControlLabel> &ensp;
-          <Toggle
-            checked={showE}
-            icons={{
-              checked: <span>Yes</span>,
-              unchecked: <span>No</span>,
-            }}
-            onChange={this.onSwitchHandler}
-          />
-        </HeaderRow>
-        {showE && (
-          <>
-            <FormControl
-              componentClass="radio"
-              value={BILL_TYPES.CITIZEN}
-              inline={true}
-              name="billType"
-              checked={billType === BILL_TYPES.CITIZEN}
-              onChange={onBillTypeChange}
-            >
-              {__("Person")}
-            </FormControl>
-            &ensp;&ensp;
-            <FormControl
-              componentClass="radio"
-              value={BILL_TYPES.ENTITY}
-              inline={true}
-              name="billType"
-              checked={billType === BILL_TYPES.ENTITY}
-              onChange={onBillTypeChange}
-            >
-              {__("Organization")}
-            </FormControl>
-          </>
+
+        {paymentMethod === 'cash' && (
+          <FormGroup>
+            <ControlLabel>{__("In Cash")}</ControlLabel>
+            <Input color={options.colors.primary}>
+              <NumberFormat
+                name="cashAmount"
+                value={cashAmount}
+                onValueChange={(values) =>
+                  handleInput(PAYMENT_TYPES.CASH, values.floatValue)
+                }
+                onClick={() => handleClick(PAYMENT_TYPES.CASH)}
+                {...inputProps}
+              />
+              <div onClick={() => this.reset(PAYMENT_TYPES.CASH)}>
+                <Icon icon="cancel" size={13} />
+              </div>
+            </Input>
+          </FormGroup>
         )}
+
+        {paymentMethod === 'card' && <CardForm onStateChange={onStateChange} cardAmount={cardAmount} reset={this.reset} color={options.colors.primary} />}
+
+        <Ebarimt
+          billType={billType}
+          isPortrait={isPortrait}
+          show={showE}
+          onBillTypeChange={onBillTypeChange}
+          onStateChange={onStateChange}
+        />
       </FormHead>
     );
   }
