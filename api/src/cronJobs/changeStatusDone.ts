@@ -9,7 +9,7 @@ import { Configs } from '../db/models/Configs';
  */
 dotenv.config();
 
-export const changeStatusToDone = async () => {
+export const changeStatus = async () => {
   await connect();
 
   const config = await Configs.findOne();
@@ -35,7 +35,7 @@ export const changeStatusToDone = async () => {
   await Orders.updateMany({
     status: { $in: ['new', 'paid', 'doing'] },
     modifiedAt: { $lte: checkTime }
-  }, { $set: { status: 'done' } })
+  }, { $set: { status: 'done', modifiedAt: new Date() } })
 
 };
 
@@ -51,5 +51,5 @@ export const changeStatusToDone = async () => {
  * └───────────────────────── second (0 - 59, OPTIONAL)
  */
 schedule.scheduleJob('0 * * * * *', () => {
-  changeStatusToDone();
+  changeStatus();
 });

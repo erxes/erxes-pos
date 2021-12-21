@@ -18,7 +18,8 @@ import { Orders } from './db/models/Orders';
 import { debugError, debugInit } from './debuggers';
 import userMiddleware from './middlewares/userMiddleware';
 import { initBroker } from './messageBroker';
-import './cronJobs/changeStatus';
+import './cronJobs/changeStatusDone';
+import './cronJobs/changeStatusComplete';
 
 // load environment variables
 dotenv.config();
