@@ -6,7 +6,6 @@ import gql from "graphql-tag";
 import apolloClient from "apolloClient";
 
 import { Alert } from "modules/common/utils";
-import FormControl from "modules/common/components/form/Control";
 import { FlexCenter } from "modules/common/styles/main";
 import Button from "modules/common/components/Button";
 import { __ } from "modules/common/utils";
@@ -20,6 +19,7 @@ import { queries } from "../../graphql/index";
 import { IPaymentParams } from "modules/orders/containers/PosContainer";
 import CardForm from './CardForm';
 import Ebarimt from './Ebarimt';
+import RegisterChecker from './RegisterChecker';
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   margin: ${(props) => (props.isPortrait ? "20px 10%" : "20px 21%")};
@@ -247,6 +247,7 @@ class CalculationForm extends React.Component<Props, State> {
 
   render() {
     const { title, isPayment, options, isPortrait } = this.props;
+    const { showE, billType, registerNumber = '' } = this.state;
 
     const onChangeReg = (e) => {
       const value = (e.target as HTMLInputElement).value;
@@ -259,31 +260,16 @@ class CalculationForm extends React.Component<Props, State> {
         {title && <Title>{__(title)}</Title>}
         <Header>
           {this.renderFormHead()}
-          {this.state.showE && this.state.billType === BILL_TYPES.ENTITY && (
-            <FormHead isPortrait={isPortrait}>
-              <FlexCenter>
-                <Input color={options.colors.primary}>
-                  <FormControl
-                    type="text"
-                    name="registerNumber"
-                    onChange={onChangeReg}
-                    value={this.state.registerNumber}
-                  />
-                  <div onClick={() => this.reset("registerNumber")}>
-                    <Icon icon="cancel" size={13} />
-                  </div>
-                </Input>
-                {this.state.billType === BILL_TYPES.ENTITY && (
-                  <Button
-                    style={{ backgroundColor: options.colors.primary }}
-                    onClick={() => this.checkOrganization()}
-                  >
-                    {__("Check")}
-                  </Button>
-                )}
-              </FlexCenter>
-            </FormHead>
-          )}
+          <RegisterChecker
+            billType={billType}
+            show={showE}
+            registerNumber={registerNumber}
+            checkOrganization={this.checkOrganization.bind(this)}
+            reset={this.reset}
+            color={options.colors.primary}
+            isPortrait={isPortrait}
+            onChange={onChangeReg}
+          />
         </Header>
         <PaymentWrapper isPortrait={isPortrait}>
           <KeyBoard>
