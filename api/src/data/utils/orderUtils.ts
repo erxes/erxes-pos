@@ -21,17 +21,40 @@ interface IDetailItem {
 }
 
 export const generateOrderNumber = async (): Promise<string> => {
-  const today = dayjs().hour(0).minute(0).second(0);
-  const tomorrow = today.add(1, 'day');
+  const today = new Date();
+  const tomorrow = new Date();
+  const todayStr = dayjs().format('YYYYMMDD').toString();
+
+  today.setHours(0, 0, 0);
+  tomorrow.setDate(today.getDate() + 1);
+  tomorrow.setHours(0, 0, 0);
 
   const orderCountToday = await Orders.countDocuments({
-    createdAt: { $gte: today.toDate(), $lt: tomorrow.toDate() },
+    createdAt: { $gte: today, $lt: tomorrow },
   });
 
-  const dateString = today.format('YYYYMMDD').toString();
-  const number = String(orderCountToday + 1).padStart(4, '0');
+  let suffix = String(orderCountToday + 1).padStart(4, '0');
+  let number = `${todayStr}_${suffix}`;
 
-  return `${dateString}_${number}`;
+  const exists = await Orders.findOne({ number });
+
+  if (!exists) {
+    return number;
+  }
+
+  const latestOrders = await Orders.find({}).sort({ createdAt: -1 }).limit(2);
+
+  if (latestOrders && latestOrders.length > 0) {
+    const parts = latestOrders[0].number.split('_');
+
+    // number generation gone wrong due to timezone
+    if (parts[0] === todayStr && parts[1] >= suffix) {
+      suffix = String(parseInt(parts[1]) + 1).padStart(4, '0');
+      number = `${todayStr}_${suffix}`
+    }
+  }
+
+  return number;
 };
 
 export const validateOrder = async (doc: IOrderInput) => {
