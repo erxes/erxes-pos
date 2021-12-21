@@ -8,6 +8,10 @@ interface ISearchParams {
   perPage?: number;
 }
 
+interface IFullOrderParams extends ISearchParams {
+  statuses: string[];
+}
+
 const orderQueries = {
   orders(_root, { searchValue, page, perPage }: ISearchParams) {
     const filter: any = {};
@@ -16,11 +20,26 @@ const orderQueries = {
       filter.number = { $regex: new RegExp(escapeRegExp(searchValue), 'i') };
     }
 
-    return paginate(Orders.find(filter).sort('createdAt').lean(), { page, perPage });
+    return paginate(Orders.find(filter).sort({ createdAt: -1 }).lean(), { page, perPage });
   },
+
+  fullOrders(_root, { searchValue, statuses }: IFullOrderParams) {
+    const filter: any = {};
+
+    if (searchValue) {
+      filter.number = { $regex: new RegExp(escapeRegExp(searchValue), 'i') };
+    }
+
+    return Orders.find({
+      ...filter,
+      status: { $in: statuses }
+    }).sort({ createdAt: 1 });
+  },
+
   orderDetail(_root, { _id }) {
     return Orders.findOne({ _id });
   },
+
   async ordersCheckCompany(_root, { registerNumber }, { config }: IContext) {
     if (!registerNumber) {
       throw new Error('Company register number required for checking');

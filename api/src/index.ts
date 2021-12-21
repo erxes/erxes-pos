@@ -18,6 +18,7 @@ import { Orders } from './db/models/Orders';
 import { debugError, debugInit } from './debuggers';
 import userMiddleware from './middlewares/userMiddleware';
 import { initBroker } from './messageBroker';
+import './cronJobs/changeStatus';
 
 // load environment variables
 dotenv.config();
@@ -143,6 +144,8 @@ httpServer.listen(PORT, () => {
       }).catch(e => {
         debugError(`Error occurred when starting message broker: ${e.message}`);
       });
+
+
     })
     .catch((e) => {
       debugError(`Error occured while starting init: ${e.message}`);

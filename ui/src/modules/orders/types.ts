@@ -100,6 +100,10 @@ export type OrderQueryResponse = {
   orders: IOrder[];
 } & QueryResponse;
 
+export type FullOrderQueryResponse = {
+  fullOrders: IOrder[];
+} & QueryResponse;
+
 export interface ICustomer {
   state?: "visitor" | "lead" | "customer";
 
