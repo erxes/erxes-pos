@@ -18,7 +18,24 @@ type Props = {
   orientation: string;
 } & IRouterProps;
 
-export default class Products extends React.Component<Props> {
+type State = {
+  categoriesHeight: number;
+};
+export default class Products extends React.Component<Props, State> {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      categoriesHeight: 0,
+    };
+  }
+
+  componentDidMount() {
+    const height = document.getElementById("product-categories");
+
+    this.setState({ categoriesHeight: height ? height.clientHeight : 0 });
+  }
+
   onClickCategory = (activeCategoryId: string) => {
     const { qp, history, productsQuery } = this.props;
     const variables = { ...qp, categoryId: activeCategoryId };
@@ -41,7 +58,11 @@ export default class Products extends React.Component<Props> {
       />
     ));
 
-    return <ProductCategories>{categories}</ProductCategories>;
+    return (
+      <ProductCategories id="product-categories">
+        {categories}
+      </ProductCategories>
+    );
   }
 
   addItem(item: IProduct, count: number) {
@@ -54,7 +75,8 @@ export default class Products extends React.Component<Props> {
       productId: item._id,
       productName: item.name,
       unitPrice: item.unitPrice || 0,
-      productImgUrl: item.attachment && item.attachment.url ? item.attachment.url : ''
+      productImgUrl:
+        item.attachment && item.attachment.url ? item.attachment.url : "",
     };
 
     if (!exists) {
@@ -91,7 +113,9 @@ export default class Products extends React.Component<Props> {
     return (
       <>
         {this.renderCategories()}
-        <ProductsWrapper>{this.renderProducts()}</ProductsWrapper>
+        <ProductsWrapper height={this.state.categoriesHeight}>
+          {this.renderProducts()}
+        </ProductsWrapper>
       </>
     );
   }
