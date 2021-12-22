@@ -20,6 +20,8 @@
   "Edit order": "Edit order",
   "Cancel": "Cancel",
   "Done": "Done",
+  "Ready": "Ready",
+  "ready": "ready",
   "Phone number": "Phone number",
   "Check": "Check",
   "Organization": "Organization",
@@ -63,5 +65,6 @@
   "Decline": "Decline",
   "new": "New",
   "doing": "Doing",
+  "Doing": "Doing",
   "Search orders": "Search orders"
 }
