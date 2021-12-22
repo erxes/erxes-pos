@@ -9,6 +9,7 @@ import FormGroup from "modules/common/components/form/Group";
 import ControlLabel from "modules/common/components/form/Label";
 import { __ } from "modules/common/utils";
 import { Input } from "modules/orders/styles";
+import { PAYMENT_TYPES } from './CalculationForm';
 
 const ButtonWrapper = styled.div`
   margin-bottom: 20px;
@@ -48,14 +49,12 @@ export default class CardForm extends React.Component<Props, State> {
       inputMode: "numeric",
     };
 
-    const CARD_AMOUNT = 'cardAmount';
-
-    const handleInput = (name: string, value: number | undefined) => {
-      onStateChange(name, value);
+    const handleInput = (value: number | undefined) => {
+      onStateChange(PAYMENT_TYPES.CARD, value);
     };
 
-    const handleClick = (activeInput: string) => {
-      onStateChange('activeInput', activeInput);
+    const handleClick = () => {
+      onStateChange('activeInput', PAYMENT_TYPES.CARD);
     };
 
     // change databank urls below
@@ -73,13 +72,11 @@ export default class CardForm extends React.Component<Props, State> {
             <NumberFormat
               name="cardAmount"
               value={cardAmount}
-              onValueChange={(values) =>
-                handleInput(CARD_AMOUNT, values.floatValue)
-              }
-              onClick={() => handleClick(CARD_AMOUNT)}
+              onValueChange={(values) => handleInput(values.floatValue)}
+              onClick={() => handleClick()}
               {...inputProps}
             />
-            <div onClick={() => reset(CARD_AMOUNT)}>
+            <div onClick={() => reset(PAYMENT_TYPES.CARD)}>
               <Icon icon="cancel" size={13} />
             </div>
           </Input>

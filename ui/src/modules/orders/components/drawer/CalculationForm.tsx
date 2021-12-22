@@ -1,5 +1,4 @@
 import React from "react";
-import NumberFormat from "react-number-format";
 import styled from "styled-components";
 import styledTS from "styled-components-ts";
 import gql from "graphql-tag";
@@ -9,17 +8,15 @@ import { Alert } from "modules/common/utils";
 import { FlexCenter } from "modules/common/styles/main";
 import Button from "modules/common/components/Button";
 import { __ } from "modules/common/utils";
-import Icon from "erxes-ui/lib/components/Icon";
-import { Input, FormHead } from "modules/orders/styles";
+import { FormHead } from "modules/orders/styles";
 import { Amount } from "modules/orders/components/Calculation";
 import { formatNumber } from "modules/utils";
-import FormGroup from "modules/common/components/form/Group";
-import ControlLabel from "modules/common/components/form/Label";
 import { queries } from "../../graphql/index";
 import { IPaymentParams } from "modules/orders/containers/PosContainer";
 import CardForm from './CardForm';
 import Ebarimt from './Ebarimt';
 import RegisterChecker from './RegisterChecker';
+import CashForm from './CashForm';
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   margin: ${(props) => (props.isPortrait ? "20px 10%" : "20px 21%")};
@@ -99,7 +96,7 @@ export const BILL_TYPES = {
   ENTITY: "3", // байгууллагад өгөх баримт
 };
 
-const PAYMENT_TYPES = {
+export const PAYMENT_TYPES = {
   CARD: "cardAmount",
   CASH: "cashAmount",
 };
@@ -176,24 +173,8 @@ class CalculationForm extends React.Component<Props, State> {
   }
 
   renderFormHead() {
-    const { showE, billType, cashAmount, cardAmount = 0 } = this.state;
+    const { showE, billType, cashAmount = 0, cardAmount = 0 } = this.state;
     const { options, totalAmount, isPortrait, paymentMethod } = this.props;
-
-    const inputProps: any = {
-      allowNegative: false,
-      thousandSeparator: true,
-      prefix: "₮",
-      inputMode: "numeric",
-    };
-
-    const handleInput = (name: string, value: number | undefined) => {
-      this.setState({ [name]: value } as any);
-    };
-
-    // for updating card & cash amount from either input or numpad
-    const handleClick = (activeInput: string) => {
-      this.setState({ activeInput });
-    };
 
     const onBillTypeChange = (e) => {
       const billType = (e.target as HTMLInputElement).value;
@@ -213,23 +194,12 @@ class CalculationForm extends React.Component<Props, State> {
         </Amount>
 
         {paymentMethod === 'cash' && (
-          <FormGroup>
-            <ControlLabel>{__("In Cash")}</ControlLabel>
-            <Input color={options.colors.primary}>
-              <NumberFormat
-                name="cashAmount"
-                value={cashAmount}
-                onValueChange={(values) =>
-                  handleInput(PAYMENT_TYPES.CASH, values.floatValue)
-                }
-                onClick={() => handleClick(PAYMENT_TYPES.CASH)}
-                {...inputProps}
-              />
-              <div onClick={() => this.reset(PAYMENT_TYPES.CASH)}>
-                <Icon icon="cancel" size={13} />
-              </div>
-            </Input>
-          </FormGroup>
+          <CashForm
+            cashAmount={cashAmount}
+            reset={this.reset}
+            color={options.colors.primary}
+            onStateChange={onStateChange}
+          />
         )}
 
         {paymentMethod === 'card' && <CardForm onStateChange={onStateChange} cardAmount={cardAmount} reset={this.reset} color={options.colors.primary} />}
