@@ -14,6 +14,9 @@
   "Take": "Take",
   "Eat": "Eat",
   "Save": "Save",
+  "take": "Take",
+  "eat": "Eat",
+  "save": "Save",
   "Edit order": "Edit order",
   "Cancel": "Cancel",
   "Done": "Done",
@@ -50,5 +53,15 @@
   "Last name": "Last name",
   "First name": "First name",
   "Email address": "Email address",
-  "Search products": "Search products"
+  "Search products": "Search products",
+  "Order": "Order",
+  "Type": "Type",
+  "Status": "Status",
+  "Actions": "Actions",
+  "Quantity": "Quantity",
+  "Start": "Start",
+  "Decline": "Decline",
+  "new": "New",
+  "doing": "Doing",
+  "Search orders": "Search orders"
 }
