@@ -72,7 +72,7 @@ export const validateOrder = async (doc: IOrderInput) => {
 
 export const validateOrderPayment = (order: IOrder, doc: IPayment) => {
   if (order.paidDate) {
-    throw new Error(`Ebarimt has already been given to order "${order.number}"`);
+    throw new Error('Order has already been paid');
   }
 
   const { cardAmount = 0, cashAmount = 0, mobileAmount = 0 } = doc;

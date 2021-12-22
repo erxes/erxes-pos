@@ -71,7 +71,7 @@ class PosContainer extends React.Component<Props> {
           }
         })
         .catch((e) => {
-          return Alert.error(e.message);
+          return Alert.error(__(e.message));
         });
     };
 
@@ -83,7 +83,7 @@ class PosContainer extends React.Component<Props> {
           }
         })
         .catch((e) => {
-          return Alert.error(e.message);
+          return Alert.error(__(e.message));
         });
     };
 
@@ -112,7 +112,7 @@ class PosContainer extends React.Component<Props> {
           window.location.href = "/pos";
         })
         .catch((e) => {
-          Alert.error(e.message);
+          Alert.error(__(e.message));
         });
     };
 
@@ -124,7 +124,7 @@ class PosContainer extends React.Component<Props> {
           }
         })
         .catch((e) => {
-          Alert.error(e.message);
+          Alert.error(__(e.message));
         });
     };
 
