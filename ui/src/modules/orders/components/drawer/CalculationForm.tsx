@@ -17,6 +17,7 @@ import CardForm from './CardForm';
 import Ebarimt from './Ebarimt';
 import RegisterChecker from './RegisterChecker';
 import CashForm from './CashForm';
+import { IOrder } from "modules/orders/types";
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   margin: ${(props) => (props.isPortrait ? "20px 10%" : "20px 21%")};
@@ -83,6 +84,7 @@ type Props = {
   extraButton?: React.ReactNode;
   handlePayment: (params: IPaymentParams) => void;
   paymentMethod: string;
+  order: IOrder;
 };
 
 type State = {
@@ -175,7 +177,7 @@ class CalculationForm extends React.Component<Props, State> {
 
   renderFormHead() {
     const { showE, billType, cashAmount = 0, cardAmount = 0 } = this.state;
-    const { options, totalAmount = 0, isPortrait, paymentMethod } = this.props;
+    const { options, totalAmount = 0, isPortrait, paymentMethod, order } = this.props;
 
     const onBillTypeChange = (e) => {
       const billType = (e.target as HTMLInputElement).value;
@@ -204,7 +206,16 @@ class CalculationForm extends React.Component<Props, State> {
           />
         )}
 
-        {paymentMethod === 'card' && <CardForm onStateChange={onStateChange} cardAmount={cardAmount} reset={this.reset} color={options.colors.primary} />}
+        {paymentMethod === 'card' && (
+          <CardForm
+            onStateChange={onStateChange}
+            cardAmount={cardAmount}
+            reset={this.reset}
+            color={options.colors.primary}
+            billType={billType}
+            orderNumber={order.number}
+          />)
+        }
 
         <Ebarimt
           billType={billType}

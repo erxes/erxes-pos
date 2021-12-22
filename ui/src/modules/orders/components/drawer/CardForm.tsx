@@ -20,6 +20,8 @@ type Props = {
   reset: (paymentType: string) => void;
   color?: string;
   onStateChange: (key: string, value: any) => void;
+  billType: string;
+  orderNumber: string;
 }
 
 type State = {
@@ -40,7 +42,7 @@ export default class CardForm extends React.Component<Props, State> {
   }
 
   render() {
-    const { cardAmount, reset, color = '', onStateChange } = this.props;
+    const { cardAmount, reset, color = '', onStateChange, billType, orderNumber } = this.props;
     const { checkedConnection } = this.state;
 
     const inputProps: any = {
@@ -71,6 +73,33 @@ export default class CardForm extends React.Component<Props, State> {
       });
     };
 
+    const sendTransaction = async (e) => {
+      e.preventDefault();
+
+      if (!checkedConnection) {
+        return Alert.warning('Make a successful connection first');
+      }
+
+      await fetch('http://localhost:27028', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          service_name: 'doSaleTransaction',
+          service_params: {
+            db_ref_no: orderNumber,
+            amount: cardAmount,
+            vatps_bill_type: billType
+          }
+        })
+      }).then(res => res.json()).then(response => {
+        console.log(response, 'rerer');
+      }).catch(e => {
+        console.log(e, 'eeee');
+      })
+    };
+
     return (
       <React.Fragment>
         <FormGroup>
@@ -90,7 +119,9 @@ export default class CardForm extends React.Component<Props, State> {
         </FormGroup>
         <ButtonWrapper>
           <Button btnStyle='simple' onClick={onCheckConnection}>{__("Check connection")}</Button>
-          {checkedConnection && <Button btnStyle='warning'>{__("Check transaction")}</Button>}
+          {checkedConnection && cardAmount && 
+            <Button btnStyle='warning' onClick={sendTransaction}>{__("Send transaction")}</Button>
+          }
         </ButtonWrapper>
       </React.Fragment>
     );
