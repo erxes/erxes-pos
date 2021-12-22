@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import dayjs from "dayjs";
+
 import { AppContext } from "appContext";
 import { FlexCenter, FlexBetween } from "modules/common/styles/main";
+import colors from 'modules/common/styles/colors';
 import Tip from "modules/common/components/Tip";
 import { OrderBox } from "modules/orders/styles";
 import Icon from "modules/common/components/Icon";
@@ -28,8 +30,10 @@ export default function OrderItem({ order }: Props) {
 
   const onClick = () => window.location.href = `/pos?id=${order._id}`;
 
+  const color = order.paidDate ? colors.colorCoreGreen : options.colors.primary;
+
   return (
-    <OrderBox color={options.colors.primary} key={order._id} onClick={onClick}>
+    <OrderBox color={color} key={order._id} onClick={onClick}>
       <Link to={`/pos?id=${order._id}`}>
         <FlexBetween>
           <span>{dayjs(order.createdAt).format('YY/MM/DD')}</span>
