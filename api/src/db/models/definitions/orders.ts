@@ -1,12 +1,13 @@
 import { Document, Schema } from 'mongoose';
 import { field, getDateFieldDefinition, getNumberFieldDefinition } from './utils';
-import { ORDER_TYPES } from './constants';
+import { ORDER_TYPES, ORDER_STATUSES } from './constants';
 import { IOrderItemDocument } from './orderItems';
 import { ICustomerDocument } from './customers';
 
 export interface IOrder {
   status: string;
   createdAt: Date;
+  modifiedAt: Date;
   paidDate: Date;
   number: string;
   customerId?: string;
@@ -37,7 +38,12 @@ const commonAttributes = { positive: true, default: 0 };
 export const orderSchema = new Schema({
   _id: field({ pkey: true }),
   createdAt: getDateFieldDefinition('Created at'),
-  status: { type: String, label: 'Status of the order' },
+  modifiedAt: getDateFieldDefinition('Created at'),
+  status: {
+    type: String, label: 'Status of the order',
+    enum: ORDER_STATUSES.ALL,
+    default: ORDER_STATUSES.NEW
+  },
   paidDate: { type: Date, label: 'Paid date' },
   number: { type: String, label: 'Order number', unique: true },
   customerId: { type: String, label: 'Customer' },

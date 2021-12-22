@@ -49,6 +49,7 @@ const currentConfig = `
         bgImage
         logo
         favIcon
+        receiptIcon
       }
 
       ebarimtConfig {

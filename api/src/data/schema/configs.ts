@@ -4,6 +4,7 @@ export const types = `
     logo: String
     bgImage: String
     favIcon: String
+    receiptIcon: String
   }
 
   type EbarimtConfig {

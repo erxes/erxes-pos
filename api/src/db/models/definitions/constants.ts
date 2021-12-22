@@ -112,7 +112,13 @@ export const ORDER_RETURN_TYPES = {
 
 export const ORDER_STATUSES = {
   NEW: 'new',
-  PAID: 'paid'
+  PAID: 'paid',
+  DOING: 'doing',
+  DONE: 'done',
+  ROAD: 'road',
+  COMPLETE: 'complete',
+
+  ALL: ['new', 'paid', 'doing', 'done', 'road', 'complete']
 };
 
 export const DISTRICTS = {

@@ -15,6 +15,7 @@ import {
 import { checkConnection, sendTransaction } from '../../utils/cardUtils';
 import { IContext } from '../../types';
 import messageBroker from '../../../messageBroker';
+import { ORDER_STATUSES } from '../../../db/models/definitions/constants';
 
 export interface IPayment {
   cardAmount?: number;
@@ -130,6 +131,8 @@ const orderMutations = {
       doc.billType,
       doc.registerNumber
     );
+
+    await Orders.updateOne({ _id }, { $set: { status: ORDER_STATUSES.PAID } });
 
     const ebarimtConfig = {
       ...config.ebarimtConfig,
