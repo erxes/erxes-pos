@@ -16,6 +16,7 @@ import {
   DropSubNavItem,
 } from "../styles";
 import Tip from "modules/common/components/Tip";
+import { IConfig } from "types";
 
 export interface ISubNav {
   permission: string;
@@ -29,6 +30,7 @@ type IProps = {
   unreadConversationsCount?: number;
   collapsed: boolean;
   onCollapseNavigation: () => void;
+  currentConfig?: IConfig
   currentUser: IUser;
   options: any;
 };
@@ -169,9 +171,46 @@ class Navigation extends React.Component<IProps> {
     if (!currentUser) {
       return "";
     }
+
     return (
       <NavLink to="/settings">
         <NavIcon className={"icon-sync-exclamation"} />
+      </NavLink>
+    );
+  }
+
+  renderKitchenMenu() {
+    const { currentUser, currentConfig } = this.props;
+
+    if (!currentUser || !currentConfig) {
+      return "";
+    }
+
+    if (!currentConfig.kitchenScreen) {
+      return "";
+    }
+
+    return (
+      <NavLink to="/kitchen-screen">
+        <NavIcon className={"icon-wallclock"} />
+      </NavLink>
+    );
+  }
+
+  renderWaitingMenu() {
+    const { currentUser, currentConfig } = this.props;
+
+    if (!currentUser || !currentConfig) {
+      return "";
+    }
+
+    if (!currentConfig.waitingScreen) {
+      return "";
+    }
+
+    return (
+      <NavLink to="/waiting-screen">
+        <NavIcon className={"icon-presentation"} />
       </NavLink>
     );
   }
@@ -186,6 +225,8 @@ class Navigation extends React.Component<IProps> {
           <img src={options.logo || `/images/${logo}`} alt="logo" />
         </NavLink>
         {this.renderSyncMenu()}
+        {this.renderKitchenMenu()}
+        {this.renderWaitingMenu()}
         <Nav id="navigation" collapsed={collapsed}>
           {pluginsOfNavigations(this.renderNavItem)}
         </Nav>

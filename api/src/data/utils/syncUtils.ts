@@ -156,6 +156,8 @@ export const extractConfig = (doc) => {
     cashierIds: doc.cashierIds,
     uiOptions,
     ebarimtConfig: doc.ebarimtConfig,
+    kitchenScreen: doc.kitchenScreen,
+    waitingScreen: doc.waitingScreen
   }
 };
 

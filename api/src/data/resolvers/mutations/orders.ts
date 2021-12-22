@@ -14,6 +14,7 @@ import {
 } from '../../utils/orderUtils';
 import { IContext } from '../../types';
 import messageBroker from '../../../messageBroker';
+import { ORDER_STATUSES } from '../../../db/models/definitions/constants';
 
 export interface IPayment {
   cardAmount?: number;
@@ -57,7 +58,7 @@ const orderMutations = {
 
     try {
       const order = await Orders.createOrder(orderDoc);
-  
+
       for (const item of items) {
         await OrderItems.createOrderItem({
           count: item.count,
@@ -66,7 +67,7 @@ const orderMutations = {
           orderId: order._id
         });
       }
-  
+
       return order;
     } catch (e) {
       debugError(`Error occurred when creating order: ${JSON.stringify(orderDoc)}`);
@@ -97,6 +98,8 @@ const orderMutations = {
     await validateOrderPayment(order, doc);
 
     const data = await prepareEbarimtData(order, config.ebarimtConfig, items, doc.billType, doc.registerNumber);
+
+    await Orders.updateOne({ _id }, { $set: { status: ORDER_STATUSES.PAID } });
 
     const ebarimtConfig = {
       ...config.ebarimtConfig,

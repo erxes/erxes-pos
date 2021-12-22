@@ -84,6 +84,7 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
           {currentUser && (
             <Navigation
               currentUser={currentUser}
+              currentConfig={currentConfig}
               options={currentConfig ? currentConfig.uiOptions : {}}
               collapsed={isCollapsed}
               onCollapseNavigation={this.onCollapseNavigation}

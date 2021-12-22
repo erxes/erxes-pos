@@ -24,7 +24,7 @@ class Order {
   }
 
   public static async updateOrder(_id: string, doc: IOrder) {
-    await Orders.updateOne({ _id }, { $set: doc });
+    await Orders.updateOne({ _id }, { $set: { ...doc, modifiedAt: new Date() } });
 
     return Orders.findOne({ _id });
   }

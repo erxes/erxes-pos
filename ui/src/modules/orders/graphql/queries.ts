@@ -122,6 +122,23 @@ const orders = `
   }
 `;
 
+const fullOrders = `
+  query fullOrders($searchValue: String, $statuses: [String], $page: Int, $perPage: Int) {
+    fullOrders(searchValue: $searchValue, statuses: $statuses, page: $page, perPage: $perPage) {
+      ${orderFields}
+
+      items {
+        _id
+        unitPrice
+        orderId
+        productName
+        count
+        productId
+      }
+    }
+  }
+`;
+
 const customers = `
   query customers($searchValue: String) {
     customers(searchValue: $searchValue) {
@@ -147,6 +164,7 @@ export default {
   products,
   orderDetail,
   orders,
+  fullOrders,
   customers,
   ordersCheckCompany,
   fetchRemoteInvoice
