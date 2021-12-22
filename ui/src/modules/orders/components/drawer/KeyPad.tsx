@@ -24,20 +24,13 @@ const Pad = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
 `;
 
 type Props = {
-  key: string;
   num: string;
   isPortrait: boolean | undefined;
   onClick: (val: string) => void;
 }
 
-export default function KeyPad({ key, num, onClick, isPortrait }: Props) {
+export default function KeyPad({ num, onClick, isPortrait }: Props) {
   return (
-    <Pad
-      key={key}
-      onClick={() => onClick(num.toString())}
-      isPortrait={isPortrait}
-    >
-      {num}
-    </Pad>
+    <Pad onClick={() => onClick(num.toString())} isPortrait={isPortrait}>{num}</Pad>
   );
 };
