@@ -17,6 +17,7 @@ import CardForm from './CardForm';
 import Ebarimt from './Ebarimt';
 import RegisterChecker from './RegisterChecker';
 import CashForm from './CashForm';
+import KeyPads from './KeyPads';
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   margin: ${(props) => (props.isPortrait ? "20px 10%" : "20px 21%")};
@@ -28,34 +29,6 @@ const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   }
   @media (max-width: 1600px) and (orientation:landscape) {
     margin: 20px 10%;
-  }
-`;
-
-const KeyBoard = styled.div`
-  display: inline-grid;
-  justify-content: center;
-  grid-auto-flow: row;
-  grid-template-columns: repeat(3, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  margin-bottom: 30px;
-`;
-
-const KeyPad = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
-  width: ${(props) => (props.isPortrait ? "140px" : "95px")}
-  height: ${(props) => (props.isPortrait ? "140px" : "95px")}
-  border-radius: ${(props) => (props.isPortrait ? "140px" : "95px")}
-  line-height: ${(props) => (props.isPortrait ? "140px" : "95px")}
-  background: #eee;
-  margin: 8px;
-  font-size: ${(props) => (props.isPortrait ? "42px" : "32px")};
-  font-weight: 600;
-  cursor: pointer;
-  @media (max-width: 1600px) and (orientation:landscape) {
-    width: 70px;
-    height: 70px;
-    border-radius: 70px;
-    line-height: 70px;
-    font-size: 28px;
   }
 `;
 
@@ -161,18 +134,6 @@ class CalculationForm extends React.Component<Props, State> {
       });
   }
 
-  renderKeyPad(key, num) {
-    return (
-      <KeyPad
-        key={key}
-        onClick={() => this.onChangeKeyPad(num.toString())}
-        isPortrait={this.props.isPortrait}
-      >
-        {num}
-      </KeyPad>
-    );
-  }
-
   renderFormHead() {
     const { showE, billType, cashAmount = 0, cardAmount = 0 } = this.state;
     const { options, totalAmount = 0, isPortrait, paymentMethod } = this.props;
@@ -244,14 +205,7 @@ class CalculationForm extends React.Component<Props, State> {
           />
         </Header>
         <PaymentWrapper isPortrait={isPortrait}>
-          <KeyBoard>
-            {Array.from({ length: 9 }, (_, i) => i + 1).map((num, index) =>
-              this.renderKeyPad(index, num)
-            )}
-            {this.renderKeyPad(15, isPayment ? "+" : ".")}
-            {this.renderKeyPad(0, 0)}
-            {this.renderKeyPad(16, "CE")}
-          </KeyBoard>
+          <KeyPads isPayment={isPayment} isPortrait={isPortrait} onChangeKeyPad={this.onChangeKeyPad} />
           <FlexCenter>
             <Button
               btnStyle="simple"
