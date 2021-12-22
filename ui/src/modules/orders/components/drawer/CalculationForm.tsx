@@ -133,12 +133,13 @@ class CalculationForm extends React.Component<Props, State> {
   };
 
   handleSubmit = () => {
-    const { registerNumber, billType, cardAmount, cashAmount } = this.state;
+    const { totalAmount = 0 } = this.props;
+    const { registerNumber, billType, cardAmount, cashAmount = 0 } = this.state;
 
     this.props.handlePayment({
       registerNumber,
       cardAmount,
-      cashAmount,
+      cashAmount: cashAmount > totalAmount ? totalAmount : cashAmount,
       billType,
     });
   };
@@ -174,7 +175,7 @@ class CalculationForm extends React.Component<Props, State> {
 
   renderFormHead() {
     const { showE, billType, cashAmount = 0, cardAmount = 0 } = this.state;
-    const { options, totalAmount, isPortrait, paymentMethod } = this.props;
+    const { options, totalAmount = 0, isPortrait, paymentMethod } = this.props;
 
     const onBillTypeChange = (e) => {
       const billType = (e.target as HTMLInputElement).value;
@@ -199,6 +200,7 @@ class CalculationForm extends React.Component<Props, State> {
             reset={this.reset}
             color={options.colors.primary}
             onStateChange={onStateChange}
+            totalAmount={totalAmount}
           />
         )}
 
