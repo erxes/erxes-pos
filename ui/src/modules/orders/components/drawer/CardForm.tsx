@@ -78,14 +78,19 @@ export default class CardForm extends React.Component<Props, State> {
                 vatps_bill_type: billType
               }
             })
-          }).then(res => res.json()).then(resp => {
-            if (resp && resp.status === true && resp.response) {
-              Alert.success(__('Transaction was successful'));
-
-              // enable payment button
-              onStateChange('paymentEnabled', true);
-
-              setCardPaymentInfo(JSON.stringify(resp.response));
+          }).then(res => res.json()).then(r => {
+            if (r && r.status === true && r.response) {
+              if (r.response.response_code === '000') {
+                Alert.success(__(r.response.response_msg || 'Transaction was successful'));
+  
+                // enable payment button
+                onStateChange('paymentEnabled', true);
+  
+                setCardPaymentInfo(JSON.stringify(r.response));
+              }
+              if (r.response.response_code === '116') {
+                Alert.warning(r.response.response_msg);
+              }
             }
           }).catch(e => {
             Alert.error(e.message);
