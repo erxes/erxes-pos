@@ -87,9 +87,8 @@ export default class CardForm extends React.Component<Props, State> {
                 onStateChange('paymentEnabled', true);
   
                 setCardPaymentInfo(JSON.stringify(r.response));
-              }
-              if (r.response.response_code === '116') {
-                Alert.warning(r.response.response_msg);
+              } else {
+                return Alert.warning(r.response.response_msg);
               }
             }
           }).catch(e => {
