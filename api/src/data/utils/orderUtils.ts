@@ -42,7 +42,7 @@ export const generateOrderNumber = async (): Promise<string> => {
     return number;
   }
 
-  const latestOrders = await Orders.find({}).sort({ createdAt: -1 }).limit(2);
+  const latestOrders = await Orders.find({}).sort({ createdAt: -1, number: -1 }).limit(2);
 
   if (latestOrders && latestOrders.length > 0) {
     const parts = latestOrders[0].number.split('_');
