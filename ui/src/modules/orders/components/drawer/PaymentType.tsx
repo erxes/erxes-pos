@@ -80,6 +80,12 @@ type Props = {
   isPortrait?: boolean;
 };
 
+export const PAYMENT_METHODS = {
+  CARD: 'card',
+  CASH: 'cash',
+  QPAY: 'qpay'
+};
+
 class PaymentType extends React.Component<Props> {
   render() {
     const { color, togglePaymentType, isPortrait } = this.props;
@@ -89,19 +95,19 @@ class PaymentType extends React.Component<Props> {
         <h2>{__("Choose the payment method")}</h2>
 
         <Cards color={color} isPortrait={isPortrait}>
-          <Card isPortrait={isPortrait} onClick={() => togglePaymentType('cash')}>
+          <Card isPortrait={isPortrait} onClick={() => togglePaymentType(PAYMENT_METHODS.CASH)}>
             <div>
               <img src="/images/payment2.png" alt="payment" />
             </div>
             <p>{__("In Cash")}</p>
           </Card>
-          <Card isPortrait={isPortrait} onClick={() => togglePaymentType('card')}>
+          <Card isPortrait={isPortrait} onClick={() => togglePaymentType(PAYMENT_METHODS.CARD)}>
             <div>
               <img src="/images/payment4.png" alt="payment" />
             </div>
             <p>{__("By Card")}</p>
           </Card>
-          <Card isPortrait={isPortrait} onClick={() => togglePaymentType('qpay')}>
+          <Card isPortrait={isPortrait} onClick={() => togglePaymentType(PAYMENT_METHODS.QPAY)}>
             <div>
               <img src="/images/payment1.png" alt="payment" />
             </div>

@@ -1,5 +1,5 @@
 import React from "react";
-import PaymentType from "./PaymentType";
+import PaymentType, { PAYMENT_METHODS } from "./PaymentType";
 import CalculationForm from "modules/orders/components/drawer/CalculationForm";
 import { IPaymentParams } from "modules/orders/containers/PosContainer";
 import QPay from "./QPay";
@@ -55,7 +55,7 @@ class PaymentForm extends React.Component<Props, State> {
       );
     }
 
-    if (paymentType === 'qpay') {
+    if (paymentType === PAYMENT_METHODS.QPAY) {
       return <QPay order={order} handlePayment={this.handlePayment} />;
     }
 
