@@ -25,7 +25,6 @@ type Props = {
 }
 
 type State = {
-  checkedConnection: boolean;
   sentTransaction: boolean;
   checkedTransaction: boolean;
 }
@@ -35,7 +34,6 @@ export default class CardForm extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      checkedConnection: false,
       sentTransaction: false,
       checkedTransaction: false
     };
@@ -43,7 +41,6 @@ export default class CardForm extends React.Component<Props, State> {
 
   render() {
     const { cardAmount, reset, color = '', onStateChange, billType, orderNumber } = this.props;
-    const { checkedConnection } = this.state;
 
     const inputProps: any = {
       allowNegative: false,
@@ -60,44 +57,35 @@ export default class CardForm extends React.Component<Props, State> {
       onStateChange('activeInput', PAYMENT_TYPES.CARD);
     };
 
-    // change databank urls below
-    const onCheckConnection = () => {
-      const path = 'http://localhost:27028/ajax/get-status-info';
+    const PATH = 'http://localhost:27028';
 
-      fetch(path).then((res: any) => {
+    const sendTransaction = async () => {
+      fetch(`${PATH}/ajax/get-status-info`).then(res => res.json()).then((res: any) => {
         if (res && res.status_code === 'ok') {
-          this.setState({ checkedConnection: true });
+          // send transaction upon successful connection
+          fetch(PATH, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+              service_name: 'doSaleTransaction',
+              service_params: {
+                // special character _ is not accepted
+                db_ref_no: orderNumber.replace('_', ''),
+                amount: cardAmount.toString(),
+                vatps_bill_type: billType
+              }
+            })
+          }).then(res => res.json()).then(response => {
+            console.log(response, 'rerer');
+          }).catch(e => {
+            console.log(e, 'eeee');
+          })
         }
       }).catch(e => {
-        Alert.error(`${e.message}: Databank-н төлбөрийн програмтай холбогдсонгүй: ${path}`);
+        Alert.error(`${e.message}: Databank-н төлбөрийн програмтай холбогдсонгүй`);
       });
-    };
-
-    const sendTransaction = async (e) => {
-      e.preventDefault();
-
-      if (!checkedConnection) {
-        return Alert.warning('Make a successful connection first');
-      }
-
-      await fetch('http://localhost:27028', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          service_name: 'doSaleTransaction',
-          service_params: {
-            db_ref_no: orderNumber,
-            amount: cardAmount,
-            vatps_bill_type: billType
-          }
-        })
-      }).then(res => res.json()).then(response => {
-        console.log(response, 'rerer');
-      }).catch(e => {
-        console.log(e, 'eeee');
-      })
     };
 
     return (
@@ -118,8 +106,7 @@ export default class CardForm extends React.Component<Props, State> {
           </Input>
         </FormGroup>
         <ButtonWrapper>
-          <Button btnStyle='simple' onClick={onCheckConnection}>{__("Check connection")}</Button>
-          {checkedConnection && cardAmount && 
+          {cardAmount &&
             <Button btnStyle='warning' onClick={sendTransaction}>{__("Send transaction")}</Button>
           }
         </ButtonWrapper>
