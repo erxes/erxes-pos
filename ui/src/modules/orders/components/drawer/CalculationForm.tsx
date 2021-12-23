@@ -18,6 +18,7 @@ import Ebarimt from './Ebarimt';
 import RegisterChecker from './RegisterChecker';
 import CashForm from './CashForm';
 import { IOrder } from "modules/orders/types";
+import { PAYMENT_METHODS } from "./PaymentType";
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   margin: ${(props) => (props.isPortrait ? "20px 10%" : "20px 21%")};
@@ -77,7 +78,6 @@ type Props = {
   options: any;
   closeDrawer: any;
   isPortrait?: boolean;
-  totalAmount?: number;
   title?: string;
   isPayment?: boolean;
   header?: React.ReactNode;
@@ -107,13 +107,16 @@ class CalculationForm extends React.Component<Props, State> {
   constructor(props) {
     super(props);
 
+    const { paymentMethod, order } = props;
+
     this.state = {
       showE: true,
       activeInput: PAYMENT_TYPES.CASH,
       // payment doc
       registerNumber: "",
       billType: BILL_TYPES.CITIZEN,
-      cashAmount: props.totalAmount,
+      cashAmount: paymentMethod === PAYMENT_METHODS.CASH ? order.totalAmount : 0,
+      cardAmount: paymentMethod === PAYMENT_METHODS.CARD ? order.totalAmount : 0
     };
   }
 
@@ -135,13 +138,13 @@ class CalculationForm extends React.Component<Props, State> {
   };
 
   handleSubmit = () => {
-    const { totalAmount = 0 } = this.props;
+    const { order } = this.props;
     const { registerNumber, billType, cardAmount, cashAmount = 0 } = this.state;
 
     this.props.handlePayment({
       registerNumber,
       cardAmount,
-      cashAmount: cashAmount > totalAmount ? totalAmount : cashAmount,
+      cashAmount: cashAmount > order.totalAmount ? order.totalAmount : cashAmount,
       billType,
     });
   };
@@ -177,7 +180,7 @@ class CalculationForm extends React.Component<Props, State> {
 
   renderFormHead() {
     const { showE, billType, cashAmount = 0, cardAmount = 0 } = this.state;
-    const { options, totalAmount = 0, isPortrait, paymentMethod, order } = this.props;
+    const { options, isPortrait, paymentMethod, order } = this.props;
 
     const onBillTypeChange = (e) => {
       const billType = (e.target as HTMLInputElement).value;
@@ -193,7 +196,7 @@ class CalculationForm extends React.Component<Props, State> {
       <FormHead isPortrait={isPortrait}>
         <Amount color={options.colors.primary}>
           <span>{__("Amount to pay")}</span>
-          {formatNumber(totalAmount || 0)}₮
+          {formatNumber(order.totalAmount || 0)}₮
         </Amount>
 
         {paymentMethod === 'cash' && (
@@ -202,7 +205,7 @@ class CalculationForm extends React.Component<Props, State> {
             reset={this.reset}
             color={options.colors.primary}
             onStateChange={onStateChange}
-            totalAmount={totalAmount}
+            totalAmount={order.totalAmount}
           />
         )}
 
