@@ -24,6 +24,7 @@ export interface IOrder {
   oldBillId: string;
   type: string;
   synced: boolean;
+  cardPaymentInfo?: string;
 }
 
 export interface IOrderDocument extends Document, IOrder {
@@ -65,5 +66,6 @@ export const orderSchema = new Schema({
     default: ORDER_TYPES.EAT
   },
   userId: { type: String, label: 'Created user id' },
-  synced: { type: Boolean, default: false, label: 'synced on erxes' }
+  synced: { type: Boolean, default: false, label: 'synced on erxes' },
+  cardPaymentInfo: { type: String, label: 'Bank card transaction info' }
 });

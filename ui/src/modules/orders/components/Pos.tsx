@@ -41,6 +41,7 @@ type Props = {
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
   qp: any;
+  setCardPaymentInfo: (params: any) => void;
 };
 
 type State = {
@@ -170,7 +171,7 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   renderDrawerContent() {
-    const { currentConfig, makePayment, order, addCustomer } = this.props;
+    const { currentConfig, makePayment, order, addCustomer, setCardPaymentInfo } = this.props;
     const { drawerContentType, totalAmount } = this.state;
 
     switch (drawerContentType) {
@@ -186,6 +187,7 @@ export default class Pos extends React.Component<Props, State> {
               closeDrawer={this.toggleDrawer}
               makePayment={makePayment}
               order={order}
+              setCardPaymentInfo={setCardPaymentInfo}
             />
           )
         );
@@ -209,7 +211,9 @@ export default class Pos extends React.Component<Props, State> {
       orientation,
       productCategoriesQuery,
       productsQuery,
+      setCardPaymentInfo
     } = this.props;
+
     const { items, totalAmount, showMenu, type, customerId } = this.state;
 
     const products = (
@@ -235,6 +239,7 @@ export default class Pos extends React.Component<Props, State> {
           order={order}
           setOrderState={this.setOrderState}
           customerId={customerId}
+          setCardPaymentInfo={setCardPaymentInfo}
         />
       );
     }

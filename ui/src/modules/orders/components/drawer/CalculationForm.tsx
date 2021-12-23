@@ -58,11 +58,13 @@ type Props = {
   handlePayment: (params: IPaymentParams) => void;
   paymentMethod: string;
   order: IOrder;
+  setCardPaymentInfo: (params: any) => void;
 };
 
 type State = {
   showE: boolean;
   activeInput: string;
+  paymentEnabled: boolean;
 } & IPaymentParams;
 
 // НӨАТ-н баримтын төрөл
@@ -89,7 +91,8 @@ class CalculationForm extends React.Component<Props, State> {
       registerNumber: "",
       billType: BILL_TYPES.CITIZEN,
       cashAmount: paymentMethod === PAYMENT_METHODS.CASH ? order.totalAmount : 0,
-      cardAmount: paymentMethod === PAYMENT_METHODS.CARD ? order.totalAmount : 0
+      cardAmount: paymentMethod === PAYMENT_METHODS.CARD ? order.totalAmount : 0,
+      paymentEnabled: paymentMethod === PAYMENT_METHODS.CASH ? true : false
     };
   }
 
@@ -141,7 +144,7 @@ class CalculationForm extends React.Component<Props, State> {
 
   renderFormHead() {
     const { showE, billType, cashAmount = 0, cardAmount = 0 } = this.state;
-    const { options, isPortrait, paymentMethod, order } = this.props;
+    const { options, isPortrait, paymentMethod, order, setCardPaymentInfo } = this.props;
 
     const onBillTypeChange = (e) => {
       const billType = (e.target as HTMLInputElement).value;
@@ -178,6 +181,7 @@ class CalculationForm extends React.Component<Props, State> {
             color={options.colors.primary}
             billType={billType}
             orderNumber={order.number}
+            setCardPaymentInfo={setCardPaymentInfo}
           />)
         }
 
@@ -194,7 +198,7 @@ class CalculationForm extends React.Component<Props, State> {
 
   render() {
     const { title, isPayment, options, isPortrait } = this.props;
-    const { showE, billType, registerNumber = '' } = this.state;
+    const { showE, billType, registerNumber = '', paymentEnabled } = this.state;
 
     const onChangeReg = (e) => {
       const value = (e.target as HTMLInputElement).value;
@@ -229,14 +233,16 @@ class CalculationForm extends React.Component<Props, State> {
             >
               {__("Cancel")}
             </Button>
-            <Button
-              style={{ backgroundColor: options.colors.primary }}
-              icon="check-circle"
-              block
-              onClick={this.handleSubmit}
-            >
-              {__("Done")}
-            </Button>
+            {paymentEnabled && (
+              <Button
+                style={{ backgroundColor: options.colors.primary }}
+                icon="check-circle"
+                block
+                onClick={this.handleSubmit}
+              >
+                {__("Done")}
+              </Button>
+            )}
           </FlexCenter>
         </PaymentWrapper>
       </>

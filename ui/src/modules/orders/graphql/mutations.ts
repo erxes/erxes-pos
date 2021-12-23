@@ -63,6 +63,14 @@ const customersAdd = `
   }
 `;
 
+const ordersSetPaymentInfo = `
+  mutation ordersSetPaymentInfo($_id: String, $info: String) {
+    ordersSetPaymentInfo(_id: $_id, info: $info) {
+      _id
+    }
+  }
+`;
+
 export default {
   ordersAdd,
   ordersMakePayment,
@@ -70,4 +78,5 @@ export default {
   createQpaySimpleInvoice,
   qpayCheckPayment,
   customersAdd,
+  ordersSetPaymentInfo
 };

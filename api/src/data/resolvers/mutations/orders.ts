@@ -33,6 +33,11 @@ interface IOrderEditParams extends IOrderInput {
   _id: string;
 }
 
+interface IInfoParams {
+  _id: string;
+  info: string;
+}
+
 const orderMutations = {
   async ordersAdd(_root, doc: IOrderInput, { user }: IContext) {
     const { items = [], totalAmount, type, customerId } = doc;
@@ -149,7 +154,14 @@ const orderMutations = {
 
       return e;
     }
-  },
+  }, // end payment mutation
+  async ordersSetPaymentInfo(_root, { _id, info }: IInfoParams) {
+    const order = await Orders.getOrder(_id);
+
+    await Orders.updateOne({ _id }, { $set: { cardPaymentInfo: info } });
+
+    return Orders.findOne({ _id: order._id });
+  }
 };
 
 export default orderMutations;

@@ -13,6 +13,7 @@ type Props = {
   makePayment: any;
   order: IOrder;
   orientation?: string;
+  setCardPaymentInfo: (params: any) => void;
 };
 
 type State = {
@@ -34,7 +35,7 @@ class PaymentForm extends React.Component<Props, State> {
 
   render() {
     const { paymentType } = this.state;
-    const { options, orderId, order, orientation } = this.props;
+    const { options, orderId, order, orientation, setCardPaymentInfo } = this.props;
     const isPortrait = orientation === "portrait";
 
     if (!orderId) {
@@ -65,6 +66,7 @@ class PaymentForm extends React.Component<Props, State> {
         handlePayment={this.handlePayment}
         isPortrait={isPortrait}
         paymentMethod={paymentType}
+        setCardPaymentInfo={setCardPaymentInfo}
       />
     );
   }

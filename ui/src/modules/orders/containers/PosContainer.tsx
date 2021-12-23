@@ -29,6 +29,7 @@ type Props = {
   productCategoriesQuery: any;
   productsQuery: any;
   customersAddMutation: any;
+  setPaymentInfoMutation: any;
 } & IRouterProps;
 
 export interface IPaymentParams {
@@ -48,6 +49,7 @@ class PosContainer extends React.Component<Props> {
       orderDetailQuery,
       qp,
       customersAddMutation,
+      setPaymentInfoMutation
     } = this.props;
 
     if (qp && qp.id && orderDetailQuery.loading) {
@@ -128,6 +130,16 @@ class PosContainer extends React.Component<Props> {
         });
     };
 
+    const setCardPaymentInfo = (params: any) => {
+      setPaymentInfoMutation({ variables: params }).then(({ data }) => {
+        if (data && data.ordersSetPaymentInfo && data.ordersSetPaymentInfo._id) {
+          Alert.success('Card payment info saved');
+        }
+      }).catch(e => {
+        Alert.error(__(e.message))
+      });
+    };
+
     const updatedProps = {
       ...this.props,
       createOrder,
@@ -135,6 +147,7 @@ class PosContainer extends React.Component<Props> {
       makePayment,
       addCustomer,
       order: qp && qp.id ? orderDetailQuery.orderDetail : null,
+      setCardPaymentInfo
     };
 
     return <Pos {...updatedProps} />;
@@ -173,6 +186,9 @@ export default withProps<Props>(
     }),
     graphql<Props>(gql(mutations.customersAdd), {
       name: "customersAddMutation",
+    }),
+    graphql<Props>(gql(mutations.ordersSetPaymentInfo), {
+      name: 'setPaymentInfoMutation'
     })
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );

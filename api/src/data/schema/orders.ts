@@ -80,6 +80,7 @@ export const types = `
     billId: String
     oldBillId: String
     type: String
+    cardPaymentInfo: String
 
     items: [OrderItem]
     customer: Customer
@@ -104,6 +105,7 @@ export const mutations = `
   ordersAdd(${addEditParams}): Order
   ordersEdit(_id: String!, ${addEditParams}): Order
   ordersMakePayment(_id: String!, doc: OrderPaymentInput): PutResponse
+  ordersSetPaymentInfo(_id: String!, info: String): Order
 `;
 
 export const queries = `

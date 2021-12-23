@@ -110,6 +110,8 @@ const orderDetail = `
         paymentDate
         createdAt
       }
+
+      cardPaymentInfo
     }
   }
 `;

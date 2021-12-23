@@ -40,6 +40,7 @@ type Props = {
   setOrderState: (name: string, value: any) => void;
   qp: any;
   customerId: string;
+  setCardPaymentInfo: (params: any) => void;
 };
 
 type State = {
@@ -106,6 +107,7 @@ export default class PortraitView extends React.Component<Props, State> {
       totalAmount,
       makePayment,
       orientation,
+      setCardPaymentInfo
     } = this.props;
     const { modalContentType } = this.state;
 
@@ -121,6 +123,7 @@ export default class PortraitView extends React.Component<Props, State> {
               makePayment={makePayment}
               order={order}
               orientation={orientation}
+              setCardPaymentInfo={setCardPaymentInfo}
             />
           )
         );

@@ -44,6 +44,7 @@ export interface IOrder {
   registerNumber: string;
   oldBillId: string;
   type: string;
+  cardPaymentInfo?: string;
 
   items: IOrderItem[];
   customer?: ICustomer;
