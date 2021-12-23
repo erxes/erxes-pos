@@ -6,7 +6,8 @@ import { PosWrapper, MainContent } from "../../orders/styles";
 import { IConfig } from "types";
 import { __ } from "modules/common/utils";
 import { IOrder } from "../../orders/types";
-import Table from 'modules/common/components/table';
+import Icon from "modules/common/components/Icon";
+import { Label, OrderCard, Orders } from "../styles";
 
 type Props = {
   currentUser: IUser;
@@ -14,126 +15,49 @@ type Props = {
   orders: IOrder[];
 };
 
-type State = {};
-
-export default class Screen extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {};
-  }
-
-  renderDetail(order) {
-    const { items } = order;
-    if (!items || !items.length) {
-      return <></>;
+export default class Screen extends React.Component<Props> {
+  renderOrders(order: IOrder, type: string) {
+    if (type === "Doing" && order.status !== "done") {
+      return <OrderCard>{order.number.split("_")[1]}</OrderCard>;
     }
 
-    return (
-      <>
-        {items.map(item => (
-          <p key={item._id}>
-            {item.productName} - ( {item.count} )
-          </p>
-        ))}
-      </>
-    )
-  }
-
-  renderOrder(order: IOrder) {
-    if (order.status === 'done') {
-      return '';
+    if (type === "Ready" && order.status === "done") {
+      return <OrderCard>{order.number.split("_")[1]}</OrderCard>;
     }
 
-    return (
-      <tr
-        key={order._id}
-        id={order._id}
-      >
-        <td>
-          {order.number}
-        </td>
-        <td>
-          {this.renderDetail(order)}
-        </td>
-        <td>{order.type}</td>
-        <td>{order.status}</td>
-      </tr>
-    )
+    return null;
   }
 
-  renderReady(order: IOrder) {
-    if (order.status !== 'done') {
-      return '';
-    }
-
-    return (
-      <tr
-        key={order._id}
-        id={order._id}
-      >
-        <td>
-          {order.number}
-        </td>
-        <td>
-          {this.renderDetail(order)}
-        </td>
-        <td>{order.type}</td>
-        <td>{order.status}</td>
-      </tr>
-    )
-  }
-
-  render() {
+  renderCol(type, icon) {
     const { orders } = this.props;
 
     return (
-      <PosWrapper>
-        <Row>
-          <Col md={6}>
-            <MainContent hasBackground={true}>
-              Orders:
-              <Table>
-                <thead>
-                  <tr>
-                    <th>{__('Number')}</th>
-                    <th>{__('Order')}</th>
-                    <th>{__('Type')}</th>
-                    <th>{__('Status')}</th>
-                  </tr>
-                </thead>
-                <tbody id="products">
-                  {orders.map(order => (
-                    this.renderOrder(order)
-                  ))}
-                </tbody>
-              </Table>
-            </MainContent>
+      <Col md={6}>
+        <Label isReady={type === "Ready"}>
+          <Icon icon={icon} size={28} />
+          <span>{__(type)}</span>
+        </Label>
+        <Orders>
+          {orders.map((order, index) => (
+            <React.Fragment key={index}>
+              {this.renderOrders(order, type)}
+            </React.Fragment>
+          ))}
+        </Orders>
+      </Col>
+    );
+  }
 
-          </Col>
-          <Col sm={6}>
-            <MainContent hasBackground={true}>
-              Ready:
-              <Table>
-                <thead>
-                  <tr>
-                    <th>{__('Number')}</th>
-                    <th>{__('Order')}</th>
-                    <th>{__('Type')}</th>
-                    <th>{__('Status')}</th>
-                  </tr>
-                </thead>
-                <tbody id="products">
-                  {orders.map(order => (
-                    this.renderReady(order)
-                  ))}
-                </tbody>
-              </Table>
-            </MainContent>
-
-          </Col>
-        </Row>
-      </PosWrapper>
+  render() {
+    return (
+      <MainContent hasBackground={true}>
+        <PosWrapper>
+          <Row>
+            {this.renderCol("Doing", "hourglass")}
+            {this.renderCol("Ready", "checked")}
+          </Row>
+        </PosWrapper>
+      </MainContent>
     );
   } // end render()
 }

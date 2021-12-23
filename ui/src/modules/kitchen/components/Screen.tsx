@@ -7,7 +7,7 @@ import { IConfig } from "types";
 import { __ } from "modules/common/utils";
 import { IOrder, FullOrderQueryResponse } from "../../orders/types";
 import Table from "modules/common/components/table";
-import { TableRow, Detail, Status, FlexEnd } from "../styles";
+import { TableRow, Detail, Status, FlexEnd, ScreenWrapper } from "../styles";
 import { colors } from "modules/common/styles";
 import Button from "modules/common/components/Button";
 import OrderSearch from "../containers/OrderSearch";
@@ -20,15 +20,7 @@ type Props = {
   orderQuery: FullOrderQueryResponse;
 };
 
-type State = {};
-
-export default class Screen extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {};
-  }
-
+export default class Screen extends React.Component<Props> {
   renderDetail(order) {
     const { items } = order;
 
@@ -81,7 +73,7 @@ export default class Screen extends React.Component<Props, State> {
 
     return (
       <Button size="small" btnStyle="success" icon="check-circle">
-        Done
+        Ready
       </Button>
     );
   };
@@ -92,12 +84,12 @@ export default class Screen extends React.Component<Props, State> {
 
     return (
       <TableRow key={order._id} id={order._id} color={color}>
-        <td className="number">{order.number.split("_")[1]}</td>
+        <td className="number center">{order.number.split("_")[1]}</td>
         <td>{this.renderDetail(order)}</td>
-        <td>
+        <td className="center">
           <Status color={color}>{__(order.type)}</Status>
         </td>
-        <td>{this.renderStatus(color, order.status)}</td>
+        <td className="center">{this.renderStatus(color, order.status)}</td>
         <td>{this.renderActions(order.status)}</td>
       </TableRow>
     );
@@ -105,7 +97,7 @@ export default class Screen extends React.Component<Props, State> {
 
   render() {
     const { orders, orderQuery } = this.props;
-    console.log(orders);
+
     return (
       <MainContent hasBackground={true}>
         <PosWrapper>
@@ -114,20 +106,22 @@ export default class Screen extends React.Component<Props, State> {
           </FlexEnd>
           <Row>
             <Col>
-              <Table>
-                <thead>
-                  <tr>
-                    <th>{__("Number")}</th>
-                    <th>{__("Order")}</th>
-                    <th>{__("Type")}</th>
-                    <th>{__("Status")}</th>
-                    <th>{__("Actions")}</th>
-                  </tr>
-                </thead>
-                <tbody id="products">
-                  {orders.map((order) => this.renderOrder(order))}
-                </tbody>
-              </Table>
+              <ScreenWrapper>
+                <Table>
+                  <thead>
+                    <tr>
+                      <th>{__("Number")}</th>
+                      <th>{__("Order")}</th>
+                      <th>{__("Type")}</th>
+                      <th>{__("Status")}</th>
+                      <th>{__("Actions")}</th>
+                    </tr>
+                  </thead>
+                  <tbody id="products">
+                    {orders.map((order) => this.renderOrder(order))}
+                  </tbody>
+                </Table>
+              </ScreenWrapper>
             </Col>
           </Row>
         </PosWrapper>

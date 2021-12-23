@@ -58,18 +58,24 @@ export const ProductCategories = styled.div`
   }
 `;
 
-export const ProductsWrapper = styled.div`
+export const ProductsWrapper = styledTS<{ height?: number }>(styled.div)`
   display: flex;
   flex-wrap: wrap;
   max-height: 80%;
   overflow: auto;
 
   @media (max-width: 1170px) and (orientation: landscape) {
-    max-height: 570px;
+    max-height: ${(props) =>
+      props.height && props.height !== 0
+        ? `calc(100% - ${props.height + 40}px)`
+        : "570px"};
   }
 
   @media (orientation: portrait) {
-    max-height: 75%;
+    max-height: ${(props) =>
+      props.height && props.height !== 0
+        ? `calc(100% - ${props.height + 40}px)`
+        : "75%"};
   }
 `;
 

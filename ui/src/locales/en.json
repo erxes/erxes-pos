@@ -20,6 +20,8 @@
   "Edit order": "Edit order",
   "Cancel": "Cancel",
   "Done": "Done",
+  "Ready": "Ready",
+  "ready": "ready",
   "Phone number": "Phone number",
   "Check": "Check",
   "Organization": "Organization",
@@ -64,5 +66,6 @@
   "new": "New",
   "doing": "Doing",
   "Search orders": "Search orders",
-  "Order has already been paid": "Order has already been paid"
+  "Order has already been paid": "Order has already been paid",
+  "Doing": "Doing"
 }

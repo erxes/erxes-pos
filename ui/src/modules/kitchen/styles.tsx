@@ -64,3 +64,14 @@ export const FlexEnd = styled.div`
     width: 40%;
   }
 `;
+
+export const ScreenWrapper = styled.div`
+  table {
+    overflow: auto;
+
+    tr th,
+    .center {
+      text-align: center;
+    }
+  }
+`;

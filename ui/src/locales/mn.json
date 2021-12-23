@@ -61,7 +61,10 @@
   "Start": "Хийж эхлэх",
   "Decline": "Цуцлах",
   "new": "Шинэ",
+  "Ready": "Бэлэн болсон",
+  "ready": "Бэлэн болсон",
   "doing": "Хийгдэж буй",
-  "Search orders": "Захиалга хайх",
-  "Order has already been paid": "Энэ захиалгын тооцоог өмнө хийсэн байна"
+  "Order has already been paid": "Энэ захиалгын тооцоог өмнө хийсэн байна",
+  "Doing": "Хийгдэж буй",
+  "Search orders": "Захиалга хайх"
 }
