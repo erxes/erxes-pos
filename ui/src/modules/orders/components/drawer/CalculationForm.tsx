@@ -182,6 +182,7 @@ class CalculationForm extends React.Component<Props, State> {
             billType={billType}
             orderNumber={order.number}
             setCardPaymentInfo={setCardPaymentInfo}
+            orderId={order._id}
           />)
         }
 

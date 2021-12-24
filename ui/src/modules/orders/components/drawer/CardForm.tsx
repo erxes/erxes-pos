@@ -23,6 +23,7 @@ type Props = {
   billType: string;
   orderNumber: string;
   setCardPaymentInfo: (params: any) => void;
+  orderId: string;
 }
 
 type State = {
@@ -41,7 +42,7 @@ export default class CardForm extends React.Component<Props, State> {
   }
 
   render() {
-    const { cardAmount, reset, color = '', onStateChange, billType, orderNumber, setCardPaymentInfo } = this.props;
+    const { cardAmount, reset, color = '', onStateChange, billType, orderNumber, setCardPaymentInfo, orderId } = this.props;
 
     const inputProps: any = {
       allowNegative: false,
@@ -82,11 +83,11 @@ export default class CardForm extends React.Component<Props, State> {
             if (r && r.status === true && r.response) {
               if (r.response.response_code === '000') {
                 Alert.success(__(r.response.response_msg || 'Transaction was successful'));
-  
+
                 // enable payment button
                 onStateChange('paymentEnabled', true);
-  
-                setCardPaymentInfo(JSON.stringify(r.response));
+
+                setCardPaymentInfo({ _id: orderId, info: JSON.stringify(r.response) });
               } else {
                 return Alert.warning(r.response.response_msg);
               }
