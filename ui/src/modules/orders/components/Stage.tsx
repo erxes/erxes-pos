@@ -43,6 +43,11 @@ export default class Stage extends React.Component<Props> {
   }
 
   render() {
+    const mode = localStorage.getItem('erxesPosMode') || '';
+    if (mode === 'kiosk') {
+      return (<></>);
+    }
+
     const { onClickDrawer, options } = this.props;
 
     return (

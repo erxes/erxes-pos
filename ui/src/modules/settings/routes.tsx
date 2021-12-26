@@ -15,6 +15,10 @@ const Settings = ({ location }) => {
 };
 
 const routes = () => {
+  if (localStorage.getItem('erxesPosMode')) {
+    return (<></>)
+  }
+
   return (
     <React.Fragment>
       <Route

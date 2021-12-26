@@ -25,7 +25,7 @@ const Cards = styledTS<{ color?: string; isPortrait?: boolean }>(styled.div)`
     font-weight: 500;
     @media (max-width: 1250px) and (orientation:landscape) {
       line-height: 22px;
-      font-size: 16px;  
+      font-size: 16px;
     }
   }
 `;
@@ -89,18 +89,19 @@ export const PAYMENT_METHODS = {
 class PaymentType extends React.Component<Props> {
   render() {
     const { color, togglePaymentType, isPortrait } = this.props;
+    const mode = localStorage.getItem('erxesPosMode') || '';
 
     return (
       <TypeWrapper isPortrait={isPortrait}>
         <h2>{__("Choose the payment method")}</h2>
 
         <Cards color={color} isPortrait={isPortrait}>
-          <Card isPortrait={isPortrait} onClick={() => togglePaymentType(PAYMENT_METHODS.CASH)}>
+          {!mode && <Card isPortrait={isPortrait} onClick={() => togglePaymentType(PAYMENT_METHODS.CASH)}>
             <div>
               <img src="/images/payment2.png" alt="payment" />
             </div>
             <p>{__("In Cash")}</p>
-          </Card>
+          </Card>}
           <Card isPortrait={isPortrait} onClick={() => togglePaymentType(PAYMENT_METHODS.CARD)}>
             <div>
               <img src="/images/payment4.png" alt="payment" />

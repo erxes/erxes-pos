@@ -9,6 +9,9 @@ import { IConfig } from "types";
 import Button from "modules/common/components/Button";
 import { __ } from "modules/common/utils";
 import { StageContent } from "../../orders/styles";
+import { FormGroup } from "modules/common/components/form";
+import ControlLabel from 'modules/common/components/form/Label';
+import FormControl from 'modules/common/components/form/Control';
 
 type Props = {
   syncConfig: (type: string) => void;
@@ -17,13 +20,18 @@ type Props = {
   syncOrders: () => void;
 };
 
-type State = {};
+type State = {
+  mode: string
+};
 
 export default class Settings extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = {};
+    const mode = localStorage.getItem('erxesPosMode') || '';
+    this.state = {
+      mode
+    };
   }
 
   onSyncConfig = () => {
@@ -35,6 +43,14 @@ export default class Settings extends React.Component<Props, State> {
   onSyncProducts = () => {
     this.props.syncConfig("products");
   };
+
+  onChangeMode = (e) => {
+    e.preventDefault();
+    const mode = e.target.value;
+
+    this.setState({ mode })
+    localStorage.setItem('erxesPosMode', mode);
+  }
 
   render() {
     const { currentUser, currentConfig } = this.props;
@@ -94,7 +110,23 @@ export default class Settings extends React.Component<Props, State> {
             </MainContent>
           </Col>
           <Col sm={6}>
-            <MainContent hasBackground={true} hasShadow={true}></MainContent>
+            <MainContent hasBackground={true} hasShadow={true}>
+              <FormGroup>
+                <ControlLabel>{__("Select Mode")}</ControlLabel>
+                <FormControl
+                  componentClass="select"
+                  name="lastName"
+                  defaultValue={this.state.mode}
+                  options={[
+                    { value: '', label: 'Pos and full mode' },
+                    { value: 'kiosk', label: 'Kiosk Mode' },
+                    { value: 'kitchen', label: 'Kitchen Screen' },
+                    { value: 'waiting', label: 'Waiting Screen' },
+                  ]}
+                  onChange={this.onChangeMode}
+                  required={true} />
+              </FormGroup>
+            </MainContent>
           </Col>
         </Row>
       </PosWrapper>

@@ -15,6 +15,10 @@ const WaitingScreen = ({ location }) => {
 };
 
 const routes = () => {
+  if (!['', 'waiting'].includes(localStorage.getItem('erxesPosMode') || '')) {
+    return (<></>);
+  }
+
   return (
     <React.Fragment>
       <Route

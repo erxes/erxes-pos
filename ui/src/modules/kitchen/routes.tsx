@@ -15,6 +15,10 @@ const KitchenScreen = ({ location }) => {
 };
 
 const routes = () => {
+  if (!['', 'kitchen'].includes(localStorage.getItem('erxesPosMode') || '')) {
+    return (<></>);
+  }
+
   return (
     <React.Fragment>
       <Route

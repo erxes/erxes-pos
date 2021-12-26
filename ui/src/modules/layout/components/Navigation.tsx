@@ -172,6 +172,10 @@ class Navigation extends React.Component<IProps> {
       return "";
     }
 
+    if (localStorage.getItem('erxesPosMode')) {
+      return "";
+    }
+
     return (
       <NavLink to="/settings">
         <NavIcon className={"icon-sync-exclamation"} />
@@ -190,6 +194,10 @@ class Navigation extends React.Component<IProps> {
       return "";
     }
 
+    if (!['', 'kitchen'].includes(localStorage.getItem('erxesPosMode') || '')) {
+      return "";
+    }
+
     return (
       <NavLink to="/kitchen-screen">
         <NavIcon className={"icon-wallclock"} />
@@ -205,6 +213,10 @@ class Navigation extends React.Component<IProps> {
     }
 
     if (!currentConfig.waitingScreen) {
+      return "";
+    }
+
+    if (!['', 'waiting'].includes(localStorage.getItem('erxesPosMode') || '')) {
       return "";
     }
 
