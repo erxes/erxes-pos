@@ -170,7 +170,7 @@ export default class PortraitView extends React.Component<Props, State> {
         {this.renderContent(colors.primary)}
         <Footer color={colors.primary}>
           <span>
-            <Icon icon="earthgrid" /> www.yoshinoya.mn
+            <Icon icon="earthgrid" /> www.yoshinoyamongolia.com
           </span>
           &emsp;
           <span>
