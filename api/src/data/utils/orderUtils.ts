@@ -3,14 +3,21 @@ import { IOrder, IOrderDocument } from '../../db/models/definitions/orders';
 
 import { Orders } from '../../db/models/Orders';
 import { OrderItems } from '../../db/models/OrderItems';
-import { Products } from '../../db/models/Products';
+import { ProductCategories, Products } from '../../db/models/Products';
 import { IPayment } from '../resolvers/mutations/orders';
 import { IOrderInput, IOrderItemInput } from '../types';
-import { BILL_TYPES } from '../../db/models/definitions/constants';
-import { IEbarimtConfig } from '../../db/models/definitions/configs';
+import {
+  BILL_TYPES,
+  ORDER_TYPES,
+  PRODUCT_STATUSES,
+} from '../../db/models/definitions/constants';
+import {
+  IConfigDocument,
+  IEbarimtConfig,
+} from '../../db/models/definitions/configs';
 import { IOrderItemDocument } from '../../db/models/definitions/orderItems';
 import Customers from '../../db/models/Customers';
-import { sendRequest } from './commonUtils'
+import { sendRequest } from './commonUtils';
 import { DISTRICTS } from '../../db/models/definitions/constants';
 
 interface IDetailItem {
@@ -42,7 +49,9 @@ export const generateOrderNumber = async (): Promise<string> => {
     return number;
   }
 
-  const latestOrders = await Orders.find({}).sort({ createdAt: -1, number: -1 }).limit(2);
+  const latestOrders = await Orders.find({})
+    .sort({ createdAt: -1, number: -1 })
+    .limit(2);
 
   if (latestOrders && latestOrders.length > 0) {
     const parts = latestOrders[0].number.split('_');
@@ -50,7 +59,7 @@ export const generateOrderNumber = async (): Promise<string> => {
     // number generation gone wrong due to timezone
     if (parts[0] === todayStr && parts[1] >= suffix) {
       suffix = String(parseInt(parts[1]) + 1).padStart(4, '0');
-      number = `${todayStr}_${suffix}`
+      number = `${todayStr}_${suffix}`;
     }
   }
 
@@ -102,7 +111,7 @@ export const updateOrderItems = async (
         productId: item.productId,
         count: item.count,
         orderId,
-        unitPrice: item.unitPrice
+        unitPrice: item.unitPrice,
       });
     }
   }
@@ -123,7 +132,7 @@ export const getDistrictName = (districtCode: string): string => {
     return DISTRICTS[districtCode];
   }
 
-  return ''
+  return '';
 };
 
 export const prepareEbarimtData = async (
@@ -212,4 +221,63 @@ export const prepareEbarimtData = async (
     contentType: 'pos',
     contentId: order._id,
   };
+};
+
+export const prepareOrderDoc = async (
+  doc: IOrderInput,
+  config: IConfigDocument
+) => {
+  const { catProdMappings = [] } = config;
+  const updatedDoc = {
+    items: doc.items,
+    totalAmount: doc.totalAmount,
+  };
+
+  if (doc.type === ORDER_TYPES.TAKE && catProdMappings.length > 0) {
+    const { items = [] } = doc;
+
+    for (const item of items) {
+      const product = await Products.findOne({
+        _id: item.productId,
+        status: PRODUCT_STATUSES.ACTIVE,
+      });
+
+      const category = await ProductCategories.findOne({
+        _id: product && product.categoryId,
+      });
+
+      if (category) {
+        const relatedCategories = await ProductCategories.find({
+          _id: { $ne: category._id },
+        }).lean();
+
+        const relatedCatIds = relatedCategories.map((r) => r._id);
+
+        // one intersection is enough
+        const matches = catProdMappings.find((m) =>
+          relatedCatIds.includes(m.categoryId)
+        );
+
+        if (matches) {
+          const takingProduct = await Products.findOne({
+            _id: matches.productId,
+          });
+
+          if (takingProduct) {
+            updatedDoc.items.push({
+              _id: Math.random().toString(),
+              productId: takingProduct._id,
+              count: item.count,
+              unitPrice: takingProduct.unitPrice,
+            });
+
+            updatedDoc.totalAmount +=
+              item.count * (takingProduct.unitPrice || 0);
+          }
+        }
+      } // end category
+    } // end items loop
+  }
+
+  return updatedDoc;
 };

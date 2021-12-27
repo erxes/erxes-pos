@@ -11,6 +11,7 @@ import {
   getTotalAmount,
   prepareEbarimtData,
   getDistrictName,
+  prepareOrderDoc
 } from '../../utils/orderUtils';
 import { IContext } from '../../types';
 import messageBroker from '../../../messageBroker';
@@ -39,8 +40,8 @@ interface IInfoParams {
 }
 
 const orderMutations = {
-  async ordersAdd(_root, doc: IOrderInput, { user }: IContext) {
-    const { items = [], totalAmount, type, customerId } = doc;
+  async ordersAdd(_root, doc: IOrderInput, { user, config }: IContext) {
+    const { totalAmount, type, customerId } = doc;
 
     await validateOrder(doc);
 
@@ -67,9 +68,14 @@ const orderMutations = {
     }
 
     try {
-      const order = await Orders.createOrder(orderDoc);
+      const preparedDoc = await prepareOrderDoc(doc, config);
 
-      for (const item of items) {
+      const order = await Orders.createOrder({
+        ...orderDoc,
+        totalAmount: preparedDoc.totalAmount
+      });
+
+      for (const item of preparedDoc.items) {
         await OrderItems.createOrderItem({
           count: item.count,
           productId: item.productId,
@@ -87,17 +93,19 @@ const orderMutations = {
       return e;
     }
   },
-  async ordersEdit(_root, doc: IOrderEditParams) {
+  async ordersEdit(_root, doc: IOrderEditParams, { config }: IContext) {
     await Orders.getOrder(doc._id);
 
-    await validateOrder(doc);
+    const preparedDoc = await prepareOrderDoc(doc, config);
 
-    await updateOrderItems(doc._id, doc.items);
+    await validateOrder({ ...doc, items: preparedDoc.items });
+
+    await updateOrderItems(doc._id, preparedDoc.items);
 
     const updatedOrder = await Orders.updateOrder(doc._id, {
       customerId: doc.customerId,
       type: doc.type,
-      totalAmount: getTotalAmount(doc.items),
+      totalAmount: getTotalAmount(preparedDoc.items),
     });
 
     return updatedOrder;
