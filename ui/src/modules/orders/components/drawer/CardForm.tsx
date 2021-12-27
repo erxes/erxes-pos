@@ -120,7 +120,7 @@ export default class CardForm extends React.Component<Props, State> {
         </FormGroup>
         <ButtonWrapper>
           {cardAmount &&
-            <Button btnStyle='warning' onClick={sendTransaction}>{__("Send transaction")}</Button>
+            <Button btnStyle='warning' onClick={sendTransaction} size='large'>{__("Send transaction")}</Button>
           }
         </ButtonWrapper>
       </React.Fragment>
