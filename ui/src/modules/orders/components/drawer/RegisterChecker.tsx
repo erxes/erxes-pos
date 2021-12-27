@@ -17,11 +17,12 @@ type Props = {
   reset: (key: string) => void;
   color: string;
   onChange: (e: any) => void;
+  focusOnKeypads: () => void;
 }
 
 export default class RegisterChecker extends React.Component<Props> {
   render() {
-    const { show, billType, checkOrganization, isPortrait, reset, color, registerNumber, onChange } = this.props;
+    const { show, billType, checkOrganization, isPortrait, reset, color, registerNumber, onChange, focusOnKeypads } = this.props;
 
     return (
       show && billType === BILL_TYPES.ENTITY && (
@@ -33,6 +34,7 @@ export default class RegisterChecker extends React.Component<Props> {
                 name="registerNumber"
                 onChange={(e) => onChange(e)}
                 value={registerNumber}
+                onClick={() => focusOnKeypads()}
               />
               <div onClick={() => reset("registerNumber")}>
                 <Icon icon="cancel" size={13} />

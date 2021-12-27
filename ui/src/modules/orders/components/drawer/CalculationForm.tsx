@@ -76,6 +76,7 @@ export const BILL_TYPES = {
 export const PAYMENT_TYPES = {
   CARD: "cardAmount",
   CASH: "cashAmount",
+  REGISTER: 'registerNumber'
 };
 
 class CalculationForm extends React.Component<Props, State> {
@@ -207,6 +208,10 @@ class CalculationForm extends React.Component<Props, State> {
       this.setState({ registerNumber: value });
     };
 
+    const focusOnKeypads = () => {
+      this.setState({ activeInput: PAYMENT_TYPES.REGISTER });
+    };
+
     return (
       <>
         {title && <Title>{__(title)}</Title>}
@@ -221,10 +226,16 @@ class CalculationForm extends React.Component<Props, State> {
             color={options.colors.primary}
             isPortrait={isPortrait}
             onChange={onChangeReg}
+            focusOnKeypads={focusOnKeypads}
           />
         </Header>
         <PaymentWrapper isPortrait={isPortrait}>
-          <KeyPads isPayment={isPayment} isPortrait={isPortrait} onChangeKeyPad={this.onChangeKeyPad} />
+          <KeyPads
+            isPayment={isPayment}
+            isPortrait={isPortrait}
+            onChangeKeyPad={this.onChangeKeyPad}
+            billType={billType}
+          />
           <FlexCenter>
             <Button
               btnStyle="simple"

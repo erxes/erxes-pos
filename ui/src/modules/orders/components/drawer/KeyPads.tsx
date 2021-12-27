@@ -2,6 +2,7 @@ import React from 'react';
 import styled from "styled-components";
 
 import KeyPad from './KeyPad';
+import { BILL_TYPES } from './CalculationForm';
 
 const KeyBoard = styled.div`
   display: inline-grid;
@@ -16,6 +17,7 @@ type Props = {
   isPortrait: boolean | undefined;
   isPayment: boolean | undefined;
   onChangeKeyPad: (val: string) => void;
+  billType: string;
 }
 
 export default class KeyPads extends React.Component<Props> {
@@ -31,7 +33,11 @@ export default class KeyPads extends React.Component<Props> {
   }
 
   render() {
-    const { isPayment } = this.props;
+    const { isPayment, billType } = this.props;
+
+    if (billType !== BILL_TYPES.ENTITY) {
+      return null;
+    }
 
     return (
       <KeyBoard>
