@@ -69,6 +69,11 @@ const currentConfig = `
         invoiceCode
       }
       syncInfo
+      catProdMappings {
+        _id
+        categoryId
+        productId
+      }
     }
   }
 `;

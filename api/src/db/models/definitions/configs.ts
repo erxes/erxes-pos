@@ -39,6 +39,12 @@ interface ISyncInfo {
   date: Date;
 }
 
+interface ICatProd {
+  _id: string;
+  categoryId: string;
+  productId: string;
+}
+
 export interface IConfig {
   name: string;
   description?: string;
@@ -57,6 +63,7 @@ export interface IConfig {
   ebarimtConfig: IEbarimtConfig;
   qpayConfig: IQPayConfig;
   syncInfo: ISyncInfo;
+  catProdMappings: ICatProd[];
 }
 
 export interface IConfigDocument extends Document, IConfig {
@@ -116,7 +123,8 @@ export const configSchema = new Schema({
   uiOptions: { type: Object, label: 'Logo & color configs' },
   ebarimtConfig: ebarimtConfigSchema,
   qpayConfig: qpayConfigSchema,
-  syncInfo: { type: Object }
+  syncInfo: { type: Object },
+  catProdMappings: { type: [Object], label: 'Product category mappings' }
 });
 
 export const productGroupSchema = new Schema({

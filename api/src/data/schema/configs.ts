@@ -28,6 +28,12 @@ export const types = `
     invoiceCode: String
   }
 
+  type CatProd {
+    _id: String
+    categoryId: String
+    productId: String
+  }
+
   type Config {
     _id: String
     name: String
@@ -49,6 +55,7 @@ export const types = `
     ebarimtConfig: EbarimtConfig
     qpayConfig: QPayConfig
     syncInfo: JSON
+    catProdMappings: [CatProd]
   }
 `;
 

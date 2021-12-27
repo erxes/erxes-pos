@@ -157,7 +157,8 @@ export const extractConfig = (doc) => {
     uiOptions,
     ebarimtConfig: doc.ebarimtConfig,
     kitchenScreen: doc.kitchenScreen,
-    waitingScreen: doc.waitingScreen
+    waitingScreen: doc.waitingScreen,
+    catProdMappings: doc.catProdMappings
   }
 };
 
