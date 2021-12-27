@@ -22,7 +22,7 @@ import { IOrder } from "modules/orders/types";
 import { PAYMENT_METHODS } from "./PaymentType";
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  margin: ${(props) => (props.isPortrait ? "20px 10%" : "20px 21%")};
+  margin: ${(props) => (props.isPortrait ? "10px 10%" : "10px 21%")};
   text-align: center;
   button {
     padding: ${(props) => (props.isPortrait ? "20px 30px" : "10px 20px")};
@@ -30,7 +30,7 @@ const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
     font-size: ${(props) => props.isPortrait && "32px"};
   }
   @media (max-width: 1600px) and (orientation:landscape) {
-    margin: 20px 10%;
+    margin: 10px 10%;
   }
 `;
 

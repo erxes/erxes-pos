@@ -15,10 +15,10 @@ const Pad = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
   font-weight: 600;
   cursor: pointer;
   @media (max-width: 1600px) and (orientation:landscape) {
-    width: 70px;
-    height: 70px;
-    border-radius: 70px;
-    line-height: 70px;
+    width: 60px;
+    height: 60px;
+    border-radius: 60px;
+    line-height: 60px;
     font-size: 28px;
   }
 `;

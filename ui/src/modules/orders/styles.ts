@@ -151,7 +151,7 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
     > img {
       max-width: 100%;
       max-height: 100%;
-    } 
+    }
 
     @media (max-width: 1200px) and (orientation:landscape) {
       width: 100px;
@@ -364,7 +364,7 @@ export const SearchInputWrapper = styledTS<{
     color: ${colors.colorCoreGray};
     padding-left: ${dimensions.unitSpacing}px;
   }
-  
+
   i {
     cursor: pointer;
     color: ${colors.colorCoreDarkGray};
@@ -394,7 +394,7 @@ export const FlexColumn = styled.div`
 `;
 
 export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  padding: 0 30px 20px;
+  padding: 0 30px 0px;
   font-size: ${(props) => props.isPortrait && "30px"};
 
   label {
@@ -438,7 +438,7 @@ export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
   }
 
   .jbyscQ {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
   }
 `;
 

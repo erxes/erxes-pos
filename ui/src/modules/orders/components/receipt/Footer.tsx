@@ -86,6 +86,10 @@ export default class Footer extends React.Component<Props> {
 
   componentDidMount() {
     if (this.putResponse) {
+      window.addEventListener('afterprint', (event) => {
+        window.close();
+      });
+
       const { errorCode, lotteryWarningMsg, qrData, success, message, billId } = this.putResponse;
       const errorMessage = document.getElementById('error-message');
       const barCode = document.getElementById('bar-code');
