@@ -48,6 +48,9 @@ type State = {
 }
 
 export default class QPay extends React.Component<Props, State> {
+  timeoutId;
+  requestCount = 0;
+
   constructor(props) {
     super(props);
 
@@ -96,10 +99,26 @@ export default class QPay extends React.Component<Props, State> {
   checkPayment() {
     const { order } = this.props;
 
+    this.requestCount++;
+
+    if (this.requestCount > 5) {
+      clearTimeout(this.timeoutId);
+
+      return;
+    }
+
     client.mutate({
       mutation: gql(mutations.qpayCheckPayment), variables: { orderId: order._id }
     }).then(({ data }) => {
-      this.setState({ invoice: data.qpayCheckPayment });
+      const invoice = data.qpayCheckPayment;
+
+      this.setState({ invoice });
+
+      const paid = invoice && invoice.qpayPaymentId && invoice.paymentDate;
+
+      if (paid) {
+        clearTimeout(this.timeoutId);
+      }
     }).catch(e => {
       Alert.error(e.message);
     });
@@ -120,6 +139,12 @@ export default class QPay extends React.Component<Props, State> {
         {__("Check payment")}
       </Button>
     );
+  }
+
+  setupTimer() {
+    this.timeoutId = setTimeout(() => {
+      this.checkPayment();
+    }, 3000);
   }
 
   renderReceiptButton() {
@@ -177,10 +202,18 @@ export default class QPay extends React.Component<Props, State> {
       });
     } else {
       this.drawQR();
+
+      this.setupTimer();
     }
   }
 
   componentDidUpdate() {
     this.drawQR();
+
+    this.setupTimer();
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeoutId);
   }
 }
