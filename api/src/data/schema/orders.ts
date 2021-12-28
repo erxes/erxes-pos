@@ -35,6 +35,7 @@ export const types = `
     discountPercent: Float
 
     productName: String
+    isPackage: Boolean
   }
 
   type PutResponse {
@@ -94,6 +95,7 @@ export const types = `
     productId: String!
     count: Int!
     unitPrice: Float!
+    isPackage: Boolean
   }
 
   input OrderPaymentInput {

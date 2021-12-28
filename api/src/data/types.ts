@@ -14,6 +14,7 @@ export interface IOrderItemInput {
   productId: string;
   count: number;
   unitPrice: number;
+  isPackage?: boolean;
 }
 
 export interface IOrderInput {

@@ -83,6 +83,7 @@ const orderDetail = `
         productName
         count
         productId
+        isPackage
       }
 
       user {

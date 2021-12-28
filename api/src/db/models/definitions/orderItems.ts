@@ -9,6 +9,7 @@ export interface IOrderItem {
   discountAmount?: number;
   discountPercent?: number;
   orderId: string;
+  isPackage?: boolean;
 }
 
 export interface IOrderItemDocument extends Document, IOrderItem {
@@ -24,5 +25,6 @@ export const orderItemSchema = new Schema({
   unitPrice: getNumberFieldDefinition({ label: 'Unit price', positive: true }),
   discountAmount: getNumberFieldDefinition({ label: 'Discount price amount', discount: true }),
   discountPercent: getNumberFieldDefinition({ label: 'Discount percent', discount: true, default: 0 }),
-  orderId: { type: String, label: 'Order id' }
+  orderId: { type: String, label: 'Order id' },
+  isPackage: { type: Boolean, default: false, label: 'Is Package' }
 });

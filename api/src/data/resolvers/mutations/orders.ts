@@ -81,6 +81,7 @@ const orderMutations = {
           productId: item.productId,
           unitPrice: item.unitPrice,
           orderId: order._id,
+          isPackage: item.isPackage,
         });
       }
 
@@ -96,9 +97,15 @@ const orderMutations = {
   async ordersEdit(_root, doc: IOrderEditParams, { config }: IContext) {
     await Orders.getOrder(doc._id);
 
-    const preparedDoc = await prepareOrderDoc(doc, config);
+    const originItems = doc.items
+    // const originItems = doc.items.filter(i => !i.isPackage) ||
+    // if (!originItems) {
+    //   throw new Error('Products missing in order. Please add products');
+    // }
 
-    await validateOrder({ ...doc, items: preparedDoc.items });
+    const preparedDoc = await prepareOrderDoc({ ...doc, items: originItems }, config);
+
+    await validateOrder({ ...doc, ...preparedDoc });
 
     await updateOrderItems(doc._id, preparedDoc.items);
 
@@ -154,7 +161,7 @@ const orderMutations = {
           order,
           items,
         });
-      } catch (e) {}
+      } catch (e) { }
 
       return response;
     } catch (e) {

@@ -3,13 +3,12 @@ import { IOrder, IOrderDocument } from '../../db/models/definitions/orders';
 
 import { Orders } from '../../db/models/Orders';
 import { OrderItems } from '../../db/models/OrderItems';
-import { ProductCategories, Products } from '../../db/models/Products';
+import { Products } from '../../db/models/Products';
 import { IPayment } from '../resolvers/mutations/orders';
 import { IOrderInput, IOrderItemInput } from '../types';
 import {
   BILL_TYPES,
   ORDER_TYPES,
-  PRODUCT_STATUSES,
 } from '../../db/models/definitions/constants';
 import {
   IConfigDocument,
@@ -112,6 +111,7 @@ export const updateOrderItems = async (
         count: item.count,
         orderId,
         unitPrice: item.unitPrice,
+        isPackage: item.isPackage,
       });
     }
   }
@@ -228,56 +228,58 @@ export const prepareOrderDoc = async (
   config: IConfigDocument
 ) => {
   const { catProdMappings = [] } = config;
-  const updatedDoc = {
-    items: doc.items,
-    totalAmount: doc.totalAmount,
-  };
+
 
   if (doc.type === ORDER_TYPES.TAKE && catProdMappings.length > 0) {
-    const { items = [] } = doc;
+    const packOfCategoryId = {}
+    for (const rel of catProdMappings) {
+      packOfCategoryId[rel.categoryId] = rel.productId
+    }
 
+    const items = doc.items || [];
+
+    const products = await Products.find({ _id: { $in: items.map(i => (i.productId)) } }).lean();
+
+    const productsOfId = {};
+    for (const prod of products) {
+      productsOfId[prod._id] = prod;
+    }
+
+    const toAddProducts = {}
     for (const item of items) {
-      const product = await Products.findOne({
-        _id: item.productId,
-        status: PRODUCT_STATUSES.ACTIVE,
-      });
+      const product = productsOfId[item.productId]
 
-      const category = await ProductCategories.findOne({
-        _id: product && product.categoryId,
-      });
+      if (Object.keys(packOfCategoryId).includes(product.categoryId)) {
+        const packProductId = packOfCategoryId[product.categoryId]
 
-      if (category) {
-        const relatedCategories = await ProductCategories.find({
-          _id: { $ne: category._id },
-        }).lean();
-
-        const relatedCatIds = relatedCategories.map((r) => r._id);
-
-        // one intersection is enough
-        const matches = catProdMappings.find((m) =>
-          relatedCatIds.includes(m.categoryId)
-        );
-
-        if (matches) {
-          const takingProduct = await Products.findOne({
-            _id: matches.productId,
-          });
-
-          if (takingProduct) {
-            updatedDoc.items.push({
-              _id: Math.random().toString(),
-              productId: takingProduct._id,
-              count: item.count,
-              unitPrice: takingProduct.unitPrice,
-            });
-
-            updatedDoc.totalAmount +=
-              item.count * (takingProduct.unitPrice || 0);
-          }
+        if (!Object.keys(toAddProducts).includes(packProductId)) {
+          toAddProducts[packProductId] = { count: 0 }
         }
-      } // end category
+
+        toAddProducts[packProductId]['count'] += item.count;
+      }
     } // end items loop
+
+    const addProductIds = Object.keys(toAddProducts);
+    if (addProductIds.length) {
+      const takingProducts = await Products.find({
+        _id: { $in: addProductIds }
+      });
+
+      for (const addProduct of takingProducts) {
+        const toAddItem = toAddProducts[addProduct._id]
+        console.log(toAddItem.count, addProduct.unitPrice)
+        doc.items.push({
+          _id: Math.random().toString(),
+          productId: addProduct._id,
+          count: toAddItem.count,
+          unitPrice: addProduct.unitPrice,
+          isPackage: true
+        });
+        doc.totalAmount += toAddItem.count || 0 * addProduct.unitPrice || 0;
+      }
+    }
   }
 
-  return updatedDoc;
+  return doc;
 };
