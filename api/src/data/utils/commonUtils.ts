@@ -64,7 +64,7 @@ export const paginate = (
   const { page = 0, perPage = 0, ids, excludeIds } = params || { ids: null };
 
   const _page = Number(page || "1");
-  const _limit = Number(perPage || "20");
+  const _limit = Number(perPage || "100");
 
   if (ids && ids.length > 0) {
     return excludeIds ? collection.limit(_limit) : collection;
