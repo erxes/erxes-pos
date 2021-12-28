@@ -17,6 +17,7 @@ import {
 import { IContext } from '../../types';
 import messageBroker from '../../../messageBroker';
 import { ORDER_STATUSES } from '../../../db/models/definitions/constants';
+import { graphqlPubsub } from '../../../pubsub';
 
 export interface IPayment {
   cardAmount?: number;
@@ -149,6 +150,13 @@ const orderMutations = {
           { $set: { ...doc, paidDate: new Date() } }
         );
       }
+
+      graphqlPubsub.publish('ordersOrdered', {
+        ordersOrdered: {
+          _id,
+          status: order.status
+        }
+      });
 
       try {
         messageBroker().sendMessage('vrpc_queue:erxes-pos-to-api', {

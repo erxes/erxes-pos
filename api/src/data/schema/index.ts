@@ -6,8 +6,6 @@ import { mutations as PaymentMutations, queries as PaymentQueries, types as Paym
 import { queries as ProductQueries, types as ProductTypes } from './product';
 import { types as CompanyTypes } from './company';
 
-
-
 export let types = `
   scalar JSON
   scalar Date
@@ -37,4 +35,8 @@ export let mutations = `
   ${CustomerMutations}
 `;
 
-export default { mutations, queries, types };
+export let subscriptions = `
+  ordersOrdered(statuses: [String]): Order
+`;
+
+export default { mutations, queries, types, subscriptions };

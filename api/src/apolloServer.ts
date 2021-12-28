@@ -28,7 +28,7 @@ if (NODE_ENV !== 'production') {
 let apolloServer;
 
 export const initApolloServer = async () => {
-  const { types, queries, mutations } = typeDefDetails;
+  const { types, queries, mutations, subscriptions } = typeDefDetails;
 
   const typeDefs = gql(`
     ${types}
@@ -37,6 +37,9 @@ export const initApolloServer = async () => {
     }
     type Mutation {
       ${mutations}
+    }
+    type Subscription {
+      ${subscriptions}
     }
   `);
 
@@ -67,6 +70,10 @@ export const initApolloServer = async () => {
         },
         config: await Configs.findOne().lean()
       };
+    },
+    subscriptions: {
+      keepAlive: 10000,
+      path: '/subscriptions',
     }
   });
 

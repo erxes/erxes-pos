@@ -105,6 +105,7 @@ export type OrderQueryResponse = {
 
 export type FullOrderQueryResponse = {
   fullOrders: IOrder[];
+  subscribeToMore: any;
 } & QueryResponse;
 
 export interface ICustomer {
