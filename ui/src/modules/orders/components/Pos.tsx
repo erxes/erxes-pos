@@ -158,6 +158,7 @@ export default class Pos extends React.Component<Props, State> {
         productId: item.productId,
         count: item.count,
         unitPrice: item.unitPrice,
+        isPackage: item.isPackage
       }));
 
       updateOrder({

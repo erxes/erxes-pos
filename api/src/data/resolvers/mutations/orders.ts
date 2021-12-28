@@ -11,7 +11,8 @@ import {
   getTotalAmount,
   prepareEbarimtData,
   getDistrictName,
-  prepareOrderDoc
+  prepareOrderDoc,
+  cleanOrderItems
 } from '../../utils/orderUtils';
 import { IContext } from '../../types';
 import messageBroker from '../../../messageBroker';
@@ -97,15 +98,11 @@ const orderMutations = {
   async ordersEdit(_root, doc: IOrderEditParams, { config }: IContext) {
     await Orders.getOrder(doc._id);
 
-    const originItems = doc.items
-    // const originItems = doc.items.filter(i => !i.isPackage) ||
-    // if (!originItems) {
-    //   throw new Error('Products missing in order. Please add products');
-    // }
+    await validateOrder({ ...doc });
 
-    const preparedDoc = await prepareOrderDoc({ ...doc, items: originItems }, config);
+    await cleanOrderItems(doc._id, doc.items);
 
-    await validateOrder({ ...doc, ...preparedDoc });
+    const preparedDoc = await prepareOrderDoc({ ...doc }, config);
 
     await updateOrderItems(doc._id, preparedDoc.items);
 

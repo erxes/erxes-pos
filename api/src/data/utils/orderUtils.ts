@@ -68,7 +68,7 @@ export const generateOrderNumber = async (): Promise<string> => {
 export const validateOrder = async (doc: IOrderInput) => {
   const { items = [] } = doc;
 
-  if (items.length < 1) {
+  if (items.filter(i => !i.isPackage).length < 1) {
     throw new Error('Products missing in order. Please add products');
   }
 
@@ -92,19 +92,27 @@ export const validateOrderPayment = (order: IOrder, doc: IPayment) => {
   }
 };
 
-export const updateOrderItems = async (
+export const cleanOrderItems = async (
   orderId: string,
   items: IOrderItemInput[]
 ) => {
   const itemIds = items.map((item) => item._id);
 
+  await OrderItems.deleteMany({ orderId, isPackage: true });
   await OrderItems.deleteMany({ orderId, _id: { $nin: itemIds } });
+};
+
+export const updateOrderItems = async (
+  orderId: string,
+  items: IOrderItemInput[]
+) => {
+  const oldItems = await OrderItems.find({ _id: { $in: items.map((item) => item._id) } }).lean();
+
+  const itemIds = oldItems.map(i => i._id);
 
   for (const item of items) {
-    const found = await OrderItems.findOne({ _id: item._id });
-
-    if (found) {
-      await OrderItems.updateOrderItem(found._id, { count: item.count });
+    if (itemIds.includes(item._id)) {
+      await OrderItems.updateOrderItem(item._id, { count: item.count });
     } else {
       await OrderItems.createOrderItem({
         productId: item.productId,
@@ -229,14 +237,13 @@ export const prepareOrderDoc = async (
 ) => {
   const { catProdMappings = [] } = config;
 
+  const items = doc.items.filter(i => !i.isPackage) || [];
 
   if (doc.type === ORDER_TYPES.TAKE && catProdMappings.length > 0) {
     const packOfCategoryId = {}
     for (const rel of catProdMappings) {
       packOfCategoryId[rel.categoryId] = rel.productId
     }
-
-    const items = doc.items || [];
 
     const products = await Products.find({ _id: { $in: items.map(i => (i.productId)) } }).lean();
 
@@ -268,8 +275,7 @@ export const prepareOrderDoc = async (
 
       for (const addProduct of takingProducts) {
         const toAddItem = toAddProducts[addProduct._id]
-        console.log(toAddItem.count, addProduct.unitPrice)
-        doc.items.push({
+        items.push({
           _id: Math.random().toString(),
           productId: addProduct._id,
           count: toAddItem.count,
@@ -281,5 +287,5 @@ export const prepareOrderDoc = async (
     }
   }
 
-  return doc;
+  return { ...doc, items };
 };

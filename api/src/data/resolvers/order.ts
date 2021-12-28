@@ -6,8 +6,8 @@ import { QPayInvoices } from "../../db/models/QPayInvoices";
 import Users from "../../db/models/Users";
 
 export default {
-  items(order: IOrderDocument) {
-    return OrderItems.find({ orderId: order._id }).lean();
+  async items(order: IOrderDocument) {
+    return await OrderItems.find({ orderId: order._id }).lean();
   },
   customer(order: IOrderDocument) {
     return Customers.findOne({ _id: order.customerId || '' });

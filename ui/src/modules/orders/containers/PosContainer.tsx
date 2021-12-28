@@ -56,6 +56,8 @@ class PosContainer extends React.Component<Props> {
       return <Spinner />;
     }
 
+    const order = qp && qp.id ? orderDetailQuery.orderDetail : null;
+
     const createOrder = (params: any) => {
       ordersAddMutation({ variables: params })
         .then(({ data }) => {
@@ -81,7 +83,8 @@ class PosContainer extends React.Component<Props> {
       ordersEditMutation({ variables: params })
         .then(({ data }) => {
           if (data && data.ordersEdit && data.ordersEdit._id) {
-            return Alert.success(`Order has been updated successfully.`);
+            Alert.success(`Order has been updated successfully.`);
+            window.location.href = `/pos?id=${qp.id}`;
           }
         })
         .catch((e) => {
@@ -146,13 +149,24 @@ class PosContainer extends React.Component<Props> {
       updateOrder,
       makePayment,
       addCustomer,
-      order: qp && qp.id ? orderDetailQuery.orderDetail : null,
+      order,
       setCardPaymentInfo
     };
 
     return <Pos {...updatedProps} />;
   }
 }
+
+export const getRefetchQueries = (_id) => {
+  return [
+    {
+      query: gql(queries.orderDetail),
+      variables: { _id },
+      // fetchPolicy: "network-only",
+    }
+  ];
+};
+
 
 export default withProps<Props>(
   compose(
@@ -161,6 +175,9 @@ export default withProps<Props>(
     }),
     graphql<Props, OrdersEditMutationResponse>(gql(mutations.ordersEdit), {
       name: "ordersEditMutation",
+      options: ({ qp }) => ({
+        refetchQueries: getRefetchQueries(qp.id)
+      })
     }),
     graphql<Props>(gql(queries.orderDetail), {
       name: "orderDetailQuery",

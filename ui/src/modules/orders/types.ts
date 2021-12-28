@@ -11,6 +11,7 @@ export interface IOrderItem {
   discountPercent?: number;
   orderId: string;
   productName: string;
+  isPackage?: boolean;
 }
 
 export interface IQPayInvoice {
@@ -87,6 +88,7 @@ export interface IOrderItemInput {
   productName: string;
   unitPrice?: number;
   productImgUrl?: string;
+  isPackage?: boolean;
 }
 
 export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;
