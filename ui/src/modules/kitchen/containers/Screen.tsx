@@ -9,47 +9,60 @@ import { graphql } from 'react-apollo';
 import { IConfig, IRouterProps } from '../../../types';
 import { IUser } from 'modules/auth/types';
 import { mutations, queries, subscriptions } from '../../orders/graphql';
-import { FullOrderQueryResponse, OrdersEditMutationResponse } from '../../orders/types';
+import { FullOrderQueryResponse, OrderChangeStatusMutationResponse } from '../../orders/types';
 import { withProps } from '../../utils';
 import { withRouter } from 'react-router-dom';
 
 type Props = {
   orderQuery: FullOrderQueryResponse;
-  orderEditMutation: OrdersEditMutationResponse;
+  orderDoneQuery: FullOrderQueryResponse;
+  orderChangeStatusMutation: OrderChangeStatusMutationResponse;
   currentUser: IUser;
   currentConfig: IConfig;
   qp: any;
 } & IRouterProps;
 
 function KitchenScreenContainer(props: Props) {
-  const { orderQuery, orderEditMutation } = props;
+  const { orderQuery, orderDoneQuery, orderChangeStatusMutation } = props;
 
   useEffect(() => {
     return orderQuery.subscribeToMore({
       document: gql(subscriptions.ordersOrdered),
-      variables: { statuses: ['paid', 'new', 'doing'] },
+      variables: { statuses: ['paid', 'new', 'doing', 'done', 'complete'] },
       updateQuery: () => {
         orderQuery.refetch();
       }
     });
   });
 
-  if (orderQuery.loading) {
+  useEffect(() => {
+    return orderDoneQuery.subscribeToMore({
+      document: gql(subscriptions.ordersOrdered),
+      variables: { statuses: ['paid', 'new', 'doing', 'done', 'complete'] },
+      updateQuery: () => {
+        orderDoneQuery.refetch();
+      }
+    });
+  });
+
+  if (orderQuery.loading || orderDoneQuery.loading) {
     return <Spinner />;
   }
 
   const editOrder = (doc) => {
-    orderEditMutation({ variables: { ...doc } }).then(({ data }) => {
+    orderChangeStatusMutation({ variables: { ...doc } }).then(({ data }) => {
       Alert.success(`${doc.number} has been synced successfully.`);
     }).catch(e => {
       return Alert.error(e.message);
     });
   };
   const orders = orderQuery.fullOrders || [];
+  const doneOrders = orderDoneQuery.fullOrders || [];
 
   const updatedProps = {
     ...props,
     orders,
+    doneOrders,
     editOrder
   };
 
@@ -65,8 +78,15 @@ export default withProps<Props>(
         fetchPolicy: 'network-only'
       }),
     }),
-    graphql<Props, OrdersEditMutationResponse>(gql(mutations.ordersEdit), {
-      name: "orderEditMutation",
+    graphql<Props, FullOrderQueryResponse>(gql(queries.fullOrders), {
+      name: 'orderDoneQuery',
+      options: () => ({
+        variables: { statuses: ['done'], perPage: 8, page: 1, sortField: 'modifiedAt', sortDirection: -1 },
+        fetchPolicy: 'network-only'
+      }),
+    }),
+    graphql<Props, OrderChangeStatusMutationResponse>(gql(mutations.orderChangeStatus), {
+      name: "orderChangeStatusMutation",
     }),
   )(withCurrentUser(withRouter<Props>(KitchenScreenContainer)))
 );

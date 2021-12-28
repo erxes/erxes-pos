@@ -95,6 +95,8 @@ export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;
 
 export type OrdersEditMutationResponse = ({ variables: any }) => Promise<any>;
 
+export type OrderChangeStatusMutationResponse = ({ variables: any }) => Promise<any>;
+
 export type OrderDetailQueryResponse = {
   orderDetail: IOrder;
 } & QueryResponse;

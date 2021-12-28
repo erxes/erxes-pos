@@ -3,6 +3,7 @@ import { connect } from '../db/connection';
 import * as schedule from 'node-schedule';
 import { Orders } from '../db/models/Orders';
 import { Configs } from '../db/models/Configs';
+import { graphqlPubsub } from '../pubsub';
 
 /**
  * Send conversation messages to customer
@@ -32,10 +33,25 @@ export const changeStatus = async () => {
   const minute = config.waitingScreen.value;
   const checkTime = new Date((new Date()).getTime() - minute * 60 * 1000);
 
-  await Orders.updateMany({
+  const orders = await Orders.find({
     status: { $in: ['done'] },
     modifiedAt: { $lte: checkTime }
+  }).lean();
+
+  const orderIds = orders.map(o => o._id)
+
+  await Orders.updateMany({
+    _id: { $in: orderIds }
   }, { $set: { status: 'complete', modifiedAt: new Date() } })
+
+  for (const orderId of orderIds) {
+    graphqlPubsub.publish('ordersOrdered', {
+      ordersOrdered: {
+        _id: orderId,
+        status: 'complete'
+      }
+    });
+  }
 
 };
 

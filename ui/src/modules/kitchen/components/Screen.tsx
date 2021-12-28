@@ -2,7 +2,7 @@ import React from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { IUser } from "modules/auth/types";
-import { PosWrapper, MainContent } from "../../orders/styles";
+import { PosWrapper, MainContent, Orders } from "../../orders/styles";
 import { IConfig } from "types";
 import { __ } from "modules/common/utils";
 import { IOrder, FullOrderQueryResponse } from "../../orders/types";
@@ -17,6 +17,7 @@ type Props = {
   currentUser: IUser;
   currentConfig: IConfig;
   orders: IOrder[];
+  doneOrders: IOrder[];
   orderQuery: FullOrderQueryResponse;
 };
 
@@ -57,8 +58,8 @@ export default class Screen extends React.Component<Props> {
     );
   }
 
-  renderActions = (status) => {
-    if (status === "new") {
+  renderActions = (order) => {
+    if (order.status === "new") {
       return (
         <>
           <Button size="small" btnStyle="primary" icon="play-1">
@@ -71,8 +72,12 @@ export default class Screen extends React.Component<Props> {
       );
     }
 
+    const toDone = (e) => {
+      this.props.editOrder({ _id: order._id, status: 'done' })
+    }
+
     return (
-      <Button size="small" btnStyle="success" icon="check-circle">
+      <Button size="small" btnStyle="success" icon="check-circle" onClick={toDone}>
         Ready
       </Button>
     );
@@ -90,13 +95,28 @@ export default class Screen extends React.Component<Props> {
           <Status color={color}>{__(order.type)}</Status>
         </td>
         <td className="center">{this.renderStatus(color, order.status)}</td>
-        <td>{this.renderActions(order.status)}</td>
+        <td>{this.renderActions(order)}</td>
       </TableRow>
     );
   }
 
+  renderDoneOrders(order: IOrder) {
+    const onClickUndo = e => {
+      this.props.editOrder({ _id: order._id, status: 'doing' })
+    }
+
+    return <Button
+      btnStyle='warning'
+      onClick={onClickUndo}
+      size='large'
+      icon="arrow-from-top"
+    >
+      {order.number.split("_")[1]}
+    </Button>;
+  }
+
   render() {
-    const { orders, orderQuery } = this.props;
+    const { orders, doneOrders, orderQuery } = this.props;
 
     return (
       <MainContent hasBackground={true}>
@@ -104,6 +124,13 @@ export default class Screen extends React.Component<Props> {
           <FlexEnd>
             <OrderSearch ordersQuery={orderQuery} />
           </FlexEnd>
+          <Orders>
+            {doneOrders.map((order, index) => (
+              <React.Fragment key={index}>
+                {this.renderDoneOrders(order)}
+              </React.Fragment>
+            ))}
+          </Orders>
           <Row>
             <Col>
               <ScreenWrapper>

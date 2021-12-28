@@ -6,6 +6,8 @@ interface ISearchParams {
   searchValue?: string;
   page?: number;
   perPage?: number;
+  sortField?: string;
+  sortDirection?: number;
 }
 
 interface IFullOrderParams extends ISearchParams {
@@ -23,17 +25,25 @@ const orderQueries = {
     return paginate(Orders.find(filter).sort({ createdAt: -1 }).lean(), { page, perPage });
   },
 
-  fullOrders(_root, { searchValue, statuses }: IFullOrderParams) {
+  fullOrders(_root, { searchValue, statuses, page, perPage, sortField, sortDirection }: IFullOrderParams) {
     const filter: any = {};
 
     if (searchValue) {
       filter.number = { $regex: new RegExp(escapeRegExp(searchValue), 'i') };
     }
 
-    return Orders.find({
+    const sort: { [key: string]: any } = {};
+
+    if (sortField) {
+      sort[sortField] = sortDirection;
+    } else {
+      sort.createdAt = 1
+    }
+
+    return paginate(Orders.find({
       ...filter,
       status: { $in: statuses }
-    }).sort({ createdAt: 1 });
+    }).sort(sort).lean(), { page, perPage });
   },
 
   orderDetail(_root, { _id }) {

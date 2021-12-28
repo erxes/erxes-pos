@@ -108,11 +108,12 @@ export const mutations = `
   ordersEdit(_id: String!, ${addEditParams}): Order
   ordersMakePayment(_id: String!, doc: OrderPaymentInput): PutResponse
   ordersSetPaymentInfo(_id: String!, info: String): Order
+  orderChangeStatus(_id: String!, status: String): Order
 `;
 
 export const queries = `
   orders(searchValue: String, page: Int, perPage: Int): [Order]
-  fullOrders(searchValue: String, statuses: [String], page: Int, perPage: Int): [Order]
+  fullOrders(searchValue: String, statuses: [String], page: Int, perPage: Int, sortField: String, sortDirection: Int): [Order]
   orderDetail(_id: String): Order
   ordersCheckCompany(registerNumber: String!): JSON
 `;

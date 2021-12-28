@@ -30,6 +30,14 @@ const ordersEdit = `
   }
 `;
 
+const orderChangeStatus = `
+  mutation orderChangeStatus($_id: String!, $status: String) {
+    orderChangeStatus(_id: $_id, status: $status) {
+      _id
+    }
+  }
+`;
+
 const invoiceFields = `
   qrText
   senderInvoiceNo
@@ -75,6 +83,7 @@ export default {
   ordersAdd,
   ordersMakePayment,
   ordersEdit,
+  orderChangeStatus,
   createQpaySimpleInvoice,
   qpayCheckPayment,
   customersAdd,

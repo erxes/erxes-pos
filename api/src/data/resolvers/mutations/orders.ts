@@ -116,6 +116,19 @@ const orderMutations = {
     return updatedOrder;
   },
 
+  async orderChangeStatus(_root, { _id, status }: { _id: string, status: string }) {
+    await Orders.getOrder(_id);
+
+    const order = await Orders.updateOrder(_id, { status });
+
+    graphqlPubsub.publish('ordersOrdered', {
+      ordersOrdered: {
+        _id,
+        status: order.status
+      }
+    });
+  },
+
   async ordersMakePayment(
     _root,
     { _id, doc }: IPaymentParams,

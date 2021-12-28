@@ -126,8 +126,8 @@ const orders = `
 `;
 
 const fullOrders = `
-  query fullOrders($searchValue: String, $statuses: [String], $page: Int, $perPage: Int) {
-    fullOrders(searchValue: $searchValue, statuses: $statuses, page: $page, perPage: $perPage) {
+  query fullOrders($searchValue: String, $statuses: [String], $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
+    fullOrders(searchValue: $searchValue, statuses: $statuses, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
       ${orderFields}
 
       items {
