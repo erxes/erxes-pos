@@ -75,7 +75,7 @@ const customersAdd = `
 `;
 
 const ordersSetPaymentInfo = `
-  mutation ordersSetPaymentInfo($_id: String, $info: String) {
+  mutation ordersSetPaymentInfo($_id: String!, $info: String) {
     ordersSetPaymentInfo(_id: $_id, info: $info) {
       _id
     }
