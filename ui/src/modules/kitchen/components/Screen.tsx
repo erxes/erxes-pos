@@ -8,7 +8,6 @@ import { __ } from "modules/common/utils";
 import { IOrder, FullOrderQueryResponse } from "../../orders/types";
 import Table from "modules/common/components/table";
 import { TableRow, Detail, Status, FlexEnd, ScreenWrapper } from "../styles";
-import { colors } from "modules/common/styles";
 import Button from "modules/common/components/Button";
 import OrderSearch from "../containers/OrderSearch";
 
@@ -37,25 +36,6 @@ export default class Screen extends React.Component<Props> {
         </span>
       </Detail>
     ));
-  }
-
-  renderStatus(primaryColor, status) {
-    let color = primaryColor;
-
-    switch (status) {
-      case "new":
-        color = colors.colorCoreBlue;
-        break;
-      case "doing":
-        color = colors.colorCoreOrange;
-        break;
-    }
-
-    return (
-      <Status color={color} odd={true}>
-        {__(status)}
-      </Status>
-    );
   }
 
   renderActions = (order) => {
@@ -94,7 +74,6 @@ export default class Screen extends React.Component<Props> {
         <td className="center">
           <Status color={color}>{__(order.type)}</Status>
         </td>
-        <td className="center">{this.renderStatus(color, order.status)}</td>
         <td>{this.renderActions(order)}</td>
       </TableRow>
     );
@@ -140,7 +119,6 @@ export default class Screen extends React.Component<Props> {
                       <th>{__("Number")}</th>
                       <th>{__("Order")}</th>
                       <th>{__("Type")}</th>
-                      <th>{__("Status")}</th>
                       <th>{__("Actions")}</th>
                     </tr>
                   </thead>
