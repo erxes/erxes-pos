@@ -195,7 +195,7 @@ export default class Calculation extends React.Component<Props, State> {
 
     const color = config.uiOptions && config.uiOptions.colors.primary;
     const taxAmount = calcTaxAmount(totalAmount, config.ebarimtConfig);
-    
+
     let vatPercent = 0;
     let cityTaxPercent = 0;
 
@@ -273,8 +273,8 @@ export default class Calculation extends React.Component<Props, State> {
               </FormGroup>
 
               {this.renderAmount(`${__('Pure amount')}:`, taxAmount.pureAmount)}
-              {this.renderAmount(`${__("VAT")} (${vatPercent}%):`, taxAmount.vatAmount)}
-              {this.renderAmount(`${__("UB city tax")} (${cityTaxPercent}%):`, taxAmount.cityTaxAmount)}
+              {taxAmount.vatAmount && this.renderAmount(`${__("VAT")} (${vatPercent}%):`, taxAmount.vatAmount) || ''}
+              {taxAmount.cityTaxAmount && this.renderAmount(`${__("UB city tax")} (${cityTaxPercent}%):`, taxAmount.cityTaxAmount) || ''}
               {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
             </div>
             <ButtonWrapper>
