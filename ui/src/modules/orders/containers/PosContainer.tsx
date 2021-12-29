@@ -84,7 +84,8 @@ class PosContainer extends React.Component<Props> {
         .then(({ data }) => {
           if (data && data.ordersEdit && data.ordersEdit._id) {
             Alert.success(`Order has been updated successfully.`);
-            window.location.href = `/pos?id=${qp.id}`;
+
+            return data.ordersEdit;
           }
         })
         .catch((e) => {

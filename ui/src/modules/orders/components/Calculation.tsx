@@ -87,7 +87,7 @@ type Props = {
   setOrderState: (name: string, value: any) => void;
   onClickDrawer: (drawerContentType: string) => void;
   config: IConfig;
-  editOrder: (params) => void;
+  editOrder: () => void;
   order: IOrder | null;
   type: string;
 };
@@ -110,20 +110,6 @@ export default class Calculation extends React.Component<Props, State> {
 
     this.props.setOrderState("type", value);
   };
-
-  renderEditButton() {
-    const { editOrder, order } = this.props;
-
-    if (!order) {
-      return null;
-    }
-
-    return (
-      <Button btnStyle="success" onClick={editOrder} icon="check-circle" block>
-        {__("Edit order")}
-      </Button>
-    );
-  }
 
   renderAddButton() {
     const { addOrder, order } = this.props;
@@ -154,16 +140,22 @@ export default class Calculation extends React.Component<Props, State> {
   }
 
   renderPaymentButton() {
-    const { order, onClickDrawer, config, totalAmount } = this.props;
+    const { order, onClickDrawer, config, totalAmount, editOrder } = this.props;
 
     if (!order || (order && order.paidDate)) {
       return null;
     }
 
+    const onClick = () => {
+      editOrder();
+
+      onClickDrawer("payment");
+    };
+
     return (
       <Button
         style={{ backgroundColor: config.uiOptions.colors.primary }}
-        onClick={() => onClickDrawer("payment")}
+        onClick={onClick}
         icon="dollar-alt"
         block
         disabled={!totalAmount || totalAmount === 0 ? true : false}
@@ -279,7 +271,6 @@ export default class Calculation extends React.Component<Props, State> {
             </div>
             <ButtonWrapper>
               {this.renderAddButton()}
-              {this.renderEditButton()}
               {this.renderReceiptButton()}
               {this.renderPaymentButton()}
             </ButtonWrapper>

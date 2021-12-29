@@ -31,7 +31,7 @@ type Props = {
   changeItemCount: (item: IOrderItemInput) => void;
   onClickDrawer: (drawerContentType: string) => void;
   addOrder: (params: any) => void;
-  editOrder: (params: any) => void;
+  editOrder: () => void;
   customerId: string;
   setOrderState: (name: string, value: any) => void;
 };
@@ -55,22 +55,8 @@ export default class PortraitList extends React.Component<Props, State> {
     );
   }
 
-  renderEditButton() {
-    const { editOrder, order } = this.props;
-
-    if (!order) {
-      return null;
-    }
-
-    return (
-      <Button btnStyle="success" onClick={editOrder} icon="check-circle" block>
-        {__("Edit order")}
-      </Button>
-    );
-  }
-
   renderPaymentButton() {
-    const { order, onClickDrawer, totalAmount, currentConfig } = this.props;
+    const { order, onClickDrawer, totalAmount, currentConfig, editOrder } = this.props;
 
     if (!order || (order && order.paidDate)) {
       return null;
@@ -82,10 +68,16 @@ export default class PortraitList extends React.Component<Props, State> {
       style.backgroundColor = currentConfig.uiOptions.colors.primary;
     }
 
+    const onClick = () => {
+      editOrder();
+
+      onClickDrawer("payment");
+    };
+
     return (
       <Button
         style={style}
-        onClick={() => onClickDrawer("payment")}
+        onClick={onClick}
         icon="dollar-alt"
         block
         disabled={!totalAmount || totalAmount === 0 ? true : false}
@@ -135,7 +127,6 @@ export default class PortraitList extends React.Component<Props, State> {
             {formatNumber(totalAmount || 0)}₮
           </Amount>
           {this.renderAddButton()}
-          {this.renderEditButton()}
           {this.renderPaymentButton()}
         </div>
       </ColumnBetween>

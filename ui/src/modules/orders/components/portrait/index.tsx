@@ -36,7 +36,7 @@ type Props = {
   addCustomer: (params: ICustomerParams) => void;
   changeItemCount: (item: IOrderItemInput) => void;
   addOrder: (params: any) => void;
-  editOrder: (params: any) => void;
+  editOrder: () => void;
   setOrderState: (name: string, value: any) => void;
   qp: any;
   customerId: string;

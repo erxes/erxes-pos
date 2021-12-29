@@ -5,7 +5,7 @@ const commonFields = `
   attachment
 `;
 
-const orderFields = `
+export const orderFields = `
   _id
   createdAt
   number
@@ -24,6 +24,18 @@ const orderFields = `
   registerNumber
   oldBillId
   type
+`;
+
+export const orderItemsFields = `
+  items {
+    _id
+    unitPrice
+    orderId
+    productName
+    count
+    productId
+    isPackage
+  }
 `;
 
 const customerFields = `
@@ -76,15 +88,7 @@ const orderDetail = `
     orderDetail(_id: $_id) {
       ${orderFields}
 
-      items {
-        _id
-        unitPrice
-        orderId
-        productName
-        count
-        productId
-        isPackage
-      }
+      ${orderItemsFields}
 
       user {
         details {
