@@ -74,7 +74,7 @@ export default withProps<Props>(
     graphql<Props, FullOrderQueryResponse>(gql(queries.fullOrders), {
       name: 'orderQuery',
       options: () => ({
-        variables: { statuses: ['paid', 'new', 'doing'] },
+        variables: { statuses: ['paid', 'doing'] },
         fetchPolicy: 'network-only'
       }),
     }),
