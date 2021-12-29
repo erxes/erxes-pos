@@ -48,6 +48,17 @@ export const MainContent = styledTS<{
   }
 `;
 
+export const ScreenContent = styledTS<{
+  hasBackground?: boolean;
+}>(styled.div)`
+  padding-top: 15px;
+  padding-left: 25px;
+  padding-right: 25px;
+  background: ${(props) => props.hasBackground && colors.colorWhite};
+  box-shadow: rgb(217, 226, 236) 0px 0px 24px 0px;
+  height: 100vh;
+`;
+
 export const ProductCategories = styled.div`
   display: flex;
   flex-wrap: wrap;

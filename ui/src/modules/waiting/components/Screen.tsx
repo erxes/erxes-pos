@@ -2,7 +2,7 @@ import React from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { IUser } from "modules/auth/types";
-import { PosWrapper, MainContent } from "../../orders/styles";
+import { ScreenContent } from "../../orders/styles";
 import { IConfig } from "types";
 import { __ } from "modules/common/utils";
 import { IOrder } from "../../orders/types";
@@ -17,22 +17,14 @@ type Props = {
 
 export default class Screen extends React.Component<Props> {
   renderOrders(order: IOrder, type: string) {
-    if (type === "Doing" && order.status !== "done") {
-      return <OrderCard>{order.number.split("_")[1]}</OrderCard>;
-    }
-
-    if (type === "Ready" && order.status === "done") {
-      return <OrderCard>{order.number.split("_")[1]}</OrderCard>;
-    }
-
-    return null;
+    return <OrderCard>{order.number.split("_")[1]}</OrderCard>;
   }
 
   renderCol(type, icon) {
     const { orders } = this.props;
 
     return (
-      <Col md={6}>
+      <Col sm={10}>
         <Label isReady={type === "Ready"}>
           <Icon icon={icon} size={28} />
           <span>{__(type)}</span>
@@ -50,14 +42,11 @@ export default class Screen extends React.Component<Props> {
 
   render() {
     return (
-      <MainContent hasBackground={true}>
-        <PosWrapper>
-          <Row>
-            {this.renderCol("Doing", "hourglass")}
+      <ScreenContent hasBackground={true}>
+          < Row >
             {this.renderCol("Ready", "checked")}
-          </Row>
-        </PosWrapper>
-      </MainContent>
+          </Row >
+      </ScreenContent>
     );
   } // end render()
 }

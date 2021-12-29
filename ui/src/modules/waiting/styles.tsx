@@ -30,9 +30,9 @@ export const OrderCard = styled(FlexCenter)`
   background: ${colors.bgActive};
   border: 1px solid ${colors.borderPrimary};
   border-radius: 4px;
-  width: 20%;
-  font-size: 35px;
-  font-weight: 600;
+  width: 30%;
+  font-size: 80px;
+  font-weight: 700;
   padding: 20px;
   margin: 0 20px 20px 0;
 
