@@ -273,8 +273,8 @@ export default class Calculation extends React.Component<Props, State> {
               </FormGroup>
 
               {this.renderAmount(`${__('Pure amount')}:`, taxAmount.pureAmount)}
-              {taxAmount.vatAmount && this.renderAmount(`${__("VAT")} (${vatPercent}%):`, taxAmount.vatAmount) || ''}
-              {taxAmount.cityTaxAmount && this.renderAmount(`${__("UB city tax")} (${cityTaxPercent}%):`, taxAmount.cityTaxAmount) || ''}
+              {taxAmount.vatAmount ? this.renderAmount(`${__("VAT")} (${vatPercent}%):`, taxAmount.vatAmount) : ''}
+              {taxAmount.cityTaxAmount ? this.renderAmount(`${__("UB city tax")} (${cityTaxPercent}%):`, taxAmount.cityTaxAmount) : ''}
               {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
             </div>
             <ButtonWrapper>
