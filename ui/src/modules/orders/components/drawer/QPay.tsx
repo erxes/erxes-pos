@@ -96,12 +96,12 @@ export default class QPay extends React.Component<Props, State> {
     }
   }
 
-  checkPayment() {
+  checkPayment(isAuto=false) {
     const { order } = this.props;
 
     this.requestCount++;
 
-    if (this.requestCount > 5) {
+    if (isAuto && this.requestCount > 20) {
       clearTimeout(this.timeoutId);
 
       return;
@@ -143,7 +143,7 @@ export default class QPay extends React.Component<Props, State> {
 
   setupTimer() {
     this.timeoutId = setTimeout(() => {
-      this.checkPayment();
+      this.checkPayment(true);
     }, 3000);
   }
 
