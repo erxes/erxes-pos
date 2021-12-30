@@ -46,8 +46,8 @@ class SignIn extends React.Component<Props> {
   };
 
   render() {
-    const { currentConfig = { uiOptions: {} } } = this.props;
-    const { colors = { primary: '' } } = currentConfig.uiOptions;
+    const { currentConfig } = this.props;
+    const { colors = {} } = currentConfig.uiOptions || {};
 
     return (
       <AuthBox mainColor={colors.primary}>

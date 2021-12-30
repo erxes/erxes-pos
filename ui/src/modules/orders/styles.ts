@@ -143,7 +143,7 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   text-align: center;
   padding: 10px;
   padding-bottom: ${(props) => props.isPortrait && "20px"};
-  flex-basis: 22%;
+  flex-basis: 14.888889%;
   flex-shrink: 0;
   cursor: pointer;
   margin: 0 20px 20px 0;
@@ -195,17 +195,17 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   }
 
   @media (max-width: 1600px) and (min-width: 1011px) and (orientation:landscape)  {
-    flex-basis: 30%;
+    flex-basis: 18%;
 
-    &:nth-child(3n) {
+    &:nth-child(5n) {
       margin-right: 0;
     }
   }
 
   @media (max-width: 1010px) {
-    flex-basis: 43%;
+    flex-basis: 22%;
 
-    &:nth-child(2n) {
+    &:nth-child(4n) {
       margin-right: 0;
     }
   }
