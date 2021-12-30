@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import styledTS from "styled-components-ts";
 import { dimensions, colors } from "modules/common/styles";
-import { FlexCenter } from "modules/common/styles/main";
 
 export const Label = styledTS<{ isReady?: boolean }>(styled.div)`
   display: flex;
@@ -26,15 +25,12 @@ export const Orders = styled.div`
   flex-wrap: wrap;
 `;
 
-export const OrderCard = styled(FlexCenter)`
-  background: ${colors.bgActive};
-  border: 1px solid ${colors.borderPrimary};
-  border-radius: 4px;
-  width: 30%;
-  font-size: 80px;
+export const OrderCard = styledTS<{ color?: string }>(styled.div)`
+  width: 30.3333%;
+  font-size: 70px;
   font-weight: 700;
-  padding: 20px;
   margin: 0 20px 20px 0;
+  color: ${(props) => props.color && props.color};
 
   @media (max-width: 1200px) {
     width: 25%;

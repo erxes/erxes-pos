@@ -54,6 +54,10 @@ a:hover {
   display: flex;
 }
 
+.fullHeight {
+  height: 100% !important;
+}
+
 /* override */
 
 .modal-backdrop {
