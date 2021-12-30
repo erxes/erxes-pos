@@ -1,6 +1,6 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 import { ICustomerParams, IOrder, IOrderItemInput } from "../../types";
 import { IUser } from "modules/auth/types";
@@ -17,7 +17,7 @@ import {
 import PaymentForm from "../drawer/PaymentForm";
 import Icon from "modules/common/components/Icon";
 import { FlexCenter } from "modules/common/styles/main";
-import { __ } from 'modules/common/utils';
+import { __ } from "modules/common/utils";
 import PortraitList from "./PortraitList";
 
 type Props = {
@@ -62,7 +62,7 @@ export default class PortraitView extends React.Component<Props, State> {
 
   onClickType = (type: string) => {
     this.setState({ type });
-    this.props.setOrderState('type', type);
+    this.props.setOrderState("type", type);
   };
 
   handleModal = (modalContentType: string) => {
@@ -107,7 +107,7 @@ export default class PortraitView extends React.Component<Props, State> {
       totalAmount,
       makePayment,
       orientation,
-      setCardPaymentInfo
+      setCardPaymentInfo,
     } = this.props;
     const { modalContentType } = this.state;
 
@@ -171,10 +171,6 @@ export default class PortraitView extends React.Component<Props, State> {
         <Footer color={colors.primary}>
           <span>
             <Icon icon="earthgrid" /> www.yoshinoyamongolia.com
-          </span>
-          &emsp;
-          <span>
-            <Icon icon="car" /> Хүргэлт: 7007-7007
           </span>
         </Footer>
       </PortraitViewWrapper>

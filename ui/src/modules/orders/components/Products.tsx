@@ -21,6 +21,7 @@ type Props = {
 type State = {
   categoriesHeight: number;
 };
+
 export default class Products extends React.Component<Props, State> {
   constructor(props) {
     super(props);

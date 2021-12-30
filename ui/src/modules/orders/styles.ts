@@ -78,14 +78,14 @@ export const ProductsWrapper = styledTS<{ height?: number }>(styled.div)`
   @media (max-width: 1170px) and (orientation: landscape) {
     max-height: ${(props) =>
       props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 40}px)`
+        ? `calc(100% - ${props.height + 60}px)`
         : "570px"};
   }
 
   @media (orientation: portrait) {
     max-height: ${(props) =>
       props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 40}px)`
+        ? `calc(100% - ${props.height + 200}px)`
         : "75%"};
   }
 `;
