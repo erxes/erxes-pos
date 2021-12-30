@@ -30,7 +30,7 @@ type IProps = {
   unreadConversationsCount?: number;
   collapsed: boolean;
   onCollapseNavigation: () => void;
-  currentConfig?: IConfig
+  currentConfig?: IConfig;
   currentUser: IUser;
   options: any;
 };
@@ -172,7 +172,7 @@ class Navigation extends React.Component<IProps> {
       return "";
     }
 
-    if (localStorage.getItem('erxesPosMode')) {
+    if (localStorage.getItem("erxesPosMode")) {
       return "";
     }
 
@@ -194,7 +194,7 @@ class Navigation extends React.Component<IProps> {
       return "";
     }
 
-    if (!['', 'kitchen'].includes(localStorage.getItem('erxesPosMode') || '')) {
+    if (!["", "kitchen"].includes(localStorage.getItem("erxesPosMode") || "")) {
       return "";
     }
 
@@ -216,7 +216,7 @@ class Navigation extends React.Component<IProps> {
       return "";
     }
 
-    if (!['', 'waiting'].includes(localStorage.getItem('erxesPosMode') || '')) {
+    if (!["", "waiting"].includes(localStorage.getItem("erxesPosMode") || "")) {
       return "";
     }
 

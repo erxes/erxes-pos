@@ -23,7 +23,7 @@ export const StageItems = styled.div`
   height: 290px;
 
   @media (orientation: portrait) {
-    height: 65%;
+    height: 75%;
     max-height: initial;
   }
 

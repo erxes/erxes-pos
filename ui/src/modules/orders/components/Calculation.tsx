@@ -2,7 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import styledTS from "styled-components-ts";
-import FormGroup from "modules/common/components/form/Group";
 import SelectWithSearch from "modules/common/components/SelectWithSearch";
 import { __ } from "modules/common/utils";
 import { IConfig, IOption } from "types";
@@ -174,7 +173,7 @@ export default class Calculation extends React.Component<Props, State> {
     const { type } = this.props;
 
     return (
-      <FormGroup>
+      <div>
         <StageContent>
           <ControlLabel>{__("Choose type")}</ControlLabel>
         </StageContent>
@@ -201,7 +200,7 @@ export default class Calculation extends React.Component<Props, State> {
             {__("Save")}
           </Type>
         </Types>
-      </FormGroup>
+      </div>
     );
   }
 
