@@ -2,13 +2,12 @@ import React from "react";
 import { __ } from "modules/common/utils";
 import { IOrderItemInput } from "../types";
 import StageItem from "./StageItem";
-import { Stages, ProductLabel, StageContent, StageItems } from "../styles";
+import { Stages, StageContent, StageItems } from "../styles";
 import EmptyState from "modules/common/components/EmptyState";
 
 type Props = {
   items: IOrderItemInput[];
   changeItemCount: (item: IOrderItemInput) => void;
-  onClickDrawer: (drawerContentType: string) => void;
   options: any;
 };
 
@@ -43,23 +42,12 @@ export default class Stage extends React.Component<Props> {
   }
 
   render() {
-    const mode = localStorage.getItem('erxesPosMode') || '';
-    if (mode === 'kiosk') {
-      return (<></>);
+    const mode = localStorage.getItem("erxesPosMode") || "";
+
+    if (mode === "kiosk") {
+      return <></>;
     }
 
-    const { onClickDrawer, options } = this.props;
-
-    return (
-      <Stages>
-        <ProductLabel
-          onClick={() => onClickDrawer("order")}
-          color={options.colors.primary}
-        >
-          {__("Find orders")}
-        </ProductLabel>
-        {this.renderItems()}
-      </Stages>
-    );
+    return <Stages>{this.renderItems()}</Stages>;
   }
 }

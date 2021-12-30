@@ -20,15 +20,15 @@ export const Column = styled.div`
 
 export const StageItems = styled.div`
   overflow: auto;
-  height: 85%;
+  height: 290px;
 
   @media (orientation: portrait) {
-    height: 85%;
+    height: 65%;
     max-height: initial;
   }
 
   @media (max-width: 1170px) and (orientation: landscape) {
-    max-height: 650px;
+    max-height: 450px;
   }
 `;
 
@@ -225,12 +225,33 @@ export const ProductLabel = styledTS<{ color?: string; isPortrait?: boolean }>(
   cursor: pointer;
 `;
 
+export const Types = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const Type = styledTS<{ checked?: boolean, color?: string }>(styled.div)`
+ border: 1px solid ${props => props.checked ? props.color : '#cbd2d9'};
+ cursor: pointer;
+ padding: 10px;
+ width: 30%;
+ word-break: break-word;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ text-align: center;
+ margin: 10px 0;
+ line-height: 15px;
+ border-radius: 8px;
+ transition: all ease .3s;
+`;
+
 export const Stages = styled.div`
   height: 100%;
 `;
 
 export const StageContent = styledTS<{ odd?: boolean }>(styled.div)`
-  margin-top: ${dimensions.coreSpacing}px;
+  margin-top: ${dimensions.unitSpacing}px;
   height: ${(props) => props.odd && "100%"};
 
   > b {

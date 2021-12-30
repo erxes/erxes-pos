@@ -149,6 +149,10 @@ a:hover {
   border: none;
 }
 
+.mt-10 {
+  margin-top: 10px !important;
+}
+
 .wide-modal {
   width: 90%;
 }
