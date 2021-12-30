@@ -1,5 +1,6 @@
 import React from "react";
 import dayjs from "dayjs";
+
 import { IOrder } from "modules/orders/types";
 import { ICustomer } from "../../types";
 import { IUser } from "modules/auth/types";
@@ -60,15 +61,13 @@ export default class Header extends React.Component<Props> {
       <HeaderWrapper className="block">
         <div className="receipt-logo">
           <img src={logo} alt={name} />
+          <h5><b>{name}</b></h5>
         </div>
         {ebarimtError ? <div>{ebarimtError}</div> : null}
         <div className="header">
-          <h5 className="text-center">
-            <b>{name}</b>
-          </h5>
           <p>
             <b>&#8470;:</b>
-            <span>{order.number}</span>
+            <span className="order-number">{order.number}</span>
           </p>
           <div className="ebarimt">
             {this.renderField("ТТД", ebarimt && ebarimt.ttd)}
