@@ -86,7 +86,7 @@ export default class Footer extends React.Component<Props> {
 
   componentDidMount() {
     if (this.putResponse) {
-      window.addEventListener('afterprint', (event) => {
+      window.addEventListener('afterprint', () => {
         window.close();
       });
 
@@ -126,4 +126,8 @@ export default class Footer extends React.Component<Props> {
       } // end qrcode
     }
   } // end componentDidMount
+
+  componentWillUnmount() {
+    window.removeEventListener('afterprint', () => {});
+  }
 }
