@@ -1,13 +1,13 @@
-import { gql } from 'apollo-server-express';
+// import { gql } from 'apollo-server-express';
 import * as dotenv from 'dotenv';
-import { graphql } from 'graphql';
-import { makeExecutableSchema } from 'graphql-tools';
+// import { graphql } from 'graphql';
+// import { makeExecutableSchema } from 'graphql-tools';
 import mongoose = require('mongoose');
-import resolvers from '../data/resolvers';
-import { mutations, queries, types, subscriptions } from '../data/schema';
+// import resolvers from '../data/resolvers';
+// import { mutations, queries, types, subscriptions } from '../data/schema';
 import { getEnv } from '../data/utils/commonUtils';
 import { debugDb } from '../debuggers';
-import { userFactory } from './factories';
+// import { userFactory } from './factories';
 
 dotenv.config();
 
@@ -63,58 +63,58 @@ export const mongoStatus = () => {
   });
 };
 
-const typeDefs = gql(`
-  ${types}
+// const typeDefs = gql(`
+//   ${types}
 
-  type Query {
-    ${queries}
-  }
+//   type Query {
+//     ${queries}
+//   }
 
-  type Mutation {
-    ${mutations}
-  }
+//   type Mutation {
+//     ${mutations}
+//   }
 
-  type Subscription {
-    ${subscriptions}
-  }
-`);
+//   type Subscription {
+//     ${subscriptions}
+//   }
+// `);
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers
-});
+// const schema = makeExecutableSchema({
+//   typeDefs,
+//   resolvers
+// });
 
-export const graphqlRequest = async (
-  source: string = '',
-  name: string = '',
-  args?: any,
-  context: any = {}
-) => {
-  const res = {
-    cookie: () => {
-      return 'cookie';
-    }
-  };
+// export const graphqlRequest = async (
+//   source: string = '',
+//   name: string = '',
+//   args?: any,
+//   context: any = {}
+// ) => {
+//   const res = {
+//     cookie: () => {
+//       return 'cookie';
+//     }
+//   };
 
-  const finalContext: any = {};
+//   const finalContext: any = {};
 
-  finalContext.requestInfo = { secure: false, cookies: [] };
-  finalContext.user = context.user || (await userFactory({}));
-  finalContext.res = context.res || res;
+//   finalContext.requestInfo = { secure: false, cookies: [] };
+//   finalContext.user = context.user || (await userFactory({}));
+//   finalContext.res = context.res || res;
 
-  const rootValue = {};
+//   const rootValue = {};
 
-  const response: any = await graphql(
-    schema,
-    source,
-    rootValue,
-    finalContext,
-    args
-  );
+//   const response: any = await graphql(
+//     schema,
+//     source,
+//     rootValue,
+//     finalContext,
+//     args
+//   );
 
-  if (response.errors || !response.data) {
-    throw response.errors;
-  }
+//   if (response.errors || !response.data) {
+//     throw response.errors;
+//   }
 
-  return response.data[name];
-};
+//   return response.data[name];
+// };

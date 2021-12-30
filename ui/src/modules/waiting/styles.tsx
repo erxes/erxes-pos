@@ -26,13 +26,9 @@ export const Orders = styled.div`
 `;
 
 export const OrderCard = styledTS<{ color?: string }>(styled.div)`
-  width: 30.3333%;
+  width: 200px;
   font-size: 70px;
   font-weight: 700;
   margin: 0 20px 20px 0;
   color: ${(props) => props.color && props.color};
-
-  @media (max-width: 1200px) {
-    width: 25%;
-  }
 `;
