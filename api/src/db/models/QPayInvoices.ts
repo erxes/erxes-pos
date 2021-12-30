@@ -20,7 +20,7 @@ class QPayInvoice {
     });
 
     if (invoice) {
-      throw new Error('senderInvoiceNo duplicated');
+      throw new Error('An invoice is already created for this order');
     }
 
     return QPayInvoices.create({ ...doc });

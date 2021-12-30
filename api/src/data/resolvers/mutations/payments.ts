@@ -25,9 +25,15 @@ const paymentMutations = {
 
     const order = await Orders.getOrder(orderId);
 
+    let invoice = await QPayInvoices.findOne({ senderInvoiceNo: orderId });
+
+    if (invoice) {
+      return invoice;
+    }
+
     const tokenInfo = await fetchQPayToken(config.qpayConfig);
 
-    const invoice = await QPayInvoices.createInvoice({
+    invoice = await QPayInvoices.createInvoice({
       senderInvoiceNo: order._id,
       amount: order.totalAmount.toString(),
     });
