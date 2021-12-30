@@ -320,7 +320,7 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   margin: 0 15px 15px 0;
   border: 1px solid #ddd;
   border-radius: 8px;
-  width: 31.333%;
+  width: 30.333%;
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;
