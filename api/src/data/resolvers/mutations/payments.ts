@@ -5,6 +5,7 @@ import {
   fetchQPayToken,
   requestQPayInvoice,
   fetchInvoicePayment,
+  requestInvoiceDeletion
 } from '../../utils/qpayUtils';
 
 interface IInvoiceParams {
@@ -56,6 +57,24 @@ const paymentMutations = {
     }
 
     return QPayInvoices.findOne({ _id: invoice._id });
+  },
+  async qpayCancelInvoice(
+    _root,
+    { orderId }: IInvoiceParams,
+    { config }: IContext
+  ) {
+    const tokenInfo = await fetchQPayToken(config.qpayConfig);
+    const invoice = await QPayInvoices.getInvoice(orderId);
+
+    if (invoice.status === 'open') {
+      const response = await requestInvoiceDeletion(
+        invoice.qpayInvoiceId,
+        tokenInfo.access_token,
+        config.qpayConfig
+      );
+
+      return response;
+    }
   },
   async qpayCheckPayment(
     _root,

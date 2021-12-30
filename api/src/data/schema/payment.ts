@@ -15,6 +15,7 @@ export const types = `
 export const mutations = `
   createQpaySimpleInvoice(orderId: String!): QPayInvoice
   qpayCheckPayment(orderId: String!): QPayInvoice
+  qpayCancelInvoice(orderId: String!): JSON
 `;
 
 export const queries = `
