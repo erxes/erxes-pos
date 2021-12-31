@@ -2,21 +2,18 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import styledTS from "styled-components-ts";
-import FormControl from "modules/common/components/form/Control";
-import FormGroup from "modules/common/components/form/Group";
 import SelectWithSearch from "modules/common/components/SelectWithSearch";
-import Icon from "modules/common/components/Icon";
-import { FlexRow } from "modules/common/components/filterableList/styles";
 import { __ } from "modules/common/utils";
 import { IConfig, IOption } from "types";
 import { ORDER_TYPES } from "../../../constants";
-import { StageContent, FlexColumn } from "../styles";
+import { StageContent, ProductLabel, Types, Type } from "../styles";
 import ControlLabel from "modules/common/components/form/Label";
 import { FlexBetween, ColumnBetween } from "modules/common/styles/main";
-import { formatNumber, calcTaxAmount } from "modules/utils";
+import { formatNumber } from "modules/utils";
 import Button from "modules/common/components/Button";
-import { ICustomer, IOrder } from "../types";
+import { ICustomer, IOrder, IOrderItemInput } from "../types";
 import queries from "../graphql/queries";
+import Stage from "./Stage";
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   display: flex;
@@ -32,12 +29,6 @@ const Wrapper = styledTS<{ color?: string }>(styled.div)`
   .ioevLe:checked + span:before, .hCqfzh .react-toggle--checked .react-toggle-track {
     background-color: ${(props) => props.color && props.color};
   }
-`;
-
-const Description = styled.div`
-  color: #888;
-  font-size: 12px;
-  margin-bottom: 10px;
 `;
 
 export const Amount = styledTS<{ color?: string }>(styled(FlexBetween))`
@@ -65,16 +56,16 @@ export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
     const { _id, firstName, primaryEmail, primaryPhone, lastName } =
       item || ({} as ICustomer);
 
-    let value = firstName ? firstName.toUpperCase() : '';
+    let value = firstName ? firstName.toUpperCase() : "";
 
     if (lastName) {
       value = `${value} ${lastName}`;
     }
     if (primaryPhone) {
-      value = `${value} (${primaryPhone})`
+      value = `${value} (${primaryPhone})`;
     }
     if (primaryEmail) {
-      value = `${value} /${primaryEmail}/`
+      value = `${value} /${primaryEmail}/`;
     }
 
     return { value: _id, label: value };
@@ -86,6 +77,8 @@ type Props = {
   addOrder: (params: any) => void;
   setOrderState: (name: string, value: any) => void;
   onClickDrawer: (drawerContentType: string) => void;
+  items: IOrderItemInput[];
+  changeItemCount: (item: IOrderItemInput) => void;
   config: IConfig;
   editOrder: () => void;
   order: IOrder | null;
@@ -105,9 +98,7 @@ export default class Calculation extends React.Component<Props, State> {
     };
   }
 
-  onChange = (e) => {
-    const value = (e.target as HTMLInputElement).value;
-
+  onChange = (value) => {
     this.props.setOrderState("type", value);
   };
 
@@ -134,7 +125,9 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <Button icon="print" btnStyle="warning" block>
-        <Link to={`/order-receipt/${order._id}`} target="_blank">{__("Print receipt")}</Link>
+        <Link to={`/order-receipt/${order._id}`} target="_blank">
+          {__("Print receipt")}
+        </Link>
       </Button>
     );
   }
@@ -176,8 +169,50 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
+  renderDeliveryTypes(color: string) {
+    const { type } = this.props;
+
+    return (
+      <div>
+        <StageContent>
+          <ControlLabel>{__("Choose type")}</ControlLabel>
+        </StageContent>
+        <Types>
+          <Type
+            onClick={() => this.onChange(ORDER_TYPES.TAKE)}
+            checked={type === ORDER_TYPES.TAKE}
+            color={color}
+          >
+            {__("Take")}
+          </Type>
+          <Type
+            onClick={() => this.onChange(ORDER_TYPES.EAT)}
+            checked={type === ORDER_TYPES.EAT}
+            color={color}
+          >
+            {__("Eat")}
+          </Type>
+          <Type
+            onClick={() => this.onChange(ORDER_TYPES.SAVE)}
+            checked={type === ORDER_TYPES.SAVE}
+            color={color}
+          >
+            {__("Save")}
+          </Type>
+        </Types>
+      </div>
+    );
+  }
+
   render() {
-    const { totalAmount, config, setOrderState, type, onClickDrawer } = this.props;
+    const {
+      totalAmount,
+      config,
+      setOrderState,
+      onClickDrawer,
+      items,
+      changeItemCount,
+    } = this.props;
 
     const onSelectCustomer = (customerId) => {
       this.setState({ customerId });
@@ -186,90 +221,41 @@ export default class Calculation extends React.Component<Props, State> {
     };
 
     const color = config.uiOptions && config.uiOptions.colors.primary;
-    const taxAmount = calcTaxAmount(totalAmount, config.ebarimtConfig);
-
-    let vatPercent = 0;
-    let cityTaxPercent = 0;
-
-    if (config.ebarimtConfig) {
-      vatPercent = config.ebarimtConfig.vatPercent || 0;
-      cityTaxPercent = config.ebarimtConfig.cityTaxPercent || 0;
-    }
-
-    const btnStyle = { padding: "4px 10px" };
 
     return (
       <>
         <Wrapper color={color}>
-          <StageContent>
-            <FlexRow>
-              <div>
-                <ControlLabel>{__("Identify a customer")}</ControlLabel>
-                <Description>{__("Choose customer from select")}</Description>
-              </div>
-              <Button onClick={() => onClickDrawer('customer')} style={btnStyle} btnStyle="success">
-                <Icon icon="plus" />
-              </Button>
-            </FlexRow>
-          </StageContent>
-            <SelectWithSearch
-              name="customerId"
-              queryName="customers"
-              label={__("Type name, phone, or email to search")}
-              initialValue={this.state.customerId}
-              onSelect={onSelectCustomer}
-              generateOptions={generateLabelOptions}
-              customQuery={queries.customers}
-            />
+          <ProductLabel onClick={() => onClickDrawer("order")} color={color}>
+            {__("Find orders")}
+          </ProductLabel>
+          <ProductLabel
+            className="mt-10"
+            onClick={() => onClickDrawer("customer")}
+            color={color}
+          >
+            {__("Identify a customer")}
+          </ProductLabel>
+          <SelectWithSearch
+            name="customerId"
+            queryName="customers"
+            label={__("Type name, phone, or email to search")}
+            initialValue={this.state.customerId}
+            onSelect={onSelectCustomer}
+            generateOptions={generateLabelOptions}
+            customQuery={queries.customers}
+          />
           <ColumnBetween>
             <div>
-              <FormGroup>
-                <StageContent>
-                  <ControlLabel>{__("Choose type")}</ControlLabel>
-                  <Description>
-                    {__("Choose from the following options")}
-                  </Description>
-                </StageContent>
-                <FlexColumn>
-                  <FormControl
-                    componentClass="radio"
-                    value={ORDER_TYPES.TAKE}
-                    checked={type === ORDER_TYPES.TAKE}
-                    inline={true}
-                    name="type"
-                    onChange={this.onChange}
-                  >
-                    {__("Take")}
-                  </FormControl>
-                  <FormControl
-                    componentClass="radio"
-                    value={ORDER_TYPES.EAT}
-                    checked={type === ORDER_TYPES.EAT}
-                    inline={true}
-                    name="type"
-                    onChange={this.onChange}
-                  >
-                    {__("Eat")}
-                  </FormControl>
-                  <FormControl
-                    componentClass="radio"
-                    value={ORDER_TYPES.SAVE}
-                    checked={type === ORDER_TYPES.SAVE}
-                    inline={true}
-                    name="type"
-                    onChange={this.onChange}
-                  >
-                    {__("Save")}
-                  </FormControl>
-                </FlexColumn>
-              </FormGroup>
+              {this.renderDeliveryTypes(color)}
 
-              {this.renderAmount(`${__('Pure amount')}:`, taxAmount.pureAmount)}
-              {taxAmount.vatAmount ? this.renderAmount(`${__("VAT")} (${vatPercent}%):`, taxAmount.vatAmount) : ''}
-              {taxAmount.cityTaxAmount ? this.renderAmount(`${__("UB city tax")} (${cityTaxPercent}%):`, taxAmount.cityTaxAmount) : ''}
-              {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
+              <Stage
+                items={items}
+                changeItemCount={changeItemCount}
+                options={config.uiOptions}
+              />
             </div>
             <ButtonWrapper>
+              {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
               {this.renderAddButton()}
               {this.renderReceiptButton()}
               {this.renderPaymentButton()}

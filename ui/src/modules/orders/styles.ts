@@ -20,15 +20,15 @@ export const Column = styled.div`
 
 export const StageItems = styled.div`
   overflow: auto;
-  height: 85%;
+  height: 290px;
 
   @media (orientation: portrait) {
-    height: 85%;
+    height: 75%;
     max-height: initial;
   }
 
   @media (max-width: 1170px) and (orientation: landscape) {
-    max-height: 650px;
+    max-height: 450px;
   }
 `;
 
@@ -78,14 +78,14 @@ export const ProductsWrapper = styledTS<{ height?: number }>(styled.div)`
   @media (max-width: 1170px) and (orientation: landscape) {
     max-height: ${(props) =>
       props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 40}px)`
+        ? `calc(100% - ${props.height + 60}px)`
         : "570px"};
   }
 
   @media (orientation: portrait) {
     max-height: ${(props) =>
       props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 40}px)`
+        ? `calc(100% - ${props.height + 200}px)`
         : "75%"};
   }
 `;
@@ -143,7 +143,7 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   text-align: center;
   padding: 10px;
   padding-bottom: ${(props) => props.isPortrait && "20px"};
-  flex-basis: 22%;
+  flex-basis: 14.888889%;
   flex-shrink: 0;
   cursor: pointer;
   margin: 0 20px 20px 0;
@@ -195,17 +195,17 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   }
 
   @media (max-width: 1600px) and (min-width: 1011px) and (orientation:landscape)  {
-    flex-basis: 30%;
+    flex-basis: 18%;
 
-    &:nth-child(3n) {
+    &:nth-child(5n) {
       margin-right: 0;
     }
   }
 
   @media (max-width: 1010px) {
-    flex-basis: 43%;
+    flex-basis: 22%;
 
-    &:nth-child(2n) {
+    &:nth-child(4n) {
       margin-right: 0;
     }
   }
@@ -225,12 +225,33 @@ export const ProductLabel = styledTS<{ color?: string; isPortrait?: boolean }>(
   cursor: pointer;
 `;
 
+export const Types = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const Type = styledTS<{ checked?: boolean, color?: string }>(styled.div)`
+ border: 1px solid ${props => props.checked ? props.color : '#cbd2d9'};
+ cursor: pointer;
+ padding: 10px;
+ width: 30%;
+ word-break: break-word;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+ text-align: center;
+ margin: 10px 0;
+ line-height: 15px;
+ border-radius: 8px;
+ transition: all ease .3s;
+`;
+
 export const Stages = styled.div`
   height: 100%;
 `;
 
 export const StageContent = styledTS<{ odd?: boolean }>(styled.div)`
-  margin-top: ${dimensions.coreSpacing}px;
+  margin-top: ${dimensions.unitSpacing}px;
   height: ${(props) => props.odd && "100%"};
 
   > b {
@@ -299,7 +320,7 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   margin: 0 15px 15px 0;
   border: 1px solid #ddd;
   border-radius: 8px;
-  width: 31.333%;
+  width: 30.333%;
   display: flex;
   flex-wrap: wrap;
   overflow: hidden;

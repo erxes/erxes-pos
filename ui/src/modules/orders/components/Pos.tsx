@@ -6,7 +6,6 @@ import AsyncComponent from "modules/common/components/AsyncComponent";
 import RTG from "react-transition-group";
 import { ICustomerParams, IOrder, IOrderItemInput } from "../types";
 import { ORDER_TYPES } from "../../../constants";
-import Stage from "./Stage";
 import Calculation from "./Calculation";
 import OrderSearch from "../containers/layout/OrderSearch";
 import { IUser } from "modules/auth/types";
@@ -158,7 +157,7 @@ export default class Pos extends React.Component<Props, State> {
         productId: item.productId,
         count: item.count,
         unitPrice: item.unitPrice,
-        isPackage: item.isPackage
+        isPackage: item.isPackage,
       }));
 
       updateOrder({
@@ -172,7 +171,13 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   renderDrawerContent() {
-    const { currentConfig, makePayment, order, addCustomer, setCardPaymentInfo } = this.props;
+    const {
+      currentConfig,
+      makePayment,
+      order,
+      addCustomer,
+      setCardPaymentInfo,
+    } = this.props;
     const { drawerContentType, totalAmount } = this.state;
 
     switch (drawerContentType) {
@@ -212,7 +217,7 @@ export default class Pos extends React.Component<Props, State> {
       orientation,
       productCategoriesQuery,
       productsQuery,
-      setCardPaymentInfo
+      setCardPaymentInfo,
     } = this.props;
 
     const { items, totalAmount, showMenu, type, customerId } = this.state;
@@ -249,23 +254,13 @@ export default class Pos extends React.Component<Props, State> {
       <>
         <PosWrapper>
           <Row>
-            <Col md={6}>
+            <Col md={9} className="kk">
               <MainContent hasBackground={true}>
                 <FlexBetween>
                   <NameCard user={currentUser} avatarSize={40} />
                   <ProductSearch productsQuery={productsQuery} />
                 </FlexBetween>
                 {products}
-              </MainContent>
-            </Col>
-            <Col sm={3} className="no-padding">
-              <MainContent noPadding={true}>
-                <Stage
-                  items={items}
-                  changeItemCount={this.changeItemCount}
-                  onClickDrawer={this.toggleDrawer}
-                  options={currentConfig ? currentConfig.uiOptions : {}}
-                />
               </MainContent>
             </Col>
             <Col sm={3}>
@@ -280,6 +275,8 @@ export default class Pos extends React.Component<Props, State> {
                   editOrder={this.editOrder}
                   setOrderState={this.setOrderState}
                   onClickDrawer={this.toggleDrawer}
+                  items={items}
+                  changeItemCount={this.changeItemCount}
                   config={currentConfig}
                   order={order}
                   type={type}
