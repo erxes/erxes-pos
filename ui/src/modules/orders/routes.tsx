@@ -18,10 +18,11 @@ const ReceiptContainer = asyncComponent(
     )
 );
 
-const Receipt = ({ match }) => {
+const Receipt = ({ match, location }) => {
   const id = match.params.id;
+  const qp = queryString.parse(location.search);
 
-  return <ReceiptContainer id={id} />;
+  return <ReceiptContainer id={id} kitchen={qp && qp.kitchen} />;
 };
 
 const Pos = ({ location }) => {

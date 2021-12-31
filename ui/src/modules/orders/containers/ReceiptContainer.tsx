@@ -10,9 +10,11 @@ import { withProps } from '../../utils';
 import { queries } from '../graphql/index';
 import Receipt from '../components/receipt/Receipt';
 import { OrderDetailQueryResponse } from '../types';
+import KitchenReceipt from '../components/receipt/KitchenReceipt';
 
 type Props = {
   id: string;
+  kitchen: string;
 };
 
 type FinalProps = {
@@ -21,13 +23,19 @@ type FinalProps = {
 
 class ReceiptContainer extends React.Component<FinalProps> {
   render() {
-    const { orderDetailQuery } = this.props;
+    const { orderDetailQuery, kitchen } = this.props;
 
     if (orderDetailQuery.loading) {
       return <Spinner />;
     }
 
-    return <Receipt order={orderDetailQuery.orderDetail} />;
+    const order = orderDetailQuery.orderDetail;
+
+    if (kitchen === 'true') {
+      return <KitchenReceipt order={order} />;
+    }
+
+    return <Receipt order={order} />;
   }
 };
 
