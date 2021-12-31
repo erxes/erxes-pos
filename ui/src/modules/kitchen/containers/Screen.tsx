@@ -52,7 +52,9 @@ function KitchenScreenContainer(props: Props) {
   const editOrder = (doc) => {
     orderChangeStatusMutation({ variables: { ...doc } }).then(() => {
       Alert.success(`${doc.number} has been synced successfully.`);
-      window.open(`/order-receipt/${doc._id}?kitchen=true`, '_blank');
+      if (doc.status === 'done'){
+        window.open(`/order-receipt/${doc._id}?kitchen=true`, '_blank');
+      }
     }).catch(e => {
       return Alert.error(e.message);
     });

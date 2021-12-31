@@ -28,9 +28,9 @@ export default class Screen extends React.Component<Props> {
     return (
       <>
         <Col md={12} className="fullHeight">
-          <Label isReady={type === "Ready"}>
+          <Label isReady={true}>
             <Icon icon={icon} size={28} />
-            <span>{__(type)}</span>
+            <span>{__(`Дугаар бүхий хэрэглэгчид хоолоо авна уу.`)}</span>
           </Label>
           <Orders>
             {orders.map((order, index) => (
