@@ -14,6 +14,11 @@ export const PosWrapper = styled.div`
   }
 `;
 
+export const FlexCustomer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const Column = styled.div`
   border: 1px solid #ddd;
 `;
@@ -364,8 +369,8 @@ export const SearchInputWrapper = styledTS<{
         ? "100%"
         : "280px"
       : props.full
-      ? "100%"
-      : "120px"};
+        ? "100%"
+        : "120px"};
   display: flex;
   padding: 0 ${dimensions.unitSpacing}px;
   align-items: center;

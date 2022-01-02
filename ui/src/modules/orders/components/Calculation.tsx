@@ -88,6 +88,7 @@ type Props = {
 type State = {
   customerId: string;
   stageHeight: number;
+  mode: string;
 };
 
 export default class Calculation extends React.Component<Props, State> {
@@ -98,18 +99,21 @@ export default class Calculation extends React.Component<Props, State> {
     const customerId = order ? order.customerId : "";
 
     let stageHeight = window.innerHeight - 100; // types title
+    const mode = localStorage.getItem('erxesPosMode') || '';
+
+    if (mode === '') {
+      stageHeight -= 44; // findOrder
+      stageHeight -= 68; // customer
+    }
 
     if (orientation === 'portrait') {
       stageHeight -= 75; // amount
       stageHeight -= 125; // oneButton
       stageHeight -= (order && order.paidDate) ? 0 : 100; // oneButton
     } else {
-      stageHeight -= 44; // findOrder
-      stageHeight -= 68; // customer
       stageHeight -= 52; // amount
       stageHeight -= 50; // oneButton
       stageHeight -= (order && order.paidDate) ? 0 : 50; // oneButton
-      stageHeight -= 30; // marginbottom
     }
 
     if (stageHeight < 50) {
@@ -118,6 +122,7 @@ export default class Calculation extends React.Component<Props, State> {
     this.state = {
       customerId: customerId || "",
       stageHeight,
+      mode,
     };
   }
 
@@ -275,9 +280,9 @@ export default class Calculation extends React.Component<Props, State> {
       changeItemCount,
       orientation,
     } = this.props;
-
+    const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
-    const mode = localStorage.getItem('erxesPosMode')
+
     return (
       <>
         <Wrapper color={color}>

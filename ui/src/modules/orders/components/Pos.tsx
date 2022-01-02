@@ -15,6 +15,7 @@ import {
   LeftMenuContainer,
   Drawer,
   DrawerContent,
+  FlexCustomer,
 } from "../styles";
 import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
@@ -24,6 +25,7 @@ import ProductSearch from "../containers/ProductSearch";
 import { IPaymentParams } from "../containers/PosContainer";
 import PortraitView from "./portrait";
 import { renderFullName } from "modules/common/utils";
+import Icon from 'modules/common/components/Icon';
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -211,7 +213,7 @@ export default class Pos extends React.Component<Props, State> {
     }
   }
 
-  renderCurrentLogin() {
+  renderCurrentLogin(uiOptions) {
     const mode = localStorage.getItem('erxesPosMode')
     const { order } = this.props;
 
@@ -221,12 +223,27 @@ export default class Pos extends React.Component<Props, State> {
 
         return (
           <>
-            <NameCard.Avatar customer={customer} size={40} />
-            {renderFullName(customer)}
+            <Icon
+              icon="home"
+              onClick={() => { window.location.href = '/' }}
+              size={36}
+              color={uiOptions.colors ? uiOptions.colors.primary : ''}
+            />
+            <FlexCustomer>
+              <NameCard.Avatar customer={customer} size={40} />
+              {renderFullName(customer)}
+            </FlexCustomer>
           </>
         )
       }
-      return <></>;
+      return (
+        <Icon
+          icon="home"
+          onClick={() => { window.location.href = '/' }}
+          size={36}
+          color={uiOptions.colors ? uiOptions.colors.primary : ''}
+        />
+      );
     }
 
     const { currentUser } = this.props;
@@ -276,7 +293,7 @@ export default class Pos extends React.Component<Props, State> {
             <Col md={8} className="kk">
               <MainContent hasBackground={true}>
                 <FlexBetween>
-                  {this.renderCurrentLogin()}
+                  {this.renderCurrentLogin(currentConfig ? currentConfig.uiOptions : {})}
                   <ProductSearch productsQuery={productsQuery} />
                 </FlexBetween>
                 {products}
