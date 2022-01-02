@@ -295,7 +295,7 @@ export default class Calculation extends React.Component<Props, State> {
                 stageHeight={this.state.stageHeight}
               />
             </div>
-            <ButtonWrapper className={orientation === 'portrait' && "payment-section" || ""}>
+            <ButtonWrapper className={orientation === 'portrait' ? "payment-section" : ""}>
               {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
               {this.renderAddButton()}
               {this.renderReceiptButton()}
