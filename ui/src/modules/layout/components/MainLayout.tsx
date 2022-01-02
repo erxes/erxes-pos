@@ -17,7 +17,7 @@ import { setHeader } from "modules/utils";
 import Tip from "modules/common/components/Tip";
 
 interface IProps extends IRouterProps {
-  currentUser?: IUser;
+  posCurrentUser?: IUser;
   currentConfig?: IConfig;
   orientation: string;
   children: React.ReactNode;
@@ -35,9 +35,9 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
   }
 
   componentDidMount() {
-    const { history, currentUser, currentConfig } = this.props;
+    const { history, posCurrentUser, currentConfig } = this.props;
 
-    if (history.location.pathname !== "/reset-password" && !currentUser) {
+    if (history.location.pathname !== "/reset-password" && !posCurrentUser) {
       history.push("/sign-in");
     }
 
@@ -59,7 +59,7 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
   render() {
     const {
       children,
-      currentUser,
+      posCurrentUser,
       currentConfig,
       logout,
       orientation,
@@ -81,9 +81,9 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
       <>
         <div id="anti-clickjack" style={{ display: "none" }} />
         <Layout>
-          {currentUser && (
+          {posCurrentUser && (
             <Navigation
-              currentUser={currentUser}
+              posCurrentUser={posCurrentUser}
               currentConfig={currentConfig}
               options={currentConfig ? currentConfig.uiOptions : {}}
               collapsed={isCollapsed}

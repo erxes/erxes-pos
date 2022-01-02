@@ -10,7 +10,7 @@ import Icon from "modules/common/components/Icon";
 import { Label, OrderCard, Orders } from "../styles";
 
 type Props = {
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   orders: IOrder[];
 };

@@ -15,7 +15,7 @@ import { withRouter } from 'react-router-dom';
 type Props = {
   syncConfigMutation: SyncConfigMutationResponse;
   syncOrdersMutation: SyncOrdersMutationResponse;
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   qp: any;
 } & IRouterProps;

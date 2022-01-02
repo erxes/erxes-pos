@@ -20,7 +20,7 @@ import Spinner from "modules/common/components/Spinner";
 type Props = {
   ordersAddMutation: OrdersAddMutationResponse;
   ordersEditMutation: OrdersEditMutationResponse;
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   qp: any;
   orientation: string;

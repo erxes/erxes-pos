@@ -32,17 +32,17 @@ const withCurrentUser = (Component) => {
       return <Spinner />;
     }
 
-    const currentUser = currentUserQuery.currentUser;
+    const posCurrentUser = currentUserQuery.posCurrentUser;
 
     const updatedProps = {
       ...props,
-      currentUser,
+      posCurrentUser,
       orientation,
       currentConfig: currentConfigQuery.currentConfig,
     };
 
-    if (currentUser) {
-      const constants = currentUser.configsConstants || [];
+    if (posCurrentUser) {
+      const constants = posCurrentUser.configsConstants || [];
 
       constants.forEach((c) => storeConstantToStore(c.key, c.values));
     }
@@ -52,7 +52,7 @@ const withCurrentUser = (Component) => {
 
   return withProps<{}>(
     compose(
-      graphql<CurrentUserQueryResponse>(gql(queries.currentUser), {
+      graphql<CurrentUserQueryResponse>(gql(queries.posCurrentUser), {
         name: "currentUserQuery",
       }),
       graphql<CurrentConfigQueryResponse>(gql(queries.currentConfig), {

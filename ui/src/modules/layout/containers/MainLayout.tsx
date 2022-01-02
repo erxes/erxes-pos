@@ -8,7 +8,7 @@ import { IConfig } from "types";
 import { Alert } from "modules/common/utils";
 
 type Props = {
-  currentUser?: IUser;
+  posCurrentUser?: IUser;
   currentConfig?: IConfig;
   plugins?: any;
   orientation: string;
@@ -35,7 +35,7 @@ const logout = () => {
 
 const container = (props: Props) => (
   <AppProvider
-    currentUser={props.currentUser}
+    posCurrentUser={props.posCurrentUser}
     currentConfig={props.currentConfig}
     plugins={props.plugins}
   >

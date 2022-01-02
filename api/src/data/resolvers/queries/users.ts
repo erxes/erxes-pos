@@ -5,7 +5,7 @@ const userQueries = {
   /**
    * Current user
    */
-  currentUser(_root, _args, { user }: IContext) {
+  posCurrentUser(_root, _args, { user }: IContext) {
     return user
       ? Users.findOne({ _id: user._id, isActive: { $ne: false } })
       : null;

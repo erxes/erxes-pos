@@ -30,7 +30,7 @@ const ProductsContainer = AsyncComponent(
 
 type Props = {
   createOrder: (params) => void;
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   order: IOrder | null;
   orientation: string;
@@ -211,7 +211,7 @@ export default class Pos extends React.Component<Props, State> {
 
   render() {
     const {
-      currentUser,
+      posCurrentUser,
       currentConfig,
       order,
       orientation,
@@ -257,7 +257,7 @@ export default class Pos extends React.Component<Props, State> {
             <Col md={9} className="kk">
               <MainContent hasBackground={true}>
                 <FlexBetween>
-                  <NameCard user={currentUser} avatarSize={40} />
+                  <NameCard user={posCurrentUser} avatarSize={40} />
                   <ProductSearch productsQuery={productsQuery} />
                 </FlexBetween>
                 {products}

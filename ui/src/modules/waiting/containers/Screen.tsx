@@ -14,7 +14,7 @@ import { withRouter } from "react-router-dom";
 
 type Props = {
   orderQuery: FullOrderQueryResponse;
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   qp: any;
 } & IRouterProps;

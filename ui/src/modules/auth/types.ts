@@ -61,7 +61,7 @@ export type LoginMutationResponse = {
 };
 
 export type CurrentUserQueryResponse = {
-  currentUser: IUser;
+  posCurrentUser: IUser;
   loading: boolean;
   subscribeToMore: any;
   refetch: () => void;

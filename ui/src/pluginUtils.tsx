@@ -7,7 +7,7 @@ import { Route } from 'react-router-dom';
 import pluginModules from './plugins';
 import { ISubNav } from './types';
 
-export const pluginsOfRoutes = (currentUser: IUser) => {
+export const pluginsOfRoutes = (posCurrentUser: IUser) => {
   const plugins: any = [];
   const pluginRoutes: any = [];
   const specialPluginRoutes: any = [];
@@ -23,7 +23,7 @@ export const pluginsOfRoutes = (currentUser: IUser) => {
     if (plugin.response) {
       const Component = plugin.response;
       specialPluginRoutes.push(
-        <Component key={Math.random()} currentUser={currentUser} />
+        <Component key={Math.random()} posCurrentUser={posCurrentUser} />
       );
     }
 

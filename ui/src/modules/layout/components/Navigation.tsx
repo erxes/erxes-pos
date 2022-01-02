@@ -31,7 +31,7 @@ type IProps = {
   collapsed: boolean;
   onCollapseNavigation: () => void;
   currentConfig?: IConfig;
-  currentUser: IUser;
+  posCurrentUser: IUser;
   options: any;
 };
 
@@ -166,9 +166,9 @@ class Navigation extends React.Component<IProps> {
   };
 
   renderSyncMenu() {
-    const { currentUser } = this.props;
+    const { posCurrentUser } = this.props;
 
-    if (!currentUser) {
+    if (!posCurrentUser) {
       return "";
     }
 
@@ -184,9 +184,9 @@ class Navigation extends React.Component<IProps> {
   }
 
   renderKitchenMenu() {
-    const { currentUser, currentConfig } = this.props;
+    const { posCurrentUser, currentConfig } = this.props;
 
-    if (!currentUser || !currentConfig) {
+    if (!posCurrentUser || !currentConfig) {
       return "";
     }
 
@@ -206,9 +206,9 @@ class Navigation extends React.Component<IProps> {
   }
 
   renderWaitingMenu() {
-    const { currentUser, currentConfig } = this.props;
+    const { posCurrentUser, currentConfig } = this.props;
 
-    if (!currentUser || !currentConfig) {
+    if (!posCurrentUser || !currentConfig) {
       return "";
     }
 

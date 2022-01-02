@@ -1,6 +1,6 @@
-const currentUser = `
-  query currentUser {
-    currentUser {
+const posCurrentUser = `
+  query posCurrentUser {
+    posCurrentUser {
       _id
       createdAt
       username
@@ -78,4 +78,4 @@ const currentConfig = `
   }
 `;
 
-export default { currentUser, userChanged, currentConfig };
+export default { posCurrentUser, userChanged, currentConfig };

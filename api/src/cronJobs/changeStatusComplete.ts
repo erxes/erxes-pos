@@ -67,5 +67,5 @@ export const changeStatus = async () => {
  * └───────────────────────── second (0 - 59, OPTIONAL)
  */
 schedule.scheduleJob('40 * * * * *', () => {
-  changeStatus();
+  // changeStatus();
 });

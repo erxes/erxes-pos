@@ -13,7 +13,7 @@ import OrderSearch from "../containers/OrderSearch";
 
 type Props = {
   editOrder: (doc) => void;
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   orders: IOrder[];
   doneOrders: IOrder[];

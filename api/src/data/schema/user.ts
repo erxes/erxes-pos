@@ -32,11 +32,11 @@ export const queries = `
   allUsers(isActive: Boolean): [User]
   userDetail(_id: String): User
   usersTotalCount(${commonSelector}): Int
-  currentUser: User
+  posCurrentUser: User
 `;
 
 export const mutations = `
-  usersCreateOwner(email: String!, password: String!, firstName: String!, lastName: String): String 
-  login(email: String!, password: String! deviceToken: String): String 
+  usersCreateOwner(email: String!, password: String!, firstName: String!, lastName: String): String
+  login(email: String!, password: String! deviceToken: String): String
   logout: String
  `;

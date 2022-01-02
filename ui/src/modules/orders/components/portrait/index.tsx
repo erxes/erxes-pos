@@ -22,7 +22,7 @@ import PortraitList from "./PortraitList";
 
 type Props = {
   createOrder: (params) => void;
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   order: IOrder | null;
   orientation: string;

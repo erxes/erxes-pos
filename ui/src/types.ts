@@ -26,7 +26,7 @@ export type AllUsersQueryResponse = {
 } & QueryResponse;
 
 export type CurrentUserQueryResponse = {
-  currentUser: IUser;
+  posCurrentUser: IUser;
   subscribeToMore: any;
 } & QueryResponse;
 

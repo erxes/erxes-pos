@@ -32,16 +32,16 @@ export const unsubscribe = ({ location }) => {
   return <Unsubscribe queryParams={queryParams} />;
 };
 
-const renderRoutes = (currentUser, currentConfig, orientation) => {
+const renderRoutes = (posCurrentUser, currentConfig, orientation) => {
   const userConfirmation = ({ location }) => {
     const queryParams = queryString.parse(location.search);
 
-    const UserConfirmation = ({ queryParams, currentUser }) => (
+    const UserConfirmation = ({ queryParams, posCurrentUser }) => (
       <div>user confirmation</div>
     );
 
     return (
-      <UserConfirmation queryParams={queryParams} currentUser={currentUser} />
+      <UserConfirmation queryParams={queryParams} posCurrentUser={posCurrentUser} />
     );
   };
 
@@ -49,15 +49,15 @@ const renderRoutes = (currentUser, currentConfig, orientation) => {
     sessionStorage.setItem("sessioncode", Math.random().toString());
   }
 
-  if (currentUser) {
+  if (posCurrentUser) {
     const { plugins, pluginRoutes, specialPluginRoutes } = pluginsOfRoutes(
-      currentUser
+      posCurrentUser
     );
 
     return (
       <>
         <MainLayout
-          currentUser={currentUser}
+          posCurrentUser={posCurrentUser}
           orientation={orientation}
           currentConfig={currentConfig}
           plugins={plugins}
@@ -93,11 +93,11 @@ const renderRoutes = (currentUser, currentConfig, orientation) => {
 };
 
 const Routes = ({
-  currentUser,
+  posCurrentUser,
   currentConfig,
   orientation,
 }: {
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   orientation: string;
 }) => (
@@ -110,7 +110,7 @@ const Routes = ({
         component={unsubscribe}
       />
 
-      {renderRoutes(currentUser, currentConfig, orientation)}
+      {renderRoutes(posCurrentUser, currentConfig, orientation)}
     </>
   </Router>
 );

@@ -1,6 +1,6 @@
 const login = `
-  mutation login($email: String!, $password: String!) {
-    login(email: $email, password: $password)
+  mutation posLogin($email: String!, $password: String!) {
+    posLogin(email: $email, password: $password)
   }
 `;
 
