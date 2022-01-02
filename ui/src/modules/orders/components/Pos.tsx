@@ -60,7 +60,7 @@ type State = {
 const getTotalAmount = (items: IOrderItemInput[]) => {
   let total = 0;
 
-  for (const i of items) {
+  for (const i of items || []) {
     total += (i.unitPrice || 0) * i.count;
   }
 
