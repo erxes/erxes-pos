@@ -406,11 +406,11 @@ const FlexBetween = styled(FlexCenter)`
   justify-content: space-between;
 `;
 
-const ColumnBetween = styledTS<{ orientation?: string }>(styled.div)`
+const ColumnBetween = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: ${(props) => (props.orientation === "portrait" ? "90%" : "100%")};
+  height: "100%";
 
   .payment-section {
     margin-bottom: 30px;

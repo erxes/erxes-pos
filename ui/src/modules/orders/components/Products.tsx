@@ -81,11 +81,11 @@ export default class Products extends React.Component<Props, State> {
     };
 
     if (!exists) {
-      currentItems.push({ count: 1, ...doc });
+      currentItems.unshift({ count: 1, ...doc });
     } else {
       currentItems = items.filter((i) => i.productId !== item._id);
 
-      currentItems.push({
+      currentItems.unshift({
         ...doc,
         count: exists.count + count,
         _id: exists._id,
