@@ -14,22 +14,21 @@ export const PosWrapper = styled.div`
   }
 `;
 
+export const FlexCustomer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
 export const Column = styled.div`
   border: 1px solid #ddd;
 `;
 
-export const StageItems = styled.div`
+export const StageItems = styledTS<{
+  heigth?: number
+}>(styled.div)`
   overflow: auto;
-  height: 290px;
-
-  @media (orientation: portrait) {
-    height: 75%;
-    max-height: initial;
-  }
-
-  @media (max-width: 1170px) and (orientation: landscape) {
-    max-height: 450px;
-  }
+  height: ${(props) => (props.height ? `${props.height}px` : "250px")};
+  margin-bottom: 5px;
 `;
 
 export const MainContent = styledTS<{
@@ -151,7 +150,7 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   position: relative;
 
   .image-wrapper {
-    width: ${(props) => (props.isPortrait ? "280px" : "120px")};
+    width: ${(props) => (props.isPortrait ? "265px" : "120px")};
     height: ${(props) => (props.isPortrait ? "280px" : "120px")};
     margin-bottom: 5px;
     display: flex;
@@ -194,21 +193,6 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.28);
   }
 
-  @media (max-width: 1600px) and (min-width: 1011px) and (orientation:landscape)  {
-    flex-basis: 18%;
-
-    &:nth-child(5n) {
-      margin-right: 0;
-    }
-  }
-
-  @media (max-width: 1010px) {
-    flex-basis: 22%;
-
-    &:nth-child(4n) {
-      margin-right: 0;
-    }
-  }
 `;
 
 export const ProductLabel = styledTS<{ color?: string; isPortrait?: boolean }>(
@@ -216,7 +200,7 @@ export const ProductLabel = styledTS<{ color?: string; isPortrait?: boolean }>(
 )`
   background: ${(props) => (props.color ? props.color : colors.colorSecondary)}
   color: ${colors.colorWhite};
-  padding: 12px 15px;
+  padding: 8px 15px;
   border-radius: 5px;
   font-size: ${(props) => (props.isPortrait ? "24px" : "12px")};
   margin-top: 20px;
@@ -234,7 +218,7 @@ export const Type = styledTS<{ checked?: boolean, color?: string }>(styled.div)`
  border: 1px solid ${props => props.checked ? props.color : '#cbd2d9'};
  cursor: pointer;
  padding: 10px;
- width: 30%;
+ width: 49%;
  word-break: break-word;
  display: flex;
  align-items: center;
@@ -385,8 +369,8 @@ export const SearchInputWrapper = styledTS<{
         ? "100%"
         : "280px"
       : props.full
-      ? "100%"
-      : "120px"};
+        ? "100%"
+        : "120px"};
   display: flex;
   padding: 0 ${dimensions.unitSpacing}px;
   align-items: center;

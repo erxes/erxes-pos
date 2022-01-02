@@ -62,11 +62,10 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
       posCurrentUser,
       currentConfig,
       logout,
-      orientation,
     } = this.props;
     const { isCollapsed } = this.state;
 
-    if (orientation === "portrait") {
+    if (localStorage.getItem('erxesPosMode') === "kiosk") {
       return (
         <>
           <div id="anti-clickjack" style={{ display: "none" }} />

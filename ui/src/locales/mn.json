@@ -1,5 +1,5 @@
 {
-  "Identify a customer": "Хэрэглэгч таних",
+  "Identify a customer": "Хэрэглэгч нэмэх",
   "Selected products": "Сонгосон бүтээгдэхүүнүүд",
   "Choose type": "Төрөл сонгох",
   "Choose from the following options": "Дараах сонголтуудаас сонгоно уу",
@@ -12,7 +12,7 @@
   "Total": "Нийт",
   "Find orders": "Захиалга хайх",
   "Take": "Авч явах",
-  "Eat": "Зааланд үйлчлүүлэх",
+  "Eat": "Зааланд",
   "Save": "Хадгалуулах",
   "take": "Авч явах",
   "eat": "Зааланд үйлчлүүлэх",
@@ -68,5 +68,6 @@
   "Doing": "Хийгдэж буй",
   "Search orders": "Захиалга хайх",
   "Send transaction": "Гүйлгээ хийх",
-  "Transaction was successful": "Гүйлгээ амжилттай хийгдлээ"
+  "Transaction was successful": "Гүйлгээ амжилттай хийгдлээ",
+  "Date": "Огноо"
 }

@@ -2,14 +2,15 @@ import styled from "styled-components";
 import { colors } from "modules/common/styles";
 
 export const HeaderWrapper = styled.div`
-  .receipt-logo,
-  h5 {
-    text-align: center;
+  .receipt-logo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
   }
 
   h5 {
     font-size: 16px;
-    margin: 10px 0;
+    margin: 0;
   }
 `;
 
@@ -63,6 +64,10 @@ export const ReceiptWrapper = styled.div`
       padding: 0;
       text-align: right;
     }
+  }
+
+  .order-number {
+    font-size: 14px;
   }
 `;
 

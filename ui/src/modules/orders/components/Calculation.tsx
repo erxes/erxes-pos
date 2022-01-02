@@ -6,8 +6,7 @@ import SelectWithSearch from "modules/common/components/SelectWithSearch";
 import { __ } from "modules/common/utils";
 import { IConfig, IOption } from "types";
 import { ORDER_TYPES } from "../../../constants";
-import { StageContent, ProductLabel, Types, Type } from "../styles";
-import ControlLabel from "modules/common/components/form/Label";
+import { ProductLabel, Types, Type } from "../styles";
 import { FlexBetween, ColumnBetween } from "modules/common/styles/main";
 import { formatNumber } from "modules/utils";
 import Button from "modules/common/components/Button";
@@ -73,6 +72,7 @@ export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
 };
 
 type Props = {
+  orientation: string;
   totalAmount: number;
   addOrder: (params: any) => void;
   setOrderState: (name: string, value: any) => void;
@@ -87,14 +87,42 @@ type Props = {
 
 type State = {
   customerId: string;
+  stageHeight: number;
+  mode: string;
 };
 
 export default class Calculation extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    const { order, orientation } = this.props;
+    const customerId = order ? order.customerId : "";
+
+    let stageHeight = window.innerHeight - 100; // types title
+    const mode = localStorage.getItem('erxesPosMode') || '';
+
+    if (mode === '') {
+      stageHeight -= 44; // findOrder
+      stageHeight -= 68; // customer
+    }
+
+    if (orientation === 'portrait') {
+      stageHeight -= 75; // amount
+      stageHeight -= 125; // oneButton
+      stageHeight -= (order && order.paidDate) ? 0 : 100; // oneButton
+    } else {
+      stageHeight -= 52; // amount
+      stageHeight -= 50; // oneButton
+      stageHeight -= (order && order.paidDate) ? 0 : 50; // oneButton
+    }
+
+    if (stageHeight < 50) {
+      stageHeight = 50;
+    }
     this.state = {
-      customerId: "",
+      customerId: customerId || "",
+      stageHeight,
+      mode,
     };
   }
 
@@ -174,9 +202,6 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <div>
-        <StageContent>
-          <ControlLabel>{__("Choose type")}</ControlLabel>
-        </StageContent>
         <Types>
           <Type
             onClick={() => this.onChange(ORDER_TYPES.TAKE)}
@@ -192,27 +217,32 @@ export default class Calculation extends React.Component<Props, State> {
           >
             {__("Eat")}
           </Type>
-          <Type
-            onClick={() => this.onChange(ORDER_TYPES.SAVE)}
-            checked={type === ORDER_TYPES.SAVE}
-            color={color}
-          >
-            {__("Save")}
-          </Type>
         </Types>
       </div>
     );
   }
 
-  render() {
-    const {
-      totalAmount,
-      config,
-      setOrderState,
-      onClickDrawer,
-      items,
-      changeItemCount,
-    } = this.props;
+  renderFindOrder(mode) {
+    if (mode === 'kiosk') {
+      return <></>;
+    }
+
+    const { onClickDrawer, config } = this.props;
+    const color = config.uiOptions && config.uiOptions.colors.primary;
+    return (
+      <ProductLabel onClick={() => onClickDrawer("order")} color={color}>
+        {__("Find orders")}
+      </ProductLabel>
+    )
+  }
+
+  renderCustomerChooser(mode) {
+    if (mode === 'kiosk') {
+      return <></>;
+    }
+
+    const { onClickDrawer, config, setOrderState, } = this.props;
+    const color = config.uiOptions && config.uiOptions.colors.primary;
 
     const onSelectCustomer = (customerId) => {
       this.setState({ customerId });
@@ -220,41 +250,57 @@ export default class Calculation extends React.Component<Props, State> {
       setOrderState("customerId", customerId);
     };
 
+    return (
+      <>
+        <ProductLabel
+          className="mt-10"
+          onClick={() => onClickDrawer("customer")}
+          color={color}
+        >
+          {__("Identify a customer")}
+        </ProductLabel>
+        <SelectWithSearch
+          name="customerId"
+          queryName="customers"
+          label={__("Type name, phone, or email to search")}
+          initialValue={this.state.customerId}
+          onSelect={onSelectCustomer}
+          generateOptions={generateLabelOptions}
+          customQuery={queries.customers}
+        />
+      </>
+    )
+  }
+
+  render() {
+    const {
+      totalAmount,
+      config,
+      items,
+      changeItemCount,
+      orientation,
+    } = this.props;
+    const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
 
     return (
       <>
         <Wrapper color={color}>
-          <ProductLabel onClick={() => onClickDrawer("order")} color={color}>
-            {__("Find orders")}
-          </ProductLabel>
-          <ProductLabel
-            className="mt-10"
-            onClick={() => onClickDrawer("customer")}
-            color={color}
-          >
-            {__("Identify a customer")}
-          </ProductLabel>
-          <SelectWithSearch
-            name="customerId"
-            queryName="customers"
-            label={__("Type name, phone, or email to search")}
-            initialValue={this.state.customerId}
-            onSelect={onSelectCustomer}
-            generateOptions={generateLabelOptions}
-            customQuery={queries.customers}
-          />
+          {this.renderFindOrder(mode)}
+          {this.renderCustomerChooser(mode)}
           <ColumnBetween>
             <div>
               {this.renderDeliveryTypes(color)}
 
               <Stage
+                orientation={orientation}
                 items={items}
                 changeItemCount={changeItemCount}
                 options={config.uiOptions}
+                stageHeight={this.state.stageHeight}
               />
             </div>
-            <ButtonWrapper>
+            <ButtonWrapper className={orientation === 'portrait' ? "payment-section" : ""}>
               {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
               {this.renderAddButton()}
               {this.renderReceiptButton()}

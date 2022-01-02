@@ -52,9 +52,9 @@ export default class Screen extends React.Component<Props> {
       );
     }
 
-    const toDone = (e) => {
-      this.props.editOrder({ _id: order._id, status: 'done' })
-    }
+    const toDone = () => {
+      this.props.editOrder({ _id: order._id, status: 'done', number: order.number });
+    };
 
     return (
       <Button size="small" btnStyle="success" icon="check-circle" onClick={toDone}>

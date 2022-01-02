@@ -80,7 +80,7 @@ export default class StageItem extends React.Component<Props> {
       changeItemCount({ ...item, count: 0 });
     };
 
-    if (orientation && isPortrait) {
+    if (isPortrait) {
       return (
         <Item>
           <PortraitStage>
@@ -102,7 +102,7 @@ export default class StageItem extends React.Component<Props> {
                 isPortrait={isPortrait}
               />
             </FlexCenter>
-            <Close onClick={onRemoveItem} isPortrait={isPortrait}>
+            <Close onClick={onRemoveItem}>
               <Icon icon="cancel-1" />
             </Close>
           </PortraitStage>
@@ -127,10 +127,10 @@ export default class StageItem extends React.Component<Props> {
               onChange={this.onChange}
               color={color}
             />
-            <Close onClick={onRemoveItem}>
-              <Icon icon="cancel-1" />
-            </Close>
           </FlexCenter>
+          <Close onClick={onRemoveItem}>
+            <Icon icon="cancel-1" />
+          </Close>
         </FlexBetween>
       </Item>
     );

@@ -43,31 +43,6 @@ export const ChooseType = styled.div`
   }
 `;
 
-export const PortraitListWrapper = styled.div`
-  background: ${colors.bgMain};
-  height: 100%;
-
-  .col-md-4 {
-    width: 35% !important;
-    padding-left: 0 !important;
-  }
-
-  .col-md-4,
-  .col-md-8 {
-    width: 64%;
-    float: left;
-    padding-right: 15px;
-    padding-left: 15px;
-    position: relative;
-  }
-
-  .row,
-  .col-md-8,
-  .col-md-4 {
-    height: 100%;
-  }
-`;
-
 export const PortraitViewWrapper = styled.div`
   background: url(images/portrait.svg);
   background-repeat: no-repeat;
@@ -122,33 +97,14 @@ export const AppWrapper = styled.div`
   }
 `;
 
-export const Products = styled.div`
-  background: ${colors.colorWhite};
-  height: 100%;
-  padding: 0 10px 0 20px;
-`;
-
-export const Title = styled.div`
-  font-size: 34px;
-  font-weight: 500;
-  margin: 30px 0;
-  text-align: center;
-`;
-
 export const PortraitStage = styled.div`
+  padding-right: 50px;
+  justify-content: space-between;
   text-align: center;
 
   > img {
     max-width: 200px;
     max-height: 200px;
     margin-top: 10px;
-  }
-`;
-
-export const Empty = styled.div`
-  height: 100%;
-
-  span {
-    font-size: 24px;
   }
 `;

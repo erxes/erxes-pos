@@ -15,6 +15,7 @@ import {
   LeftMenuContainer,
   Drawer,
   DrawerContent,
+  FlexCustomer,
 } from "../styles";
 import { FlexBetween } from "modules/common/styles/main";
 import { IConfig } from "types";
@@ -23,6 +24,8 @@ import CustomerForm from "./drawer/CustomerForm";
 import ProductSearch from "../containers/ProductSearch";
 import { IPaymentParams } from "../containers/PosContainer";
 import PortraitView from "./portrait";
+import { renderFullName } from "modules/common/utils";
+import Icon from 'modules/common/components/Icon';
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -41,6 +44,7 @@ type Props = {
   addCustomer: (params: ICustomerParams) => void;
   qp: any;
   setCardPaymentInfo: (params: any) => void;
+  type?: string;
 };
 
 type State = {
@@ -75,7 +79,7 @@ export default class Pos extends React.Component<Props, State> {
       items: order ? order.items : [],
       totalAmount: order ? getTotalAmount(order.items) : 0,
       showMenu: false,
-      type: order && order.type ? order.type : ORDER_TYPES.EAT,
+      type: this.props.type || ((order && order.type) ? order.type : ORDER_TYPES.EAT),
       drawerContentType: "",
       customerId: order && order.customerId ? order.customerId : "",
       registerNumber: "",
@@ -209,18 +213,57 @@ export default class Pos extends React.Component<Props, State> {
     }
   }
 
+  renderCurrentLogin(uiOptions) {
+    const mode = localStorage.getItem('erxesPosMode')
+    const { order } = this.props;
+
+    if (mode === 'kiosk') {
+      if (order && order.customer) {
+        const customer = order.customer;
+
+        return (
+          <>
+            <Icon
+              icon="home"
+              onClick={() => { window.location.href = '/' }}
+              size={36}
+              color={uiOptions.colors ? uiOptions.colors.primary : ''}
+            />
+            <FlexCustomer>
+              <NameCard.Avatar customer={customer} size={40} />
+              {renderFullName(customer)}
+            </FlexCustomer>
+          </>
+        )
+      }
+      return (
+        <Icon
+          icon="home"
+          onClick={() => { window.location.href = '/' }}
+          size={36}
+          color={uiOptions.colors ? uiOptions.colors.primary : ''}
+        />
+      );
+    }
+
+    const { posCurrentUser } = this.props;
+
+    return (
+      <NameCard user={posCurrentUser} avatarSize={40} />
+    )
+  }
+
   render() {
     const {
-      posCurrentUser,
       currentConfig,
       order,
       orientation,
       productCategoriesQuery,
       productsQuery,
-      setCardPaymentInfo,
+      qp
     } = this.props;
 
-    const { items, totalAmount, showMenu, type, customerId } = this.state;
+    const { items, totalAmount, showMenu, type } = this.state;
 
     const products = (
       <ProductsContainer
@@ -232,20 +275,13 @@ export default class Pos extends React.Component<Props, State> {
       />
     );
 
-    if (orientation === "portrait") {
+    const mode = localStorage.getItem('erxesPosMode');
+
+    if (mode === "kiosk" && !this.props.type && !(qp && qp.id)) {
       return (
         <PortraitView
           {...this.props}
-          products={products}
-          items={items}
-          changeItemCount={this.changeItemCount}
-          totalAmount={totalAmount}
-          addOrder={this.addOrder}
-          editOrder={this.editOrder}
           order={order}
-          setOrderState={this.setOrderState}
-          customerId={customerId}
-          setCardPaymentInfo={setCardPaymentInfo}
         />
       );
     }
@@ -254,22 +290,23 @@ export default class Pos extends React.Component<Props, State> {
       <>
         <PosWrapper>
           <Row>
-            <Col md={9} className="kk">
+            <Col md={8} className="kk">
               <MainContent hasBackground={true}>
                 <FlexBetween>
-                  <NameCard user={posCurrentUser} avatarSize={40} />
+                  {this.renderCurrentLogin(currentConfig ? currentConfig.uiOptions : {})}
                   <ProductSearch productsQuery={productsQuery} />
                 </FlexBetween>
                 {products}
               </MainContent>
             </Col>
-            <Col sm={3}>
+            <Col sm={4}>
               <MainContent
                 hasBackground={true}
                 hasShadow={true}
                 noPadding={true}
               >
                 <Calculation
+                  orientation={orientation}
                   totalAmount={totalAmount}
                   addOrder={this.addOrder}
                   editOrder={this.editOrder}

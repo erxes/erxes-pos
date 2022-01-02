@@ -6,14 +6,16 @@ import { Stages, StageContent, StageItems } from "../styles";
 import EmptyState from "modules/common/components/EmptyState";
 
 type Props = {
+  orientation: string;
   items: IOrderItemInput[];
   changeItemCount: (item: IOrderItemInput) => void;
   options: any;
+  stageHeight?: number;
 };
 
 export default class Stage extends React.Component<Props> {
   renderItems() {
-    const { items, changeItemCount, options } = this.props;
+    const { items, changeItemCount, options, orientation, stageHeight } = this.props;
 
     if (!items || items.length === 0) {
       return (
@@ -27,9 +29,10 @@ export default class Stage extends React.Component<Props> {
     return (
       <StageContent odd={true}>
         <b>{__("Selected products")}</b>
-        <StageItems>
+        <StageItems height={stageHeight}>
           {items.map((i) => (
             <StageItem
+              orientation={orientation}
               item={i}
               key={`${i._id}`}
               changeItemCount={changeItemCount}
@@ -42,12 +45,6 @@ export default class Stage extends React.Component<Props> {
   }
 
   render() {
-    const mode = localStorage.getItem("erxesPosMode") || "";
-
-    if (mode === "kiosk") {
-      return <></>;
-    }
-
     return <Stages>{this.renderItems()}</Stages>;
   }
 }
