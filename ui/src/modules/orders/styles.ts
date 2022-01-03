@@ -216,6 +216,7 @@ export const Types = styled.div`
 
 export const Type = styledTS<{ checked?: boolean, color?: string }>(styled.div)`
  border: 1px solid ${props => props.checked ? props.color : '#cbd2d9'};
+ font-weight: ${props => props.checked ? 'bold' : ''};
  cursor: pointer;
  padding: 10px;
  width: 49%;
