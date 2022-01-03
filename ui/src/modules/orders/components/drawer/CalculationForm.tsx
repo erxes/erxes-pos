@@ -22,15 +22,12 @@ import { IOrder } from "modules/orders/types";
 import { PAYMENT_METHODS } from "./PaymentType";
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  margin: ${(props) => (props.isPortrait ? "10px 10%" : "10px 21%")};
+  margin: 10px 0;
   text-align: center;
   button {
     padding: ${(props) => (props.isPortrait ? "20px 30px" : "10px 20px")};
     border-radius: 8px;
     font-size: ${(props) => props.isPortrait && "32px"};
-  }
-  @media (max-width: 1600px) and (orientation:landscape) {
-    margin: 10px 10%;
   }
 `;
 
@@ -39,10 +36,10 @@ const Title = styled.h2`
   margin-bottom: 40px;
 `;
 
-const Header = styled.div`
-  margin: 30px 80px 20px;
+const Header = styledTS<{ isPortrait?: boolean }>(styled.div)`
+  margin: ${(props) => (props.isPortrait ? "30px 20px 20px;" : "30px 80px 20px;")};
   @media (max-width: 1600px) and (orientation: landscape) {
-    margin: 20px 20px 0px;
+    margin: 0px 20px 0px;
   }
 `;
 
@@ -87,7 +84,7 @@ class CalculationForm extends React.Component<Props, State> {
 
     this.state = {
       showE: true,
-      activeInput: PAYMENT_TYPES.CASH,
+      activeInput: paymentMethod === PAYMENT_METHODS.CARD ? PAYMENT_TYPES.CARD : PAYMENT_TYPES.CASH,
       // payment doc
       registerNumber: "",
       billType: BILL_TYPES.CITIZEN,
@@ -143,6 +140,10 @@ class CalculationForm extends React.Component<Props, State> {
       });
   }
 
+  focusOnRegisterInput = () => {
+    this.setState({ activeInput: PAYMENT_TYPES.REGISTER });
+  };
+
   renderFormHead() {
     const { showE, billType, cashAmount = 0, cardAmount = 0 } = this.state;
     const { options, isPortrait, paymentMethod, order, setCardPaymentInfo } = this.props;
@@ -151,6 +152,12 @@ class CalculationForm extends React.Component<Props, State> {
       const billType = (e.target as HTMLInputElement).value;
 
       this.setState({ billType });
+
+      if (billType === BILL_TYPES.ENTITY) {
+        this.focusOnRegisterInput();
+      } else {
+        this.setState({ activeInput: paymentMethod === PAYMENT_METHODS.CARD ? PAYMENT_TYPES.CARD : PAYMENT_TYPES.CASH });
+      }
     };
 
     const onStateChange = (key: string, value: any) => {
@@ -208,14 +215,10 @@ class CalculationForm extends React.Component<Props, State> {
       this.setState({ registerNumber: value });
     };
 
-    const focusOnKeypads = () => {
-      this.setState({ activeInput: PAYMENT_TYPES.REGISTER });
-    };
-
     return (
       <>
         {title && <Title>{__(title)}</Title>}
-        <Header>
+        <Header isPortrait={isPortrait}>
           {this.renderFormHead()}
           <RegisterChecker
             billType={billType}
@@ -226,7 +229,7 @@ class CalculationForm extends React.Component<Props, State> {
             color={options.colors.primary}
             isPortrait={isPortrait}
             onChange={onChangeReg}
-            focusOnKeypads={focusOnKeypads}
+            focusOnKeypads={this.focusOnRegisterInput}
           />
         </Header>
         <PaymentWrapper isPortrait={isPortrait}>

@@ -39,7 +39,7 @@ const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: ${(props) => (props.isPortrait ? "100%" : "45%")};
+  width: ${(props) => (props.isPortrait ? "90%" : "45%")};
   margin: 0 20px 20px 0;
   flex-shrink: 0;
   cursor: pointer;

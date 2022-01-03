@@ -33,9 +33,10 @@ export default class KeyPads extends React.Component<Props> {
   }
 
   render() {
+    const mode = localStorage.getItem('erxesPosMode') || '';
     const { isPayment, billType } = this.props;
 
-    if (billType !== BILL_TYPES.ENTITY) {
+    if (billType === BILL_TYPES.CITIZEN && mode === 'kiosk') {
       return null;
     }
 

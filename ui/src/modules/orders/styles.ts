@@ -411,7 +411,6 @@ export const FlexColumn = styled.div`
 `;
 
 export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  padding: 0 30px 0px;
   font-size: ${(props) => props.isPortrait && "30px"};
 
   label {
@@ -462,7 +461,7 @@ export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
 export const Input = styledTS<{ color?: string }>(styled.div)`
   display: flex;
   align-items: center;
-  margin-right: 10px;
+
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 3px 10px;
