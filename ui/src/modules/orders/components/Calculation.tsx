@@ -17,7 +17,7 @@ import Stage from "./Stage";
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   display: flex;
   flex-direction: column;
-  padding: 0 20px;
+  padding: 0 20px 0 2px;
   height: 100%;
 
   button {
@@ -98,12 +98,12 @@ export default class Calculation extends React.Component<Props, State> {
     const { order, orientation } = this.props;
     const customerId = order ? order.customerId : "";
 
-    let stageHeight = window.innerHeight - 100; // types title
+    let stageHeight = window.innerHeight - 120; // types title
     const mode = localStorage.getItem('erxesPosMode') || '';
 
     if (mode === '') {
       stageHeight -= 44; // findOrder
-      stageHeight -= 68; // customer
+      stageHeight -= 78; // customer
     }
 
     if (orientation === 'portrait') {
