@@ -11,10 +11,10 @@ import styledTS from 'styled-components-ts';
 import styled from 'styled-components';
 
 export const FlexCenterFix = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
-  display: ${(props) => props.isPortrait && "block" || "flex"};
+  display: ${(props) => props.isPortrait ? "block" : "flex"};
 
   button {
-    margin: ${(props) => props.isPortrait && "10px 0px 0px 40%" || "0 0 0 5px"};
+    margin: ${(props) => props.isPortrait ? "10px 0px 0px 40%" : "0 0 0 5px"};
   }
 `;
 
