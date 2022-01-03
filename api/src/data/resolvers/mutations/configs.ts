@@ -89,8 +89,8 @@ const configMutations = {
         } = response;
         await Configs.updateConfig(config._id, { ...extractConfig(pos), qpayConfig });
 
-        await importUsers(adminUsers, true);
         await importUsers(cashiers, false);
+        await importUsers(adminUsers, true);
 
         break;
       case 'products':

@@ -129,7 +129,7 @@ export const loadClass = () => {
       }
 
       // Checking duplicated email
-      const query = { email: doc.email };
+      const query = (doc as IUserDocument)._id ? { _id: (doc as IUserDocument)._id } : { email: doc.email };
       const user = await Users.findOne(query);
 
       user && user._id ? await Users.updateOne({ _id: user._id }, doc) : await Users.create(doc);

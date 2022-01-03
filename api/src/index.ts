@@ -139,13 +139,15 @@ httpServer.listen(PORT, () => {
   connect(mongoUrl)
     .then(async () => {
       debugInit(`GraphQL Server is now running on ${PORT}`);
-
-      initBroker(httpServer).then(() => {
-        debugInit('Message broker has started.')
-      }).catch(e => {
-        debugError(`Error occurred when starting message broker: ${e.message}`);
-      });
-
+      try {
+        initBroker(httpServer).then(() => {
+          debugInit('Message broker has started.')
+        }).catch(e => {
+          debugError(`Error occurred when starting message broker: ${e.message}`);
+        });
+      } catch (e) {
+        debugError(`Error occurred when starting message broker on try: ${e.message}`);
+      }
 
     })
     .catch((e) => {
