@@ -59,7 +59,7 @@ export default class Screen extends React.Component<Props> {
 
     return (
       <Button size="small" btnStyle="success" icon="check-circle" onClick={toDone}>
-        Ready
+        ready
       </Button>
     );
   };
