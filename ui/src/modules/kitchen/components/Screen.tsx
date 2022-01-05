@@ -32,8 +32,9 @@ export default class Screen extends React.Component<Props> {
       <Detail key={item._id}>
         <p>{item.productName}</p>
         <span>
-          {__("Quantity")}: <b>{item.count}</b>
+          {__("Quantity")}:&nbsp;
         </span>
+        <p><b>{item.count}</b></p>
       </Detail>
     ));
   }

@@ -29,7 +29,6 @@ export default function OrderReceipt({ order }: Props) {
     <ReceiptWrapper>
       <Header order={order} logo={logo} name={name} />
       <Body items={order.items} />
-
       <Footer color={color} order={order} />
     </ReceiptWrapper>
   );

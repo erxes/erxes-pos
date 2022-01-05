@@ -1,69 +1,19 @@
-import React from 'react';
-import dayjs from 'dayjs';
-import styled from 'styled-components';
-
+import KitchenReceiptBody from './KitchenReceiptBody';
+import React, { useContext } from 'react';
+import { AppContext } from 'appContext';
 import { IOrder } from 'modules/orders/types';
-import { __ } from 'modules/common/utils';
-import { ReceiptWrapper } from './styles';
 
-const NumberWrapper = styled.div`
-  display: flex;
-  justify-content: space-between;
-`;
-
-type Props = {
-  order: IOrder;
-}
-
-export default class KitchenReceipt extends React.Component<Props> {
-  render() {
-    const { order } = this.props;
-
-    if (!order) {
-      return null;
-    }
-
-    const numberParts = order.number.split('_');
-
-    return (
-      <ReceiptWrapper>
-        <NumberWrapper>
-          <p>{numberParts[0]}</p>
-          <h3>#{numberParts[1]}</h3>
-        </NumberWrapper>
-        <p>
-          <b>{__("Date")}:</b>
-          {order.paidDate ? (
-            <span>{dayjs(order.paidDate).format("YYYY.MM.DD HH:mm")}</span>
-          ) : null}
-        </p>
-        <table>
-          <thead>
-            <tr>
-              <th>{__("Inventory")}</th>
-              <th>{__("Count")}</th>
-            </tr>
-          </thead>
-          <tbody>{order.items.map(item => (
-            <tr key={item._id}>
-              <td>{item.productName}</td>
-              <td>{item.count}</td>
-            </tr>
-          ))}</tbody>
-        </table>
-      </ReceiptWrapper>
-    );
+export default function KitchenReceipt({ order }: { order: IOrder }) {
+  const { currentConfig } = useContext(AppContext);
+  if (!order) {
+    return null;
   }
 
-  componentDidMount() {
-    window.addEventListener('afterprint', () => {
-      window.close();
-    });
+  const logo =
+    currentConfig && currentConfig.uiOptions && currentConfig.uiOptions.receiptIcon;
+  const name = currentConfig && currentConfig.name ? currentConfig.name : "";
 
-    window.print();
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('afterprint', () => {});
-  }
+  return (
+    <KitchenReceiptBody order={order} logo={logo} name={name} />
+  );
 }

@@ -21,9 +21,10 @@ export const Detail = styled.div`
 
   p {
     margin: 0;
+    font-size: 16px;
     font-weight: 500;
-    min-width: 120px;
-    max-width: 300px;
+    min-width: 250px;
+    max-width: 400px;
     margin-right: ${dimensions.unitSpacing}px;
   }
 `;
