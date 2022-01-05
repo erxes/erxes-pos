@@ -49,7 +49,7 @@ export default class Settings extends React.Component<Props, State> {
 
     fetch(
       `${ebarimtConfig.ebarimtUrl}/sendData?lib=${ebarimtConfig.companyRD}`
-    ).then(res => res.json()).then((res: any) => {
+    ).then((res: any) => {
       return Alert.success(`${res}.`);
     }).catch(e => {
       Alert.error(`${e.message}`);
