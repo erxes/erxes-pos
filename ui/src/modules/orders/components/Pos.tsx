@@ -336,6 +336,7 @@ export default class Pos extends React.Component<Props, State> {
               <LeftMenuContainer>
                 <DrawerContent
                   options={currentConfig ? currentConfig.uiOptions : {}}
+                  innerWidth={window.innerWidth}
                 >
                   {this.renderDrawerContent()}
                 </DrawerContent>

@@ -29,7 +29,7 @@ export default class Stage extends React.Component<Props> {
     return (
       <StageContent odd={true}>
         <b>{__("Selected products")}</b>
-        <StageItems height={stageHeight}>
+        <StageItems height={stageHeight} innerWidth={window.innerWidth} color={options.colors.secondary}>
           {items.map((i) => (
             <StageItem
               orientation={orientation}

@@ -24,11 +24,32 @@ export const Column = styled.div`
 `;
 
 export const StageItems = styledTS<{
-  heigth?: number
+  heigth?: number, color?: string, innerWidth?: number
 }>(styled.div)`
   overflow: auto;
   height: ${(props) => (props.height ? `${props.height}px` : "250px")};
   margin-bottom: 5px;
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: ${(props) => (props.innerWidth ? `${props.innerWidth * 0.01}px` : '')}
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};
+    border-radius: 40px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};;
+  }
 `;
 
 export const MainContent = styledTS<{
@@ -68,24 +89,45 @@ export const ProductCategories = styled.div`
   }
 `;
 
-export const ProductsWrapper = styledTS<{ height?: number }>(styled.div)`
+export const ProductsWrapper = styledTS<{ height?: number, color?: string, innerWidth?: number }>(styled.div)`
   display: flex;
   flex-wrap: wrap;
   max-height: 80%;
   overflow: auto;
 
+  /* width */
+  ::-webkit-scrollbar {
+    width: ${(props) => (props.innerWidth ? `${props.innerWidth * 0.02}px` : '')}
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};
+    border-radius: 40px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};;
+  }
+
   @media (max-width: 1170px) and (orientation: landscape) {
     max-height: ${(props) =>
-      props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 60}px)`
-        : "570px"};
+    props.height && props.height !== 0
+      ? `calc(100% - ${props.height + 60}px)`
+      : "570px"};
   }
 
   @media (orientation: portrait) {
     max-height: ${(props) =>
-      props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 200}px)`
-        : "75%"};
+    props.height && props.height !== 0
+      ? `calc(100% - ${props.height + 200}px)`
+      : "75%"};
   }
 `;
 
@@ -273,19 +315,40 @@ export const LeftMenuContainer = styled.div`
     0 0 0 1px rgba(9, 30, 66, 0.08);
 `;
 
-export const DrawerContent = styledTS<{ options?: any }>(styled.div)`
+export const DrawerContent = styledTS<{ options?: any , color?: string, innerWidth?: number}>(styled.div)`
   padding: 20px;
   height: 100%;
   overflow: auto;
 
+  /* width */
+  ::-webkit-scrollbar {
+    width: ${(props) => (props.innerWidth ? `${props.innerWidth * 0.02}px` : '')}
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => (props.options ? props.options.colors.secondary : colors.colorSecondary)};
+    border-radius: 40px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${(props) => (props.options ? props.options.colors.secondary : colors.colorSecondary)};
+  }
+
   .ioevLe:checked + span:before, .react-toggle--checked .react-toggle-track {
     background-color: ${(props) =>
-      props.options && props.options.colors.primary} !important;
+    props.options && props.options.colors.primary} !important;
   }
 
   .react-toggle--checked .react-toggle-thumb, .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
     border-color: ${(props) =>
-      props.options && props.options.colors.primary} !important;
+    props.options && props.options.colors.primary} !important;
   }
 `;
 
