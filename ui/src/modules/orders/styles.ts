@@ -190,7 +190,7 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   position: relative;
 
   .image-wrapper {
-    width: ${(props) => (props.isPortrait ? "265px" : "120px")};
+    width: ${(props) => (props.isPortrait ? "240px" : "120px")};
     height: ${(props) => (props.isPortrait ? "280px" : "120px")};
     margin-bottom: 5px;
     display: flex;

@@ -19,10 +19,13 @@ export default class Stage extends React.Component<Props> {
 
     if (!items || items.length === 0) {
       return (
-        <EmptyState
-          image="/images/actions/8.svg"
-          text={__("Add some reservations")}
-        />
+        <StageContent odd={false}>
+          <EmptyState
+            image="/images/actions/8.svg"
+            text={__("Add some reservations")}
+            size={'large'}
+          />
+        </StageContent>
       );
     }
 
