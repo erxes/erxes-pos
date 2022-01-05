@@ -181,6 +181,7 @@ export default class Pos extends React.Component<Props, State> {
       order,
       addCustomer,
       setCardPaymentInfo,
+      orientation
     } = this.props;
     const { drawerContentType, totalAmount } = this.state;
 
@@ -198,6 +199,7 @@ export default class Pos extends React.Component<Props, State> {
               makePayment={makePayment}
               order={order}
               setCardPaymentInfo={setCardPaymentInfo}
+              orientation={orientation}
             />
           )
         );
@@ -334,6 +336,7 @@ export default class Pos extends React.Component<Props, State> {
               <LeftMenuContainer>
                 <DrawerContent
                   options={currentConfig ? currentConfig.uiOptions : {}}
+                  innerWidth={window.innerWidth}
                 >
                   {this.renderDrawerContent()}
                 </DrawerContent>

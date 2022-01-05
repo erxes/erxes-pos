@@ -19,6 +19,7 @@ import {
   preImportProducts,
   preImportCustomers,
 } from '../../utils/syncUtils';
+import { ORDER_STATUSES } from '../../../db/models/definitions/constants';
 
 dotenv.config();
 
@@ -89,8 +90,8 @@ const configMutations = {
         } = response;
         await Configs.updateConfig(config._id, { ...extractConfig(pos), qpayConfig });
 
-        await importUsers(adminUsers, true);
         await importUsers(cashiers, false);
+        await importUsers(adminUsers, true);
 
         break;
       case 'products':
@@ -111,7 +112,12 @@ const configMutations = {
   async syncOrders(_root, _param) {
     const { ERXES_API_DOMAIN } = process.env;
 
-    const orderFilter = { synced: false, paidDate: { $exists: true, $ne: null } };
+    const orderFilter = {
+      synced: false,
+      status: { $in: ORDER_STATUSES.FULL },
+      paidDate: { $exists: true, $ne: null }
+    };
+
     let sumCount = await Orders.find({ ...orderFilter }).count();
     const orders = await Orders.find({ ...orderFilter }).sort({ paidDate: 1 }).limit(100).lean();
 

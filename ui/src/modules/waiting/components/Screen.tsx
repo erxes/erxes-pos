@@ -6,8 +6,7 @@ import { ScreenContent } from "../../orders/styles";
 import { IConfig } from "types";
 import { __ } from "modules/common/utils";
 import { IOrder } from "../../orders/types";
-import Icon from "modules/common/components/Icon";
-import { Label, OrderCard, Orders } from "../styles";
+import { Label, OrderCard, Orders } from '../styles';
 
 type Props = {
   posCurrentUser: IUser;
@@ -23,13 +22,14 @@ export default class Screen extends React.Component<Props> {
   }
 
   renderCol(type, icon) {
-    const { orders } = this.props;
+    const { orders, currentConfig } = this.props;
+    const { uiOptions } = currentConfig;
 
     return (
       <>
         <Col md={12} className="fullHeight">
-          <Label isReady={true}>
-            <Icon icon={icon} size={28} />
+          <Label isReady={true} color={uiOptions.colors.primary}>
+            <img src={uiOptions.logo || `/images/logo.png`} alt="logo" onClick={() => { window.location.href = '/' }}/>
             <span>{__(`Дугаар бүхий хэрэглэгчид хоолоо авна уу.`)}</span>
           </Label>
           <Orders>
@@ -45,17 +45,22 @@ export default class Screen extends React.Component<Props> {
   }
 
   renderContent() {
+    const { orders } = this.props;
     const contentUrl = this.props.currentConfig.waitingScreen.contentUrl || '';
 
     if (!contentUrl) {
       return ''
     }
+    let innerHeight = window.innerHeight;
+    const innerWidth = window.innerWidth - 23;
+    innerHeight -= 110;
+    innerHeight -= 127 * Math.ceil((orders || []).length / Math.floor(innerWidth / 210));
 
     return (
-      <div className="fullHeight">
+      <div>
         <iframe
-          width="100%"
-          height="80%"
+          width={innerWidth}
+          height={innerHeight}
           src={`${contentUrl}?autoplay=1&controls=0`}
           title="YouTube video player"
           frameBorder="0"

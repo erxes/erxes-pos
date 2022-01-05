@@ -5,16 +5,25 @@ export const HeaderWrapper = styled.div`
   .receipt-logo {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 20px;
+    margin-bottom: 5px;
+    text-align: center;
+    align-items: center;
   }
 
   h5 {
     font-size: 16px;
     margin: 0;
+    padding-left: 10px;
+  }
+
+  h2 {
+    font-size: 16px;
+    margin: 0;
+    padding-left: 25px;
   }
 `;
 
-export const ReceiptWrapper = styled.div`
+export const ReceiptWrapper = styled(HeaderWrapper)`
   width: 80mm;
   padding: 15px;
   color: #000;
@@ -66,8 +75,9 @@ export const ReceiptWrapper = styled.div`
     }
   }
 
-  .order-number {
-    font-size: 14px;
+  #qrcode {
+    max-width: 150px;
+    max-height: 150px;
   }
 `;
 
@@ -82,4 +92,18 @@ export const FooterWrapper = styled(AmountContainer)`
   button {
     margin-top: 15px;
   }
+`;
+
+export const Lottery = styled.div`
+  display: flex-up;
+`;
+
+export const LotterySide = styled.div`
+  margin-top: 10px;
+  text-align: center;
+  margin-left: 7px;
+`;
+
+export const LotteryCode = styled.div`
+  padding-top: 10px;
 `;

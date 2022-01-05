@@ -118,7 +118,8 @@ export const ORDER_STATUSES = {
   ROAD: 'road',
   COMPLETE: 'complete',
 
-  ALL: ['new', 'paid', 'doing', 'done', 'road', 'complete']
+  ALL: ['new', 'paid', 'doing', 'done', 'road', 'complete'],
+  FULL: ['paid', 'done', 'complete']
 };
 
 export const DISTRICTS = {

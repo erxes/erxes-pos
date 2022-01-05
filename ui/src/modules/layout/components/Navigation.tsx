@@ -1,13 +1,11 @@
 import { IUser } from "modules/auth/types";
 import WithPermission from "modules/common/components/WithPermission";
-import { __, setBadge } from "modules/common/utils";
-import { pluginsOfNavigations } from "pluginUtils";
+import { __ } from "modules/common/utils";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import {
   LeftNavigation,
   NavIcon,
-  Nav,
   SubNav,
   NavItem,
   SubNavTitle,
@@ -36,14 +34,6 @@ type IProps = {
 };
 
 class Navigation extends React.Component<IProps> {
-  componentWillReceiveProps(nextProps) {
-    const unreadCount = nextProps.unreadConversationsCount;
-
-    if (unreadCount !== this.props.unreadConversationsCount) {
-      setBadge(unreadCount, __("Team Inbox").toString());
-    }
-  }
-
   getLink = (url) => {
     const storageValue = window.localStorage.getItem("pagination:perPage");
 
@@ -239,9 +229,6 @@ class Navigation extends React.Component<IProps> {
         {this.renderSyncMenu()}
         {this.renderKitchenMenu()}
         {this.renderWaitingMenu()}
-        <Nav id="navigation" collapsed={collapsed}>
-          {pluginsOfNavigations(this.renderNavItem)}
-        </Nav>
       </LeftNavigation>
     );
   }

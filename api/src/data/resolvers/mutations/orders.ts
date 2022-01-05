@@ -134,7 +134,7 @@ const orderMutations = {
     { _id, doc }: IPaymentParams,
     { config }: IContext
   ) {
-    const order = await Orders.getOrder(_id);
+    let order = await Orders.getOrder(_id);
     const items = await OrderItems.find({ orderId: order._id }).lean();
 
     await validateOrderPayment(order, doc);
@@ -147,8 +147,6 @@ const orderMutations = {
       doc.registerNumber
     );
 
-    await Orders.updateOne({ _id }, { $set: { status: ORDER_STATUSES.PAID } });
-
     const ebarimtConfig = {
       ...config.ebarimtConfig,
       districtName: getDistrictName(config.ebarimtConfig.districtCode),
@@ -158,12 +156,16 @@ const orderMutations = {
       const response = await PutResponses.putData(data, ebarimtConfig);
 
       if (response && response.success === 'true') {
-        await Orders.updateOne(
-          { _id: order._id },
-          { $set: { ...doc, paidDate: new Date() } }
-        );
+        await Orders.updateOne({ _id }, {
+          $set: {
+            ...doc,
+            paidDate: new Date(),
+            status: ORDER_STATUSES.PAID
+          }
+        });
       }
 
+      order = await Orders.getOrder(_id);
       graphqlPubsub.publish('ordersOrdered', {
         ordersOrdered: {
           _id,

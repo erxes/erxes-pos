@@ -4,23 +4,16 @@ import styledTS from "styled-components-ts";
 
 import { FlexCenter } from "modules/common/styles/main";
 
-const Pad = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
-  width: ${(props) => (props.isPortrait ? "140px" : "95px")}
-  height: ${(props) => (props.isPortrait ? "140px" : "95px")}
-  border-radius: ${(props) => (props.isPortrait ? "140px" : "95px")}
-  line-height: ${(props) => (props.isPortrait ? "140px" : "95px")}
+const Pad = styledTS<{ isPortrait?: boolean, mainVar: number }>(styled(FlexCenter))`
+  width: ${(props) => (props.mainVar)}px;
+  height: ${(props) => (props.mainVar)}px;
+  border-radius: ${(props) => (props.mainVar)}px;
+  line-height: ${(props) => (props.mainVar)}px;
   background: #eee;
   margin: 8px;
-  font-size: ${(props) => (props.isPortrait ? "42px" : "32px")};
+  font-size: ${(props) => (props.mainVar * 0.5)}px;
   font-weight: 600;
   cursor: pointer;
-  @media (max-width: 1600px) and (orientation:landscape) {
-    width: 60px;
-    height: 60px;
-    border-radius: 60px;
-    line-height: 60px;
-    font-size: 28px;
-  }
 `;
 
 type Props = {
@@ -30,7 +23,9 @@ type Props = {
 }
 
 export default function KeyPad({ num, onClick, isPortrait }: Props) {
+  const mainVar = Math.min(window.innerHeight, window.innerWidth) * 0.1;
+
   return (
-    <Pad onClick={() => onClick(num.toString())} isPortrait={isPortrait}>{num}</Pad>
+    <Pad onClick={() => onClick(num.toString())} isPortrait={isPortrait} mainVar={mainVar}>{num}</Pad>
   );
 };

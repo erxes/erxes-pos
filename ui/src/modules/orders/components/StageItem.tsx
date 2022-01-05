@@ -13,6 +13,7 @@ const Item = styled.div`
   border-radius: 8px;
   position: relative;
   margin-bottom: 10px;
+  margin-right: 4px;
 `;
 
 const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`

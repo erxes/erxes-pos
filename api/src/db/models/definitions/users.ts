@@ -29,12 +29,12 @@ export interface IUserDocument extends IUser, Document {
 
 const detailSchema = new Schema(
   {
-    avatar: field({ type: String, label: 'Avatar' }),
+    avatar: field({ type: String, optional: true, label: 'Avatar' }),
     shortName: field({ type: String, optional: true, label: 'Short name' }),
-    fullName: field({ type: String, label: 'Full name' }),
-    birthDate: field({ type: Date, label: 'Birth date' }),
-    workStartedDate: field({ type: Date, label: 'Date to joined to work' }),
-    position: field({ type: String, label: 'Position' }),
+    fullName: field({ type: String, optional: true, label: 'Full name' }),
+    birthDate: field({ type: Date, optional: true, label: 'Birth date' }),
+    workStartedDate: field({ type: Date, optional: true, label: 'Date to joined to work' }),
+    position: field({ type: String, optional: true, label: 'Position' }),
     location: field({ type: String, optional: true, label: 'Location' }),
     description: field({ type: String, optional: true, label: 'Description' }),
     operatorPhone: field({

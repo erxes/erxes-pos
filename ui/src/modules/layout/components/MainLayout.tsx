@@ -62,10 +62,11 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
       posCurrentUser,
       currentConfig,
       logout,
+      location
     } = this.props;
     const { isCollapsed } = this.state;
 
-    if (localStorage.getItem('erxesPosMode') === "kiosk") {
+    if (["kiosk", "waiting"].includes(localStorage.getItem('erxesPosMode') || '') || location.pathname.includes('waiting-screen')) {
       return (
         <>
           <div id="anti-clickjack" style={{ display: "none" }} />

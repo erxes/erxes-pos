@@ -32,8 +32,9 @@ export default class Screen extends React.Component<Props> {
       <Detail key={item._id}>
         <p>{item.productName}</p>
         <span>
-          {__("Quantity")}: <b>{item.count}</b>
+          {__("Quantity")}:&nbsp;
         </span>
+        <p><b>{item.count}</b></p>
       </Detail>
     ));
   }
@@ -95,7 +96,7 @@ export default class Screen extends React.Component<Props> {
   }
 
   render() {
-    const { orders, doneOrders, orderQuery } = this.props;
+    const { orders, doneOrders, orderQuery, currentConfig } = this.props;
 
     return (
       <MainContent hasBackground={true}>
@@ -112,7 +113,7 @@ export default class Screen extends React.Component<Props> {
           </Orders>
           <Row>
             <Col>
-              <ScreenWrapper>
+              <ScreenWrapper color={currentConfig.uiOptions.colors.secondary} innerWidth={window.innerWidth}>
                 <Table>
                   <thead>
                     <tr>

@@ -21,9 +21,10 @@ export const Detail = styled.div`
 
   p {
     margin: 0;
+    font-size: 16px;
     font-weight: 500;
-    min-width: 120px;
-    max-width: 300px;
+    min-width: 250px;
+    max-width: 400px;
     margin-right: ${dimensions.unitSpacing}px;
   }
 `;
@@ -33,8 +34,8 @@ export const Status = styledTS<{ color?: string; odd?: boolean }>(styled.span)`
     props.odd
       ? colors.colorWhite
       : props.color
-      ? props.color
-      : colors.colorShadowGray};
+        ? props.color
+        : colors.colorShadowGray};
   color: ${(props) =>
     props.odd
       ? props.color
@@ -65,10 +66,36 @@ export const FlexEnd = styled.div`
   }
 `;
 
-export const ScreenWrapper = styled.div`
-  table {
-    overflow: auto;
+export const ScreenWrapper = styledTS<{
+  color?: string, innerWidth?: number
+}>(styled.div)`
+  margin-right: 10px;
+  height: 92vh;
+  overflow: auto;
 
+  /* width */
+  ::-webkit-scrollbar {
+    width: ${(props) => (props.innerWidth ? `${props.innerWidth * 0.015}px` : '')}
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};
+    border-radius: 40px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};;
+  }
+
+  table {
+    padding-right: 10px;
     tr th,
     .center {
       text-align: center;

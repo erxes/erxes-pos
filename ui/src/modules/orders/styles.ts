@@ -24,11 +24,32 @@ export const Column = styled.div`
 `;
 
 export const StageItems = styledTS<{
-  heigth?: number
+  heigth?: number, color?: string, innerWidth?: number
 }>(styled.div)`
   overflow: auto;
   height: ${(props) => (props.height ? `${props.height}px` : "250px")};
   margin-bottom: 5px;
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: ${(props) => (props.innerWidth ? `${props.innerWidth * 0.01}px` : '')}
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};
+    border-radius: 40px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};;
+  }
 `;
 
 export const MainContent = styledTS<{
@@ -50,9 +71,7 @@ export const MainContent = styledTS<{
 export const ScreenContent = styledTS<{
   hasBackground?: boolean;
 }>(styled.div)`
-  padding-top: 15px;
-  padding-left: 25px;
-  padding-right: 25px;
+  padding: 15px 25px 0 25px;
   background: ${(props) => props.hasBackground && colors.colorWhite};
   box-shadow: rgb(217, 226, 236) 0px 0px 24px 0px;
   height: 100vh;
@@ -68,24 +87,45 @@ export const ProductCategories = styled.div`
   }
 `;
 
-export const ProductsWrapper = styledTS<{ height?: number }>(styled.div)`
+export const ProductsWrapper = styledTS<{ height?: number, color?: string, innerWidth?: number }>(styled.div)`
   display: flex;
   flex-wrap: wrap;
   max-height: 80%;
   overflow: auto;
 
+  /* width */
+  ::-webkit-scrollbar {
+    width: ${(props) => (props.innerWidth ? `${props.innerWidth * 0.02}px` : '')}
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};
+    border-radius: 40px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};;
+  }
+
   @media (max-width: 1170px) and (orientation: landscape) {
     max-height: ${(props) =>
-      props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 60}px)`
-        : "570px"};
+    props.height && props.height !== 0
+      ? `calc(100% - ${props.height + 60}px)`
+      : "570px"};
   }
 
   @media (orientation: portrait) {
     max-height: ${(props) =>
-      props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 200}px)`
-        : "75%"};
+    props.height && props.height !== 0
+      ? `calc(100% - ${props.height + 200}px)`
+      : "75%"};
   }
 `;
 
@@ -150,7 +190,7 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   position: relative;
 
   .image-wrapper {
-    width: ${(props) => (props.isPortrait ? "265px" : "120px")};
+    width: ${(props) => (props.isPortrait ? "240px" : "120px")};
     height: ${(props) => (props.isPortrait ? "280px" : "120px")};
     margin-bottom: 5px;
     display: flex;
@@ -216,6 +256,7 @@ export const Types = styled.div`
 
 export const Type = styledTS<{ checked?: boolean, color?: string }>(styled.div)`
  border: 1px solid ${props => props.checked ? props.color : '#cbd2d9'};
+ font-weight: ${props => props.checked ? 'bold' : ''};
  cursor: pointer;
  padding: 10px;
  width: 49%;
@@ -272,19 +313,40 @@ export const LeftMenuContainer = styled.div`
     0 0 0 1px rgba(9, 30, 66, 0.08);
 `;
 
-export const DrawerContent = styledTS<{ options?: any }>(styled.div)`
+export const DrawerContent = styledTS<{ options?: any , color?: string, innerWidth?: number}>(styled.div)`
   padding: 20px;
   height: 100%;
   overflow: auto;
 
+  /* width */
+  ::-webkit-scrollbar {
+    width: ${(props) => (props.innerWidth ? `${props.innerWidth * 0.02}px` : '')}
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) => (props.options ? props.options.colors.secondary : colors.colorSecondary)};
+    border-radius: 40px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${(props) => (props.options ? props.options.colors.secondary : colors.colorSecondary)};
+  }
+
   .ioevLe:checked + span:before, .react-toggle--checked .react-toggle-track {
     background-color: ${(props) =>
-      props.options && props.options.colors.primary} !important;
+    props.options && props.options.colors.primary} !important;
   }
 
   .react-toggle--checked .react-toggle-thumb, .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
     border-color: ${(props) =>
-      props.options && props.options.colors.primary} !important;
+    props.options && props.options.colors.primary} !important;
   }
 `;
 
@@ -410,7 +472,6 @@ export const FlexColumn = styled.div`
 `;
 
 export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  padding: 0 30px 0px;
   font-size: ${(props) => props.isPortrait && "30px"};
 
   label {
@@ -461,7 +522,7 @@ export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
 export const Input = styledTS<{ color?: string }>(styled.div)`
   display: flex;
   align-items: center;
-  margin-right: 10px;
+
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 3px 10px;

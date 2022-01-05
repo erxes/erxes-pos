@@ -59,6 +59,7 @@ const currentConfig = `
         vatPercent
         cityTaxPercent
         companyName
+        ebarimtUrl
       }
 
       qpayConfig {

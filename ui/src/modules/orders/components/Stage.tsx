@@ -19,17 +19,20 @@ export default class Stage extends React.Component<Props> {
 
     if (!items || items.length === 0) {
       return (
-        <EmptyState
-          image="/images/actions/8.svg"
-          text={__("Add some reservations")}
-        />
+        <StageContent odd={false}>
+          <EmptyState
+            image="/images/actions/8.svg"
+            text={__("Add some reservations")}
+            size={'large'}
+          />
+        </StageContent>
       );
     }
 
     return (
       <StageContent odd={true}>
         <b>{__("Selected products")}</b>
-        <StageItems height={stageHeight}>
+        <StageItems height={stageHeight} innerWidth={window.innerWidth} color={options.colors.secondary}>
           {items.map((i) => (
             <StageItem
               orientation={orientation}

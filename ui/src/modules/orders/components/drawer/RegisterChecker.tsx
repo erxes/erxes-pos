@@ -7,6 +7,16 @@ import Icon from "modules/common/components/Icon";
 import { __ } from "modules/common/utils";
 import { Input, FormHead } from "modules/orders/styles";
 import { BILL_TYPES } from './CalculationForm';
+import styledTS from 'styled-components-ts';
+import styled from 'styled-components';
+
+export const FlexCenterFix = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
+  display: ${(props) => props.isPortrait ? "block" : "flex"};
+
+  button {
+    margin: ${(props) => props.isPortrait ? "10px 0px 0px 40%" : "0 0 0 5px"};
+  }
+`;
 
 type Props = {
   show: boolean;
@@ -24,33 +34,35 @@ export default class RegisterChecker extends React.Component<Props> {
   render() {
     const { show, billType, checkOrganization, isPortrait, reset, color, registerNumber, onChange, focusOnKeypads } = this.props;
 
+    if (!show || billType !== BILL_TYPES.ENTITY) {
+      return <></>;
+    }
+
     return (
-      show && billType === BILL_TYPES.ENTITY && (
-        <FormHead isPortrait={isPortrait}>
-          <FlexCenter>
-            <Input color={color}>
-              <FormControl
-                type="text"
-                name="registerNumber"
-                onChange={(e) => onChange(e)}
-                value={registerNumber}
-                onClick={() => focusOnKeypads()}
-              />
-              <div onClick={() => reset("registerNumber")}>
-                <Icon icon="cancel" size={13} />
-              </div>
-            </Input>
-            {billType === BILL_TYPES.ENTITY && (
-              <Button
-                style={{ backgroundColor: color }}
-                onClick={() => checkOrganization()}
-              >
-                {__("Check")}
-              </Button>
-            )}
-          </FlexCenter>
-        </FormHead>
-      )
+      <FormHead isPortrait={isPortrait}>
+        <FlexCenterFix isPortrait={isPortrait}>
+          <Input color={color}>
+            <FormControl
+              type="text"
+              name="registerNumber"
+              onChange={(e) => onChange(e)}
+              value={registerNumber}
+              onClick={() => focusOnKeypads()}
+            />
+            <div onClick={() => reset("registerNumber")}>
+              <Icon icon="cancel" size={13} />
+            </div>
+          </Input>
+
+          <Button
+            style={{ backgroundColor: color }}
+            onClick={() => checkOrganization()}
+          >
+            {__("Check")}
+          </Button>
+
+        </FlexCenterFix>
+      </FormHead>
     );
   } // end render()
 }
