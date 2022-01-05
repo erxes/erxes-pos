@@ -1,7 +1,8 @@
 import React from "react";
 import QRCode from 'qrcode';
 import JsBarcode from 'jsbarcode';
-import { FooterWrapper } from "./styles";
+import { FooterWrapper, Lottery, LotteryCode, LotterySide } from "./styles";
+import Amount from "./Amount";
 import Button from "modules/common/components/Button";
 import { IOrder } from "modules/orders/types";
 import { __ } from 'modules/common/utils';
@@ -34,7 +35,7 @@ export default class Footer extends React.Component<Props> {
     return null;
   }
 
-  renderQrAndBarCode() {
+  renderQr() {
     if (!this.putResponse) {
       return null;
     }
@@ -46,6 +47,17 @@ export default class Footer extends React.Component<Props> {
             <canvas id="qrcode" />
           </div>
         ) : null}
+      </React.Fragment>
+    );
+  }
+
+  renderBarCode() {
+    if (!this.putResponse) {
+      return null;
+    }
+
+    return (
+      <React.Fragment>
         {this.putResponse.billId ? (<canvas id="bar-code" />) : null}
       </React.Fragment>
     );
@@ -58,8 +70,22 @@ export default class Footer extends React.Component<Props> {
 
     return (
       this.putResponse.lottery ? (
-        <div className="lottery">{__("Lottery")}: {this.putResponse.lottery}</div>
+        <LotteryCode>
+          {__("Lottery")}:
+          <br />
+          {this.putResponse.lottery}
+        </LotteryCode>
       ) : null
+    )
+  }
+
+  renderSide() {
+    const { order } = this.props;
+    return (
+      <LotterySide>
+        <Amount order={order} />
+        {this.renderLotteryCode()}
+      </LotterySide>
     )
   }
 
@@ -69,8 +95,11 @@ export default class Footer extends React.Component<Props> {
     return (
       <FooterWrapper>
         <p id="error-message" className='error-message'></p>
-        {this.renderLotteryCode()}
-        {this.renderQrAndBarCode()}
+        <Lottery>
+          {this.renderQr()}
+          {this.renderSide()}
+        </Lottery>
+        {this.renderBarCode()}
         <p className="signature">
           <label>{__("Signature")}:</label>
           <span>_____________________</span>
@@ -122,12 +151,14 @@ export default class Footer extends React.Component<Props> {
           });
         }
 
-        window.print();
+        setTimeout(() => {
+          window.print();
+        }, 10)
       } // end qrcode
     }
   } // end componentDidMount
 
   componentWillUnmount() {
-    window.removeEventListener('afterprint', () => {});
+    window.removeEventListener('afterprint', () => { });
   }
 }

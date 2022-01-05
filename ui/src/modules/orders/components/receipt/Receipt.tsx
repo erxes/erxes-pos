@@ -4,7 +4,6 @@ import { ReceiptWrapper } from "./styles";
 import { AppContext } from "appContext";
 import Header from "./Header";
 import Body from "./Body";
-import Amount from "./Amount";
 import Footer from "./Footer";
 
 type Props = {
@@ -30,7 +29,7 @@ export default function OrderReceipt({ order }: Props) {
     <ReceiptWrapper>
       <Header order={order} logo={logo} name={name} />
       <Body items={order.items} />
-      <Amount order={order} />
+
       <Footer color={color} order={order} />
     </ReceiptWrapper>
   );

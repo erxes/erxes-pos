@@ -60,15 +60,12 @@ export default class Header extends React.Component<Props> {
     return (
       <HeaderWrapper className="block">
         <div className="receipt-logo">
-          <img src={logo} alt={name} />
+          <img src={logo} alt={name} width={'32px'} height={'32px'} />
           <h5><b>{name}</b></h5>
+          <h2><b>&#8470;:</b>{order.number.split("_")[1]}</h2>
         </div>
         {ebarimtError ? <div>{ebarimtError}</div> : null}
         <div className="header">
-          <p>
-            <b>&#8470;:</b>
-            <span className="order-number">{order.number}</span>
-          </p>
           <div className="ebarimt">
             {this.renderField("ТТД", ebarimt && ebarimt.ttd)}
             {this.renderField(
