@@ -1,17 +1,18 @@
-import React from "react";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import NameCard from "modules/common/components/nameCard/NameCard";
-import { IUser } from "modules/auth/types";
-import { PosWrapper, MainContent } from "../../orders/styles";
-import { FlexBetween } from "modules/common/styles/main";
-import { IConfig } from "types";
-import Button from "modules/common/components/Button";
-import { __ } from "modules/common/utils";
-import { StageContent } from "../../orders/styles";
-import { FormGroup } from "modules/common/components/form";
+import Button from 'modules/common/components/Button';
+import Col from 'react-bootstrap/Col';
 import ControlLabel from 'modules/common/components/form/Label';
 import FormControl from 'modules/common/components/form/Control';
+import NameCard from 'modules/common/components/nameCard/NameCard';
+import React from 'react';
+import Row from 'react-bootstrap/Row';
+import { __ } from 'modules/common/utils';
+import { Alert } from 'modules/common/utils';
+import { FlexBetween } from 'modules/common/styles/main';
+import { FormGroup } from 'modules/common/components/form';
+import { IConfig } from 'types';
+import { IUser } from 'modules/auth/types';
+import { MainContent, PosWrapper } from '../../orders/styles';
+import { StageContent } from '../../orders/styles';
 
 type Props = {
   syncConfig: (type: string) => void;
@@ -43,6 +44,17 @@ export default class Settings extends React.Component<Props, State> {
   onSyncProducts = () => {
     this.props.syncConfig("products");
   };
+  onSendData = async () => {
+    const { ebarimtConfig } = this.props.currentConfig;
+
+    fetch(
+      `${ebarimtConfig.ebarimtUrl}/sendData?lib=${ebarimtConfig.companyRD}`
+    ).then(res => res.json()).then((res: any) => {
+      return Alert.success(`${res}.`);
+    }).catch(e => {
+      Alert.error(`${e.message}`);
+    });
+  }
 
   onChangeMode = (e) => {
     e.preventDefault();
@@ -105,6 +117,17 @@ export default class Settings extends React.Component<Props, State> {
                   block
                 >
                   {__("Sync Orders")}
+                </Button>
+              </StageContent>
+
+              <StageContent>
+                <Button
+                  btnStyle="warning"
+                  onClick={this.onSendData}
+                  icon="check-circle"
+                  block
+                >
+                  {__("Send-Data")}
                 </Button>
               </StageContent>
             </MainContent>
