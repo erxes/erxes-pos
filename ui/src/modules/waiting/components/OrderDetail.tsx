@@ -1,5 +1,4 @@
 import React from 'react';
-import { __ } from 'modules/common/utils';
 import { IConfig } from 'types';
 import { IOrder } from '../../orders/types';
 import { IUser } from 'modules/auth/types';
