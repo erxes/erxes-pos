@@ -41,6 +41,10 @@ export const OrderCard = styledTS<{ color?: string }>(styled.div)`
   font-weight: 700;
   margin: 0 20px 20px 0;
   color: ${(props) => props.color && props.color};
+
+  p {
+    display: none
+  }
 `;
 
 export const EmbedVideo = styled.div``;

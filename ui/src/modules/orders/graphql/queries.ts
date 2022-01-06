@@ -8,6 +8,7 @@ const commonFields = `
 export const orderFields = `
   _id
   createdAt
+  modifiedAt
   number
   status
   paidDate

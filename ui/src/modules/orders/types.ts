@@ -30,6 +30,7 @@ export interface IOrder {
   _id: string;
   status: string;
   createdAt: Date;
+  modifiedAt: Date;
   paidDate: Date;
   number: string;
   customerId?: string;
