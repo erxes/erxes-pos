@@ -16,13 +16,14 @@ import { StageContent } from '../../orders/styles';
 
 type Props = {
   syncConfig: (type: string) => void;
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   syncOrders: () => void;
 };
 
 type State = {
-  mode: string
+  mode: string,
+  disableSendData: boolean
 };
 
 export default class Settings extends React.Component<Props, State> {
@@ -31,7 +32,8 @@ export default class Settings extends React.Component<Props, State> {
 
     const mode = localStorage.getItem('erxesPosMode') || '';
     this.state = {
-      mode
+      mode,
+      disableSendData: false
     };
   }
 
@@ -45,14 +47,20 @@ export default class Settings extends React.Component<Props, State> {
     this.props.syncConfig("products");
   };
   onSendData = async () => {
+    this.setState({ disableSendData: true });
     const { ebarimtConfig } = this.props.currentConfig;
 
     fetch(
       `${ebarimtConfig.ebarimtUrl}/sendData?lib=${ebarimtConfig.companyRD}`
-    ).then((res: any) => {
-      return Alert.success(`${res}.`);
+    ).then((res: any) => (res.json())).then(res => {
+      if (res.success) {
+        return Alert.success(`Амжилттай.`);
+      }
+      return Alert.success(`Амжилтгүй: ${res.message}.`);
     }).catch(e => {
       Alert.error(`${e.message}`);
+    }).then(() => {
+      this.setState({ disableSendData: false });
     });
   }
 
@@ -65,7 +73,7 @@ export default class Settings extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentUser, currentConfig } = this.props;
+    const { posCurrentUser, currentConfig } = this.props;
 
     return (
       <PosWrapper>
@@ -73,7 +81,7 @@ export default class Settings extends React.Component<Props, State> {
           <Col md={6}>
             <MainContent hasBackground={true} hasShadow={true}>
               <FlexBetween>
-                <NameCard user={currentUser} avatarSize={40} />
+                <NameCard user={posCurrentUser} avatarSize={40} />
               </FlexBetween>
               {currentConfig.name}
               {currentConfig.syncInfo && currentConfig.syncInfo.date}
@@ -126,6 +134,7 @@ export default class Settings extends React.Component<Props, State> {
                   onClick={this.onSendData}
                   icon="check-circle"
                   block
+                  disabled={this.state.disableSendData}
                 >
                   {__("Send-Data")}
                 </Button>
