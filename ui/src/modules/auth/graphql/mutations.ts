@@ -5,20 +5,20 @@ const login = `
 `;
 
 const forgotPassword = `
-  mutation forgotPassword($email: String!) {
-    forgotPassword(email: $email)
+  mutation posForgotPassword($email: String!) {
+    posForgotPassword(email: $email)
   }
 `;
 
 const resetPassword = `
-  mutation resetPassword($token: String!, $newPassword: String!) {
-    resetPassword(token: $token, newPassword: $newPassword)
+  mutation posResetPassword($token: String!, $newPassword: String!) {
+    posResetPassword(token: $token, newPassword: $newPassword)
   }
 `;
 
 const configsFetch = `
-  mutation configsFetch($token: String!) {
-    configsFetch(token: $token) {
+  mutation posConfigsFetch($token: String!) {
+    posConfigsFetch(token: $token) {
       _id
     }
   }

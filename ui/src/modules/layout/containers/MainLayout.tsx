@@ -20,7 +20,7 @@ const logout = () => {
     .mutate({
       mutation: gql`
         mutation {
-          logout
+          posLogout
         }
       `,
     })

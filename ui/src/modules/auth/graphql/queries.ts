@@ -20,8 +20,8 @@ const posCurrentUser = `
 `;
 
 const userChanged = `
-	subscription userChanged($userId: String) {
-		userChanged(userId: $userId)
+	subscription posUserChanged($userId: String) {
+		posUserChanged(userId: $userId)
   }
 `;
 
