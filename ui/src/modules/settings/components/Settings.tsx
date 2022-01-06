@@ -16,7 +16,7 @@ import { StageContent } from '../../orders/styles';
 
 type Props = {
   syncConfig: (type: string) => void;
-  posCurrentUser: IUser;
+  currentUser: IUser;
   currentConfig: IConfig;
   syncOrders: () => void;
 };
@@ -73,7 +73,7 @@ export default class Settings extends React.Component<Props, State> {
   }
 
   render() {
-    const { posCurrentUser, currentConfig } = this.props;
+    const { currentUser, currentConfig } = this.props;
 
     return (
       <PosWrapper>
@@ -81,7 +81,7 @@ export default class Settings extends React.Component<Props, State> {
           <Col md={6}>
             <MainContent hasBackground={true} hasShadow={true}>
               <FlexBetween>
-                <NameCard user={posCurrentUser} avatarSize={40} />
+                <NameCard user={currentUser} avatarSize={40} />
               </FlexBetween>
               {currentConfig.name}
               {currentConfig.syncInfo && currentConfig.syncInfo.date}
