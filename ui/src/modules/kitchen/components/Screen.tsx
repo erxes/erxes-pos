@@ -2,14 +2,13 @@ import React from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import { IUser } from "modules/auth/types";
-import { PosWrapper, MainContent, Orders } from "../../orders/styles";
+import { PosWrapper, MainContent } from "../../orders/styles";
 import { IConfig } from "types";
 import { __ } from "modules/common/utils";
 import { IOrder, FullOrderQueryResponse } from "../../orders/types";
 import Table from "modules/common/components/table";
 import { TableRow, Detail, Status, FlexEnd, ScreenWrapper } from "../styles";
 import Button from "modules/common/components/Button";
-import OrderSearch from "../containers/OrderSearch";
 
 type Props = {
   editOrder: (doc) => void;
@@ -96,21 +95,18 @@ export default class Screen extends React.Component<Props> {
   }
 
   render() {
-    const { orders, doneOrders, orderQuery, currentConfig } = this.props;
+    const { orders, doneOrders, currentConfig } = this.props;
 
     return (
       <MainContent hasBackground={true}>
         <PosWrapper>
           <FlexEnd>
-            <OrderSearch ordersQuery={orderQuery} />
-          </FlexEnd>
-          <Orders>
             {doneOrders.map((order, index) => (
               <React.Fragment key={index}>
                 {this.renderDoneOrders(order)}
               </React.Fragment>
             ))}
-          </Orders>
+          </FlexEnd>
           <Row>
             <Col>
               <ScreenWrapper color={currentConfig.uiOptions.colors.secondary} innerWidth={window.innerWidth}>

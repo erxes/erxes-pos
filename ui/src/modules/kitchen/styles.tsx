@@ -58,11 +58,11 @@ export const Status = styledTS<{ color?: string; odd?: boolean }>(styled.span)`
 export const FlexEnd = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: end;
   margin-bottom: ${dimensions.coreSpacing}px;
 
   > div {
-    width: 40%;
+    width: 100%;
   }
 `;
 
@@ -70,7 +70,7 @@ export const ScreenWrapper = styledTS<{
   color?: string, innerWidth?: number
 }>(styled.div)`
   margin-right: 10px;
-  height: 92vh;
+  height: 80vh;
   overflow: auto;
 
   /* width */
