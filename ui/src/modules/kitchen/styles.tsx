@@ -29,6 +29,11 @@ export const Detail = styled.div`
   }
 `;
 
+export const TimeGroup = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+`;
+
 export const Status = styledTS<{ color?: string; odd?: boolean }>(styled.span)`
   background: ${(props) =>
     props.odd

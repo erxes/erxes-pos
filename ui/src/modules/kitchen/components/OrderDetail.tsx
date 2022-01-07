@@ -1,7 +1,7 @@
 import Button from 'modules/common/components/Button';
 import React from 'react';
 import { __ } from 'modules/common/utils';
-import { Detail, Status, TableRow } from '../styles';
+import { Detail, Status, TableRow, TimeGroup } from '../styles';
 import { IConfig } from 'types';
 import { IOrder } from '../../orders/types';
 import { IUser } from 'modules/auth/types';
@@ -34,9 +34,9 @@ function Timer({ oTime }) {
   diffSeconds = diffSeconds - diffMinutes * 60
 
   return (
-    <>
+    <TimeGroup>
       <span>{diffHours}</span>:<span>{diffMinutes}</span>:<span>{diffSeconds || 60}</span>
-    </>
+    </TimeGroup>
   )
 }
 
@@ -63,7 +63,7 @@ export default class OrderDetail extends React.Component<Props, State> {
 
     return items.map((item) => (
       <Detail key={item._id}>
-        <p>{item.productName}</p>
+        <p><b>{item.productName}</b></p>
         <span>
           {__("Quantity")}:&nbsp;
         </span>
