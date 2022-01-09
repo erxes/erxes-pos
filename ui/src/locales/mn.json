@@ -70,5 +70,6 @@
   "Send transaction": "Гүйлгээ хийх",
   "Transaction was successful": "Гүйлгээ амжилттай хийгдлээ",
   "Date": "Огноо",
-  "Time": "Хугацаа"
+  "Time": "Хугацаа",
+  "buyerCompanyNumber": "Худалдан авагч (ТТД)"
 }

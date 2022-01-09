@@ -82,6 +82,7 @@ const putResponseFields = `
   message
   getInformation
   returnBillId
+  billType
 `;
 
 const orderDetail = `

@@ -68,6 +68,17 @@ export default class Footer extends React.Component<Props> {
       return null;
     }
 
+    if (this.putResponse.billType === '3') {
+      const { order } = this.props;
+      return (
+        <LotteryCode>
+          {__("buyerCompanyNumber")}:
+          <br />
+          {order.registerNumber}
+        </LotteryCode>
+      );
+    }
+
     return (
       this.putResponse.lottery ? (
         <LotteryCode>
@@ -153,7 +164,7 @@ export default class Footer extends React.Component<Props> {
 
         setTimeout(() => {
           window.print();
-        }, 10)
+        }, 20)
       } // end qrcode
     }
   } // end componentDidMount

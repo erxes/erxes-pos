@@ -70,5 +70,7 @@
   "Doing": "Doing",
   "Send transaction": "Send transaction",
   "Transaction was successful": "Transaction was successful",
-  "Date": "Date"
+  "Date": "Date",
+  "Time": "Time",
+  "buyerCompanyNumber": "Buyer (regNo)"
 }
