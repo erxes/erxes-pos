@@ -1,5 +1,4 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 import styledTS from "styled-components-ts";
 import SelectWithSearch from "modules/common/components/SelectWithSearch";
@@ -152,10 +151,14 @@ export default class Calculation extends React.Component<Props, State> {
     }
 
     return (
-      <Button icon="print" btnStyle="warning" block>
-        <Link to={`/order-receipt/${order._id}`} target="_blank">
-          {__("Print receipt")}
-        </Link>
+      <Button
+        icon="print"
+        btnStyle="warning"
+        block onClick={() => {
+          window.open(`/order-receipt/${order._id}`, '_blank');
+        }}
+      >
+        {__("Print receipt")}
       </Button>
     );
   }
