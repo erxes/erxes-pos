@@ -24,7 +24,7 @@ function Timer({ startTime, waitingSec, order, editOrder }) {
   let diffSec = time - startTime;
 
   if (diffSec < 0) {
-    diffSec = diffSec + 24 * 60 * 60
+    diffSec = diffSec + 24 * 60 * 60;
   }
 
   if (diffSec > waitingSec) {
@@ -37,15 +37,15 @@ function Timer({ startTime, waitingSec, order, editOrder }) {
 export default class OrderDetail extends React.Component<Props> {
 
   render() {
-    const { currentConfig, order, editOrder } = this.props
+    const { currentConfig, order, editOrder } = this.props;
     const { waitingScreen, uiOptions } = currentConfig;
     const color = uiOptions.colors.primary;
     const waitingSec = waitingScreen.value * 60;
 
-    const date = new Date(order.modifiedAt)
-    const hours = date.getHours()
-    const minutes = date.getMinutes()
-    const seconds = date.getSeconds()
+    const date = new Date(order.modifiedAt);
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+    const seconds = date.getSeconds();
     const startTime = seconds + minutes * 60 + hours * 3600;
 
     return (
