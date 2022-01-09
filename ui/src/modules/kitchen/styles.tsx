@@ -5,7 +5,7 @@ import { rgba } from "modules/common/styles/ecolor";
 
 export const TableRow = styledTS<{ color?: string }>(styled.tr)`
   background: ${(props) =>
-    props.color ? rgba(props.color, 0.08) : colors.colorShadowGray};
+    props.color ? rgba(props.color, 0.04) : colors.colorShadowGray};
 
   .number {
     font-size: 20px;
@@ -16,12 +16,12 @@ export const TableRow = styledTS<{ color?: string }>(styled.tr)`
 export const Detail = styled.div`
   display: flex;
   align-items: center;
-  margin-bottom: ${dimensions.unitSpacing}px;
   line-height: 15px;
 
   p {
     margin: 0;
-    font-size: 16px;
+    font-size: 18px;
+    line-height: 18px;
     font-weight: 500;
     min-width: 250px;
     max-width: 400px;
@@ -30,7 +30,7 @@ export const Detail = styled.div`
 `;
 
 export const TimeGroup = styled.div`
-  font-size: 14px;
+  font-size: 18px;
   font-weight: 400;
 `;
 

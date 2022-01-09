@@ -101,6 +101,7 @@ export default class OrderDetail extends React.Component<Props, State> {
     const { order, currentConfig } = this.props;
     const { uiOptions } = currentConfig || ({} as IConfig);
     const color = uiOptions.colors.primary;
+    const color2 = uiOptions.colors.secondary;
 
     return (
       <TableRow key={order._id} id={order._id} color={color}>
@@ -108,7 +109,7 @@ export default class OrderDetail extends React.Component<Props, State> {
         <td>{this.renderDetail(order)}</td>
         <td>{this.renderTime(order)}</td>
         <td className="center">
-          <Status color={order.type === 'eat' ? color : 'red'}>{__(order.type)}</Status>
+          <Status color={order.type === 'eat' ? color : color2}>{__(order.type)}</Status>
         </td>
         <td>{this.renderActions(order)}</td>
       </TableRow>
