@@ -21,9 +21,13 @@ function Timer({ startTime, waitingSec, order, editOrder }) {
 
   const time = seconds + minutes * 60 + (hours || 24) * 3600;
 
-  const diffSec = time - startTime;
+  let diffSec = time - startTime;
 
-  if (diffSec > waitingSec || diffSec < 0) {
+  if (diffSec < 0) {
+    diffSec = diffSec + 24 * 60 * 60
+  }
+
+  if (diffSec > waitingSec) {
     editOrder({ _id: order._id, status: 'complete', number: order.number });
     return <></>
   }

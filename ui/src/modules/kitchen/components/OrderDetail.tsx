@@ -25,8 +25,12 @@ function Timer({ oTime }) {
     hours,
   } = useTime({});
 
-  const time = seconds + minutes * 60 + hours * 3600;
+  const time = seconds + minutes * 60 + (hours || 24) * 3600;
   let diffSeconds = time - oTime;
+
+  if (diffSeconds < 0) {
+    diffSeconds = diffSeconds + 24 * 60 * 60
+  }
 
   const diffHours = Math.floor(diffSeconds / 3600);
   diffSeconds = diffSeconds - diffHours * 3600
