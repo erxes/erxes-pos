@@ -27,28 +27,6 @@ export interface IOwner {
   subscribeEmail?: boolean;
 }
 
-export type ForgotPasswordMutationVariables = {
-  email: string;
-  callback: (e: Error) => void;
-};
-
-export type ForgotPasswordMutationResponse = {
-  forgotPasswordMutation: (params: {
-    variables: ForgotPasswordMutationVariables;
-  }) => Promise<any>;
-};
-
-export type ResetPasswordMutationVariables = {
-  newPassword: string;
-  token: string;
-};
-
-export type ResetPasswordMutationResponse = {
-  resetPasswordMutation: (params: {
-    variables: ResetPasswordMutationVariables;
-  }) => Promise<any>;
-};
-
 export type LoginMutationVariables = {
   email: string;
   password: string;
