@@ -5,7 +5,6 @@ import React from 'react';
 
 interface IState {
   posCurrentUser?: IUser;
-  plugins?;
   currentLanguage: string;
   currentConfig?: IConfig;
 }
@@ -18,7 +17,6 @@ interface IStore extends IState {
 
 interface IProps {
   posCurrentUser?: IUser;
-  plugins?: any;
   currentConfig?: IConfig;
 }
 
@@ -71,7 +69,6 @@ export class AppProvider extends React.Component<IProps, IState> {
       <AppContext.Provider
         value={{
           posCurrentUser,
-          plugins: this.props.plugins,
           currentLanguage,
           changeLanguage: this.changeLanguage,
           currentConfig

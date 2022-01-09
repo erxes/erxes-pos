@@ -1,6 +1,5 @@
 import withCurrentUser from "modules/auth/containers/withCurrentUser";
 import asyncComponent from "modules/common/components/AsyncComponent";
-import { pluginsOfRoutes } from "pluginUtils";
 import queryString from "query-string";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -50,20 +49,13 @@ const renderRoutes = (posCurrentUser, currentConfig, orientation) => {
   }
 
   if (posCurrentUser) {
-    const { plugins, pluginRoutes, specialPluginRoutes } = pluginsOfRoutes(
-      posCurrentUser
-    );
-
     return (
       <>
         <MainLayout
           posCurrentUser={posCurrentUser}
           orientation={orientation}
           currentConfig={currentConfig}
-          plugins={plugins}
         >
-          {specialPluginRoutes}
-          {pluginRoutes}
           <OrderRoutes />
           <SettingsRoutes />
           <KitchenRoutes />

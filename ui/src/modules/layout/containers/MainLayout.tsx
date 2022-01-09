@@ -10,7 +10,6 @@ import { Alert } from "modules/common/utils";
 type Props = {
   posCurrentUser?: IUser;
   currentConfig?: IConfig;
-  plugins?: any;
   orientation: string;
   children: React.ReactNode;
 };
@@ -37,7 +36,6 @@ const container = (props: Props) => (
   <AppProvider
     posCurrentUser={props.posCurrentUser}
     currentConfig={props.currentConfig}
-    plugins={props.plugins}
   >
     <AppConsumer>{() => <MainLayout {...props} logout={logout} />}</AppConsumer>
   </AppProvider>
