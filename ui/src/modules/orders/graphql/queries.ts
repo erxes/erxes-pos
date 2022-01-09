@@ -156,6 +156,14 @@ const customers = `
   }
 `;
 
+const customerDetail = `
+  query customerDetail($_id: String) {
+    customerDetail(_id: $_id) {
+      ${customerFields}
+    }
+  }
+`;
+
 const ordersCheckCompany = `
   query ordersCheckCompany($registerNumber: String!) {
     ordersCheckCompany(registerNumber: $registerNumber)
@@ -175,6 +183,7 @@ export default {
   orders,
   fullOrders,
   customers,
+  customerDetail,
   ordersCheckCompany,
   fetchRemoteInvoice
 };

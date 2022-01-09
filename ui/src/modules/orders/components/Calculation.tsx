@@ -1,17 +1,19 @@
-import React from "react";
-import styled from "styled-components";
-import styledTS from "styled-components-ts";
-import SelectWithSearch from "modules/common/components/SelectWithSearch";
-import { __ } from "modules/common/utils";
-import { IConfig, IOption } from "types";
-import { ORDER_TYPES } from "../../../constants";
-import { ProductLabel, Types, Type } from "../styles";
-import { FlexBetween, ColumnBetween } from "modules/common/styles/main";
-import { formatNumber } from "modules/utils";
-import Button from "modules/common/components/Button";
-import { ICustomer, IOrder, IOrderItemInput } from "../types";
-import queries from "../graphql/queries";
-import Stage from "./Stage";
+import Button from 'modules/common/components/Button';
+import client from 'apolloClient';
+import gql from 'graphql-tag';
+import queries from '../graphql/queries';
+import React from 'react';
+import Stage from './Stage';
+import styled from 'styled-components';
+import styledTS from 'styled-components-ts';
+import { __ } from 'modules/common/utils';
+import { ColumnBetween, FlexBetween } from 'modules/common/styles/main';
+import { formatNumber } from 'modules/utils';
+import { FormControl } from 'modules/common/components/form';
+import { IConfig, IOption } from 'types';
+import { ICustomer, IOrder, IOrderItemInput } from '../types';
+import { ORDER_TYPES } from '../../../constants';
+import { ProductLabel, Type, Types } from '../styles';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   display: flex;
@@ -48,25 +50,30 @@ const ButtonWrapper = styled.div`
   }
 `;
 
+const generateLabel = (customer) => {
+  const { firstName, primaryEmail, primaryPhone, lastName } =
+    customer || ({} as ICustomer);
+
+  let value = firstName ? firstName.toUpperCase() : "";
+
+  if (lastName) {
+    value = `${value} ${lastName}`;
+  }
+  if (primaryPhone) {
+    value = `${value} (${primaryPhone})`;
+  }
+  if (primaryEmail) {
+    value = `${value} /${primaryEmail}/`;
+  }
+
+  return value;
+}
+
 // get user options for react-select-plus
 export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
   return array.map((item) => {
-    const { _id, firstName, primaryEmail, primaryPhone, lastName } =
-      item || ({} as ICustomer);
-
-    let value = firstName ? firstName.toUpperCase() : "";
-
-    if (lastName) {
-      value = `${value} ${lastName}`;
-    }
-    if (primaryPhone) {
-      value = `${value} (${primaryPhone})`;
-    }
-    if (primaryEmail) {
-      value = `${value} /${primaryEmail}/`;
-    }
-
-    return { value: _id, label: value };
+    const value = generateLabel(item)
+    return { value: item._id, label: value };
   });
 };
 
@@ -86,6 +93,7 @@ type Props = {
 
 type State = {
   customerId: string;
+  customerLabel: string;
   stageHeight: number;
   mode: string;
 };
@@ -96,14 +104,15 @@ export default class Calculation extends React.Component<Props, State> {
 
     const { order, orientation } = this.props;
     const customerId = order ? order.customerId : "";
+    const customerLabel = order ? generateLabel(order.customer) : ''
 
     let stageHeight = window.innerHeight - 120; // types title
     const mode = localStorage.getItem('erxesPosMode') || '';
 
     if (mode === '') {
       stageHeight -= 44; // findOrder
-      stageHeight -= 78; // customer
     }
+    stageHeight -= 78; // customer
 
     if (orientation === 'portrait') {
       stageHeight -= 75; // amount
@@ -120,6 +129,7 @@ export default class Calculation extends React.Component<Props, State> {
     }
     this.state = {
       customerId: customerId || "",
+      customerLabel,
       stageHeight,
       mode,
     };
@@ -239,37 +249,49 @@ export default class Calculation extends React.Component<Props, State> {
     )
   }
 
-  renderCustomerChooser(mode) {
-    if (mode === 'kiosk') {
-      return <></>;
-    }
-
-    const { onClickDrawer, config, setOrderState, } = this.props;
+  renderCustomerChooser() {
+    const { onClickDrawer, config, setOrderState } = this.props;
+    const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
 
-    const onSelectCustomer = (customerId) => {
-      this.setState({ customerId });
+    const onChangeQrcode = (e) => {
+      const value = (e.currentTarget as HTMLInputElement).value
+      client.query({
+        query: gql(queries.customerDetail),
+        fetchPolicy: 'network-only',
+        variables: {
+          _id: value
+        }
+      }).then(async (response) => {
+        const data = response.data.customerDetail;
+        this.setState({ customerLabel: generateLabel(data), customerId: data._id })
+        setOrderState("customerId", data._id);
+      }).catch(error => {
+      });
 
-      setOrderState("customerId", customerId);
-    };
+    }
+
+    const onClearChosenCustomer = () => {
+      this.setState({ customerLabel: "", customerId: "" })
+      setOrderState("customerId", "");
+    }
 
     return (
       <>
         <ProductLabel
           className="mt-10"
-          onClick={() => onClickDrawer("customer")}
+          onClick={() => { mode !== 'kiosk' && onClickDrawer("customer") }}
           color={color}
         >
           {__("Identify a customer")}
         </ProductLabel>
-        <SelectWithSearch
+        <FormControl
+          autoFocus={true}
+          id="customerIdInput"
           name="customerId"
-          queryName="customers"
-          label={__("Type name, phone, or email to search")}
-          initialValue={this.state.customerId}
-          onSelect={onSelectCustomer}
-          generateOptions={generateLabelOptions}
-          customQuery={queries.customers}
+          value={this.state.customerLabel}
+          onChange={onChangeQrcode}
+          onClick={onClearChosenCustomer}
         />
       </>
     )
@@ -290,7 +312,7 @@ export default class Calculation extends React.Component<Props, State> {
       <>
         <Wrapper color={color}>
           {this.renderFindOrder(mode)}
-          {this.renderCustomerChooser(mode)}
+          {this.renderCustomerChooser()}
           <ColumnBetween>
             <div>
               {this.renderDeliveryTypes(color)}
