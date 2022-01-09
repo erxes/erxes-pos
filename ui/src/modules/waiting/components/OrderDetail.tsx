@@ -19,11 +19,11 @@ function Timer({ startTime, waitingSec, order, editOrder }) {
     hours,
   } = useTime({});
 
-  const time = seconds + minutes * 60 + hours * 3600;
+  const time = seconds + minutes * 60 + (hours || 24) * 3600;
 
   const diffSec = time - startTime;
 
-  if (diffSec > waitingSec) {
+  if (diffSec > waitingSec || diffSec < 0) {
     editOrder({ _id: order._id, status: 'complete', number: order.number });
     return <></>
   }
