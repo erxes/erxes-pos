@@ -15,7 +15,7 @@ export default class KitchenReceiptBody extends React.Component<Props> {
     const { order, logo, name } = this.props;
 
     return (
-      <ReceiptWrapper>
+      <ReceiptWrapper className="printDocument">
         <div className="receipt-logo">
           <img src={logo} alt={name} width={'32px'} height={'32px'} />
           <h5><b>{name}</b></h5>

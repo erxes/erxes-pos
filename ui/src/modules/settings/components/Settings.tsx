@@ -1,29 +1,37 @@
 import Button from 'modules/common/components/Button';
+import client from 'apolloClient';
 import Col from 'react-bootstrap/Col';
 import ControlLabel from 'modules/common/components/form/Label';
 import FormControl from 'modules/common/components/form/Control';
+import gql from 'graphql-tag';
 import NameCard from 'modules/common/components/nameCard/NameCard';
 import React from 'react';
 import Row from 'react-bootstrap/Row';
+import Select from 'react-select-plus';
 import { __ } from 'modules/common/utils';
 import { Alert } from 'modules/common/utils';
-import { FlexBetween } from 'modules/common/styles/main';
+import { FlexBetween, FlexCenter } from 'modules/common/styles/main';
 import { FormGroup } from 'modules/common/components/form';
 import { IConfig } from 'types';
 import { IUser } from 'modules/auth/types';
 import { MainContent, PosWrapper } from '../../orders/styles';
 import { StageContent } from '../../orders/styles';
+import { queries } from '../graphql';
+import DailyReportReceipt from './DailyReport';
 
 type Props = {
   syncConfig: (type: string) => void;
   posCurrentUser: IUser;
   currentConfig: IConfig;
   syncOrders: () => void;
+  posUsers: IUser[];
 };
 
 type State = {
   mode: string,
-  disableSendData: boolean
+  disableSendData: boolean,
+  reportUserIds: string[],
+  dailyReport: any,
 };
 
 export default class Settings extends React.Component<Props, State> {
@@ -33,19 +41,24 @@ export default class Settings extends React.Component<Props, State> {
     const mode = localStorage.getItem('erxesPosMode') || '';
     this.state = {
       mode,
-      disableSendData: false
+      disableSendData: false,
+      reportUserIds: [],
+      dailyReport: undefined,
     };
   }
 
   onSyncConfig = () => {
     this.props.syncConfig("config");
   };
+
   onSyncCustomers = () => {
     this.props.syncConfig("customers");
   };
+
   onSyncProducts = () => {
     this.props.syncConfig("products");
   };
+
   onSendData = async () => {
     this.setState({ disableSendData: true });
     const { ebarimtConfig } = this.props.currentConfig;
@@ -72,19 +85,66 @@ export default class Settings extends React.Component<Props, State> {
     localStorage.setItem('erxesPosMode', mode);
   }
 
+  onSelectUsers = values => {
+    this.setState({ reportUserIds: values.map(v => v.value) })
+  };
+
+  onReport = () => {
+    client.query({
+      query: gql(queries.dailyReport),
+      fetchPolicy: 'network-only',
+      variables: {
+        posUserIds: this.state.reportUserIds
+      }
+    }).then(async (response) => {
+      this.setState({ dailyReport: response.data.dailyReport.report })
+    }).catch(error => {
+      Alert.error(error.message);
+    });
+  }
+
+  renderReport() {
+    const { dailyReport } = this.state;
+
+    if (!dailyReport) {
+      return null;
+    }
+
+    return <DailyReportReceipt dailyReport={dailyReport} />
+  }
+
   render() {
-    const { posCurrentUser, currentConfig } = this.props;
+    const { posCurrentUser, currentConfig, posUsers } = this.props;
 
     return (
       <PosWrapper>
         <Row>
-          <Col md={6}>
+          <Col md={4}>
             <MainContent hasBackground={true} hasShadow={true}>
               <FlexBetween>
                 <NameCard user={posCurrentUser} avatarSize={40} />
               </FlexBetween>
-              {currentConfig.name}
-              {currentConfig.syncInfo && currentConfig.syncInfo.date}
+              <br />
+              <FlexBetween>
+                {currentConfig.name}
+                {currentConfig.syncInfo && currentConfig.syncInfo.date}
+              </FlexBetween>
+              <br />
+              <FormGroup>
+                <ControlLabel>{__("Select Mode")}</ControlLabel>
+                <FormControl
+                  componentClass="select"
+                  name="chooseMode"
+                  defaultValue={this.state.mode}
+                  options={[
+                    { value: '', label: 'Pos and full mode' },
+                    { value: 'kiosk', label: 'Kiosk Mode' },
+                    { value: 'kitchen', label: 'Kitchen Screen' },
+                    { value: 'waiting', label: 'Waiting Screen' },
+                  ]}
+                  onChange={this.onChangeMode}
+                  required={true} />
+              </FormGroup>
 
               <StageContent>
                 <Button
@@ -141,24 +201,36 @@ export default class Settings extends React.Component<Props, State> {
               </StageContent>
             </MainContent>
           </Col>
-          <Col sm={6}>
-            <MainContent hasBackground={true} hasShadow={true}>
-              <FormGroup>
-                <ControlLabel>{__("Select Mode")}</ControlLabel>
-                <FormControl
-                  componentClass="select"
-                  name="lastName"
-                  defaultValue={this.state.mode}
-                  options={[
-                    { value: '', label: 'Pos and full mode' },
-                    { value: 'kiosk', label: 'Kiosk Mode' },
-                    { value: 'kitchen', label: 'Kitchen Screen' },
-                    { value: 'waiting', label: 'Waiting Screen' },
-                  ]}
-                  onChange={this.onChangeMode}
-                  required={true} />
-              </FormGroup>
+          <Col md={8}>
+            <MainContent hasBackground={true} hasShadow={true} isHalf={true}>
+              <FlexBetween>
+                Өдрийн тайлан
+              </FlexBetween>
+
+              <FlexCenter>
+                <FormGroup>
+                  <ControlLabel>{`Хэрэглэгч сонгох...`}</ControlLabel>
+                  <Select
+                    placeholder={__('Хэрэглэгч')}
+                    value={this.state.reportUserIds}
+                    clearable={true}
+                    onChange={this.onSelectUsers}
+                    options={(posUsers || []).map(u => ({ value: u._id, label: u.email }))}
+                    multi={true}
+                    block
+                  />
+                </FormGroup>
+                <Button
+                  btnStyle="warning"
+                  onClick={this.onReport}
+                  icon="check-circle"
+                  disabled={this.state.disableSendData}
+                >
+                  {__("Report")}
+                </Button>
+              </FlexCenter>
             </MainContent>
+            {this.renderReport()}
           </Col>
         </Row>
       </PosWrapper>

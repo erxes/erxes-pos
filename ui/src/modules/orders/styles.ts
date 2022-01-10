@@ -56,12 +56,13 @@ export const MainContent = styledTS<{
   hasBackground?: boolean;
   noPadding?: boolean;
   hasShadow?: boolean;
+  isHalf?: boolean;
 }>(styled.div)`
   padding: ${(props) => (props.noPadding ? 0 : "20px 30px")};
   background: ${(props) => props.hasBackground && colors.colorWhite};
   box-shadow: ${(props) =>
     props.hasShadow && "rgb(217, 226, 236) 0px 0px 24px 0px;"};
-  height: 100vh;
+  height: ${(props) => props.isHalf ? '' : '100vh;'};
 
   @media (max-width: 1170px) and (orientation:landscape) {
     padding: ${(props) => (props.noPadding ? 0 : "15px 10px")};

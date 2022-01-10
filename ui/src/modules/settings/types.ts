@@ -1,4 +1,10 @@
+import { IUser } from "modules/auth/types";
+import { QueryResponse } from "types";
+
 export type SyncConfigMutationResponse = ({ variables: any }) => Promise<any>;
 
 export type SyncOrdersMutationResponse = () => Promise<any>;
 
+export type PosUsersQueryResponse = {
+  posUsers: IUser[];
+} & QueryResponse;

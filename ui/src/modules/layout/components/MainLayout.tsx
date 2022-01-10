@@ -78,7 +78,7 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
     }
 
     return (
-      <>
+      <div className="subRoot">
         <div id="anti-clickjack" style={{ display: "none" }} />
         <Layout>
           {posCurrentUser && (
@@ -103,7 +103,7 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
             </NavItem>
           </Tip>
         </Bottom>
-      </>
+      </div>
     );
   }
 }

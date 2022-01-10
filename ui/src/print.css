@@ -5,7 +5,19 @@
     background-color: #fff;
   }
 
-  header, footer, aside, nav, form, iframe, .btn-print, .logout {
+  .subRoot {
+    visibility: hidden;
+  }
+
+  .printDocument {
+    visibility: visible;
+    position: fixed;
+    overflow: auto;
+    top: 0px;
+    left: 0px;
+  }
+
+  .btn-print {
     display: none;
   }
 
