@@ -13,6 +13,7 @@ export const MainGroup  = styled.div`
 export const GroupUser = styled.div`
   border-bottom: 1px solid #666;
   width: 100%;
+  font-weight: bold;
 `
 
 export const Amounts = styled.div`
@@ -30,6 +31,7 @@ export const GroupCategory = styled.div`
   display: flex;
   justify-content: center;
   border-bottom: 1px dashed #666;
+  font-weight: 500;
 `;
 
 export const Products = styled.div`
