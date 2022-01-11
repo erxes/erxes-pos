@@ -24,6 +24,7 @@ type Props = {
   posCurrentUser: IUser;
   currentConfig: IConfig;
   syncOrders: () => void;
+  deleteOrders: () => void;
   posUsers: IUser[];
 };
 
@@ -185,6 +186,17 @@ export default class Settings extends React.Component<Props, State> {
                   block
                 >
                   {__("Sync Orders")}
+                </Button>
+              </StageContent>
+
+              <StageContent>
+                <Button
+                  btnStyle="warning"
+                  onClick={this.props.deleteOrders}
+                  icon="check-circle"
+                  block
+                >
+                  {__("Delete Less Orders")}
                 </Button>
               </StageContent>
 
