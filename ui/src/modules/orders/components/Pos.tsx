@@ -132,9 +132,26 @@ export default class Pos extends React.Component<Props, State> {
     this.setState({ items, totalAmount });
   };
 
+  changeItemIsTake = (item: IOrderItemInput, value: boolean) => {
+    const { type, items } = this.state;
+    if (type !== ORDER_TYPES.EAT) {
+      this.setState({ items: items.map(i => ({ ...i, isTake: true })) });
+      return;
+    }
+
+    this.setState({ items: items.map(i => (item._id === i._id ? { ...i, isTake: value } : i)) });
+  }
+
   // set state field that doesn't need amount calculation
   setOrderState = (name: string, value: any) => {
     this.setState({ [name]: value } as Pick<State, keyof State>);
+
+    if (name === 'type') {
+      const { items } = this.state;
+      const isTake = value !== ORDER_TYPES.EAT
+      this.setState({ items: items.map(i => ({ ...i, isTake })) });
+    }
+
   };
 
   addOrder = () => {
@@ -146,6 +163,8 @@ export default class Pos extends React.Component<Props, State> {
       productId: item.productId,
       count: item.count,
       unitPrice: item.unitPrice,
+      isPackage: item.isPackage,
+      isTake: item.isTake,
     }));
 
     createOrder({ items: currentItems, totalAmount, type, customerId });
@@ -162,6 +181,7 @@ export default class Pos extends React.Component<Props, State> {
         count: item.count,
         unitPrice: item.unitPrice,
         isPackage: item.isPackage,
+        isTake: item.isTake,
       }));
 
       updateOrder({
@@ -316,6 +336,7 @@ export default class Pos extends React.Component<Props, State> {
                   onClickDrawer={this.toggleDrawer}
                   items={items}
                   changeItemCount={this.changeItemCount}
+                  changeItemIsTake={this.changeItemIsTake}
                   config={currentConfig}
                   order={order}
                   type={type}

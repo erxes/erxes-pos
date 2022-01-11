@@ -9,13 +9,15 @@ type Props = {
   orientation: string;
   items: IOrderItemInput[];
   changeItemCount: (item: IOrderItemInput) => void;
+  changeItemIsTake: (item: IOrderItemInput, value: boolean) => void;
   options: any;
   stageHeight?: number;
+  type: string;
 };
 
 export default class Stage extends React.Component<Props> {
   renderItems() {
-    const { items, changeItemCount, options, orientation, stageHeight } = this.props;
+    const { items, changeItemCount, changeItemIsTake, options, orientation, stageHeight, type } = this.props;
 
     if (!items || items.length === 0) {
       return (
@@ -39,7 +41,9 @@ export default class Stage extends React.Component<Props> {
               item={i}
               key={`${i._id}`}
               changeItemCount={changeItemCount}
+              changeItemIsTake={changeItemIsTake}
               color={options.colors.primary || ""}
+              type={type}
             />
           ))}
         </StageItems>

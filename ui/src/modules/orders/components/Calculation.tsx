@@ -85,6 +85,7 @@ type Props = {
   onClickDrawer: (drawerContentType: string) => void;
   items: IOrderItemInput[];
   changeItemCount: (item: IOrderItemInput) => void;
+  changeItemIsTake: (item: IOrderItemInput, value: boolean) => void;
   config: IConfig;
   editOrder: () => void;
   order: IOrder | null;
@@ -303,7 +304,9 @@ export default class Calculation extends React.Component<Props, State> {
       config,
       items,
       changeItemCount,
+      changeItemIsTake,
       orientation,
+      type
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
@@ -321,8 +324,10 @@ export default class Calculation extends React.Component<Props, State> {
                 orientation={orientation}
                 items={items}
                 changeItemCount={changeItemCount}
+                changeItemIsTake={changeItemIsTake}
                 options={config.uiOptions}
                 stageHeight={this.state.stageHeight}
+                type={type}
               />
             </div>
             <ButtonWrapper className={orientation === 'portrait' ? "payment-section" : ""}>

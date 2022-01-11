@@ -36,6 +36,7 @@ export const orderItemsFields = `
     count
     productId
     isPackage
+    isTake
   }
 `;
 
@@ -143,6 +144,8 @@ const fullOrders = `
         productName
         count
         productId
+        isPackage
+        isTake
       }
     }
   }

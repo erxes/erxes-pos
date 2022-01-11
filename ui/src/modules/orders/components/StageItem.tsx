@@ -6,6 +6,8 @@ import { FlexBetween, FlexCenter } from "modules/common/styles/main";
 import Icon from "modules/common/components/Icon";
 import Quantity from "./Quantity";
 import { PortraitStage } from "./portrait/style";
+import FormControl from 'modules/common/components/form/Control';
+import { ORDER_TYPES } from '../../../constants';
 
 const Item = styled.div`
   background: #fff;
@@ -17,23 +19,32 @@ const Item = styled.div`
 `;
 
 const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
-  background: ${(props) => !props.isPortrait && "#e4ebf1"};
-  width: ${(props) => (props.isPortrait ? "50px" : "35px")};
-  height: ${(props) => props.isPortrait && "50px"};
+  background: ${(props) => !props.isPortrait ? "#e4ebf1" : "#e4ebf1"};
+  width: ${(props) => (props.isPortrait ? "50px" : "30px")};
+
   position: absolute;
-  right: ${(props) => (props.isPortrait ? "10px" : "0")};
-  top: ${(props) => (props.isPortrait ? "10px" : "0")};
-  bottom: ${(props) => (props.isPortrait ? "auto" : "0")};
+  right: ${(props) => (props.isPortrait ? "0" : "0")};
+  top: ${(props) => (props.isPortrait ? "0" : "0")};
+  bottom: ${(props) => (props.isPortrait ? "0" : "0")};
   cursor: pointer;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   transition: all ease 0.3s;
-  font-size: ${(props) => props.isPortrait && "40px"};
+  font-size: ${(props) => props.isPortrait ? "34px" : "14px"};
 
   &:hover {
     i {
-      font-size: 14px;
+      font-size: ${(props) => props.isPortrait ? "36px" : "17px;"};
     }
+  }
+
+  .close-manager {
+    height: 80%
+  }
+
+  input {
+    width: ${(props) => props.isPortrait ? "36px" : "18px;"};
+    height: ${(props) => props.isPortrait ? "124px" : "18px;"};
   }
 `;
 
@@ -57,19 +68,52 @@ type Props = {
   color: string;
   orientation?: string;
   changeItemCount: (item: IOrderItemInput) => void;
+  changeItemIsTake: (item: IOrderItemInput, value: boolean) => void;
+  type: string;
 };
 
-export default class StageItem extends React.Component<Props> {
+type State = {
+  isTake: boolean;
+}
+
+export default class StageItem extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.onChange = this.onChange.bind(this);
+
+    const { type, item } = this.props;
+    this.state = {
+      isTake: type === ORDER_TYPES.EAT ? item.isTake || false : true
+    }
   }
 
   onChange(e) {
     const { item, changeItemCount } = this.props;
 
     changeItemCount({ ...item, count: parseInt(e) });
+  }
+
+  renderCheckbox() {
+    const { type, item, changeItemIsTake } = this.props;
+
+    if (type !== ORDER_TYPES.EAT) {
+      return (<></>);
+    }
+
+    const onChange = (e) => {
+      changeItemIsTake(item, e.target.checked);
+    }
+
+    return (
+      <FormControl
+        type="checkbox"
+        name="itemIsTake"
+        onChange={onChange}
+        checked={item.isTake}
+        onClick={(e) => {e.stopPropagation()}}
+      />
+    );
   }
 
   render() {
@@ -103,8 +147,11 @@ export default class StageItem extends React.Component<Props> {
                 isPortrait={isPortrait}
               />
             </FlexCenter>
-            <Close onClick={onRemoveItem}>
-              <Icon icon="cancel-1" />
+            <Close onClick={onRemoveItem} isPortrait={isPortrait}>
+            <div className="close-manager">
+                <Icon icon="cancel-1" />
+                {this.renderCheckbox()}
+              </div>
             </Close>
           </PortraitStage>
         </Item>
@@ -130,7 +177,10 @@ export default class StageItem extends React.Component<Props> {
             />
           </FlexCenter>
           <Close onClick={onRemoveItem}>
-            <Icon icon="cancel-1" />
+            <div className="close-manager">
+              <Icon icon="cancel-1" />
+              {this.renderCheckbox()}
+            </div>
           </Close>
         </FlexBetween>
       </Item>

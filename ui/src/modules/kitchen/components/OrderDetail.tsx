@@ -6,6 +6,7 @@ import { IConfig } from 'types';
 import { IOrder } from '../../orders/types';
 import { IUser } from 'modules/auth/types';
 import { useTime } from 'react-timer-hook';
+import Icon from 'modules/common/components/Icon';
 
 type Props = {
   editOrder: (doc) => void;
@@ -58,7 +59,7 @@ export default class OrderDetail extends React.Component<Props, State> {
     )
   }
 
-  renderDetail(order) {
+  renderDetail(order: IOrder, color: string, color2: string) {
     const { items } = order;
 
     if (!items || !items.length) {
@@ -67,7 +68,13 @@ export default class OrderDetail extends React.Component<Props, State> {
 
     return items.map((item) => (
       <Detail key={item._id}>
-        <p><b>{item.productName}</b></p>
+        <p>
+          <Icon
+            icon={item.isTake ? "plane-departure" : "utensils"}
+            color={item.isTake ? color : color2}
+          />
+          <b>{item.productName}</b>
+        </p>
         <span>
           {__("Quantity")}:&nbsp;
         </span>
@@ -110,10 +117,10 @@ export default class OrderDetail extends React.Component<Props, State> {
     return (
       <TableRow key={order._id} id={order._id} color={color}>
         <td className="number center">{order.number.split("_")[1]}</td>
-        <td>{this.renderDetail(order)}</td>
+        <td>{this.renderDetail(order, color, color2)}</td>
         <td>{this.renderTime(order)}</td>
         <td className="center">
-          <Status color={order.type === 'eat' ? color : color2}>{__(order.type)}</Status>
+          <Status color={order.type === 'eat' ? color2 : color}>{__(order.type)}</Status>
         </td>
         <td>{this.renderActions(order)}</td>
       </TableRow>

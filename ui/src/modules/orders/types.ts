@@ -12,6 +12,7 @@ export interface IOrderItem {
   orderId: string;
   productName: string;
   isPackage?: boolean;
+  isTake?: boolean;
 }
 
 export interface IQPayInvoice {
@@ -90,6 +91,7 @@ export interface IOrderItemInput {
   unitPrice?: number;
   productImgUrl?: string;
   isPackage?: boolean;
+  isTake?: boolean;
 }
 
 export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;
