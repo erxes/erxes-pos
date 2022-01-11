@@ -23,7 +23,7 @@ export default class Screen extends React.Component<Props> {
     )
   }
 
-  renderCol(type, icon) {
+  renderCol() {
     const { orders, currentConfig } = this.props;
     const { uiOptions } = currentConfig;
 
@@ -51,8 +51,9 @@ export default class Screen extends React.Component<Props> {
     const contentUrl = this.props.currentConfig.waitingScreen.contentUrl || '';
 
     if (!contentUrl) {
-      return ''
+      return <></>;
     }
+
     let innerHeight = window.innerHeight;
     const innerWidth = window.innerWidth - 23;
     innerHeight -= 110;
@@ -75,7 +76,7 @@ export default class Screen extends React.Component<Props> {
   render() {
     return (
       <ScreenContent hasBackground={true} className="fullHeight">
-        <Row>{this.renderCol("Ready", "checked")}</Row>
+        <Row>{this.renderCol()}</Row>
         <Row className="fullHeight">{this.renderContent()}</Row>
       </ScreenContent>
     );

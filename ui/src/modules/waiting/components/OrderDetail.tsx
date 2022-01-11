@@ -40,7 +40,7 @@ export default class OrderDetail extends React.Component<Props> {
     const { currentConfig, order, editOrder } = this.props;
     const { waitingScreen, uiOptions } = currentConfig;
     const color = uiOptions.colors.primary;
-    const waitingSec = waitingScreen.value * 60;
+    const waitingSec = parseInt(waitingScreen.value) * 60;
 
     const date = new Date(order.modifiedAt);
     const hours = date.getHours();
