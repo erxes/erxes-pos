@@ -68,12 +68,15 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
 
     if (["kiosk", "waiting"].includes(localStorage.getItem('erxesPosMode') || '') || location.pathname.includes('waiting-screen')) {
       return (
-        <>
+        <div className="subRoot">
           <div id="anti-clickjack" style={{ display: "none" }} />
           <Layout>
-            <PortraitWrapper>{children}</PortraitWrapper>
+            <PortraitWrapper>
+              {children}
+            </PortraitWrapper>
+            <DetectBrowser />
           </Layout>
-        </>
+        </div>
       );
     }
 

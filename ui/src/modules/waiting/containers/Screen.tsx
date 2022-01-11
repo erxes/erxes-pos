@@ -20,7 +20,7 @@ type Props = {
   qp: any;
 } & IRouterProps;
 
-function KitchenScreenContainer(props: Props) {
+function WaitingScreenContainer(props: Props) {
   const { orderQuery, orderChangeStatusMutation } = props;
 
   useEffect(() => {
@@ -64,5 +64,5 @@ export default withProps<Props>(
     graphql<Props, OrderChangeStatusMutationResponse>(gql(mutations.orderChangeStatus), {
       name: "orderChangeStatusMutation",
     }),
-  )(withCurrentUser(withRouter<Props>(KitchenScreenContainer)))
+  )(withCurrentUser(withRouter<Props>(WaitingScreenContainer)))
 );
