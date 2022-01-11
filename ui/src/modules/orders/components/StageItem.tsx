@@ -8,6 +8,7 @@ import Quantity from "./Quantity";
 import { PortraitStage } from "./portrait/style";
 import FormControl from 'modules/common/components/form/Control';
 import { ORDER_TYPES } from '../../../constants';
+import Tip from "modules/common/components/Tip";
 
 const Item = styled.div`
   background: #fff;
@@ -106,13 +107,17 @@ export default class StageItem extends React.Component<Props, State> {
     }
 
     return (
-      <FormControl
-        type="checkbox"
-        name="itemIsTake"
-        onChange={onChange}
-        checked={item.isTake}
-        onClick={(e) => {e.stopPropagation()}}
-      />
+      <Tip text={"Тусгайлан авч явах бол тэмдэглэх"} placement="left">
+        <div>
+          <FormControl
+            type="checkbox"
+            name="itemIsTake"
+            onChange={onChange}
+            checked={item.isTake}
+            onClick={(e) => { e.stopPropagation() }}
+          />
+        </div>
+      </Tip>
     );
   }
 
@@ -148,7 +153,7 @@ export default class StageItem extends React.Component<Props, State> {
               />
             </FlexCenter>
             <Close onClick={onRemoveItem} isPortrait={isPortrait}>
-            <div className="close-manager">
+              <div className="close-manager">
                 <Icon icon="cancel-1" />
                 {this.renderCheckbox()}
               </div>
