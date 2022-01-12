@@ -164,7 +164,7 @@ export default class Pos extends React.Component<Props, State> {
       count: item.count,
       unitPrice: item.unitPrice,
       isPackage: item.isPackage,
-      isTake: item.isTake,
+      isTake: type !== ORDER_TYPES.EAT ? true : item.isTake,
     }));
 
     createOrder({ items: currentItems, totalAmount, type, customerId });
@@ -181,7 +181,7 @@ export default class Pos extends React.Component<Props, State> {
         count: item.count,
         unitPrice: item.unitPrice,
         isPackage: item.isPackage,
-        isTake: item.isTake,
+        isTake: type !== ORDER_TYPES.EAT ? true : item.isTake,
       }));
 
       updateOrder({
