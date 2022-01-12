@@ -203,8 +203,10 @@ export default class Calculation extends React.Component<Props, State> {
   renderAmount(text: string, amount: number, color?: string) {
     const prop = { color };
 
+    const {order} = this.props;
     return (
       <Amount {...prop}>
+        <span>{order && order.number ? order.number.split('_')[1] : ''}</span>
         <span>{text}</span>
         {formatNumber(amount || 0)}₮
       </Amount>
