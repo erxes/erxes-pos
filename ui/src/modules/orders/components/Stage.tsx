@@ -13,11 +13,12 @@ type Props = {
   options: any;
   stageHeight?: number;
   type: string;
+  mode: string;
 };
 
 export default class Stage extends React.Component<Props> {
   renderItems() {
-    const { items, changeItemCount, changeItemIsTake, options, orientation, stageHeight, type } = this.props;
+    const { items, changeItemCount, changeItemIsTake, options, orientation, stageHeight, type, mode } = this.props;
 
     if (!items || items.length === 0) {
       return (
@@ -44,6 +45,7 @@ export default class Stage extends React.Component<Props> {
               changeItemIsTake={changeItemIsTake}
               color={options.colors.primary || ""}
               type={type}
+              mode={mode}
             />
           ))}
         </StageItems>

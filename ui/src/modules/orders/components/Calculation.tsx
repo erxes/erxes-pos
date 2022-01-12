@@ -328,6 +328,7 @@ export default class Calculation extends React.Component<Props, State> {
                 options={config.uiOptions}
                 stageHeight={this.state.stageHeight}
                 type={type}
+                mode={mode}
               />
             </div>
             <ButtonWrapper className={orientation === 'portrait' ? "payment-section" : ""}>

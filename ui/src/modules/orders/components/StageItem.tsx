@@ -39,10 +39,6 @@ const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
     }
   }
 
-  .close-manager {
-    height: 80%
-  }
-
   input {
     width: ${(props) => props.isPortrait ? "36px" : "18px;"};
     height: ${(props) => props.isPortrait ? "124px" : "18px;"};
@@ -62,6 +58,15 @@ export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
     color: #616e7c;
     font-size: ${(props) => (props.isPortrait ? "22px" : "11px")};
   }
+
+  b {
+    display: flex;
+  }
+
+  input {
+    width: ${(props) => props.isPortrait ? "36px" : "22px;"};
+    height: ${(props) => props.isPortrait ? "32px" : "18px;"};
+  }
 `;
 
 type Props = {
@@ -71,6 +76,7 @@ type Props = {
   changeItemCount: (item: IOrderItemInput) => void;
   changeItemIsTake: (item: IOrderItemInput, value: boolean) => void;
   type: string;
+  mode: string;
 };
 
 type State = {
@@ -96,9 +102,9 @@ export default class StageItem extends React.Component<Props, State> {
   }
 
   renderCheckbox() {
-    const { type, item, changeItemIsTake } = this.props;
+    const { type, item, changeItemIsTake, mode } = this.props;
 
-    if (type !== ORDER_TYPES.EAT) {
+    if (mode === 'kiosk' || type !== ORDER_TYPES.EAT) {
       return (<></>);
     }
 
@@ -107,8 +113,8 @@ export default class StageItem extends React.Component<Props, State> {
     }
 
     return (
-      <Tip text={"Тусгайлан авч явах бол тэмдэглэх"} placement="left">
-        <div>
+      <Tip text={"Тусгайлан авч явах бол тэмдэглэх"} placement="right">
+        <label>
           <FormControl
             type="checkbox"
             name="itemIsTake"
@@ -116,7 +122,7 @@ export default class StageItem extends React.Component<Props, State> {
             checked={item.isTake}
             onClick={(e) => { e.stopPropagation() }}
           />
-        </div>
+        </label>
       </Tip>
     );
   }
@@ -136,7 +142,7 @@ export default class StageItem extends React.Component<Props, State> {
           <PortraitStage>
             <Text isPortrait={isPortrait}>
               <div>
-                <b>{productName}</b>
+                <b>{this.renderCheckbox()}{productName}</b>
               </div>
               <span>
                 {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
@@ -153,10 +159,7 @@ export default class StageItem extends React.Component<Props, State> {
               />
             </FlexCenter>
             <Close onClick={onRemoveItem} isPortrait={isPortrait}>
-              <div className="close-manager">
-                <Icon icon="cancel-1" />
-                {this.renderCheckbox()}
-              </div>
+              <Icon icon="cancel-1" />
             </Close>
           </PortraitStage>
         </Item>
@@ -168,7 +171,7 @@ export default class StageItem extends React.Component<Props, State> {
         <FlexBetween>
           <Text>
             <div>
-              <b>{productName}</b>
+              <b>{this.renderCheckbox()}{productName}</b>
             </div>
             <span>{Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮</span>
           </Text>
@@ -182,10 +185,7 @@ export default class StageItem extends React.Component<Props, State> {
             />
           </FlexCenter>
           <Close onClick={onRemoveItem}>
-            <div className="close-manager">
-              <Icon icon="cancel-1" />
-              {this.renderCheckbox()}
-            </div>
+            <Icon icon="cancel-1" />
           </Close>
         </FlexBetween>
       </Item>
