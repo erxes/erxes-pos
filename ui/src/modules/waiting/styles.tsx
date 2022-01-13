@@ -37,7 +37,7 @@ export const Orders = styled.div`
 
 export const OrderCard = styledTS<{ color?: string }>(styled.div)`
   font-size: 120px;
-  font-weight: 900;
+  font-weight: 500;
   margin: 0 20px 0px 20px;
   color: ${(props) => props.color && props.color};
 
