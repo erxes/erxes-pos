@@ -60,6 +60,7 @@ const currentConfig = `
         cityTaxPercent
         companyName
         ebarimtUrl
+        footerText
       }
 
       qpayConfig {
@@ -75,6 +76,7 @@ const currentConfig = `
         categoryId
         productId
       }
+      initialCategoryIds
     }
   }
 `;

@@ -74,6 +74,7 @@ export interface IEbarimtConfig {
   defaultGSCode: string;
   vatPercent: number;
   cityTaxPercent: number;
+  footerText: string;
 }
 
 export interface IConfig {
@@ -94,6 +95,7 @@ export interface IConfig {
   uiOptions: any;
   ebarimtConfig: IEbarimtConfig;
   syncInfo: any;
+  initialCategoryIds: string[];
 };
 
 export type CurrentConfigQueryResponse = {

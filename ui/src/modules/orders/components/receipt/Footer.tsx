@@ -10,6 +10,7 @@ import { __ } from 'modules/common/utils';
 type Props = {
   color: string;
   order: IOrder;
+  footerText: string;
 };
 
 export default class Footer extends React.Component<Props> {
@@ -101,7 +102,7 @@ export default class Footer extends React.Component<Props> {
   }
 
   render() {
-    const { color } = this.props;
+    const { color, footerText } = this.props;
 
     return (
       <FooterWrapper>
@@ -111,10 +112,20 @@ export default class Footer extends React.Component<Props> {
           {this.renderSide()}
         </Lottery>
         {this.renderBarCode()}
-        <p className="signature">
-          <label>{__("Signature")}:</label>
-          <span>_____________________</span>
-        </p>
+        {
+          footerText
+            ?
+            <div className="text-center signature">
+              <label>
+                {footerText}
+              </label>
+            </div>
+            :
+            <p className="signature">
+              <label>{__("Signature")}:</label>
+              <span>_____________________</span>
+            </p>
+        }
         <div className="text-center btn-print">
           <Button onClick={() => window.print()} style={{ backgroundColor: color }}>
             {__("Print")}
