@@ -116,12 +116,12 @@ export default class Calculation extends React.Component<Props, State> {
     stageHeight -= 78; // customer
 
     if (orientation === 'portrait') {
-      stageHeight -= 75; // amount
-      stageHeight -= 125; // oneButton
+      stageHeight -= 135; // amount
+      stageHeight -= mode === 'kiosk' ? 0 : 125; // printButton
       stageHeight -= (order && order.paidDate) ? 0 : 100; // oneButton
     } else {
       stageHeight -= 52; // amount
-      stageHeight -= 50; // oneButton
+      stageHeight -= mode === 'kiosk' ? 0 : 50; // printButton
       stageHeight -= (order && order.paidDate) ? 0 : 50; // oneButton
     }
 
@@ -160,9 +160,9 @@ export default class Calculation extends React.Component<Props, State> {
     if (!order) {
       return null;
     }
-    const {mode} = this.state;
+    const { mode } = this.state;
 
-    if (mode ==='kiosk') {
+    if (mode === 'kiosk') {
       return null;
     }
 
