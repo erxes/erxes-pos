@@ -80,7 +80,7 @@ class PosContainer extends React.Component<Props> {
     };
 
     const updateOrder = (params: any) => {
-      ordersEditMutation({ variables: params })
+      return ordersEditMutation({ variables: params })
         .then(({ data }) => {
           if (data && data.ordersEdit && data.ordersEdit._id) {
             Alert.success(`Order has been updated successfully.`);

@@ -14,7 +14,7 @@ import {
   AppWrapper,
 } from "./style";
 import Icon from "modules/common/components/Icon";
-import { FlexCenter } from "modules/common/styles/main";
+import { FlexBetween, FlexCenter } from "modules/common/styles/main";
 import { __ } from "modules/common/utils";
 import Pos from "../Pos";
 
@@ -24,7 +24,7 @@ type Props = {
   currentConfig: IConfig;
   order: IOrder | null;
   orientation: string;
-  updateOrder: (params) => void;
+  updateOrder: (params) => Promise<IOrder>;
   makePayment: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
   productsQuery: any;
@@ -84,7 +84,7 @@ export default class PortraitView extends React.Component<Props, State> {
   render() {
     const { currentConfig } = this.props;
     const { type } = this.state;
-    const { colors, logo } = currentConfig.uiOptions || ({} as any);
+    const { colors, logo, texts = {} } = currentConfig.uiOptions || ({} as any);
 
     if (type) {
       return (
@@ -104,9 +104,14 @@ export default class PortraitView extends React.Component<Props, State> {
         </LogoWrapper>
         {this.renderContent(colors.primary)}
         <Footer color={colors.primary}>
-          <span>
-            <Icon icon="earthgrid" /> www.yoshinoyamongolia.com
-          </span>
+          <FlexBetween>
+            <span>
+              <Icon icon="earthgrid" /> {texts.website}
+            </span>
+            <span>
+              <Icon icon="phone" /> {texts.phone}
+            </span>
+          </FlexBetween>
         </Footer>
       </PortraitViewWrapper>
     );

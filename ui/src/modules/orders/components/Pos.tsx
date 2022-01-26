@@ -37,7 +37,7 @@ type Props = {
   currentConfig: IConfig;
   order: IOrder | null;
   orientation: string;
-  updateOrder: (params) => void;
+  updateOrder: (params) => Promise<IOrder>;
   makePayment: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
   productsQuery: any;
@@ -190,6 +190,11 @@ export default class Pos extends React.Component<Props, State> {
         totalAmount,
         type,
         customerId,
+      }).then((updatedOrder) => {
+        this.setState({
+          items: updatedOrder.items,
+          totalAmount: getTotalAmount(updatedOrder.items)
+        });
       });
     }
   };

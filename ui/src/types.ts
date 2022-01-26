@@ -96,6 +96,7 @@ export interface IConfig {
   ebarimtConfig: IEbarimtConfig;
   syncInfo: any;
   initialCategoryIds: string[];
+  kioskExcludeProductIds: string[];
 };
 
 export type CurrentConfigQueryResponse = {

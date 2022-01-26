@@ -561,3 +561,9 @@ export const Input = styledTS<{ color?: string }>(styled.div)`
 export const ProductSearch = styled.div`
   width: 65%;
 `;
+
+export const PackageProduct = styled.span`
+  text-decoration: underline;
+  text-decoration-color: greenyellow;
+  text-decoration-style: wavy;
+`;

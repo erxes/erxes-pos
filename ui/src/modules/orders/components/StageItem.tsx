@@ -9,6 +9,7 @@ import { PortraitStage } from "./portrait/style";
 import FormControl from 'modules/common/components/form/Control';
 import { ORDER_TYPES } from '../../../constants';
 import Tip from "modules/common/components/Tip";
+import { PackageProduct } from '../styles';
 
 const Item = styled.div`
   background: #fff;
@@ -127,9 +128,19 @@ export default class StageItem extends React.Component<Props, State> {
     );
   }
 
+  renderName() {
+    const { item } = this.props;
+
+    if (item.isPackage) {
+      return <PackageProduct>{item.productName}</PackageProduct>
+    }
+
+    return item.productName
+  }
+
   render() {
     const { item, changeItemCount, color, orientation } = this.props;
-    const { productName, unitPrice, count } = item;
+    const { unitPrice, count } = item;
     const isPortrait = orientation === "portrait";
 
     const onRemoveItem = () => {
@@ -142,7 +153,7 @@ export default class StageItem extends React.Component<Props, State> {
           <PortraitStage>
             <Text isPortrait={isPortrait}>
               <div>
-                <b>{this.renderCheckbox()}{productName}</b>
+                <b>{this.renderCheckbox()}{this.renderName()}</b>
               </div>
               <span>
                 {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
@@ -171,7 +182,7 @@ export default class StageItem extends React.Component<Props, State> {
         <FlexBetween>
           <Text>
             <div>
-              <b>{this.renderCheckbox()}{productName}</b>
+              <b>{this.renderCheckbox()}{this.renderName()}</b>
             </div>
             <span>{Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮</span>
           </Text>

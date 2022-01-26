@@ -96,9 +96,16 @@ export default class Products extends React.Component<Props, State> {
   }
 
   renderProducts() {
-    const { products = [], orientation } = this.props;
+    const { products = [], orientation, currentConfig } = this.props;
+    const mode = localStorage.getItem('erxesPosMode');
+    let filteredProducts = products;
 
-    return products.map((product) => {
+    if (mode === 'kiosk') {
+      const excludeIds = currentConfig.kioskExcludeProductIds || [];
+      filteredProducts = products.filter(p => (!excludeIds.includes(p._id)))
+    }
+
+    return filteredProducts.map((product) => {
       return (
         <ProductItem
           product={product}

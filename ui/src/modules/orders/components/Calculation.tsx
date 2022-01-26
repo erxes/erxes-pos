@@ -160,6 +160,11 @@ export default class Calculation extends React.Component<Props, State> {
     if (!order) {
       return null;
     }
+    const {mode} = this.state;
+
+    if (mode ==='kiosk') {
+      return null;
+    }
 
     return (
       <Button
@@ -203,10 +208,10 @@ export default class Calculation extends React.Component<Props, State> {
   renderAmount(text: string, amount: number, color?: string) {
     const prop = { color };
 
-    const {order} = this.props;
+    const { order } = this.props;
     return (
       <Amount {...prop}>
-        <span>{order && order.number ? order.number.split('_')[1] : ''}</span>
+        <span>№: {order && order.number ? order.number.split('_')[1] : ''}</span>
         <span>{text}</span>
         {formatNumber(amount || 0)}₮
       </Amount>

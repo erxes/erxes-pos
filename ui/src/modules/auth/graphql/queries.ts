@@ -50,6 +50,7 @@ const currentConfig = `
         logo
         favIcon
         receiptIcon
+        texts
       }
 
       ebarimtConfig {
@@ -77,6 +78,7 @@ const currentConfig = `
         productId
       }
       initialCategoryIds
+      kioskExcludeProductIds
     }
   }
 `;
