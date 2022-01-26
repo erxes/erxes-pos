@@ -106,10 +106,10 @@ export default class PortraitView extends React.Component<Props, State> {
         <Footer color={colors.primary}>
           <FlexBetween>
             <span>
-              <Icon icon="earthgrid" /> {texts && texts.website || ''}
+              <Icon icon="earthgrid" /> {texts ? texts.website : '' || ''}
             </span>
             <span>
-              <Icon icon="phone" /> {texts && texts.phone || ''}
+              <Icon icon="phone" /> {texts ? texts.phone : '' || ''}
             </span>
           </FlexBetween>
         </Footer>
