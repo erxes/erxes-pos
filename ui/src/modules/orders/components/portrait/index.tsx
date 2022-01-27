@@ -68,14 +68,14 @@ export default class PortraitView extends React.Component<Props, State> {
         </FlexCenter>
         <AppWrapper>
           <img src="/images/yoshinaya-app.png" alt="app" />
-          <FlexCenter>
+          {/* <FlexCenter>
             <img className="app-download" src="/images/ios.png" alt="ios" />
             <img
               className="app-download"
               src="/images/android.png"
               alt="android"
             />
-          </FlexCenter>
+          </FlexCenter> */}
         </AppWrapper>
       </ChooseType>
     );

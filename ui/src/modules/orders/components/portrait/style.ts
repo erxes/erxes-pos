@@ -11,7 +11,7 @@ export const LogoWrapper = styledTS<{ odd?: boolean }>(styled.div)`
 
   img {
     max-width: 500px;
-    height: 6%;
+    height: 400px;
   }
 `;
 
@@ -35,7 +35,7 @@ export const Footer = styledTS<{ color?: string }>(styled.div)`
 
 export const ChooseType = styled.div`
   text-align: center;
-  margin-top: 1%;
+  margin-top: 0;
 
   h4 {
     font-size: 48px;
