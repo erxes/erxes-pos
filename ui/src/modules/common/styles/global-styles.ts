@@ -26,6 +26,10 @@ body {
     height: 100%;
     flex-direction: column;
   }
+
+  .subRoot {
+    height: 100%;
+  }
 }
 
 a {

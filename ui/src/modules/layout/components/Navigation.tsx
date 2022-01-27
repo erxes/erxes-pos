@@ -224,7 +224,7 @@ class Navigation extends React.Component<IProps> {
     return (
       <LeftNavigation collapsed={collapsed} color={options.colors.primary}>
         <NavLink to="/">
-          <img src={options.logo || `/images/${logo}`} alt="logo" />
+          <img src={options.favIcon || `/images/${logo}`} alt="logo" />
         </NavLink>
         {this.renderSyncMenu()}
         {this.renderKitchenMenu()}

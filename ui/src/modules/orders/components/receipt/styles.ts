@@ -24,8 +24,8 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const ReceiptWrapper = styled(HeaderWrapper)`
-  width: 80mm;
-  padding: 15px;
+  width: 72mm;
+  padding: 10px;
   color: #000;
   background-color: ${colors.colorWhite};
   font-size: 11px;

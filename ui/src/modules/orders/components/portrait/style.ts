@@ -7,11 +7,11 @@ import { FlexCenter } from "modules/common/styles/main";
 
 export const LogoWrapper = styledTS<{ odd?: boolean }>(styled.div)`
   text-align: center;
-  padding: ${(props) => (props.odd ? "50px 0 20px" : "50px")};
+  padding: ${(props) => (props.odd ? "40px 0 20px" : "20px")};
 
   img {
-    max-width: 400px;
-    max-height: 120px;
+    max-width: 500px;
+    height: 6%;
   }
 `;
 
@@ -35,7 +35,7 @@ export const Footer = styledTS<{ color?: string }>(styled.div)`
 
 export const ChooseType = styled.div`
   text-align: center;
-  margin-top: 15%;
+  margin-top: 1%;
 
   h4 {
     font-size: 48px;
