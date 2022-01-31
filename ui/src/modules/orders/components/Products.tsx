@@ -68,29 +68,18 @@ export default class Products extends React.Component<Props, State> {
 
   addItem(item: IProduct, count: number) {
     const { items, setItems } = this.props;
-    let currentItems = items.slice();
-    const exists = items.find((i) => i.productId === item._id);
 
-    const doc = {
+    const currentItems = items.slice();
+
+    currentItems.push({
       _id: Math.random().toString(),
       productId: item._id,
       productName: item.name,
       unitPrice: item.unitPrice || 0,
       productImgUrl:
         item.attachment && item.attachment.url ? item.attachment.url : "",
-    };
-
-    if (!exists) {
-      currentItems.unshift({ count: 1, ...doc });
-    } else {
-      currentItems = items.filter((i) => i.productId !== item._id);
-
-      currentItems.unshift({
-        ...doc,
-        count: exists.count + count,
-        _id: exists._id,
-      });
-    }
+      count
+    });
 
     setItems(currentItems);
   }
