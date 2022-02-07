@@ -4,7 +4,7 @@ import { ReceiptWrapper } from "./styles";
 import { AppContext } from "appContext";
 import Header from "./Header";
 import Body from "./Body";
-import Footer from "./Footer";
+import InnerFooter from "./InnerFooter";
 
 type Props = {
   order: IOrder;
@@ -25,14 +25,12 @@ export default function OrderReceipt({ order }: Props) {
     currentConfig.uiOptions &&
     currentConfig.uiOptions.colors.primary;
 
-  const footerText = currentConfig && currentConfig.ebarimtConfig && currentConfig.ebarimtConfig.footerText
-
   return (
     <>
       <ReceiptWrapper className="printDocument">
         <Header order={order} logo={logo} name={name} />
         <Body items={order.items} />
-        <Footer color={color} order={order} footerText={footerText || ''} />
+        <InnerFooter color={color} order={order} />
       </ReceiptWrapper>
     </>
   );

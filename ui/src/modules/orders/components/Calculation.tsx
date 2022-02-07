@@ -172,6 +172,10 @@ export default class Calculation extends React.Component<Props, State> {
         btnStyle="warning"
         block onClick={() => {
           window.open(`/order-receipt/${order._id}`, '_blank');
+          setTimeout(() => {
+            window.open(`/order-receipt/${order._id}?inner=true`, '_blank');
+          }, 100);
+
         }}
       >
         {__("Print receipt")}
