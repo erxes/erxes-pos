@@ -118,7 +118,7 @@ export default class Pos extends React.Component<Props, State> {
 
   changeItemCount = (item: IOrderItemInput) => {
     let items = this.state.items.map((i) => {
-      if (i.productId === item.productId) {
+      if (i.productId === item.productId && item._id === i._id) {
         i.count = item.count;
       }
 
