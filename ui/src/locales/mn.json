@@ -72,5 +72,6 @@
   "Transaction was successful": "Гүйлгээ амжилттай хийгдлээ",
   "Date": "Огноо",
   "Time": "Хугацаа",
-  "buyerCompanyNumber": "Худалдан авагч (ТТД)"
+  "buyerCompanyNumber": "Худалдан авагч (ТТД)",
+  "Split payment": "Хувааж төлөх"
 }

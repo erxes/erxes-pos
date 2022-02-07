@@ -10,6 +10,7 @@ import ControlLabel from "modules/common/components/form/Label";
 import { __, Alert } from "modules/common/utils";
 import { Input } from "modules/orders/styles";
 import { PAYMENT_TYPES } from './CalculationForm';
+import { IOrder } from 'modules/orders/types';
 
 const ButtonWrapper = styled.div`
   margin-bottom: 20px;
@@ -21,9 +22,10 @@ type Props = {
   color?: string;
   onStateChange: (key: string, value: any) => void;
   billType: string;
-  orderNumber: string;
   setCardPaymentInfo: (params: any) => void;
-  orderId: string;
+  order: IOrder;
+  isSplit?: boolean;
+  cashAmount?: number;
 }
 
 type State = {
@@ -42,7 +44,19 @@ export default class CardForm extends React.Component<Props, State> {
   }
 
   render() {
-    const { cardAmount, reset, color = '', onStateChange, billType, orderNumber, setCardPaymentInfo, orderId } = this.props;
+    const {
+      cardAmount,
+      reset,
+      color = '',
+      onStateChange,
+      billType,
+      setCardPaymentInfo,
+      isSplit,
+      order,
+      cashAmount = 0
+    } = this.props;
+
+    const { number, _id } = order;
 
     const inputProps: any = {
       allowNegative: false,
@@ -53,6 +67,14 @@ export default class CardForm extends React.Component<Props, State> {
 
     const handleInput = (value: number | undefined) => {
       onStateChange(PAYMENT_TYPES.CARD, value);
+
+      const totalMatches = value && value + cashAmount === order.totalAmount;
+
+      if (isSplit && totalMatches) {
+        onStateChange('paymentEnabled', true);
+      } else {
+        onStateChange('paymentEnabled', false);
+      }
     };
 
     const handleClick = () => {
@@ -74,7 +96,7 @@ export default class CardForm extends React.Component<Props, State> {
               service_name: 'doSaleTransaction',
               service_params: {
                 // special character _ is not accepted
-                db_ref_no: orderNumber.replace('_', ''),
+                db_ref_no: number.replace('_', ''),
                 amount: cardAmount.toString(),
                 vatps_bill_type: billType
               }
@@ -87,7 +109,7 @@ export default class CardForm extends React.Component<Props, State> {
                 // enable payment button
                 onStateChange('paymentEnabled', true);
 
-                setCardPaymentInfo({ _id: orderId, info: JSON.stringify(r.response) });
+                setCardPaymentInfo({ _id, info: JSON.stringify(r.response) });
               } else {
                 return Alert.warning(r.response.response_msg);
               }

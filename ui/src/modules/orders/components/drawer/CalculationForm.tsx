@@ -56,6 +56,7 @@ type Props = {
   paymentMethod: string;
   order: IOrder;
   setCardPaymentInfo: (params: any) => void;
+  isSplit?: boolean;
 };
 
 type State = {
@@ -146,7 +147,7 @@ class CalculationForm extends React.Component<Props, State> {
 
   renderFormHead() {
     const { showE, billType, cashAmount = 0, cardAmount = 0 } = this.state;
-    const { options, isPortrait, paymentMethod, order, setCardPaymentInfo } = this.props;
+    const { options, isPortrait, paymentMethod, order, setCardPaymentInfo, isSplit } = this.props;
 
     const onBillTypeChange = (e) => {
       const billType = (e.target as HTMLInputElement).value;
@@ -164,6 +165,32 @@ class CalculationForm extends React.Component<Props, State> {
       this.setState({ [key]: value } as Pick<State, keyof State>);
     };
 
+    const Cash = (
+      <CashForm
+        cashAmount={cashAmount}
+        reset={this.reset}
+        color={options.colors.primary}
+        onStateChange={onStateChange}
+        isSplit={isSplit}
+        cardAmount={cardAmount}
+        order={order}
+      />
+    );
+
+    const Card = (
+      <CardForm
+        onStateChange={onStateChange}
+        cardAmount={cardAmount}
+        reset={this.reset}
+        color={options.colors.primary}
+        billType={billType}
+        setCardPaymentInfo={setCardPaymentInfo}
+        cashAmount={cashAmount}
+        isSplit={isSplit}
+        order={order}
+      />
+    );
+
     return (
       <FormHead isPortrait={isPortrait}>
         <Amount color={options.colors.primary}>
@@ -171,28 +198,17 @@ class CalculationForm extends React.Component<Props, State> {
           {formatNumber(order.totalAmount || 0)}₮
         </Amount>
 
-        {paymentMethod === 'cash' && (
-          <CashForm
-            cashAmount={cashAmount}
-            reset={this.reset}
-            color={options.colors.primary}
-            onStateChange={onStateChange}
-            totalAmount={order.totalAmount}
-          />
-        )}
-
-        {paymentMethod === 'card' && (
-          <CardForm
-            onStateChange={onStateChange}
-            cardAmount={cardAmount}
-            reset={this.reset}
-            color={options.colors.primary}
-            billType={billType}
-            orderNumber={order.number}
-            setCardPaymentInfo={setCardPaymentInfo}
-            orderId={order._id}
-          />)
-        }
+        {isSplit ? (
+          <React.Fragment>
+            {Card}
+            {Cash}
+          </React.Fragment>
+        ) : (
+          <React.Fragment>
+            {paymentMethod === 'cash' && Cash}
+            {paymentMethod === 'card' && Card}
+          </React.Fragment>
+          )}
 
         <Ebarimt
           billType={billType}

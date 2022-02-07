@@ -79,7 +79,7 @@ export default class Pos extends React.Component<Props, State> {
       items: order ? order.items : [],
       totalAmount: order ? getTotalAmount(order.items) : 0,
       showMenu: false,
-      type: this.props.type || ((order && order.type) ? order.type : ORDER_TYPES.EAT),
+      type: props.type || ((order && order.type) ? order.type : ORDER_TYPES.EAT),
       drawerContentType: "",
       customerId: order && order.customerId ? order.customerId : "",
       registerNumber: "",
@@ -206,9 +206,11 @@ export default class Pos extends React.Component<Props, State> {
       order,
       addCustomer,
       setCardPaymentInfo,
-      orientation
+      orientation,
     } = this.props;
     const { drawerContentType, totalAmount } = this.state;
+
+    const options = currentConfig ? currentConfig.uiOptions : {};
 
     switch (drawerContentType) {
       case "order":
@@ -218,7 +220,7 @@ export default class Pos extends React.Component<Props, State> {
           order && (
             <PaymentForm
               orderId={order ? order._id : ""}
-              options={currentConfig ? currentConfig.uiOptions : {}}
+              options={options}
               totalAmount={totalAmount}
               closeDrawer={this.toggleDrawer}
               makePayment={makePayment}
@@ -234,6 +236,22 @@ export default class Pos extends React.Component<Props, State> {
             addCustomer={addCustomer}
             toggleDrawer={this.toggleDrawer}
           ></CustomerForm>
+        );
+      case "splitPayment":
+        return (
+          order && (
+            <PaymentForm
+              orderId={order ? order._id : ""}
+              options={options}
+              totalAmount={totalAmount}
+              closeDrawer={this.toggleDrawer}
+              makePayment={makePayment}
+              order={order}
+              setCardPaymentInfo={setCardPaymentInfo}
+              orientation={orientation}
+              isSplit={true}
+            />
+          )
         );
       default:
         return null;

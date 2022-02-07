@@ -3,6 +3,9 @@ import { orderFields, orderItemsFields } from "./queries";
 const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String`;
 const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId`;
 
+const paymentParamDefs = `$_id: String!, $doc: OrderPaymentInput`;
+const paymentParams = `_id: $_id, doc: $doc`;
+
 const ordersAdd = `
   mutation ordersAdd(${addEditParamDefs}) {
     ordersAdd(${addEditParams}) {
@@ -13,8 +16,8 @@ const ordersAdd = `
 `;
 
 const ordersMakePayment = `
-  mutation ordersMakePayment($_id: String!, $doc: OrderPaymentInput) {
-    ordersMakePayment(_id: $_id, doc: $doc) {
+  mutation ordersMakePayment(${paymentParamDefs}) {
+    ordersMakePayment(${paymentParams}) {
       success
       lotteryWarningMsg
       errorCode

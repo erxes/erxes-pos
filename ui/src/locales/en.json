@@ -73,5 +73,6 @@
   "Transaction was successful": "Transaction was successful",
   "Date": "Date",
   "Time": "Time",
-  "buyerCompanyNumber": "Buyer (regNo)"
+  "buyerCompanyNumber": "Buyer (regNo)",
+  "Split payment": "Split payment"
 }

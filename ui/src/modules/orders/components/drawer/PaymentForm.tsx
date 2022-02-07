@@ -14,6 +14,7 @@ type Props = {
   order: IOrder;
   orientation?: string;
   setCardPaymentInfo: (params: any) => void;
+  isSplit?: boolean;
 };
 
 type State = {
@@ -35,7 +36,7 @@ class PaymentForm extends React.Component<Props, State> {
 
   render() {
     const { paymentType } = this.state;
-    const { options, orderId, order, orientation, setCardPaymentInfo } = this.props;
+    const { options, orderId, order, orientation, setCardPaymentInfo, isSplit } = this.props;
     const isPortrait = orientation === "portrait";
 
     if (!orderId) {
@@ -46,7 +47,7 @@ class PaymentForm extends React.Component<Props, State> {
       this.setState({ paymentType });
     };
 
-    if (!paymentType) {
+    if (!paymentType && !isSplit) {
       return (
         <PaymentType
           color={options.colors.primary}
@@ -56,7 +57,7 @@ class PaymentForm extends React.Component<Props, State> {
       );
     }
 
-    if (paymentType === PAYMENT_METHODS.QPAY) {
+    if (paymentType === PAYMENT_METHODS.QPAY && !isSplit) {
       return <QPay order={order} handlePayment={this.handlePayment} />;
     }
 

@@ -12,7 +12,7 @@ import { formatNumber } from 'modules/utils';
 import { FormControl } from 'modules/common/components/form';
 import { IConfig, IOption } from 'types';
 import { ICustomer, IOrder, IOrderItemInput } from '../types';
-import { ORDER_TYPES } from '../../../constants';
+import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from '../../../constants';
 import { ProductLabel, Type, Types } from '../styles';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
@@ -197,10 +197,33 @@ export default class Calculation extends React.Component<Props, State> {
         style={{ backgroundColor: config.uiOptions.colors.primary }}
         onClick={onClick}
         icon="dollar-alt"
-        block
         disabled={!totalAmount || totalAmount === 0 ? true : false}
       >
         {__("Pay the bill")}
+      </Button>
+    );
+  }
+
+  renderSplitPaymentButton() {
+    const { order, onClickDrawer, config, editOrder } = this.props;
+
+    if (!order || (order && order.paidDate && order.status === ORDER_STATUSES.PAID)) {
+      return null;
+    }
+
+    const onClick = () => {
+      editOrder();
+
+      onClickDrawer("splitPayment");
+    };
+
+    return (
+      <Button
+        style={{ backgroundColor: config.uiOptions.colors.secondary }}
+        onClick={onClick}
+        icon="dollar-alt"
+      >
+        {__("Split payment")}
       </Button>
     );
   }
@@ -342,7 +365,10 @@ export default class Calculation extends React.Component<Props, State> {
               {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
               {this.renderAddButton()}
               {this.renderReceiptButton()}
-              {this.renderPaymentButton()}
+              <FlexBetween>
+                {this.renderPaymentButton()}
+                {mode === POS_MODES.POS && this.renderSplitPaymentButton()}
+              </FlexBetween>
             </ButtonWrapper>
           </ColumnBetween>
         </Wrapper>
