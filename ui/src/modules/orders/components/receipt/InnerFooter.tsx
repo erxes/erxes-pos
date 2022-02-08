@@ -44,7 +44,7 @@ export default class Footer extends React.Component<Props> {
 
   render() {
     const { color } = this.props;
-    const { billId } = this.putResponse;
+    const { billId = '' } = this.putResponse || {};
 
     return (
       <FooterWrapper>

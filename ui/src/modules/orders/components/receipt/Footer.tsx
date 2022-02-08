@@ -137,8 +137,18 @@ export default class Footer extends React.Component<Props> {
 
   componentDidMount() {
     if (this.putResponse) {
+      const { order } = this.props;
+      const mode = localStorage.getItem('erxesPosMode');
+
       window.addEventListener('afterprint', () => {
-        window.close();
+        if (mode !== 'kiosk') {
+          setTimeout(() => {
+            window.open(`/order-receipt/${order._id}?inner=true`, '_blank');
+          }, 1);
+        }
+        setTimeout(() => {
+          window.close();
+        }, 1);
       });
 
       const { errorCode, lotteryWarningMsg, qrData, success, message, billId } = this.putResponse;
