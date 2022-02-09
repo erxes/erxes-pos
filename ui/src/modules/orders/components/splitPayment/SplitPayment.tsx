@@ -1,9 +1,17 @@
 import React from 'react';
+import styled from 'styled-components';
 
 import { Tabs, TabTitle } from 'modules/common/components/tabs/index';
 import { BILL_TYPES } from '../../../../constants';
 import { IOrder, ICardPayment } from 'modules/orders/types';
 import CardSection from './CardSection';
+import OrderInfo from './OrderInfo';
+
+const OrderInfoWrapper = styled.div`
+  margin: 20px;
+  padding: 20px;
+  border-top: 1px dashed #ddd;
+`;
 
 type Props = {
   order: IOrder;
@@ -58,6 +66,9 @@ export default class SplitPayment extends React.Component<Props, State> {
           <TabTitle className={currentTab === 'qpay' ? 'active' : ''} onClick={() => onClick('qpay')}>QPay</TabTitle>
         </Tabs>
         {this.renderContent()}
+        <OrderInfoWrapper>
+          <OrderInfo order={this.props.order} />
+        </OrderInfoWrapper>
       </div>
     );
   }
