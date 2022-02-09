@@ -31,7 +31,8 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
 
     const addCardPayment = (params: ICardPayment) => {
       addCardPaymentMutation({ variables: params }).then(({ data }) => {
-        console.log(data, 'daadada');
+        orderDetailQuery.refetch();
+        console.log(data, 'dada')
       }).catch(e => {
         Alert.error(__(e.message));
       })

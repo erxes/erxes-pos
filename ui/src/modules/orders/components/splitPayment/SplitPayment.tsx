@@ -30,7 +30,13 @@ export default class SplitPayment extends React.Component<Props, State> {
     const { billType, currentTab } = this.state;
 
     if (currentTab === 'card') {
-      return <CardSection order={order} addCardPayment={addCardPayment} billType={billType} />
+      return (
+        <CardSection
+          order={order}
+          addCardPayment={addCardPayment}
+          billType={billType}
+        />
+      );
     }
 
     return 'qpay'
