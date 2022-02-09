@@ -11,6 +11,7 @@ import { __ } from "modules/common/utils";
 import { FormHead } from "modules/orders/styles";
 import { Amount } from "modules/orders/components/Calculation";
 import { formatNumber } from "modules/utils";
+import { BILL_TYPES } from "../../../../constants";
 import { queries } from "../../graphql/index";
 import { IPaymentParams } from "modules/orders/containers/PosContainer";
 import CardForm from './CardForm';
@@ -64,12 +65,6 @@ type State = {
   activeInput: string;
   paymentEnabled: boolean;
 } & IPaymentParams;
-
-// НӨАТ-н баримтын төрөл
-export const BILL_TYPES = {
-  CITIZEN: "1", // иргэнд өгөх баримт
-  ENTITY: "3", // байгууллагад өгөх баримт
-};
 
 export const PAYMENT_TYPES = {
   CARD: "cardAmount",

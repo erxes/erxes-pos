@@ -9,7 +9,7 @@ import TextInfo from 'modules/common/components/TextInfo';
 import Label from 'modules/common/components/Label';
 import { Alert, __ } from 'modules/common/utils';
 import { mutations } from '../../graphql/index';
-import { BILL_TYPES } from './CalculationForm';
+import { BILL_TYPES } from '../../../../constants';
 import { IOrder, IQPayInvoice } from 'modules/orders/types';
 
 const QRCodeWrapper = styled.div`

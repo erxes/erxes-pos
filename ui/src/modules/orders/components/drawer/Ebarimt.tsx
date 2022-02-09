@@ -7,7 +7,7 @@ import ControlLabel from "modules/common/components/form/Label";
 import { FlexCenter } from "modules/common/styles/main";
 import Toggle from "modules/common/components/Toggle";
 import { __ } from "modules/common/utils";
-import { BILL_TYPES } from './CalculationForm';
+import { BILL_TYPES } from '../../../../constants';
 
 const HeaderRow = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
   justify-content: flex-start;
