@@ -18,6 +18,13 @@ const ReceiptContainer = asyncComponent(
     )
 );
 
+const SplitPaymentContainer = asyncComponent(
+  () =>
+    import(
+      /* webpackChunkName: "SplitPayment" */ "modules/orders/containers/SplitPaymentContainer"
+    )
+);
+
 const Receipt = ({ match, location }) => {
   const id = match.params.id;
   const qp = queryString.parse(location.search);
@@ -31,6 +38,10 @@ const Pos = ({ location }) => {
   return <PosContainer qp={qp} />;
 };
 
+const SplitPayment = ({ match }) => {
+  return <SplitPaymentContainer id={match.params.id} />;
+};
+
 const routes = () => {
   return (
     <React.Fragment>
@@ -41,6 +52,13 @@ const routes = () => {
         exact={true}
         path="/order-receipt/:id"
         component={Receipt}
+      />
+
+      <Route
+        key="/order-payment/:id"
+        exact={true}
+        path="/order-payment/:id"
+        component={SplitPayment}
       />
 
       <Route key="/" exact={true} path="/" component={Pos} />

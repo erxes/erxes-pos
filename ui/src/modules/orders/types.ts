@@ -27,6 +27,12 @@ export interface IQPayInvoice {
   status: string;
 }
 
+export interface ICardPayment {
+  _id: string;
+  amount: number;
+  cardInfo: string;
+}
+
 export interface IOrder {
   _id: string;
   status: string;
@@ -48,6 +54,7 @@ export interface IOrder {
   oldBillId: string;
   type: string;
   cardPaymentInfo?: string;
+  cardPayments?: ICardPayment[];
 
   items: IOrderItem[];
   customer?: ICustomer;

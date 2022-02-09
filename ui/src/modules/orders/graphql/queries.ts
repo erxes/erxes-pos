@@ -120,6 +120,12 @@ const orderDetail = `
       }
 
       cardPaymentInfo
+
+      cardPayments {
+        _id
+        amount
+        cardInfo
+      }
     }
   }
 `;

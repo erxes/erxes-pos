@@ -85,6 +85,14 @@ const ordersSetPaymentInfo = `
   }
 `;
 
+const ordersAddCardPayment = `
+  mutation ordersAddCardPayment($_id: String!, $amount: Float!, $cardInfo: String!) {
+    ordersAddCardPayment(_id: $_id, amount: $amount, cardInfo: $cardInfo) {
+      ${orderFields}
+    }
+  }
+`;
+
 export default {
   ordersAdd,
   ordersMakePayment,
@@ -93,5 +101,6 @@ export default {
   createQpaySimpleInvoice,
   qpayCheckPayment,
   customersAdd,
-  ordersSetPaymentInfo
+  ordersSetPaymentInfo,
+  ordersAddCardPayment
 };
