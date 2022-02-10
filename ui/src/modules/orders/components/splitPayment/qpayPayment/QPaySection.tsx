@@ -25,12 +25,12 @@ export default class QPaySection extends React.Component<Props> {
 
     return (
       <div>
-        <Table>
+        <Table hover={true} bordered={true} responsive={true}>
           <thead>
             <tr>
               <th>{__('Amount')}</th>
               <th>{__('Status')}</th>
-              <th>{__('QR code')}</th>
+              <th>{__('Scan the QR code below with payment app to continue')}</th>
             </tr>
           </thead>
           <tbody>{qpayInvoices ? qpayInvoices.map(c => <QPayRow item={c} key={c._id} />) : null}</tbody>

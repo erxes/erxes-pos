@@ -14,10 +14,9 @@ export default class CardRow extends React.Component<Props> {
     const { item } = this.props;
     const canvas = document.getElementById(item._id);
 
-    console.log(canvas, item._id)
-
     if (canvas && item && item.qrText) {
-      QRCode.toCanvas(canvas, item.qrText);
+      // create less than normal size code, default: 4
+      QRCode.toCanvas(canvas, item.qrText, { scale: 3 });
     }
   }
 
@@ -28,14 +27,7 @@ export default class CardRow extends React.Component<Props> {
       return null;
     }
 
-    return (
-      <React.Fragment>
-        <h4>{__("Scan the QR code below with payment app to continue")}</h4>
-        <div>
-          <canvas id={item._id} />
-        </div>
-      </React.Fragment>
-    );
+    return (<canvas id={item._id} />);
   }
 
   render() {
