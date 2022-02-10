@@ -3,6 +3,7 @@ import React from 'react';
 import NumberFormat from "react-number-format";
 import styled from "styled-components";
 
+import { FlexCenter } from "modules/common/styles/main";
 import Button from "modules/common/components/Button";
 import Icon from "modules/common/components/Icon";
 import FormGroup from "modules/common/components/form/Group";
@@ -10,7 +11,7 @@ import ControlLabel from "modules/common/components/form/Label";
 import { __, Alert } from "modules/common/utils";
 import { Input } from "modules/orders/styles";
 import { IOrder, ICardPayment } from 'modules/orders/types';
-import KeyPads from '../drawer/KeyPads';
+import KeyPads from '../../drawer/KeyPads';
 
 const ButtonWrapper = styled.div`
   margin-bottom: 20px;
@@ -142,12 +143,14 @@ export default class CardInput extends React.Component<Props, State> {
             <Button btnStyle='warning' onClick={sendTransaction} size='large'>{__("Send transaction")}</Button> : null
           }
         </ButtonWrapper>
-        <KeyPads
-          isPayment={false}
-          isPortrait={true}
-          onChangeKeyPad={this.onChangeKeyPad}
-          billType={billType}
-        />
+        <FlexCenter>
+          <KeyPads
+            isPayment={false}
+            isPortrait={true}
+            onChangeKeyPad={this.onChangeKeyPad}
+            billType={billType}
+          />
+        </FlexCenter>
       </React.Fragment>
     );
   } // end render()

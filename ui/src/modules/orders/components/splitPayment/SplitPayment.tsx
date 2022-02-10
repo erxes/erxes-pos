@@ -3,8 +3,9 @@ import styled from 'styled-components';
 
 import { Tabs, TabTitle } from 'modules/common/components/tabs/index';
 import { BILL_TYPES } from '../../../../constants';
-import { IOrder, ICardPayment } from 'modules/orders/types';
-import CardSection from './CardSection';
+import { IOrder, ICardPayment, IInvoiceParams } from 'modules/orders/types';
+import CardSection from './cardPayment/CardSection';
+import QPaySection from './qpayPayment/QPaySection';
 import OrderInfo from './OrderInfo';
 
 const OrderInfoWrapper = styled.div`
@@ -16,6 +17,7 @@ const OrderInfoWrapper = styled.div`
 type Props = {
   order: IOrder;
   addCardPayment: (params: ICardPayment) => void;
+  createQPayInvoice: (params: IInvoiceParams) => void;
 }
 
 type State = {
@@ -33,8 +35,8 @@ export default class SplitPayment extends React.Component<Props, State> {
     };
   }
 
-  renderContent() {
-    const { order, addCardPayment } = this.props;
+  renderTabContent() {
+    const { order, addCardPayment, createQPayInvoice } = this.props;
     const { billType, currentTab } = this.state;
 
     if (currentTab === 'card') {
@@ -47,7 +49,13 @@ export default class SplitPayment extends React.Component<Props, State> {
       );
     }
 
-    return 'qpay'
+    if (currentTab === 'qpay') {
+      return (
+        <QPaySection order={order} billType={billType} createQPayInvoice={createQPayInvoice} />
+      );
+    }
+
+    return null;
   }
 
   render() {
@@ -63,9 +71,9 @@ export default class SplitPayment extends React.Component<Props, State> {
           <TabTitle className={currentTab === 'card' ? 'active' : ''} onClick={() => onClick('card')}>
             Card payment
           </TabTitle>
-          <TabTitle className={currentTab === 'qpay' ? 'active' : ''} onClick={() => onClick('qpay')}>QPay</TabTitle>
+          <TabTitle className={currentTab === 'qpay' ? 'active' : ''} onClick={() => onClick('qpay')}>QPay invoices</TabTitle>
         </Tabs>
-        {this.renderContent()}
+        {this.renderTabContent()}
         <OrderInfoWrapper>
           <OrderInfo order={this.props.order} />
         </OrderInfoWrapper>

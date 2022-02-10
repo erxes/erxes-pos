@@ -10,7 +10,7 @@ import { withProps } from '../../utils';
 import { Alert, __ } from "modules/common/utils";
 import { queries, mutations } from '../graphql/index';
 import SplitPayment from '../components/splitPayment/SplitPayment';
-import { ICardPayment, OrderDetailQueryResponse } from '../types';
+import { ICardPayment, OrderDetailQueryResponse, IInvoiceParams } from '../types';
 
 type Props = {
   id: string;
@@ -19,11 +19,12 @@ type Props = {
 type FinalProps = {
   orderDetailQuery: OrderDetailQueryResponse;
   addCardPaymentMutation: any;
+  createInvoiceMutation: any;
 } & Props & IRouterProps;
 
 class SplitPaymentContainer extends React.Component<FinalProps> {
   render() {
-    const { orderDetailQuery, addCardPaymentMutation } = this.props;
+    const { orderDetailQuery, addCardPaymentMutation, createInvoiceMutation } = this.props;
 
     if (orderDetailQuery.loading) {
       return <Spinner />;
@@ -38,10 +39,20 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       })
     };
 
+    const createQPayInvoice = (params: IInvoiceParams) => {
+      createInvoiceMutation({ variables: params }).then(({ data }) => {
+        orderDetailQuery.refetch();
+        console.log(data);
+      }).catch(e => {
+        Alert.error(__(e.message));
+      })
+    };
+
     return (
       <SplitPayment
         order={orderDetailQuery.orderDetail}
         addCardPayment={addCardPayment}
+        createQPayInvoice={createQPayInvoice}
       />
     );
   }
@@ -60,6 +71,9 @@ export default withProps<Props>(
     ),
     graphql<Props>(gql(mutations.ordersAddCardPayment), {
       name: 'addCardPaymentMutation',
+    }),
+    graphql<Props>(gql(mutations.createQpaySimpleInvoice), {
+      name: 'createInvoiceMutation'
     })
   )(withCurrentUser(withRouter<FinalProps>(SplitPaymentContainer)))
 );

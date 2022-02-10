@@ -205,7 +205,7 @@ export default class Calculation extends React.Component<Props, State> {
   }
 
   renderSplitPaymentButton() {
-    const { order, onClickDrawer, config, editOrder } = this.props;
+    const { order, config, editOrder } = this.props;
 
     if (!order || (order && order.paidDate && order.status === ORDER_STATUSES.PAID)) {
       return null;
@@ -214,7 +214,7 @@ export default class Calculation extends React.Component<Props, State> {
     const onClick = () => {
       editOrder();
 
-      onClickDrawer("splitPayment");
+      window.location.href = `/order-payment/${order._id}`;
     };
 
     return (

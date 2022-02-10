@@ -61,6 +61,7 @@ export interface IOrder {
   user: IUser;
   putResponses?: IPutResponse[];
   qpayInvoice: IQPayInvoice;
+  qpayInvoices: IQPayInvoice[];
 }
 
 interface IProductCommonFields {
@@ -216,4 +217,9 @@ export interface ICustomerParams {
   phone: string;
   email?: string;
   sex?: number;
+}
+
+export interface IInvoiceParams {
+  orderId: string;
+  amount?: number;
 }

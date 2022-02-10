@@ -54,8 +54,8 @@ const invoiceFields = `
 `;
 
 const createQpaySimpleInvoice = `
-  mutation createQpaySimpleInvoice($orderId: String!) {
-    createQpaySimpleInvoice(orderId: $orderId) {
+  mutation createQpaySimpleInvoice($orderId: String!, $amount: Float) {
+    createQpaySimpleInvoice(orderId: $orderId, amount: $amount) {
       ${invoiceFields}
     }
   }
