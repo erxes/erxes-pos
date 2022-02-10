@@ -21,11 +21,18 @@ type FinalProps = {
   addCardPaymentMutation: any;
   createInvoiceMutation: any;
   checkInvoiceMutation: any;
+  cancelInvoiceMutation: any;
 } & Props & IRouterProps;
 
 class SplitPaymentContainer extends React.Component<FinalProps> {
   render() {
-    const { orderDetailQuery, addCardPaymentMutation, createInvoiceMutation, checkInvoiceMutation } = this.props;
+    const {
+      orderDetailQuery,
+      addCardPaymentMutation,
+      createInvoiceMutation,
+      checkInvoiceMutation,
+      cancelInvoiceMutation
+    } = this.props;
 
     if (orderDetailQuery.loading) {
       return <Spinner />;
@@ -56,12 +63,23 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       })
     };
 
+    const cancelInvoice = (_id: string) => {
+      cancelInvoiceMutation({ variables: { _id } }).then(() => {
+        orderDetailQuery.refetch();
+
+        Alert.success(__('Success'));
+      }).catch(e => {
+        Alert.error(e.message);
+      })
+    };
+
     return (
       <SplitPayment
         order={orderDetailQuery.orderDetail}
         addCardPayment={addCardPayment}
         createQPayInvoice={createQPayInvoice}
         checkQPayInvoice={checkQPayInvoice}
+        cancelQPayInvoice={cancelInvoice}
       />
     );
   }
@@ -86,6 +104,9 @@ export default withProps<Props>(
     }),
     graphql<Props>(gql(mutations.qpayCheckPayment), {
       name: 'checkInvoiceMutation'
+    }),
+    graphql<Props>(gql(mutations.qpayCancelInvoice), {
+      name: 'cancelInvoiceMutation'
     })
   )(withCurrentUser(withRouter<FinalProps>(SplitPaymentContainer)))
 );

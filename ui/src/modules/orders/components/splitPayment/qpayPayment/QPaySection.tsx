@@ -13,11 +13,12 @@ type Props = {
   billType: string;
   createQPayInvoice: (params: IInvoiceParams) => void;
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
+  cancelQPayInvoice: (id: string) => void;
 }
 
 export default class QPaySection extends React.Component<Props> {
   render() {
-    const { order, billType, createQPayInvoice, checkQPayInvoice } = this.props;
+    const { order, billType, createQPayInvoice, checkQPayInvoice, cancelQPayInvoice } = this.props;
 
     const { qpayInvoices = [] } = order;
 
@@ -37,8 +38,14 @@ export default class QPaySection extends React.Component<Props> {
           </thead>
           <tbody>
             {qpayInvoices ? qpayInvoices.map(c =>
-              <QPayRow item={c} key={c._id} checkQPayInvoice={checkQPayInvoice} orderId={order._id} />)
-              : null
+              <QPayRow
+                item={c}
+                key={c._id}
+                checkQPayInvoice={checkQPayInvoice}
+                cancelQPayInvoice={cancelQPayInvoice}
+                orderId={order._id}
+              />
+            ) : null
             }
           </tbody>
         </Table>

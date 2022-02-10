@@ -93,6 +93,12 @@ const ordersAddCardPayment = `
   }
 `;
 
+const qpayCancelInvoice = `
+  mutation qpayCancelInvoice($_id: String!) {
+    qpayCancelInvoice(_id: $_id)
+  }
+`;
+
 export default {
   ordersAdd,
   ordersMakePayment,
@@ -102,5 +108,6 @@ export default {
   qpayCheckPayment,
   customersAdd,
   ordersSetPaymentInfo,
-  ordersAddCardPayment
+  ordersAddCardPayment,
+  qpayCancelInvoice
 };

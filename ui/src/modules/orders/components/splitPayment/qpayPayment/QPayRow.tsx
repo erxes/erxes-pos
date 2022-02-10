@@ -1,7 +1,7 @@
 import React from 'react';
 import QRCode from 'qrcode';
 
-import { __ } from 'modules/common/utils';
+import { __, confirm, Alert } from 'modules/common/utils';
 import Button from 'modules/common/components/Button';
 import Label from 'modules/common/components/Label';
 import { IQPayInvoice } from 'modules/qpay/types';
@@ -11,6 +11,7 @@ type Props = {
   item: IQPayInvoice;
   orderId: string;
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
+  cancelQPayInvoice: (id: string) => void;
 }
 
 export default class CardRow extends React.Component<Props> {
@@ -35,12 +36,20 @@ export default class CardRow extends React.Component<Props> {
   }
 
   render() {
-    const { item, checkQPayInvoice, orderId } = this.props;
+    const { item, checkQPayInvoice, orderId, cancelQPayInvoice } = this.props;
 
     const labelStyle = item.status === 'PAID' ? 'success' : 'warning';
 
     const onCheck = () => {
       checkQPayInvoice({ orderId, _id: item._id });
+    };
+
+    const onCancel = () => {
+      confirm().then(() => {
+        cancelQPayInvoice(item._id);
+      }).catch(e => {
+        Alert.error(e.message);
+      })
     };
 
     return (
@@ -50,7 +59,12 @@ export default class CardRow extends React.Component<Props> {
         <td>
           <div>{item.status !== 'PAID' ? this.renderQrCode() : 'already paid'}</div>
         </td>
-        <td><Button size="small" btnStyle="warning" icon="check-1" onClick={onCheck}>{__('Check invoice')}</Button></td>
+        <td>
+          <div>
+            <Button size="small" btnStyle="warning" icon="check-1" onClick={onCheck}>{__('Check invoice')}</Button>
+            <Button size="small" btnStyle="danger" icon="trash-alt" onClick={onCancel}>{__('Cancel invoice')}</Button>
+          </div>
+        </td>
       </tr>
     );
   }

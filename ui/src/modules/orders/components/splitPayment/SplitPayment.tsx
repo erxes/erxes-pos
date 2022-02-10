@@ -19,6 +19,8 @@ type Props = {
   addCardPayment: (params: ICardPayment) => void;
   createQPayInvoice: (params: IInvoiceParams) => void;
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
+  cancelQPayInvoice: (id: string) => void;
+
 }
 
 type State = {
@@ -37,7 +39,7 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   renderTabContent() {
-    const { order, addCardPayment, createQPayInvoice, checkQPayInvoice } = this.props;
+    const { order, addCardPayment, createQPayInvoice, checkQPayInvoice, cancelQPayInvoice } = this.props;
     const { billType, currentTab } = this.state;
 
     if (currentTab === 'card') {
@@ -57,6 +59,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           billType={billType}
           createQPayInvoice={createQPayInvoice}
           checkQPayInvoice={checkQPayInvoice}
+          cancelQPayInvoice={cancelQPayInvoice}
         />
       );
     }
