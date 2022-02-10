@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import Button from 'modules/common/components/Button';
 import client from 'apolloClient';
 import Col from 'react-bootstrap/Col';
@@ -10,7 +11,7 @@ import Row from 'react-bootstrap/Row';
 import Select from 'react-select-plus';
 import { __ } from 'modules/common/utils';
 import { Alert } from 'modules/common/utils';
-import { FlexBetween, FlexCenter } from 'modules/common/styles/main';
+import { FlexBetween } from 'modules/common/styles/main';
 import { FormGroup } from 'modules/common/components/form';
 import { IConfig } from 'types';
 import { IUser } from 'modules/auth/types';
@@ -32,6 +33,7 @@ type State = {
   mode: string,
   disableSendData: boolean,
   reportUserIds: string[],
+  reportNumber: string,
   dailyReport: any,
 };
 
@@ -44,6 +46,7 @@ export default class Settings extends React.Component<Props, State> {
       mode,
       disableSendData: false,
       reportUserIds: [],
+      reportNumber: dayjs().format('YYYYMMDD').toString(),
       dailyReport: undefined,
     };
   }
@@ -87,15 +90,26 @@ export default class Settings extends React.Component<Props, State> {
   }
 
   onSelectUsers = values => {
-    this.setState({ reportUserIds: values.map(v => v.value) })
+    this.setState({ reportUserIds: values.map(v => v.value), dailyReport: undefined })
+  };
+
+  onChangeNumber = e => {
+    this.setState({ reportNumber: e.target.value, dailyReport: undefined })
   };
 
   onReport = () => {
+    const { reportNumber, reportUserIds } = this.state;
+
+    if (reportNumber && reportNumber.length !== 8) {
+      return Alert.error('Эхлэл дугаарыг YYYYMMDD форматаар оруулна уу. Эсвэл хоосон байж болно.');
+    }
+
     client.query({
       query: gql(queries.dailyReport),
       fetchPolicy: 'network-only',
       variables: {
-        posUserIds: this.state.reportUserIds
+        posNumber: reportNumber,
+        posUserIds: reportUserIds
       }
     }).then(async (response) => {
       this.setState({ dailyReport: response.data.dailyReport.report })
@@ -105,13 +119,13 @@ export default class Settings extends React.Component<Props, State> {
   }
 
   renderReport() {
-    const { dailyReport } = this.state;
+    const { dailyReport, reportNumber } = this.state;
 
     if (!dailyReport) {
       return null;
     }
 
-    return <DailyReportReceipt dailyReport={dailyReport} />
+    return <DailyReportReceipt dailyReport={dailyReport} reportNumber={reportNumber} key={Math.random()} />
   }
 
   render() {
@@ -213,35 +227,42 @@ export default class Settings extends React.Component<Props, State> {
               </StageContent>
             </MainContent>
           </Col>
-          <Col md={8}>
+          <Col md={4}>
             <MainContent hasBackground={true} hasShadow={true} isHalf={true}>
-              <FlexBetween>
-                Өдрийн тайлан
-              </FlexBetween>
+              <ControlLabel>{`Өдрийн тайлан`}</ControlLabel>
+              <p />
+              <FormGroup>
+                <ControlLabel>{`Дугаар эхлэл`}</ControlLabel>
+                <FormControl
+                  defaultValue={this.state.reportNumber}
+                  onChange={this.onChangeNumber}
+                />
+              </FormGroup>
+              <FormGroup>
+                <ControlLabel>{`Хэрэглэгч сонгох...`}</ControlLabel>
+                <Select
+                  placeholder={__('Хэрэглэгч')}
+                  value={this.state.reportUserIds}
+                  clearable={true}
+                  onChange={this.onSelectUsers}
+                  options={(posUsers || []).map(u => ({ value: u._id, label: u.email }))}
+                  multi={true}
+                  block
+                />
+              </FormGroup>
+              <Button
+                btnStyle="warning"
+                onClick={this.onReport}
+                icon="check-circle"
+                disabled={this.state.disableSendData}
+              >
+                {__("Report")}
+              </Button>
 
-              <FlexCenter>
-                <FormGroup>
-                  <ControlLabel>{`Хэрэглэгч сонгох...`}</ControlLabel>
-                  <Select
-                    placeholder={__('Хэрэглэгч')}
-                    value={this.state.reportUserIds}
-                    clearable={true}
-                    onChange={this.onSelectUsers}
-                    options={(posUsers || []).map(u => ({ value: u._id, label: u.email }))}
-                    multi={true}
-                    block
-                  />
-                </FormGroup>
-                <Button
-                  btnStyle="warning"
-                  onClick={this.onReport}
-                  icon="check-circle"
-                  disabled={this.state.disableSendData}
-                >
-                  {__("Report")}
-                </Button>
-              </FlexCenter>
             </MainContent>
+
+          </Col>
+          <Col md={4}>
             {this.renderReport()}
           </Col>
         </Row>

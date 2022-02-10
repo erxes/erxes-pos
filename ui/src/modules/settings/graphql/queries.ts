@@ -24,8 +24,8 @@ const posUsers = `
 `;
 
 const dailyReport = `
-  query dailyReport($posUserIds: [String]) {
-    dailyReport(posUserIds: $posUserIds) {
+  query dailyReport($posUserIds: [String], $posNumber: String) {
+    dailyReport(posUserIds: $posUserIds, posNumber: $posNumber) {
       report
     }
   }
