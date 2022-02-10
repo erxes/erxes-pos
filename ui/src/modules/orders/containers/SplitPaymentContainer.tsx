@@ -10,7 +10,7 @@ import { withProps } from '../../utils';
 import { Alert, __ } from "modules/common/utils";
 import { queries, mutations } from '../graphql/index';
 import SplitPayment from '../components/splitPayment/SplitPayment';
-import { ICardPayment, OrderDetailQueryResponse, IInvoiceParams } from '../types';
+import { ICardPayment, OrderDetailQueryResponse, IInvoiceParams, IInvoiceCheckParams } from '../types';
 
 type Props = {
   id: string;
@@ -20,11 +20,12 @@ type FinalProps = {
   orderDetailQuery: OrderDetailQueryResponse;
   addCardPaymentMutation: any;
   createInvoiceMutation: any;
+  checkInvoiceMutation: any;
 } & Props & IRouterProps;
 
 class SplitPaymentContainer extends React.Component<FinalProps> {
   render() {
-    const { orderDetailQuery, addCardPaymentMutation, createInvoiceMutation } = this.props;
+    const { orderDetailQuery, addCardPaymentMutation, createInvoiceMutation, checkInvoiceMutation } = this.props;
 
     if (orderDetailQuery.loading) {
       return <Spinner />;
@@ -42,7 +43,14 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
     const createQPayInvoice = (params: IInvoiceParams) => {
       createInvoiceMutation({ variables: params }).then(({ data }) => {
         orderDetailQuery.refetch();
-        console.log(data);
+      }).catch(e => {
+        Alert.error(__(e.message));
+      })
+    };
+
+    const checkQPayInvoice = (params: IInvoiceCheckParams) => {
+      checkInvoiceMutation({ variables: params }).then(({ data }) => {
+        orderDetailQuery.refetch();
       }).catch(e => {
         Alert.error(__(e.message));
       })
@@ -53,6 +61,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
         order={orderDetailQuery.orderDetail}
         addCardPayment={addCardPayment}
         createQPayInvoice={createQPayInvoice}
+        checkQPayInvoice={checkQPayInvoice}
       />
     );
   }
@@ -74,6 +83,9 @@ export default withProps<Props>(
     }),
     graphql<Props>(gql(mutations.createQpaySimpleInvoice), {
       name: 'createInvoiceMutation'
+    }),
+    graphql<Props>(gql(mutations.qpayCheckPayment), {
+      name: 'checkInvoiceMutation'
     })
   )(withCurrentUser(withRouter<FinalProps>(SplitPaymentContainer)))
 );

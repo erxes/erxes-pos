@@ -38,6 +38,8 @@ export default class SplitQPayForm extends React.Component<Props, State> {
 
     const onSubmit = () => {
       createQPayInvoice({ orderId: order._id, amount });
+
+      onCancel();
     };
 
     return (

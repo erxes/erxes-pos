@@ -223,3 +223,8 @@ export interface IInvoiceParams {
   orderId: string;
   amount?: number;
 }
+
+export interface IInvoiceCheckParams {
+  orderId: string;
+  _id: string;
+}

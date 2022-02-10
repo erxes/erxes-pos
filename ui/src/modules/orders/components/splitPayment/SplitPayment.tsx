@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { Tabs, TabTitle } from 'modules/common/components/tabs/index';
 import { BILL_TYPES } from '../../../../constants';
-import { IOrder, ICardPayment, IInvoiceParams } from 'modules/orders/types';
+import { IOrder, ICardPayment, IInvoiceParams, IInvoiceCheckParams } from 'modules/orders/types';
 import CardSection from './cardPayment/CardSection';
 import QPaySection from './qpayPayment/QPaySection';
 import OrderInfo from './OrderInfo';
@@ -18,6 +18,7 @@ type Props = {
   order: IOrder;
   addCardPayment: (params: ICardPayment) => void;
   createQPayInvoice: (params: IInvoiceParams) => void;
+  checkQPayInvoice: (params: IInvoiceCheckParams) => void;
 }
 
 type State = {
@@ -36,7 +37,7 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   renderTabContent() {
-    const { order, addCardPayment, createQPayInvoice } = this.props;
+    const { order, addCardPayment, createQPayInvoice, checkQPayInvoice } = this.props;
     const { billType, currentTab } = this.state;
 
     if (currentTab === 'card') {
@@ -51,7 +52,12 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     if (currentTab === 'qpay') {
       return (
-        <QPaySection order={order} billType={billType} createQPayInvoice={createQPayInvoice} />
+        <QPaySection
+          order={order}
+          billType={billType}
+          createQPayInvoice={createQPayInvoice}
+          checkQPayInvoice={checkQPayInvoice}
+        />
       );
     }
 

@@ -62,8 +62,8 @@ const createQpaySimpleInvoice = `
 `;
 
 const qpayCheckPayment = `
-  mutation qpayCheckPayment($orderId: String!) {
-    qpayCheckPayment(orderId: $orderId) {
+  mutation qpayCheckPayment($orderId: String!, $_id: String) {
+    qpayCheckPayment(orderId: $orderId, _id: $_id) {
       ${invoiceFields}
     }
   }
