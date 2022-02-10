@@ -29,7 +29,7 @@ const Receipt = ({ match, location }) => {
   const id = match.params.id;
   const qp = queryString.parse(location.search);
 
-  return <ReceiptContainer id={id} kitchen={qp && qp.kitchen} />;
+  return <ReceiptContainer id={id} kitchen={qp && qp.kitchen} inner={qp && qp.inner} />;
 };
 
 const Pos = ({ location }) => {
