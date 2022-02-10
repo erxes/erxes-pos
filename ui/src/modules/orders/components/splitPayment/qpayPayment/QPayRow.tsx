@@ -1,7 +1,6 @@
 import React from 'react';
 import QRCode from 'qrcode';
 
-import { __ } from 'modules/common/utils';
 import Label from 'modules/common/components/Label';
 import { IQPayInvoice } from 'modules/qpay/types';
 
