@@ -48,7 +48,6 @@ export default class SplitForm extends React.Component<Props> {
             </Button>
             {paymentEnabled && (
               <Button
-                // style={{ backgroundColor: options.colors.primary }}
                 icon="check-circle"
                 block
                 onClick={handleSubmit}

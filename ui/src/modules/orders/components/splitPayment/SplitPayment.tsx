@@ -20,7 +20,6 @@ type Props = {
   createQPayInvoice: (params: IInvoiceParams) => void;
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
-
 }
 
 type State = {
@@ -80,7 +79,9 @@ export default class SplitPayment extends React.Component<Props, State> {
           <TabTitle className={currentTab === 'card' ? 'active' : ''} onClick={() => onClick('card')}>
             Card payment
           </TabTitle>
-          <TabTitle className={currentTab === 'qpay' ? 'active' : ''} onClick={() => onClick('qpay')}>QPay invoices</TabTitle>
+          <TabTitle className={currentTab === 'qpay' ? 'active' : ''} onClick={() => onClick('qpay')}>
+            QPay invoices  
+          </TabTitle>
         </Tabs>
         {this.renderTabContent()}
         <OrderInfoWrapper>

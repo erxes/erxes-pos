@@ -31,7 +31,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       addCardPaymentMutation,
       createInvoiceMutation,
       checkInvoiceMutation,
-      cancelInvoiceMutation
+      cancelInvoiceMutation,
     } = this.props;
 
     if (orderDetailQuery.loading) {
