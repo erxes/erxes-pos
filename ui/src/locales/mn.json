@@ -77,5 +77,9 @@
   "Add payment": "Төлбөр нэмэх",
   "Amount": "Дүн",
   "Payment info": "Төлбөрийн мэдээлэл",
-  "Create invoice": "Нэхэмжлэх үүсгэх"
+  "Create invoice": "Нэхэмжлэх үүсгэх",
+  "Paid card amount": "Картаар төлсөн дүн",
+  "Paid cash amount": "Бэлнээр төлсөн дүн",
+  "Paid mobile amount": "Мобайлаар төлсөн дүн (QPay)",
+  "Amount exceeds total amount": "Төлөх дүнгээс хэтэрсэн байна"
 }

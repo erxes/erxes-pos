@@ -19,7 +19,6 @@ const ButtonWrapper = styled.div`
 
 type Props = {
   color?: string;
-  onStateChange: (key: string, value: any) => void;
   billType: string;
   addCardPayment: (params: ICardPayment) => void;
   order: IOrder;
@@ -55,7 +54,6 @@ export default class CardInput extends React.Component<Props, State> {
   render() {
     const {
       color = '',
-      onStateChange,
       billType,
       addCardPayment,
       order,
@@ -104,9 +102,6 @@ export default class CardInput extends React.Component<Props, State> {
             if (r && r.status === true && r.response) {
               if (r.response.response_code === '000') {
                 Alert.success(__(r.response.response_msg || 'Transaction was successful'));
-
-                // enable payment button
-                onStateChange('paymentEnabled', true);
 
                 addCardPayment({ _id, cardInfo: JSON.stringify(r.response), amount });
               } else {

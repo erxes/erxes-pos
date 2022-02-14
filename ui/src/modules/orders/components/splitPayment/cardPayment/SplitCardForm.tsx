@@ -14,15 +14,19 @@ type Props = {
   billType: string;
 }
 
-export default class SplitForm extends React.Component<Props> {
+type State = {
+  paymentEnabled: boolean;
+}
+
+export default class SplitForm extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = { paymentEnabled: false };
+  }
+
   render() {
     const { order, addCardPayment, closeModal, billType } = this.props;
-
-    const handleSubmit = () => {
-      console.log('ok');
-    };
-
-    const paymentEnabled = false;
 
     const onCancel = () => {
       closeModal && closeModal();
@@ -34,7 +38,6 @@ export default class SplitForm extends React.Component<Props> {
           billType={billType}
           addCardPayment={addCardPayment}
           order={order}
-          onStateChange={() => {}}
         />
         <div>
           <FlexCenter>
@@ -46,15 +49,6 @@ export default class SplitForm extends React.Component<Props> {
             >
               {__("Cancel")}
             </Button>
-            {paymentEnabled && (
-              <Button
-                icon="check-circle"
-                block
-                onClick={handleSubmit}
-              >
-                {__("Done")}
-              </Button>
-            )}
           </FlexCenter>
         </div>
       </>

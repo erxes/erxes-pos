@@ -78,5 +78,9 @@
   "Add payment": "Add payment",
   "Amount": "Amount",
   "Payment info": "Payment info",
-  "Create invoice": "Create invoice"
+  "Create invoice": "Create invoice",
+  "Paid card amount": "Paid card amount",
+  "Paid cash amount": "Paid cash amount",
+  "Paid mobile amount": "Paid mobile amount (QPay)",
+  "Amount exceeds total amount": "Amount exceeds total amount"
 }
