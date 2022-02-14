@@ -86,6 +86,7 @@ export interface IConfig {
   productDetails: string[];
   adminIds: string[];
   cashierIds: string[];
+  maxSkipNumber: number;
   kitchenScreen: any;
   waitingScreen: any;
   kioskMachine: any;
