@@ -73,5 +73,9 @@
   "Date": "Огноо",
   "Time": "Хугацаа",
   "buyerCompanyNumber": "Худалдан авагч (ТТД)",
-  "Split payment": "Хувааж төлөх"
+  "Split payment": "Хувааж төлөх",
+  "Add payment": "Төлбөр нэмэх",
+  "Amount": "Дүн",
+  "Payment info": "Төлбөрийн мэдээлэл",
+  "Create invoice": "Нэхэмжлэх үүсгэх"
 }

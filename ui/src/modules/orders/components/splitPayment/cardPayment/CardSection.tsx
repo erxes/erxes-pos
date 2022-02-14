@@ -28,17 +28,17 @@ export default class CardSection extends React.Component<Props> {
         <Table>
           <thead>
             <tr>
-              <th>Amount</th>
-              <th>Card info</th>
+              <th>{__('Amount')}</th>
+              <th>{__('Payment info')}</th>
             </tr>
           </thead>
           <tbody>{cardPayments ? cardPayments.map(c => <CardRow item={c} key={c._id} />) : null}</tbody>
         </Table>
         <ModalTrigger
           hideHeader={true}
-          title={__('Add card payment')}
+          title={__('Add payment')}
           trigger={
-            <Button size="small" btnStyle="success" icon="plus-circle">Add</Button>
+            <Button size="small" btnStyle="success" icon="plus-circle">{__('Add payment')}</Button>
           }
           content={content}
         />

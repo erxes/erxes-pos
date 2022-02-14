@@ -78,7 +78,7 @@ export default class CardInput extends React.Component<Props, State> {
     return (
       <React.Fragment>
         <FormGroup>
-          <ControlLabel>{__("QPay amount")}</ControlLabel>
+          <ControlLabel>{__("Amount")}</ControlLabel>
           <Input color={color}>
             <NumberFormat
               name="mobileAmount"

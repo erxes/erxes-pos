@@ -51,13 +51,13 @@ export default class QPaySection extends React.Component<Props> {
         </Table>
         <ModalTrigger
           hideHeader={true}
-          title={__('Add qpay invoice')}
+          title={__('Create invoice')}
           trigger={
             <Button
               size="small"
               btnStyle="success"
               icon="plus-circle"
-              >{__('Add invoice')}
+              >{__('Create invoice')}
             </Button>
           }
           content={content}

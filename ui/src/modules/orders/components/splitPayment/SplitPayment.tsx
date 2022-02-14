@@ -7,6 +7,7 @@ import { IOrder, ICardPayment, IInvoiceParams, IInvoiceCheckParams } from 'modul
 import CardSection from './cardPayment/CardSection';
 import QPaySection from './qpayPayment/QPaySection';
 import OrderInfo from './OrderInfo';
+import { __ } from 'modules/common/utils';
 
 const OrderInfoWrapper = styled.div`
   margin: 20px;
@@ -76,11 +77,14 @@ export default class SplitPayment extends React.Component<Props, State> {
     return (
       <div>
         <Tabs full={true}>
+          <TabTitle className={currentTab === 'cash' ? 'active' : ''} onClick={() => onClick('cash')}>
+            {__('In Cash')}
+          </TabTitle>
           <TabTitle className={currentTab === 'card' ? 'active' : ''} onClick={() => onClick('card')}>
-            Card payment
+            {__('By Card')}
           </TabTitle>
           <TabTitle className={currentTab === 'qpay' ? 'active' : ''} onClick={() => onClick('qpay')}>
-            QPay invoices  
+            {__('Pay with QPay')}
           </TabTitle>
         </Tabs>
         {this.renderTabContent()}

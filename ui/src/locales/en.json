@@ -74,5 +74,9 @@
   "Date": "Date",
   "Time": "Time",
   "buyerCompanyNumber": "Buyer (regNo)",
-  "Split payment": "Split payment"
+  "Split payment": "Split payment",
+  "Add payment": "Add payment",
+  "Amount": "Amount",
+  "Payment info": "Payment info",
+  "Create invoice": "Create invoice"
 }
