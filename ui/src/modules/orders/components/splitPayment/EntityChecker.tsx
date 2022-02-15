@@ -40,7 +40,7 @@ export default class EbarimtModal extends React.Component<Props> {
             getStringValue={true}
           />
         </Modal.Body>
-        <Modal.Footer>
+        <Modal.Footer style={{ padding: '20px', margin: '0' }}>
           <Button btnStyle="success" icon="check" onClick={() => onSubmit()}>{__('Check')}</Button>
           <Button btnStyle="simple" icon="cancel-1" onClick={onClose}>{__('Close')}</Button>
         </Modal.Footer>

@@ -2,6 +2,7 @@ import React from 'react';
 
 import Button from 'modules/common/components/Button';
 import { IInvoiceCheckParams, IInvoiceParams, IOrder } from 'modules/orders/types';
+import { MarginTop } from 'modules/orders/styles';
 import QPayRow from './QPayRow';
 import ModalTrigger from 'modules/common/components/ModalTrigger';
 import Table from 'modules/common/components/table/index';
@@ -56,19 +57,21 @@ export default class QPaySection extends React.Component<Props> {
             }
           </tbody>
         </Table>
-        <ModalTrigger
-          hideHeader={true}
-          title={__('Create invoice')}
-          trigger={
-            <Button
-              size="small"
-              btnStyle="success"
-              icon="plus-circle"
-              >{__('Create invoice')}
-            </Button>
-          }
-          content={content}
-        />
+        <MarginTop margin={20}>
+          <ModalTrigger
+            hideHeader={true}
+            title={__('Create invoice')}
+            trigger={
+              <Button
+                size="small"
+                btnStyle="success"
+                icon="plus-circle"
+                >{__('Create invoice')}
+              </Button>
+            }
+            content={content}
+          />
+        </MarginTop>
       </div>
     );
   }

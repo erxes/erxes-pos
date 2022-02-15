@@ -16,16 +16,17 @@ import KeypadWithInput from './KeypadWithInput';
 import Ebarimt from '../drawer/Ebarimt';
 import EntityChecker from './EntityChecker';
 
-const OrderInfoWrapper = styled.div`
+const PaymentWrapper = styled.div`
   margin: 20px;
   padding: 20px;
   background-color: #fff;
   overflow: scroll;
 `;
 
-const ContentWrapper = styled.div`
+const TabContentWrapper = styled.div`
   padding: 20px;
   border-top: 1px dashed #ddd;
+  border-bottom: 1px dashed #ddd;
 `;
 
 type Props = {
@@ -138,7 +139,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           order={order}
           setAmount={setAmount}
           amount={cashAmount}
-          inputLabel={__('Cash amount')}
+          inputLabel={__('Amount')}
         />
       );
     }
@@ -164,7 +165,7 @@ export default class SplitPayment extends React.Component<Props, State> {
     };
 
     return (
-      <OrderInfoWrapper>
+      <PaymentWrapper>
         <Tabs full={true}>
           <TabTitle className={currentTab === 'cash' ? 'active' : ''} onClick={() => onClick('cash')}>
             {__('In Cash')}
@@ -176,7 +177,7 @@ export default class SplitPayment extends React.Component<Props, State> {
             {__('Pay with QPay')}
           </TabTitle>
         </Tabs>
-        <ContentWrapper>{this.renderTabContent()}</ContentWrapper>
+        <TabContentWrapper>{this.renderTabContent()}</TabContentWrapper>
         <FlexBetween>
           <div>
             <Ebarimt
@@ -186,22 +187,22 @@ export default class SplitPayment extends React.Component<Props, State> {
               onBillTypeChange={onBillTypeChange}
               onStateChange={onStateChange}
             />
-            <OrderInfo
-              order={order}
-              remainderAmount={this.getRemainderAmount() - cashAmount}
-              companyName={companyName}
-            />
-            <EntityChecker
-              billType={billType}
-              onStateChange={onStateChange}
-              order={order}
-              showModal={showRegModal}
-              registerNumber={registerNumber}
-              onSubmit={this.checkOrganization}
-            />
           </div>
+          <OrderInfo
+            order={order}
+            remainderAmount={this.getRemainderAmount() - cashAmount}
+            companyName={companyName}
+          />
+          <EntityChecker
+            billType={billType}
+            onStateChange={onStateChange}
+            order={order}
+            showModal={showRegModal}
+            registerNumber={registerNumber}
+            onSubmit={this.checkOrganization}
+          />
         </FlexBetween>
-      </OrderInfoWrapper>
+      </PaymentWrapper>
     );
   } // end render()
 }
