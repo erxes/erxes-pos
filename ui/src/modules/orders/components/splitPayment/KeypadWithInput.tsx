@@ -9,7 +9,7 @@ import ControlLabel from "modules/common/components/form/Label";
 import { __ } from "modules/common/utils";
 import { Input } from "modules/orders/styles";
 import { IOrder } from 'modules/orders/types';
-import KeyPads from '../../drawer/KeyPads';
+// import KeyPads from '../drawer/KeyPads';
 
 type Props = {
   color?: string;
@@ -18,45 +18,29 @@ type Props = {
   setAmount: (amount: number) => void;
   amount: number;
   maxAmount?: number;
+  inputLabel: string;
 }
 
-type State = {
-  amount: number;
-}
-
-export default class CardInput extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      amount: props.amount || 0
-    };
-  }
-
-  onChangeKeyPad = (num) => {
-    const { setAmount } = this.props;
-    const { amount } = this.state;
+export default class CardInput extends React.Component<Props> {
+  onChangeKeyPad = (num: string) => {
+    const { setAmount, amount } = this.props;
 
     if (num === "CE") {
-      this.setState({ amount: 0 });
-
       return setAmount(0);
     }
 
-    this.setState({ amount: amount + num });
-
-    return setAmount(amount + num);
+    return setAmount(Number(amount + num));
   };
 
   render() {
     const {
       color = '',
-      billType,
+      // billType,
       setAmount,
-      maxAmount = 0
+      // maxAmount = 0,
+      inputLabel,
+      amount
     } = this.props;
-
-    const { amount } = this.state;
 
     const inputProps: any = {
       allowNegative: false,
@@ -65,44 +49,29 @@ export default class CardInput extends React.Component<Props, State> {
       inputMode: "numeric",
     };
 
-    const handleInput = (value: number | undefined = 0) => {
-      // do not accept amount greater than payable amount
-      const val = Number((value > maxAmount ? maxAmount : value).toFixed(2));
-
-      this.setState({ amount: val });
-
-      setAmount(val);
-    };
-
-    const resetInput = () => {
-      this.setState({ amount: 0 });
-
-      setAmount(0);
-    };
-
     return (
       <React.Fragment>
         <FormGroup>
-          <ControlLabel>{__("QPay amount")}</ControlLabel>
+          <ControlLabel>{__(inputLabel)}</ControlLabel>
           <Input color={color}>
             <NumberFormat
-              name="mobileAmount"
+              name="cashAmount"
               value={amount}
-              onValueChange={(values) => handleInput(values.floatValue)}
+              onValueChange={(values) => setAmount(values.floatValue || 0)}
               {...inputProps}
             />
-            <div onClick={resetInput}>
+            <div onClick={() => setAmount(0)}>
               <Icon icon="cancel" size={13} />
             </div>
           </Input>
         </FormGroup>
         <FlexCenter>
-          <KeyPads
+          {/* <KeyPads
             isPayment={false}
             isPortrait={true}
             onChangeKeyPad={this.onChangeKeyPad}
             billType={billType}
-          />
+          /> */}
         </FlexCenter>
       </React.Fragment>
     );

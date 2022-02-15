@@ -11,6 +11,7 @@ type Props = {
   order: IOrder;
   billType: string;
   createQPayInvoice: (params: IInvoiceParams) => void;
+  maxAmount?: number;
 }
 
 type State = {
@@ -25,7 +26,7 @@ export default class SplitQPayForm extends React.Component<Props, State> {
   }
 
   render() {
-    const { order, closeModal, billType, createQPayInvoice } = this.props;
+    const { order, closeModal, billType, createQPayInvoice, maxAmount } = this.props;
     const { amount } = this.state;
 
     const onCancel = () => {
@@ -49,6 +50,7 @@ export default class SplitQPayForm extends React.Component<Props, State> {
           order={order}
           setAmount={setAmount}
           amount={this.state.amount}
+          maxAmount={maxAmount}
         />
         <div>
           <FlexCenter>

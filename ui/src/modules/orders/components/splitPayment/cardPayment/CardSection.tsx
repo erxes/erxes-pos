@@ -12,16 +12,23 @@ type Props = {
   order: IOrder;
   addCardPayment: (params: ICardPayment) => void;
   billType: string;
+  maxAmount?: number;
 }
 
 export default class CardSection extends React.Component<Props> {
   render() {
-    const { order, addCardPayment, billType } = this.props;
+    const { order, addCardPayment, billType, maxAmount } = this.props;
 
     const { cardPayments = [] } = order;
 
     const content = (props) => 
-      <SplitCardForm {...props} order={order} addCardPayment={addCardPayment} billType={billType} />;
+      <SplitCardForm
+        {...props}
+        order={order}
+        addCardPayment={addCardPayment}
+        billType={billType}
+        maxAmount={maxAmount}
+      />;
 
     return (
       <div>

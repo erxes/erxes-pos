@@ -12,6 +12,7 @@ type Props = {
   order: IOrder;
   addCardPayment: (params: ICardPayment) => void;
   billType: string;
+  maxAmount?: number;
 }
 
 type State = {
@@ -26,7 +27,7 @@ export default class SplitForm extends React.Component<Props, State> {
   }
 
   render() {
-    const { order, addCardPayment, closeModal, billType } = this.props;
+    const { order, addCardPayment, closeModal, billType, maxAmount } = this.props;
 
     const onCancel = () => {
       closeModal && closeModal();
@@ -38,6 +39,7 @@ export default class SplitForm extends React.Component<Props, State> {
           billType={billType}
           addCardPayment={addCardPayment}
           order={order}
+          maxAmount={maxAmount}
         />
         <div>
           <FlexCenter>

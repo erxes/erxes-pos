@@ -14,16 +14,23 @@ type Props = {
   createQPayInvoice: (params: IInvoiceParams) => void;
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
+  maxAmount?: number;
 }
 
 export default class QPaySection extends React.Component<Props> {
   render() {
-    const { order, billType, createQPayInvoice, checkQPayInvoice, cancelQPayInvoice } = this.props;
+    const { order, billType, createQPayInvoice, checkQPayInvoice, cancelQPayInvoice, maxAmount } = this.props;
 
     const { qpayInvoices = [] } = order;
 
     const content = (props) =>
-      <SplitQPayForm {...props} order={order} billType={billType} createQPayInvoice={createQPayInvoice} />;
+      <SplitQPayForm
+        {...props}
+        order={order}
+        billType={billType}
+        createQPayInvoice={createQPayInvoice}
+        maxAmount={maxAmount}
+      />;
 
     return (
       <div>

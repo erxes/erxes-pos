@@ -39,9 +39,8 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
     }
 
     const addCardPayment = (params: ICardPayment) => {
-      addCardPaymentMutation({ variables: params }).then(({ data }) => {
+      addCardPaymentMutation({ variables: params }).then(() => {
         orderDetailQuery.refetch();
-        console.log(data, 'dada')
       }).catch(e => {
         Alert.error(__(e.message));
       })
@@ -56,7 +55,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
     };
 
     const checkQPayInvoice = (params: IInvoiceCheckParams) => {
-      checkInvoiceMutation({ variables: params }).then(({ data }) => {
+      checkInvoiceMutation({ variables: params }).then(() => {
         orderDetailQuery.refetch();
       }).catch(e => {
         Alert.error(__(e.message));

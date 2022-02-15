@@ -5,16 +5,18 @@ import { __ } from 'modules/common/utils';
 
 type Props = {
   order: IOrder;
+  remainderAmount: number;
 }
 
-export default function OrderInfo({ order }: Props) {
+export default function OrderInfo({ order, remainderAmount }: Props) {
   return (
-    <React.Fragment>
+    <div>
       <div>{__('Number')}: <b>#{order.number}</b></div>
       <div>{__('Total amount')}: {order.totalAmount}</div>
       <div>{__('Paid card amount')}: {order.cardAmount || 0}</div>
       <div>{__('Paid cash amount')}: {order.cashAmount || 0}</div>
       <div>{__('Paid mobile amount')}: {order.mobileAmount || 0}</div>
-    </React.Fragment>
+      <div>{__('Remainder amount')}: {remainderAmount}</div>
+    </div>
   );
 }

@@ -22,6 +22,7 @@ type Props = {
   billType: string;
   addCardPayment: (params: ICardPayment) => void;
   order: IOrder;
+  maxAmount?: number;
 }
 
 type State = {
@@ -57,6 +58,7 @@ export default class CardInput extends React.Component<Props, State> {
       billType,
       addCardPayment,
       order,
+      maxAmount = 0
     } = this.props;
 
     const { amount } = this.state;
@@ -70,8 +72,11 @@ export default class CardInput extends React.Component<Props, State> {
       inputMode: "numeric",
     };
 
-    const handleInput = (value: number | undefined) => {
-      this.setState({ amount: value || 0 });
+    const handleInput = (value: number | undefined = 0) => {
+      // do not accept amount greater than payable amount
+      const val = Number((value > maxAmount ? maxAmount : value).toFixed(2));
+
+      this.setState({ amount: val });
     };
 
     const resetInput = () => {

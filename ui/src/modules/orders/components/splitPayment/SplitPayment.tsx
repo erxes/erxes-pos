@@ -1,16 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import { Tabs, TabTitle } from 'modules/common/components/tabs/index';
 import { BILL_TYPES } from '../../../../constants';
+import { FlexBetween } from 'modules/common/styles/main';
+import { Tabs, TabTitle } from 'modules/common/components/tabs/index';
+import { __, Alert } from 'modules/common/utils';
 import { IOrder, ICardPayment, IInvoiceParams, IInvoiceCheckParams } from 'modules/orders/types';
 import CardSection from './cardPayment/CardSection';
 import QPaySection from './qpayPayment/QPaySection';
 import OrderInfo from './OrderInfo';
-import { __ } from 'modules/common/utils';
+import KeypadWithInput from './KeypadWithInput';
+import Ebarimt from '../drawer/Ebarimt';
 
 const OrderInfoWrapper = styled.div`
   margin: 20px;
+  padding: 20px;
+  background-color: #fff;
+  overflow: scroll;
+`;
+
+const ContentWrapper = styled.div`
   padding: 20px;
   border-top: 1px dashed #ddd;
 `;
@@ -26,6 +35,10 @@ type Props = {
 type State = {
   billType: string;
   currentTab: string;
+  order: IOrder;
+  cashAmount: number;
+  registerNumber: string;
+  showE: boolean;
 }
 
 export default class SplitPayment extends React.Component<Props, State> {
@@ -34,13 +47,37 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     this.state = {
       billType: BILL_TYPES.CITIZEN,
-      currentTab: 'card'
+      currentTab: 'cash',
+      order: props.order,
+      cashAmount: 0,
+      registerNumber: '',
+      showE: true
     };
   }
 
+  getRemainderAmount() {
+    const { order } = this.props;
+
+    return order.totalAmount - ((order.cardAmount || 0) + (order.cashAmount || 0) + (order.mobileAmount || 0));
+  }
+
   renderTabContent() {
-    const { order, addCardPayment, createQPayInvoice, checkQPayInvoice, cancelQPayInvoice } = this.props;
-    const { billType, currentTab } = this.state;
+    const { addCardPayment, createQPayInvoice, checkQPayInvoice, cancelQPayInvoice } = this.props;
+    const { billType, currentTab, order, cashAmount } = this.state;
+
+    const remainder = this.getRemainderAmount();
+
+    const setAmount = (am: number) => {
+      let amount = am;
+
+      if (amount > remainder) {
+        amount = remainder;
+
+        Alert.warning('Amount exceeds total amount');
+      }
+
+      this.setState({ cashAmount: amount });
+    };
 
     if (currentTab === 'card') {
       return (
@@ -48,6 +85,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           order={order}
           addCardPayment={addCardPayment}
           billType={billType}
+          maxAmount={remainder - this.state.cashAmount}
         />
       );
     }
@@ -60,6 +98,20 @@ export default class SplitPayment extends React.Component<Props, State> {
           createQPayInvoice={createQPayInvoice}
           checkQPayInvoice={checkQPayInvoice}
           cancelQPayInvoice={cancelQPayInvoice}
+          maxAmount={remainder - this.state.cashAmount}
+        />
+      );
+    }
+
+    if (currentTab === 'cash') {
+      return (
+        <KeypadWithInput
+          billType={billType}
+          order={order}
+          setAmount={setAmount}
+          amount={cashAmount}
+          inputLabel={__('Cash amount')}
+          maxAmount={remainder - this.state.cashAmount}
         />
       );
     }
@@ -68,14 +120,24 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentTab } = this.state;
+    const { currentTab, order, cashAmount, billType, showE } = this.state;
 
     const onClick = (currentTab: string) => {
       this.setState({ currentTab });
     };
 
+    const onStateChange = (key: string, value: any) => {
+      this.setState({ [key]: value } as Pick<State, keyof State>);
+    };
+
+    const onBillTypeChange = (e) => {
+      const billType = (e.target as HTMLInputElement).value;
+
+      onStateChange('billType', billType);
+    };
+
     return (
-      <div>
+      <OrderInfoWrapper>
         <Tabs full={true}>
           <TabTitle className={currentTab === 'cash' ? 'active' : ''} onClick={() => onClick('cash')}>
             {__('In Cash')}
@@ -87,11 +149,22 @@ export default class SplitPayment extends React.Component<Props, State> {
             {__('Pay with QPay')}
           </TabTitle>
         </Tabs>
-        {this.renderTabContent()}
-        <OrderInfoWrapper>
-          <OrderInfo order={this.props.order} />
-        </OrderInfoWrapper>
-      </div>
+        <ContentWrapper>{this.renderTabContent()}</ContentWrapper>
+        <FlexBetween>
+          <div>
+            <Ebarimt
+              billType={billType}
+              isPortrait={false}
+              show={showE}
+              onBillTypeChange={onBillTypeChange}
+              onStateChange={onStateChange}
+            />
+            <OrderInfo order={order} remainderAmount={this.getRemainderAmount() - cashAmount} />
+            <ContentWrapper>
+            </ContentWrapper>
+          </div>
+        </FlexBetween>
+      </OrderInfoWrapper>
     );
-  }
+  } // end render()
 }
