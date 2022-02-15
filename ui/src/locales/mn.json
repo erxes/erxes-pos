@@ -85,5 +85,7 @@
   "Remainder amount": "Төлөх дүн",
   "Close": "Хаах",
   "Entity name": "Байгууллагын нэр",
-  "Register number": "Регистрийн дугаар"
+  "Register number": "Регистрийн дугаар",
+  "Cancel1": "Цуцлах",
+  "Already paid": "Төлбөр төлөгдсөн"
 }

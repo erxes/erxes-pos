@@ -86,5 +86,7 @@
   "Remainder amount": "Remainder amount",
   "Close": "Close",
   "Entity name": "Entity name",
-  "Register number": "Register number"
+  "Register number": "Register number",
+  "Cancel1": "Cancel",
+  "Already paid": "Already paid"
 }

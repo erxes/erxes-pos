@@ -57,12 +57,12 @@ export default class CardRow extends React.Component<Props> {
         <td>{item.amount}</td>
         <td><Label lblStyle={labelStyle}>{item.status}</Label></td>
         <td>
-          <div>{item.status !== 'PAID' ? this.renderQrCode() : 'already paid'}</div>
+          <div>{item.status !== 'PAID' ? this.renderQrCode() : __('Already paid')}</div>
         </td>
         <td>
           <div>
-            <Button size="small" btnStyle="warning" icon="check-1" onClick={onCheck}>{__('Check invoice')}</Button>
-            <Button size="small" btnStyle="danger" icon="trash-alt" onClick={onCancel}>{__('Cancel invoice')}</Button>
+            <Button size="small" btnStyle="warning" icon="check-1" onClick={onCheck}>{__('Check')}</Button>
+            <Button size="small" btnStyle="danger" icon="trash-alt" onClick={onCancel}>{__('Cancel1')}</Button>
           </div>
         </td>
       </tr>

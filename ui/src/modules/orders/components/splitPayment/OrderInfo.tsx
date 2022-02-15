@@ -17,7 +17,7 @@ export default function OrderInfo({ order, remainderAmount, companyName }: Props
       <div>{__('Paid card amount')}: {order.cardAmount || 0}</div>
       <div>{__('Paid cash amount')}: {order.cashAmount || 0}</div>
       <div>{__('Paid mobile amount')}: {order.mobileAmount || 0}</div>
-      <div>{__('Remainder amount')}: {remainderAmount}</div>
+      <div><b>{__('Remainder amount')}: {remainderAmount}</b></div>
       {companyName && <div>{__('Entity name')}: {companyName}</div> }
     </div>
   );
