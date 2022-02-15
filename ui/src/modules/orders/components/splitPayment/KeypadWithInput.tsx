@@ -9,7 +9,7 @@ import ControlLabel from "modules/common/components/form/Label";
 import { __ } from "modules/common/utils";
 import { Input } from "modules/orders/styles";
 import { IOrder } from 'modules/orders/types';
-// import KeyPads from '../drawer/KeyPads';
+import KeyPads from '../drawer/KeyPads';
 
 type Props = {
   color?: string;
@@ -35,9 +35,8 @@ export default class CardInput extends React.Component<Props> {
   render() {
     const {
       color = '',
-      // billType,
+      billType,
       setAmount,
-      // maxAmount = 0,
       inputLabel,
       amount
     } = this.props;
@@ -66,12 +65,12 @@ export default class CardInput extends React.Component<Props> {
           </Input>
         </FormGroup>
         <FlexCenter>
-          {/* <KeyPads
+          <KeyPads
             isPayment={false}
             isPortrait={true}
             onChangeKeyPad={this.onChangeKeyPad}
             billType={billType}
-          /> */}
+          />
         </FlexCenter>
       </React.Fragment>
     );
