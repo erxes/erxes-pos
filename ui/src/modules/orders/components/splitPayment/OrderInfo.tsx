@@ -7,9 +7,10 @@ type Props = {
   order: IOrder;
   remainderAmount: number;
   companyName: string;
+  registerNumber: string;
 }
 
-export default function OrderInfo({ order, remainderAmount, companyName }: Props) {
+export default function OrderInfo({ order, remainderAmount, companyName, registerNumber }: Props) {
   return (
     <div>
       <div>{__('Number')}: <b>#{order.number}</b></div>
@@ -18,7 +19,8 @@ export default function OrderInfo({ order, remainderAmount, companyName }: Props
       <div>{__('Paid cash amount')}: {order.cashAmount || 0}</div>
       <div>{__('Paid mobile amount')}: {order.mobileAmount || 0}</div>
       <div><b>{__('Remainder amount')}: {remainderAmount}</b></div>
-      {companyName && <div>{__('Entity name')}: {companyName}</div> }
+      {registerNumber && <div>{__('Register number')}: {registerNumber}</div>}
+      {companyName && <div>{__('Entity name')}: {companyName}</div>}
     </div>
   );
 }

@@ -192,6 +192,7 @@ export default class SplitPayment extends React.Component<Props, State> {
             order={order}
             remainderAmount={this.getRemainderAmount() - cashAmount}
             companyName={companyName}
+            registerNumber={registerNumber}
           />
           <EntityChecker
             billType={billType}
