@@ -111,7 +111,6 @@ export default class SplitPayment extends React.Component<Props, State> {
           setAmount={setAmount}
           amount={cashAmount}
           inputLabel={__('Cash amount')}
-          maxAmount={remainder - this.state.cashAmount}
         />
       );
     }

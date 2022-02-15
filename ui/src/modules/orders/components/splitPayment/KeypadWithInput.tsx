@@ -17,7 +17,6 @@ type Props = {
   order: IOrder;
   setAmount: (amount: number) => void;
   amount: number;
-  maxAmount?: number;
   inputLabel: string;
 }
 
