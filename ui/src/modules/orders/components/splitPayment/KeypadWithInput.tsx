@@ -15,17 +15,22 @@ type Props = {
   color?: string;
   billType: string;
   order: IOrder;
-  setAmount: (amount: number) => void;
-  amount: number;
+  setAmount: (amount: number | string) => void;
+  amount: number | string;
   inputLabel: string;
+  usePrefix?: boolean;
+  getStringValue?: boolean;
 }
 
 export default class CardInput extends React.Component<Props> {
   onChangeKeyPad = (num: string) => {
-    const { setAmount, amount } = this.props;
+    const { setAmount, amount, getStringValue } = this.props;
 
     if (num === "CE") {
       return setAmount(0);
+    }
+    if (getStringValue) {
+      return setAmount(amount + num);
     }
 
     return setAmount(Number(amount + num));
@@ -37,15 +42,27 @@ export default class CardInput extends React.Component<Props> {
       billType,
       setAmount,
       inputLabel,
-      amount
+      amount,
+      usePrefix,
+      getStringValue
     } = this.props;
 
     const inputProps: any = {
       allowNegative: false,
-      thousandSeparator: true,
-      prefix: "₮",
+      thousandSeparator: !getStringValue && true,
+      prefix: !getStringValue && usePrefix && "₮",
       inputMode: "numeric",
     };
+
+    const onValueChange = (values) => {
+      let value = values.floatValue || 0;
+
+      if (getStringValue) {
+        value = values.value;
+      }
+
+      setAmount(value);
+    }
 
     return (
       <React.Fragment>
@@ -53,9 +70,8 @@ export default class CardInput extends React.Component<Props> {
           <ControlLabel>{__(inputLabel)}</ControlLabel>
           <Input color={color}>
             <NumberFormat
-              name="cashAmount"
               value={amount}
-              onValueChange={(values) => setAmount(values.floatValue || 0)}
+              onValueChange={onValueChange}
               {...inputProps}
             />
             <div onClick={() => setAmount(0)}>

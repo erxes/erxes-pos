@@ -1,6 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
+import gql from "graphql-tag";
 
+import apolloClient from "apolloClient";
+import { queries } from "../../graphql/index";
 import { BILL_TYPES } from '../../../../constants';
 import { FlexBetween } from 'modules/common/styles/main';
 import { Tabs, TabTitle } from 'modules/common/components/tabs/index';
@@ -11,6 +14,7 @@ import QPaySection from './qpayPayment/QPaySection';
 import OrderInfo from './OrderInfo';
 import KeypadWithInput from './KeypadWithInput';
 import Ebarimt from '../drawer/Ebarimt';
+import EntityChecker from './EntityChecker';
 
 const OrderInfoWrapper = styled.div`
   margin: 20px;
@@ -39,6 +43,8 @@ type State = {
   cashAmount: number;
   registerNumber: string;
   showE: boolean;
+  showRegModal: boolean;
+  companyName: string;
 }
 
 export default class SplitPayment extends React.Component<Props, State> {
@@ -51,8 +57,12 @@ export default class SplitPayment extends React.Component<Props, State> {
       order: props.order,
       cashAmount: 0,
       registerNumber: '',
-      showE: true
+      showE: true,
+      showRegModal: false,
+      companyName: ''
     };
+
+    this.checkOrganization = this.checkOrganization.bind(this);
   }
 
   getRemainderAmount() {
@@ -61,13 +71,31 @@ export default class SplitPayment extends React.Component<Props, State> {
     return order.totalAmount - ((order.cardAmount || 0) + (order.cashAmount || 0) + (order.mobileAmount || 0));
   }
 
+  checkOrganization() {
+    apolloClient
+      .query({
+        query: gql(queries.ordersCheckCompany),
+        variables: { registerNumber: this.state.registerNumber },
+      })
+      .then(({ data, errors }) => {
+        if (errors) {
+          Alert.error(errors.toString());
+        }
+        if (data && data.ordersCheckCompany) {
+          Alert.success(data.ordersCheckCompany.name);
+
+          this.setState({ companyName: data.ordersCheckCompany.name });
+        }
+      });
+  }
+
   renderTabContent() {
     const { addCardPayment, createQPayInvoice, checkQPayInvoice, cancelQPayInvoice } = this.props;
     const { billType, currentTab, order, cashAmount } = this.state;
 
     const remainder = this.getRemainderAmount();
 
-    const setAmount = (am: number) => {
+    const setAmount = (am: number | string) => {
       let amount = am;
 
       if (amount > remainder) {
@@ -76,7 +104,7 @@ export default class SplitPayment extends React.Component<Props, State> {
         Alert.warning('Amount exceeds total amount');
       }
 
-      this.setState({ cashAmount: amount });
+      this.setState({ cashAmount: Number(amount) });
     };
 
     if (currentTab === 'card') {
@@ -119,7 +147,7 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentTab, order, cashAmount, billType, showE } = this.state;
+    const { currentTab, order, cashAmount, billType, showE, showRegModal, companyName, registerNumber } = this.state;
 
     const onClick = (currentTab: string) => {
       this.setState({ currentTab });
@@ -132,7 +160,7 @@ export default class SplitPayment extends React.Component<Props, State> {
     const onBillTypeChange = (e) => {
       const billType = (e.target as HTMLInputElement).value;
 
-      onStateChange('billType', billType);
+      this.setState({ billType, showRegModal: billType === BILL_TYPES.ENTITY });
     };
 
     return (
@@ -158,9 +186,19 @@ export default class SplitPayment extends React.Component<Props, State> {
               onBillTypeChange={onBillTypeChange}
               onStateChange={onStateChange}
             />
-            <OrderInfo order={order} remainderAmount={this.getRemainderAmount() - cashAmount} />
-            <ContentWrapper>
-            </ContentWrapper>
+            <OrderInfo
+              order={order}
+              remainderAmount={this.getRemainderAmount() - cashAmount}
+              companyName={companyName}
+            />
+            <EntityChecker
+              billType={billType}
+              onStateChange={onStateChange}
+              order={order}
+              showModal={showRegModal}
+              registerNumber={registerNumber}
+              onSubmit={this.checkOrganization}
+            />
           </div>
         </FlexBetween>
       </OrderInfoWrapper>

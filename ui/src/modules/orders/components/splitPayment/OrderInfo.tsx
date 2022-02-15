@@ -6,9 +6,10 @@ import { __ } from 'modules/common/utils';
 type Props = {
   order: IOrder;
   remainderAmount: number;
+  companyName: string;
 }
 
-export default function OrderInfo({ order, remainderAmount }: Props) {
+export default function OrderInfo({ order, remainderAmount, companyName }: Props) {
   return (
     <div>
       <div>{__('Number')}: <b>#{order.number}</b></div>
@@ -17,6 +18,7 @@ export default function OrderInfo({ order, remainderAmount }: Props) {
       <div>{__('Paid cash amount')}: {order.cashAmount || 0}</div>
       <div>{__('Paid mobile amount')}: {order.mobileAmount || 0}</div>
       <div>{__('Remainder amount')}: {remainderAmount}</div>
+      {companyName && <div>{__('Entity name')}: {companyName}</div> }
     </div>
   );
 }
