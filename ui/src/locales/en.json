@@ -88,5 +88,6 @@
   "Entity name": "Entity name",
   "Register number": "Register number",
   "Cancel1": "Cancel",
-  "Already paid": "Already paid"
+  "Already paid": "Already paid",
+  "There are unpaid QPay invoices for this order": "There are unpaid QPay invoices for this order"
 }

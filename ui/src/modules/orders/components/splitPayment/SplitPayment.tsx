@@ -6,15 +6,18 @@ import apolloClient from "apolloClient";
 import { queries } from "../../graphql/index";
 import { BILL_TYPES } from '../../../../constants';
 import { FlexBetween } from 'modules/common/styles/main';
+import Button from 'modules/common/components/Button';
 import { Tabs, TabTitle } from 'modules/common/components/tabs/index';
 import { __, Alert } from 'modules/common/utils';
-import { IOrder, ICardPayment, IInvoiceParams, IInvoiceCheckParams } from 'modules/orders/types';
+import { IOrder, ICardPayment, IInvoiceParams, IInvoiceCheckParams, IPaymentParams } from 'modules/orders/types';
 import CardSection from './cardPayment/CardSection';
 import QPaySection from './qpayPayment/QPaySection';
 import OrderInfo from './OrderInfo';
 import KeypadWithInput from './KeypadWithInput';
 import Ebarimt from '../drawer/Ebarimt';
 import EntityChecker from './EntityChecker';
+
+const DASHED_BORDER = '1px dashed #ddd';
 
 const PaymentWrapper = styled.div`
   margin: 20px;
@@ -25,8 +28,13 @@ const PaymentWrapper = styled.div`
 
 const TabContentWrapper = styled.div`
   padding: 20px;
-  border-top: 1px dashed #ddd;
-  border-bottom: 1px dashed #ddd;
+  border-top: ${DASHED_BORDER};
+  border-bottom: ${DASHED_BORDER};
+`;
+
+const FooterButtons = styled.div`
+  padding-top: 20px;
+  border-top: ${DASHED_BORDER};
 `;
 
 type Props = {
@@ -35,6 +43,7 @@ type Props = {
   createQPayInvoice: (params: IInvoiceParams) => void;
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
+  makePayment: (_id: string, params: IPaymentParams) => void;
 }
 
 type State = {
@@ -64,6 +73,7 @@ export default class SplitPayment extends React.Component<Props, State> {
     };
 
     this.checkOrganization = this.checkOrganization.bind(this);
+    this.handlePayment = this.handlePayment.bind(this);
   }
 
   getRemainderAmount() {
@@ -88,6 +98,13 @@ export default class SplitPayment extends React.Component<Props, State> {
           this.setState({ companyName: data.ordersCheckCompany.name });
         }
       });
+  }
+
+  handlePayment() {
+    const { makePayment, order } = this.props;
+    const { registerNumber, billType, cashAmount } = this.state;
+
+    makePayment(order._id, { registerNumber, billType, cashAmount });
   }
 
   renderTabContent() {
@@ -203,6 +220,9 @@ export default class SplitPayment extends React.Component<Props, State> {
             onSubmit={this.checkOrganization}
           />
         </FlexBetween>
+        <FooterButtons>
+          <Button btnStyle="success" onClick={this.handlePayment} icon="dollar-alt">{__("Pay the bill")}</Button>
+        </FooterButtons>
       </PaymentWrapper>
     );
   } // end render()

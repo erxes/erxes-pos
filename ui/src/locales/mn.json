@@ -87,5 +87,6 @@
   "Entity name": "Байгууллагын нэр",
   "Register number": "Регистрийн дугаар",
   "Cancel1": "Цуцлах",
-  "Already paid": "Төлбөр төлөгдсөн"
+  "Already paid": "Төлбөр төлөгдсөн",
+  "There are unpaid QPay invoices for this order": "Уг захиалганд төлөгдөөгүй QPay нэхэмжлэх үлдсэн байна"
 }
