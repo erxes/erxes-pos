@@ -22,7 +22,7 @@ import { IConfig } from "types";
 import PaymentForm from "./drawer/PaymentForm";
 import CustomerForm from "./drawer/CustomerForm";
 import ProductSearch from "../containers/ProductSearch";
-import { IPaymentParams } from "../containers/PosContainer";
+import { IPaymentParams } from "../types";
 import PortraitView from "./portrait";
 import { renderFullName } from "modules/common/utils";
 import Icon from 'modules/common/components/Icon';

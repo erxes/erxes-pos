@@ -228,3 +228,11 @@ export interface IInvoiceCheckParams {
   orderId: string;
   _id: string;
 }
+
+export interface IPaymentParams {
+  cardAmount?: number;
+  cashAmount?: number;
+  mobileAmount?: number;
+  billType: string;
+  registerNumber?: string;
+}

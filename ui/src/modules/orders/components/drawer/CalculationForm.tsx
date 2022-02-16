@@ -13,13 +13,12 @@ import { Amount } from "modules/orders/components/Calculation";
 import { formatNumber } from "modules/utils";
 import { BILL_TYPES } from "../../../../constants";
 import { queries } from "../../graphql/index";
-import { IPaymentParams } from "modules/orders/containers/PosContainer";
 import CardForm from './CardForm';
 import Ebarimt from './Ebarimt';
 import RegisterChecker from './RegisterChecker';
 import CashForm from './CashForm';
 import KeyPads from './KeyPads';
-import { IOrder } from "modules/orders/types";
+import { IOrder, IPaymentParams } from "modules/orders/types";
 import { PAYMENT_METHODS } from "./PaymentType";
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`

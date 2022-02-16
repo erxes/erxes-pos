@@ -1,9 +1,9 @@
 import React from "react";
+
 import PaymentType, { PAYMENT_METHODS } from "./PaymentType";
 import CalculationForm from "modules/orders/components/drawer/CalculationForm";
-import { IPaymentParams } from "modules/orders/containers/PosContainer";
 import QPay from "./QPay";
-import { IOrder } from "modules/orders/types";
+import { IOrder, IPaymentParams } from "modules/orders/types";
 
 type Props = {
   orderId: string;
