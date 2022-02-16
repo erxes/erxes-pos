@@ -56,7 +56,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       billType: BILL_TYPES.CITIZEN,
       currentTab: 'cash',
       order: props.order,
-      cashAmount: 0,
+      cashAmount: this.getRemainderAmount(),
       registerNumber: '',
       showE: true,
       showRegModal: false,
