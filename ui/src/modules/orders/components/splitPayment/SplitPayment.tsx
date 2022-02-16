@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 
 import apolloClient from "apolloClient";
 import { queries } from "../../graphql/index";
-import { BILL_TYPES } from '../../../../constants';
+import { BILL_TYPES, POS_MODES } from '../../../../constants';
 import { FlexBetween } from 'modules/common/styles/main';
 import Button from 'modules/common/components/Button';
 import { Tabs, TabTitle } from 'modules/common/components/tabs/index';
@@ -37,6 +37,8 @@ const FooterButtons = styled.div`
   border-top: ${DASHED_BORDER};
 `;
 
+const POS_MODE = localStorage.getItem('erxesPosMode') || '';
+
 type Props = {
   order: IOrder;
   addCardPayment: (params: ICardPayment) => void;
@@ -63,7 +65,7 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     this.state = {
       billType: BILL_TYPES.CITIZEN,
-      currentTab: 'cash',
+      currentTab: POS_MODE === POS_MODES.KIOSK ? 'card' : 'cash',
       order: props.order,
       cashAmount: this.getRemainderAmount(),
       registerNumber: '',
@@ -149,7 +151,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       );
     }
 
-    if (currentTab === 'cash') {
+    if (currentTab === 'cash' && POS_MODE !== POS_MODES.KIOSK) {
       return (
         <KeypadWithInput
           billType={billType}
@@ -184,9 +186,11 @@ export default class SplitPayment extends React.Component<Props, State> {
     return (
       <PaymentWrapper>
         <Tabs full={true}>
-          <TabTitle className={currentTab === 'cash' ? 'active' : ''} onClick={() => onClick('cash')}>
-            {__('In Cash')}
-          </TabTitle>
+          {
+            POS_MODE !== POS_MODES.KIOSK &&
+            <TabTitle className={currentTab === 'cash' ? 'active' : ''} onClick={() => onClick('cash')}>
+              {__('In Cash')}
+            </TabTitle>}
           <TabTitle className={currentTab === 'card' ? 'active' : ''} onClick={() => onClick('card')}>
             {__('By Card')}
           </TabTitle>

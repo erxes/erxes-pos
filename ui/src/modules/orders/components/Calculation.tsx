@@ -162,7 +162,7 @@ export default class Calculation extends React.Component<Props, State> {
     }
     const { mode } = this.state;
 
-    if (mode === 'kiosk') {
+    if (mode === POS_MODES.KIOSK) {
       return null;
     }
 
@@ -175,31 +175,6 @@ export default class Calculation extends React.Component<Props, State> {
         }}
       >
         {__("Print receipt")}
-      </Button>
-    );
-  }
-
-  renderPaymentButton() {
-    const { order, onClickDrawer, config, totalAmount, editOrder } = this.props;
-
-    if (!order || (order && order.paidDate)) {
-      return null;
-    }
-
-    const onClick = () => {
-      editOrder();
-
-      onClickDrawer("payment");
-    };
-
-    return (
-      <Button
-        style={{ backgroundColor: config.uiOptions.colors.primary }}
-        onClick={onClick}
-        icon="dollar-alt"
-        disabled={!totalAmount || totalAmount === 0 ? true : false}
-      >
-        {__("Pay the bill")}
       </Button>
     );
   }
@@ -219,11 +194,12 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <Button
-        style={{ backgroundColor: config.uiOptions.colors.secondary }}
+        style={{ backgroundColor: config.uiOptions.colors.primary }}
         onClick={onClick}
         icon="dollar-alt"
+        block
       >
-        {__("Split payment")}
+        {__("Pay the bill")}
       </Button>
     );
   }
@@ -365,10 +341,7 @@ export default class Calculation extends React.Component<Props, State> {
               {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
               {this.renderAddButton()}
               {this.renderReceiptButton()}
-              <FlexBetween>
-                {this.renderPaymentButton()}
-                {mode === POS_MODES.POS && this.renderSplitPaymentButton()}
-              </FlexBetween>
+              {this.renderSplitPaymentButton()}
             </ButtonWrapper>
           </ColumnBetween>
         </Wrapper>
