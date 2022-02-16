@@ -38,7 +38,7 @@ export default class CardInput extends React.Component<Props, State> {
     this.state = {
       sentTransaction: false,
       checkedTransaction: false,
-      amount: 0
+      amount: props.maxAmount || 0
     };
   }
 

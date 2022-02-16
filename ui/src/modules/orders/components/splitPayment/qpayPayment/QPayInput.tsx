@@ -29,7 +29,7 @@ export default class CardInput extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      amount: props.amount || 0
+      amount: props.amount || props.maxAmount || 0
     };
   }
 

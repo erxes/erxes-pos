@@ -16,6 +16,7 @@ import OrderInfo from './OrderInfo';
 import KeypadWithInput from './KeypadWithInput';
 import Ebarimt from '../drawer/Ebarimt';
 import EntityChecker from './EntityChecker';
+import PaymentTypeChooser from './PaymentTypeChooser';
 
 const DASHED_BORDER = '1px dashed #ddd';
 
@@ -65,13 +66,13 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     this.state = {
       billType: BILL_TYPES.CITIZEN,
-      currentTab: POS_MODE === POS_MODES.KIOSK ? 'card' : 'cash',
+      currentTab: 'empty',
       order: props.order,
-      cashAmount: this.getRemainderAmount(),
+      cashAmount: 0,
       registerNumber: '',
       showE: true,
       showRegModal: false,
-      companyName: ''
+      companyName: '',
     };
 
     this.checkOrganization = this.checkOrganization.bind(this);
@@ -167,7 +168,16 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   render() {
-    const { currentTab, order, cashAmount, billType, showE, showRegModal, companyName, registerNumber } = this.state;
+    const {
+      currentTab,
+      order,
+      cashAmount,
+      billType,
+      showE,
+      showRegModal,
+      companyName,
+      registerNumber,
+    } = this.state;
 
     const onClick = (currentTab: string) => {
       this.setState({ currentTab });
@@ -222,6 +232,10 @@ export default class SplitPayment extends React.Component<Props, State> {
             showModal={showRegModal}
             registerNumber={registerNumber}
             onSubmit={this.checkOrganization}
+          />
+          <PaymentTypeChooser
+            currentTab={currentTab}
+            onStateChange={onStateChange}
           />
         </FlexBetween>
         <FooterButtons>
