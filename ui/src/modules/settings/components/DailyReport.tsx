@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import React, { useContext } from "react";
 import Button from "modules/common/components/Button";
 import { AppContext } from "appContext";
@@ -7,9 +8,10 @@ import { __ } from "modules/common/utils";
 
 type Props = {
   dailyReport: any;
+  reportNumber: string;
 };
 
-export default function DailyReportReceipt({ dailyReport }: Props) {
+export default function DailyReportReceipt({ dailyReport, reportNumber }: Props) {
   const { currentConfig } = useContext(AppContext);
 
   const logo =
@@ -28,7 +30,7 @@ export default function DailyReportReceipt({ dailyReport }: Props) {
 
   const renderProduct = (product) => {
     return (
-      <Products>
+      <Products key={Math.random()}>
         <p>{`${product.name}: `} {formatAmount(product.count)}</p>
       </Products>
     )
@@ -37,7 +39,7 @@ export default function DailyReportReceipt({ dailyReport }: Props) {
   const renderCategory = (category) => {
     return (
       <>
-        <GroupCategory>
+        <GroupCategory key={Math.random()}>
           <p>{`Барааны бүлэг: `} {category.name}</p>
         </GroupCategory>
         {Object.keys(category.products).map(p => (renderProduct(category.products[p])))}
@@ -58,7 +60,7 @@ export default function DailyReportReceipt({ dailyReport }: Props) {
   }
   const renderUser = (item) => {
     return (
-      <MainGroup>
+      <MainGroup key={Math.random()}>
         <GroupUser>
           <span>{`Хэрэглэгч: `}</span>
           <span>
@@ -73,10 +75,20 @@ export default function DailyReportReceipt({ dailyReport }: Props) {
 
   return (
     <ReceiptWrapperReport className="printDocument">
+      <div className="text-center btn-print">
+        <Button onClick={() => window.print()} style={{ backgroundColor: color }}>
+          {__("Print")}
+        </Button>
+      </div>
+
       <HeaderWrapper >
         <div className="receipt-logo">
           <img src={logo} alt={name} width={'32px'} height={'32px'} />
           <h5><b>{name}</b></h5>
+        </div>
+        <div>
+          <p>Хамаарах: <b>{reportNumber}</b></p>
+          <p>Хэвлэсэн: {dayjs().format('YYYY-MM-DD HH:mm').toString()}</p>
         </div>
       </HeaderWrapper>
       {Object.keys(dailyReport).map((userId) => renderUser(dailyReport[userId]))}
@@ -84,11 +96,6 @@ export default function DailyReportReceipt({ dailyReport }: Props) {
         <label>{__("Signature")}:</label>
         <span>_____________________</span>
       </p>
-      <div className="text-center btn-print">
-        <Button onClick={() => window.print()} style={{ backgroundColor: color }}>
-          {__("Print")}
-        </Button>
-      </div>
     </ReceiptWrapperReport>
   );
 }

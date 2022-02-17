@@ -37,6 +37,8 @@ const currentConfig = `
       productDetails
       adminIds
       cashierIds
+      beginNumber
+      maxSkipNumber
       waitingScreen
       kioskMachine
       kitchenScreen
