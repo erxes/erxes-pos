@@ -1,11 +1,14 @@
-import { Route } from "react-router-dom";
+import { Route } from 'react-router-dom';
 import queryString from 'query-string';
 
-import asyncComponent from "modules/common/components/AsyncComponent";
-import React from "react";
+import asyncComponent from 'modules/common/components/AsyncComponent';
+import React from 'react';
 
 const KitchenScreenContainer = asyncComponent(
-  () => import(/* webpackChunkName: "KitchenScreen" */ "modules/kitchen/containers/Screen")
+  () =>
+    import(
+      /* webpackChunkName: "KitchenScreen" */ 'modules/kitchen/containers/Screen'
+    )
 );
 
 const KitchenScreen = ({ location }) => {
@@ -16,15 +19,15 @@ const KitchenScreen = ({ location }) => {
 
 const routes = () => {
   if (!['', 'kitchen'].includes(localStorage.getItem('erxesPosMode') || '')) {
-    return (<></>);
+    return <></>;
   }
 
   return (
     <React.Fragment>
       <Route
-        key="/kitchen-screen"
+        key='/kitchen-screen'
         exact={true}
-        path="/kitchen-screen"
+        path='/kitchen-screen'
         component={KitchenScreen}
       />
     </React.Fragment>

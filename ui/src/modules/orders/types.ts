@@ -1,5 +1,5 @@
-import { IUser } from "modules/auth/types";
-import { QueryResponse, ICustomField } from "types";
+import { IUser } from 'modules/auth/types';
+import { QueryResponse, ICustomField } from 'types';
 
 export interface IOrderItem {
   _id: string;
@@ -98,7 +98,9 @@ export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;
 
 export type OrdersEditMutationResponse = ({ variables: any }) => Promise<any>;
 
-export type OrderChangeStatusMutationResponse = ({ variables: any }) => Promise<any>;
+export type OrderChangeStatusMutationResponse = ({
+  variables: any
+}) => Promise<any>;
 
 export type OrderDetailQueryResponse = {
   orderDetail: IOrder;
@@ -114,7 +116,7 @@ export type FullOrderQueryResponse = {
 } & QueryResponse;
 
 export interface ICustomer {
-  state?: "visitor" | "lead" | "customer";
+  state?: 'visitor' | 'lead' | 'customer';
 
   scopeBrandIds?: string[];
   firstName?: string;

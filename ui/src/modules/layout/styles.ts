@@ -19,14 +19,14 @@ import {
   SidebarList,
   SidebarTitle,
   WhiteBox,
-  WhiteBoxRoot,
-} from "erxes-ui/lib/layout/styles";
-import { twinkling } from "modules/common/styles/animations";
-import styled, { css } from "styled-components";
-import styledTS from "styled-components-ts";
+  WhiteBoxRoot
+} from 'erxes-ui/lib/layout/styles';
+import { twinkling } from 'modules/common/styles/animations';
+import styled, { css } from 'styled-components';
+import styledTS from 'styled-components-ts';
 
-import { colors, dimensions } from "../common/styles";
-import { rgba } from "modules/common/styles/ecolor";
+import { colors, dimensions } from '../common/styles';
+import { rgba } from 'modules/common/styles/ecolor';
 
 const wideNavigation =
   dimensions.headerSpacingWide +
@@ -44,14 +44,14 @@ const UserHelper = styled.div`
 `;
 
 const Layout = styledTS<{ isSqueezed?: boolean }>(styled.main)`
-  height: ${(props) => (props.isSqueezed ? "calc(100% - 36px)" : "100%")};
+  height: ${props => (props.isSqueezed ? 'calc(100% - 36px)' : '100%')};
   display: flex;
   flex: 1;
   max-width: 100%;
   position: relative;
   overflow: hidden;
 
-  ${(props) =>
+  ${props =>
     props.isSqueezed &&
     css`
       ${PageHeader} {
@@ -64,7 +64,7 @@ const MainWrapper = styledTS<{ collapsed: boolean }>(styled.div)`
   flex: 1;
   display: flex;
   flex-direction: column;
-  padding-left: ${(props) =>
+  padding-left: ${props =>
     props.collapsed ? wideNavigation : dimensions.headerSpacingWide}px;
   max-width: 100%;
   transition: width .3s;
@@ -84,7 +84,7 @@ const Authlayout = styledTS<{ hasConfig: boolean }>(styled.div)`
   height: 100%;
   overflow: auto;
   position: relative;
-  background: ${(props) =>
+  background: ${props =>
     !props.hasConfig &&
     `#5629B6 url("/images/stars.png") repeat top
   center`};
@@ -92,7 +92,7 @@ const Authlayout = styledTS<{ hasConfig: boolean }>(styled.div)`
   display: flex;
 
   &:before {
-    content: ${(props) => !props.hasConfig && '""'};
+    content: ${props => !props.hasConfig && '""'};
     position: absolute;
     width: 100%;
     height: 100%;
@@ -123,25 +123,25 @@ const AuthDescription = styledTS<{ hasConfig: boolean }>(styled.div)`
     font-weight: bold;
     font-size: 34px;
     margin: 10px 0 30px;
-    color: ${(props) => !props.hasConfig && colors.colorWhite};
+    color: ${props => !props.hasConfig && colors.colorWhite};
   }
 
   h2 {
     font-size: 24px;
-    color: ${(props) => !props.hasConfig && "rgba(255, 255, 255, 0.9)"};
+    color: ${props => !props.hasConfig && 'rgba(255, 255, 255, 0.9)'};
     line-height: 1.4em;
     font-weight: 500;
   }
 
   p {
-    color: ${(props) => !props.hasConfig && "rgba(255, 255, 255, 0.7)"};
+    color: ${props => !props.hasConfig && 'rgba(255, 255, 255, 0.7)'};
     margin-bottom: 50px;
     font-size: 18px;
     line-height: 1.8em;
   }
 
   a {
-    color: ${(props) => !props.hasConfig && "rgba(255, 255, 255, 0.7)"};
+    color: ${props => !props.hasConfig && 'rgba(255, 255, 255, 0.7)'};
     &:hover {
       color: ${colors.colorWhite};
     }
@@ -186,10 +186,9 @@ const PasswordWithEye = styled.div`
 const LeftNavigation = styledTS<{ collapsed: boolean; color?: string }>(
   styled.aside
 )`
-  width: ${(props) =>
+  width: ${props =>
     props.collapsed ? wideNavigation : dimensions.headerSpacingWide}px;
-  background: ${(props) =>
-    props.color ? props.color : colors.colorPrimaryDark};
+  background: ${props => (props.color ? props.color : colors.colorPrimaryDark)};
   box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.1);
   z-index: 11;
   flex-shrink: 0;
@@ -206,7 +205,7 @@ const LeftNavigation = styledTS<{ collapsed: boolean; color?: string }>(
     align-items: center;
 
     img {
-      max-height: ${(props) => (props.collapsed ? "35" : "28")}px;
+      max-height: ${props => (props.collapsed ? '35' : '28')}px;
       transition: all 0.3s ease;
       max-width: 80%;
 
@@ -231,7 +230,7 @@ const Nav = styledTS<{ collapsed: boolean; color?: string }>(styled.nav)`
     align-items: center;
     color: ${colors.bgLight}
     height: ${dimensions.headerSpacing + 10}px;
-    justify-content: ${(props) => !props.collapsed && "center"};
+    justify-content: ${props => !props.collapsed && 'center'};
     position: relative;
     transition: all 0.3s ease;
 
@@ -241,13 +240,13 @@ const Nav = styledTS<{ collapsed: boolean; color?: string }>(styled.nav)`
     }
 
     i {
-      padding: ${(props) => props.collapsed && "0 15px 0 20px"};
+      padding: ${props => props.collapsed && '0 15px 0 20px'};
       transition: all 0.3s ease;
     }
 
     span {
       position: absolute;
-      left: ${(props) =>
+      left: ${props =>
         props.collapsed
           ? dimensions.coreSpacing + dimensions.unitSpacing
           : dimensions.coreSpacing + dimensions.coreSpacing - 1}px;
@@ -317,13 +316,10 @@ const NavIcon = styled.i`
   color: ${colors.colorWhite};
 `;
 
-const SubNav = styledTS<{ collapsed: boolean }>(styled.ul)`
+const SubNav = styled.ul`
   background: ${colors.colorSecondary};
   position: absolute;
-  left: ${(props) =>
-    props.collapsed
-      ? wideNavigation
-      : dimensions.headerSpacing + dimensions.coreSpacing}px;
+  left: ${dimensions.headerSpacing + dimensions.coreSpacing}px;
   word-wrap: break-word;
   width: 200px;
   max-height: 100vh;
@@ -339,7 +335,7 @@ const SubNav = styledTS<{ collapsed: boolean }>(styled.ul)`
   border-bottom-right-radius: 5px;
 
   &:after {
-    content: " ";
+    content: ' ';
     border: solid transparent;
     height: 0;
     width: 0;
@@ -365,13 +361,13 @@ const SubNavItem = styledTS<{ additional: boolean }>(styled.li)`
       opacity: .8;
       display: flex;
       align-items: center;
-      border-radius: ${(props) =>
+      border-radius: ${props =>
         !props.additional && dimensions.unitSpacing - 5}px;
-      border-top: ${(props) =>
+      border-top: ${props =>
         props.additional && `1px solid ${rgba(colors.borderPrimary, 0.6)}`};
-      border-bottom-left-radius: ${(props) =>
+      border-bottom-left-radius: ${props =>
         props.additional && dimensions.unitSpacing - 5}px;
-      border-bottom-right-radius: ${(props) =>
+      border-bottom-right-radius: ${props =>
         props.additional && dimensions.unitSpacing - 5}px;
 
       > i {
@@ -448,7 +444,7 @@ const DropSubNav = styled.ul`
   transition: all 0.9s ease-out;
 
   &:after {
-    content: " ";
+    content: ' ';
     position: absolute;
     pointer-events: none;
     z-index: 10000;
@@ -497,7 +493,7 @@ const DropSubNavItem = styled.li`
 `;
 
 const ExpandIcon = styledTS<{ collapsed: boolean }>(styled.div)`
-  background: ${(props) =>
+  background: ${props =>
     !props.collapsed ? colors.colorPrimaryDark : colors.colorWhite};
   position: absolute;
   top: 12px;
@@ -511,7 +507,7 @@ const ExpandIcon = styledTS<{ collapsed: boolean }>(styled.div)`
   transition: all 0.3s;
 
   > i {
-    color: ${(props) =>
+    color: ${props =>
       props.collapsed ? colors.colorPrimaryDark : colors.colorWhite};
     line-height: ${dimensions.coreSpacing + 5}px;
     transition: all ease 0.3s;
@@ -522,7 +518,7 @@ const ExpandIcon = styledTS<{ collapsed: boolean }>(styled.div)`
     right: -15px;
 
     > i {
-      float: ${(props) => (props.collapsed ? "left" : "right")};
+      float: ${props => (props.collapsed ? 'left' : 'right')};
     }
   }
 }
@@ -588,5 +584,5 @@ export {
   DropSubNavItem,
   DropNav,
   ExpandIcon,
-  PortraitWrapper,
+  PortraitWrapper
 };

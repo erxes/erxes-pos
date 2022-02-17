@@ -1,4 +1,4 @@
-import { IProductCategory, IProduct } from "modules/orders/types";
+import { IProductCategory, IProduct } from 'modules/orders/types';
 
 export type QueryResponse = {
   loading: boolean;
@@ -53,7 +53,7 @@ export interface IRouterProps {
   history: any;
   location: any;
   match: any;
-};
+}
 
 export interface ISubNav {
   permission: string;
@@ -61,7 +61,7 @@ export interface ISubNav {
   value: string;
   icon: string;
   additional?: boolean;
-};
+}
 
 export interface IEbarimtConfig {
   companyName: string;
@@ -98,7 +98,7 @@ export interface IConfig {
   syncInfo: any;
   initialCategoryIds: string[];
   kioskExcludeProductIds: string[];
-};
+}
 
 export type CurrentConfigQueryResponse = {
   currentConfig: IConfig;

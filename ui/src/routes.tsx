@@ -1,27 +1,27 @@
-import withCurrentUser from "modules/auth/containers/withCurrentUser";
-import asyncComponent from "modules/common/components/AsyncComponent";
-import queryString from "query-string";
-import React from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import AuthRoutes from "./modules/auth/routes";
-import SettingsRoutes from "./modules/settings/routes";
-import KitchenRoutes from "./modules/kitchen/routes";
-import WaitingRoutes from "./modules/waiting/routes";
-import OrderRoutes from "./modules/orders/routes";
-import { IUser } from "./modules/auth/types";
-import { IConfig } from "types";
+import withCurrentUser from 'modules/auth/containers/withCurrentUser';
+import asyncComponent from 'modules/common/components/AsyncComponent';
+import queryString from 'query-string';
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import AuthRoutes from './modules/auth/routes';
+import SettingsRoutes from './modules/settings/routes';
+import KitchenRoutes from './modules/kitchen/routes';
+import WaitingRoutes from './modules/waiting/routes';
+import OrderRoutes from './modules/orders/routes';
+import { IUser } from './modules/auth/types';
+import { IConfig } from 'types';
 
 const MainLayout = asyncComponent(
   () =>
     import(
-      /* webpackChunkName: "MainLayout" */ "modules/layout/containers/MainLayout"
+      /* webpackChunkName: "MainLayout" */ 'modules/layout/containers/MainLayout'
     )
 );
 
 const Unsubscribe = asyncComponent(
   () =>
     import(
-      /* webpackChunkName: "Unsubscribe" */ "modules/auth/containers/Unsubscribe"
+      /* webpackChunkName: "Unsubscribe" */ 'modules/auth/containers/Unsubscribe'
     )
 );
 
@@ -40,12 +40,15 @@ const renderRoutes = (posCurrentUser, currentConfig, orientation) => {
     );
 
     return (
-      <UserConfirmation queryParams={queryParams} posCurrentUser={posCurrentUser} />
+      <UserConfirmation
+        queryParams={queryParams}
+        posCurrentUser={posCurrentUser}
+      />
     );
   };
 
-  if (!sessionStorage.getItem("sessioncode")) {
-    sessionStorage.setItem("sessioncode", Math.random().toString());
+  if (!sessionStorage.getItem('sessioncode')) {
+    sessionStorage.setItem('sessioncode', Math.random().toString());
   }
 
   if (posCurrentUser) {
@@ -61,9 +64,9 @@ const renderRoutes = (posCurrentUser, currentConfig, orientation) => {
           <KitchenRoutes />
           <WaitingRoutes />
           <Route
-            key="/confirmation"
+            key='/confirmation'
             exact={true}
-            path="/confirmation"
+            path='/confirmation'
             component={userConfirmation}
           />
         </MainLayout>
@@ -74,9 +77,9 @@ const renderRoutes = (posCurrentUser, currentConfig, orientation) => {
   return (
     <Switch>
       <Route
-        key="/confirmation"
+        key='/confirmation'
         exact={true}
-        path="/confirmation"
+        path='/confirmation'
         component={userConfirmation}
       />
       <AuthRoutes />
@@ -87,7 +90,7 @@ const renderRoutes = (posCurrentUser, currentConfig, orientation) => {
 const Routes = ({
   posCurrentUser,
   currentConfig,
-  orientation,
+  orientation
 }: {
   posCurrentUser: IUser;
   currentConfig: IConfig;
@@ -96,9 +99,9 @@ const Routes = ({
   <Router>
     <>
       <Route
-        key="/unsubscribe"
+        key='/unsubscribe'
         exact={true}
-        path="/unsubscribe"
+        path='/unsubscribe'
         component={unsubscribe}
       />
 

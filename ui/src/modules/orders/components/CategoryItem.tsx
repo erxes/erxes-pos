@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import { AppContext } from "appContext";
-import { ProductCategory } from "../styles";
-import { FlexCenter } from "modules/common/styles/main";
-import { IProductCategory } from "../types";
+import { AppContext } from 'appContext';
+import { ProductCategory } from '../styles';
+import { FlexCenter } from 'modules/common/styles/main';
+import { IProductCategory } from '../types';
 
 type Props = {
   category: IProductCategory;
@@ -18,7 +18,7 @@ export default function CategoryItem(props: Props) {
   const { name, attachment } = category;
 
   const imgUrl =
-    attachment && attachment.url ? attachment.url : "images/no-category.jpg";
+    attachment && attachment.url ? attachment.url : 'images/no-category.jpg';
 
   const color =
     currentConfig &&
@@ -26,7 +26,7 @@ export default function CategoryItem(props: Props) {
     currentConfig.uiOptions.colors &&
     currentConfig.uiOptions.colors.primary;
 
-  const isPortrait = orientation === "portrait";
+  const isPortrait = orientation === 'portrait';
 
   return (
     <ProductCategory
@@ -36,7 +36,7 @@ export default function CategoryItem(props: Props) {
       isPortrait={isPortrait}
     >
       <FlexCenter>
-        <div className="image-wrapper">
+        <div className='image-wrapper'>
           <img src={imgUrl} alt={name} />
         </div>
         {name}

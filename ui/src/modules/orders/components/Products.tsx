@@ -1,11 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import { router } from "modules/common/utils";
-import { IOrderItemInput, IProduct, IProductCategory } from "../types";
-import CategoryItem from "./CategoryItem";
-import ProductItem from "./ProductItem";
-import { ProductCategories, ProductsWrapper } from "../styles";
-import { IConfig, IRouterProps } from "types";
+import { router } from 'modules/common/utils';
+import { IOrderItemInput, IProduct, IProductCategory } from '../types';
+import CategoryItem from './CategoryItem';
+import ProductItem from './ProductItem';
+import { ProductCategories, ProductsWrapper } from '../styles';
+import { IConfig, IRouterProps } from 'types';
 
 type Props = {
   productCategories: IProductCategory[];
@@ -27,12 +27,12 @@ export default class Products extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      categoriesHeight: 0,
+      categoriesHeight: 0
     };
   }
 
   componentDidMount() {
-    const height = document.getElementById("product-categories");
+    const height = document.getElementById('product-categories');
 
     this.setState({ categoriesHeight: height ? height.clientHeight : 0 });
   }
@@ -47,9 +47,9 @@ export default class Products extends React.Component<Props, State> {
 
   renderCategories() {
     const { productCategories, qp, orientation } = this.props;
-    const catId = qp && qp.categoryId ? qp.categoryId : "";
+    const catId = qp && qp.categoryId ? qp.categoryId : '';
 
-    const categories = productCategories.map((cat) => (
+    const categories = productCategories.map(cat => (
       <CategoryItem
         category={cat}
         key={cat._id}
@@ -60,7 +60,7 @@ export default class Products extends React.Component<Props, State> {
     ));
 
     return (
-      <ProductCategories id="product-categories">
+      <ProductCategories id='product-categories'>
         {categories}
       </ProductCategories>
     );
@@ -77,7 +77,7 @@ export default class Products extends React.Component<Props, State> {
       productName: item.name,
       unitPrice: item.unitPrice || 0,
       productImgUrl:
-        item.attachment && item.attachment.url ? item.attachment.url : "",
+        item.attachment && item.attachment.url ? item.attachment.url : '',
       count
     });
 
@@ -91,10 +91,10 @@ export default class Products extends React.Component<Props, State> {
 
     if (mode === 'kiosk') {
       const excludeIds = currentConfig.kioskExcludeProductIds || [];
-      filteredProducts = products.filter(p => (!excludeIds.includes(p._id)))
+      filteredProducts = products.filter(p => !excludeIds.includes(p._id));
     }
 
-    return filteredProducts.map((product) => {
+    return filteredProducts.map(product => {
       return (
         <ProductItem
           product={product}
@@ -111,7 +111,11 @@ export default class Products extends React.Component<Props, State> {
     return (
       <>
         {this.renderCategories()}
-        <ProductsWrapper height={this.state.categoriesHeight} color={uiOptions.colors.secondary} innerWidth={window.innerWidth}>
+        <ProductsWrapper
+          height={this.state.categoriesHeight}
+          color={uiOptions.colors.secondary}
+          innerWidth={window.innerWidth}
+        >
           {this.renderProducts()}
         </ProductsWrapper>
       </>

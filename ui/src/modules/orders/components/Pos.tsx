@@ -1,34 +1,34 @@
-import React from "react";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import NameCard from "modules/common/components/nameCard/NameCard";
-import AsyncComponent from "modules/common/components/AsyncComponent";
-import RTG from "react-transition-group";
-import { ICustomerParams, IOrder, IOrderItemInput } from "../types";
-import { ORDER_TYPES } from "../../../constants";
-import Calculation from "./Calculation";
-import OrderSearch from "../containers/layout/OrderSearch";
-import { IUser } from "modules/auth/types";
+import React from 'react';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import NameCard from 'modules/common/components/nameCard/NameCard';
+import AsyncComponent from 'modules/common/components/AsyncComponent';
+import RTG from 'react-transition-group';
+import { ICustomerParams, IOrder, IOrderItemInput } from '../types';
+import { ORDER_TYPES } from '../../../constants';
+import Calculation from './Calculation';
+import OrderSearch from '../containers/layout/OrderSearch';
+import { IUser } from 'modules/auth/types';
 import {
   PosWrapper,
   MainContent,
   LeftMenuContainer,
   Drawer,
   DrawerContent,
-  FlexCustomer,
-} from "../styles";
-import { FlexBetween } from "modules/common/styles/main";
-import { IConfig } from "types";
-import PaymentForm from "./drawer/PaymentForm";
-import CustomerForm from "./drawer/CustomerForm";
-import ProductSearch from "../containers/ProductSearch";
-import { IPaymentParams } from "../containers/PosContainer";
-import PortraitView from "./portrait";
-import { renderFullName } from "modules/common/utils";
+  FlexCustomer
+} from '../styles';
+import { FlexBetween } from 'modules/common/styles/main';
+import { IConfig } from 'types';
+import PaymentForm from './drawer/PaymentForm';
+import CustomerForm from './drawer/CustomerForm';
+import ProductSearch from '../containers/ProductSearch';
+import { IPaymentParams } from '../containers/PosContainer';
+import PortraitView from './portrait';
+import { renderFullName } from 'modules/common/utils';
 import Icon from 'modules/common/components/Icon';
 
 const ProductsContainer = AsyncComponent(
-  () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
+  () => import(/* webpackChunkName: "Pos" */ '../containers/ProductsContainer')
 );
 
 type Props = {
@@ -79,14 +79,15 @@ export default class Pos extends React.Component<Props, State> {
       items: order ? order.items : [],
       totalAmount: order ? getTotalAmount(order.items) : 0,
       showMenu: false,
-      type: this.props.type || ((order && order.type) ? order.type : ORDER_TYPES.EAT),
-      drawerContentType: "",
-      customerId: order && order.customerId ? order.customerId : "",
-      registerNumber: "",
+      type:
+        this.props.type || (order && order.type ? order.type : ORDER_TYPES.EAT),
+      drawerContentType: '',
+      customerId: order && order.customerId ? order.customerId : '',
+      registerNumber: ''
     };
   }
 
-  setWrapperRef = (node) => {
+  setWrapperRef = node => {
     this.wrapperRef = node;
   };
 
@@ -95,14 +96,14 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   componentDidMount() {
-    document.addEventListener("click", this.handleClickOutside, true);
+    document.addEventListener('click', this.handleClickOutside, true);
   }
 
   componentWillUnmount() {
-    document.removeEventListener("click", this.handleClickOutside, true);
+    document.removeEventListener('click', this.handleClickOutside, true);
   }
 
-  handleClickOutside = (event) => {
+  handleClickOutside = event => {
     if (
       this.wrapperRef &&
       !this.wrapperRef.contains(event.target) &&
@@ -117,7 +118,7 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   changeItemCount = (item: IOrderItemInput) => {
-    let items = this.state.items.map((i) => {
+    let items = this.state.items.map(i => {
       if (i.productId === item.productId && item._id === i._id) {
         i.count = item.count;
       }
@@ -125,7 +126,7 @@ export default class Pos extends React.Component<Props, State> {
       return i;
     });
 
-    items = items.filter((i) => i.count > 0);
+    items = items.filter(i => i.count > 0);
 
     const totalAmount = getTotalAmount(items);
 
@@ -139,8 +140,10 @@ export default class Pos extends React.Component<Props, State> {
       return;
     }
 
-    this.setState({ items: items.map(i => (item._id === i._id ? { ...i, isTake: value } : i)) });
-  }
+    this.setState({
+      items: items.map(i => (item._id === i._id ? { ...i, isTake: value } : i))
+    });
+  };
 
   // set state field that doesn't need amount calculation
   setOrderState = (name: string, value: any) => {
@@ -148,23 +151,22 @@ export default class Pos extends React.Component<Props, State> {
 
     if (name === 'type') {
       const { items } = this.state;
-      const isTake = value !== ORDER_TYPES.EAT
+      const isTake = value !== ORDER_TYPES.EAT;
       this.setState({ items: items.map(i => ({ ...i, isTake })) });
     }
-
   };
 
   addOrder = () => {
     const { createOrder } = this.props;
     const { totalAmount, type, items, customerId } = this.state;
 
-    const currentItems = items.map((item) => ({
+    const currentItems = items.map(item => ({
       _id: item._id,
       productId: item.productId,
       count: item.count,
       unitPrice: item.unitPrice,
       isPackage: item.isPackage,
-      isTake: type !== ORDER_TYPES.EAT ? true : item.isTake,
+      isTake: type !== ORDER_TYPES.EAT ? true : item.isTake
     }));
 
     createOrder({ items: currentItems, totalAmount, type, customerId });
@@ -175,13 +177,13 @@ export default class Pos extends React.Component<Props, State> {
     const { totalAmount, type, items, customerId } = this.state;
 
     if (order && order._id) {
-      const currentItems = items.map((item) => ({
+      const currentItems = items.map(item => ({
         _id: item._id,
         productId: item.productId,
         count: item.count,
         unitPrice: item.unitPrice,
         isPackage: item.isPackage,
-        isTake: type !== ORDER_TYPES.EAT ? true : item.isTake,
+        isTake: type !== ORDER_TYPES.EAT ? true : item.isTake
       }));
 
       updateOrder({
@@ -189,8 +191,8 @@ export default class Pos extends React.Component<Props, State> {
         items: currentItems,
         totalAmount,
         type,
-        customerId,
-      }).then((updatedOrder) => {
+        customerId
+      }).then(updatedOrder => {
         this.setState({
           items: updatedOrder.items,
           totalAmount: getTotalAmount(updatedOrder.items)
@@ -211,13 +213,13 @@ export default class Pos extends React.Component<Props, State> {
     const { drawerContentType, totalAmount } = this.state;
 
     switch (drawerContentType) {
-      case "order":
+      case 'order':
         return <OrderSearch />;
-      case "payment":
+      case 'payment':
         return (
           order && (
             <PaymentForm
-              orderId={order ? order._id : ""}
+              orderId={order ? order._id : ''}
               options={currentConfig ? currentConfig.uiOptions : {}}
               totalAmount={totalAmount}
               closeDrawer={this.toggleDrawer}
@@ -228,7 +230,7 @@ export default class Pos extends React.Component<Props, State> {
             />
           )
         );
-      case "customer":
+      case 'customer':
         return (
           <CustomerForm
             addCustomer={addCustomer}
@@ -241,7 +243,7 @@ export default class Pos extends React.Component<Props, State> {
   }
 
   renderCurrentLogin(uiOptions) {
-    const mode = localStorage.getItem('erxesPosMode')
+    const mode = localStorage.getItem('erxesPosMode');
     const { order } = this.props;
 
     if (mode === 'kiosk') {
@@ -251,8 +253,10 @@ export default class Pos extends React.Component<Props, State> {
         return (
           <>
             <Icon
-              icon="home"
-              onClick={() => { window.location.href = '/' }}
+              icon='home'
+              onClick={() => {
+                window.location.href = '/';
+              }}
               size={36}
               color={uiOptions.colors ? uiOptions.colors.primary : ''}
             />
@@ -261,12 +265,14 @@ export default class Pos extends React.Component<Props, State> {
               {renderFullName(customer)}
             </FlexCustomer>
           </>
-        )
+        );
       }
       return (
         <Icon
-          icon="home"
-          onClick={() => { window.location.href = '/' }}
+          icon='home'
+          onClick={() => {
+            window.location.href = '/';
+          }}
           size={36}
           color={uiOptions.colors ? uiOptions.colors.primary : ''}
         />
@@ -275,9 +281,7 @@ export default class Pos extends React.Component<Props, State> {
 
     const { posCurrentUser } = this.props;
 
-    return (
-      <NameCard user={posCurrentUser} avatarSize={40} />
-    )
+    return <NameCard user={posCurrentUser} avatarSize={40} />;
   }
 
   render() {
@@ -304,23 +308,20 @@ export default class Pos extends React.Component<Props, State> {
 
     const mode = localStorage.getItem('erxesPosMode');
 
-    if (mode === "kiosk" && !this.props.type && !(qp && qp.id)) {
-      return (
-        <PortraitView
-          {...this.props}
-          order={order}
-        />
-      );
+    if (mode === 'kiosk' && !this.props.type && !(qp && qp.id)) {
+      return <PortraitView {...this.props} order={order} />;
     }
 
     return (
       <>
         <PosWrapper>
           <Row>
-            <Col md={8} className="kk">
+            <Col md={8} className='kk'>
               <MainContent hasBackground={true}>
                 <FlexBetween>
-                  {this.renderCurrentLogin(currentConfig ? currentConfig.uiOptions : {})}
+                  {this.renderCurrentLogin(
+                    currentConfig ? currentConfig.uiOptions : {}
+                  )}
                   <ProductSearch productsQuery={productsQuery} />
                 </FlexBetween>
                 {products}
@@ -356,7 +357,7 @@ export default class Pos extends React.Component<Props, State> {
             <RTG.CSSTransition
               in={showMenu}
               timeout={300}
-              classNames="slide-in-left"
+              classNames='slide-in-left'
               unmountOnExit={true}
             >
               <LeftMenuContainer>
