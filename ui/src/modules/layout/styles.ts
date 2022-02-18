@@ -28,10 +28,10 @@ import styledTS from 'styled-components-ts';
 import { colors, dimensions } from '../common/styles';
 import { rgba } from 'modules/common/styles/ecolor';
 
-const wideNavigation =
-  dimensions.headerSpacingWide +
-  dimensions.headerSpacingWide +
-  dimensions.coreSpacing;
+// const wideNavigation =
+//   dimensions.headerSpacingWide +
+//   dimensions.headerSpacingWide +
+//   dimensions.coreSpacing;
 
 const UserHelper = styled.div`
   height: 50px;
@@ -49,7 +49,6 @@ const Layout = styledTS<{ isSqueezed?: boolean }>(styled.main)`
   flex: 1;
   max-width: 100%;
   position: relative;
-  overflow: hidden;
 
   ${props =>
     props.isSqueezed &&
@@ -60,16 +59,15 @@ const Layout = styledTS<{ isSqueezed?: boolean }>(styled.main)`
     `};
 `;
 
-const MainWrapper = styledTS<{ collapsed: boolean }>(styled.div)`
-  flex: 1;
+const MainWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  padding-left: ${props =>
-    props.collapsed ? wideNavigation : dimensions.headerSpacingWide}px;
-  max-width: 100%;
-  transition: width .3s;
+  width: 100%;
+  transition: width 0.3s;
+  overflow-y: hidden;
+  overflow-x: hidden;
 
-  @media (max-width: 1170px) and (orientation:landscape) {
+  @media (max-width: 1170px) and (orientation: landscape) {
     padding-left: 40px;
   }
 `;
@@ -183,39 +181,11 @@ const PasswordWithEye = styled.div`
   }
 `;
 
-const LeftNavigation = styledTS<{ collapsed: boolean; color?: string }>(
-  styled.aside
-)`
-  width: ${props =>
-    props.collapsed ? wideNavigation : dimensions.headerSpacingWide}px;
+const LeftNavigation = styled.div`
   background: ${props => (props.color ? props.color : colors.colorPrimaryDark)};
   box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.1);
-  z-index: 11;
-  flex-shrink: 0;
-  position: absolute;
-  left: 0;
-  top: 0;
-  bottom: 0;
 
-  > a {
-    display: flex;
-    margin-top: ${dimensions.unitSpacing / 2}px;
-    height: ${dimensions.headerSpacing}px;
-    justify-content: center;
-    align-items: center;
-
-    img {
-      max-height: ${props => (props.collapsed ? '35' : '28')}px;
-      transition: all 0.3s ease;
-      max-width: 80%;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-    }
-  }
-
-  @media (max-width: 1170px) and (orientation:landscape) {
+  @media (max-width: 1170px) and (orientation: landscape) {
     width: 40px;
   }
 `;

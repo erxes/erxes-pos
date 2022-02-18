@@ -7,13 +7,11 @@ import {
   LeftNavigation,
   NavIcon,
   SubNav,
-  NavItem,
   SubNavTitle,
   SubNavItem,
   DropSubNav,
   DropSubNavItem
 } from '../styles';
-import Tip from 'modules/common/components/Tip';
 import { IConfig } from 'types';
 
 export interface ISubNav {
@@ -109,51 +107,51 @@ class Navigation extends React.Component<IProps> {
 
     return (
       <SubNav>
-        {!collapsed && <SubNavTitle>{__(text)}</SubNavTitle>}
+        <SubNavTitle>{__(text)}</SubNavTitle>
         {childrens.map((child, index) => this.renderSubNavItem(child, index))}
       </SubNav>
     );
   }
 
-  renderNavItem = (
-    permission: string,
-    text: string,
-    url: string,
-    icon: string,
-    childrens?: ISubNav[],
-    label?: React.ReactNode
-  ) => {
-    const { collapsed } = this.props;
+  // renderNavItem = (
+  //   permission: string,
+  //   text: string,
+  //   url: string,
+  //   icon: string,
+  //   childrens?: ISubNav[],
+  //   label?: React.ReactNode
+  // ) => {
+  //   const { collapsed } = this.props;
 
-    const item = (
-      <NavItem>
-        <NavLink to={this.getLink(url)}>
-          <NavIcon className={icon} />
-          {collapsed && <label>{__(text)}</label>}
-          {label}
-        </NavLink>
-        {this.renderChildren(collapsed, url, text, childrens)}
-      </NavItem>
-    );
+  //   const item = (
+  //     <NavItem>
+  //       <NavLink to={this.getLink(url)}>
+  //         <NavIcon className={icon} />
+  //         {collapsed && <label>{__(text)}</label>}
+  //         {label}
+  //       </NavLink>
+  //       {this.renderChildren(collapsed, url, text, childrens)}
+  //     </NavItem>
+  //   );
 
-    if (!childrens || childrens.length === 0) {
-      if (!collapsed) {
-        return (
-          <WithPermission key={url} action={permission}>
-            <Tip placement='right' key={Math.random()} text={__(text)}>
-              {item}
-            </Tip>
-          </WithPermission>
-        );
-      }
-    }
+  //   if (!childrens || childrens.length === 0) {
+  //     if (!collapsed) {
+  //       return (
+  //         <WithPermission key={url} action={permission}>
+  //           <Tip placement='right' key={Math.random()} text={__(text)}>
+  //             {item}
+  //           </Tip>
+  //         </WithPermission>
+  //       );
+  //     }
+  //   }
 
-    return (
-      <WithPermission key={url} action={permission}>
-        {item}
-      </WithPermission>
-    );
-  };
+  //   return (
+  //     <WithPermission key={url} action={permission}>
+  //       {item}
+  //     </WithPermission>
+  //   );
+  // };
 
   renderSyncMenu() {
     const { posCurrentUser } = this.props;
@@ -222,7 +220,7 @@ class Navigation extends React.Component<IProps> {
     const logo = collapsed ? 'logo.png' : 'erxes.png';
 
     return (
-      <LeftNavigation collapsed={collapsed} color={options.colors.primary}>
+      <LeftNavigation color={options.colors.primary}>
         <NavLink to='/'>
           <img src={options.favIcon || `/images/${logo}`} alt='logo' />
         </NavLink>

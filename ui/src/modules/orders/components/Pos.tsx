@@ -15,9 +15,10 @@ import {
   LeftMenuContainer,
   Drawer,
   DrawerContent,
-  FlexCustomer
+  FlexCustomer,
+  MenuContent,
+  ProductsContent
 } from '../styles';
-import { FlexBetween } from 'modules/common/styles/main';
 import { IConfig } from 'types';
 import PaymentForm from './drawer/PaymentForm';
 import CustomerForm from './drawer/CustomerForm';
@@ -26,6 +27,7 @@ import { IPaymentParams } from '../containers/PosContainer';
 import PortraitView from './portrait';
 import { renderFullName } from 'modules/common/utils';
 import Icon from 'modules/common/components/Icon';
+import { NavLink } from 'react-router-dom';
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ '../containers/ProductsContainer')
@@ -316,23 +318,28 @@ export default class Pos extends React.Component<Props, State> {
       <>
         <PosWrapper>
           <Row>
-            <Col md={8} className='kk'>
-              <MainContent hasBackground={true}>
-                <FlexBetween>
+            <Col sm={3}>
+              <MainContent numPadding={true}>
+                <MenuContent>
+                  <NavLink to='/'>
+                    <img src={currentConfig.uiOptions.favIcon} alt='logo' />
+                  </NavLink>
+                </MenuContent>
+              </MainContent>
+            </Col>
+            <Col xs={6} md={6}>
+              <MainContent numPadding={true}>
+                <ProductsContent>
                   {this.renderCurrentLogin(
                     currentConfig ? currentConfig.uiOptions : {}
                   )}
                   <ProductSearch productsQuery={productsQuery} />
-                </FlexBetween>
-                {products}
+                  {products}
+                </ProductsContent>
               </MainContent>
             </Col>
-            <Col sm={4}>
-              <MainContent
-                hasBackground={true}
-                hasShadow={true}
-                noPadding={true}
-              >
+            <Col xs={6} md={3}>
+              <MainContent>
                 <Calculation
                   orientation={orientation}
                   totalAmount={totalAmount}

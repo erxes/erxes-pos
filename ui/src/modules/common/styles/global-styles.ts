@@ -1,6 +1,6 @@
-import { injectGlobal } from "styled-components";
-import { robotAnimation } from "./animations";
-import { colors, typography } from "./";
+import { injectGlobal } from 'styled-components';
+import { robotAnimation } from './animations';
+import { colors, typography } from './';
 
 const style = `
 html {
@@ -29,6 +29,13 @@ body {
 
   .subRoot {
     height: 100%;
+    max-width: 1920px;
+    background: #F5F5F5 !important;
+  }
+
+  .row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
   }
 }
 

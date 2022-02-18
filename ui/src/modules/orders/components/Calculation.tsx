@@ -13,13 +13,16 @@ import { FormControl } from 'modules/common/components/form';
 import { IConfig, IOption } from 'types';
 import { ICustomer, IOrder, IOrderItemInput } from '../types';
 import { ORDER_TYPES } from '../../../constants';
-import { ProductLabel, Type, Types } from '../styles';
+import { FinderButtons, ProductLabel, Types } from '../styles';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   display: flex;
   flex-direction: column;
-  padding: 0 20px 0 2px;
+  padding: 0 20px 0 20px;
   height: 100%;
+  box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
+  border-radius: 16px;
+  background: #fff;
 
   button {
     padding: 10px 20px;
@@ -27,7 +30,7 @@ const Wrapper = styledTS<{ color?: string }>(styled.div)`
   }
 
   .ioevLe:checked + span:before, .hCqfzh .react-toggle--checked .react-toggle-track {
-    background-color: ${(props) => props.color && props.color};
+    background-color: ${props => props.color && props.color};
   }
 `;
 
@@ -37,8 +40,8 @@ export const Amount = styledTS<{ color?: string }>(styled(FlexBetween))`
   padding: 10px;
   margin-bottom: 10px;
   font-weight: 600;
-  border-color:${(props) => props.color && props.color}
-  color:${(props) => props.color && props.color}
+  border-color:${props => props.color && props.color}
+  color:${props => props.color && props.color}
 `;
 
 const ButtonWrapper = styled.div`
@@ -50,11 +53,11 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const generateLabel = (customer) => {
+const generateLabel = customer => {
   const { firstName, primaryEmail, primaryPhone, lastName } =
     customer || ({} as ICustomer);
 
-  let value = firstName ? firstName.toUpperCase() : "";
+  let value = firstName ? firstName.toUpperCase() : '';
 
   if (lastName) {
     value = `${value} ${lastName}`;
@@ -67,12 +70,12 @@ const generateLabel = (customer) => {
   }
 
   return value;
-}
+};
 
 // get user options for react-select-plus
 export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
-  return array.map((item) => {
-    const value = generateLabel(item)
+  return array.map(item => {
+    const value = generateLabel(item);
     return { value: item._id, label: value };
   });
 };
@@ -104,55 +107,41 @@ export default class Calculation extends React.Component<Props, State> {
     super(props);
 
     const { order, orientation } = this.props;
-    const customerId = order ? order.customerId : "";
-    const customerLabel = order ? generateLabel(order.customer) : ''
+    const customerId = order ? order.customerId : '';
+    const customerLabel = order ? generateLabel(order.customer) : '';
 
     let stageHeight = window.innerHeight - 120; // types title
     const mode = localStorage.getItem('erxesPosMode') || '';
 
     if (mode === '') {
-      stageHeight -= 44; // findOrder
+      stageHeight -= 56; // findOrder
     }
     stageHeight -= 78; // customer
 
     if (orientation === 'portrait') {
       stageHeight -= 135; // amount
       stageHeight -= mode === 'kiosk' ? 0 : 125; // printButton
-      stageHeight -= (order && order.paidDate) ? 0 : 100; // oneButton
+      stageHeight -= order && order.paidDate ? 0 : 100; // oneButton
     } else {
       stageHeight -= 52; // amount
       stageHeight -= mode === 'kiosk' ? 0 : 50; // printButton
-      stageHeight -= (order && order.paidDate) ? 0 : 50; // oneButton
+      stageHeight -= order && order.paidDate ? 0 : 50; // oneButton
     }
 
     if (stageHeight < 50) {
       stageHeight = 50;
     }
     this.state = {
-      customerId: customerId || "",
+      customerId: customerId || '',
       customerLabel,
       stageHeight,
-      mode,
+      mode
     };
   }
 
-  onChange = (value) => {
-    this.props.setOrderState("type", value);
+  onChange = value => {
+    this.props.setOrderState('type', value);
   };
-
-  renderAddButton() {
-    const { addOrder, order } = this.props;
-
-    if (order && order._id) {
-      return null;
-    }
-
-    return (
-      <Button btnStyle="success" onClick={addOrder} icon="check-circle" block>
-        {__("Make an order")}
-      </Button>
-    );
-  }
 
   renderReceiptButton() {
     const { order } = this.props;
@@ -168,13 +157,14 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <Button
-        icon="print"
-        btnStyle="warning"
-        block onClick={() => {
+        icon='print'
+        btnStyle='warning'
+        block
+        onClick={() => {
           window.open(`/order-receipt/${order._id}`, '_blank');
         }}
       >
-        {__("Print receipt")}
+        {__('Print receipt')}
       </Button>
     );
   }
@@ -189,18 +179,18 @@ export default class Calculation extends React.Component<Props, State> {
     const onClick = () => {
       editOrder();
 
-      onClickDrawer("payment");
+      onClickDrawer('payment');
     };
 
     return (
       <Button
         style={{ backgroundColor: config.uiOptions.colors.primary }}
         onClick={onClick}
-        icon="dollar-alt"
+        icon='dollar-alt'
         block
         disabled={!totalAmount || totalAmount === 0 ? true : false}
       >
-        {__("Pay the bill")}
+        {__('Pay the bill')}
       </Button>
     );
   }
@@ -211,35 +201,60 @@ export default class Calculation extends React.Component<Props, State> {
     const { order } = this.props;
     return (
       <Amount {...prop}>
-        <span>№: {order && order.number ? order.number.split('_')[1] : ''}</span>
+        <span>
+          №: {order && order.number ? order.number.split('_')[1] : ''}
+        </span>
         <span>{text}</span>
         {formatNumber(amount || 0)}₮
       </Amount>
     );
   }
 
-  renderDeliveryTypes(color: string) {
-    const { type } = this.props;
+  // renderDeliveryTypes(color: string) {
+  //   const { type } = this.props;
+
+  //   return (
+  //     <div>
+  //       <Types>
+  //         <Type
+  //           onClick={() => this.onChange(ORDER_TYPES.TAKE)}
+  //           checked={type === ORDER_TYPES.TAKE}
+  //           color={color}
+  //         >
+  //           {__('Take')}
+  //         </Type>
+  //         <Type
+  //           onClick={() => this.onChange(ORDER_TYPES.EAT)}
+  //           checked={type === ORDER_TYPES.EAT}
+  //           color={color}
+  //         >
+  //           {__('Eat')}
+  //         </Type>
+  //       </Types>
+  //     </div>
+  //   );
+  // }
+
+  renderAddButton() {
+    const { addOrder, order } = this.props;
+
+    if (order && order._id) {
+      return null;
+    }
 
     return (
-      <div>
-        <Types>
-          <Type
-            onClick={() => this.onChange(ORDER_TYPES.TAKE)}
-            checked={type === ORDER_TYPES.TAKE}
-            color={color}
-          >
-            {__("Take")}
-          </Type>
-          <Type
-            onClick={() => this.onChange(ORDER_TYPES.EAT)}
-            checked={type === ORDER_TYPES.EAT}
-            color={color}
-          >
-            {__("Eat")}
-          </Type>
-        </Types>
-      </div>
+      <Types>
+        <Button
+          btnStyle='primary'
+          onClick={() => this.onChange(ORDER_TYPES.TAKE)}
+          icon='check-circle'
+        >
+          {__('Take')}
+        </Button>
+        <Button btnStyle='success' onClick={addOrder} icon='check-circle'>
+          {__('Make an order')}
+        </Button>
+      </Types>
     );
   }
 
@@ -251,58 +266,61 @@ export default class Calculation extends React.Component<Props, State> {
     const { onClickDrawer, config } = this.props;
     const color = config.uiOptions && config.uiOptions.colors.primary;
     return (
-      <ProductLabel onClick={() => onClickDrawer("order")} color={color}>
-        {__("Find orders")}
-      </ProductLabel>
-    )
+      <>
+        <ProductLabel onClick={() => onClickDrawer('order')} color={color}>
+          {__('Find orders')}
+        </ProductLabel>
+        <ProductLabel
+          onClick={() => {
+            mode !== 'kiosk' && onClickDrawer('customer');
+          }}
+          color={color}
+        >
+          {__('Identify a customer')}
+        </ProductLabel>
+      </>
+    );
   }
 
   renderCustomerChooser() {
-    const { onClickDrawer, config, setOrderState } = this.props;
-    const { mode } = this.state;
-    const color = config.uiOptions && config.uiOptions.colors.primary;
+    const { setOrderState } = this.props;
 
-    const onChangeQrcode = (e) => {
-      const value = (e.currentTarget as HTMLInputElement).value
-      client.query({
-        query: gql(queries.customerDetail),
-        fetchPolicy: 'network-only',
-        variables: {
-          _id: value
-        }
-      }).then(async (response) => {
-        const data = response.data.customerDetail;
-        this.setState({ customerLabel: generateLabel(data), customerId: data._id })
-        setOrderState("customerId", data._id);
-      }).catch(error => {
-      });
-
-    }
+    const onChangeQrcode = e => {
+      const value = (e.currentTarget as HTMLInputElement).value;
+      client
+        .query({
+          query: gql(queries.customerDetail),
+          fetchPolicy: 'network-only',
+          variables: {
+            _id: value
+          }
+        })
+        .then(async response => {
+          const data = response.data.customerDetail;
+          this.setState({
+            customerLabel: generateLabel(data),
+            customerId: data._id
+          });
+          setOrderState('customerId', data._id);
+        })
+        .catch(error => {});
+    };
 
     const onClearChosenCustomer = () => {
-      this.setState({ customerLabel: "", customerId: "" })
-      setOrderState("customerId", "");
-    }
+      this.setState({ customerLabel: '', customerId: '' });
+      setOrderState('customerId', '');
+    };
 
     return (
-      <>
-        <ProductLabel
-          className="mt-10"
-          onClick={() => { mode !== 'kiosk' && onClickDrawer("customer") }}
-          color={color}
-        >
-          {__("Identify a customer")}
-        </ProductLabel>
-        <FormControl
-          autoFocus={true}
-          id="customerIdInput"
-          name="customerId"
-          value={this.state.customerLabel}
-          onChange={onChangeQrcode}
-          onClick={onClearChosenCustomer}
-        />
-      </>
-    )
+      <FormControl
+        autoFocus={true}
+        id='customerIdInput'
+        name='customerId'
+        value={this.state.customerLabel}
+        onChange={onChangeQrcode}
+        onClick={onClearChosenCustomer}
+      />
+    );
   }
 
   render() {
@@ -321,25 +339,23 @@ export default class Calculation extends React.Component<Props, State> {
     return (
       <>
         <Wrapper color={color}>
-          {this.renderFindOrder(mode)}
+          <FinderButtons>{this.renderFindOrder(mode)}</FinderButtons>
           {this.renderCustomerChooser()}
           <ColumnBetween>
-            <div>
-              {this.renderDeliveryTypes(color)}
-
-              <Stage
-                orientation={orientation}
-                items={items}
-                changeItemCount={changeItemCount}
-                changeItemIsTake={changeItemIsTake}
-                options={config.uiOptions}
-                stageHeight={this.state.stageHeight}
-                type={type}
-                mode={mode}
-              />
-            </div>
-            <ButtonWrapper className={orientation === 'portrait' ? "payment-section" : ""}>
-              {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
+            <Stage
+              orientation={orientation}
+              items={items}
+              changeItemCount={changeItemCount}
+              changeItemIsTake={changeItemIsTake}
+              options={config.uiOptions}
+              stageHeight={this.state.stageHeight}
+              type={type}
+              mode={mode}
+            />
+            <ButtonWrapper
+              className={orientation === 'portrait' ? 'payment-section' : ''}
+            >
+              {this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
               {this.renderAddButton()}
               {this.renderReceiptButton()}
               {this.renderPaymentButton()}
