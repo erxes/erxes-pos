@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import styledTS from 'styled-components-ts';
 import { dimensions, colors } from 'modules/common/styles';
-import { rgba } from 'modules/common/styles/ecolor';
+import { rgba, darken } from 'modules/common/styles/ecolor';
 
 export const PosWrapper = styled.div`
   position: relative;
@@ -77,10 +77,10 @@ export const MenuContent = styled.div`
   padding: 20px;
 `;
 
-export const ProductsContent = styled.div`
+export const ProductsContent = styledTS<{ show?: boolean }>(styled.div)`
   display: flex;
   flex-direction: column;
-  padding: 0 20px 0 20px;
+  padding: 20px 20px 0 20px;
   height: 100%;
   box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
   border-radius: 16px;
@@ -97,9 +97,8 @@ export const ScreenContent = styledTS<{
 `;
 
 export const ProductCategories = styled.div`
-  display: flex;
-  flex-wrap: wrap;
   margin: 30px 0;
+  width: 50%;
 
   @media (max-width: 1170px) and (orientation: landscape) {
     margin: 20px 0 10px 0;
@@ -207,14 +206,12 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   background: ${colors.colorWhite};
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 0 10px;
   padding-bottom: ${props => props.isPortrait && '20px'};
   flex-basis: 28%;
-  flex-shrink: 0;
   cursor: pointer;
   margin: 0 20px 20px 0;
   transition: all ease 0.3s;
-  position: relative;
 
   .image-wrapper {
     width: ${props => (props.isPortrait ? '240px' : '132px')};
@@ -608,12 +605,29 @@ export const Input = styledTS<{ color?: string }>(styled.div)`
   }
 `;
 
+export const FlexHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 export const ProductSearch = styled.div`
   width: 65%;
+  display: flex;
+  align-items: center;
 `;
 
 export const PackageProduct = styled.span`
   text-decoration: underline;
   text-decoration-color: greenyellow;
   text-decoration-style: wavy;
+`;
+
+export const Divider = styled.div`
+  border-bottom: 1px dotted ${darken(colors.borderDarker, 5)};
+  padding-bottom: ${dimensions.coreSpacing}px;
+  margin: 0 0 ${dimensions.coreSpacing}px 0;
+
+  @media (max-width: 1170px) {
+    margin-left: ${dimensions.coreSpacing}px;
+  }
 `;

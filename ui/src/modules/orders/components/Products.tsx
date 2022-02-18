@@ -1,14 +1,11 @@
 import React from 'react';
 
-import { router } from 'modules/common/utils';
-import { IOrderItemInput, IProduct, IProductCategory } from '../types';
-import CategoryItem from './CategoryItem';
+import { IOrderItemInput, IProduct } from '../types';
 import ProductItem from './ProductItem';
-import { ProductCategories, ProductsWrapper } from '../styles';
+import { ProductsWrapper } from '../styles';
 import { IConfig, IRouterProps } from 'types';
 
 type Props = {
-  productCategories: IProductCategory[];
   products: IProduct[];
   setItems: (items: IOrderItemInput[]) => void;
   items: IOrderItemInput[];
@@ -35,35 +32,6 @@ export default class Products extends React.Component<Props, State> {
     const height = document.getElementById('product-categories');
 
     this.setState({ categoriesHeight: height ? height.clientHeight : 0 });
-  }
-
-  onClickCategory = (activeCategoryId: string) => {
-    const { qp, history, productsQuery } = this.props;
-    const variables = { ...qp, categoryId: activeCategoryId };
-
-    router.setParams(history, variables);
-    productsQuery.refetch({ variables });
-  };
-
-  renderCategories() {
-    const { productCategories, qp, orientation } = this.props;
-    const catId = qp && qp.categoryId ? qp.categoryId : '';
-
-    const categories = productCategories.map(cat => (
-      <CategoryItem
-        category={cat}
-        key={cat._id}
-        activeCategoryId={catId}
-        orientation={orientation}
-        onClickCategory={this.onClickCategory}
-      />
-    ));
-
-    return (
-      <ProductCategories id='product-categories'>
-        {categories}
-      </ProductCategories>
-    );
   }
 
   addItem(item: IProduct, count: number) {
@@ -110,7 +78,6 @@ export default class Products extends React.Component<Props, State> {
     const { uiOptions } = this.props.currentConfig;
     return (
       <>
-        {this.renderCategories()}
         <ProductsWrapper
           height={this.state.categoriesHeight}
           color={uiOptions.colors.secondary}

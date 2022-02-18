@@ -37,6 +37,14 @@ body {
     margin-right: 0 !important;
     margin-left: 0 !important;
   }
+
+  .col-sm-3 {
+    width: 15% !important;
+  }
+
+  .col-md-8 {
+    width: 60.666667% !important;
+  }
 }
 
 a {

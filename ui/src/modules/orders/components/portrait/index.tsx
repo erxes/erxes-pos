@@ -1,10 +1,10 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import { Link } from 'react-router-dom';
 
-import { ICustomerParams, IOrder } from "../../types";
-import { IUser } from "modules/auth/types";
-import { IConfig } from "types";
-import { IPaymentParams } from "../../containers/PosContainer";
+import { ICustomerParams, IOrder } from '../../types';
+import { IUser } from 'modules/auth/types';
+import { IConfig } from 'types';
+import { IPaymentParams } from '../../containers/PosContainer';
 import {
   LogoWrapper,
   ChooseType,
@@ -12,11 +12,12 @@ import {
   PortraitViewWrapper,
   Type,
   AppWrapper,
-} from "./style";
-import Icon from "modules/common/components/Icon";
-import { FlexBetween, FlexCenter } from "modules/common/styles/main";
-import { __ } from "modules/common/utils";
-import Pos from "../Pos";
+  Settings
+} from './style';
+import Icon from 'modules/common/components/Icon';
+import { FlexBetween, FlexCenter } from 'modules/common/styles/main';
+import { __ } from 'modules/common/utils';
+import Pos from '../Pos';
 
 type Props = {
   createOrder: (params) => void;
@@ -42,7 +43,7 @@ export default class PortraitView extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      type: "",
+      type: ''
     };
   }
 
@@ -57,25 +58,29 @@ export default class PortraitView extends React.Component<Props, State> {
           Та үйлчилгээний <br /> төрлөө сонгоно уу?
         </h4>
         <FlexCenter>
-          <Type color={color} onClick={() => this.onClickType("take")}>
+          <Type color={color} onClick={() => this.onClickType('take')}>
             <img src="images/type1.png" alt="type" />
-            {__("Take")}
+            {__('Take')}
           </Type>
-          <Type color={color} onClick={() => this.onClickType("eat")}>
+          <Type color={color} onClick={() => this.onClickType('eat')}>
             <img src="images/type2.png" alt="type" />
-            {__("Eat")}
+            {__('Eat')}
           </Type>
         </FlexCenter>
         <AppWrapper>
-          <img src="/images/yoshinaya-app.png" alt="app" />
-          {/* <FlexCenter>
+          <img src="/images/Phone-XI.png" alt="phone" />
+          <div>
+            <h3>Scan Me</h3>
+            <img className="qrCode" src="/images/qr-code.png" alt="qr-code" />
+          </div>
+          <FlexCenter>
             <img className="app-download" src="/images/ios.png" alt="ios" />
             <img
               className="app-download"
               src="/images/android.png"
               alt="android"
             />
-          </FlexCenter> */}
+          </FlexCenter>
         </AppWrapper>
       </ChooseType>
     );
@@ -87,29 +92,29 @@ export default class PortraitView extends React.Component<Props, State> {
     const { colors, logo, texts = {} } = currentConfig.uiOptions || ({} as any);
 
     if (type) {
-      return (
-        <Pos
-          {...this.props}
-          type={this.state.type}
-        ></Pos>
-      );
+      return <Pos {...this.props} type={this.state.type}></Pos>;
     }
 
     return (
       <PortraitViewWrapper>
         <LogoWrapper>
           <Link to="/">
-            <img src={logo ? logo : `/images/logo-dark.png`} alt="logo" />
+            <img src={logo ? logo : `/images/headerKiosk.png`} alt="logo" />
           </Link>
+          <Settings>
+            <Icon icon="settings" size={20} color={'#fff'} />
+          </Settings>
         </LogoWrapper>
         {this.renderContent(colors.primary)}
         <Footer color={colors.primary}>
           <FlexBetween>
             <span>
-              <Icon icon="earthgrid" /> {texts ? texts.website : '' || ''}
+              <Icon icon="earthgrid" />{' '}
+              {texts ? texts.website : '' || 'WWW.YOSHINOYA.MN'}
             </span>
             <span>
-              <Icon icon="phone" /> {texts ? texts.phone : '' || ''}
+              <Icon icon="phone" />{' '}
+              {texts ? texts.phone : '' || 'ХҮРГЭЛТ: 7007-7007'}
             </span>
           </FlexBetween>
         </Footer>

@@ -3,7 +3,6 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import NameCard from 'modules/common/components/nameCard/NameCard';
 import AsyncComponent from 'modules/common/components/AsyncComponent';
-import RTG from 'react-transition-group';
 import { ICustomerParams, IOrder, IOrderItemInput } from '../types';
 import { ORDER_TYPES } from '../../../constants';
 import Calculation from './Calculation';
@@ -12,12 +11,11 @@ import { IUser } from 'modules/auth/types';
 import {
   PosWrapper,
   MainContent,
-  LeftMenuContainer,
-  Drawer,
-  DrawerContent,
   FlexCustomer,
   MenuContent,
-  ProductsContent
+  ProductsContent,
+  FlexHeader,
+  Divider
 } from '../styles';
 import { IConfig } from 'types';
 import PaymentForm from './drawer/PaymentForm';
@@ -28,9 +26,15 @@ import PortraitView from './portrait';
 import { renderFullName } from 'modules/common/utils';
 import Icon from 'modules/common/components/Icon';
 import { NavLink } from 'react-router-dom';
+import { NavIcon } from 'modules/layout/styles';
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ '../containers/ProductsContainer')
+);
+
+const CategoriesContainer = AsyncComponent(
+  () =>
+    import(/* webpackChunkName: "Pos" */ '../containers/CategoriesContainer')
 );
 
 type Props = {
@@ -255,7 +259,7 @@ export default class Pos extends React.Component<Props, State> {
         return (
           <>
             <Icon
-              icon='home'
+              icon="home"
               onClick={() => {
                 window.location.href = '/';
               }}
@@ -271,7 +275,7 @@ export default class Pos extends React.Component<Props, State> {
       }
       return (
         <Icon
-          icon='home'
+          icon="home"
           onClick={() => {
             window.location.href = '/';
           }}
@@ -286,6 +290,68 @@ export default class Pos extends React.Component<Props, State> {
     return <NameCard user={posCurrentUser} avatarSize={40} />;
   }
 
+  renderSyncMenu() {
+    const { posCurrentUser } = this.props;
+
+    if (!posCurrentUser) {
+      return '';
+    }
+
+    if (localStorage.getItem('erxesPosMode')) {
+      return '';
+    }
+
+    return (
+      <NavLink to="/settings">
+        <NavIcon className={'icon-sync-exclamation'} />
+      </NavLink>
+    );
+  }
+
+  renderKitchenMenu() {
+    const { posCurrentUser, currentConfig } = this.props;
+
+    if (!posCurrentUser || !currentConfig) {
+      return '';
+    }
+
+    if (!currentConfig.kitchenScreen) {
+      return '';
+    }
+
+    if (!['', 'kitchen'].includes(localStorage.getItem('erxesPosMode') || '')) {
+      return '';
+    }
+
+    return (
+      <NavLink to="/kitchen-screen">
+        <NavIcon className={'icon-wallclock'} />
+      </NavLink>
+    );
+  }
+
+  renderWaitingMenu() {
+    const { posCurrentUser, currentConfig } = this.props;
+
+    if (!posCurrentUser || !currentConfig) {
+      return '';
+    }
+
+    if (!currentConfig.waitingScreen) {
+      return '';
+    }
+
+    if (!['', 'waiting'].includes(localStorage.getItem('erxesPosMode') || '')) {
+      return '';
+    }
+
+    return (
+      <NavLink to="/waiting-screen">
+        <NavIcon className={'icon-presentation'} />
+      </NavLink>
+    );
+  }
+
   render() {
     const {
       currentConfig,
@@ -296,12 +362,21 @@ export default class Pos extends React.Component<Props, State> {
       qp
     } = this.props;
 
+    console.log('currentConfig.uiOptions', currentConfig);
+
     const { items, totalAmount, showMenu, type } = this.state;
 
     const products = (
       <ProductsContainer
         setItems={this.setItems}
         items={items}
+        productsQuery={productsQuery}
+        orientation={orientation}
+      />
+    );
+
+    const categories = (
+      <CategoriesContainer
         productCategoriesQuery={productCategoriesQuery}
         productsQuery={productsQuery}
         orientation={orientation}
@@ -321,24 +396,37 @@ export default class Pos extends React.Component<Props, State> {
             <Col sm={3}>
               <MainContent numPadding={true}>
                 <MenuContent>
-                  <NavLink to='/'>
-                    <img src={currentConfig.uiOptions.favIcon} alt='logo' />
+                  <NavLink to="/">
+                    <img src={currentConfig.uiOptions.logo} alt="logo11" />
                   </NavLink>
+                  {categories}
                 </MenuContent>
               </MainContent>
             </Col>
-            <Col xs={6} md={6}>
+            <Col md={8}>
               <MainContent numPadding={true}>
                 <ProductsContent>
-                  {this.renderCurrentLogin(
-                    currentConfig ? currentConfig.uiOptions : {}
+                  {showMenu === true ? (
+                    this.renderDrawerContent()
+                  ) : (
+                    <>
+                      <FlexHeader>
+                        {this.renderCurrentLogin(
+                          currentConfig ? currentConfig.uiOptions : {}
+                        )}
+                        {this.renderSyncMenu()}
+                        {this.renderKitchenMenu()}
+                        {this.renderWaitingMenu()}
+                        <ProductSearch productsQuery={productsQuery} />
+                      </FlexHeader>
+                      <Divider />
+                      {products}
+                    </>
                   )}
-                  <ProductSearch productsQuery={productsQuery} />
-                  {products}
                 </ProductsContent>
               </MainContent>
             </Col>
-            <Col xs={6} md={3}>
+            <Col md={3}>
               <MainContent>
                 <Calculation
                   orientation={orientation}
@@ -359,12 +447,12 @@ export default class Pos extends React.Component<Props, State> {
           </Row>
         </PosWrapper>
 
-        <Drawer show={showMenu}>
+        {/* <Drawer show={showMenu}>
           <div ref={this.setWrapperRef}>
             <RTG.CSSTransition
               in={showMenu}
               timeout={300}
-              classNames='slide-in-left'
+              classNames="slide-in-left"
               unmountOnExit={true}
             >
               <LeftMenuContainer>
@@ -377,7 +465,7 @@ export default class Pos extends React.Component<Props, State> {
               </LeftMenuContainer>
             </RTG.CSSTransition>
           </div>
-        </Drawer>
+        </Drawer> */}
       </>
     );
   } // end render()

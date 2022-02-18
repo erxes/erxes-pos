@@ -114,7 +114,7 @@ export default class Calculation extends React.Component<Props, State> {
     const mode = localStorage.getItem('erxesPosMode') || '';
 
     if (mode === '') {
-      stageHeight -= 56; // findOrder
+      stageHeight -= 45; // findOrder
     }
     stageHeight -= 78; // customer
 
@@ -157,8 +157,8 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <Button
-        icon='print'
-        btnStyle='warning'
+        icon="print"
+        btnStyle="warning"
         block
         onClick={() => {
           window.open(`/order-receipt/${order._id}`, '_blank');
@@ -186,7 +186,7 @@ export default class Calculation extends React.Component<Props, State> {
       <Button
         style={{ backgroundColor: config.uiOptions.colors.primary }}
         onClick={onClick}
-        icon='dollar-alt'
+        icon="dollar-alt"
         block
         disabled={!totalAmount || totalAmount === 0 ? true : false}
       >
@@ -245,13 +245,13 @@ export default class Calculation extends React.Component<Props, State> {
     return (
       <Types>
         <Button
-          btnStyle='primary'
+          btnStyle="primary"
           onClick={() => this.onChange(ORDER_TYPES.TAKE)}
-          icon='check-circle'
+          icon="check-circle"
         >
           {__('Take')}
         </Button>
-        <Button btnStyle='success' onClick={addOrder} icon='check-circle'>
+        <Button btnStyle="success" onClick={addOrder} icon="check-circle">
           {__('Make an order')}
         </Button>
       </Types>
@@ -314,8 +314,8 @@ export default class Calculation extends React.Component<Props, State> {
     return (
       <FormControl
         autoFocus={true}
-        id='customerIdInput'
-        name='customerId'
+        id="customerIdInput"
+        name="customerId"
         value={this.state.customerLabel}
         onChange={onChangeQrcode}
         onClick={onClearChosenCustomer}

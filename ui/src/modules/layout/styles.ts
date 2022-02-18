@@ -68,7 +68,7 @@ const MainWrapper = styled.div`
   overflow-x: hidden;
 
   @media (max-width: 1170px) and (orientation: landscape) {
-    padding-left: 40px;
+    padding-left: 0px;
   }
 `;
 
@@ -190,100 +190,10 @@ const LeftNavigation = styled.div`
   }
 `;
 
-const Nav = styledTS<{ collapsed: boolean; color?: string }>(styled.nav)`
-  display: block;
-  margin-top: ${dimensions.unitSpacing / 2}px;
-  height: calc(100% - 130px);
-
-  > div > a {
-    display: flex;
-    align-items: center;
-    color: ${colors.bgLight}
-    height: ${dimensions.headerSpacing + 10}px;
-    justify-content: ${props => !props.collapsed && 'center'};
-    position: relative;
-    transition: all 0.3s ease;
-
-    i, label {
-      opacity: .8;
-      cursor: pointer;
-    }
-
-    i {
-      padding: ${props => props.collapsed && '0 15px 0 20px'};
-      transition: all 0.3s ease;
-    }
-
-    span {
-      position: absolute;
-      left: ${props =>
-        props.collapsed
-          ? dimensions.coreSpacing + dimensions.unitSpacing
-          : dimensions.coreSpacing + dimensions.coreSpacing - 1}px;
-      bottom: 12px;
-      padding: 4px;
-      min-width: 19px;
-      min-height: 19px;
-      text-align: center
-    }
-
-    &.active {
-      background: rgba(0, 0, 0, 0.13);
-
-      &:before {
-        content: "";
-        width: 3px;
-        background: ${colors.colorCoreTeal};
-        position: absolute;
-        display: block;
-        left: 0;
-        top: 5px;
-        bottom: 5px;
-        border-top-right-radius: 3px;
-        border-bottom-right-radius: 3px;
-      }
-
-      > i, label {
-        opacity: 1;
-      }
-    }
-
-    &:focus {
-      outline: 0;
-    }
-
-    &:hover {
-      background: rgba(0, 0, 0, 0.06);
-
-      > i, label {
-        opacity: 1;
-      }
-    }
-
-    &.bottom {
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-    }
-
-    @media (max-height: 760px) {
-      height: ${dimensions.headerSpacing}px;
-
-      i {
-        line-height: ${dimensions.headerSpacing}px;
-      }
-    }
-  }
-
-  &::-webkit-scrollbar {
-    display: none;
-  }
-`;
-
 const NavIcon = styled.i`
   font-size: 16px;
   line-height: ${dimensions.headerSpacing + 10}px;
-  color: ${colors.colorWhite};
+  color: ${colors.colorCoreSunYellow};
 `;
 
 const SubNav = styled.ul`
@@ -544,7 +454,6 @@ export {
   FieldStyle,
   PasswordWithEye,
   LeftNavigation,
-  Nav,
   NavIcon,
   SubNav,
   NavItem,
