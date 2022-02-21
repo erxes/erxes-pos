@@ -1,4 +1,6 @@
 import React from 'react';
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
 import styled from 'styled-components';
 import gql from "graphql-tag";
 
@@ -154,13 +156,18 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     if (currentTab === 'cash' && POS_MODE !== POS_MODES.KIOSK) {
       return (
-        <KeypadWithInput
-          billType={billType}
-          order={order}
-          setAmount={setAmount}
-          amount={cashAmount}
-          inputLabel={__('Amount')}
-        />
+        <Row>
+          <Col md={4} />
+          <Col md={4}>
+            <KeypadWithInput
+              billType={billType}
+              order={order}
+              setAmount={setAmount}
+              amount={cashAmount}
+              inputLabel={__('Amount')}
+            />
+          </Col>
+        </Row>
       );
     }
 
