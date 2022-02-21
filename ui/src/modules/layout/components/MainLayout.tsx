@@ -23,16 +23,7 @@ interface IProps extends IRouterProps {
   logout: () => void;
 }
 
-class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
-  constructor(props) {
-    super(props);
-    const hasWideNav = localStorage.getItem('navigation');
-
-    this.state = {
-      isCollapsed: hasWideNav ? (hasWideNav === 'true' ? true : false) : false
-    };
-  }
-
+class MainLayout extends React.Component<IProps> {
   componentDidMount() {
     const { history, posCurrentUser, currentConfig } = this.props;
 
@@ -49,12 +40,6 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
     setHeader(this.props.currentConfig || ({} as IConfig));
   }
 
-  onCollapseNavigation = () => {
-    this.setState({ isCollapsed: !this.state.isCollapsed }, () => {
-      localStorage.setItem('navigation', this.state.isCollapsed.toString());
-    });
-  };
-
   render() {
     const { children, logout, location } = this.props;
 
@@ -65,8 +50,8 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
       location.pathname.includes('waiting-screen')
     ) {
       return (
-        <div className='subRoot'>
-          <div id='anti-clickjack' style={{ display: 'none' }} />
+        <div className="subRoot">
+          <div id="anti-clickjack" style={{ display: 'none' }} />
           <Layout>
             <PortraitWrapper>{children}</PortraitWrapper>
             <DetectBrowser />
@@ -76,17 +61,17 @@ class MainLayout extends React.Component<IProps, { isCollapsed: boolean }> {
     }
 
     return (
-      <div className='subRoot'>
-        <div id='anti-clickjack' style={{ display: 'none' }} />
+      <div className="subRoot">
+        <div id="anti-clickjack" style={{ display: 'none' }} />
         <Layout>
-          <MainWrapper className='main-wrapper'>{children}</MainWrapper>
+          <MainWrapper className="main-wrapper">{children}</MainWrapper>
           <DetectBrowser />
         </Layout>
 
-        <Bottom onClick={logout} className='logout'>
-          <Tip placement='right' key={Math.random()} text='Sign out'>
+        <Bottom onClick={logout} className="logout">
+          <Tip placement="right" key={Math.random()} text="Sign out">
             <NavItem>
-              <NavIcon className='icon-logout-2' />
+              <NavIcon className="icon-logout-2" />
             </NavItem>
           </Tip>
         </Bottom>

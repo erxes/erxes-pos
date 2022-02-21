@@ -13,6 +13,9 @@ export default function ProductItem(props: Props) {
   const { product, addItem, orientation } = props;
   const { attachment, name, unitPrice } = product;
   const attachmentUrl = attachment && attachment.url ? attachment.url : '';
+  const mode = localStorage.getItem('erxesPosMode');
+
+  console.log('orientation', orientation);
 
   const onClick = () => {
     addItem({
@@ -27,13 +30,13 @@ export default function ProductItem(props: Props) {
 
   return (
     <Item onClick={onClick} isPortrait={orientation === 'portrait'}>
-      <div className='image-wrapper'>
+      <div className="image-wrapper">
         <img
           src={attachmentUrl ? attachmentUrl : 'images/no-category.jpg'}
           alt={name}
         />
       </div>
-      <div className='text-wrapper'>
+      <div className={mode === 'kiosk' ? 'text-kiosk' : 'text-wrapper'}>
         <h4>{name}</h4>
         <span>{formatNumber(unitPrice || 0)}₮</span>
       </div>

@@ -41,10 +41,13 @@ body {
   .col-sm-3 {
     width: 15% !important;
   }
-
-  .col-md-8 {
-    width: 60.666667% !important;
+  
+  @media (min-width: 768px) {
+    .col-md-8 {
+      width: 60.666667% !important;
+    }
   }
+ 
 }
 
 a {

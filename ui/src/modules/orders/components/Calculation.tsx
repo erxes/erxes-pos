@@ -42,6 +42,8 @@ export const Amount = styledTS<{ color?: string }>(styled(FlexBetween))`
   font-weight: 600;
   border-color:${props => props.color && props.color}
   color:${props => props.color && props.color}
+  height: 70px;
+  margin-bottom: 40px;
 `;
 
 const ButtonWrapper = styled.div`

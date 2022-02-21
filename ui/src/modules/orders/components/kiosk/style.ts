@@ -131,3 +131,36 @@ export const PortraitStage = styled.div`
     margin-top: 10px;
   }
 `;
+
+export const LeftCategory = styledTS<{
+  isActive?: boolean;
+  color?: string;
+}>(styled.div)`
+  width: 120px;
+  height: 140px;
+  background: rgba(255, 120, 0, 0.12);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 16px;
+  margin-bottom: 10px;
+  background: ${props =>
+    props.isActive
+      ? props.color
+        ? props.color
+        : colors.colorSecondary
+      : colors.colorWhite};
+  color: ${props => props.isActive && colors.colorWhite};
+
+  .item-list {
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 44px;
+    margin-top: 45px;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+`;

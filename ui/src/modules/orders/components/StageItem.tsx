@@ -1,14 +1,14 @@
-import React from "react";
-import styled from "styled-components";
-import styledTS from "styled-components-ts";
-import { IOrderItemInput } from "../types";
-import { FlexBetween, FlexCenter } from "modules/common/styles/main";
-import Icon from "modules/common/components/Icon";
-import Quantity from "./Quantity";
-import { PortraitStage } from "./portrait/style";
+import React from 'react';
+import styled from 'styled-components';
+import styledTS from 'styled-components-ts';
+import { IOrderItemInput } from '../types';
+import { FlexBetween, FlexCenter } from 'modules/common/styles/main';
+import Icon from 'modules/common/components/Icon';
+import Quantity from './Quantity';
+import { PortraitStage } from './kiosk/style';
 import FormControl from 'modules/common/components/form/Control';
 import { ORDER_TYPES } from '../../../constants';
-import Tip from "modules/common/components/Tip";
+import Tip from 'modules/common/components/Tip';
 import { PackageProduct } from '../styles';
 
 const Item = styled.div`
@@ -21,43 +21,43 @@ const Item = styled.div`
 `;
 
 const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
-  background: ${(props) => !props.isPortrait ? "#e4ebf1" : "#e4ebf1"};
-  width: ${(props) => (props.isPortrait ? "50px" : "30px")};
+  background: ${props => (!props.isPortrait ? '#e4ebf1' : '#e4ebf1')};
+  width: ${props => (props.isPortrait ? '50px' : '30px')};
 
   position: absolute;
-  right: ${(props) => (props.isPortrait ? "0" : "0")};
-  top: ${(props) => (props.isPortrait ? "0" : "0")};
-  bottom: ${(props) => (props.isPortrait ? "0" : "0")};
+  right: ${props => (props.isPortrait ? '0' : '0')};
+  top: ${props => (props.isPortrait ? '0' : '0')};
+  bottom: ${props => (props.isPortrait ? '0' : '0')};
   cursor: pointer;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   transition: all ease 0.3s;
-  font-size: ${(props) => props.isPortrait ? "34px" : "14px"};
+  font-size: ${props => (props.isPortrait ? '34px' : '14px')};
 
   &:hover {
     i {
-      font-size: ${(props) => props.isPortrait ? "36px" : "17px;"};
+      font-size: ${props => (props.isPortrait ? '36px' : '17px;')};
     }
   }
 
   input {
-    width: ${(props) => props.isPortrait ? "36px" : "18px;"};
-    height: ${(props) => props.isPortrait ? "124px" : "18px;"};
+    width: ${props => (props.isPortrait ? '36px' : '18px;')};
+    height: ${props => (props.isPortrait ? '124px' : '18px;')};
   }
 `;
 
 export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
   padding: 10px;
   word-break: break-word;
-  font-size: ${(props) => props.isPortrait && "26px"};
+  font-size: ${props => props.isPortrait && '26px'};
 
   > div {
-    line-height: ${(props) => (props.isPortrait ? "25px" : "13px")};
+    line-height: ${props => (props.isPortrait ? '25px' : '13px')};
   }
 
   > span {
     color: #616e7c;
-    font-size: ${(props) => (props.isPortrait ? "22px" : "11px")};
+    font-size: ${props => (props.isPortrait ? '22px' : '11px')};
   }
 
   b {
@@ -65,8 +65,8 @@ export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
   }
 
   input {
-    width: ${(props) => props.isPortrait ? "36px" : "22px;"};
-    height: ${(props) => props.isPortrait ? "32px" : "18px;"};
+    width: ${props => (props.isPortrait ? '36px' : '22px;')};
+    height: ${props => (props.isPortrait ? '32px' : '18px;')};
   }
 `;
 
@@ -82,7 +82,7 @@ type Props = {
 
 type State = {
   isTake: boolean;
-}
+};
 
 export default class StageItem extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -93,7 +93,7 @@ export default class StageItem extends React.Component<Props, State> {
     const { type, item } = this.props;
     this.state = {
       isTake: type === ORDER_TYPES.EAT ? item.isTake || false : true
-    }
+    };
   }
 
   onChange(e) {
@@ -106,22 +106,24 @@ export default class StageItem extends React.Component<Props, State> {
     const { type, item, changeItemIsTake, mode } = this.props;
 
     if (mode === 'kiosk' || type !== ORDER_TYPES.EAT) {
-      return (<></>);
+      return <></>;
     }
 
-    const onChange = (e) => {
+    const onChange = e => {
       changeItemIsTake(item, e.target.checked);
-    }
+    };
 
     return (
-      <Tip text={"Тусгайлан авч явах бол тэмдэглэх"} placement="right">
+      <Tip text={'Тусгайлан авч явах бол тэмдэглэх'} placement="right">
         <label>
           <FormControl
             type="checkbox"
             name="itemIsTake"
             onChange={onChange}
             checked={item.isTake}
-            onClick={(e) => { e.stopPropagation() }}
+            onClick={e => {
+              e.stopPropagation();
+            }}
           />
         </label>
       </Tip>
@@ -132,16 +134,16 @@ export default class StageItem extends React.Component<Props, State> {
     const { item } = this.props;
 
     if (item.isPackage) {
-      return <PackageProduct>{item.productName}</PackageProduct>
+      return <PackageProduct>{item.productName}</PackageProduct>;
     }
 
-    return item.productName
+    return item.productName;
   }
 
   render() {
     const { item, changeItemCount, color, orientation } = this.props;
     const { unitPrice, count } = item;
-    const isPortrait = orientation === "portrait";
+    const isPortrait = orientation === 'portrait';
 
     const onRemoveItem = () => {
       changeItemCount({ ...item, count: 0 });
@@ -153,7 +155,10 @@ export default class StageItem extends React.Component<Props, State> {
           <PortraitStage>
             <Text isPortrait={isPortrait}>
               <div>
-                <b>{this.renderCheckbox()}{this.renderName()}</b>
+                <b>
+                  {this.renderCheckbox()}
+                  {this.renderName()}
+                </b>
               </div>
               <span>
                 {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
@@ -182,7 +187,10 @@ export default class StageItem extends React.Component<Props, State> {
         <FlexBetween>
           <Text>
             <div>
-              <b>{this.renderCheckbox()}{this.renderName()}</b>
+              <b>
+                {this.renderCheckbox()}
+                {this.renderName()}
+              </b>
             </div>
             <span>{Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮</span>
           </Text>

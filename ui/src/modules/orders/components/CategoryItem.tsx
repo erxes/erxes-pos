@@ -2,8 +2,9 @@ import React from 'react';
 
 import { AppContext } from 'appContext';
 import { ProductCategory } from '../styles';
-import { FlexCenter } from 'modules/common/styles/main';
+// import { FlexCenter } from 'modules/common/styles/main';
 import { IProductCategory } from '../types';
+// import { LeftCategory } from './kiosk/style';
 
 type Props = {
   category: IProductCategory;
@@ -28,19 +29,23 @@ export default function CategoryItem(props: Props) {
 
   const isPortrait = orientation === 'portrait';
 
-  return (
-    <ProductCategory
-      isActive={category._id === activeCategoryId}
-      onClick={() => onClickCategory(category._id)}
-      color={color}
-      isPortrait={isPortrait}
-    >
-      <FlexCenter>
-        <div className='image-wrapper'>
+  const renderCategory = () => {
+    const mode = localStorage.getItem('erxesPosMode');
+
+    return (
+      <ProductCategory
+        isActive={category._id === activeCategoryId}
+        onClick={() => onClickCategory(category._id)}
+        color={color}
+        isPortrait={isPortrait}
+      >
+        <div className={mode === 'kiosk' ? 'item-list' : 'image-wrapper'}>
           <img src={imgUrl} alt={name} />
+          {name}
         </div>
-        {name}
-      </FlexCenter>
-    </ProductCategory>
-  );
+      </ProductCategory>
+    );
+  };
+
+  return renderCategory();
 }

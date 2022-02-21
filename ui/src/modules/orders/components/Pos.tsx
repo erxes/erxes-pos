@@ -15,14 +15,18 @@ import {
   MenuContent,
   ProductsContent,
   FlexHeader,
-  Divider
+  Divider,
+  KioskMainContent,
+  KioskMenuContent,
+  KioskProductsContent,
+  FooterContent
 } from '../styles';
 import { IConfig } from 'types';
 import PaymentForm from './drawer/PaymentForm';
 import CustomerForm from './drawer/CustomerForm';
 import ProductSearch from '../containers/ProductSearch';
 import { IPaymentParams } from '../containers/PosContainer';
-import PortraitView from './portrait';
+import PortraitView from './kiosk';
 import { renderFullName } from 'modules/common/utils';
 import Icon from 'modules/common/components/Icon';
 import { NavLink } from 'react-router-dom';
@@ -250,7 +254,7 @@ export default class Pos extends React.Component<Props, State> {
 
   renderCurrentLogin(uiOptions) {
     const mode = localStorage.getItem('erxesPosMode');
-    const { order } = this.props;
+    const { order, posCurrentUser } = this.props;
 
     if (mode === 'kiosk') {
       if (order && order.customer) {
@@ -273,6 +277,7 @@ export default class Pos extends React.Component<Props, State> {
           </>
         );
       }
+
       return (
         <Icon
           icon="home"
@@ -284,8 +289,6 @@ export default class Pos extends React.Component<Props, State> {
         />
       );
     }
-
-    const { posCurrentUser } = this.props;
 
     return <NameCard user={posCurrentUser} avatarSize={40} />;
   }
@@ -352,6 +355,8 @@ export default class Pos extends React.Component<Props, State> {
     );
   }
 
+  renderKiosk() {}
+
   render() {
     const {
       currentConfig,
@@ -361,8 +366,6 @@ export default class Pos extends React.Component<Props, State> {
       productsQuery,
       qp
     } = this.props;
-
-    console.log('currentConfig.uiOptions', currentConfig);
 
     const { items, totalAmount, showMenu, type } = this.state;
 
@@ -387,6 +390,38 @@ export default class Pos extends React.Component<Props, State> {
 
     if (mode === 'kiosk' && !this.props.type && !(qp && qp.id)) {
       return <PortraitView {...this.props} order={order} />;
+    }
+
+    if (mode === 'kiosk') {
+      return (
+        <>
+          <div className="headerKiosk">
+            <img src="/images/headerKiosk.png" alt="type" />
+          </div>
+          <KioskMainContent>
+            <KioskMenuContent>
+              <MenuContent>{categories}</MenuContent>
+            </KioskMenuContent>
+            <KioskProductsContent>{products}</KioskProductsContent>
+          </KioskMainContent>
+          <FooterContent>
+            <Calculation
+              orientation={orientation}
+              totalAmount={totalAmount}
+              addOrder={this.addOrder}
+              editOrder={this.editOrder}
+              setOrderState={this.setOrderState}
+              onClickDrawer={this.toggleDrawer}
+              items={items}
+              changeItemCount={this.changeItemCount}
+              changeItemIsTake={this.changeItemIsTake}
+              config={currentConfig}
+              order={order}
+              type={type}
+            />
+          </FooterContent>
+        </>
+      );
     }
 
     return (

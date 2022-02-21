@@ -6,6 +6,10 @@ import { rgba, darken } from 'modules/common/styles/ecolor';
 export const PosWrapper = styled.div`
   position: relative;
 
+  .headerKiosk {
+    position: relative;
+  }
+
   @media (max-width: 1170px) and (orientation: landscape) {
     .no-padding {
       padding: 0;
@@ -75,6 +79,8 @@ export const MainContent = styledTS<{
 export const MenuContent = styled.div`
   height: 100%;
   padding: 20px;
+  display: grid;
+  justify-content: center;
 `;
 
 export const ProductsContent = styledTS<{ show?: boolean }>(styled.div)`
@@ -96,14 +102,42 @@ export const ScreenContent = styledTS<{
   height: 100vh;
 `;
 
-export const ProductCategories = styled.div`
-  margin: 30px 0;
-  width: 50%;
+export const ProductCategories = styledTS<{ isPortrait?: boolean }>(
+  styled.div
+)`  
+  margin: ${props => (props.isPortrait ? '' : '30px 0')};
+  width: ${props => (props.isPortrait ? '' : '50%')};
+  display: ${props => (props.isPortrait ? 'grid' : '')};
+  justify-content: center;
 
   @media (max-width: 1170px) and (orientation: landscape) {
     margin: 20px 0 10px 0;
   }
 `;
+
+//Kiosk
+export const KioskMainContent = styled.div`
+  width: 100%;
+  height: 1429px;
+  display: flex;
+`;
+
+export const KioskMenuContent = styled.div`
+  width: 20%;
+`;
+
+export const KioskProductsContent = styled.div`
+  width: 80%;
+  margin-top: 20px;
+`;
+
+export const FooterContent = styled.div`
+  position: relative;
+  width: 100%;
+  height: 286px;
+`;
+
+/********end kiosk***** */
 
 export const ProductsWrapper = styledTS<{
   height?: number;
@@ -157,12 +191,16 @@ export const ProductCategory = styledTS<{
   color?: string;
   isPortrait?: boolean;
 }>(styled.div)`
-  box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.1);
-  border-radius: 30px;
-  font-size: ${props => (props.isPortrait ? '28px' : '11px')};
+  border-radius: 16px;
+  font-size: 14px;
   font-weight: 500;
+  box-shadow: ${props =>
+    props.isPortrait ? '2px 2px 4px rgba(0, 0, 0, 0.25);' : ''}; 
   margin: ${props => (props.isPortrait ? '0 20px 20px 0' : '0 10px 10px 0')};
-  padding: ${dimensions.unitSpacing - 4}px 15px;
+  padding: ${props =>
+    props.isPortrait ? '' : `${dimensions.unitSpacing - 4}px 15px;`}; 
+  width: ${props => (props.isPortrait ? '120px' : '')};
+  height:  ${props => (props.isPortrait ? '140px;' : '')}; 
   background: ${props =>
     props.isActive
       ? props.color
@@ -172,16 +210,29 @@ export const ProductCategory = styledTS<{
   cursor: pointer;
   color: ${props => props.isActive && colors.colorWhite};
   transition: all ease .3s;
-  display: flex;
 
   .image-wrapper {
-    width: ${props => (props.isPortrait ? '70px' : '30px')};
-    height: ${props => (props.isPortrait ? '70px' : '30px')};
+    width: 70px;
+    height: 70px;
     margin-right:  ${dimensions.unitSpacing}px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+
+  .item-list {
+    width: 36px;
+    height: 36px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 44px;
+    margin-top: 45px;
 
     img {
       max-width: 100%;
@@ -201,24 +252,27 @@ export const ProductCategory = styledTS<{
 `;
 
 export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.25);
+  box-shadow: ${props =>
+    props.isPortrait ? '' : '0px 2px 4px rgba(0, 0, 0, 0.25)'};
   border-radius: 24px;
-  background: ${colors.colorWhite};
-  display: flex;
+  background: ${props => (props.isPortrait ? '' : `${colors.colorWhite}`)};
+  display: ${props => (props.isPortrait ? '' : 'flex')};
   align-items: center;
   padding: 0 10px;
   padding-bottom: ${props => props.isPortrait && '20px'};
-  flex-basis: 28%;
+  flex-basis: ${props => (props.isPortrait ? '28%' : '14.6%28%;')};
   cursor: pointer;
   margin: 0 20px 20px 0;
   transition: all ease 0.3s;
 
   .image-wrapper {
-    width: ${props => (props.isPortrait ? '240px' : '132px')};
-    height: ${props => (props.isPortrait ? '280px' : '120px')};
+    width: ${props => (props.isPortrait ? '211px' : '132px')};
+    height: ${props => (props.isPortrait ? '211px' : '120px')};
     margin-bottom: 5px;
-    display: flex;
+    display: ${props => (props.isPortrait ? '' : 'flex')};
     align-items: center;
+    display: grid;
+    align-content: center;
     justify-content: center;
     overflow: hidden;
 
@@ -254,6 +308,27 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
     }
   }
 
+  .text-kiosk {
+    background: #F3F3F3;
+    border-radius: 8px;
+    height: 100px;
+    text-align: center;
+
+    h4 {
+      font-size: '16px';
+      line-height: 24px;
+      letter-spacing: 0.15px;
+      font-weight: bold;
+      padding-top: 8px;
+    }
+
+    span {
+      color: #FF7800;
+      font-size: 16px;
+      font-weight: bold;
+    }
+  }
+
   p {
     line-height: 16px;
     font-size: 12px;
@@ -262,7 +337,8 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   }
 
   &:hover {
-    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.28);
+    box-shadow: ${props =>
+      props.isPortrait ? '' : '0px 3px 4px rgba(0, 0, 0, 0.28);'}; 
   }
 
 `;
@@ -278,21 +354,27 @@ export const ProductLabel = styledTS<{ color?: string; isPortrait?: boolean }>(
 )`
   background: ${props => (props.color ? props.color : colors.colorSecondary)}
   color: ${colors.colorWhite};
-  padding: 8px 15px;
+  padding: 12px 15px;
   border-radius: 12px;
   font-size: ${props => (props.isPortrait ? '24px' : '12px')};
   text-align: center;
   font-weight: 500;
   cursor: pointer;
   width: 49%;
+  height: 56px;
 `;
 
 export const Types = styled.div`
   display: flex;
   justify-content: space-between;
+  height: 70px;
 
   button {
     width: 49%;
+
+    span {
+      font-size: 18px;
+    }
   }
 `;
 

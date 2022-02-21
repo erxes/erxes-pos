@@ -3,7 +3,7 @@ import React from 'react';
 import { router } from 'modules/common/utils';
 import { IProduct, IProductCategory } from '../types';
 import CategoryItem from './CategoryItem';
-import { ProductCategories } from '../styles';
+// import { ProductCategories } from '../styles';
 import { IConfig, IRouterProps } from 'types';
 
 type Props = {
@@ -56,10 +56,6 @@ export default class Categories extends React.Component<Props, State> {
       />
     ));
 
-    return (
-      <ProductCategories id="product-categories">
-        {categories}
-      </ProductCategories>
-    );
+    return <div>{categories}</div>;
   }
 }
