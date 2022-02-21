@@ -268,7 +268,7 @@ export default class Calculation extends React.Component<Props, State> {
         query: gql(queries.customerDetail),
         fetchPolicy: 'network-only',
         variables: {
-          _id: value
+          _id: value.trim()
         }
       }).then(async (response) => {
         const data = response.data.customerDetail;
