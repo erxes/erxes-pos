@@ -230,13 +230,12 @@ export const ProductCategory = styledTS<{
     width: 36px;
     height: 36px;
     align-items: center;
-    justify-content: center;
     margin-left: 44px;
-    margin-top: 45px;
 
     img {
       max-width: 100%;
       max-height: 100%;
+      align-content: center;
     }
   }
 
@@ -399,9 +398,13 @@ export const Stages = styled.div`
   height: 100%;
 `;
 
-export const StageContent = styledTS<{ odd?: boolean }>(styled.div)`
+export const StageContent = styledTS<{ odd?: boolean; isPortrait?: boolean }>(
+  styled.div
+)`
   margin-top: ${dimensions.unitSpacing}px;
-  height: ${props => props.odd && '100%'};
+  height: ${props => (props.isPortrait ? '100px' : '100%')};
+  display: ${props => (props.isPortrait ? 'flex' : '')};
+  width: 100%;
 
   > b {
     margin-bottom: ${dimensions.unitSpacing}px;

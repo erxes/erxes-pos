@@ -132,35 +132,21 @@ export const PortraitStage = styled.div`
   }
 `;
 
-export const LeftCategory = styledTS<{
-  isActive?: boolean;
-  color?: string;
-}>(styled.div)`
-  width: 120px;
-  height: 140px;
-  background: rgba(255, 120, 0, 0.12);
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+export const SelectedItem = styled.div`
+  width: 206px;
+  height: 206px;
+  top: 0px;
+  border: 1px solid #ff7800;
+  box-sizing: border-box;
   border-radius: 16px;
-  margin-bottom: 10px;
-  background: ${props =>
-    props.isActive
-      ? props.color
-        ? props.color
-        : colors.colorSecondary
-      : colors.colorWhite};
-  color: ${props => props.isActive && colors.colorWhite};
+`;
 
-  .item-list {
-    width: 36px;
-    height: 36px;
-    align-items: center;
-    justify-content: center;
-    margin-left: 44px;
-    margin-top: 45px;
+export const SelectedStage = styled.div`
+  text-align: center;
 
-    img {
-      max-width: 100%;
-      max-height: 100%;
-    }
+  > img {
+    max-width: 200px;
+    max-height: 200px;
+    margin-top: 10px;
   }
 `;

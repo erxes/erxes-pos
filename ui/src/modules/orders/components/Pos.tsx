@@ -31,6 +31,7 @@ import { renderFullName } from 'modules/common/utils';
 import Icon from 'modules/common/components/Icon';
 import { NavLink } from 'react-router-dom';
 import { NavIcon } from 'modules/layout/styles';
+import FooterCalculation from './kiosk/FooterCalculation';
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ '../containers/ProductsContainer')
@@ -404,22 +405,24 @@ export default class Pos extends React.Component<Props, State> {
             </KioskMenuContent>
             <KioskProductsContent>{products}</KioskProductsContent>
           </KioskMainContent>
-          <FooterContent>
-            <Calculation
-              orientation={orientation}
-              totalAmount={totalAmount}
-              addOrder={this.addOrder}
-              editOrder={this.editOrder}
-              setOrderState={this.setOrderState}
-              onClickDrawer={this.toggleDrawer}
-              items={items}
-              changeItemCount={this.changeItemCount}
-              changeItemIsTake={this.changeItemIsTake}
-              config={currentConfig}
-              order={order}
-              type={type}
-            />
-          </FooterContent>
+          {items.length > 0 && (
+            <FooterContent>
+              <FooterCalculation
+                orientation={orientation}
+                totalAmount={totalAmount}
+                addOrder={this.addOrder}
+                editOrder={this.editOrder}
+                setOrderState={this.setOrderState}
+                onClickDrawer={this.toggleDrawer}
+                items={items}
+                changeItemCount={this.changeItemCount}
+                changeItemIsTake={this.changeItemIsTake}
+                config={currentConfig}
+                order={order}
+                type={type}
+              />
+            </FooterContent>
+          )}
         </>
       );
     }

@@ -5,7 +5,7 @@ import { IOrderItemInput } from '../types';
 import { FlexBetween, FlexCenter } from 'modules/common/styles/main';
 import Icon from 'modules/common/components/Icon';
 import Quantity from './Quantity';
-import { PortraitStage } from './kiosk/style';
+import { SelectedItem, SelectedStage } from './kiosk/style';
 import FormControl from 'modules/common/components/form/Control';
 import { ORDER_TYPES } from '../../../constants';
 import Tip from 'modules/common/components/Tip';
@@ -22,9 +22,9 @@ const Item = styled.div`
 
 const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
   background: ${props => (!props.isPortrait ? '#e4ebf1' : '#e4ebf1')};
-  width: ${props => (props.isPortrait ? '50px' : '30px')};
+  width: ${props => (props.isPortrait ? '0' : '30px')};
 
-  position: absolute;
+  position: ${props => (props.isPortrait ? '' : 'absolute')}; ;
   right: ${props => (props.isPortrait ? '0' : '0')};
   top: ${props => (props.isPortrait ? '0' : '0')};
   bottom: ${props => (props.isPortrait ? '0' : '0')};
@@ -32,11 +32,11 @@ const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   transition: all ease 0.3s;
-  font-size: ${props => (props.isPortrait ? '34px' : '14px')};
+  font-size: ${props => (props.isPortrait ? '10px' : '14px')};
 
   &:hover {
     i {
-      font-size: ${props => (props.isPortrait ? '36px' : '17px;')};
+      font-size: ${props => (props.isPortrait ? '' : '17px;')};
     }
   }
 
@@ -151,8 +151,8 @@ export default class StageItem extends React.Component<Props, State> {
 
     if (isPortrait) {
       return (
-        <Item>
-          <PortraitStage>
+        <SelectedItem>
+          <SelectedStage>
             <Text isPortrait={isPortrait}>
               <div>
                 <b>
@@ -164,6 +164,9 @@ export default class StageItem extends React.Component<Props, State> {
                 {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
               </span>
             </Text>
+            <Close onClick={onRemoveItem} isPortrait={isPortrait}>
+              <Icon icon="cancel-1" />
+            </Close>
             <FlexCenter>
               <Quantity
                 step={1}
@@ -174,11 +177,8 @@ export default class StageItem extends React.Component<Props, State> {
                 isPortrait={isPortrait}
               />
             </FlexCenter>
-            <Close onClick={onRemoveItem} isPortrait={isPortrait}>
-              <Icon icon="cancel-1" />
-            </Close>
-          </PortraitStage>
-        </Item>
+          </SelectedStage>
+        </SelectedItem>
       );
     }
 
