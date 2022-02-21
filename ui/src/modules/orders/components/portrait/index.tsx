@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import { ICustomerParams, IOrder } from "../../types";
+import { ICustomerParams, IOrder, IPaymentParams } from "../../types";
 import { IUser } from "modules/auth/types";
 import { IConfig } from "types";
-import { IPaymentParams } from "../../containers/PosContainer";
 import {
   LogoWrapper,
   ChooseType,

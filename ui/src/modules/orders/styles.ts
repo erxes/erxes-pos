@@ -567,3 +567,7 @@ export const PackageProduct = styled.span`
   text-decoration-color: greenyellow;
   text-decoration-style: wavy;
 `;
+
+export const MarginTop = styledTS<{ margin: number }>(styled.div)`
+  margin-top: ${(props) => props.margin}px
+`;

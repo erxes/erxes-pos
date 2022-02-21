@@ -3,6 +3,7 @@ import { withRouter } from "react-router-dom";
 import gql from "graphql-tag";
 import * as compose from "lodash.flowright";
 import React from "react";
+
 import { Alert, __ } from "modules/common/utils";
 import { IRouterProps, IConfig } from "../../../types";
 import { withProps } from "../../utils";
@@ -12,6 +13,7 @@ import {
   OrdersAddMutationResponse,
   OrdersEditMutationResponse,
   OrderDetailQueryResponse,
+  IPaymentParams
 } from "../types";
 import withCurrentUser from "modules/auth/containers/withCurrentUser";
 import { IUser } from "modules/auth/types";
@@ -31,14 +33,6 @@ type Props = {
   customersAddMutation: any;
   setPaymentInfoMutation: any;
 } & IRouterProps;
-
-export interface IPaymentParams {
-  cardAmount?: number;
-  cashAmount?: number;
-  mobileAmount?: number;
-  billType: string;
-  registerNumber?: string;
-}
 
 class PosContainer extends React.Component<Props> {
   render() {

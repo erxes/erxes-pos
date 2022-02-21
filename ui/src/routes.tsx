@@ -8,6 +8,7 @@ import SettingsRoutes from "./modules/settings/routes";
 import KitchenRoutes from "./modules/kitchen/routes";
 import WaitingRoutes from "./modules/waiting/routes";
 import OrderRoutes from "./modules/orders/routes";
+import QPayRoutes from './modules/qpay/routes';
 import { IUser } from "./modules/auth/types";
 import { IConfig } from "types";
 
@@ -60,6 +61,7 @@ const renderRoutes = (posCurrentUser, currentConfig, orientation) => {
           <SettingsRoutes />
           <KitchenRoutes />
           <WaitingRoutes />
+          <QPayRoutes />
           <Route
             key="/confirmation"
             exact={true}

@@ -55,3 +55,7 @@ export const calcTaxAmount = (amount: number, config?: IEbarimtConfig) => {
     pureAmount: amount / (100 + taxPercent) * 100
   };
 };
+
+export const trimGraphqlError = (msg: string) => {
+  return msg.replace('GraphQL error: ', '');
+}

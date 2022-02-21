@@ -12,7 +12,7 @@ import { formatNumber } from 'modules/utils';
 import { FormControl } from 'modules/common/components/form';
 import { IConfig, IOption } from 'types';
 import { ICustomer, IOrder, IOrderItemInput } from '../types';
-import { ORDER_TYPES } from '../../../constants';
+import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from '../../../constants';
 import { ProductLabel, Type, Types } from '../styles';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
@@ -162,7 +162,7 @@ export default class Calculation extends React.Component<Props, State> {
     }
     const { mode } = this.state;
 
-    if (mode === 'kiosk') {
+    if (mode === POS_MODES.KIOSK) {
       return null;
     }
 
@@ -179,17 +179,17 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
-  renderPaymentButton() {
-    const { order, onClickDrawer, config, totalAmount, editOrder } = this.props;
+  renderSplitPaymentButton() {
+    const { order, config, editOrder } = this.props;
 
-    if (!order || (order && order.paidDate)) {
+    if (!order || (order && order.paidDate && order.status === ORDER_STATUSES.PAID)) {
       return null;
     }
 
     const onClick = () => {
       editOrder();
 
-      onClickDrawer("payment");
+      window.location.href = `/order-payment/${order._id}`;
     };
 
     return (
@@ -198,7 +198,6 @@ export default class Calculation extends React.Component<Props, State> {
         onClick={onClick}
         icon="dollar-alt"
         block
-        disabled={!totalAmount || totalAmount === 0 ? true : false}
       >
         {__("Pay the bill")}
       </Button>
@@ -342,7 +341,7 @@ export default class Calculation extends React.Component<Props, State> {
               {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
               {this.renderAddButton()}
               {this.renderReceiptButton()}
-              {this.renderPaymentButton()}
+              {this.renderSplitPaymentButton()}
             </ButtonWrapper>
           </ColumnBetween>
         </Wrapper>

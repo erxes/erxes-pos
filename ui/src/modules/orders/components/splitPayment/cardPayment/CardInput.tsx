@@ -3,58 +3,65 @@ import React from 'react';
 import NumberFormat from "react-number-format";
 import styled from "styled-components";
 
+import { FlexCenter } from "modules/common/styles/main";
 import Button from "modules/common/components/Button";
 import Icon from "modules/common/components/Icon";
 import FormGroup from "modules/common/components/form/Group";
 import ControlLabel from "modules/common/components/form/Label";
 import { __, Alert } from "modules/common/utils";
 import { Input } from "modules/orders/styles";
-import { PAYMENT_TYPES } from './CalculationForm';
-import { IOrder } from 'modules/orders/types';
+import { IOrder, ICardPayment } from 'modules/orders/types';
+import KeyPads from '../../drawer/KeyPads';
 
 const ButtonWrapper = styled.div`
   margin-bottom: 20px;
 `;
 
 type Props = {
-  cardAmount: number;
-  reset: (paymentType: string) => void;
   color?: string;
-  onStateChange: (key: string, value: any) => void;
   billType: string;
-  setCardPaymentInfo: (params: any) => void;
+  addCardPayment: (params: ICardPayment) => void;
   order: IOrder;
-  isSplit?: boolean;
-  cashAmount?: number;
+  maxAmount?: number;
 }
 
 type State = {
   sentTransaction: boolean;
   checkedTransaction: boolean;
+  amount: number;
 }
 
-export default class CardForm extends React.Component<Props, State> {
+export default class CardInput extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
       sentTransaction: false,
-      checkedTransaction: false
+      checkedTransaction: false,
+      amount: props.maxAmount || 0
     };
   }
 
+  onChangeKeyPad = (num) => {
+    const { amount } = this.state;
+
+    if (num === "CE") {
+      return this.setState({ amount: 0 });
+    }
+
+    return this.setState({ amount: amount + num });
+  };
+
   render() {
     const {
-      cardAmount,
-      reset,
       color = '',
-      onStateChange,
       billType,
-      setCardPaymentInfo,
-      isSplit,
+      addCardPayment,
       order,
-      cashAmount = 0
+      maxAmount = 0
     } = this.props;
+
+    const { amount } = this.state;
 
     const { number, _id } = order;
 
@@ -65,20 +72,15 @@ export default class CardForm extends React.Component<Props, State> {
       inputMode: "numeric",
     };
 
-    const handleInput = (value: number | undefined) => {
-      onStateChange(PAYMENT_TYPES.CARD, value);
+    const handleInput = (value: number | undefined = 0) => {
+      // do not accept amount greater than payable amount
+      const val = Number((value > maxAmount ? maxAmount : value).toFixed(2));
 
-      const totalMatches = value && value + cashAmount === order.totalAmount;
-
-      if (isSplit && totalMatches) {
-        onStateChange('paymentEnabled', true);
-      } else {
-        onStateChange('paymentEnabled', false);
-      }
+      this.setState({ amount: val });
     };
 
-    const handleClick = () => {
-      onStateChange('activeInput', PAYMENT_TYPES.CARD);
+    const resetInput = () => {
+      this.setState({ amount: 0 });
     };
 
     const PATH = 'http://localhost:27028';
@@ -97,7 +99,7 @@ export default class CardForm extends React.Component<Props, State> {
               service_params: {
                 // special character _ is not accepted
                 db_ref_no: number.replace('_', ''),
-                amount: cardAmount.toString(),
+                amount: amount.toString(),
                 vatps_bill_type: billType
               }
             })
@@ -106,10 +108,7 @@ export default class CardForm extends React.Component<Props, State> {
               if (r.response.response_code === '000') {
                 Alert.success(__(r.response.response_msg || 'Transaction was successful'));
 
-                // enable payment button
-                onStateChange('paymentEnabled', true);
-
-                setCardPaymentInfo({ _id, info: JSON.stringify(r.response) });
+                addCardPayment({ _id, cardInfo: JSON.stringify(r.response), amount });
               } else {
                 return Alert.warning(r.response.response_msg);
               }
@@ -130,21 +129,28 @@ export default class CardForm extends React.Component<Props, State> {
           <Input color={color}>
             <NumberFormat
               name="cardAmount"
-              value={cardAmount}
+              value={amount}
               onValueChange={(values) => handleInput(values.floatValue)}
-              onClick={() => handleClick()}
               {...inputProps}
             />
-            <div onClick={() => reset(PAYMENT_TYPES.CARD)}>
+            <div onClick={resetInput}>
               <Icon icon="cancel" size={13} />
             </div>
           </Input>
         </FormGroup>
         <ButtonWrapper>
-          {cardAmount &&
-            <Button btnStyle='warning' onClick={sendTransaction} size='large'>{__("Send transaction")}</Button>
+          {amount ?
+            <Button btnStyle='warning' onClick={sendTransaction} size='large'>{__("Send transaction")}</Button> : null
           }
         </ButtonWrapper>
+        <FlexCenter>
+          <KeyPads
+            isPayment={false}
+            isPortrait={true}
+            onChangeKeyPad={this.onChangeKeyPad}
+            billType={billType}
+          />
+        </FlexCenter>
       </React.Fragment>
     );
   } // end render()
