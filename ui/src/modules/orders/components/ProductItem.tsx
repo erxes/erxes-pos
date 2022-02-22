@@ -15,8 +15,6 @@ export default function ProductItem(props: Props) {
   const attachmentUrl = attachment && attachment.url ? attachment.url : '';
   const mode = localStorage.getItem('erxesPosMode');
 
-  console.log('orientation', orientation);
-
   const onClick = () => {
     addItem({
       productId: product._id,

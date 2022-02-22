@@ -3,19 +3,22 @@ import React from 'react';
 import styled from 'styled-components';
 import styledTS from 'styled-components-ts';
 import { __ } from 'modules/common/utils';
-import { ColumnBetween, FlexBetween } from 'modules/common/styles/main';
+import { FlexBetween } from 'modules/common/styles/main';
 import { formatNumber } from 'modules/utils';
 import { IConfig, IOption } from 'types';
 import { ICustomer, IOrder, IOrderItemInput } from 'modules/orders/types';
 import Stage from '../Stage';
+import { FlexColumn, TypeButtons } from './style';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   position: fixed;
-  width: 100%;
+  width: 1080px;
   height: 286px;
-  left: 0px;
-  top: 1634px;
   background: #F5F5F5;
+  display: flex;
+  justify-content: space-between;
+  overflow: hidden;
+  max-width:1080px;
 
   button {
     padding: 10px 20px;
@@ -27,24 +30,21 @@ const Wrapper = styledTS<{ color?: string }>(styled.div)`
   }
 `;
 
-export const Amount = styledTS<{ color?: string }>(styled(FlexBetween))`
-  border: 1px solid #cbd2d9;
-  border-radius: 8px;
-  padding: 10px;
+export const Amount = styled(FlexBetween)`
   margin-bottom: 10px;
-  font-weight: 600;
-  border-color:${props => props.color && props.color}
-  color:${props => props.color && props.color}
-  height: 70px;
-  margin-bottom: 40px;
+  font-size: 16px;
+
+  span {
+    font-weight: 600;
+  }
 `;
 
 const ButtonWrapper = styled.div`
-  margin-bottom: 30px;
+  margin: 40px;
+  min-width: 310px;
 
   > button {
-    margin-bottom: 10px;
-    margin-left: 0;
+    width: 300px;
   }
 `;
 
@@ -149,7 +149,7 @@ export default class Calculation extends React.Component<Props, State> {
   renderPaymentButton() {
     const { order, onClickDrawer, config, totalAmount, editOrder } = this.props;
 
-    if (!order || (order && order.paidDate)) {
+    if (order && order.paidDate) {
       return null;
     }
 
@@ -160,30 +160,57 @@ export default class Calculation extends React.Component<Props, State> {
     };
 
     return (
-      <Button
-        style={{ backgroundColor: config.uiOptions.colors.primary }}
-        onClick={onClick}
-        icon="dollar-alt"
-        block
-        disabled={!totalAmount || totalAmount === 0 ? true : false}
-      >
-        {__('Pay the bill')}
-      </Button>
+      <TypeButtons>
+        <Button btnStyle="simple" block>
+          {__('Захиалга цуцлах')}
+        </Button>
+        <Button
+          style={{ backgroundColor: config.uiOptions.colors.primary }}
+          onClick={onClick}
+          block
+          disabled={!totalAmount || totalAmount === 0 ? true : false}
+        >
+          {__('Төлбөр төлөх')}
+        </Button>
+      </TypeButtons>
     );
   }
 
-  renderAmount(text: string, amount: number, color?: string) {
-    const prop = { color };
-
-    const { order } = this.props;
+  renderAmount(text: string, amount: number) {
     return (
-      <Amount {...prop}>
-        <span>
-          №: {order && order.number ? order.number.split('_')[1] : ''}
-        </span>
-        <span>{text}</span>
-        {formatNumber(amount || 0)}₮
+      <Amount>
+        {text}
+        <span>{formatNumber(amount || 0)}₮</span>
       </Amount>
+    );
+  }
+
+  renderQuantity(text: string, amount: number) {
+    return (
+      <Amount>
+        {text}
+        <span>{formatNumber(amount || 0)}₮</span>
+      </Amount>
+    );
+  }
+
+  renderAddButton() {
+    const { addOrder, order, config } = this.props;
+
+    if (order && order._id) {
+      return null;
+    }
+
+    return (
+      <TypeButtons>
+        <Button
+          style={{ backgroundColor: config.uiOptions.colors.primary }}
+          onClick={addOrder}
+          block
+        >
+          {__('Make an order')}
+        </Button>
+      </TypeButtons>
     );
   }
 
@@ -203,7 +230,7 @@ export default class Calculation extends React.Component<Props, State> {
     return (
       <>
         <Wrapper color={color}>
-          <ColumnBetween>
+          <FlexColumn>
             <Stage
               orientation={orientation}
               items={items}
@@ -214,14 +241,15 @@ export default class Calculation extends React.Component<Props, State> {
               type={type}
               mode={mode}
             />
-            <ButtonWrapper
-              className={orientation === 'portrait' ? 'payment-section' : ''}
-            >
-              {this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
-              {this.renderReceiptButton()}
-              {this.renderPaymentButton()}
-            </ButtonWrapper>
-          </ColumnBetween>
+          </FlexColumn>
+          <ButtonWrapper
+            className={orientation === 'portrait' ? 'payment-section' : ''}
+          >
+            {this.renderQuantity(`${__('Нийт')}:`, totalAmount)}
+            {this.renderAmount(`${__('Төлөх')}:`, totalAmount)}
+            {this.renderPaymentButton()}
+            {this.renderReceiptButton()}
+          </ButtonWrapper>
         </Wrapper>
       </>
     );

@@ -116,9 +116,9 @@ export const ProductCategories = styledTS<{ isPortrait?: boolean }>(
 `;
 
 //Kiosk
-export const KioskMainContent = styled.div`
+export const KioskMainContent = styledTS<{ length?: number }>(styled.div)`
   width: 100%;
-  height: 1429px;
+  height: ${props => (props.length && props.length > 0 ? `1429px` : '89%;')} 
   display: flex;
 `;
 
@@ -210,6 +210,9 @@ export const ProductCategory = styledTS<{
   cursor: pointer;
   color: ${props => props.isActive && colors.colorWhite};
   transition: all ease .3s;
+  display: flex;
+  align-items: center;
+  justify-content: ${props => (props.isPortrait ? 'center' : 'left')}; 
 
   .image-wrapper {
     width: 70px;
@@ -230,7 +233,6 @@ export const ProductCategory = styledTS<{
     width: 36px;
     height: 36px;
     align-items: center;
-    margin-left: 44px;
 
     img {
       max-width: 100%;
@@ -257,8 +259,6 @@ export const Item = styledTS<{ isPortrait: boolean }>(styled.div)`
   background: ${props => (props.isPortrait ? '' : `${colors.colorWhite}`)};
   display: ${props => (props.isPortrait ? '' : 'flex')};
   align-items: center;
-  padding: 0 10px;
-  padding-bottom: ${props => props.isPortrait && '20px'};
   flex-basis: ${props => (props.isPortrait ? '28%' : '14.6%28%;')};
   cursor: pointer;
   margin: 0 20px 20px 0;
@@ -398,18 +398,16 @@ export const Stages = styled.div`
   height: 100%;
 `;
 
-export const StageContent = styledTS<{ odd?: boolean; isPortrait?: boolean }>(
-  styled.div
-)`
-  margin-top: ${dimensions.unitSpacing}px;
-  height: ${props => (props.isPortrait ? '100px' : '100%')};
-  display: ${props => (props.isPortrait ? 'flex' : '')};
-  width: 100%;
+export const StageContent = styledTS<{ odd?: boolean }>(styled.div)`
+margin-top: ${dimensions.unitSpacing}px;
+height: ${props => props.odd && '100%'};
+`;
 
-  > b {
-    margin-bottom: ${dimensions.unitSpacing}px;
-    display: block;
-  }
+export const KioskStageContent = styled.div`
+  display: flex;
+  margin: 40px;
+  width: 100%;
+  height: '100px';
 `;
 
 export const Drawer = styledTS<{ show: boolean }>(styled.div)`
@@ -431,10 +429,14 @@ export const Drawer = styledTS<{ show: boolean }>(styled.div)`
 
 export const LeftMenuContainer = styled.div`
   position: relative;
-  height: 100%;
   background: ${colors.bgLight};
   white-space: normal;
   display: flex;
+  width: 1080px;
+  height: 1320px;
+  border-radius: 32px;
+  margin-top: 204px;
+
   flex-direction: column;
   box-shadow: 0 12px 24px -6px rgba(9, 30, 66, 0.25),
     0 0 0 1px rgba(9, 30, 66, 0.08);

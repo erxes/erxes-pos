@@ -212,31 +212,6 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
-  // renderDeliveryTypes(color: string) {
-  //   const { type } = this.props;
-
-  //   return (
-  //     <div>
-  //       <Types>
-  //         <Type
-  //           onClick={() => this.onChange(ORDER_TYPES.TAKE)}
-  //           checked={type === ORDER_TYPES.TAKE}
-  //           color={color}
-  //         >
-  //           {__('Take')}
-  //         </Type>
-  //         <Type
-  //           onClick={() => this.onChange(ORDER_TYPES.EAT)}
-  //           checked={type === ORDER_TYPES.EAT}
-  //           color={color}
-  //         >
-  //           {__('Eat')}
-  //         </Type>
-  //       </Types>
-  //     </div>
-  //   );
-  // }
-
   renderAddButton() {
     const { addOrder, order } = this.props;
 

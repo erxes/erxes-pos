@@ -49,7 +49,8 @@ const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
 export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
   padding: 10px;
   word-break: break-word;
-  font-size: ${props => props.isPortrait && '26px'};
+  font-size: ${props => props.isPortrait && '16px'};
+  margin-top: ${props => props.isPortrait && '15px'};
 
   > div {
     line-height: ${props => (props.isPortrait ? '25px' : '13px')};
@@ -57,7 +58,7 @@ export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
 
   > span {
     color: #616e7c;
-    font-size: ${props => (props.isPortrait ? '22px' : '11px')};
+    font-size: ${props => (props.isPortrait ? '16px' : '11px')};
   }
 
   b {
@@ -141,42 +142,33 @@ export default class StageItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { item, changeItemCount, color, orientation } = this.props;
-    const { unitPrice, count } = item;
+    const { item, changeItemCount, color, orientation, mode } = this.props;
+    const { unitPrice, count, productImgUrl, productName } = item;
     const isPortrait = orientation === 'portrait';
 
     const onRemoveItem = () => {
       changeItemCount({ ...item, count: 0 });
     };
 
-    if (isPortrait) {
+    if (mode === 'kiosk') {
       return (
         <SelectedItem>
           <SelectedStage>
+            <div className="image-wrapper">
+              <img
+                src={productImgUrl ? productImgUrl : 'images/no-category.jpg'}
+                alt={productName}
+              />
+              <Icon onClick={onRemoveItem} icon="cancel-1" color={color} />
+            </div>
             <Text isPortrait={isPortrait}>
               <div>
-                <b>
-                  {this.renderCheckbox()}
-                  {this.renderName()}
-                </b>
+                <b>{this.renderName()}</b>
               </div>
               <span>
                 {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
               </span>
             </Text>
-            <Close onClick={onRemoveItem} isPortrait={isPortrait}>
-              <Icon icon="cancel-1" />
-            </Close>
-            <FlexCenter>
-              <Quantity
-                step={1}
-                max={1000}
-                value={count || 0}
-                onChange={this.onChange}
-                color={color}
-                isPortrait={isPortrait}
-              />
-            </FlexCenter>
           </SelectedStage>
         </SelectedItem>
       );

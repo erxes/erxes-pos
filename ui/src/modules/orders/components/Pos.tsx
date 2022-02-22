@@ -1,6 +1,7 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
+import RTG from 'react-transition-group';
 import NameCard from 'modules/common/components/nameCard/NameCard';
 import AsyncComponent from 'modules/common/components/AsyncComponent';
 import { ICustomerParams, IOrder, IOrderItemInput } from '../types';
@@ -19,7 +20,10 @@ import {
   KioskMainContent,
   KioskMenuContent,
   KioskProductsContent,
-  FooterContent
+  FooterContent,
+  Drawer,
+  LeftMenuContainer,
+  DrawerContent
 } from '../styles';
 import { IConfig } from 'types';
 import PaymentForm from './drawer/PaymentForm';
@@ -356,8 +360,6 @@ export default class Pos extends React.Component<Props, State> {
     );
   }
 
-  renderKiosk() {}
-
   render() {
     const {
       currentConfig,
@@ -399,7 +401,7 @@ export default class Pos extends React.Component<Props, State> {
           <div className="headerKiosk">
             <img src="/images/headerKiosk.png" alt="type" />
           </div>
-          <KioskMainContent>
+          <KioskMainContent length={items.length}>
             <KioskMenuContent>
               <MenuContent>{categories}</MenuContent>
             </KioskMenuContent>
@@ -423,6 +425,26 @@ export default class Pos extends React.Component<Props, State> {
               />
             </FooterContent>
           )}
+
+          <Drawer show={showMenu}>
+            <div ref={this.setWrapperRef}>
+              <RTG.CSSTransition
+                in={showMenu}
+                timeout={300}
+                classNames="slide-in-center"
+                unmountOnExit={true}
+              >
+                <LeftMenuContainer>
+                  <DrawerContent
+                    options={currentConfig ? currentConfig.uiOptions : {}}
+                    innerWidth={window.innerWidth}
+                  >
+                    {this.renderDrawerContent()}
+                  </DrawerContent>
+                </LeftMenuContainer>
+              </RTG.CSSTransition>
+            </div>
+          </Drawer>
         </>
       );
     }
@@ -484,8 +506,8 @@ export default class Pos extends React.Component<Props, State> {
             </Col>
           </Row>
         </PosWrapper>
-
-        {/* <Drawer show={showMenu}>
+        {/* 
+        <Drawer show={showMenu}>
           <div ref={this.setWrapperRef}>
             <RTG.CSSTransition
               in={showMenu}

@@ -1,14 +1,14 @@
-import React from "react";
-import styledTS from "styled-components-ts";
-import styled from "styled-components";
-import { __ } from "modules/common/utils";
+import React from 'react';
+import styledTS from 'styled-components-ts';
+import styled from 'styled-components';
+import { __ } from 'modules/common/utils';
 
 const TypeWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   margin-top: 50px;
   h2 {
     text-align: center;
     margin-bottom: 40px;
-    font-size: ${(props) => props.isPortrait && "50px"};
+    font-size: ${props => props.isPortrait && '50px'};
     @media (max-width: 1250px) and (orientation:landscape) {
       font-size: 25px;
     }
@@ -20,8 +20,8 @@ const Cards = styledTS<{ color?: string; isPortrait?: boolean }>(styled.div)`
   flex-wrap: wrap;
   justify-content: center;
   p {
-    color: ${(props) => props.color && props.color};
-    font-size: ${(props) => (props.isPortrait ? "35px" : "18px")};
+    color: ${props => props.color && props.color};
+    font-size: ${props => (props.isPortrait ? '35px' : '18px')};
     font-weight: 500;
     @media (max-width: 1250px) and (orientation:landscape) {
       line-height: 22px;
@@ -32,14 +32,14 @@ const Cards = styledTS<{ color?: string; isPortrait?: boolean }>(styled.div)`
 
 const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
   border: 1px solid #ddd;
-  border-radius: 8px;
+  border-radius: 16px;
   padding: 40px 40px 30px;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: ${(props) => (props.isPortrait ? "90%" : "45%")};
+  width: ${props => (props.isPortrait ? '40%' : '45%')};
   margin: 0 20px 20px 0;
   flex-shrink: 0;
   cursor: pointer;
@@ -50,8 +50,8 @@ const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
     align-items: center;
     justify-content: center;
     > img {
-      max-height: ${(props) => (props.isPortrait ? "250px" : "150px")};
-      max-width: ${(props) => (props.isPortrait ? "250px" : "150px")};
+      max-height: ${props => (props.isPortrait ? '250px' : '150px')};
+      max-width: ${props => (props.isPortrait ? '250px' : '150px')};
       margin-bottom: 30px;
       @media (max-width: 1250px) and (orientation:landscape) {
         max-height: 80px;
@@ -93,26 +93,37 @@ class PaymentType extends React.Component<Props> {
 
     return (
       <TypeWrapper isPortrait={isPortrait}>
-        <h2>{__("Choose the payment method")}</h2>
+        <h2>{__('Choose the payment method')}</h2>
 
         <Cards color={color} isPortrait={isPortrait}>
-          {!mode && <Card isPortrait={isPortrait} onClick={() => togglePaymentType(PAYMENT_METHODS.CASH)}>
-            <div>
-              <img src="/images/payment2.png" alt="payment" />
-            </div>
-            <p>{__("In Cash")}</p>
-          </Card>}
-          <Card isPortrait={isPortrait} onClick={() => togglePaymentType(PAYMENT_METHODS.CARD)}>
+          {!mode && (
+            <Card
+              isPortrait={isPortrait}
+              onClick={() => togglePaymentType(PAYMENT_METHODS.CASH)}
+            >
+              <div>
+                <img src="/images/payment2.png" alt="payment" />
+              </div>
+              <p>{__('In Cash')}</p>
+            </Card>
+          )}
+          <Card
+            isPortrait={isPortrait}
+            onClick={() => togglePaymentType(PAYMENT_METHODS.CARD)}
+          >
             <div>
               <img src="/images/payment4.png" alt="payment" />
             </div>
-            <p>{__("By Card")}</p>
+            <p>{__('By Card')}</p>
           </Card>
-          <Card isPortrait={isPortrait} onClick={() => togglePaymentType(PAYMENT_METHODS.QPAY)}>
+          <Card
+            isPortrait={isPortrait}
+            onClick={() => togglePaymentType(PAYMENT_METHODS.QPAY)}
+          >
             <div>
               <img src="/images/payment1.png" alt="payment" />
             </div>
-            <p>{__("Pay with QPay")}</p>
+            <p>{__('Pay with QPay')}</p>
           </Card>
         </Cards>
       </TypeWrapper>

@@ -17,17 +17,14 @@ export default function CategoryItem(props: Props) {
   const { currentConfig } = React.useContext(AppContext);
   const { category, onClickCategory, activeCategoryId, orientation } = props;
   const { name, attachment } = category;
-
-  const imgUrl =
-    attachment && attachment.url ? attachment.url : 'images/no-category.jpg';
+  const attachmentUrl = attachment && attachment.url ? attachment.url : '';
+  const isPortrait = orientation === 'portrait';
 
   const color =
     currentConfig &&
     currentConfig.uiOptions &&
     currentConfig.uiOptions.colors &&
     currentConfig.uiOptions.colors.primary;
-
-  const isPortrait = orientation === 'portrait';
 
   const renderCategory = () => {
     const mode = localStorage.getItem('erxesPosMode');
@@ -40,7 +37,10 @@ export default function CategoryItem(props: Props) {
         isPortrait={isPortrait}
       >
         <div className={mode === 'kiosk' ? 'item-list' : 'image-wrapper'}>
-          <img src={imgUrl} alt={name} />
+          <img
+            src={attachmentUrl ? attachmentUrl : 'images/no-category.jpg'}
+            alt={name}
+          />
           {name}
         </div>
       </ProductCategory>

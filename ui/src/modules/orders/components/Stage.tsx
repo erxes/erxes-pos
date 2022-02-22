@@ -2,7 +2,7 @@ import React from 'react';
 import { __ } from 'modules/common/utils';
 import { IOrderItemInput } from '../types';
 import StageItem from './StageItem';
-import { Stages, StageContent, StageItems } from '../styles';
+import { Stages, StageContent, StageItems, KioskStageContent } from '../styles';
 import EmptyState from 'modules/common/components/EmptyState';
 
 type Props = {
@@ -43,7 +43,7 @@ export default class Stage extends React.Component<Props> {
 
     if (mode === 'kiosk') {
       return (
-        <StageContent isPortrait={orientation === 'portrait'}>
+        <KioskStageContent>
           {items.map(i => (
             <StageItem
               orientation={orientation}
@@ -56,7 +56,7 @@ export default class Stage extends React.Component<Props> {
               mode={mode}
             />
           ))}
-        </StageContent>
+        </KioskStageContent>
       );
     }
 

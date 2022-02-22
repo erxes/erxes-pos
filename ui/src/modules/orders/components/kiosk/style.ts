@@ -135,18 +135,54 @@ export const PortraitStage = styled.div`
 export const SelectedItem = styled.div`
   width: 206px;
   height: 206px;
-  top: 0px;
+  min-width: 206px;
+  max-height: 206px;
   border: 1px solid #ff7800;
   box-sizing: border-box;
   border-radius: 16px;
+  margin-right: 15px;
+  display: flex;
+  justify-content: center;
 `;
 
 export const SelectedStage = styled.div`
   text-align: center;
 
-  > img {
-    max-width: 200px;
-    max-height: 200px;
+  .image-wrapper {
     margin-top: 10px;
+
+    i {
+      font-size: 20px;
+      cursor: pointer;
+      float: right;
+    }
+
+    img {
+      width: 112px;
+      height: 112px;
+      margin-left: 15px;
+    }
+  }
+`;
+
+export const CloseIcon = styled.div`
+  border-top-right-radius: 8px;
+  border-bottom-right-radius: 8px;
+  transition: all ease 0.3s;
+  font-size: 14px;
+  cursor: pointer;
+`;
+
+export const FlexColumn = styled.div`
+  display: flex;
+  overflow-x: auto;
+  max-width: 770px;
+`;
+
+export const TypeButtons = styled.div`
+  button {
+    margin-left: 0;
+    margin-top: 10px;
+    height: 60px;
   }
 `;
