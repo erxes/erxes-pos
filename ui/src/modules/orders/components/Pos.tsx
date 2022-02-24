@@ -1,7 +1,7 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import RTG from 'react-transition-group';
+// import RTG from 'react-transition-group';
 import NameCard from 'modules/common/components/nameCard/NameCard';
 import AsyncComponent from 'modules/common/components/AsyncComponent';
 import { ICustomerParams, IOrder, IOrderItemInput } from '../types';
@@ -9,6 +9,7 @@ import { ORDER_TYPES } from '../../../constants';
 import Calculation from './Calculation';
 import OrderSearch from '../containers/layout/OrderSearch';
 import { IUser } from 'modules/auth/types';
+import Modal from 'react-bootstrap/Modal';
 import {
   PosWrapper,
   MainContent,
@@ -21,9 +22,10 @@ import {
   KioskMenuContent,
   KioskProductsContent,
   FooterContent,
-  Drawer,
-  LeftMenuContainer,
-  DrawerContent
+  PosMenuContent
+  // Drawer,
+  // LeftMenuContainer,
+  // DrawerContent
 } from '../styles';
 import { IConfig } from 'types';
 import PaymentForm from './drawer/PaymentForm';
@@ -83,8 +85,6 @@ const getTotalAmount = (items: IOrderItemInput[]) => {
 };
 
 export default class Pos extends React.Component<Props, State> {
-  private wrapperRef;
-
   constructor(props: Props) {
     super(props);
 
@@ -102,30 +102,19 @@ export default class Pos extends React.Component<Props, State> {
     };
   }
 
-  setWrapperRef = node => {
-    this.wrapperRef = node;
-  };
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.order, ' === next props');
+    if (nextProps.order !== this.props.order) {
+      const order = nextProps.order;
+
+      this.setState({
+        totalAmount: order ? getTotalAmount(order.items) : 0
+      });
+    }
+  }
 
   setItems = (items: IOrderItemInput[]) => {
     this.setState({ items, totalAmount: getTotalAmount(items) });
-  };
-
-  componentDidMount() {
-    document.addEventListener('click', this.handleClickOutside, true);
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('click', this.handleClickOutside, true);
-  }
-
-  handleClickOutside = event => {
-    if (
-      this.wrapperRef &&
-      !this.wrapperRef.contains(event.target) &&
-      this.state.showMenu
-    ) {
-      this.setState({ showMenu: false });
-    }
   };
 
   toggleDrawer = (drawerContentType: string) => {
@@ -216,12 +205,12 @@ export default class Pos extends React.Component<Props, State> {
     }
   };
 
-  renderDrawerContent() {
+  renderModalContent() {
     const {
       currentConfig,
       makePayment,
-      order,
       addCustomer,
+      order,
       setCardPaymentInfo,
       orientation
     } = this.props;
@@ -360,6 +349,12 @@ export default class Pos extends React.Component<Props, State> {
     );
   }
 
+  handleModal = () => {
+    this.setState({
+      showMenu: !this.state.showMenu
+    });
+  };
+
   render() {
     const {
       currentConfig,
@@ -371,6 +366,7 @@ export default class Pos extends React.Component<Props, State> {
     } = this.props;
 
     const { items, totalAmount, showMenu, type } = this.state;
+    const mode = localStorage.getItem('erxesPosMode');
 
     const products = (
       <ProductsContainer
@@ -389,8 +385,6 @@ export default class Pos extends React.Component<Props, State> {
       />
     );
 
-    const mode = localStorage.getItem('erxesPosMode');
-
     if (mode === 'kiosk' && !this.props.type && !(qp && qp.id)) {
       return <PortraitView {...this.props} order={order} />;
     }
@@ -401,7 +395,7 @@ export default class Pos extends React.Component<Props, State> {
           <div className="headerKiosk">
             <img src="/images/headerKiosk.png" alt="type" />
           </div>
-          <KioskMainContent length={items.length}>
+          <KioskMainContent mainHeight={items.length}>
             <KioskMenuContent>
               <MenuContent>{categories}</MenuContent>
             </KioskMenuContent>
@@ -426,25 +420,15 @@ export default class Pos extends React.Component<Props, State> {
             </FooterContent>
           )}
 
-          <Drawer show={showMenu}>
-            <div ref={this.setWrapperRef}>
-              <RTG.CSSTransition
-                in={showMenu}
-                timeout={300}
-                classNames="slide-in-center"
-                unmountOnExit={true}
-              >
-                <LeftMenuContainer>
-                  <DrawerContent
-                    options={currentConfig ? currentConfig.uiOptions : {}}
-                    innerWidth={window.innerWidth}
-                  >
-                    {this.renderDrawerContent()}
-                  </DrawerContent>
-                </LeftMenuContainer>
-              </RTG.CSSTransition>
-            </div>
-          </Drawer>
+          <Modal
+            enforceFocus={false}
+            onHide={this.handleModal}
+            show={showMenu}
+            animation={false}
+            size="lg"
+          >
+            <Modal.Body>{this.renderModalContent()}</Modal.Body>
+          </Modal>
         </>
       );
     }
@@ -455,19 +439,19 @@ export default class Pos extends React.Component<Props, State> {
           <Row>
             <Col sm={3}>
               <MainContent numPadding={true}>
-                <MenuContent>
+                <PosMenuContent>
                   <NavLink to="/">
                     <img src={currentConfig.uiOptions.logo} alt="logo11" />
                   </NavLink>
                   {categories}
-                </MenuContent>
+                </PosMenuContent>
               </MainContent>
             </Col>
             <Col md={8}>
               <MainContent numPadding={true}>
                 <ProductsContent>
                   {showMenu === true ? (
-                    this.renderDrawerContent()
+                    this.renderModalContent()
                   ) : (
                     <>
                       <FlexHeader>
@@ -506,26 +490,6 @@ export default class Pos extends React.Component<Props, State> {
             </Col>
           </Row>
         </PosWrapper>
-        {/* 
-        <Drawer show={showMenu}>
-          <div ref={this.setWrapperRef}>
-            <RTG.CSSTransition
-              in={showMenu}
-              timeout={300}
-              classNames="slide-in-left"
-              unmountOnExit={true}
-            >
-              <LeftMenuContainer>
-                <DrawerContent
-                  options={currentConfig ? currentConfig.uiOptions : {}}
-                  innerWidth={window.innerWidth}
-                >
-                  {this.renderDrawerContent()}
-                </DrawerContent>
-              </LeftMenuContainer>
-            </RTG.CSSTransition>
-          </div>
-        </Drawer> */}
       </>
     );
   } // end render()

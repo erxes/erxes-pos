@@ -19,7 +19,7 @@
   "eat": "Зааланд",
   "save": "Хадгалуулах",
   "Edit order": "Захиалга засах",
-  "Cancel": "Болих",
+  "Cancel": "Буцах",
   "Done": "Болсон",
   "Phone number": "Утасны дугаар",
   "Check": "Шалгах",
@@ -28,6 +28,7 @@
   "Choose the payment method": "Та төлбөрийн сонголтоо хийнэ үү",
   "Choose customer from select": "Хэрэглэгчээ сонгоно уу",
   "VAT": "НӨАТ",
+  "Obtain a VAT receipt": "НӨАТ-ын баримт авах",
   "UB city tax": "НХАТ",
   "By Card": "Картаар",
   "In Cash": "Бэлнээр",
@@ -72,5 +73,7 @@
   "Transaction was successful": "Гүйлгээ амжилттай хийгдлээ",
   "Date": "Огноо",
   "Time": "Хугацаа",
-  "buyerCompanyNumber": "Худалдан авагч (ТТД)"
+  "buyerCompanyNumber": "Худалдан авагч (ТТД)",
+  "Payment": "Төлбөр төлөх",
+  "Cancel order": "Захиалга цуцлах"
 }

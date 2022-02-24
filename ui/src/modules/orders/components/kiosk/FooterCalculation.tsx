@@ -78,7 +78,7 @@ export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
 type Props = {
   orientation: string;
   totalAmount: number;
-  addOrder: (params: any) => void;
+  addOrder: () => void;
   setOrderState: (name: string, value: any) => void;
   onClickDrawer: (drawerContentType: string) => void;
   items: IOrderItemInput[];
@@ -97,7 +97,7 @@ type State = {
   mode: string;
 };
 
-export default class Calculation extends React.Component<Props, State> {
+export default class FooterCalculation extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -120,41 +120,17 @@ export default class Calculation extends React.Component<Props, State> {
     this.props.setOrderState('type', value);
   };
 
-  renderReceiptButton() {
-    const { order } = this.props;
-
-    if (!order) {
-      return null;
-    }
-    const { mode } = this.state;
-
-    if (mode === 'kiosk') {
-      return null;
-    }
-
-    return (
-      <Button
-        icon="print"
-        btnStyle="warning"
-        block
-        onClick={() => {
-          window.open(`/order-receipt/${order._id}`, '_blank');
-        }}
-      >
-        {__('Print receipt')}
-      </Button>
-    );
-  }
-
   renderPaymentButton() {
-    const { order, onClickDrawer, config, totalAmount, editOrder } = this.props;
+    const { order, onClickDrawer, config, totalAmount, addOrder, items } =
+      this.props;
 
     if (order && order.paidDate) {
       return null;
     }
 
     const onClick = () => {
-      editOrder();
+      console.log(items);
+      addOrder();
 
       onClickDrawer('payment');
     };
@@ -162,7 +138,7 @@ export default class Calculation extends React.Component<Props, State> {
     return (
       <TypeButtons>
         <Button btnStyle="simple" block>
-          {__('Захиалга цуцлах')}
+          {__('Cancel order')}
         </Button>
         <Button
           style={{ backgroundColor: config.uiOptions.colors.primary }}
@@ -170,7 +146,7 @@ export default class Calculation extends React.Component<Props, State> {
           block
           disabled={!totalAmount || totalAmount === 0 ? true : false}
         >
-          {__('Төлбөр төлөх')}
+          {__('Payment')}
         </Button>
       </TypeButtons>
     );
@@ -185,11 +161,13 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
-  renderQuantity(text: string, amount: number) {
+  renderQuantity(text: string) {
+    const { items } = this.props;
+
     return (
       <Amount>
         {text}
-        <span>{formatNumber(amount || 0)}₮</span>
+        <span>{items.length}ш</span>
       </Amount>
     );
   }
@@ -245,10 +223,9 @@ export default class Calculation extends React.Component<Props, State> {
           <ButtonWrapper
             className={orientation === 'portrait' ? 'payment-section' : ''}
           >
-            {this.renderQuantity(`${__('Нийт')}:`, totalAmount)}
-            {this.renderAmount(`${__('Төлөх')}:`, totalAmount)}
+            {this.renderQuantity(`${__('Total')}:`)}
+            {this.renderAmount(`${__('Amount to pay')}:`, totalAmount)}
             {this.renderPaymentButton()}
-            {this.renderReceiptButton()}
           </ButtonWrapper>
         </Wrapper>
       </>

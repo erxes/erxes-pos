@@ -15,10 +15,9 @@ type Props = {
 
 export default function CategoryItem(props: Props) {
   const { currentConfig } = React.useContext(AppContext);
-  const { category, onClickCategory, activeCategoryId, orientation } = props;
+  const { category, onClickCategory, activeCategoryId } = props;
   const { name, attachment } = category;
   const attachmentUrl = attachment && attachment.url ? attachment.url : '';
-  const isPortrait = orientation === 'portrait';
 
   const color =
     currentConfig &&
@@ -34,7 +33,7 @@ export default function CategoryItem(props: Props) {
         isActive={category._id === activeCategoryId}
         onClick={() => onClickCategory(category._id)}
         color={color}
-        isPortrait={isPortrait}
+        isPortrait={mode === 'kiosk'}
       >
         <div className={mode === 'kiosk' ? 'item-list' : 'image-wrapper'}>
           <img

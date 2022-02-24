@@ -186,3 +186,25 @@ export const TypeButtons = styled.div`
     height: 60px;
   }
 `;
+
+export const EbarimtButton = styledTS<{
+  isPortrait?: boolean;
+  isActive?: boolean;
+}>(styled(FlexCenter))`
+  justify-content: center;
+  margin: ${props => props.isPortrait && '5px 0 30px 0'};
+
+  button {
+    width: 50%;
+    padding: 20px 20px;
+    background-color: ${props =>
+      props.isActive ? colors.bgGray : colors.colorWhite}; 
+    border: 1px solid #616E7C;
+    color: #616E7C !important;
+
+    &:hover {
+      color: #fff !important;
+      background: #616E7C;
+    }
+  }
+`;

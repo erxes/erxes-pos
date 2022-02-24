@@ -2,7 +2,7 @@ import { IProductCategory, IProduct } from 'modules/orders/types';
 
 export type QueryResponse = {
   loading: boolean;
-  refetch: () => void;
+  refetch: (params?: any) => void;
 };
 
 export interface IUserDoc {

@@ -31,6 +31,7 @@
   "Find customer": "Find customer",
   "Choose customer from select": "Choose customer from select",
   "VAT": "VAT",
+  "Obtain a VAT receipt": "Obtain a VAT receipt",
   "UB city tax": "UB city tax",
   "By Card": "By Card",
   "In Cash": "In Cash",
@@ -73,5 +74,7 @@
   "Transaction was successful": "Transaction was successful",
   "Date": "Date",
   "Time": "Time",
-  "buyerCompanyNumber": "Buyer (regNo)"
+  "buyerCompanyNumber": "Buyer (regNo)",
+  "Payment": "Payment",
+  "Cancel order": "Cancel order"
 }

@@ -100,7 +100,7 @@ a:hover {
 
 .modal-dialog {
   padding: 0;
-  margin: 50px auto;
+  margin: 300px auto;
 
   &.modal-dialog-centered {
     margin: 0 auto;
@@ -126,7 +126,7 @@ a:hover {
 }
 
 .modal-content {
-  border-radius: 2px;
+  border-radius: 20px;
   border: 0;
   box-shadow: 0 2px 10px -3px rgba(0, 0, 0, 0.5);
   background: ${colors.bgLight};
@@ -158,7 +158,7 @@ a:hover {
 }
 
 .modal-body {
-  padding: 30px 40px;
+  padding: 80px 80px;
 
   &.md-padding {
     padding: 20px;

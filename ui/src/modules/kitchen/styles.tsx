@@ -1,10 +1,10 @@
-import styled from "styled-components";
-import styledTS from "styled-components-ts";
-import { dimensions, colors } from "modules/common/styles";
-import { rgba } from "modules/common/styles/ecolor";
+import styled from 'styled-components';
+import styledTS from 'styled-components-ts';
+import { dimensions, colors } from 'modules/common/styles';
+import { rgba } from 'modules/common/styles/ecolor';
 
 export const TableRow = styledTS<{ color?: string }>(styled.tr)`
-  background: ${(props) =>
+  background: ${props =>
     props.color ? rgba(props.color, 0.04) : colors.colorShadowGray};
 
   .number {
@@ -35,19 +35,19 @@ export const TimeGroup = styled.div`
 `;
 
 export const Status = styledTS<{ color?: string; odd?: boolean }>(styled.span)`
-  background: ${(props) =>
+  background: ${props =>
     props.odd
       ? colors.colorWhite
       : props.color
-        ? props.color
-        : colors.colorShadowGray};
-  color: ${(props) =>
+      ? props.color
+      : colors.colorShadowGray};
+  color: ${props =>
     props.odd
       ? props.color
         ? props.color
         : colors.colorSecondary
       : colors.colorWhite};
-  border: 1px solid ${(props) =>
+  border: 1px solid ${props =>
     props.odd
       ? props.color
         ? props.color
@@ -72,7 +72,8 @@ export const FlexEnd = styled.div`
 `;
 
 export const ScreenWrapper = styledTS<{
-  color?: string, innerWidth?: number
+  color?: string;
+  innerWidth?: number;
 }>(styled.div)`
   margin-right: 10px;
   height: 80vh;
@@ -80,7 +81,7 @@ export const ScreenWrapper = styledTS<{
 
   /* width */
   ::-webkit-scrollbar {
-    width: ${(props) => (props.innerWidth ? `${props.innerWidth * 0.015}px` : '')}
+    width: ${props => (props.innerWidth ? `${props.innerWidth * 0.015}px` : '')}
   }
 
   /* Track */
@@ -90,13 +91,14 @@ export const ScreenWrapper = styledTS<{
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};
+    background: ${props => (props.color ? props.color : colors.colorSecondary)};
     border-radius: 40px;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: ${(props) => (props.color ? props.color : colors.colorSecondary)};;
+    background: ${props =>
+      props.color ? props.color : colors.colorSecondary};;
   }
 
   table {

@@ -5,6 +5,7 @@ import { IProduct, IProductCategory } from '../types';
 import CategoryItem from './CategoryItem';
 // import { ProductCategories } from '../styles';
 import { IConfig, IRouterProps } from 'types';
+import { CategoriesColumn } from '../styles';
 
 type Props = {
   productCategories: IProductCategory[];
@@ -56,6 +57,6 @@ export default class Categories extends React.Component<Props, State> {
       />
     ));
 
-    return <div>{categories}</div>;
+    return <CategoriesColumn>{categories}</CategoriesColumn>;
   }
 }

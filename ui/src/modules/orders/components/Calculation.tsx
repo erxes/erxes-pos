@@ -14,6 +14,7 @@ import { IConfig, IOption } from 'types';
 import { ICustomer, IOrder, IOrderItemInput } from '../types';
 import { ORDER_TYPES } from '../../../constants';
 import { FinderButtons, ProductLabel, Types } from '../styles';
+import { colors } from 'modules/common/styles';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   display: flex;
@@ -34,16 +35,40 @@ const Wrapper = styledTS<{ color?: string }>(styled.div)`
   }
 `;
 
-export const Amount = styledTS<{ color?: string }>(styled(FlexBetween))`
-  border: 1px solid #cbd2d9;
+export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
+  styled(FlexBetween)
+)`
+  border: 1px solid ${props => props.color};
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
-  font-weight: 600;
+  font-weight: ${props => (props.isPortrait ? '' : '600')} 
   border-color:${props => props.color && props.color}
-  color:${props => props.color && props.color}
-  height: 70px;
+  color:${props => (props.isPortrait ? colors.colorCoreBlack : props.color)}
+  height: ${props => (props.isPortrait ? ' 115px' : '70px')}
   margin-bottom: 40px;
+  display: ${props => (props.isPortrait ? ' block' : '')};
+
+  .total-wrapper {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      font-weight: 600;
+    }
+  }
+
+  .amount-wrapper {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
+
+    span {
+      font-weight: 600;
+    }
+  }
 `;
 
 const ButtonWrapper = styled.div`

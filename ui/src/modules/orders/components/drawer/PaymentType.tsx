@@ -5,10 +5,11 @@ import { __ } from 'modules/common/utils';
 
 const TypeWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   margin-top: 50px;
+
   h2 {
     text-align: center;
     margin-bottom: 40px;
-    font-size: ${props => props.isPortrait && '50px'};
+    font-size: ${props => props.isPortrait && '34px'};
     @media (max-width: 1250px) and (orientation:landscape) {
       font-size: 25px;
     }
@@ -30,8 +31,8 @@ const Cards = styledTS<{ color?: string; isPortrait?: boolean }>(styled.div)`
   }
 `;
 
-const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  border: 1px solid #ddd;
+const Card = styledTS<{ isPortrait?: boolean; isActive: boolean }>(styled.div)`
+  border: ${props => (props.isActive ? '2px solid #000' : '1px solid #ddd')}; 
   border-radius: 16px;
   padding: 40px 40px 30px;
   text-align: center;
@@ -39,7 +40,7 @@ const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: ${props => (props.isPortrait ? '40%' : '45%')};
+  width: ${props => (props.isPortrait ? '46%' : '45%')};
   margin: 0 20px 20px 0;
   flex-shrink: 0;
   cursor: pointer;
@@ -80,13 +81,24 @@ type Props = {
   isPortrait?: boolean;
 };
 
+type State = {
+  isActive: boolean;
+};
+
 export const PAYMENT_METHODS = {
   CARD: 'card',
   CASH: 'cash',
   QPAY: 'qpay'
 };
 
-class PaymentType extends React.Component<Props> {
+class PaymentType extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      isActive: false
+    };
+  }
   render() {
     const { color, togglePaymentType, isPortrait } = this.props;
     const mode = localStorage.getItem('erxesPosMode') || '';
@@ -98,32 +110,32 @@ class PaymentType extends React.Component<Props> {
         <Cards color={color} isPortrait={isPortrait}>
           {!mode && (
             <Card
+              isActive={this.state.isActive}
               isPortrait={isPortrait}
               onClick={() => togglePaymentType(PAYMENT_METHODS.CASH)}
             >
               <div>
                 <img src="/images/payment2.png" alt="payment" />
               </div>
-              <p>{__('In Cash')}</p>
             </Card>
           )}
           <Card
             isPortrait={isPortrait}
+            isActive={this.state.isActive}
             onClick={() => togglePaymentType(PAYMENT_METHODS.CARD)}
           >
             <div>
               <img src="/images/payment4.png" alt="payment" />
             </div>
-            <p>{__('By Card')}</p>
           </Card>
           <Card
+            isActive={this.state.isActive}
             isPortrait={isPortrait}
             onClick={() => togglePaymentType(PAYMENT_METHODS.QPAY)}
           >
             <div>
               <img src="/images/payment1.png" alt="payment" />
             </div>
-            <p>{__('Pay with QPay')}</p>
           </Card>
         </Cards>
       </TypeWrapper>

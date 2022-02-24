@@ -1,4 +1,4 @@
-import { orderFields, orderItemsFields } from "./queries";
+import { orderFields, orderItemsFields } from './queries';
 
 const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String`;
 const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId`;
@@ -6,8 +6,8 @@ const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, cu
 const ordersAdd = `
   mutation ordersAdd(${addEditParamDefs}) {
     ordersAdd(${addEditParams}) {
-      _id
-      number
+      ${orderFields}
+      ${orderItemsFields}
     }
   }
 `;

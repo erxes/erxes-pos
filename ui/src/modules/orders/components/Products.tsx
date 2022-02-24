@@ -53,8 +53,9 @@ export default class Products extends React.Component<Props, State> {
   }
 
   renderProducts() {
-    const { products = [], orientation, currentConfig } = this.props;
+    const { products = [], orientation, currentConfig, qp } = this.props;
     const mode = localStorage.getItem('erxesPosMode');
+    const productId = qp && qp.productId ? qp.productId : '';
     let filteredProducts = products;
 
     if (mode === 'kiosk') {
@@ -68,6 +69,7 @@ export default class Products extends React.Component<Props, State> {
           product={product}
           key={product._id}
           orientation={orientation}
+          activeProductId={productId}
           addItem={this.addItem.bind(this, product, 1)}
         />
       );

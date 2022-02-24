@@ -1,33 +1,35 @@
-import React from "react";
-import styled from "styled-components";
-import styledTS from "styled-components-ts";
-import gql from "graphql-tag";
-import apolloClient from "apolloClient";
+import React from 'react';
+import styled from 'styled-components';
+import styledTS from 'styled-components-ts';
+import gql from 'graphql-tag';
+import apolloClient from 'apolloClient';
 
-import { Alert } from "modules/common/utils";
-import { FlexCenter } from "modules/common/styles/main";
-import Button from "modules/common/components/Button";
-import { __ } from "modules/common/utils";
-import { FormHead } from "modules/orders/styles";
-import { Amount } from "modules/orders/components/Calculation";
-import { formatNumber } from "modules/utils";
-import { queries } from "../../graphql/index";
-import { IPaymentParams } from "modules/orders/containers/PosContainer";
+import { Alert } from 'modules/common/utils';
+import Button from 'modules/common/components/Button';
+import { __ } from 'modules/common/utils';
+import { FormHead } from 'modules/orders/styles';
+import { Amount } from 'modules/orders/components/Calculation';
+import { formatNumber } from 'modules/utils';
+import { queries } from '../../graphql/index';
+import { IPaymentParams } from 'modules/orders/containers/PosContainer';
 import CardForm from './CardForm';
 import Ebarimt from './Ebarimt';
 import RegisterChecker from './RegisterChecker';
 import CashForm from './CashForm';
 import KeyPads from './KeyPads';
-import { IOrder } from "modules/orders/types";
-import { PAYMENT_METHODS } from "./PaymentType";
+import { IOrder } from 'modules/orders/types';
+import { PAYMENT_METHODS } from './PaymentType';
+import { FlexCenter } from 'modules/common/styles/main';
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  margin: 10px 0;
+  margin:  ${props => (props.isPortrait ? '30px 20px 20px;' : '10px 0')}; 
   text-align: center;
+
   button {
-    padding: ${(props) => (props.isPortrait ? "20px 30px" : "10px 20px")};
+    padding: ${props => (props.isPortrait ? '20px 30px' : '10px 20px')};
     border-radius: 8px;
-    font-size: ${(props) => props.isPortrait && "32px"};
+    font-size: ${props => props.isPortrait && '32px'};
+    width: 50%;
   }
 `;
 
@@ -37,7 +39,7 @@ const Title = styled.h2`
 `;
 
 const Header = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  margin: ${(props) => (props.isPortrait ? "30px 20px 20px;" : "30px 80px 20px;")};
+  margin: ${props => (props.isPortrait ? '0px 20px 20px;' : '30px 80px 20px;')};
   @media (max-width: 1600px) and (orientation: landscape) {
     margin: 0px 20px 0px;
   }
@@ -66,13 +68,13 @@ type State = {
 
 // НӨАТ-н баримтын төрөл
 export const BILL_TYPES = {
-  CITIZEN: "1", // иргэнд өгөх баримт
-  ENTITY: "3", // байгууллагад өгөх баримт
+  CITIZEN: '1', // иргэнд өгөх баримт
+  ENTITY: '3' // байгууллагад өгөх баримт
 };
 
 export const PAYMENT_TYPES = {
-  CARD: "cardAmount",
-  CASH: "cashAmount",
+  CARD: 'cardAmount',
+  CASH: 'cashAmount',
   REGISTER: 'registerNumber'
 };
 
@@ -84,31 +86,36 @@ class CalculationForm extends React.Component<Props, State> {
 
     this.state = {
       showE: true,
-      activeInput: paymentMethod === PAYMENT_METHODS.CARD ? PAYMENT_TYPES.CARD : PAYMENT_TYPES.CASH,
+      activeInput:
+        paymentMethod === PAYMENT_METHODS.CARD
+          ? PAYMENT_TYPES.CARD
+          : PAYMENT_TYPES.CASH,
       // payment doc
-      registerNumber: "",
+      registerNumber: '',
       billType: BILL_TYPES.CITIZEN,
-      cashAmount: paymentMethod === PAYMENT_METHODS.CASH ? order.totalAmount : 0,
-      cardAmount: paymentMethod === PAYMENT_METHODS.CARD ? order.totalAmount : 0,
+      cashAmount:
+        paymentMethod === PAYMENT_METHODS.CASH ? order.totalAmount : 0,
+      cardAmount:
+        paymentMethod === PAYMENT_METHODS.CARD ? order.totalAmount : 0,
       paymentEnabled: paymentMethod === PAYMENT_METHODS.CASH ? true : false
     };
   }
 
-  onChangeKeyPad = (num) => {
+  onChangeKeyPad = num => {
     const { activeInput } = this.state;
     const val = this.state[activeInput];
 
-    if (num === "CE") {
+    if (num === 'CE') {
       return this.setState({ [activeInput]: 0 } as any);
     }
 
     return this.setState({
-      [activeInput]: val + num,
+      [activeInput]: val + num
     } as any);
   };
 
   reset = (key: string) => {
-    this.setState({ [key]: key === "registerNumber" ? "" : 0 } as any);
+    this.setState({ [key]: key === 'registerNumber' ? '' : 0 } as any);
   };
 
   handleSubmit = () => {
@@ -118,8 +125,9 @@ class CalculationForm extends React.Component<Props, State> {
     this.props.handlePayment({
       registerNumber,
       cardAmount,
-      cashAmount: cashAmount > order.totalAmount ? order.totalAmount : cashAmount,
-      billType,
+      cashAmount:
+        cashAmount > order.totalAmount ? order.totalAmount : cashAmount,
+      billType
     });
   };
 
@@ -127,7 +135,7 @@ class CalculationForm extends React.Component<Props, State> {
     apolloClient
       .query({
         query: gql(queries.ordersCheckCompany),
-        variables: { registerNumber: this.state.registerNumber },
+        variables: { registerNumber: this.state.registerNumber }
       })
       .then(({ data, errors }) => {
         if (errors) {
@@ -145,10 +153,11 @@ class CalculationForm extends React.Component<Props, State> {
   };
 
   renderFormHead() {
-    const { showE, billType, cashAmount = 0, cardAmount = 0 } = this.state;
-    const { options, isPortrait, paymentMethod, order, setCardPaymentInfo } = this.props;
+    const { showE, billType, cashAmount = 0 } = this.state;
+    const { options, isPortrait, paymentMethod, order } = this.props;
+    const mode = localStorage.getItem('erxesPosMode') || '';
 
-    const onBillTypeChange = (e) => {
+    const onBillTypeChange = e => {
       const billType = (e.target as HTMLInputElement).value;
 
       this.setState({ billType });
@@ -156,7 +165,12 @@ class CalculationForm extends React.Component<Props, State> {
       if (billType === BILL_TYPES.ENTITY) {
         this.focusOnRegisterInput();
       } else {
-        this.setState({ activeInput: paymentMethod === PAYMENT_METHODS.CARD ? PAYMENT_TYPES.CARD : PAYMENT_TYPES.CASH });
+        this.setState({
+          activeInput:
+            paymentMethod === PAYMENT_METHODS.CARD
+              ? PAYMENT_TYPES.CARD
+              : PAYMENT_TYPES.CASH
+        });
       }
     };
 
@@ -166,10 +180,13 @@ class CalculationForm extends React.Component<Props, State> {
 
     return (
       <FormHead isPortrait={isPortrait}>
-        <Amount color={options.colors.primary}>
-          <span>{__("Amount to pay")}</span>
-          {formatNumber(order.totalAmount || 0)}₮
-        </Amount>
+        <Ebarimt
+          billType={billType}
+          isPortrait={isPortrait}
+          show={showE}
+          onBillTypeChange={onBillTypeChange}
+          onStateChange={onStateChange}
+        />
 
         {paymentMethod === 'cash' && (
           <CashForm
@@ -181,38 +198,41 @@ class CalculationForm extends React.Component<Props, State> {
           />
         )}
 
-        {paymentMethod === 'card' && (
-          <CardForm
-            onStateChange={onStateChange}
-            cardAmount={cardAmount}
-            reset={this.reset}
-            color={options.colors.primary}
-            billType={billType}
-            orderNumber={order.number}
-            setCardPaymentInfo={setCardPaymentInfo}
-            orderId={order._id}
-          />)
-        }
-
-        <Ebarimt
-          billType={billType}
-          isPortrait={isPortrait}
-          show={showE}
-          onBillTypeChange={onBillTypeChange}
-          onStateChange={onStateChange}
-        />
+        {mode === 'kiosk' && (
+          <Amount isPortrait={isPortrait} color={options.colors.primary}>
+            <div className="total-wrapper">
+              {__('Total')}
+              <span>{formatNumber(order.items.length || 0)}ш</span>
+            </div>
+            <div className="amount-wrapper">
+              {__('Amount to pay')}
+              <span> {formatNumber(order.totalAmount || 0)}₮</span>
+            </div>
+          </Amount>
+        )}
       </FormHead>
     );
   }
 
   render() {
-    const { title, isPayment, options, isPortrait } = this.props;
-    const { showE, billType, registerNumber = '', paymentEnabled } = this.state;
+    const { title, order, isPayment, options, isPortrait, setCardPaymentInfo } =
+      this.props;
+    const {
+      showE,
+      billType,
+      registerNumber = '',
+      paymentEnabled,
+      cardAmount = 0
+    } = this.state;
 
-    const onChangeReg = (e) => {
+    const onChangeReg = e => {
       const value = (e.target as HTMLInputElement).value;
 
       this.setState({ registerNumber: value });
+    };
+
+    const onStateChange = (key: string, value: any) => {
+      this.setState({ [key]: value } as Pick<State, keyof State>);
     };
 
     return (
@@ -242,12 +262,20 @@ class CalculationForm extends React.Component<Props, State> {
           <FlexCenter>
             <Button
               btnStyle="simple"
-              icon="cancel-1"
-              block
-              onClick={() => this.props.closeDrawer("payment")}
+              icon="arrow-left"
+              onClick={() => this.props.closeDrawer('payment')}
             >
-              {__("Cancel")}
+              {__('Cancel')}
             </Button>
+            <CardForm
+              onStateChange={onStateChange}
+              cardAmount={cardAmount}
+              color={options.colors.primary}
+              billType={billType}
+              orderNumber={order.number}
+              setCardPaymentInfo={setCardPaymentInfo}
+              orderId={order._id}
+            />
             {paymentEnabled && (
               <Button
                 style={{ backgroundColor: options.colors.primary }}
@@ -255,7 +283,7 @@ class CalculationForm extends React.Component<Props, State> {
                 block
                 onClick={this.handleSubmit}
               >
-                {__("Done")}
+                {__('Done')}
               </Button>
             )}
           </FlexCenter>
