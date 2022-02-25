@@ -138,17 +138,20 @@ export default class Footer extends React.Component<Props> {
   componentDidMount() {
     if (this.putResponse) {
       const { order } = this.props;
-      const mode = localStorage.getItem('erxesPosMode');
+      const mode = localStorage.getItem('erxesPosMode') || '';
 
       window.addEventListener('afterprint', () => {
         if (mode !== 'kiosk') {
           setTimeout(() => {
-            window.open(`/order-receipt/${order._id}?inner=true`, '_blank');
-          }, 1);
+            const popup = window.open(`/order-receipt/${order._id}?inner=true`, '__blank');
+            if (!popup) {
+              prompt(`Popup зөвшөөрөгдөөгүй байна. Дараах тохиргоог хийнэ үү. \n 1. Доорх холбоосыг copy-дох  \n 2. шинэ tab нээж, paste хийн копидсон холбоосоор орох \n 3. "Pop-ups and redirects" гэсэн хэсгийг олоод \n 4. "Allow" гэснийг сонгоно. \n 5. Үндсэн хуудасаа рефреш`, `chrome://settings/content/siteDetails?site=${window.location.origin}`);
+            };
+          }, 10);
         }
         setTimeout(() => {
           window.close();
-        }, 1);
+        }, 50);
       });
 
       const { errorCode, lotteryWarningMsg, qrData, success, message, billId } = this.putResponse;

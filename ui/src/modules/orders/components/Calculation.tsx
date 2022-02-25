@@ -42,7 +42,7 @@ export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
-  font-weight: ${props => (props.isPortrait ? '' : '600')} 
+  font-weight: ${props => (props.isPortrait ? '' : '600')}
   border-color:${props => props.color && props.color}
   color:${props => (props.isPortrait ? colors.colorCoreBlack : props.color)}
   height: ${props => (props.isPortrait ? ' 115px' : '70px')}
@@ -288,13 +288,13 @@ export default class Calculation extends React.Component<Props, State> {
     const { setOrderState } = this.props;
 
     const onChangeQrcode = e => {
-      const value = (e.currentTarget as HTMLInputElement).value;
+      const value = (e.currentTarget as HTMLInputElement).value || '';
       client
         .query({
           query: gql(queries.customerDetail),
           fetchPolicy: 'network-only',
           variables: {
-            _id: value
+            _id: value.trim()
           }
         })
         .then(async response => {
