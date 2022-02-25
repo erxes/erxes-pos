@@ -72,7 +72,7 @@ export const MainContent = styledTS<{
   height: ${props => (props.isHalf ? '' : '100vh;')};
 
   @media (max-width: 1170px) and (orientation:landscape) {
-    padding: ${props => (props.numPadding ? 0 : '15px 10px')};
+    padding: ${props => (props.numPadding ? '15px 0;' : '15px 10px')};
   }
 `;
 
@@ -161,7 +161,8 @@ export const ProductsWrapper = styledTS<{
 
   /* width */
   ::-webkit-scrollbar {
-    width: ${props => (props.innerWidth ? `${props.innerWidth * 0.02}px` : '')}
+    width: ${props =>
+      props.innerWidth ? `${props.innerWidth * 0.02}px` : '10px'}
   }
 
   /* Track */
@@ -192,7 +193,7 @@ export const ProductsWrapper = styledTS<{
     max-height: ${props =>
       props.height && props.height !== 0
         ? `calc(100% - ${props.height + 200}px)`
-        : '75%'};
+        : '100%'};
   }
 `;
 
@@ -273,25 +274,25 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
   background: ${props => (props.isPortrait ? '' : `${colors.colorWhite}`)};
   display: ${props => (props.isPortrait ? '' : 'flex')};
   align-items: center;
-  flex-basis: ${props => (props.isPortrait ? '28%' : '14.6%28%;')};
+  flex-basis: ${props => (props.isPortrait ? '28%' : '30%')};
   cursor: pointer;
   margin: 0 20px 20px 0;
   transition: all ease 0.3s;
 
   .image-wrapper {
     width: ${props => (props.isPortrait ? '211px' : '132px')};
-    height: ${props => (props.isPortrait ? '211px' : '120px')};
-    margin-bottom: 5px;
+    height: ${props => (props.isPortrait ? '200px' : '120px')};
+    margin-left: ${props => (props.isPortrait ? '15px' : '')};
     display: ${props => (props.isPortrait ? '' : 'flex')};
     align-items: center;
     display: grid;
     align-content: center;
     justify-content: center;
-    overflow: hidden;
 
     > img {
       max-width: 100%;
       max-height: 100%;
+      margin-left: 10px;
     }
 
     @media (max-width: 1200px) and (orientation:landscape) {
@@ -327,14 +328,16 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
     border-radius: 8px;
     height: 100px;
     text-align: center; 
+    align-items: center;
+    display: grid;
     
     h4 {
       font-size: '16px';
-      line-height: 24px;
       letter-spacing: 0.15px;
+      line-height: 25px;
+      margin-top: 0;
+      margin-bottom: 5px;
       font-weight: bold;
-      padding-top: 15px;
-      margin-bottom: 15px;
       color: ${props =>
         props.isPortrait && props.isActive ? '#1F2933' : '#616E7C;'};
     }

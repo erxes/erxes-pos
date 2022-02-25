@@ -355,6 +355,42 @@ export default class Pos extends React.Component<Props, State> {
     });
   };
 
+  renderProduct() {
+    const { currentConfig, orientation, productsQuery } = this.props;
+
+    const { items, showMenu } = this.state;
+    // const mode = localStorage.getItem('erxesPosMode');
+
+    const products = (
+      <ProductsContainer
+        setItems={this.setItems}
+        items={items}
+        productsQuery={productsQuery}
+        orientation={orientation}
+      />
+    );
+
+    if (showMenu) {
+      return <> {this.renderModalContent()}</>;
+    }
+
+    return (
+      <>
+        <FlexHeader>
+          {this.renderCurrentLogin(
+            currentConfig ? currentConfig.uiOptions : {}
+          )}
+          {this.renderSyncMenu()}
+          {this.renderKitchenMenu()}
+          {this.renderWaitingMenu()}
+          <ProductSearch productsQuery={productsQuery} />
+        </FlexHeader>
+        <Divider />
+        {products}
+      </>
+    );
+  }
+
   render() {
     const {
       currentConfig,
@@ -449,25 +485,7 @@ export default class Pos extends React.Component<Props, State> {
             </Col>
             <Col md={8}>
               <MainContent numPadding={true}>
-                <ProductsContent>
-                  {showMenu === true ? (
-                    this.renderModalContent()
-                  ) : (
-                    <>
-                      <FlexHeader>
-                        {this.renderCurrentLogin(
-                          currentConfig ? currentConfig.uiOptions : {}
-                        )}
-                        {this.renderSyncMenu()}
-                        {this.renderKitchenMenu()}
-                        {this.renderWaitingMenu()}
-                        <ProductSearch productsQuery={productsQuery} />
-                      </FlexHeader>
-                      <Divider />
-                      {products}
-                    </>
-                  )}
-                </ProductsContent>
+                <ProductsContent>{this.renderProduct()}</ProductsContent>
               </MainContent>
             </Col>
             <Col md={3}>

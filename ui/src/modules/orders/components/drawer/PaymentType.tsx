@@ -40,7 +40,7 @@ const Card = styledTS<{ isPortrait?: boolean; isActive: boolean }>(styled.div)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: ${props => (props.isPortrait ? '46%' : '45%')};
+  width: ${props => (props.isPortrait ? '46%' : '30%')};
   margin: 0 20px 20px 0;
   flex-shrink: 0;
   cursor: pointer;
@@ -101,24 +101,22 @@ class PaymentType extends React.Component<Props, State> {
   }
   render() {
     const { color, togglePaymentType, isPortrait } = this.props;
-    const mode = localStorage.getItem('erxesPosMode') || '';
+    // const mode = localStorage.getItem('erxesPosMode') || '';
 
     return (
       <TypeWrapper isPortrait={isPortrait}>
         <h2>{__('Choose the payment method')}</h2>
 
         <Cards color={color} isPortrait={isPortrait}>
-          {!mode && (
-            <Card
-              isActive={this.state.isActive}
-              isPortrait={isPortrait}
-              onClick={() => togglePaymentType(PAYMENT_METHODS.CASH)}
-            >
-              <div>
-                <img src="/images/payment2.png" alt="payment" />
-              </div>
-            </Card>
-          )}
+          <Card
+            isActive={this.state.isActive}
+            isPortrait={isPortrait}
+            onClick={() => togglePaymentType(PAYMENT_METHODS.CASH)}
+          >
+            <div>
+              <img src="/images/payment2.png" alt="payment" />
+            </div>
+          </Card>
           <Card
             isPortrait={isPortrait}
             isActive={this.state.isActive}
