@@ -1,17 +1,20 @@
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import React from 'react';
-import Button from 'modules/common/components/Button';
-import { __, Alert } from 'modules/common/utils';
+
+import Button from "modules/common/components/Button";
+import { __, Alert } from "modules/common/utils";
+import { IOrder } from 'modules/orders/types';
 
 type Props = {
   cardAmount: number;
   color?: string;
   onStateChange: (key: string, value: any) => void;
   billType: string;
-  orderNumber: string;
   setCardPaymentInfo: (params: any) => void;
-  orderId: string;
-};
+  order: IOrder;
+  isSplit?: boolean;
+  cashAmount?: number;
+}
 
 type State = {
   sentTransaction: boolean;
@@ -33,9 +36,8 @@ export default class CardForm extends React.Component<Props, State> {
       cardAmount,
       onStateChange,
       billType,
-      orderNumber,
       setCardPaymentInfo,
-      orderId
+      order,
     } = this.props;
 
     const PATH = 'http://localhost:27028';
@@ -55,7 +57,7 @@ export default class CardForm extends React.Component<Props, State> {
                 service_name: 'doSaleTransaction',
                 service_params: {
                   // special character _ is not accepted
-                  db_ref_no: orderNumber.replace('_', ''),
+                  db_ref_no: order.number.replace('_', ''),
                   amount: cardAmount.toString(),
                   vatps_bill_type: billType
                 }
@@ -75,7 +77,7 @@ export default class CardForm extends React.Component<Props, State> {
                     onStateChange('paymentEnabled', true);
 
                     setCardPaymentInfo({
-                      _id: orderId,
+                      _id: order._id,
                       info: JSON.stringify(r.response)
                     });
                   } else {

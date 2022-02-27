@@ -22,7 +22,7 @@ import { PAYMENT_METHODS } from './PaymentType';
 import { FlexCenter } from 'modules/common/styles/main';
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  margin:  ${props => (props.isPortrait ? '30px 20px 20px;' : '10px 0')}; 
+  margin:  ${props => (props.isPortrait ? '30px 20px 20px;' : '10px 0')};
   text-align: center;
 
   button {
@@ -58,6 +58,7 @@ type Props = {
   paymentMethod: string;
   order: IOrder;
   setCardPaymentInfo: (params: any) => void;
+  isSplit?: boolean;
 };
 
 type State = {
@@ -153,7 +154,7 @@ class CalculationForm extends React.Component<Props, State> {
   };
 
   renderFormHead() {
-    const { showE, billType, cashAmount = 0 } = this.state;
+    const { showE, billType, cashAmount = 0, cardAmount = 0 } = this.state;
     const { options, isPortrait, paymentMethod, order } = this.props;
     const mode = localStorage.getItem('erxesPosMode') || '';
 
@@ -194,7 +195,8 @@ class CalculationForm extends React.Component<Props, State> {
             reset={this.reset}
             color={options.colors.primary}
             onStateChange={onStateChange}
-            totalAmount={order.totalAmount}
+            cardAmount={cardAmount}
+            order={order}
           />
         )}
 
@@ -272,9 +274,8 @@ class CalculationForm extends React.Component<Props, State> {
               cardAmount={cardAmount}
               color={options.colors.primary}
               billType={billType}
-              orderNumber={order.number}
+              order={order}
               setCardPaymentInfo={setCardPaymentInfo}
-              orderId={order._id}
             />
             {paymentEnabled && (
               <Button
