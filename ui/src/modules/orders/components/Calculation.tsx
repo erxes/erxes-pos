@@ -12,9 +12,9 @@ import { formatNumber } from 'modules/utils';
 import { FormControl } from 'modules/common/components/form';
 import { IConfig, IOption } from 'types';
 import { ICustomer, IOrder, IOrderItemInput } from '../types';
-import { ORDER_TYPES } from '../../../constants';
 import { FinderButtons, ProductLabel, Types } from '../styles';
 import { colors } from 'modules/common/styles';
+import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from '../../../constants';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   display: flex;
@@ -178,7 +178,7 @@ export default class Calculation extends React.Component<Props, State> {
     }
     const { mode } = this.state;
 
-    if (mode === 'kiosk') {
+    if (mode === POS_MODES.KIOSK) {
       return null;
     }
 
@@ -216,6 +216,32 @@ export default class Calculation extends React.Component<Props, State> {
         icon="dollar-alt"
         block
         disabled={!totalAmount || totalAmount === 0 ? true : false}
+      >
+        {__('Pay the billz')}
+      </Button>
+    );
+  }
+
+  renderSplitPaymentButton() {
+    const { order, config, editOrder, onClickDrawer } = this.props;
+
+    if (!order || (order && order.paidDate && order.status === ORDER_STATUSES.PAID)) {
+      return null;
+    }
+
+    const onClick = () => {
+      editOrder();
+
+      onClickDrawer('payment');
+      window.location.href = `/order-payment/${order._id}`;
+    };
+
+    return (
+      <Button
+        style={{ backgroundColor: config.uiOptions.colors.primary }}
+        onClick={onClick}
+        icon="dollar-alt"
+        block
       >
         {__('Pay the bill')}
       </Button>
@@ -360,6 +386,7 @@ export default class Calculation extends React.Component<Props, State> {
               {this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
               {this.renderAddButton()}
               {this.renderReceiptButton()}
+              {this.renderSplitPaymentButton()}
               {this.renderPaymentButton()}
             </ButtonWrapper>
           </ColumnBetween>

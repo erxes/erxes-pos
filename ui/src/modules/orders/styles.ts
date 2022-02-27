@@ -113,7 +113,7 @@ export const ScreenContent = styledTS<{
 
 export const ProductCategories = styledTS<{ isPortrait?: boolean }>(
   styled.div
-)`  
+)`
   margin: ${props => (props.isPortrait ? '' : '30px 0')};
   width: ${props => (props.isPortrait ? '' : '50%')};
   display: ${props => (props.isPortrait ? 'grid' : '')};
@@ -128,7 +128,7 @@ export const ProductCategories = styledTS<{ isPortrait?: boolean }>(
 export const KioskMainContent = styledTS<{ mainHeight?: number }>(styled.div)`
   width: 100%;
   height: ${props =>
-    props.mainHeight && props.mainHeight > 0 ? `1429px` : '89%;'} 
+    props.mainHeight && props.mainHeight > 0 ? `1429px` : '89%;'}
   display: flex;
 `;
 
@@ -210,11 +210,11 @@ export const ProductCategory = styledTS<{
   font-size: 14px;
   font-weight: 500;
   box-shadow: ${props =>
-    props.isPortrait ? '2px 2px 4px rgba(0, 0, 0, 0.25)' : ''}; 
+    props.isPortrait ? '2px 2px 4px rgba(0, 0, 0, 0.25)' : ''};
   margin: ${props => (props.isPortrait ? '0 20px 20px 0' : '')};
-  padding: ${props => (props.isPortrait ? '' : `0 20px;`)}; 
+  padding: ${props => (props.isPortrait ? '' : `0 20px;`)};
   width: ${props => (props.isPortrait ? '120px' : '')};
-  height:  ${props => (props.isPortrait ? '140px;' : '')}; 
+  height:  ${props => (props.isPortrait ? '140px;' : '')};
   background: ${props =>
     props.isActive ? (props.color ? props.color : colors.colorSecondary) : ''};
   cursor: pointer;
@@ -222,7 +222,7 @@ export const ProductCategory = styledTS<{
   transition: all ease .3s;
   display: flex;
   align-items: center;
-  justify-content: ${props => (props.isPortrait ? 'center' : 'left')}; 
+  justify-content: ${props => (props.isPortrait ? 'center' : 'left')};
 
   .image-wrapper {
     width: 70px;
@@ -313,7 +313,7 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
       line-height: 24px;
       letter-spacing: 0.15px;
       font-weight: bold;
-      
+
     }
 
     span {
@@ -327,10 +327,10 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
     background: #F3F3F3;
     border-radius: 8px;
     height: 100px;
-    text-align: center; 
+    text-align: center;
     align-items: center;
     display: grid;
-    
+
     h4 {
       font-size: '16px';
       letter-spacing: 0.15px;
@@ -358,7 +358,7 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
 
   &:hover {
     box-shadow: ${props =>
-      props.isPortrait ? '' : '0px 3px 4px rgba(0, 0, 0, 0.28);'}; 
+      props.isPortrait ? '' : '0px 3px 4px rgba(0, 0, 0, 0.28);'};
   }
 
 `;
@@ -738,4 +738,8 @@ export const Divider = styled.div`
   @media (max-width: 1170px) {
     margin-left: ${dimensions.coreSpacing}px;
   }
+`
+
+export const MarginTop = styledTS<{ margin: number }>(styled.div)`
+  margin-top: ${(props) => props.margin}px
 `;

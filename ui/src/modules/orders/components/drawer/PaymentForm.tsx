@@ -14,6 +14,7 @@ type Props = {
   order: IOrder;
   orientation?: string;
   setCardPaymentInfo: (params: any) => void;
+  isSplit?: boolean;
 };
 
 type State = {

@@ -41,21 +41,6 @@ export interface IPaymentParams {
 }
 
 class PosContainer extends React.Component<Props, { order: IOrder }> {
-  constructor(props) {
-    super(props);
-
-    const { orderDetailQuery, qp } = props;
-
-    const order =
-      qp && qp.id && !orderDetailQuery.loading
-        ? orderDetailQuery.orderDetail
-        : null;
-
-    this.state = {
-      order
-    };
-  }
-
   render() {
     const {
       ordersAddMutation,
@@ -159,13 +144,24 @@ class PosContainer extends React.Component<Props, { order: IOrder }> {
         });
     };
 
+    const { orderDetailQuery, qp } = this.props;
+
+    if (qp && qp.id && orderDetailQuery.loading) {
+      return null;
+    }
+
+    const order =
+      qp && qp.id
+        ? orderDetailQuery.orderDetail
+        : null;
+
     const updatedProps = {
       ...this.props,
       createOrder,
       updateOrder,
       makePayment,
       addCustomer,
-      order: this.state.order,
+      order,
       setCardPaymentInfo
     };
 

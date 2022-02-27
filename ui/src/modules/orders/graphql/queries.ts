@@ -86,6 +86,18 @@ const putResponseFields = `
   billType
 `;
 
+const qpayInvoiceFields = `
+  _id
+  qrText
+  senderInvoiceNo
+  amount
+  qpayInvoiceId
+  qpayPaymentId
+  status
+  paymentDate
+  createdAt
+`;
+
 const orderDetail = `
   query orderDetail($_id: String) {
     orderDetail(_id: $_id) {
@@ -109,17 +121,20 @@ const orderDetail = `
       }
 
       qpayInvoice {
-        qrText
-        senderInvoiceNo
-        amount
-        qpayInvoiceId
-        qpayPaymentId
-        status
-        paymentDate
-        createdAt
+        ${qpayInvoiceFields}
+      }
+
+      qpayInvoices {
+        ${qpayInvoiceFields}
       }
 
       cardPaymentInfo
+
+      cardPayments {
+        _id
+        amount
+        cardInfo
+      }
     }
   }
 `;

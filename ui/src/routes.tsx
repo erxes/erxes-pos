@@ -1,15 +1,16 @@
-import withCurrentUser from 'modules/auth/containers/withCurrentUser';
-import asyncComponent from 'modules/common/components/AsyncComponent';
-import queryString from 'query-string';
-import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import AuthRoutes from './modules/auth/routes';
-import SettingsRoutes from './modules/settings/routes';
-import KitchenRoutes from './modules/kitchen/routes';
-import WaitingRoutes from './modules/waiting/routes';
-import OrderRoutes from './modules/orders/routes';
-import { IUser } from './modules/auth/types';
-import { IConfig } from 'types';
+import withCurrentUser from "modules/auth/containers/withCurrentUser";
+import asyncComponent from "modules/common/components/AsyncComponent";
+import queryString from "query-string";
+import React from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import AuthRoutes from "./modules/auth/routes";
+import SettingsRoutes from "./modules/settings/routes";
+import KitchenRoutes from "./modules/kitchen/routes";
+import WaitingRoutes from "./modules/waiting/routes";
+import OrderRoutes from "./modules/orders/routes";
+import QPayRoutes from './modules/qpay/routes';
+import { IUser } from "./modules/auth/types";
+import { IConfig } from "types";
 
 const MainLayout = asyncComponent(
   () =>
@@ -63,6 +64,7 @@ const renderRoutes = (posCurrentUser, currentConfig, orientation) => {
           <SettingsRoutes />
           <KitchenRoutes />
           <WaitingRoutes />
+          <QPayRoutes />
           <Route
             key='/confirmation'
             exact={true}
