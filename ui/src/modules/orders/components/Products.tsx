@@ -78,16 +78,15 @@ export default class Products extends React.Component<Props, State> {
 
   render() {
     const { uiOptions } = this.props.currentConfig;
+
     return (
-      <>
-        <ProductsWrapper
-          height={this.state.categoriesHeight}
-          color={uiOptions.colors.secondary}
-          innerWidth={window.innerWidth}
-        >
-          {this.renderProducts()}
-        </ProductsWrapper>
-      </>
+      <ProductsWrapper
+        height={this.state.categoriesHeight}
+        color={uiOptions.colors.secondary}
+        innerWidth={window.innerWidth}
+      >
+        {this.renderProducts()}
+      </ProductsWrapper>
     );
   }
 }

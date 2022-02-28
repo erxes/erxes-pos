@@ -121,15 +121,13 @@ export default class FooterCalculation extends React.Component<Props, State> {
   };
 
   renderPaymentButton() {
-    const { order, onClickDrawer, config, totalAmount, addOrder, items } =
-      this.props;
+    const { order, onClickDrawer, config, totalAmount, addOrder } = this.props;
 
     if (order && order.paidDate) {
       return null;
     }
 
     const onClick = () => {
-      console.log(items);
       addOrder();
 
       onClickDrawer('payment');

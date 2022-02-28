@@ -13,7 +13,7 @@ import { PackageProduct } from '../styles';
 
 const Item = styled.div`
   background: #fff;
-  border: 1px solid #cbd2d9;
+  border: 1px solid #ff7800;
   border-radius: 8px;
   position: relative;
   margin-bottom: 10px;
@@ -21,9 +21,9 @@ const Item = styled.div`
 `;
 
 const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
-  background: ${props => (!props.isPortrait ? '#e4ebf1' : '#e4ebf1')};
+  background: ${props =>
+    props.isPortrait ? '#e4ebf1' : 'rgba(255, 120, 0, 0.12)'};
   width: ${props => (props.isPortrait ? '0' : '30px')};
-
   position: ${props => (props.isPortrait ? '' : 'absolute')}; ;
   right: ${props => (props.isPortrait ? '0' : '0')};
   top: ${props => (props.isPortrait ? '0' : '0')};
@@ -33,6 +33,7 @@ const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
   border-bottom-right-radius: 8px;
   transition: all ease 0.3s;
   font-size: ${props => (props.isPortrait ? '10px' : '14px')};
+  justify-content: center;
 
   &:hover {
     i {
@@ -47,27 +48,29 @@ const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
 `;
 
 export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  padding: 10px;
+  padding: ${props => (props.isPortrait ? '' : '10px')};
   word-break: break-word;
   font-size: ${props => props.isPortrait && '16px'};
-  margin-top: ${props => props.isPortrait && '15px'};
+  margin-top: ${props => props.isPortrait && ''};
+  color: ${props => (props.isPortrait ? '' : '#904300')};
+  display: flex;
+  align-items: center;
 
   > div {
-    line-height: ${props => (props.isPortrait ? '25px' : '13px')};
-  }
+    line-height: ${props => (props.isPortrait ? '25px' : '15px')};
+    margin-left: 10px;
+    display: grid;
 
-  > span {
-    color: #616e7c;
-    font-size: ${props => (props.isPortrait ? '16px' : '11px')};
-  }
-
-  b {
-    display: flex;
+    > span {
+      margin-top: 5px;
+      font-size: ${props => (props.isPortrait ? '16px' : '11px')};  
+    }
   }
 
   input {
-    width: ${props => (props.isPortrait ? '36px' : '22px;')};
-    height: ${props => (props.isPortrait ? '32px' : '18px;')};
+    width: ${props => (props.isPortrait ? '36px' : '25px;')};
+    height: ${props => (props.isPortrait ? '32px' : '25px;')};
+    border-radius: 30px;
   }
 `;
 
@@ -116,17 +119,16 @@ export default class StageItem extends React.Component<Props, State> {
 
     return (
       <Tip text={'Тусгайлан авч явах бол тэмдэглэх'} placement="right">
-        <label>
-          <FormControl
-            type="checkbox"
-            name="itemIsTake"
-            onChange={onChange}
-            checked={item.isTake}
-            onClick={e => {
-              e.stopPropagation();
-            }}
-          />
-        </label>
+        <FormControl
+          type="checkbox"
+          name="itemIsTake"
+          round={true}
+          onChange={onChange}
+          checked={item.isTake}
+          onClick={e => {
+            e.stopPropagation();
+          }}
+        />
       </Tip>
     );
   }
@@ -178,13 +180,13 @@ export default class StageItem extends React.Component<Props, State> {
       <Item>
         <FlexBetween>
           <Text>
+            {this.renderCheckbox()}
             <div>
-              <b>
-                {this.renderCheckbox()}
-                {this.renderName()}
-              </b>
+              <b>{this.renderName()}</b>
+              <span>
+                {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
+              </span>
             </div>
-            <span>{Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮</span>
           </Text>
           <FlexCenter>
             <Quantity

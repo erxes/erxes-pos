@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import styledTS from 'styled-components-ts';
 import { dimensions, colors } from 'modules/common/styles';
-import { rgba, darken } from 'modules/common/styles/ecolor';
+import { darken } from 'modules/common/styles/ecolor';
 
 export const PosWrapper = styled.div`
   position: relative;
@@ -201,6 +201,13 @@ export const CategoriesColumn = styled.div`
   margin-top: 20px;
 `;
 
+const imgSize = `img {
+  max-width: 100%;
+  max-height: 100%;
+  width: 36px;
+  height: 36px;
+}`;
+
 export const ProductCategory = styledTS<{
   isActive?: boolean;
   color?: string;
@@ -211,57 +218,55 @@ export const ProductCategory = styledTS<{
   font-weight: 500;
   box-shadow: ${props =>
     props.isPortrait ? '2px 2px 4px rgba(0, 0, 0, 0.25)' : ''}; 
-  margin: ${props => (props.isPortrait ? '0 20px 20px 0' : '')};
-  padding: ${props => (props.isPortrait ? '' : `0 20px;`)}; 
-  width: ${props => (props.isPortrait ? '120px' : '')};
-  height:  ${props => (props.isPortrait ? '140px;' : '')}; 
+  margin: ${props => (props.isPortrait ? '0 20px 20px 0' : '12px 0')};
+  padding: ${props => (props.isPortrait ? '' : `10px`)}; 
+  width: ${props => (props.isPortrait ? '110px' : 'auto')};
+  height:  ${props => (props.isPortrait ? '120px;' : 'auto')}; 
   background: ${props =>
-    props.isActive ? (props.color ? props.color : colors.colorSecondary) : ''};
+    props.isActive && props.isPortrait ? 'rgba(255, 120, 0, 0.12)' : ''};
   cursor: pointer;
-  color: ${props => props.isActive && colors.colorWhite};
+  border: ${props =>
+    props.isActive ? (props.isPortrait ? '' : '1px solid #FF7800') : ''};
+  color: ${props => props.isActive && props.color};
   transition: all ease .3s;
   display: flex;
   align-items: center;
   justify-content: ${props => (props.isPortrait ? 'center' : 'left')}; 
 
+
   .image-wrapper {
-    width: 70px;
-    height: 70px;
     margin-right:  ${dimensions.unitSpacing}px;
     display: flex;
     align-items: center;
     justify-content: center;
     overflow: hidden;
 
-    img {
-      max-width: 100%;
-      max-height: 100%;
+    ${imgSize}
+
+    span {
+      padding-left: ${props => (props.isPortrait ? '' : '5px')}; 
     }
   }
 
   .item-list {
-    width: 36px;
-    height: 36px;
     align-items: center;
+    display: grid;
+    align-content: center;
 
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      align-content: center;
-    }
+    ${imgSize}
   }
 
   .text-wrapper {
     font-size: 16px;
-    line-height:24px
+    line-height:24px;
     letter: 0.15 px
   }
 
   &:hover {
     box-shadow: ${props =>
       props.isPortrait ? '0 0 21px 2px rgba(0, 0, 0, 0.16)' : ''};
-    border: ${props => (props.isPortrait ? '' : '1px solid orange')};
-     transition: all ease .3s;
+    border: ${props => (props.isPortrait ? '' : '1px solid #FF7800')};
+    transition: all ease .3s;
   }
 `;
 
@@ -282,7 +287,7 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
   .image-wrapper {
     width: ${props => (props.isPortrait ? '211px' : '132px')};
     height: ${props => (props.isPortrait ? '200px' : '120px')};
-    margin-left: ${props => (props.isPortrait ? '15px' : '')};
+    margin-left: ${props => (props.isPortrait ? '' : '15px')};
     display: ${props => (props.isPortrait ? '' : 'flex')};
     align-items: center;
     display: grid;
@@ -303,6 +308,7 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
 
   .text-wrapper {
     padding-left: 10px;
+    margin-left: 10px;
     align-items: center;
     overflow-wrap: break-word;
     text-align: left;
@@ -422,6 +428,10 @@ export const Stages = styled.div`
 export const StageContent = styledTS<{ odd?: boolean }>(styled.div)`
 margin-top: ${dimensions.unitSpacing}px;
 height: ${props => props.odd && '100%'};
+
+@media (max-heigth: 768px) {
+  overflow: auto
+}
 `;
 
 export const KioskStageContent = styled.div`
@@ -513,11 +523,12 @@ export const Orders = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-top: 20px;
+  overflow: auto;
 `;
 
 export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   background: #fff;
-  padding: 20px;
+  padding: 15px;
   text-align: center;
   margin: 0 15px 15px 0;
   border: 1px solid #ddd;
@@ -536,8 +547,10 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
 
   div {
     margin-bottom: 10px;
+    margin-top: 10px;
     font-weight: 500;
     font-size: 15px;
+     justify-content: center;
 
     span {
       font-size: 11px;
@@ -547,9 +560,10 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
 
     b {
       margin-left: 5px;
-      color: ${props => (props.color ? props.color : '#6569df')};
+      color: #616E7C;
       word-break: break-word;
       line-height: 15px;
+      font-size: 16px;
     }
   }
 
@@ -558,14 +572,14 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   }
 
   label {
-    color: ${props => (props.color ? props.color : '#6569df')};
-    padding: 5px;
+    color: #00124E;
+    padding: 10px;
     border-radius: 20px;
-    background: ${props => rgba(props.color ? props.color : '#6569df', 0.2)}
+    border: 1px solid #00124E;
   }
 
   @media (max-width: 1500px) {
-    width: 45.333%;
+    width: 30%;
   }
 `;
 

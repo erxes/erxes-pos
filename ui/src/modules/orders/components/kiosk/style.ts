@@ -155,12 +155,13 @@ export const SelectedStage = styled.div`
       font-size: 20px;
       cursor: pointer;
       float: right;
+      margin-right: 10px;
     }
 
     img {
       width: 112px;
       height: 112px;
-      margin-left: 15px;
+      margin-left: 25px;
     }
   }
 `;

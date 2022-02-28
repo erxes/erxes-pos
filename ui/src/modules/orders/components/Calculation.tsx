@@ -111,6 +111,7 @@ type Props = {
   orientation: string;
   totalAmount: number;
   addOrder: (params: any) => void;
+  onChangeProductBodyType: (type: string) => void;
   setOrderState: (name: string, value: any) => void;
   onClickDrawer: (drawerContentType: string) => void;
   items: IOrderItemInput[];
@@ -265,16 +266,19 @@ export default class Calculation extends React.Component<Props, State> {
       return <></>;
     }
 
-    const { onClickDrawer, config } = this.props;
+    const { onChangeProductBodyType, config } = this.props;
     const color = config.uiOptions && config.uiOptions.colors.primary;
     return (
       <>
-        <ProductLabel onClick={() => onClickDrawer('order')} color={color}>
+        <ProductLabel
+          onClick={() => onChangeProductBodyType('orderSearch')}
+          color={color}
+        >
           {__('Find orders')}
         </ProductLabel>
         <ProductLabel
           onClick={() => {
-            mode !== 'kiosk' && onClickDrawer('customer');
+            mode !== 'kiosk' && onChangeProductBodyType('customer');
           }}
           color={color}
         >

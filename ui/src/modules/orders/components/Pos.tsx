@@ -70,6 +70,7 @@ type State = {
   type: string;
   drawerContentType: string;
   showMenu: boolean;
+  productBodyType: string;
   customerId: string;
   registerNumber: string;
 };
@@ -94,6 +95,7 @@ export default class Pos extends React.Component<Props, State> {
       items: order ? order.items : [],
       totalAmount: order ? getTotalAmount(order.items) : 0,
       showMenu: false,
+      productBodyType: 'product',
       type:
         this.props.type || (order && order.type ? order.type : ORDER_TYPES.EAT),
       drawerContentType: '',
@@ -103,12 +105,12 @@ export default class Pos extends React.Component<Props, State> {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.order, ' === next props');
     if (nextProps.order !== this.props.order) {
       const order = nextProps.order;
 
       this.setState({
-        totalAmount: order ? getTotalAmount(order.items) : 0
+        totalAmount: order ? getTotalAmount(order.items) : 0,
+        items: order ? order.items || [] : []
       });
     }
   }
@@ -205,11 +207,18 @@ export default class Pos extends React.Component<Props, State> {
     }
   };
 
+  onChangeProductBodyType = (productBodyType: string) => {
+    this.setState({ productBodyType });
+  };
+
+  renderOrderSearch() {
+    return <OrderSearch />;
+  }
+
   renderModalContent() {
     const {
       currentConfig,
       makePayment,
-      addCustomer,
       order,
       setCardPaymentInfo,
       orientation
@@ -217,8 +226,6 @@ export default class Pos extends React.Component<Props, State> {
     const { drawerContentType, totalAmount } = this.state;
 
     switch (drawerContentType) {
-      case 'order':
-        return <OrderSearch />;
       case 'payment':
         return (
           order && (
@@ -234,12 +241,20 @@ export default class Pos extends React.Component<Props, State> {
             />
           )
         );
-      case 'customer':
+      case 'payment2':
         return (
-          <CustomerForm
-            addCustomer={addCustomer}
-            toggleDrawer={this.toggleDrawer}
-          ></CustomerForm>
+          order && (
+            <PaymentForm
+              orderId={order ? order._id : ''}
+              options={currentConfig ? currentConfig.uiOptions : {}}
+              totalAmount={totalAmount}
+              closeDrawer={this.toggleDrawer}
+              makePayment={makePayment}
+              order={order}
+              setCardPaymentInfo={setCardPaymentInfo}
+              orientation={orientation}
+            />
+          )
         );
       default:
         return null;
@@ -358,7 +373,7 @@ export default class Pos extends React.Component<Props, State> {
   renderProduct() {
     const { currentConfig, orientation, productsQuery } = this.props;
 
-    const { items, showMenu } = this.state;
+    const { items } = this.state;
     // const mode = localStorage.getItem('erxesPosMode');
 
     const products = (
@@ -369,10 +384,6 @@ export default class Pos extends React.Component<Props, State> {
         orientation={orientation}
       />
     );
-
-    if (showMenu) {
-      return <> {this.renderModalContent()}</>;
-    }
 
     return (
       <>
@@ -389,6 +400,31 @@ export default class Pos extends React.Component<Props, State> {
         {products}
       </>
     );
+  }
+
+  renderProductBody() {
+    const { addCustomer } = this.props;
+    const { productBodyType } = this.state;
+
+    switch (productBodyType) {
+      case 'product': {
+        return this.renderProduct();
+      }
+      case 'orderSearch': {
+        return this.renderOrderSearch();
+      }
+      case 'customer': {
+        return (
+          <CustomerForm
+            addCustomer={addCustomer}
+            onChangeProductBodyType={this.onChangeProductBodyType}
+          ></CustomerForm>
+        );
+      }
+      default: {
+        return null;
+      }
+    }
   }
 
   render() {
@@ -485,7 +521,7 @@ export default class Pos extends React.Component<Props, State> {
             </Col>
             <Col md={8}>
               <MainContent numPadding={true}>
-                <ProductsContent>{this.renderProduct()}</ProductsContent>
+                <ProductsContent>{this.renderProductBody()}</ProductsContent>
               </MainContent>
             </Col>
             <Col md={3}>
@@ -497,6 +533,7 @@ export default class Pos extends React.Component<Props, State> {
                   editOrder={this.editOrder}
                   setOrderState={this.setOrderState}
                   onClickDrawer={this.toggleDrawer}
+                  onChangeProductBodyType={this.onChangeProductBodyType}
                   items={items}
                   changeItemCount={this.changeItemCount}
                   changeItemIsTake={this.changeItemIsTake}

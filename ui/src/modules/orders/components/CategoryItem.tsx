@@ -40,7 +40,7 @@ export default function CategoryItem(props: Props) {
             src={attachmentUrl ? attachmentUrl : 'images/no-category.jpg'}
             alt={name}
           />
-          {name}
+          <span>{name}</span>
         </div>
       </ProductCategory>
     );

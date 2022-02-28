@@ -16,6 +16,7 @@ import {
 } from '../types';
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
 import { IUser } from 'modules/auth/types';
+import client from 'erxes-ui/lib/apolloClient';
 
 type Props = {
   ordersAddMutation: OrdersAddMutationResponse;
@@ -40,20 +41,29 @@ export interface IPaymentParams {
   registerNumber?: string;
 }
 
-class PosContainer extends React.Component<Props, { order: IOrder }> {
+class PosContainer extends React.Component<Props, { order: IOrder | null }> {
   constructor(props) {
     super(props);
 
-    const { orderDetailQuery, qp } = props;
-
-    const order =
-      qp && qp.id && !orderDetailQuery.loading
-        ? orderDetailQuery.orderDetail
-        : null;
-
     this.state = {
-      order
+      order: null
     };
+  }
+
+  componentDidMount() {
+    const { qp } = this.props;
+
+    client
+      .query({
+        query: gql(queries.orderDetail),
+        variables: { _id: qp.id },
+        fetchPolicy: 'network-only'
+      })
+      .then(({ data }) => {
+        this.setState({
+          order: data.orderDetail
+        });
+      });
   }
 
   render() {
@@ -192,13 +202,6 @@ export default withProps<Props>(
       name: 'ordersEditMutation',
       options: ({ qp }) => ({
         refetchQueries: getRefetchQueries(qp.id)
-      })
-    }),
-    graphql<Props>(gql(queries.orderDetail), {
-      name: 'orderDetailQuery',
-      options: ({ qp }) => ({
-        variables: { _id: qp && qp.id },
-        fetchPolicy: 'network-only'
       })
     }),
     graphql<Props>(gql(mutations.ordersMakePayment), {
