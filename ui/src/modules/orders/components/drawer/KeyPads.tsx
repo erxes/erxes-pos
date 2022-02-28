@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import KeyPad from './KeyPad';
-import { BILL_TYPES } from './CalculationForm';
+import { BILL_TYPES } from '../../../../constants';
 
 const KeyBoard = styled.div`
   display: inline-grid;

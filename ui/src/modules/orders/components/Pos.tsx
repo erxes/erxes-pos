@@ -91,6 +91,7 @@ export default class Pos extends React.Component<Props, State> {
 
     const { order } = props;
 
+    console.log('kkkkkkkkkkkkkk', order)
     this.state = {
       items: order ? order.items : [],
       totalAmount: order ? getTotalAmount(order.items) : 0,
@@ -221,9 +222,11 @@ export default class Pos extends React.Component<Props, State> {
       makePayment,
       order,
       setCardPaymentInfo,
-      orientation
+      orientation,
     } = this.props;
     const { drawerContentType, totalAmount } = this.state;
+
+    const options = currentConfig ? currentConfig.uiOptions : {};
 
     switch (drawerContentType) {
       case 'payment':
@@ -253,6 +256,22 @@ export default class Pos extends React.Component<Props, State> {
               order={order}
               setCardPaymentInfo={setCardPaymentInfo}
               orientation={orientation}
+            />
+          )
+        );
+      case "splitPayment":
+        return (
+          order && (
+            <PaymentForm
+              orderId={order ? order._id : ""}
+              options={options}
+              totalAmount={totalAmount}
+              closeDrawer={this.toggleDrawer}
+              makePayment={makePayment}
+              order={order}
+              setCardPaymentInfo={setCardPaymentInfo}
+              orientation={orientation}
+              isSplit={true}
             />
           )
         );

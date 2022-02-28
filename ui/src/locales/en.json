@@ -76,5 +76,21 @@
   "Time": "Time",
   "buyerCompanyNumber": "Buyer (regNo)",
   "Payment": "Payment",
-  "Cancel order": "Cancel order"
+  "Cancel order": "Cancel order",
+  "Split payment": "Split payment",
+  "Add payment": "Add payment",
+  "Amount": "Amount",
+  "Payment info": "Payment info",
+  "Create invoice": "Create invoice",
+  "Paid card amount": "Paid card amount",
+  "Paid cash amount": "Paid cash amount",
+  "Paid mobile amount": "Paid mobile amount (QPay)",
+  "Amount exceeds total amount": "Amount exceeds total amount",
+  "Remainder amount": "Remainder amount",
+  "Close": "Close",
+  "Entity name": "Entity name",
+  "Register number": "Register number",
+  "Cancel1": "Cancel",
+  "Already paid": "Already paid",
+  "There are unpaid QPay invoices for this order": "There are unpaid QPay invoices for this order"
 }

@@ -3,6 +3,9 @@ import { orderFields, orderItemsFields } from './queries';
 const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String`;
 const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId`;
 
+const paymentParamDefs = `$_id: String!, $doc: OrderPaymentInput`;
+const paymentParams = `_id: $_id, doc: $doc`;
+
 const ordersAdd = `
   mutation ordersAdd(${addEditParamDefs}) {
     ordersAdd(${addEditParams}) {
@@ -13,8 +16,8 @@ const ordersAdd = `
 `;
 
 const ordersMakePayment = `
-  mutation ordersMakePayment($_id: String!, $doc: OrderPaymentInput) {
-    ordersMakePayment(_id: $_id, doc: $doc) {
+  mutation ordersMakePayment(${paymentParamDefs}) {
+    ordersMakePayment(${paymentParams}) {
       success
       lotteryWarningMsg
       errorCode
@@ -51,16 +54,16 @@ const invoiceFields = `
 `;
 
 const createQpaySimpleInvoice = `
-  mutation createQpaySimpleInvoice($orderId: String!) {
-    createQpaySimpleInvoice(orderId: $orderId) {
+  mutation createQpaySimpleInvoice($orderId: String!, $amount: Float) {
+    createQpaySimpleInvoice(orderId: $orderId, amount: $amount) {
       ${invoiceFields}
     }
   }
 `;
 
 const qpayCheckPayment = `
-  mutation qpayCheckPayment($orderId: String!) {
-    qpayCheckPayment(orderId: $orderId) {
+  mutation qpayCheckPayment($orderId: String!, $_id: String) {
+    qpayCheckPayment(orderId: $orderId, _id: $_id) {
       ${invoiceFields}
     }
   }
@@ -82,6 +85,20 @@ const ordersSetPaymentInfo = `
   }
 `;
 
+const ordersAddCardPayment = `
+  mutation ordersAddCardPayment($_id: String!, $amount: Float!, $cardInfo: String!) {
+    ordersAddCardPayment(_id: $_id, amount: $amount, cardInfo: $cardInfo) {
+      ${orderFields}
+    }
+  }
+`;
+
+const qpayCancelInvoice = `
+  mutation qpayCancelInvoice($_id: String!) {
+    qpayCancelInvoice(_id: $_id)
+  }
+`;
+
 export default {
   ordersAdd,
   ordersMakePayment,
@@ -90,5 +107,7 @@ export default {
   createQpaySimpleInvoice,
   qpayCheckPayment,
   customersAdd,
-  ordersSetPaymentInfo
+  ordersSetPaymentInfo,
+  ordersAddCardPayment,
+  qpayCancelInvoice
 };
