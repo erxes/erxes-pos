@@ -169,21 +169,13 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
         });
     };
 
-    const { orderDetailQuery, qp } = this.props;
-
-    if (qp && qp.id && orderDetailQuery.loading) {
-      return null;
-    }
-
-    const order = qp && qp.id ? orderDetailQuery.orderDetail : null;
-
     const updatedProps = {
       ...this.props,
       createOrder,
       updateOrder,
       makePayment,
       addCustomer,
-      order,
+      order: this.state.order,
       setCardPaymentInfo
     };
 

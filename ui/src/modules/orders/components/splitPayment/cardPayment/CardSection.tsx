@@ -10,26 +10,27 @@ import { __ } from 'modules/common/utils';
 import SplitCardForm from './SplitCardForm';
 
 type Props = {
-  order: IOrder;
+  order: IOrder | null;
   addCardPayment: (params: ICardPayment) => void;
   billType: string;
   maxAmount?: number;
-}
+};
 
 export default class CardSection extends React.Component<Props> {
   render() {
     const { order, addCardPayment, billType, maxAmount } = this.props;
 
-    const { cardPayments = [] } = order;
+    const cardPayments = order ? order.cardPayments || [] : [];
 
-    const content = (props) => 
+    const content = props => (
       <SplitCardForm
         {...props}
         order={order}
         addCardPayment={addCardPayment}
         billType={billType}
         maxAmount={maxAmount}
-      />;
+      />
+    );
 
     return (
       <div>
@@ -40,14 +41,20 @@ export default class CardSection extends React.Component<Props> {
               <th>{__('Payment info')}</th>
             </tr>
           </thead>
-          <tbody>{cardPayments ? cardPayments.map(c => <CardRow item={c} key={c._id} />) : null}</tbody>
+          <tbody>
+            {cardPayments
+              ? cardPayments.map(c => <CardRow item={c} key={c._id} />)
+              : null}
+          </tbody>
         </Table>
         <MarginTop margin={20}>
           <ModalTrigger
             hideHeader={true}
             title={__('Add payment')}
             trigger={
-              <Button size="small" btnStyle="success" icon="plus-circle">{__('Add payment')}</Button>
+              <Button size="small" btnStyle="success" icon="plus-circle">
+                {__('Add payment')}
+              </Button>
             }
             content={content}
           />

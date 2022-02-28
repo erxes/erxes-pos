@@ -2,6 +2,7 @@ import { IProductCategory, IProduct } from 'modules/orders/types';
 
 export type QueryResponse = {
   loading: boolean;
+  error: any;
   refetch: (params?: any) => void;
 };
 

@@ -38,6 +38,7 @@ import Icon from 'modules/common/components/Icon';
 import { NavLink } from 'react-router-dom';
 import { NavIcon } from 'modules/layout/styles';
 import FooterCalculation from './kiosk/FooterCalculation';
+import SplitPaymentContainer from '../containers/SplitPaymentContainer';
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ '../containers/ProductsContainer')
@@ -91,7 +92,6 @@ export default class Pos extends React.Component<Props, State> {
 
     const { order } = props;
 
-    console.log('kkkkkkkkkkkkkk', order)
     this.state = {
       items: order ? order.items : [],
       totalAmount: order ? getTotalAmount(order.items) : 0,
@@ -222,7 +222,7 @@ export default class Pos extends React.Component<Props, State> {
       makePayment,
       order,
       setCardPaymentInfo,
-      orientation,
+      orientation
     } = this.props;
     const { drawerContentType, totalAmount } = this.state;
 
@@ -244,26 +244,11 @@ export default class Pos extends React.Component<Props, State> {
             />
           )
         );
-      case 'payment2':
+      case 'splitPayment':
         return (
           order && (
             <PaymentForm
               orderId={order ? order._id : ''}
-              options={currentConfig ? currentConfig.uiOptions : {}}
-              totalAmount={totalAmount}
-              closeDrawer={this.toggleDrawer}
-              makePayment={makePayment}
-              order={order}
-              setCardPaymentInfo={setCardPaymentInfo}
-              orientation={orientation}
-            />
-          )
-        );
-      case "splitPayment":
-        return (
-          order && (
-            <PaymentForm
-              orderId={order ? order._id : ""}
               options={options}
               totalAmount={totalAmount}
               closeDrawer={this.toggleDrawer}
@@ -422,12 +407,19 @@ export default class Pos extends React.Component<Props, State> {
   }
 
   renderProductBody() {
-    const { addCustomer } = this.props;
+    const { addCustomer, order } = this.props;
     const { productBodyType } = this.state;
 
     switch (productBodyType) {
       case 'product': {
         return this.renderProduct();
+      }
+      case 'payment': {
+        if (order) {
+          return <SplitPaymentContainer id={order._id} />;
+        }
+
+        return null;
       }
       case 'orderSearch': {
         return this.renderOrderSearch();

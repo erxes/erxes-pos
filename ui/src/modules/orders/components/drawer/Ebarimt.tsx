@@ -4,6 +4,7 @@ import { __ } from 'modules/common/utils';
 import Button from 'modules/common/components/Button';
 import { EbarimtButton } from '../kiosk/style';
 import { FlexCenter } from 'modules/common/styles/main';
+import { BILL_TYPES } from './CalculationForm';
 
 type Props = {
   billType: string;
@@ -26,12 +27,8 @@ export default class Ebarimt extends React.Component<Props, State> {
   }
 
   render() {
-    const { isPortrait, show, onBillTypeChange, onStateChange } = this.props;
+    const { isPortrait, onBillTypeChange } = this.props;
     const { isActive } = this.state;
-
-    const onSwitchHandler = e => {
-      onStateChange('showE', !show);
-    };
 
     return (
       <React.Fragment>
@@ -39,11 +36,14 @@ export default class Ebarimt extends React.Component<Props, State> {
           <h2>{__('Obtain a VAT receipt')}</h2>
         </FlexCenter>
         <EbarimtButton isPortrait={isPortrait} isActive={isActive}>
-          <Button onClick={onSwitchHandler} size="large">
+          <Button
+            onClick={() => onBillTypeChange(BILL_TYPES.CITIZEN)}
+            size="large"
+          >
             {__('Person')}
           </Button>
           <Button
-            onClick={onSwitchHandler}
+            onClick={() => onBillTypeChange(BILL_TYPES.ENTITY)}
             onMouseDown={onBillTypeChange}
             size="large"
           >

@@ -1,17 +1,23 @@
 import React from 'react';
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
 import styled from 'styled-components';
-import gql from "graphql-tag";
+import gql from 'graphql-tag';
 
-import apolloClient from "apolloClient";
-import { queries } from "../../graphql/index";
+import apolloClient from 'apolloClient';
+import { queries } from '../../graphql/index';
 import { BILL_TYPES, POS_MODES } from '../../../../constants';
 import { FlexBetween } from 'modules/common/styles/main';
 import Button from 'modules/common/components/Button';
 import { Tabs, TabTitle } from 'modules/common/components/tabs/index';
 import { __, Alert } from 'modules/common/utils';
-import { IOrder, ICardPayment, IInvoiceParams, IInvoiceCheckParams, IPaymentParams } from 'modules/orders/types';
+import {
+  IOrder,
+  ICardPayment,
+  IInvoiceParams,
+  IInvoiceCheckParams,
+  IPaymentParams
+} from 'modules/orders/types';
 import CardSection from './cardPayment/CardSection';
 import QPaySection from './qpayPayment/QPaySection';
 import OrderInfo from './OrderInfo';
@@ -49,7 +55,7 @@ type Props = {
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
   makePayment: (_id: string, params: IPaymentParams) => void;
-}
+};
 
 type State = {
   billType: string;
@@ -60,7 +66,7 @@ type State = {
   showE: boolean;
   showRegModal: boolean;
   companyName: string;
-}
+};
 
 export default class SplitPayment extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -74,7 +80,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       registerNumber: '',
       showE: true,
       showRegModal: false,
-      companyName: '',
+      companyName: ''
     };
 
     this.checkOrganization = this.checkOrganization.bind(this);
@@ -84,14 +90,19 @@ export default class SplitPayment extends React.Component<Props, State> {
   getRemainderAmount() {
     const { order } = this.props;
 
-    return order.totalAmount - ((order.cardAmount || 0) + (order.cashAmount || 0) + (order.mobileAmount || 0));
+    return order
+      ? order.totalAmount -
+          ((order.cardAmount || 0) +
+            (order.cashAmount || 0) +
+            (order.mobileAmount || 0))
+      : 0;
   }
 
   checkOrganization() {
     apolloClient
       .query({
         query: gql(queries.ordersCheckCompany),
-        variables: { registerNumber: this.state.registerNumber },
+        variables: { registerNumber: this.state.registerNumber }
       })
       .then(({ data, errors }) => {
         if (errors) {
@@ -113,7 +124,12 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   renderTabContent() {
-    const { addCardPayment, createQPayInvoice, checkQPayInvoice, cancelQPayInvoice } = this.props;
+    const {
+      addCardPayment,
+      createQPayInvoice,
+      checkQPayInvoice,
+      cancelQPayInvoice
+    } = this.props;
     const { billType, currentTab, order, cashAmount } = this.state;
 
     const remainder = this.getRemainderAmount();
@@ -183,7 +199,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       showE,
       showRegModal,
       companyName,
-      registerNumber,
+      registerNumber
     } = this.state;
 
     const onClick = (currentTab: string) => {
@@ -194,8 +210,8 @@ export default class SplitPayment extends React.Component<Props, State> {
       this.setState({ [key]: value } as Pick<State, keyof State>);
     };
 
-    const onBillTypeChange = (e) => {
-      const billType = (e.target as HTMLInputElement).value;
+    const onBillTypeChange = (value: string) => {
+      const billType = value;
 
       this.setState({ billType, showRegModal: billType === BILL_TYPES.ENTITY });
     };
@@ -203,15 +219,24 @@ export default class SplitPayment extends React.Component<Props, State> {
     return (
       <PaymentWrapper>
         <Tabs full={true}>
-          {
-            POS_MODE !== POS_MODES.KIOSK &&
-            <TabTitle className={currentTab === 'cash' ? 'active' : ''} onClick={() => onClick('cash')}>
+          {POS_MODE !== POS_MODES.KIOSK && (
+            <TabTitle
+              className={currentTab === 'cash' ? 'active' : ''}
+              onClick={() => onClick('cash')}
+            >
               {__('In Cash')}
-            </TabTitle>}
-          <TabTitle className={currentTab === 'card' ? 'active' : ''} onClick={() => onClick('card')}>
+            </TabTitle>
+          )}
+          <TabTitle
+            className={currentTab === 'card' ? 'active' : ''}
+            onClick={() => onClick('card')}
+          >
             {__('By Card')}
           </TabTitle>
-          <TabTitle className={currentTab === 'qpay' ? 'active' : ''} onClick={() => onClick('qpay')}>
+          <TabTitle
+            className={currentTab === 'qpay' ? 'active' : ''}
+            onClick={() => onClick('qpay')}
+          >
             {__('Pay with QPay')}
           </TabTitle>
         </Tabs>
@@ -246,7 +271,13 @@ export default class SplitPayment extends React.Component<Props, State> {
           />
         </FlexBetween>
         <FooterButtons>
-          <Button btnStyle="success" onClick={this.handlePayment} icon="dollar-alt">{__("Pay the bill")}</Button>
+          <Button
+            btnStyle="success"
+            onClick={this.handlePayment}
+            icon="dollar-alt"
+          >
+            {__('Pay the bill')}
+          </Button>
         </FooterButtons>
       </PaymentWrapper>
     );

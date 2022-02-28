@@ -53,7 +53,7 @@ export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
   font-size: ${props => props.isPortrait && '16px'};
   margin-top: ${props => props.isPortrait && ''};
   color: ${props => (props.isPortrait ? '' : '#904300')};
-  display: flex;
+  display: ${props => (props.isPortrait ? '' : 'flex')};
   align-items: center;
 
   > div {

@@ -217,9 +217,9 @@ export const ProductCategory = styledTS<{
   box-shadow: ${props =>
     props.isPortrait ? '2px 2px 4px rgba(0, 0, 0, 0.25)' : ''};
   margin: ${props => (props.isPortrait ? '0 20px 20px 0' : '')};
-  padding: ${props => (props.isPortrait ? '' : `0 20px;`)};
-  width: ${props => (props.isPortrait ? '120px' : '')};
-  height:  ${props => (props.isPortrait ? '140px;' : '')};
+  padding: ${props => (props.isPortrait ? '' : `10px`)};
+  width: ${props => (props.isPortrait ? '110px' : '')};
+  height:  ${props => (props.isPortrait ? '120px;' : '')};
   background: ${props =>
     props.isActive && props.isPortrait ? 'rgba(255, 120, 0, 0.12)' : ''};
   cursor: pointer;
@@ -286,9 +286,8 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
     width: ${props => (props.isPortrait ? '211px' : '132px')};
     height: ${props => (props.isPortrait ? '200px' : '120px')};
     margin-left: ${props => (props.isPortrait ? '' : '15px')};
-    display: ${props => (props.isPortrait ? '' : 'flex')};
+    display: ${props => (props.isPortrait ? 'grid' : 'flex')};
     align-items: center;
-    display: grid;
     align-content: center;
     justify-content: center;
 
@@ -378,14 +377,13 @@ export const ProductLabel = styledTS<{ color?: string; isPortrait?: boolean }>(
 )`
   background: ${props => (props.color ? props.color : colors.colorSecondary)}
   color: ${colors.colorWhite};
-  padding: 12px 15px;
+  padding: 18px;
   border-radius: 12px;
   font-size: ${props => (props.isPortrait ? '24px' : '12px')};
   text-align: center;
   font-weight: 500;
   cursor: pointer;
   width: 49%;
-  height: 56px;
 `;
 
 export const Types = styled.div`
@@ -533,8 +531,6 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   border-radius: 8px;
   width: 30.333%;
   display: flex;
-  flex-wrap: wrap;
-  overflow: hidden;
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
@@ -548,7 +544,7 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
     margin-top: 10px;
     font-weight: 500;
     font-size: 15px;
-     justify-content: center;
+    justify-content: space-between;
 
     span {
       font-size: 11px;

@@ -197,44 +197,20 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
-  renderPaymentButton() {
-    const { order, onClickDrawer, config, totalAmount, editOrder } = this.props;
-
-    if (!order || (order && order.paidDate)) {
-      return null;
-    }
-
-    const onClick = () => {
-      editOrder();
-
-      onClickDrawer('payment');
-    };
-
-    return (
-      <Button
-        style={{ backgroundColor: config.uiOptions.colors.primary }}
-        onClick={onClick}
-        icon="dollar-alt"
-        block
-        disabled={!totalAmount || totalAmount === 0 ? true : false}
-      >
-        {__('Pay the billz')}
-      </Button>
-    );
-  }
-
   renderSplitPaymentButton() {
-    const { order, config, editOrder, onClickDrawer } = this.props;
+    const { order, config, editOrder, onChangeProductBodyType } = this.props;
 
-    if (!order || (order && order.paidDate && order.status === ORDER_STATUSES.PAID)) {
+    if (
+      !order ||
+      (order && order.paidDate && order.status === ORDER_STATUSES.PAID)
+    ) {
       return null;
     }
 
     const onClick = () => {
       editOrder();
 
-      onClickDrawer('payment');
-      window.location.href = `/order-payment/${order._id}`;
+      onChangeProductBodyType('payment');
     };
 
     return (
@@ -244,7 +220,7 @@ export default class Calculation extends React.Component<Props, State> {
         icon="dollar-alt"
         block
       >
-        {__('Pay the bill')}
+        {__('Payment')}
       </Button>
     );
   }
@@ -389,9 +365,8 @@ export default class Calculation extends React.Component<Props, State> {
             >
               {this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
               {this.renderAddButton()}
-              {this.renderReceiptButton()}
+              {/* {this.renderReceiptButton()} */}
               {this.renderSplitPaymentButton()}
-              {this.renderPaymentButton()}
             </ButtonWrapper>
           </ColumnBetween>
         </Wrapper>
