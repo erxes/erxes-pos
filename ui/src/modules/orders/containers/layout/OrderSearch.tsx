@@ -14,7 +14,7 @@ import { OrderQueryResponse } from 'modules/orders/types';
 import { IRouterProps } from 'types';
 import Spinner from 'modules/common/components/Spinner';
 
-type Props = {};
+type Props = { orientation: string };
 
 type WithProps = {
   history: any;
@@ -42,14 +42,14 @@ class SearchContainer extends React.Component<FinalProps> {
   };
 
   renderContent() {
-    const { ordersQuery } = this.props;
+    const { ordersQuery, orientation } = this.props;
 
     if (ordersQuery.loading) {
       return <Spinner />;
     }
 
     return ordersQuery.orders.map(order => (
-      <OrderItem key={order._id} order={order} />
+      <OrderItem orientation={orientation} key={order._id} order={order} />
     ));
   }
 

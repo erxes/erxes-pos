@@ -29,6 +29,10 @@ p {
     font-size: 16px;
   }
 }
+
+.activeCard {
+  border: 1px solid #FF7800; 
+}
 `;
 
 export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
@@ -45,32 +49,36 @@ margin: 0 20px 20px 0;
 flex-shrink: 0;
 cursor: pointer;
 transition: all ease 0.3s;
-> div {
-  height: 150px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  > img {
-    max-height: ${props => (props.isPortrait ? '250px' : '150px')};
-    max-width: ${props => (props.isPortrait ? '250px' : '150px')};
-    margin-bottom: 30px;
+
+  > div {
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    > img {
+      max-height: ${props => (props.isPortrait ? '250px' : '150px')};
+      max-width: ${props => (props.isPortrait ? '250px' : '150px')};
+      margin-bottom: 30px;
+      @media (max-width: 1250px) and (orientation:landscape) {
+        max-height: 80px;
+        max-width: 80px;
+        margin-bottom: 20px;
+      }
+    }
     @media (max-width: 1250px) and (orientation:landscape) {
-      max-height: 80px;
-      max-width: 80px;
-      margin-bottom: 20px;
+      height: 80px;
     }
   }
-  @media (max-width: 1250px) and (orientation:landscape) {
-    height: 80px;
+
+  &:nth-child(even) {
+    margin-right: 0;
   }
-}
-&:nth-child(even) {
-  margin-right: 0;
-}
-&:hover {
-  box-shadow: 0 6px 10px 1px rgba(136, 136, 136, 0.08);
-}
-@media (max-width: 1250px) and (orientation:landscape) {
-  padding: 20px;
-}
+
+  &:hover {
+    box-shadow: 0 6px 10px 1px rgba(136, 136, 136, 0.08);
+  }
+
+  @media (max-width: 1250px) and (orientation:landscape) {
+    padding: 20px;
+  }
 `;

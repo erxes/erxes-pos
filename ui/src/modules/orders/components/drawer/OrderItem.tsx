@@ -14,9 +14,10 @@ import { __ } from 'modules/common/utils';
 
 type Props = {
   order: IOrder;
+  orientation: string;
 };
 
-export default function OrderItem({ order }: Props) {
+export default function OrderItem({ order, orientation }: Props) {
   const { currentConfig } = React.useContext(AppContext);
   const options = currentConfig && currentConfig.uiOptions;
 
@@ -33,7 +34,12 @@ export default function OrderItem({ order }: Props) {
   const color = order.paidDate ? colors.colorCoreGreen : options.colors.primary;
 
   return (
-    <OrderBox color={color} key={order._id} onClick={onClick}>
+    <OrderBox
+      isPortrait={orientation === 'portrait'}
+      color={color}
+      key={order._id}
+      onClick={onClick}
+    >
       <Link to={`/pos?id=${order._id}`}>
         <FlexBetween>
           <span>{dayjs(order.createdAt).format('YY/MM/DD')}</span>

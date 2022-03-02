@@ -8,46 +8,61 @@ type Props = {
   isPortrait?: boolean;
 };
 
+type State = {
+  selectedPaymentType: string;
+};
+
 export const PAYMENT_METHODS = {
   CARD: 'card',
   CASH: 'cash',
   QPAY: 'qpay'
 };
 
-class PaymentType extends React.Component<Props> {
+class PaymentType extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      selectedPaymentType: PAYMENT_METHODS.CARD
+    };
+  }
+
+  onChangeCard = value => {
+    this.setState({ selectedPaymentType: value });
+    this.props.togglePaymentType(value);
+  };
+
   render() {
-    const { color, togglePaymentType, isPortrait } = this.props;
-    const mode = localStorage.getItem('erxesPosMode') || '';
+    const { isPortrait } = this.props;
+    const { selectedPaymentType } = this.state;
+
+    console.log('selectedPaymentType', selectedPaymentType);
 
     return (
       <TypeWrapper isPortrait={isPortrait}>
         <h2>{__('Choose the payment method')}</h2>
 
-        <Cards color={color} isPortrait={isPortrait}>
-          {!mode && (
-            <Card
-              isPortrait={isPortrait}
-              onClick={() => togglePaymentType(PAYMENT_METHODS.CASH)}
-            >
-              <div>
-                <img src="/images/payment2.png" alt="payment" />
-              </div>
-            </Card>
-          )}
+        <Cards isPortrait={isPortrait}>
           <Card
+            className={
+              selectedPaymentType === PAYMENT_METHODS.CARD ? 'activeCard' : ''
+            }
             isPortrait={isPortrait}
-            onClick={() => togglePaymentType(PAYMENT_METHODS.CARD)}
+            onClick={() => this.onChangeCard(PAYMENT_METHODS.CARD)}
           >
             <div>
-              <img src="/images/payment4.png" alt="payment" />
+              <img src="/images/payment4.png" alt="payment2" />
             </div>
           </Card>
           <Card
+            className={
+              selectedPaymentType === PAYMENT_METHODS.QPAY ? 'activeCard' : ''
+            }
             isPortrait={isPortrait}
-            onClick={() => togglePaymentType(PAYMENT_METHODS.QPAY)}
+            onClick={() => this.onChangeCard(PAYMENT_METHODS.QPAY)}
           >
             <div>
-              <img src="/images/payment1.png" alt="payment" />
+              <img src="/images/payment1.png" alt="payment3" />
             </div>
           </Card>
         </Cards>

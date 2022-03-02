@@ -46,7 +46,7 @@ const CategoriesContainer = AsyncComponent(
 );
 
 type Props = {
-  createOrder: (params) => void;
+  createOrder: (params, callback?) => void;
   posCurrentUser: IUser;
   currentConfig: IConfig;
   order: IOrder | null;
@@ -112,6 +112,15 @@ export default class Pos extends React.Component<Props, State> {
         items: order ? order.items || [] : []
       });
     }
+
+    if (
+      nextProps.qp.categoryId ||
+      (Object.keys(nextProps.qp).length === 1 && nextProps.qp.home)
+    ) {
+      this.setState({
+        productBodyType: 'product'
+      });
+    }
   }
 
   setItems = (items: IOrderItemInput[]) => {
@@ -161,7 +170,7 @@ export default class Pos extends React.Component<Props, State> {
     }
   };
 
-  addOrder = () => {
+  addOrder = (callback?: () => void) => {
     const { createOrder } = this.props;
     const { totalAmount, type, items, customerId } = this.state;
 
@@ -174,7 +183,10 @@ export default class Pos extends React.Component<Props, State> {
       isTake: type !== ORDER_TYPES.EAT ? true : item.isTake
     }));
 
-    createOrder({ items: currentItems, totalAmount, type, customerId });
+    createOrder(
+      { items: currentItems, totalAmount, type, customerId },
+      callback
+    );
   };
 
   editOrder = () => {
@@ -211,7 +223,9 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   renderOrderSearch() {
-    return <OrderSearch />;
+    const { orientation } = this.props;
+
+    return <OrderSearch orientation={orientation} />;
   }
 
   handlePayment = (params: IPaymentParams) => {
@@ -368,7 +382,6 @@ export default class Pos extends React.Component<Props, State> {
     const { currentConfig, orientation, productsQuery } = this.props;
 
     const { items } = this.state;
-    // const mode = localStorage.getItem('erxesPosMode');
 
     const products = (
       <ProductsContainer
@@ -513,7 +526,7 @@ export default class Pos extends React.Component<Props, State> {
             <Col sm={3}>
               <MainContent numPadding={true}>
                 <PosMenuContent>
-                  <NavLink to="/">
+                  <NavLink to={'/?home=true'}>
                     <img src={currentConfig.uiOptions.logo} alt="logo11" />
                   </NavLink>
                   {categories}

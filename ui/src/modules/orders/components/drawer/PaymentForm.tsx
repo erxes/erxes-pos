@@ -18,16 +18,16 @@ import CardForm from './CardForm';
 import { __ } from 'modules/common/utils';
 import { Alert } from 'modules/common/utils';
 import gql from 'graphql-tag';
-import { Card, Cards, TypeWrapper } from './style';
+import { Cards, TypeWrapper } from './style';
 
 const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   margin:  ${props => (props.isPortrait ? '30px 20px 20px;' : '10px 0')};
   text-align: center;
 
   button {
-    padding: ${props => (props.isPortrait ? '20px 30px' : '10px 20px')};
+    padding: ${props => (props.isPortrait ? '20px 15px' : '10px 20px')};
     border-radius: 8px;
-    font-size: ${props => props.isPortrait && '32px'};
+    font-size: ${props => props.isPortrait && '20px'};
     width: 50%;
   }
 `;
@@ -37,8 +37,8 @@ const Title = styled.h2`
   margin-bottom: 40px;
 `;
 
-const Header = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  margin: ${props => (props.isPortrait ? '0px 20px 20px;' : '30px 80px 20px;')};
+const Header = styled.div`
+  margin: 0px 20px 20px;
   @media (max-width: 1600px) and (orientation: landscape) {
     margin: 0px 20px 0px;
   }
@@ -208,13 +208,15 @@ class PaymentForm extends React.Component<Props, State> {
     };
 
     return (
-      <Ebarimt
-        billType={billType}
-        isPortrait={isPortrait}
-        show={showE}
-        onBillTypeChange={onBillTypeChange}
-        onStateChange={onStateChange}
-      />
+      <Header>
+        <Ebarimt
+          billType={billType}
+          isPortrait={isPortrait}
+          show={showE}
+          onBillTypeChange={onBillTypeChange}
+          onStateChange={onStateChange}
+        />
+      </Header>
     );
   }
 
@@ -253,12 +255,29 @@ class PaymentForm extends React.Component<Props, State> {
         </h2>
 
         <Cards isPortrait={isPortrait}>
-          <Card isPortrait={isPortrait}>
-            <div>
-              <img src="/images/card-reader.png" alt="card-reader" />
-            </div>
-          </Card>
+          <div>
+            <img src="/images/card-reader.png" alt="card-reader" />
+          </div>
         </Cards>
+      </TypeWrapper>
+    );
+  }
+
+  renderDone() {
+    const { orientation } = this.props;
+    const isPortrait = orientation === 'portrait';
+
+    return (
+      <TypeWrapper isPortrait={isPortrait}>
+        <h2>{__('Манайхыг сонгон үйлчлүүлсэн танд баярлалаа. ')}</h2>
+
+        <Cards isPortrait={isPortrait}>
+          <div>
+            <img src="/images/thank-you.png" alt="card-reader" />
+          </div>
+        </Cards>
+
+        <h2>Таны дугаар: 102</h2>
       </TypeWrapper>
     );
   }
@@ -278,34 +297,56 @@ class PaymentForm extends React.Component<Props, State> {
     );
   }
 
+  renderCardButtons() {
+    const { setCardPaymentInfo, options, order } = this.props;
+    const { paymentEnabled, cardAmount = 0, billType } = this.state;
+
+    const onStateChange = (key: string, value: any) => {
+      this.setState({ [key]: value } as Pick<State, keyof State>);
+    };
+
+    if (paymentEnabled) {
+      return (
+        <Button
+          style={{ backgroundColor: options.colors.primary }}
+          size="medium"
+          icon="check-circle"
+          onClick={() => this.handleSubmit}
+        >
+          {__('Waiting for payment')}
+        </Button>
+      );
+    }
+
+    return (
+      <CardForm
+        onStateChange={onStateChange}
+        cardAmount={cardAmount}
+        color={options.colors.primary}
+        billType={billType}
+        order={order}
+        setCardPaymentInfo={setCardPaymentInfo}
+      />
+    );
+  }
+
   render() {
     const {
       title,
       order,
       isPayment,
       options,
-      setCardPaymentInfo,
       orderId,
-      orientation
+      orientation,
+      totalAmount
     } = this.props;
 
-    const {
-      showE,
-      billType,
-      registerNumber = '',
-      paymentEnabled,
-      cardAmount = 0,
-      paymentType
-    } = this.state;
+    const { showE, billType, registerNumber = '', paymentType } = this.state;
 
     const onChangeReg = e => {
       const value = (e.target as HTMLInputElement).value;
 
       this.setState({ registerNumber: value });
-    };
-
-    const onStateChange = (key: string, value: any) => {
-      this.setState({ [key]: value } as Pick<State, keyof State>);
     };
 
     const isPortrait = orientation === 'portrait';
@@ -318,11 +359,15 @@ class PaymentForm extends React.Component<Props, State> {
       return <QPay order={order} handlePayment={this.handlePayment} />;
     }
 
+    if (totalAmount === 0) {
+      return <>{this.renderDone()}</>;
+    }
+
     return (
       <>
         {this.renderPopUpType()}
         {title && <Title>{__(title)}</Title>}
-        <Header isPortrait={isPortrait}>
+        <Header>
           {this.renderAmount()}
           <RegisterChecker
             billType={billType}
@@ -351,24 +396,7 @@ class PaymentForm extends React.Component<Props, State> {
             >
               {__('Cancel')}
             </Button>
-            <CardForm
-              onStateChange={onStateChange}
-              cardAmount={cardAmount}
-              color={options.colors.primary}
-              billType={billType}
-              order={order}
-              setCardPaymentInfo={setCardPaymentInfo}
-            />
-            {paymentEnabled && (
-              <Button
-                style={{ backgroundColor: options.colors.primary }}
-                icon="check-circle"
-                block
-                onClick={this.handleSubmit}
-              >
-                {__('Done')}
-              </Button>
-            )}
+            {this.renderCardButtons()}
           </FlexCenter>
         </PaymentWrapper>
       </>

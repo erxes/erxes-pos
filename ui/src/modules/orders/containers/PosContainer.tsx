@@ -81,7 +81,7 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
 
     // const order = qp && qp.id ? orderDetailQuery.orderDetail : null;
 
-    const createOrder = (params: any) => {
+    const createOrder = (params: any, callback?) => {
       ordersAddMutation({ variables: params })
         .then(({ data }) => {
           if (data && data.ordersAdd && data.ordersAdd.number) {
@@ -95,8 +95,12 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
         .then(order => {
           if (order && order._id) {
             Alert.success(`Order has been created successfully.`);
-            console.log('order', order);
+
             this.setState({ order });
+
+            if (callback) {
+              callback();
+            }
           }
         })
         .catch(e => {

@@ -19,7 +19,7 @@ import OrderInfo from './splitPayment/OrderInfo';
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   display: flex;
   flex-direction: column;
-  padding: 0 20px 0 20px;
+  padding: 0 5px 0 5px;
   height: 100%;
   box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
   border-radius: 16px;
@@ -75,7 +75,7 @@ export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
 type Props = {
   orientation: string;
   totalAmount: number;
-  addOrder: () => void;
+  addOrder: (callback?: () => void) => void;
   onChangeProductBodyType: (type: string) => void;
   setOrderState: (name: string, value: any) => void;
   onClickDrawer: (drawerContentType: string) => void;
@@ -178,9 +178,9 @@ export default class Calculation extends React.Component<Props, State> {
     }
 
     const onClick = () => {
-      addOrder();
+      const callback = () => onChangeProductBodyType('payment');
 
-      onChangeProductBodyType('payment');
+      addOrder(callback);
     };
 
     return (
@@ -334,7 +334,7 @@ export default class Calculation extends React.Component<Props, State> {
       <>
         <Wrapper color={color}>
           <FinderButtons>{this.renderFindOrder(mode)}</FinderButtons>
-          {/* {this.renderCustomerChooser()} */}
+          {this.renderCustomerChooser()}
           <ColumnBetween>
             <Stage
               orientation={orientation}

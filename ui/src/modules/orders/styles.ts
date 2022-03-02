@@ -142,7 +142,6 @@ export const KioskProductsContent = styled.div`
 export const FooterContent = styled.div`
   position: relative;
   width: 100%;
-  height: 286px;
 `;
 
 /********end kiosk***** */
@@ -280,19 +279,16 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
   background: ${props => (props.isPortrait ? '' : `${colors.colorWhite}`)};
   display: ${props => (props.isPortrait ? '' : 'flex')};
   align-items: center;
-  flex-basis: ${props => (props.isPortrait ? '28%' : '30%')};
+  flex-basis: 28%;
   cursor: pointer;
   margin: 0 20px 20px 0;
   transition: all ease 0.3s;
 
   .image-wrapper {
-    width: ${props => (props.isPortrait ? '211px' : '132px')};
-    height: ${props => (props.isPortrait ? '200px' : '120px')};
-    margin-left: ${props => (props.isPortrait ? '' : '15px')};
-    display: ${props => (props.isPortrait ? 'grid' : 'flex')};
+    width: ${props => (props.isPortrait ? '200px' : '132px')};
+    height: ${props => (props.isPortrait ? '170px' : '120px')};
+    display: ${props => (props.isPortrait ? '' : 'flex')};
     align-items: center;
-    align-content: center;
-    justify-content: center;
 
     > img {
       max-width: 100%;
@@ -301,31 +297,44 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
     }
 
     @media (max-width: 1200px) and (orientation:landscape) {
-      width: 100px;
+      width: 80px;
       height: 100px;
+      min-width: 50px;
     }
   }
 
   .text-wrapper {
-    padding-left: 10px;
-    margin-left: 10px;
+    padding: 10px;
+    margin-left: 5px;
     align-items: center;
     overflow-wrap: break-word;
-    text-align: left;
+    text-align: ${props => (props.isPortrait ? 'center' : 'left')};
 
     h4 {
-      font-size: ${props => (props.isPortrait ? '26px' : '16px')};
+      font-size: ${props => (props.isPortrait ? '16px' : '16px')};
       margin: 10px 0 5px;
       line-height: 24px;
       letter-spacing: 0.15px;
       font-weight: bold;
-
     }
 
     span {
       color: #FF7800;
       font-size: 16px;
       font-weight: bold;
+    }
+
+    @media (max-width: 1200px) and (orientation:landscape) {
+      padding: 5px;
+
+      h4 {
+      font-size: 12px;
+      line-height: 15px;
+      }
+
+      span {
+        font-size: 12px;
+      }
     }
   }
 
@@ -525,9 +534,11 @@ export const Orders = styled.div`
   overflow: auto;
 `;
 
-export const OrderBox = styledTS<{ color?: string }>(styled.div)`
+export const OrderBox = styledTS<{ color?: string; isPortrait: boolean }>(
+  styled.div
+)`
   background: #fff;
-  padding: 15px;
+  padding: 5px;
   text-align: center;
   margin: 0 15px 15px 0;
   border: 1px solid #ddd;
@@ -543,8 +554,8 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
   }
 
   div {
-    margin-bottom: 10px;
     margin-top: 10px;
+    margin-bottom: 10px;
     font-weight: 500;
     font-size: 15px;
     justify-content: space-between;
@@ -560,7 +571,11 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
       color: #616E7C;
       word-break: break-word;
       line-height: 15px;
-      font-size: 16px;
+      font-size: ${props => (props.isPortrait ? '12px' : '16px')};
+
+      @media (max-width: 1200px) and (orientation: landscape) {
+        font-size: 12px;
+      }  
     }
   }
 
@@ -570,7 +585,7 @@ export const OrderBox = styledTS<{ color?: string }>(styled.div)`
 
   label {
     color: #00124E;
-    padding: 10px;
+    padding: 8px;
     border-radius: 20px;
     border: 1px solid #00124E;
   }

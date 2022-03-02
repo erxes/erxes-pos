@@ -48,9 +48,8 @@ const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
 `;
 
 export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  padding: ${props => (props.isPortrait ? '' : '10px')};
-  word-break: break-word;
-  font-size: ${props => props.isPortrait && '16px'};
+  padding: ${props => (props.isPortrait ? '' : '5px')};
+  font-size: ${props => props.isPortrait && '12px'};
   margin-top: ${props => props.isPortrait && ''};
   color: ${props => (props.isPortrait ? '' : '#904300')};
   display: ${props => (props.isPortrait ? '' : 'flex')};
@@ -58,7 +57,8 @@ export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
 
   > div {
     line-height: ${props => (props.isPortrait ? '25px' : '15px')};
-    margin-left: 10px;
+    font-size: ${props => (props.isPortrait ? '16px' : '12px')};  
+    margin-left: 5px;
     display: grid;
 
     > span {
@@ -68,8 +68,8 @@ export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
   }
 
   input {
-    width: ${props => (props.isPortrait ? '36px' : '25px;')};
-    height: ${props => (props.isPortrait ? '32px' : '25px;')};
+    width:20px;
+    height: 20px;
     border-radius: 30px;
   }
 `;

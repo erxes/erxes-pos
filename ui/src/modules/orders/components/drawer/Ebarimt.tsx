@@ -15,35 +15,46 @@ type Props = {
 };
 
 type State = {
-  isActive: boolean;
+  selectedEbarimtType: string;
 };
 export default class Ebarimt extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
     this.state = {
-      isActive: false
+      selectedEbarimtType: BILL_TYPES.CITIZEN
     };
   }
 
+  onChange = value => {
+    this.setState({ selectedEbarimtType: value });
+    this.props.onBillTypeChange(value);
+  };
+
   render() {
     const { isPortrait, onBillTypeChange } = this.props;
-    const { isActive } = this.state;
+    const { selectedEbarimtType } = this.state;
 
     return (
       <React.Fragment>
         <FlexCenter>
           <h2>{__('Obtain a VAT receipt')}</h2>
         </FlexCenter>
-        <EbarimtButton isPortrait={isPortrait} isActive={isActive}>
+        <EbarimtButton isPortrait={isPortrait}>
           <Button
-            onClick={() => onBillTypeChange(BILL_TYPES.CITIZEN)}
+            className={
+              selectedEbarimtType === BILL_TYPES.CITIZEN ? 'active' : ''
+            }
+            onClick={() => this.onChange(BILL_TYPES.CITIZEN)}
             size="large"
           >
             {__('Person')}
           </Button>
           <Button
-            onClick={() => onBillTypeChange(BILL_TYPES.ENTITY)}
+            className={
+              selectedEbarimtType === BILL_TYPES.ENTITY ? 'active' : ''
+            }
+            onClick={() => this.onChange(BILL_TYPES.ENTITY)}
             onMouseDown={onBillTypeChange}
             size="large"
           >
