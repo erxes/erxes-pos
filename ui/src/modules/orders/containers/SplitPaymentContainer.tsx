@@ -123,8 +123,6 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
         });
     };
 
-    console.log('orderDetailQuery', orderDetailQuery);
-
     return (
       <SplitPayment
         order={orderDetailQuery.orderDetail}

@@ -2,12 +2,13 @@ import styledTS from 'styled-components-ts';
 import styled from 'styled-components';
 
 export const TypeWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
-margin-top: 50px;
+margin-top: ${props => (props.isPortrait ? '50px' : '20px')}; 
 
 h2 {
   text-align: center;
   margin-bottom: 40px;
   font-size: ${props => props.isPortrait && '34px'};
+
   @media (max-width: 1250px) and (orientation:landscape) {
     font-size: 25px;
   }
@@ -45,7 +46,7 @@ flex-direction: column;
 align-items: center;
 justify-content: center;
 width: ${props => (props.isPortrait ? '46%' : '30%')};
-margin: 0 20px 20px 0;
+margin: 0 10px 20px 0;
 flex-shrink: 0;
 cursor: pointer;
 transition: all ease 0.3s;
@@ -68,10 +69,6 @@ transition: all ease 0.3s;
     @media (max-width: 1250px) and (orientation:landscape) {
       height: 80px;
     }
-  }
-
-  &:nth-child(even) {
-    margin-right: 0;
   }
 
   &:hover {

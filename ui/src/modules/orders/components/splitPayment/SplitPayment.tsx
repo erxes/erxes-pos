@@ -6,9 +6,8 @@ import gql from 'graphql-tag';
 
 import apolloClient from 'apolloClient';
 import { queries } from '../../graphql/index';
-import { BILL_TYPES, POS_MODES } from '../../../../constants';
+import { BILL_TYPES } from '../../../../constants';
 import { FlexBetween } from 'modules/common/styles/main';
-import Button from 'modules/common/components/Button';
 import { __, Alert } from 'modules/common/utils';
 import {
   IOrder,
@@ -23,13 +22,10 @@ import KeypadWithInput from './KeypadWithInput';
 import Ebarimt from '../drawer/Ebarimt';
 import EntityChecker from './EntityChecker';
 import { Card, Cards, TypeWrapper } from '../drawer/style';
-// import PaymentTypeChooser from './PaymentTypeChooser';
 
 const DASHED_BORDER = '1px dashed #ddd';
 
 const PaymentWrapper = styled.div`
-  margin: 20px;
-  padding: 20px;
   background-color: #fff;
   overflow: scroll;
 `;
@@ -40,12 +36,7 @@ const TabContentWrapper = styled.div`
   border-bottom: ${DASHED_BORDER};
 `;
 
-const FooterButtons = styled.div`
-  padding-top: 20px;
-  border-top: ${DASHED_BORDER};
-`;
-
-const POS_MODE = localStorage.getItem('erxesPosMode') || '';
+// const POS_MODE = localStorage.getItem('erxesPosMode') || '';
 
 type Props = {
   order: IOrder;
@@ -89,7 +80,6 @@ export default class SplitPayment extends React.Component<Props, State> {
 
   getRemainderAmount() {
     const { order } = this.props;
-    console.log('props order', order);
 
     return order
       ? order.totalAmount -
@@ -124,6 +114,32 @@ export default class SplitPayment extends React.Component<Props, State> {
     makePayment(order._id, { registerNumber, billType, cashAmount });
   }
 
+  renderEbarimt() {
+    const { showE, billType } = this.state;
+
+    const onBillTypeChange = (value: string) => {
+      const billType = value;
+
+      this.setState({ billType, showRegModal: billType === BILL_TYPES.ENTITY });
+    };
+
+    const onStateChange = (key: string, value: any) => {
+      this.setState({ [key]: value } as Pick<State, keyof State>);
+    };
+
+    return (
+      <div>
+        <Ebarimt
+          billType={billType}
+          isPortrait={false}
+          show={showE}
+          onBillTypeChange={onBillTypeChange}
+          onStateChange={onStateChange}
+        />
+      </div>
+    );
+  }
+
   renderTabContent() {
     const {
       addCardPayment,
@@ -132,8 +148,6 @@ export default class SplitPayment extends React.Component<Props, State> {
       cancelQPayInvoice
     } = this.props;
     const { billType, currentTab, order, cashAmount } = this.state;
-    console.log('split order', order);
-    console.log('billtyle', billType);
     const remainder = this.getRemainderAmount();
 
     const setAmount = (am: number | string) => {
@@ -172,7 +186,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       );
     }
 
-    if (currentTab === 'cash' && POS_MODE !== POS_MODES.KIOSK) {
+    if (currentTab === 'cash') {
       return (
         <Row>
           <Col md={4} />
@@ -194,21 +208,15 @@ export default class SplitPayment extends React.Component<Props, State> {
 
   render() {
     const { isPortrait } = this.props;
-    const { currentTab, order, billType, showE, showRegModal, registerNumber } =
+    const { currentTab, order, billType, showRegModal, registerNumber } =
       this.state;
 
-    const onClick = (currentTab: string) => {
-      this.setState({ currentTab });
+    const onClick = value => {
+      this.setState({ currentTab: value });
     };
 
     const onStateChange = (key: string, value: any) => {
       this.setState({ [key]: value } as Pick<State, keyof State>);
-    };
-
-    const onBillTypeChange = (value: string) => {
-      const billType = value;
-
-      this.setState({ billType, showRegModal: billType === BILL_TYPES.ENTITY });
     };
 
     return (
@@ -217,20 +225,18 @@ export default class SplitPayment extends React.Component<Props, State> {
           <h2>{__('Choose the payment method')}</h2>
 
           <Cards isPortrait={isPortrait}>
-            {POS_MODE !== POS_MODES.KIOSK && (
-              <Card
-                className={currentTab === 'cash' ? 'active' : ''}
-                onClick={() => onClick('cash')}
-                isPortrait={isPortrait}
-              >
-                <div>
-                  <img src="/images/payment2.png" alt="payment" />
-                </div>
-              </Card>
-            )}
+            <Card
+              className={currentTab === 'cash' ? 'activeCard' : ''}
+              onClick={() => onClick('cash')}
+              isPortrait={isPortrait}
+            >
+              <div>
+                <img src="/images/payment2.png" alt="payment" />
+              </div>
+            </Card>
             <Card
               isPortrait={isPortrait}
-              className={currentTab === 'card' ? 'active' : ''}
+              className={currentTab === 'card' ? 'activeCard' : ''}
               onClick={() => onClick('card')}
             >
               <div>
@@ -239,7 +245,7 @@ export default class SplitPayment extends React.Component<Props, State> {
             </Card>
             <Card
               isPortrait={isPortrait}
-              className={currentTab === 'qpay' ? 'active' : ''}
+              className={currentTab === 'qpay' ? 'activeCard' : ''}
               onClick={() => onClick('qpay')}
             >
               <div>
@@ -250,15 +256,6 @@ export default class SplitPayment extends React.Component<Props, State> {
         </TypeWrapper>
         <TabContentWrapper>{this.renderTabContent()}</TabContentWrapper>
         <FlexBetween>
-          <div>
-            <Ebarimt
-              billType={billType}
-              isPortrait={false}
-              show={showE}
-              onBillTypeChange={onBillTypeChange}
-              onStateChange={onStateChange}
-            />
-          </div>
           {/* <OrderInfo
             order={order}
             remainderAmount={this.getRemainderAmount() - cashAmount}
@@ -273,20 +270,7 @@ export default class SplitPayment extends React.Component<Props, State> {
             registerNumber={registerNumber}
             onSubmit={this.checkOrganization}
           />
-          {/* <PaymentTypeChooser
-            currentTab={currentTab}
-            onStateChange={onStateChange}
-          /> */}
         </FlexBetween>
-        <FooterButtons>
-          <Button
-            btnStyle="success"
-            onClick={this.handlePayment}
-            icon="dollar-alt"
-          >
-            {__('Pay the bill')}
-          </Button>
-        </FooterButtons>
       </PaymentWrapper>
     );
   } // end render()

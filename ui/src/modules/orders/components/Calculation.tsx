@@ -183,6 +183,12 @@ export default class Calculation extends React.Component<Props, State> {
       addOrder(callback);
     };
 
+    // <FooterButtons>
+    //   <Button btnStyle="success" onClick={this.handlePayment} icon="dollar-alt">
+    //     {__('Pay the bill')}
+    //   </Button>
+    // </FooterButtons>;
+
     return (
       <Types>
         <Button

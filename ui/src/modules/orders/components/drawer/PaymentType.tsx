@@ -36,8 +36,6 @@ class PaymentType extends React.Component<Props, State> {
     const { isPortrait } = this.props;
     const { selectedPaymentType } = this.state;
 
-    console.log('selectedPaymentType', selectedPaymentType);
-
     return (
       <TypeWrapper isPortrait={isPortrait}>
         <h2>{__('Choose the payment method')}</h2>
