@@ -75,6 +75,12 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
       setPaymentInfoMutation
     } = this.props;
 
+    // if (qp && qp.id && orderDetailQuery.loading) {
+    //   return <Spinner />;
+    // }
+
+    // const order = qp && qp.id ? orderDetailQuery.orderDetail : null;
+
     const createOrder = (params: any) => {
       ordersAddMutation({ variables: params })
         .then(({ data }) => {

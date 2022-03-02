@@ -30,11 +30,11 @@ type Props = {
 };
 
 type State = {
-  mode: string,
-  disableSendData: boolean,
-  reportUserIds: string[],
-  reportNumber: string,
-  dailyReport: any,
+  mode: string;
+  disableSendData: boolean;
+  reportUserIds: string[];
+  reportNumber: string;
+  dailyReport: any;
 };
 
 export default class Settings extends React.Component<Props, State> {
@@ -47,76 +47,86 @@ export default class Settings extends React.Component<Props, State> {
       disableSendData: false,
       reportUserIds: [],
       reportNumber: dayjs().format('YYYYMMDD').toString(),
-      dailyReport: undefined,
+      dailyReport: undefined
     };
   }
 
   onSyncConfig = () => {
-    this.props.syncConfig("config");
+    this.props.syncConfig('config');
   };
 
   onSyncCustomers = () => {
-    this.props.syncConfig("customers");
+    this.props.syncConfig('customers');
   };
 
   onSyncProducts = () => {
-    this.props.syncConfig("products");
+    this.props.syncConfig('products');
   };
 
   onSendData = async () => {
     this.setState({ disableSendData: true });
     const { ebarimtConfig } = this.props.currentConfig;
 
-    fetch(
-      `${ebarimtConfig.ebarimtUrl}/sendData?lib=${ebarimtConfig.companyRD}`
-    ).then((res: any) => (res.json())).then(res => {
-      if (res.success) {
-        return Alert.success(`Амжилттай.`);
-      }
-      return Alert.success(`Амжилтгүй: ${res.message}.`);
-    }).catch(e => {
-      Alert.error(`${e.message}`);
-    }).then(() => {
-      this.setState({ disableSendData: false });
-    });
-  }
+    fetch(`${ebarimtConfig.ebarimtUrl}/sendData?lib=${ebarimtConfig.companyRD}`)
+      .then((res: any) => res.json())
+      .then(res => {
+        if (res.success) {
+          return Alert.success(`Амжилттай.`);
+        }
+        return Alert.success(`Амжилтгүй: ${res.message}.`);
+      })
+      .catch(e => {
+        Alert.error(`${e.message}`);
+      })
+      .then(() => {
+        this.setState({ disableSendData: false });
+      });
+  };
 
-  onChangeMode = (e) => {
+  onChangeMode = e => {
     e.preventDefault();
     const mode = e.target.value;
 
-    this.setState({ mode })
+    this.setState({ mode });
     localStorage.setItem('erxesPosMode', mode);
-  }
+  };
 
   onSelectUsers = values => {
-    this.setState({ reportUserIds: values.map(v => v.value), dailyReport: undefined })
+    this.setState({
+      reportUserIds: values.map(v => v.value),
+      dailyReport: undefined
+    });
   };
 
   onChangeNumber = e => {
-    this.setState({ reportNumber: e.target.value, dailyReport: undefined })
+    this.setState({ reportNumber: e.target.value, dailyReport: undefined });
   };
 
   onReport = () => {
     const { reportNumber, reportUserIds } = this.state;
 
     if (reportNumber && reportNumber.length !== 8) {
-      return Alert.error('Эхлэл дугаарыг YYYYMMDD форматаар оруулна уу. Эсвэл хоосон байж болно.');
+      return Alert.error(
+        'Эхлэл дугаарыг YYYYMMDD форматаар оруулна уу. Эсвэл хоосон байж болно.'
+      );
     }
 
-    client.query({
-      query: gql(queries.dailyReport),
-      fetchPolicy: 'network-only',
-      variables: {
-        posNumber: reportNumber,
-        posUserIds: reportUserIds
-      }
-    }).then(async (response) => {
-      this.setState({ dailyReport: response.data.dailyReport.report })
-    }).catch(error => {
-      Alert.error(error.message);
-    });
-  }
+    client
+      .query({
+        query: gql(queries.dailyReport),
+        fetchPolicy: 'network-only',
+        variables: {
+          posNumber: reportNumber,
+          posUserIds: reportUserIds
+        }
+      })
+      .then(async response => {
+        this.setState({ dailyReport: response.data.dailyReport.report });
+      })
+      .catch(error => {
+        Alert.error(error.message);
+      });
+  };
 
   renderReport() {
     const { dailyReport, reportNumber } = this.state;
@@ -125,7 +135,13 @@ export default class Settings extends React.Component<Props, State> {
       return null;
     }
 
-    return <DailyReportReceipt dailyReport={dailyReport} reportNumber={reportNumber} key={Math.random()} />
+    return (
+      <DailyReportReceipt
+        dailyReport={dailyReport}
+        reportNumber={reportNumber}
+        key={Math.random()}
+      />
+    );
   }
 
   render() {
@@ -146,7 +162,7 @@ export default class Settings extends React.Component<Props, State> {
               </FlexBetween>
               <br />
               <FormGroup>
-                <ControlLabel>{__("Select Mode")}</ControlLabel>
+                <ControlLabel>{__('Select Mode')}</ControlLabel>
                 <FormControl
                   componentClass="select"
                   name="chooseMode"
@@ -155,10 +171,11 @@ export default class Settings extends React.Component<Props, State> {
                     { value: '', label: 'Pos and full mode' },
                     { value: 'kiosk', label: 'Kiosk Mode' },
                     { value: 'kitchen', label: 'Kitchen Screen' },
-                    { value: 'waiting', label: 'Waiting Screen' },
+                    { value: 'waiting', label: 'Waiting Screen' }
                   ]}
                   onChange={this.onChangeMode}
-                  required={true} />
+                  required={true}
+                />
               </FormGroup>
 
               <StageContent>
@@ -168,7 +185,7 @@ export default class Settings extends React.Component<Props, State> {
                   icon="check-circle"
                   block
                 >
-                  {__("ReSync Config")}
+                  {__('ReSync Config')}
                 </Button>
               </StageContent>
               <StageContent>
@@ -178,7 +195,7 @@ export default class Settings extends React.Component<Props, State> {
                   icon="check-circle"
                   block
                 >
-                  {__("ReSync Customers")}
+                  {__('ReSync Customers')}
                 </Button>
               </StageContent>
               <StageContent>
@@ -188,7 +205,7 @@ export default class Settings extends React.Component<Props, State> {
                   icon="check-circle"
                   block
                 >
-                  {__("ReSync Products")}
+                  {__('ReSync Products')}
                 </Button>
               </StageContent>
 
@@ -199,7 +216,7 @@ export default class Settings extends React.Component<Props, State> {
                   icon="check-circle"
                   block
                 >
-                  {__("Sync Orders")}
+                  {__('Sync Orders')}
                 </Button>
               </StageContent>
 
@@ -210,7 +227,7 @@ export default class Settings extends React.Component<Props, State> {
                   icon="check-circle"
                   block
                 >
-                  {__("Delete Less Orders")}
+                  {__('Delete Less Orders')}
                 </Button>
               </StageContent>
 
@@ -222,7 +239,7 @@ export default class Settings extends React.Component<Props, State> {
                   block
                   disabled={this.state.disableSendData}
                 >
-                  {__("Send-Data")}
+                  {__('Send-Data')}
                 </Button>
               </StageContent>
             </MainContent>
@@ -245,7 +262,10 @@ export default class Settings extends React.Component<Props, State> {
                   value={this.state.reportUserIds}
                   clearable={true}
                   onChange={this.onSelectUsers}
-                  options={(posUsers || []).map(u => ({ value: u._id, label: u.email }))}
+                  options={(posUsers || []).map(u => ({
+                    value: u._id,
+                    label: u.email
+                  }))}
                   multi={true}
                   block
                 />
@@ -256,15 +276,11 @@ export default class Settings extends React.Component<Props, State> {
                 icon="check-circle"
                 disabled={this.state.disableSendData}
               >
-                {__("Report")}
+                {__('Report')}
               </Button>
-
             </MainContent>
-
           </Col>
-          <Col md={4}>
-            {this.renderReport()}
-          </Col>
+          <Col md={4}>{this.renderReport()}</Col>
         </Row>
       </PosWrapper>
     );

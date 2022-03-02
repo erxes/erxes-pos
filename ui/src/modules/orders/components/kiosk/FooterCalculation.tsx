@@ -121,7 +121,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
   };
 
   renderPaymentButton() {
-    const { order, onClickDrawer, config, totalAmount, addOrder } = this.props;
+    const { order, onClickDrawer, config, addOrder } = this.props;
 
     if (order && order.paidDate) {
       return null;
@@ -142,7 +142,6 @@ export default class FooterCalculation extends React.Component<Props, State> {
           style={{ backgroundColor: config.uiOptions.colors.primary }}
           onClick={onClick}
           block
-          disabled={!totalAmount || totalAmount === 0 ? true : false}
         >
           {__('Payment')}
         </Button>
@@ -167,26 +166,6 @@ export default class FooterCalculation extends React.Component<Props, State> {
         {text}
         <span>{items.length}ш</span>
       </Amount>
-    );
-  }
-
-  renderAddButton() {
-    const { addOrder, order, config } = this.props;
-
-    if (order && order._id) {
-      return null;
-    }
-
-    return (
-      <TypeButtons>
-        <Button
-          style={{ backgroundColor: config.uiOptions.colors.primary }}
-          onClick={addOrder}
-          block
-        >
-          {__('Make an order')}
-        </Button>
-      </TypeButtons>
     );
   }
 

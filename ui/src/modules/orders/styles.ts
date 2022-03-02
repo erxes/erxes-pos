@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import styledTS from 'styled-components-ts';
 import { dimensions, colors } from 'modules/common/styles';
 import { darken } from 'modules/common/styles/ecolor';
+import { FlexBetween } from 'modules/common/styles/main';
 
 export const PosWrapper = styled.div`
   position: relative;
@@ -64,8 +65,7 @@ export const MainContent = styledTS<{
   hasShadow?: boolean;
   isHalf?: boolean;
 }>(styled.div)`
-  padding: ${props =>
-    props.numPadding ? '20px 0px 20px 0' : '20px 20px 20px 0'};
+  padding: ${props => (props.numPadding ? '20px 0px 20px 0' : '20px')};
   background: ${props => props.hasBackground && colors.colorWhite};
   box-shadow: ${props =>
     props.hasShadow && 'rgb(217, 226, 236) 0px 0px 24px 0px;'};
@@ -216,12 +216,16 @@ export const ProductCategory = styledTS<{
   font-weight: 500;
   box-shadow: ${props =>
     props.isPortrait ? '2px 2px 4px rgba(0, 0, 0, 0.25)' : ''};
-  margin: ${props => (props.isPortrait ? '0 20px 20px 0' : '')};
+  margin: ${props => (props.isPortrait ? '0 20px 20px 0' : '20px 0')};
   padding: ${props => (props.isPortrait ? '' : `10px`)};
   width: ${props => (props.isPortrait ? '110px' : '')};
   height:  ${props => (props.isPortrait ? '120px;' : '')};
   background: ${props =>
-    props.isActive && props.isPortrait ? 'rgba(255, 120, 0, 0.12)' : ''};
+    props.isActive
+      ? props.isPortrait
+        ? 'rgba(255, 120, 0, 0.12)'
+        : '#ffffff'
+      : ''};
   cursor: pointer;
   border: ${props =>
     props.isActive ? (props.isPortrait ? '' : '1px solid #FF7800') : ''};
@@ -248,8 +252,8 @@ export const ProductCategory = styledTS<{
 
   .item-list {
     align-items: center;
-    display: grid;
-    align-content: center;
+    display: flex;
+    flex-direction: column;
 
     ${imgSize}
   }
@@ -264,7 +268,6 @@ export const ProductCategory = styledTS<{
     box-shadow: ${props =>
       props.isPortrait ? '0 0 21px 2px rgba(0, 0, 0, 0.16)' : ''};
     border: ${props => (props.isPortrait ? '' : '1px solid #FF7800')};
-    transition: all ease .3s;
   }
 `;
 
@@ -389,7 +392,7 @@ export const ProductLabel = styledTS<{ color?: string; isPortrait?: boolean }>(
 export const Types = styled.div`
   display: flex;
   justify-content: space-between;
-  height: 70px;
+  padding: 10px;
 
   button {
     width: 49%;
@@ -750,4 +753,52 @@ export const Divider = styled.div`
 
 export const MarginTop = styledTS<{ margin: number }>(styled.div)`
   margin-top: ${props => props.margin}px
+`;
+
+export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
+  styled(FlexBetween)
+)`
+  border: 1px solid ${props => props.color};
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  font-weight: ${props => (props.isPortrait ? '' : '600')}
+  border-color:${props => props.color && props.color}
+  color:${props => (props.isPortrait ? colors.colorCoreBlack : props.color)}
+  height: ${props => (props.isPortrait ? ' 115px' : '')}
+  display: ${props => (props.isPortrait ? ' block' : '')};
+  margin-top: ${props => (props.isPortrait ? ' 20px' : '')};
+
+  .payment-wrapper {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    height: 120px;
+    flex-direction: column;
+
+    span {
+      font-weight: 600;
+    }
+  }
+
+  .total-wrapper {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      font-weight: 600;
+    }
+  }
+
+  .amount-wrapper {
+    display: flex;
+    text-align: center;
+    justify-content: space-between;
+    padding-bottom: 20px;
+
+    span {
+      font-weight: 600;
+    }
+  }
 `;

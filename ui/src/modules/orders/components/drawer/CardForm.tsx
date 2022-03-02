@@ -1,8 +1,8 @@
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import React from 'react';
 
-import Button from "modules/common/components/Button";
-import { __, Alert } from "modules/common/utils";
+import Button from 'modules/common/components/Button';
+import { __, Alert } from 'modules/common/utils';
 import { IOrder } from 'modules/orders/types';
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
   order: IOrder;
   isSplit?: boolean;
   cashAmount?: number;
-}
+};
 
 type State = {
   sentTransaction: boolean;
@@ -32,13 +32,8 @@ export default class CardForm extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      cardAmount,
-      onStateChange,
-      billType,
-      setCardPaymentInfo,
-      order,
-    } = this.props;
+    const { cardAmount, onStateChange, billType, setCardPaymentInfo, order } =
+      this.props;
 
     const PATH = 'http://localhost:7000';
     // const PATH = 'http://localhost:27028';
@@ -49,8 +44,8 @@ export default class CardForm extends React.Component<Props, State> {
         .then((res: any) => {
           // TODO remove code, fake data
           res = {
-            status_code: 'ok',
-          }
+            status_code: 'ok'
+          };
           if (res && res.status_code === 'ok') {
             // send transaction upon successful connection
             fetch(PATH, {
@@ -58,7 +53,7 @@ export default class CardForm extends React.Component<Props, State> {
               // method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
-              },
+              }
               // body: JSON.stringify({
               //   service_name: 'doSaleTransaction',
               //   service_params: {
@@ -77,35 +72,35 @@ export default class CardForm extends React.Component<Props, State> {
                   status: true,
                   response: {
                     response_code: '000',
-                    aid: "A0000000031010",
+                    aid: 'A0000000031010',
                     amount: cardAmount,
-                    app_name: "VISA DEBIT",
-                    auth_code: "1TS93C",
-                    bank_mb_code: "05",
-                    batch_no: "000000000231",
-                    card_holder_name: "",
-                    date: "02/27",
-                    db_ref_no: "202202270001",
-                    entry_mode: "Contact Less TAP",
-                    is_vatps: "0",
-                    merchant_name: "Yoshinoya",
-                    model: "s300",
-                    operation: "SALE",
-                    pan: "438054XXXXXX2643",
-                    pos_firmware: "2.4.94",
-                    reader_id: "53240799",
-                    response_msg: "Гүйлгээ зөвшөөрөгдсөн.",
-                    rrn: "003841002333",
-                    tc: "0000000000000000",
-                    term_app_name: "DtbProlin",
-                    terminal_date: "20220227112935",
-                    terminal_id: "70078754",
-                    time: "11:29:32",
-                    trace_no: "020735",
-                    version: "334",
+                    app_name: 'VISA DEBIT',
+                    auth_code: '1TS93C',
+                    bank_mb_code: '05',
+                    batch_no: '000000000231',
+                    card_holder_name: '',
+                    date: '02/27',
+                    db_ref_no: '202202270001',
+                    entry_mode: 'Contact Less TAP',
+                    is_vatps: '0',
+                    merchant_name: 'Yoshinoya',
+                    model: 's300',
+                    operation: 'SALE',
+                    pan: '438054XXXXXX2643',
+                    pos_firmware: '2.4.94',
+                    reader_id: '53240799',
+                    response_msg: 'Гүйлгээ зөвшөөрөгдсөн.',
+                    rrn: '003841002333',
+                    tc: '0000000000000000',
+                    term_app_name: 'DtbProlin',
+                    terminal_date: '20220227112935',
+                    terminal_id: '70078754',
+                    time: '11:29:32',
+                    trace_no: '020735',
+                    version: '334'
                   }
-                }
-                console.log(billType)
+                };
+                console.log(billType);
                 if (r && r.status === true && r.response) {
                   if (r.response.response_code === '000') {
                     Alert.success(

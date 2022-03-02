@@ -31,10 +31,8 @@ p {
 }
 `;
 
-export const Card = styledTS<{ isPortrait?: boolean; isActive: boolean }>(
-  styled.div
-)`
-border: ${props => (props.isActive ? '2px solid #000' : '1px solid #ddd')}; 
+export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
+border: 1px solid #ddd; 
 border-radius: 16px;
 padding: 40px 40px 30px;
 text-align: center;

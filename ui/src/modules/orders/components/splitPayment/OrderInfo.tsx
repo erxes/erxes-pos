@@ -2,6 +2,7 @@ import React from 'react';
 
 import { IOrder } from 'modules/orders/types';
 import { __ } from 'modules/common/utils';
+import { Amount } from 'modules/orders/styles';
 
 type Props = {
   order: IOrder;
@@ -17,23 +18,17 @@ export default function OrderInfo({
   registerNumber
 }: Props) {
   return (
-    <div>
-      <div>
-        {__('Number')}: <b>#{order ? order.number : 0}</b>
-      </div>
-      <div>
-        {__('Total amount')}: {order ? order.totalAmount : 0}
-      </div>
-      <div>
-        {__('Paid card amount')}: {order ? order.cardAmount : 0}
-      </div>
-      <div>
-        {__('Paid cash amount')}: {order ? order.cashAmount : 0}
-      </div>
-      <div>
-        {__('Paid mobile amount')}: {order ? order.mobileAmount : 0}
-      </div>
-      <div>
+    <Amount>
+      <div className="amount-wrapper">
+        <b>
+          {__('Paid card amount')}: {order ? order.cardAmount : 0}
+        </b>
+        <b>
+          {__('Paid cash amount')}: {order ? order.cashAmount : 0}
+        </b>
+        <b>
+          {__('Paid mobile amount')}: {order ? order.mobileAmount : 0}
+        </b>
         <b>
           {__('Remainder amount')}: {remainderAmount}
         </b>
@@ -48,6 +43,6 @@ export default function OrderInfo({
           {__('Entity name')}: {companyName}
         </div>
       )}
-    </div>
+    </Amount>
   );
 }

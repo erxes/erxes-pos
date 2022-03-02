@@ -1,7 +1,6 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-// import RTG from 'react-transition-group';
 import NameCard from 'modules/common/components/nameCard/NameCard';
 import AsyncComponent from 'modules/common/components/AsyncComponent';
 import { ICustomerParams, IOrder, IOrderItemInput } from '../types';
@@ -23,9 +22,6 @@ import {
   KioskProductsContent,
   FooterContent,
   PosMenuContent
-  // Drawer,
-  // LeftMenuContainer,
-  // DrawerContent
 } from '../styles';
 import { IConfig } from 'types';
 import PaymentForm from './drawer/PaymentForm';
@@ -74,6 +70,7 @@ type State = {
   productBodyType: string;
   customerId: string;
   registerNumber: string;
+  paymentType: string;
 };
 
 const getTotalAmount = (items: IOrderItemInput[]) => {
@@ -101,7 +98,8 @@ export default class Pos extends React.Component<Props, State> {
         this.props.type || (order && order.type ? order.type : ORDER_TYPES.EAT),
       drawerContentType: '',
       customerId: order && order.customerId ? order.customerId : '',
-      registerNumber: ''
+      registerNumber: '',
+      paymentType: 'card'
     };
   }
 
@@ -216,7 +214,13 @@ export default class Pos extends React.Component<Props, State> {
     return <OrderSearch />;
   }
 
-  renderModalContent() {
+  handlePayment = (params: IPaymentParams) => {
+    const { order, makePayment } = this.props;
+
+    makePayment(order ? order._id : '', params);
+  };
+
+  renderKioskModalContent() {
     const {
       currentConfig,
       makePayment,
@@ -224,27 +228,12 @@ export default class Pos extends React.Component<Props, State> {
       setCardPaymentInfo,
       orientation
     } = this.props;
-    const { drawerContentType, totalAmount } = this.state;
+    const { drawerContentType, totalAmount, paymentType } = this.state;
 
     const options = currentConfig ? currentConfig.uiOptions : {};
 
     switch (drawerContentType) {
       case 'payment':
-        return (
-          order && (
-            <PaymentForm
-              orderId={order ? order._id : ''}
-              options={currentConfig ? currentConfig.uiOptions : {}}
-              totalAmount={totalAmount}
-              closeDrawer={this.toggleDrawer}
-              makePayment={makePayment}
-              order={order}
-              setCardPaymentInfo={setCardPaymentInfo}
-              orientation={orientation}
-            />
-          )
-        );
-      case 'splitPayment':
         return (
           order && (
             <PaymentForm
@@ -256,7 +245,8 @@ export default class Pos extends React.Component<Props, State> {
               order={order}
               setCardPaymentInfo={setCardPaymentInfo}
               orientation={orientation}
-              isSplit={true}
+              handlePayment={this.handlePayment}
+              paymentMethod={paymentType}
             />
           )
         );
@@ -510,7 +500,7 @@ export default class Pos extends React.Component<Props, State> {
             animation={false}
             size="lg"
           >
-            <Modal.Body>{this.renderModalContent()}</Modal.Body>
+            <Modal.Body>{this.renderKioskModalContent()}</Modal.Body>
           </Modal>
         </>
       );

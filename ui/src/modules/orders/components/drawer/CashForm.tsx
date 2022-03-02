@@ -1,16 +1,15 @@
 import React from 'react';
-import NumberFormat from "react-number-format";
+import NumberFormat from 'react-number-format';
 
 import colors from 'modules/common/styles/colors';
-import Icon from "modules/common/components/Icon";
-import FormGroup from "modules/common/components/form/Group";
-import ControlLabel from "modules/common/components/form/Label";
-import { __ } from "modules/common/utils";
-import { Amount } from "modules/orders/components/Calculation";
-import { Input } from "modules/orders/styles";
-import { formatNumber } from "modules/utils";
-import { PAYMENT_TYPES } from './CalculationForm';
+import Icon from 'modules/common/components/Icon';
+import FormGroup from 'modules/common/components/form/Group';
+import ControlLabel from 'modules/common/components/form/Label';
+import { __ } from 'modules/common/utils';
+import { Amount, Input } from 'modules/orders/styles';
+import { formatNumber } from 'modules/utils';
 import { IOrder } from 'modules/orders/types';
+import { PAYMENT_TYPES } from './PaymentForm';
 
 type Props = {
   cashAmount: number;
@@ -20,17 +19,25 @@ type Props = {
   order: IOrder;
   isSplit?: boolean;
   cardAmount?: number;
-}
+};
 
 export default class CashForm extends React.Component<Props> {
   render() {
-    const { color, reset, cashAmount, onStateChange, isSplit, cardAmount = 0, order } = this.props;
+    const {
+      color,
+      reset,
+      cashAmount,
+      onStateChange,
+      isSplit,
+      cardAmount = 0,
+      order
+    } = this.props;
 
     const inputProps: any = {
       allowNegative: false,
       thousandSeparator: true,
-      prefix: "₮",
-      inputMode: "numeric",
+      prefix: '₮',
+      inputMode: 'numeric'
     };
 
     const handleInput = (value: number | undefined) => {
@@ -50,17 +57,18 @@ export default class CashForm extends React.Component<Props> {
     };
 
     const changeAmount = (cashAmount || 0) - (order.totalAmount || 0);
-    const changeColor = changeAmount < 0 ? colors.colorCoreRed : colors.colorCoreTeal;
+    const changeColor =
+      changeAmount < 0 ? colors.colorCoreRed : colors.colorCoreTeal;
 
     return (
       <React.Fragment>
         <FormGroup>
-          <ControlLabel>{__("In Cash")}</ControlLabel>
+          <ControlLabel>{__('In Cash')}</ControlLabel>
           <Input color={color}>
             <NumberFormat
               name="cashAmount"
               value={cashAmount}
-              onValueChange={(values) => handleInput(values.floatValue)}
+              onValueChange={values => handleInput(values.floatValue)}
               onClick={() => handleClick()}
               {...inputProps}
             />
@@ -73,7 +81,7 @@ export default class CashForm extends React.Component<Props> {
         {/** hide change amount in split payment form */}
         {!isSplit && changeAmount !== 0 && (
           <Amount color={changeColor}>
-            <span>{__("Change amount")}</span>
+            <span>{__('Change amount')}</span>
             {formatNumber(changeAmount)}₮
           </Amount>
         )}

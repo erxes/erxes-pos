@@ -8,24 +8,13 @@ type Props = {
   isPortrait?: boolean;
 };
 
-type State = {
-  isActive: boolean;
-};
-
 export const PAYMENT_METHODS = {
   CARD: 'card',
   CASH: 'cash',
   QPAY: 'qpay'
 };
 
-class PaymentType extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      isActive: false
-    };
-  }
+class PaymentType extends React.Component<Props> {
   render() {
     const { color, togglePaymentType, isPortrait } = this.props;
     const mode = localStorage.getItem('erxesPosMode') || '';
@@ -37,7 +26,6 @@ class PaymentType extends React.Component<Props, State> {
         <Cards color={color} isPortrait={isPortrait}>
           {!mode && (
             <Card
-              isActive={this.state.isActive}
               isPortrait={isPortrait}
               onClick={() => togglePaymentType(PAYMENT_METHODS.CASH)}
             >
@@ -48,7 +36,6 @@ class PaymentType extends React.Component<Props, State> {
           )}
           <Card
             isPortrait={isPortrait}
-            isActive={this.state.isActive}
             onClick={() => togglePaymentType(PAYMENT_METHODS.CARD)}
           >
             <div>
@@ -56,7 +43,6 @@ class PaymentType extends React.Component<Props, State> {
             </div>
           </Card>
           <Card
-            isActive={this.state.isActive}
             isPortrait={isPortrait}
             onClick={() => togglePaymentType(PAYMENT_METHODS.QPAY)}
           >

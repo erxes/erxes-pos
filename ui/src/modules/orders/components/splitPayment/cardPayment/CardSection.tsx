@@ -10,7 +10,7 @@ import { __ } from 'modules/common/utils';
 import SplitCardForm from './SplitCardForm';
 
 type Props = {
-  order: IOrder | null;
+  order: IOrder;
   addCardPayment: (params: ICardPayment) => void;
   billType: string;
   maxAmount?: number;
@@ -21,6 +21,8 @@ export default class CardSection extends React.Component<Props> {
     const { order, addCardPayment, billType, maxAmount } = this.props;
 
     const cardPayments = order ? order.cardPayments || [] : [];
+    console.log('card order', order);
+    console.log('cardPayments', cardPayments);
 
     const content = props => (
       <SplitCardForm
