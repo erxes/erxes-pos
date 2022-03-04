@@ -245,12 +245,11 @@ export const ProductCategory = styledTS<{
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
 
     ${imgSize}
 
     span {
-      padding-left: ${props => (props.isPortrait ? '' : '5px')}; 
+      padding-left: ${props => (props.isPortrait ? '5px' : '5px')}; 
     }
   }
 
@@ -258,6 +257,11 @@ export const ProductCategory = styledTS<{
     align-items: center;
     display: flex;
     flex-direction: column;
+    text-align: center;
+
+    span {
+      padding: 0 10px 0 10px;
+    }
 
     ${imgSize}
   }
