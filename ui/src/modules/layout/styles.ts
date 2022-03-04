@@ -191,9 +191,10 @@ const LeftNavigation = styled.div`
 `;
 
 const NavIcon = styled.i`
-  font-size: 16px;
-  line-height: ${dimensions.headerSpacing + 10}px;
+  font-size: 18px;
+  line-height: ${dimensions.headerSpacing - 10}px;
   color: ${colors.colorCoreSunYellow};
+  padding-right: 5px;
 `;
 
 const SubNav = styled.ul`
@@ -406,21 +407,28 @@ const ExpandIcon = styledTS<{ collapsed: boolean }>(styled.div)`
 
 export const Bottom = styled.div`
   position: fixed;
-  bottom: 0px;
-  width: 70px;
+  bottom: 50px;
+  width: 150px;
   padding: 10px 0;
   text-align: center;
   z-index: 15;
   align-items: center;
   transition: all ease 0.3s;
+  color: #ff7800;
+  font-size: 18px;
 
   &:hover {
     cursor: pointer;
     background: rgba(0, 0, 0, 0.06);
   }
 
+  i {
+    color: #ff7800;
+    font-size: 20px;
+  }
+
   @media (max-width: 1170px) and (orientation: landscape) {
-    width: 40px;
+    width: 150px;
   }
 `;
 

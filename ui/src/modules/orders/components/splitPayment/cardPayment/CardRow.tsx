@@ -3,8 +3,8 @@ import React from 'react';
 import { ICardPayment } from 'modules/orders/types';
 
 type Props = {
-  item: ICardPayment
-}
+  item: ICardPayment;
+};
 
 export default function CardRow({ item }: Props) {
   return (

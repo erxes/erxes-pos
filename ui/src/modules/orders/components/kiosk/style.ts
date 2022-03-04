@@ -112,10 +112,10 @@ export const AppWrapper = styled.div`
 
   .app-download {
     margin-top: 20px;
-    width: 250px;
+    width: 150px;
 
     &:first-child {
-      margin-right: 50px;
+      margin-right: 10px;
     }
   }
 `;
@@ -132,11 +132,16 @@ export const PortraitStage = styled.div`
   }
 `;
 
+export const KioskStageContent = styled.div`
+  display: flex;
+  margin: 38px;
+  width: 100%;
+  height: '100px';
+`;
+
 export const SelectedItem = styled.div`
-  width: 206px;
-  height: 206px;
-  min-width: 206px;
-  max-height: 206px;
+  width: 210px;
+  height: 210px;
   border: 1px solid #ff7800;
   box-sizing: border-box;
   border-radius: 16px;
@@ -146,22 +151,62 @@ export const SelectedItem = styled.div`
 `;
 
 export const SelectedStage = styled.div`
+  min-width: 210px;
+  max-height: 210px;
   text-align: center;
+  position: relative;
+  padding: 5px;
+  flex: 1;
+
+  i {
+    font-size: 20px;
+    cursor: pointer;
+    margin-right: 10px;
+    position: absolute;
+    right: 0;
+    top: 6px;
+  }
 
   .image-wrapper {
-    margin-top: 10px;
+    img {
+      width: 90px;
+      height: 90px;
+    }
+  }
 
-    i {
-      font-size: 20px;
+  .text-wrapper {
+    text-align: center;
+    line-height: 20px;
+    font-size: 14px;
+    padding-top: 5px;
+
+    span {
+      color: #616e7c;
+      font-weight: 600;
+
+      b {
+        color: #ff7800;
+      }
+    }
+  }
+
+  .count-wrapper {
+    margin-top: 5px;
+
+    button {
+      padding: 0px 20px;
+      border-radius: 8px;
+      background: #fff;
+      font-weight: 600;
+      border: 1px solid #616e7c;
+      color: #616e7c;
+      margin-right: 5px;
       cursor: pointer;
-      float: right;
-      margin-right: 10px;
     }
 
-    img {
-      width: 112px;
-      height: 112px;
-      margin-left: 25px;
+    .active {
+      border: 1px solid #ff7800;
+      color: #ff7800;
     }
   }
 `;
@@ -215,4 +260,46 @@ export const EbarimtButton = styledTS<{
     ${style}
   }
 
+`;
+
+export const KioskAmount = styledTS<{ color?: string }>(styled.div)`
+  border: 1px solid ${props => props.color && props.color};
+  border-radius: 8px;
+  padding: 10px;
+  margin: 20px 0  10px 0; 
+  font-size: 18px;
+
+  .total-wrapper {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      font-weight: 600;
+    }
+  }
+`;
+
+export const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
+  margin:  ${props => (props.isPortrait ? '30px 20px 20px;' : '10px 0')};
+  text-align: center;
+
+  button {
+    padding: ${props => (props.isPortrait ? '20px 15px' : '10px 20px')};
+    border-radius: 8px;
+    font-size: ${props => props.isPortrait && '20px'};
+    width: 50%;
+  }
+`;
+
+export const Title = styled.h2`
+  text-align: center;
+  margin-bottom: 40px;
+`;
+
+export const Header = styled.div`
+  margin: 0px 20px 20px;
+  @media (max-width: 1600px) and (orientation: landscape) {
+    margin: 0px 20px 0px;
+  }
 `;

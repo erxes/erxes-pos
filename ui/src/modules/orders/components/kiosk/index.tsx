@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
 import { ICustomerParams, IOrder } from '../../types';
 import { IUser } from 'modules/auth/types';
 import { IConfig } from 'types';
@@ -11,8 +10,7 @@ import {
   Footer,
   PortraitViewWrapper,
   Type,
-  AppWrapper,
-  Settings
+  AppWrapper
 } from './style';
 import Icon from 'modules/common/components/Icon';
 import { FlexBetween, FlexCenter } from 'modules/common/styles/main';
@@ -101,9 +99,9 @@ export default class PortraitView extends React.Component<Props, State> {
           <Link to="/">
             <img src={logo ? logo : `/images/headerKiosk.png`} alt="logo" />
           </Link>
-          <Settings>
+          {/* <Settings>
             <Icon icon="settings" size={20} color={'#fff'} />
-          </Settings>
+          </Settings> */}
         </LogoWrapper>
         {this.renderContent(colors.primary)}
         <Footer color={colors.primary}>

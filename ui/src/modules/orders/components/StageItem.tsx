@@ -10,6 +10,7 @@ import FormControl from 'modules/common/components/form/Control';
 import { ORDER_TYPES } from '../../../constants';
 import Tip from 'modules/common/components/Tip';
 import { PackageProduct } from '../styles';
+import { __ } from 'erxes-ui/lib/utils/core';
 
 const Item = styled.div`
   background: #fff;
@@ -56,7 +57,7 @@ export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
   align-items: center;
 
   > div {
-    line-height: ${props => (props.isPortrait ? '25px' : '15px')};
+    line-height: ${props => (props.isPortrait ? '20px' : '15px')};
     font-size: ${props => (props.isPortrait ? '16px' : '12px')};  
     margin-left: 5px;
     display: grid;
@@ -74,6 +75,11 @@ export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
   }
 `;
 
+export const COUNT_TYPES = {
+  MINUS: 'minus',
+  PLUS: 'plus'
+};
+
 type Props = {
   item: IOrderItemInput;
   color: string;
@@ -86,6 +92,7 @@ type Props = {
 
 type State = {
   isTake: boolean;
+  countType: string;
 };
 
 export default class StageItem extends React.Component<Props, State> {
@@ -95,8 +102,10 @@ export default class StageItem extends React.Component<Props, State> {
     this.onChange = this.onChange.bind(this);
 
     const { type, item } = this.props;
+
     this.state = {
-      isTake: type === ORDER_TYPES.EAT ? item.isTake || false : true
+      isTake: type === ORDER_TYPES.EAT ? item.isTake || false : true,
+      countType: ''
     };
   }
 
@@ -107,9 +116,9 @@ export default class StageItem extends React.Component<Props, State> {
   }
 
   renderCheckbox() {
-    const { type, item, changeItemIsTake, mode } = this.props;
+    const { item, changeItemIsTake, mode } = this.props;
 
-    if (mode === 'kiosk' || type !== ORDER_TYPES.EAT) {
+    if (mode === 'kiosk') {
       return <></>;
     }
 
@@ -125,9 +134,6 @@ export default class StageItem extends React.Component<Props, State> {
           round={true}
           onChange={onChange}
           checked={item.isTake}
-          onClick={e => {
-            e.stopPropagation();
-          }}
         />
       </Tip>
     );
@@ -144,33 +150,63 @@ export default class StageItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { item, changeItemCount, color, orientation, mode } = this.props;
+    const { item, changeItemCount, color, mode } = this.props;
     const { unitPrice, count, productImgUrl, productName } = item;
-    const isPortrait = orientation === 'portrait';
+    const { countType } = this.state;
 
     const onRemoveItem = () => {
       changeItemCount({ ...item, count: 0 });
+    };
+
+    const onIncCount = value => {
+      const count = item.count + 1;
+
+      this.setState({ countType: value });
+      changeItemCount({ ...item, count });
+    };
+
+    const onDecCount = value => {
+      const count = item.count - 1;
+
+      this.setState({ countType: value });
+      changeItemCount({ ...item, count });
     };
 
     if (mode === 'kiosk') {
       return (
         <SelectedItem>
           <SelectedStage>
+            <Icon onClick={onRemoveItem} icon="cancel-1" color={color} />
             <div className="image-wrapper">
               <img
                 src={productImgUrl ? productImgUrl : 'images/no-category.jpg'}
                 alt={productName}
               />
-              <Icon onClick={onRemoveItem} icon="cancel-1" color={color} />
             </div>
-            <Text isPortrait={isPortrait}>
+            <div className="text-wrapper">
               <div>
                 <b>{this.renderName()}</b>
               </div>
               <span>
+                <b>{count}</b> x{' '}
                 {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
               </span>
-            </Text>
+            </div>
+            <div className="count-wrapper">
+              <button
+                className={countType === COUNT_TYPES.MINUS ? 'active' : ''}
+                onClick={() => onDecCount(COUNT_TYPES.MINUS)}
+              >
+                <b>{__('-')}</b>
+              </button>
+              {/* <span>{count}</span> */}
+              <button
+                className={countType === COUNT_TYPES.PLUS ? 'active' : ''}
+                onClick={() => onIncCount(COUNT_TYPES.PLUS)}
+              >
+                <b>{__('+')}</b>
+              </button>
+            </div>
           </SelectedStage>
         </SelectedItem>
       );

@@ -39,7 +39,7 @@
   "Payment successful": "Төлбөр амжилттай төлөгдлөө",
   "In cash or by card": "Бэлнээр болон картаар төлөх",
   "Pay with QPay": "QPay-ээр төлөх",
-  "Scan the QR code below with payment app to continue": "Гар утасны апп-аар доорх QR кодыг уншуулна уу",
+  "Scan the QR code below with payment app to continue": "Та гар утасны аппликейшнаар доорх кодыг уншуулна уу.",
   "Print": "Хэвлэх",
   "Lottery": "Сугалаа",
   "Signature": "Гарын үсэг",
@@ -92,5 +92,8 @@
   "Cancel1": "Цуцлах",
   "Already paid": "Төлбөр төлөгдсөн",
   "There are unpaid QPay invoices for this order": "Уг захиалганд төлөгдөөгүй QPay нэхэмжлэх үлдсэн байна",
-  "Waiting for payment": "Төлбөр хүлээгдэж байна"
+  "Waiting for payment": "Төлбөр хүлээгдэж байна",
+  "Make the payment you will make according to the card instructions to the card reader on the right hand side": "Та баруун гар талд байгаа карт уншигчид картаа зааврын  дагуу хийнэ төлбөрөө хийнэ үү.",
+  "Thank you for choosing us": "Манайхыг сонгон үйлчлүүлсэн танд баярлалаа.",
+  "Your number": "Таны дугаар"
 }

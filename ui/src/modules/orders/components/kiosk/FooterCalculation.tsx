@@ -79,8 +79,9 @@ type Props = {
   orientation: string;
   totalAmount: number;
   addOrder: () => void;
+  setItems: (items: IOrderItemInput[]) => void;
   setOrderState: (name: string, value: any) => void;
-  onClickDrawer: (drawerContentType: string) => void;
+  onClickModal: (modalContentType: string) => void;
   items: IOrderItemInput[];
   changeItemCount: (item: IOrderItemInput) => void;
   changeItemIsTake: (item: IOrderItemInput, value: boolean) => void;
@@ -121,7 +122,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
   };
 
   renderPaymentButton() {
-    const { order, onClickDrawer, config, addOrder } = this.props;
+    const { order, onClickModal, config, addOrder, setItems } = this.props;
 
     if (order && order.paidDate) {
       return null;
@@ -130,12 +131,16 @@ export default class FooterCalculation extends React.Component<Props, State> {
     const onClick = () => {
       addOrder();
 
-      onClickDrawer('payment');
+      onClickModal('payment');
+    };
+
+    const onCancelOrder = () => {
+      setItems([]);
     };
 
     return (
       <TypeButtons>
-        <Button btnStyle="simple" block>
+        <Button onClick={onCancelOrder} btnStyle="simple" block>
           {__('Cancel order')}
         </Button>
         <Button
@@ -151,21 +156,13 @@ export default class FooterCalculation extends React.Component<Props, State> {
 
   renderAmount(text: string, amount: number) {
     return (
-      <Amount>
-        {text}
-        <span>{formatNumber(amount || 0)}₮</span>
-      </Amount>
-    );
-  }
-
-  renderQuantity(text: string) {
-    const { items } = this.props;
-
-    return (
-      <Amount>
-        {text}
-        <span>{items.length}ш</span>
-      </Amount>
+      <>
+        <h4>{__('Payment info')}</h4>
+        <Amount>
+          {text}
+          <span>{formatNumber(amount || 0)}₮</span>
+        </Amount>
+      </>
     );
   }
 
@@ -200,7 +197,6 @@ export default class FooterCalculation extends React.Component<Props, State> {
           <ButtonWrapper
             className={orientation === 'portrait' ? 'payment-section' : ''}
           >
-            {this.renderQuantity(`${__('Total')}:`)}
             {this.renderAmount(`${__('Amount to pay')}:`, totalAmount)}
             {this.renderPaymentButton()}
           </ButtonWrapper>

@@ -20,29 +20,32 @@ export default function OrderInfo({
   return (
     <Amount>
       <div className="amount-wrapper">
-        <b>
-          {__('Paid card amount')}: {order ? order.cardAmount : 0}
-        </b>
-        <b>
-          {__('Paid cash amount')}: {order ? order.cashAmount : 0}
-        </b>
-        <b>
-          {__('Paid mobile amount')}: {order ? order.mobileAmount : 0}
-        </b>
-        <b>
-          {__('Remainder amount')}: {remainderAmount}
-        </b>
+        <p>Төлбөрийн мэдээлэл</p>
+        <ul className="a">
+          <li>
+            {__('Paid card amount')}: 12000$ {order ? order.cardAmount : 0}
+          </li>
+          <li>
+            {__('Paid cash amount')}: 14000$ {order ? order.cashAmount : 0}
+          </li>
+          <li>
+            {__('Paid mobile amount')}: 23332$ {order ? order.mobileAmount : 0}
+          </li>
+          <li>
+            {__('Remainder amount')}: {remainderAmount}
+          </li>
+          {/* {registerNumber && ( */}
+          <li>
+            {__('Register number')}: 34245656{registerNumber}
+          </li>
+          {/* )}
+          {companyName && ( */}
+          <li>
+            {__('Entity name')}: Erxes Mongolia{companyName}
+          </li>
+          {/* )} */}
+        </ul>
       </div>
-      {registerNumber && (
-        <div>
-          {__('Register number')}: {registerNumber}
-        </div>
-      )}
-      {companyName && (
-        <div>
-          {__('Entity name')}: {companyName}
-        </div>
-      )}
     </Amount>
   );
 }

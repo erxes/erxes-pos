@@ -1,6 +1,6 @@
 import { IUser } from 'modules/auth/types';
 import { IRouterProps, IConfig } from '../../../types';
-import { bustIframe } from 'modules/common/utils';
+import { bustIframe, __ } from 'modules/common/utils';
 import React from 'react';
 import { withRouter } from 'react-router-dom';
 import {
@@ -69,9 +69,10 @@ class MainLayout extends React.Component<IProps> {
         </Layout>
 
         <Bottom onClick={logout} className="logout">
-          <Tip placement="right" key={Math.random()} text="Sign out">
+          <Tip placement="right" key={Math.random()} text="Гарах">
             <NavItem>
               <NavIcon className="icon-logout-2" />
+              <b>{__('ГАРАХ')}</b>
             </NavItem>
           </Tip>
         </Bottom>

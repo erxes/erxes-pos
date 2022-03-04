@@ -65,7 +65,7 @@ type State = {
   items: IOrderItemInput[];
   totalAmount: number;
   type: string;
-  drawerContentType: string;
+  modalContentType: string;
   showMenu: boolean;
   productBodyType: string;
   customerId: string;
@@ -96,7 +96,7 @@ export default class Pos extends React.Component<Props, State> {
       productBodyType: 'product',
       type:
         this.props.type || (order && order.type ? order.type : ORDER_TYPES.EAT),
-      drawerContentType: '',
+      modalContentType: '',
       customerId: order && order.customerId ? order.customerId : '',
       registerNumber: '',
       paymentType: 'card'
@@ -127,8 +127,8 @@ export default class Pos extends React.Component<Props, State> {
     this.setState({ items, totalAmount: getTotalAmount(items) });
   };
 
-  toggleDrawer = (drawerContentType: string) => {
-    this.setState({ showMenu: !this.state.showMenu, drawerContentType });
+  toggleModal = (modalContentType: string) => {
+    this.setState({ showMenu: !this.state.showMenu, modalContentType });
   };
 
   changeItemCount = (item: IOrderItemInput) => {
@@ -242,11 +242,11 @@ export default class Pos extends React.Component<Props, State> {
       setCardPaymentInfo,
       orientation
     } = this.props;
-    const { drawerContentType, totalAmount, paymentType } = this.state;
+    const { modalContentType, totalAmount, paymentType } = this.state;
 
     const options = currentConfig ? currentConfig.uiOptions : {};
 
-    switch (drawerContentType) {
+    switch (modalContentType) {
       case 'payment':
         return (
           order && (
@@ -254,7 +254,7 @@ export default class Pos extends React.Component<Props, State> {
               orderId={order ? order._id : ''}
               options={options}
               totalAmount={totalAmount}
-              closeDrawer={this.toggleDrawer}
+              closeDrawer={this.toggleModal}
               makePayment={makePayment}
               order={order}
               setCardPaymentInfo={setCardPaymentInfo}
@@ -398,9 +398,11 @@ export default class Pos extends React.Component<Props, State> {
           {this.renderCurrentLogin(
             currentConfig ? currentConfig.uiOptions : {}
           )}
-          {this.renderSyncMenu()}
-          {this.renderKitchenMenu()}
-          {this.renderWaitingMenu()}
+          <div className="syncMenu">
+            {this.renderSyncMenu()}
+            {this.renderKitchenMenu()}
+            {this.renderWaitingMenu()}
+          </div>
           <ProductSearch productsQuery={productsQuery} />
         </FlexHeader>
         <Divider />
@@ -493,9 +495,10 @@ export default class Pos extends React.Component<Props, State> {
                 orientation={orientation}
                 totalAmount={totalAmount}
                 addOrder={this.addOrder}
+                setItems={this.setItems}
                 editOrder={this.editOrder}
                 setOrderState={this.setOrderState}
-                onClickDrawer={this.toggleDrawer}
+                onClickModal={this.toggleModal}
                 items={items}
                 changeItemCount={this.changeItemCount}
                 changeItemIsTake={this.changeItemIsTake}
@@ -546,7 +549,6 @@ export default class Pos extends React.Component<Props, State> {
                   addOrder={this.addOrder}
                   editOrder={this.editOrder}
                   setOrderState={this.setOrderState}
-                  onClickDrawer={this.toggleDrawer}
                   onChangeProductBodyType={this.onChangeProductBodyType}
                   items={items}
                   changeItemCount={this.changeItemCount}

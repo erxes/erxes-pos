@@ -22,6 +22,7 @@ import KeypadWithInput from './KeypadWithInput';
 import Ebarimt from '../drawer/Ebarimt';
 import EntityChecker from './EntityChecker';
 import { Card, Cards, TypeWrapper } from '../drawer/style';
+import OrderInfo from './OrderInfo';
 
 const DASHED_BORDER = '1px dashed #ddd';
 
@@ -32,7 +33,6 @@ const PaymentWrapper = styled.div`
 
 const TabContentWrapper = styled.div`
   padding: 20px;
-  border-top: ${DASHED_BORDER};
   border-bottom: ${DASHED_BORDER};
 `;
 
@@ -128,15 +128,13 @@ export default class SplitPayment extends React.Component<Props, State> {
     };
 
     return (
-      <div>
-        <Ebarimt
-          billType={billType}
-          isPortrait={false}
-          show={showE}
-          onBillTypeChange={onBillTypeChange}
-          onStateChange={onStateChange}
-        />
-      </div>
+      <Ebarimt
+        billType={billType}
+        isPortrait={false}
+        show={showE}
+        onBillTypeChange={onBillTypeChange}
+        onStateChange={onStateChange}
+      />
     );
   }
 
@@ -208,8 +206,15 @@ export default class SplitPayment extends React.Component<Props, State> {
 
   render() {
     const { isPortrait } = this.props;
-    const { currentTab, order, billType, showRegModal, registerNumber } =
-      this.state;
+    const {
+      currentTab,
+      order,
+      billType,
+      showRegModal,
+      registerNumber,
+      cashAmount,
+      companyName
+    } = this.state;
 
     const onClick = value => {
       this.setState({ currentTab: value });
@@ -218,6 +223,8 @@ export default class SplitPayment extends React.Component<Props, State> {
     const onStateChange = (key: string, value: any) => {
       this.setState({ [key]: value } as Pick<State, keyof State>);
     };
+
+    // const cardPayments = order ? order.cardPayments || [] : [];
 
     return (
       <PaymentWrapper>
@@ -254,14 +261,14 @@ export default class SplitPayment extends React.Component<Props, State> {
             </Card>
           </Cards>
         </TypeWrapper>
-        <TabContentWrapper>{this.renderTabContent()}</TabContentWrapper>
         <FlexBetween>
-          {/* <OrderInfo
+          {this.renderEbarimt()}
+          <OrderInfo
             order={order}
             remainderAmount={this.getRemainderAmount() - cashAmount}
             companyName={companyName}
             registerNumber={registerNumber}
-          /> */}
+          />
           <EntityChecker
             billType={billType}
             onStateChange={onStateChange}
@@ -271,6 +278,7 @@ export default class SplitPayment extends React.Component<Props, State> {
             onSubmit={this.checkOrganization}
           />
         </FlexBetween>
+        <TabContentWrapper>{this.renderTabContent()}</TabContentWrapper>
       </PaymentWrapper>
     );
   } // end render()

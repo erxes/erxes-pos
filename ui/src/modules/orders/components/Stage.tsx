@@ -2,8 +2,9 @@ import React from 'react';
 import { __ } from 'modules/common/utils';
 import { IOrderItemInput } from '../types';
 import StageItem from './StageItem';
-import { Stages, StageContent, StageItems, KioskStageContent } from '../styles';
+import { Stages, StageContent, StageItems } from '../styles';
 import EmptyState from 'modules/common/components/EmptyState';
+import { KioskStageContent } from './kiosk/style';
 
 type Props = {
   orientation: string;

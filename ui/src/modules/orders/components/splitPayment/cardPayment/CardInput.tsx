@@ -9,7 +9,7 @@ import Icon from 'modules/common/components/Icon';
 import FormGroup from 'modules/common/components/form/Group';
 import ControlLabel from 'modules/common/components/form/Label';
 import { __, Alert } from 'modules/common/utils';
-import { Input } from 'modules/orders/styles';
+import { CardInputColumn, Input } from 'modules/orders/styles';
 import { IOrder, ICardPayment } from 'modules/orders/types';
 import KeyPads from '../../drawer/KeyPads';
 
@@ -185,27 +185,29 @@ export default class CardInput extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <FormGroup>
-          <ControlLabel>{__('By Card')}</ControlLabel>
-          <Input color={color}>
-            <NumberFormat
-              name="cardAmount"
-              value={amount}
-              onValueChange={values => handleInput(values.floatValue)}
-              {...inputProps}
-            />
-            <div onClick={resetInput}>
-              <Icon icon="cancel" size={13} />
-            </div>
-          </Input>
-        </FormGroup>
-        <ButtonWrapper>
-          {amount ? (
-            <Button btnStyle="warning" onClick={sendTransaction} size="large">
-              {__('Send transaction')}
-            </Button>
-          ) : null}
-        </ButtonWrapper>
+        <CardInputColumn>
+          <FormGroup>
+            <ControlLabel>{__('By Card')}</ControlLabel>
+            <Input color={color}>
+              <NumberFormat
+                name="cardAmount"
+                value={amount}
+                onValueChange={values => handleInput(values.floatValue)}
+                {...inputProps}
+              />
+              <div onClick={resetInput}>
+                <Icon icon="cancel" size={13} />
+              </div>
+            </Input>
+          </FormGroup>
+          <ButtonWrapper>
+            {amount ? (
+              <Button btnStyle="warning" onClick={sendTransaction} size="large">
+                {__('Send transaction')}
+              </Button>
+            ) : null}
+          </ButtonWrapper>
+        </CardInputColumn>
         <FlexCenter>
           <KeyPads
             isPayment={false}

@@ -1,13 +1,9 @@
 import React from 'react';
-
-import Button from 'modules/common/components/Button';
 import { IOrder, ICardPayment } from 'modules/orders/types';
 import { MarginTop } from 'modules/orders/styles';
-import CardRow from './CardRow';
-import ModalTrigger from 'modules/common/components/ModalTrigger';
-import Table from 'modules/common/components/table/index';
-import { __ } from 'modules/common/utils';
-import SplitCardForm from './SplitCardForm';
+// import SplitCardForm from './SplitCardForm';
+import { FlexCenter } from 'modules/common/styles/main';
+import CardInput from './CardInput';
 
 type Props = {
   order: IOrder;
@@ -15,53 +11,21 @@ type Props = {
   billType: string;
   maxAmount?: number;
 };
-
 export default class CardSection extends React.Component<Props> {
   render() {
     const { order, addCardPayment, billType, maxAmount } = this.props;
 
-    const cardPayments = order ? order.cardPayments || [] : [];
-    console.log('card order', order);
-    console.log('cardPayments', cardPayments);
-
-    const content = props => (
-      <SplitCardForm
-        {...props}
-        order={order}
-        addCardPayment={addCardPayment}
-        billType={billType}
-        maxAmount={maxAmount}
-      />
-    );
-
     return (
-      <div>
-        <Table>
-          <thead>
-            <tr>
-              <th>{__('Amount')}</th>
-              <th>{__('Payment info')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {cardPayments
-              ? cardPayments.map(c => <CardRow item={c} key={c._id} />)
-              : null}
-          </tbody>
-        </Table>
-        <MarginTop margin={20}>
-          <ModalTrigger
-            hideHeader={true}
-            title={__('Add payment')}
-            trigger={
-              <Button size="small" btnStyle="success" icon="plus-circle">
-                {__('Add payment')}
-              </Button>
-            }
-            content={content}
+      <MarginTop margin={20}>
+        <FlexCenter>
+          <CardInput
+            billType={billType}
+            addCardPayment={addCardPayment}
+            order={order}
+            maxAmount={maxAmount}
           />
-        </MarginTop>
-      </div>
+        </FlexCenter>
+      </MarginTop>
     );
   }
 }

@@ -38,22 +38,27 @@ export default class Products extends React.Component<Props, State> {
     const { items, setItems } = this.props;
 
     const currentItems = items.slice();
+    const foundItem = currentItems.find(i => i.productId === item._id);
 
-    currentItems.push({
-      _id: Math.random().toString(),
-      productId: item._id,
-      productName: item.name,
-      unitPrice: item.unitPrice || 0,
-      productImgUrl:
-        item.attachment && item.attachment.url ? item.attachment.url : '',
-      count
-    });
+    if (foundItem) {
+      foundItem.count += count;
+    } else {
+      currentItems.push({
+        _id: Math.random().toString(),
+        productId: item._id,
+        productName: item.name,
+        unitPrice: item.unitPrice || 0,
+        productImgUrl:
+          item.attachment && item.attachment.url ? item.attachment.url : '',
+        count
+      });
+    }
 
     setItems(currentItems);
   }
 
   renderProducts() {
-    const { products = [], orientation, currentConfig, qp } = this.props;
+    const { products = [], orientation, currentConfig, qp, items } = this.props;
     const mode = localStorage.getItem('erxesPosMode');
     const productId = qp && qp.productId ? qp.productId : '';
     let filteredProducts = products;
@@ -69,6 +74,7 @@ export default class Products extends React.Component<Props, State> {
           product={product}
           key={product._id}
           orientation={orientation}
+          isActive={items.some(item => item.productId === product._id)}
           activeProductId={productId}
           addItem={this.addItem.bind(this, product, 1)}
         />

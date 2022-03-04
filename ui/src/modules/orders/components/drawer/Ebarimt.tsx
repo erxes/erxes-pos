@@ -3,7 +3,6 @@ import React from 'react';
 import { __ } from 'modules/common/utils';
 import Button from 'modules/common/components/Button';
 import { EbarimtButton } from '../kiosk/style';
-import { FlexCenter } from 'modules/common/styles/main';
 import { BILL_TYPES } from './PaymentForm';
 
 type Props = {
@@ -37,9 +36,6 @@ export default class Ebarimt extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <FlexCenter>
-          <h2>{__('Obtain a VAT receipt')}</h2>
-        </FlexCenter>
         <EbarimtButton isPortrait={isPortrait}>
           <Button
             className={

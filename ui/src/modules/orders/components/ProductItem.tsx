@@ -8,10 +8,11 @@ type Props = {
   orientation: string;
   addItem: (item: IOrderItemInput) => void;
   activeProductId: string;
+  isActive: boolean;
 };
 
 export default function ProductItem(props: Props) {
-  const { product, addItem, orientation, activeProductId } = props;
+  const { product, addItem, orientation, isActive } = props;
   const { attachment, name, unitPrice } = product;
   const attachmentUrl = attachment && attachment.url ? attachment.url : '';
   const mode = localStorage.getItem('erxesPosMode');
@@ -31,7 +32,7 @@ export default function ProductItem(props: Props) {
     <Item
       onClick={onClick}
       isPortrait={orientation === 'portrait'}
-      isActive={product._id === activeProductId}
+      isActive={isActive}
     >
       <div className="image-wrapper">
         <img

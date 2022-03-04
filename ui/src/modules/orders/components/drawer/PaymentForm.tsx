@@ -4,10 +4,8 @@ import { IPaymentParams } from 'modules/orders/containers/PosContainer';
 import QPay from './QPay';
 import { IOrder } from 'modules/orders/types';
 import apolloClient from 'apolloClient';
-import styled from 'styled-components';
-import styledTS from 'styled-components-ts';
 import { queries } from 'modules/orders/graphql/index';
-import { Amount, FormHead } from 'modules/orders/styles';
+import { FormHead } from 'modules/orders/styles';
 import Ebarimt from './Ebarimt';
 import { formatNumber } from 'modules/utils';
 import RegisterChecker from './RegisterChecker';
@@ -19,30 +17,7 @@ import { __ } from 'modules/common/utils';
 import { Alert } from 'modules/common/utils';
 import gql from 'graphql-tag';
 import { Cards, TypeWrapper } from './style';
-
-const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  margin:  ${props => (props.isPortrait ? '30px 20px 20px;' : '10px 0')};
-  text-align: center;
-
-  button {
-    padding: ${props => (props.isPortrait ? '20px 15px' : '10px 20px')};
-    border-radius: 8px;
-    font-size: ${props => props.isPortrait && '20px'};
-    width: 50%;
-  }
-`;
-
-const Title = styled.h2`
-  text-align: center;
-  margin-bottom: 40px;
-`;
-
-const Header = styled.div`
-  margin: 0px 20px 20px;
-  @media (max-width: 1600px) and (orientation: landscape) {
-    margin: 0px 20px 0px;
-  }
-`;
+import { Header, KioskAmount, PaymentWrapper, Title } from '../kiosk/style';
 
 type Props = {
   orderId: string;
@@ -209,6 +184,9 @@ class PaymentForm extends React.Component<Props, State> {
 
     return (
       <Header>
+        <FlexCenter>
+          <h2>{__('Obtain a VAT receipt')}</h2>
+        </FlexCenter>
         <Ebarimt
           billType={billType}
           isPortrait={isPortrait}
@@ -227,16 +205,13 @@ class PaymentForm extends React.Component<Props, State> {
 
     return (
       <FormHead isPortrait={isPortrait}>
-        <Amount isPortrait={isPortrait} color={options.colors.primary}>
+        <h4>{__('Payment info')}</h4>
+        <KioskAmount color={options.colors.primary}>
           <div className="total-wrapper">
-            {__('Total')}
-            <span>{formatNumber(order.items.length || 0)}ш</span>
-          </div>
-          <div className="amount-wrapper">
-            {__('Amount to pay')}
+            {__('Amount to pay')}:
             <span> {formatNumber(order.totalAmount || 0)}₮</span>
           </div>
-        </Amount>
+        </KioskAmount>
       </FormHead>
     );
   }
@@ -250,7 +225,7 @@ class PaymentForm extends React.Component<Props, State> {
       <TypeWrapper isPortrait={isPortrait}>
         <h2>
           {__(
-            'Та баруун гар талд байгаа карт уншигчид картаа зааврын  дагуу хийнэ төлбөрөө хийнэ үү. '
+            'Make the payment you will make according to the card instructions to the card reader on the right hand side'
           )}
         </h2>
 
@@ -263,13 +238,14 @@ class PaymentForm extends React.Component<Props, State> {
     );
   }
 
+  //Final tulbur tulugdsunii daraa
   renderDone() {
-    const { orientation } = this.props;
+    const { orientation, order } = this.props;
     const isPortrait = orientation === 'portrait';
 
     return (
       <TypeWrapper isPortrait={isPortrait}>
-        <h2>{__('Манайхыг сонгон үйлчлүүлсэн танд баярлалаа. ')}</h2>
+        <h2>{__('Thank you for choosing us')}</h2>
 
         <Cards isPortrait={isPortrait}>
           <div>
@@ -277,7 +253,10 @@ class PaymentForm extends React.Component<Props, State> {
           </div>
         </Cards>
 
-        <h2>Таны дугаар: 102</h2>
+        <h2>
+          {__('Your number')}:
+          <b>{order && order.number ? order.number.split('_')[1] : ''}</b>
+        </h2>
       </TypeWrapper>
     );
   }
@@ -286,13 +265,14 @@ class PaymentForm extends React.Component<Props, State> {
     const { paymentEnabled } = this.state;
 
     if (paymentEnabled) {
-      return this.renderPaymentPopUp();
+      // return this.renderPaymentPopUp();
+      return this.renderDone();
     }
 
     return (
       <>
-        {this.renderPayment()}
         {this.renderEbarimt()}
+        {this.renderPayment()}
       </>
     );
   }

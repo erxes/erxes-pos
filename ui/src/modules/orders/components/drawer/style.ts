@@ -9,6 +9,11 @@ h2 {
   margin-bottom: 40px;
   font-size: ${props => props.isPortrait && '34px'};
 
+  b {
+    margin-left: 5px;
+    color: #FF7800;
+  }
+
   @media (max-width: 1250px) and (orientation:landscape) {
     font-size: 25px;
   }
@@ -45,7 +50,7 @@ display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
-width: ${props => (props.isPortrait ? '46%' : '30%')};
+width: ${props => (props.isPortrait ? '46%' : '32%')};
 margin: 0 10px 20px 0;
 flex-shrink: 0;
 cursor: pointer;
@@ -73,6 +78,10 @@ transition: all ease 0.3s;
 
   &:hover {
     box-shadow: 0 6px 10px 1px rgba(136, 136, 136, 0.08);
+  }
+
+  &:nth-child(3) {
+    margin-right: 0;
   }
 
   @media (max-width: 1250px) and (orientation:landscape) {

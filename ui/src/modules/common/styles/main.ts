@@ -409,7 +409,6 @@ const ColumnBetween = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: '100%';
 
   .payment-section {
     margin-bottom: 30px;
@@ -419,6 +418,10 @@ const ColumnBetween = styled.div`
       font-size: 28px;
       margin-top: 30px;
     }
+  }
+
+  @media (max-height: 1200px) and (orientation: landscape) {
+    height: '100hv';
   }
 `;
 

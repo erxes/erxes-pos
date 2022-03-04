@@ -1,10 +1,10 @@
 import React from 'react';
 import QRCode from 'qrcode';
 import gql from 'graphql-tag';
-import styled from "styled-components";
+import styled from 'styled-components';
 
 import client from 'apolloClient';
-import Button from "modules/common/components/Button";
+import Button from 'modules/common/components/Button';
 import TextInfo from 'modules/common/components/TextInfo';
 import Label from 'modules/common/components/Label';
 import { Alert, __ } from 'modules/common/utils';
@@ -15,6 +15,15 @@ import { IOrder, IQPayInvoice } from 'modules/orders/types';
 const QRCodeWrapper = styled.div`
   text-align: center;
   margin-bottom: 20px;
+  display: contents;
+`;
+
+const MainContent = styled.div`
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 `;
 
 const ErrorMessage = styled(QRCodeWrapper)`
@@ -24,7 +33,7 @@ const ErrorMessage = styled(QRCodeWrapper)`
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: space-between;
+  margin-top: 50px;
 `;
 
 const processErrorMessage = (msg: string) => {
@@ -35,17 +44,17 @@ const processErrorMessage = (msg: string) => {
   }
 
   return info;
-}
+};
 
 type Props = {
   handlePayment: any;
-  order: IOrder
-}
+  order: IOrder;
+};
 
 type State = {
   errorMessage: string;
   invoice: IQPayInvoice;
-}
+};
 
 export default class QPay extends React.Component<Props, State> {
   timeoutId;
@@ -62,6 +71,8 @@ export default class QPay extends React.Component<Props, State> {
     };
   }
 
+  mode = localStorage.getItem('erxesPosMode');
+
   renderQrCode() {
     const { invoice } = this.state;
 
@@ -73,7 +84,7 @@ export default class QPay extends React.Component<Props, State> {
 
     return (
       <React.Fragment>
-        <h4>{__("Scan the QR code below with payment app to continue")}</h4>
+        <h2>{__('Scan the QR code below with payment app to continue')}</h2>
         <QRCodeWrapper>
           <canvas id="qrcode" />
           <Label lblStyle={labelStyle}>{invoice.status}</Label>
@@ -96,7 +107,7 @@ export default class QPay extends React.Component<Props, State> {
     }
   }
 
-  checkPayment(isAuto=false) {
+  checkPayment(isAuto = false) {
     const { order } = this.props;
 
     this.requestCount++;
@@ -107,21 +118,25 @@ export default class QPay extends React.Component<Props, State> {
       return;
     }
 
-    client.mutate({
-      mutation: gql(mutations.qpayCheckPayment), variables: { orderId: order._id }
-    }).then(({ data }) => {
-      const invoice = data.qpayCheckPayment;
+    client
+      .mutate({
+        mutation: gql(mutations.qpayCheckPayment),
+        variables: { orderId: order._id }
+      })
+      .then(({ data }) => {
+        const invoice = data.qpayCheckPayment;
 
-      this.setState({ invoice });
+        this.setState({ invoice });
 
-      const paid = invoice && invoice.qpayPaymentId && invoice.paymentDate;
+        const paid = invoice && invoice.qpayPaymentId && invoice.paymentDate;
 
-      if (paid) {
-        clearTimeout(this.timeoutId);
-      }
-    }).catch(e => {
-      Alert.error(e.message);
-    });
+        if (paid) {
+          clearTimeout(this.timeoutId);
+        }
+      })
+      .catch(e => {
+        Alert.error(e.message);
+      });
   }
 
   drawQR() {
@@ -135,8 +150,13 @@ export default class QPay extends React.Component<Props, State> {
 
   renderCheckPaymentButton() {
     return (
-      <Button btnStyle="warning" icon="uparrow-3" onClick={() => this.checkPayment()}>
-        {__("Check payment")}
+      <Button
+        btnStyle="warning"
+        icon="uparrow-3"
+        size="large"
+        onClick={() => this.checkPayment()}
+      >
+        {__('Check payment')}
       </Button>
     );
   }
@@ -152,7 +172,7 @@ export default class QPay extends React.Component<Props, State> {
     const { invoice } = this.state;
 
     if (order.paidDate) {
-      return <TextInfo>{__("Payment already made")}</TextInfo>;
+      return <TextInfo>{__('Payment already made')}</TextInfo>;
     }
 
     const disabled = !(invoice && invoice.qpayPaymentId && invoice.paymentDate);
@@ -162,28 +182,31 @@ export default class QPay extends React.Component<Props, State> {
         disabled={disabled}
         btnStyle="success"
         icon="check-circle"
+        size="large"
         onClick={() => this.makePayment()}
       >
-        {__("Print receipt")}
+        {__('Print receipt')}
       </Button>
-    )
+    );
   }
 
   render() {
     const { errorMessage } = this.state;
+    const mode = localStorage.getItem('erxesPosMode');
 
     return (
       <div>
-        {
-          errorMessage ? (<ErrorMessage>{processErrorMessage(errorMessage)}</ErrorMessage>) : (
-            <React.Fragment>
-              {this.renderQrCode()}
-              <ButtonWrapper>
-                {this.renderCheckPaymentButton()}
-                {this.renderReceiptButton()}
-              </ButtonWrapper>
-            </React.Fragment>
-          )}
+        {errorMessage ? (
+          <ErrorMessage>{processErrorMessage(errorMessage)}</ErrorMessage>
+        ) : (
+          <MainContent>
+            {this.renderQrCode()}
+            <ButtonWrapper>
+              {!mode && this.renderCheckPaymentButton()}
+              {this.renderReceiptButton()}
+            </ButtonWrapper>
+          </MainContent>
+        )}
       </div>
     );
   }
@@ -193,13 +216,19 @@ export default class QPay extends React.Component<Props, State> {
     const { order } = this.props;
 
     if (!invoice && order) {
-      client.mutate({ mutation: gql(mutations.createQpaySimpleInvoice), variables: { orderId: order._id } }).then(({ data }) => {
-        if (data && data.createQpaySimpleInvoice) {
-          this.setState({ invoice: data.createQpaySimpleInvoice });
-        }
-      }).catch(e => {
-        this.setState({ errorMessage: e.message });
-      });
+      client
+        .mutate({
+          mutation: gql(mutations.createQpaySimpleInvoice),
+          variables: { orderId: order._id }
+        })
+        .then(({ data }) => {
+          if (data && data.createQpaySimpleInvoice) {
+            this.setState({ invoice: data.createQpaySimpleInvoice });
+          }
+        })
+        .catch(e => {
+          this.setState({ errorMessage: e.message });
+        });
     } else {
       this.drawQR();
 

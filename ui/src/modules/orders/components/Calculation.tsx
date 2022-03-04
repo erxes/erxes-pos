@@ -12,13 +12,12 @@ import { formatNumber } from 'modules/utils';
 import { FormControl } from 'modules/common/components/form';
 import { IConfig, IOption } from 'types';
 import { ICustomer, IOrder, IOrderItemInput } from '../types';
-import { Amount, FinderButtons, ProductLabel, Types } from '../styles';
+import { Amount, ProductLabel, Types } from '../styles';
 import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from '../../../constants';
 import OrderInfo from './splitPayment/OrderInfo';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
-  display: flex;
-  flex-direction: column;
+
   padding: 0 5px 0 5px;
   height: 100%;
   box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
@@ -26,18 +25,13 @@ const Wrapper = styledTS<{ color?: string }>(styled.div)`
   background: #fff;
   overflow: auto;
 
-  button {
-    padding: 10px 20px;
-    border-radius: 8px;
-  }
-
   .ioevLe:checked + span:before, .hCqfzh .react-toggle--checked .react-toggle-track {
     background-color: ${props => props.color && props.color};
   }
 `;
 
 const ButtonWrapper = styled.div`
-  margin-bottom: 30px;
+  margin-bottom: 20px;
 
   > button {
     margin-bottom: 10px;
@@ -78,7 +72,6 @@ type Props = {
   addOrder: (callback?: () => void) => void;
   onChangeProductBodyType: (type: string) => void;
   setOrderState: (name: string, value: any) => void;
-  onClickDrawer: (drawerContentType: string) => void;
   items: IOrderItemInput[];
   changeItemCount: (item: IOrderItemInput) => void;
   changeItemIsTake: (item: IOrderItemInput, value: boolean) => void;
@@ -106,7 +99,7 @@ export default class Calculation extends React.Component<Props, State> {
     const customerId = order ? order.customerId : '';
     const customerLabel = order ? generateLabel(order.customer) : '';
 
-    let stageHeight = window.innerHeight - 120; // types title
+    let stageHeight = window.innerHeight; // types title
     const mode = localStorage.getItem('erxesPosMode') || '';
 
     console.log('stageHeight', stageHeight);
@@ -171,7 +164,7 @@ export default class Calculation extends React.Component<Props, State> {
   }
 
   renderSplitPaymentButton() {
-    const { order, config, addOrder, onChangeProductBodyType } = this.props;
+    const { order, addOrder, onChangeProductBodyType } = this.props;
 
     if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
       return null;
@@ -192,17 +185,12 @@ export default class Calculation extends React.Component<Props, State> {
     return (
       <Types>
         <Button
-          btnStyle="primary"
+          btnStyle="simple"
           onClick={() => this.onChange(ORDER_TYPES.TAKE)}
-          icon="check-circle"
         >
           {__('Take')}
         </Button>
-        <Button
-          style={{ backgroundColor: config.uiOptions.colors.primary }}
-          onClick={onClick}
-          icon="check-circle"
-        >
+        <Button btnStyle="success" onClick={onClick}>
           {__('Payment')}
         </Button>
       </Types>
@@ -217,22 +205,12 @@ export default class Calculation extends React.Component<Props, State> {
     const { onChangeProductBodyType, config } = this.props;
     const color = config.uiOptions && config.uiOptions.colors.primary;
     return (
-      <>
-        <ProductLabel
-          onClick={() => onChangeProductBodyType('orderSearch')}
-          color={color}
-        >
-          {__('Find orders')}
-        </ProductLabel>
-        <ProductLabel
-          onClick={() => {
-            mode !== 'kiosk' && onChangeProductBodyType('customer');
-          }}
-          color={color}
-        >
-          {__('Identify a customer')}
-        </ProductLabel>
-      </>
+      <ProductLabel
+        onClick={() => onChangeProductBodyType('orderSearch')}
+        color={color}
+      >
+        {__('Find orders')}
+      </ProductLabel>
     );
   }
 
@@ -339,7 +317,8 @@ export default class Calculation extends React.Component<Props, State> {
     return (
       <>
         <Wrapper color={color}>
-          <FinderButtons>{this.renderFindOrder(mode)}</FinderButtons>
+          {this.renderFindOrder(mode)}
+          {__('Identify a customer')}
           {this.renderCustomerChooser()}
           <ColumnBetween>
             <Stage
