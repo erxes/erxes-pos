@@ -231,7 +231,7 @@ class PaymentForm extends React.Component<Props, State> {
 
         <Cards isPortrait={isPortrait}>
           <div>
-            <img src="/images/card-reader.png" alt="card-reader" />
+            <img src="/images/payment-success.gif" alt="card-reader" />
           </div>
         </Cards>
       </TypeWrapper>
@@ -249,7 +249,7 @@ class PaymentForm extends React.Component<Props, State> {
 
         <Cards isPortrait={isPortrait}>
           <div>
-            <img src="/images/thank-you.png" alt="card-reader" />
+            <img src="/images/done-relax.gif" alt="card-reader" />
           </div>
         </Cards>
 
