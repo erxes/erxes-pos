@@ -265,8 +265,8 @@ class PaymentForm extends React.Component<Props, State> {
     const { paymentEnabled } = this.state;
 
     if (paymentEnabled) {
-      // return this.renderPaymentPopUp();
-      return this.renderDone();
+      return this.renderPaymentPopUp();
+      // return this.renderDone();
     }
 
     return (
