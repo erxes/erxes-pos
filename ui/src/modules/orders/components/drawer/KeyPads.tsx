@@ -47,7 +47,10 @@ export default class KeyPads extends React.Component<Props> {
         )}
         {this.renderKeyPad(15, isPayment ? '+' : '.')}
         {this.renderKeyPad(0, 0)}
+        {this.renderKeyPad(20, '00')}
+        {this.renderKeyPad(21, '000')}
         {this.renderKeyPad(16, 'CE')}
+        {this.renderKeyPad(16, 'C')}
       </KeyBoard>
     );
   }
