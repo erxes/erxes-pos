@@ -3,10 +3,10 @@ import styled from 'styled-components';
 
 export const TypeWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
 margin-top: ${props => (props.isPortrait ? '50px' : '20px')}; 
+text-align: center;
 
 h2 {
-  text-align: center;
-  margin-bottom: 40px;
+  margin-bottom:  ${props => (props.isPortrait ? '20px' : '')}; 
   font-size: ${props => props.isPortrait && '34px'};
 
   b {
@@ -17,6 +17,12 @@ h2 {
   @media (max-width: 1250px) and (orientation:landscape) {
     font-size: 25px;
   }
+}
+
+h4 {
+  padding-bottom: 20px;
+  border-bottom: 1px dashed #cccc;
+  font-weight: 300;
 }
 `;
 
@@ -44,7 +50,7 @@ p {
 export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
 border: 1px solid #ddd; 
 border-radius: 16px;
-padding: 40px 40px 30px;
+padding: ${props => (props.isPortrait ? '40px 40px 30px' : '30px 30px 15px')}; 
 text-align: center;
 display: flex;
 flex-direction: column;
@@ -85,6 +91,6 @@ transition: all ease 0.3s;
   }
 
   @media (max-width: 1250px) and (orientation:landscape) {
-    padding: 20px;
+    padding: 30px 30px 15px;
   }
 `;

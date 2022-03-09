@@ -830,12 +830,21 @@ export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
 
   .amount-wrapper {
     text-align: left;
-   font-weight: 500;
+    font-weight: 300;
 
     ul.a {
-      list-style-type: circle;
+      list-style-type: none;
       margin: 0;
       padding: 5px;
+      li:nth-child(1) {
+        color: #904300;
+        font-weight: 500;
+      }
+      li:nth-child(6) {
+        color: #904300;
+        font-weight: 500;
+      }
     }
+    
   }
 `;

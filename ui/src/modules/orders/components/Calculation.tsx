@@ -99,10 +99,8 @@ export default class Calculation extends React.Component<Props, State> {
     const customerId = order ? order.customerId : '';
     const customerLabel = order ? generateLabel(order.customer) : '';
 
-    let stageHeight = window.innerHeight; // types title
+    let stageHeight = window.innerHeight - 80; // types title
     const mode = localStorage.getItem('erxesPosMode') || '';
-
-    console.log('stageHeight', stageHeight);
 
     if (mode === '') {
       stageHeight -= 45; // findOrder
@@ -175,12 +173,6 @@ export default class Calculation extends React.Component<Props, State> {
 
       addOrder(callback);
     };
-
-    // <FooterButtons>
-    //   <Button btnStyle="success" onClick={this.handlePayment} icon="dollar-alt">
-    //     {__('Pay the bill')}
-    //   </Button>
-    // </FooterButtons>;
 
     return (
       <Types>
@@ -269,13 +261,8 @@ export default class Calculation extends React.Component<Props, State> {
   renderAmount(text: string, amount: number, color?: string) {
     const prop = { color };
 
-    const { order } = this.props;
-
     return (
       <Amount {...prop}>
-        <span>
-          №: {order && order.number ? order.number.split('_')[1] : ''}
-        </span>
         <span>{text}</span>
         {formatNumber(amount || 0)}₮
       </Amount>
@@ -285,7 +272,6 @@ export default class Calculation extends React.Component<Props, State> {
   renderOrderInfo() {
     const { order } = this.props;
     const { cashAmount, companyName, registerNumber } = this.state;
-    console.log('cashAmount', cashAmount);
 
     if (!order) {
       return null;
@@ -309,7 +295,8 @@ export default class Calculation extends React.Component<Props, State> {
       changeItemCount,
       changeItemIsTake,
       orientation,
-      type
+      type,
+      order
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
@@ -331,15 +318,15 @@ export default class Calculation extends React.Component<Props, State> {
               type={type}
               mode={mode}
             />
-            <ButtonWrapper
-              className={orientation === 'portrait' ? 'payment-section' : ''}
-            >
-              {this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
-              {this.renderOrderInfo()}
-              {this.renderSplitPaymentButton()}
-              {/* {this.renderReceiptButton()} */}
-            </ButtonWrapper>
           </ColumnBetween>
+          <ButtonWrapper
+            className={orientation === 'portrait' ? 'payment-section' : ''}
+          >
+            {!order &&
+              this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
+            {this.renderOrderInfo()}
+            {this.renderSplitPaymentButton()}
+          </ButtonWrapper>
         </Wrapper>
       </>
     );

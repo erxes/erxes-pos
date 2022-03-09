@@ -25,7 +25,7 @@
   "Check": "Шалгах",
   "Organization": "Байгууллага",
   "Person": "Хувь хүн",
-  "Choose the payment method": "Та төлбөрийн сонголтоо хийнэ үү",
+  "Choose the payment method": "Та төлбөрийн нөхцөлөө сонгоно уу!",
   "Choose customer from select": "Хэрэглэгчээ сонгоно уу",
   "VAT": "НӨАТ",
   "Obtain a VAT receipt": "НӨАТ-ын баримт авах",
@@ -83,7 +83,7 @@
   "Create invoice": "Нэхэмжлэх үүсгэх",
   "Paid card amount": "Картаар төлсөн дүн",
   "Paid cash amount": "Бэлнээр төлсөн дүн",
-  "Paid mobile amount": "Мобайлаар төлсөн дүн (QPay)",
+  "Paid mobile amount": "QPay-р төлсөн дүн",
   "Amount exceeds total amount": "Төлөх дүнгээс хэтэрсэн байна",
   "Remainder amount": "Төлөх дүн",
   "Close": "Хаах",
@@ -95,5 +95,6 @@
   "Waiting for payment": "Төлбөр хүлээгдэж байна",
   "Make the payment you will make according to the card instructions to the card reader on the right hand side": "Та баруун гар талд байгаа карт уншигчид картаа зааврын  дагуу хийнэ төлбөрөө хийнэ үү.",
   "Thank you for choosing us": "Манайхыг сонгон үйлчлүүлсэн танд баярлалаа.",
-  "Your number": "Таны дугаар"
+  "Your number": "Таны дугаар",
+  "Customers can pay your paymnet in share": "Хэрэглэгч та төлбөрөө хувааж төлөх боломжтой."
 }

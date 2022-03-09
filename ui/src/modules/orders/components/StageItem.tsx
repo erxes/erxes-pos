@@ -116,9 +116,9 @@ export default class StageItem extends React.Component<Props, State> {
   }
 
   renderCheckbox() {
-    const { item, changeItemIsTake, mode } = this.props;
+    const { item, changeItemIsTake, mode, type } = this.props;
 
-    if (mode === 'kiosk') {
+    if (mode === 'kiosk' || type !== ORDER_TYPES.EAT) {
       return <></>;
     }
 
@@ -128,13 +128,17 @@ export default class StageItem extends React.Component<Props, State> {
 
     return (
       <Tip text={'Тусгайлан авч явах бол тэмдэглэх'} placement="right">
-        <FormControl
-          type="checkbox"
-          name="itemIsTake"
-          round={true}
-          onChange={onChange}
-          checked={item.isTake}
-        />
+        <label>
+          <FormControl
+            type="checkbox"
+            name="itemIsTake"
+            onChange={onChange}
+            checked={item.isTake}
+            onClick={e => {
+              e.stopPropagation();
+            }}
+          />
+        </label>
       </Tip>
     );
   }

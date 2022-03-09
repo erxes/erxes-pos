@@ -8,7 +8,7 @@ const KeyBoard = styled.div`
   display: inline-grid;
   justify-content: center;
   grid-auto-flow: row;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: repeat(2, 1fr);
   margin-bottom: 30px;
 `;
