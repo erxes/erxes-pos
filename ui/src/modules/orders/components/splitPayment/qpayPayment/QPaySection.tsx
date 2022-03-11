@@ -1,13 +1,17 @@
 import React from 'react';
-
-import Button from 'modules/common/components/Button';
-import { IInvoiceCheckParams, IInvoiceParams, IOrder } from 'modules/orders/types';
-import { MarginTop } from 'modules/orders/styles';
+import {
+  IInvoiceCheckParams,
+  IInvoiceParams,
+  IOrder
+} from 'modules/orders/types';
+import { CardInputColumn, Input } from 'modules/orders/styles';
 import QPayRow from './QPayRow';
-import ModalTrigger from 'modules/common/components/ModalTrigger';
-import Table from 'modules/common/components/table/index';
 import { __ } from 'modules/common/utils';
-import SplitQPayForm from './SplitQPayForm';
+// import SplitQPayForm from './SplitQPayForm';
+import FormGroup from 'modules/common/components/form/Group';
+import ControlLabel from 'modules/common/components/form/Label';
+import NumberFormat from 'react-number-format';
+import Icon from 'modules/common/components/Icon';
 
 type Props = {
   order: IOrder;
@@ -16,62 +20,91 @@ type Props = {
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
   maxAmount?: number;
-}
+};
 
-export default class QPaySection extends React.Component<Props> {
+type State = {
+  amount: number;
+};
+
+export default class QPaySection extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      amount: props.maxAmount || 0
+    };
+  }
+
   render() {
-    const { order, billType, createQPayInvoice, checkQPayInvoice, cancelQPayInvoice, maxAmount } = this.props;
+    const {
+      order,
+      // billType,
+      // createQPayInvoice,
+      checkQPayInvoice,
+      cancelQPayInvoice,
+      maxAmount = 0
+    } = this.props;
 
     const { qpayInvoices = [] } = order;
+    const { amount } = this.state;
 
-    const content = (props) =>
-      <SplitQPayForm
-        {...props}
-        order={order}
-        billType={billType}
-        createQPayInvoice={createQPayInvoice}
-        maxAmount={maxAmount}
-      />;
+    const handleInput = (value: number | undefined = 0) => {
+      // do not accept amount greater than payable amount
+      const val = Number((value > maxAmount ? maxAmount : value).toFixed(2));
+
+      this.setState({ amount: val });
+    };
+
+    // const content = props => (
+    //   <SplitQPayForm
+    //     {...props}
+    //     order={order}
+    //     billType={billType}
+    //     createQPayInvoice={createQPayInvoice}
+    //     maxAmount={maxAmount}
+    //   />
+    // );
+
+    const inputProps: any = {
+      allowNegative: false,
+      thousandSeparator: true,
+      prefix: '₮',
+      inputMode: 'numeric'
+    };
+
+    const resetInput = () => {
+      this.setState({ amount: 0 });
+    };
 
     return (
       <div>
-        <Table hover={true} bordered={true} responsive={true}>
-          <thead>
-            <tr>
-              <th>{__('Amount')}</th>
-              <th>{__('Status')}</th>
-              <th>{__('Scan the QR code below with payment app to continue')}</th>
-              <th>{__('Actions')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {qpayInvoices ? qpayInvoices.map(c =>
-              <QPayRow
-                item={c}
-                key={c._id}
-                checkQPayInvoice={checkQPayInvoice}
-                cancelQPayInvoice={cancelQPayInvoice}
-                orderId={order._id}
+        <CardInputColumn>
+          <FormGroup>
+            <ControlLabel>{__('By QPay')}</ControlLabel>
+            <Input>
+              <NumberFormat
+                name="qpayAmount"
+                value={amount}
+                onValueChange={values => handleInput(values.floatValue)}
+                {...inputProps}
               />
-            ) : null
-            }
-          </tbody>
-        </Table>
-        <MarginTop margin={20}>
-          <ModalTrigger
-            hideHeader={true}
-            title={__('Create invoice')}
-            trigger={
-              <Button
-                size="small"
-                btnStyle="success"
-                icon="plus-circle"
-                >{__('Create invoice')}
-              </Button>
-            }
-            content={content}
-          />
-        </MarginTop>
+              <div onClick={resetInput}>
+                <Icon icon="cancel" size={13} />
+              </div>
+            </Input>
+          </FormGroup>
+          {qpayInvoices
+            ? qpayInvoices.map(c => (
+                <QPayRow
+                  item={c}
+                  key={c._id}
+                  checkQPayInvoice={checkQPayInvoice}
+                  cancelQPayInvoice={cancelQPayInvoice}
+                  orderId={order._id}
+                />
+              ))
+            : null}
+        </CardInputColumn>
       </div>
     );
   }

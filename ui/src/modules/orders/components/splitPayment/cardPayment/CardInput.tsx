@@ -50,12 +50,7 @@ export default class CardInput extends React.Component<Props, State> {
   };
 
   render() {
-    const {
-      color = '',
-      addCardPayment,
-      order,
-      maxAmount = 0
-    } = this.props;
+    const { color = '', addCardPayment, order, maxAmount = 0 } = this.props;
 
     const { amount } = this.state;
 
@@ -198,7 +193,7 @@ export default class CardInput extends React.Component<Props, State> {
           </FormGroup>
           <ButtonWrapper>
             {amount ? (
-              <Button btnStyle="warning" onClick={sendTransaction} size="large">
+              <Button btnStyle="warning" onClick={sendTransaction} size="small">
                 {__('Send transaction')}
               </Button>
             ) : null}

@@ -1,15 +1,12 @@
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import React from 'react';
-import NumberFormat from "react-number-format";
-
-import { FlexCenter } from "modules/common/styles/main";
-import Icon from "modules/common/components/Icon";
-import FormGroup from "modules/common/components/form/Group";
-import ControlLabel from "modules/common/components/form/Label";
-import { __ } from "modules/common/utils";
-import { Input } from "modules/orders/styles";
+import NumberFormat from 'react-number-format';
+import Icon from 'modules/common/components/Icon';
+import FormGroup from 'modules/common/components/form/Group';
+import ControlLabel from 'modules/common/components/form/Label';
+import { __ } from 'modules/common/utils';
+import { Input } from 'modules/orders/styles';
 import { IOrder } from 'modules/orders/types';
-import KeyPads from '../drawer/KeyPads';
 
 type Props = {
   color?: string;
@@ -20,13 +17,13 @@ type Props = {
   inputLabel: string;
   usePrefix?: boolean;
   getStringValue?: boolean;
-}
+};
 
 export default class CardInput extends React.Component<Props> {
   onChangeKeyPad = (num: string) => {
     const { setAmount, amount, getStringValue } = this.props;
 
-    if (num === "CE") {
+    if (num === 'CE') {
       return setAmount(0);
     }
     if (getStringValue) {
@@ -39,7 +36,6 @@ export default class CardInput extends React.Component<Props> {
   render() {
     const {
       color = '',
-      billType,
       setAmount,
       inputLabel,
       amount,
@@ -50,11 +46,11 @@ export default class CardInput extends React.Component<Props> {
     const inputProps: any = {
       allowNegative: false,
       thousandSeparator: !getStringValue && true,
-      prefix: !getStringValue && usePrefix && "₮",
-      inputMode: "numeric",
+      prefix: !getStringValue && usePrefix && '₮',
+      inputMode: 'numeric'
     };
 
-    const onValueChange = (values) => {
+    const onValueChange = values => {
       let value = values.floatValue || 0;
 
       if (getStringValue) {
@@ -62,7 +58,7 @@ export default class CardInput extends React.Component<Props> {
       }
 
       setAmount(value);
-    }
+    };
 
     return (
       <React.Fragment>
@@ -79,14 +75,6 @@ export default class CardInput extends React.Component<Props> {
             </div>
           </Input>
         </FormGroup>
-        <FlexCenter>
-          <KeyPads
-            isPayment={false}
-            isPortrait={true}
-            onChangeKeyPad={this.onChangeKeyPad}
-            billType={billType}
-          />
-        </FlexCenter>
       </React.Fragment>
     );
   } // end render()

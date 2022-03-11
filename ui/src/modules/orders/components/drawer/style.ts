@@ -50,7 +50,7 @@ p {
 export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
 border: 1px solid #ddd; 
 border-radius: 16px;
-padding: ${props => (props.isPortrait ? '40px 40px 30px' : '30px 30px 15px')}; 
+padding: 40px 40px 30px; 
 text-align: center;
 display: flex;
 flex-direction: column;

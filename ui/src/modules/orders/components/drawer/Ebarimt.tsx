@@ -35,29 +35,23 @@ export default class Ebarimt extends React.Component<Props, State> {
     const { selectedEbarimtType } = this.state;
 
     return (
-      <React.Fragment>
-        <EbarimtButton isPortrait={isPortrait}>
-          <Button
-            className={
-              selectedEbarimtType === BILL_TYPES.CITIZEN ? 'active' : ''
-            }
-            onClick={() => this.onChange(BILL_TYPES.CITIZEN)}
-            size="large"
-          >
-            {__('Person')}
-          </Button>
-          <Button
-            className={
-              selectedEbarimtType === BILL_TYPES.ENTITY ? 'active' : ''
-            }
-            onClick={() => this.onChange(BILL_TYPES.ENTITY)}
-            onMouseDown={onBillTypeChange}
-            size="large"
-          >
-            {__('Organization')}
-          </Button>
-        </EbarimtButton>
-      </React.Fragment>
+      <EbarimtButton isPortrait={isPortrait}>
+        <Button
+          className={selectedEbarimtType === BILL_TYPES.CITIZEN ? 'active' : ''}
+          onClick={() => this.onChange(BILL_TYPES.CITIZEN)}
+          size="large"
+        >
+          {__('Person')}
+        </Button>
+        <Button
+          className={selectedEbarimtType === BILL_TYPES.ENTITY ? 'active' : ''}
+          onClick={() => this.onChange(BILL_TYPES.ENTITY)}
+          onMouseDown={onBillTypeChange}
+          size="large"
+        >
+          {__('Organization')}
+        </Button>
+      </EbarimtButton>
     );
   } // end render()
 }

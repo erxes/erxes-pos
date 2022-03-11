@@ -549,10 +549,12 @@ export default class Pos extends React.Component<Props, State> {
                   addOrder={this.addOrder}
                   editOrder={this.editOrder}
                   setOrderState={this.setOrderState}
+                  setItems={this.setItems}
                   onChangeProductBodyType={this.onChangeProductBodyType}
                   items={items}
                   changeItemCount={this.changeItemCount}
                   changeItemIsTake={this.changeItemIsTake}
+                  productBodyType={this.state.productBodyType}
                   config={currentConfig}
                   order={order}
                   type={type}

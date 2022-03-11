@@ -671,9 +671,9 @@ export const FlexColumn = styled.div`
 `;
 
 export const CardInputColumn = styled(FlexColumn)`
-  margin-right: 10px;
   align-items: end;
   align-self: flex-start;
+  text-align: center;
 `;
 
 export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
@@ -727,6 +727,7 @@ export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
 export const Input = styledTS<{ color?: string }>(styled.div)`
   display: flex;
   align-items: center;
+  width: 150px;
 
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -847,4 +848,16 @@ export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
     }
     
   }
+`;
+
+export const EntityChecker = styled.div`
+  border: 1px solid antiquewhite;
+  display: flex;
+  border-radius: 16px;
+  padding: 15px;
+`;
+
+export const ButtonGroup = styled.div`
+  margin-left: 30px;
+  height: 30px;
 `;

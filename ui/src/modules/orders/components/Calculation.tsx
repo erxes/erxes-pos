@@ -69,6 +69,7 @@ export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
 type Props = {
   orientation: string;
   totalAmount: number;
+  setItems: (items: IOrderItemInput[]) => void;
   addOrder: (callback?: () => void) => void;
   onChangeProductBodyType: (type: string) => void;
   setOrderState: (name: string, value: any) => void;
@@ -79,6 +80,7 @@ type Props = {
   editOrder: () => void;
   order: IOrder | null;
   type: string;
+  productBodyType?: any;
 };
 
 type State = {
@@ -99,7 +101,7 @@ export default class Calculation extends React.Component<Props, State> {
     const customerId = order ? order.customerId : '';
     const customerLabel = order ? generateLabel(order.customer) : '';
 
-    let stageHeight = window.innerHeight - 80; // types title
+    let stageHeight = window.innerHeight - 40; // types title
     const mode = localStorage.getItem('erxesPosMode') || '';
 
     if (mode === '') {
@@ -162,7 +164,13 @@ export default class Calculation extends React.Component<Props, State> {
   }
 
   renderSplitPaymentButton() {
-    const { order, addOrder, onChangeProductBodyType } = this.props;
+    const {
+      order,
+      addOrder,
+      onChangeProductBodyType,
+      productBodyType,
+      setItems
+    } = this.props;
 
     if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
       return null;
@@ -174,16 +182,34 @@ export default class Calculation extends React.Component<Props, State> {
       addOrder(callback);
     };
 
-    return (
-      <Types>
+    const onCancelOrder = () => {
+      setItems([]);
+    };
+
+    const buttonType = () => {
+      if (productBodyType === 'payment') {
+        return (
+          <Button btnStyle="simple" onClick={onCancelOrder}>
+            {__('Cancel order')}
+          </Button>
+        );
+      }
+
+      return (
         <Button
           btnStyle="simple"
           onClick={() => this.onChange(ORDER_TYPES.TAKE)}
         >
           {__('Take')}
         </Button>
+      );
+    };
+
+    return (
+      <Types>
+        {buttonType()}
         <Button btnStyle="success" onClick={onClick}>
-          {__('Payment')}
+          {productBodyType === 'payment' ? __('Payment') : __('Make an order')}
         </Button>
       </Types>
     );

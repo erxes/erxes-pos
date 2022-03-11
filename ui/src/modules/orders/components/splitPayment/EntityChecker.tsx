@@ -1,50 +1,69 @@
 import React from 'react';
-import Modal from 'react-bootstrap/Modal'
-
 import Button from 'modules/common/components/Button';
 import { __ } from 'modules/common/utils';
 import { IOrder } from 'modules/orders/types';
 import KeypadWithInput from './KeypadWithInput';
+import { BILL_TYPES } from '../drawer/PaymentForm';
+import { ButtonGroup, EntityChecker } from 'modules/orders/styles';
 
 type Props = {
   billType: string;
   onStateChange: (key: string, value: any) => void;
   order: IOrder;
-  showModal: boolean;
   registerNumber: string;
   onSubmit: () => void;
-}
+};
 
 export default class EbarimtModal extends React.Component<Props> {
   render() {
-    const { billType, order, showModal, onStateChange, registerNumber, onSubmit } = this.props;
+    const { billType, order, onStateChange, registerNumber, onSubmit } =
+      this.props;
 
-    const onClose = () => {
-      onStateChange('showRegModal', false);
-    }
+    const onClose = (value: string) => {
+      const billType = value;
 
-    const setAmount = (val) => {
+      this.setState({
+        billType,
+        showRegModal: billType === BILL_TYPES.CITIZEN
+      });
+    };
+    // console.log('close');
+    // onStateChange('showRegModal', false);
+
+    const setAmount = val => {
       onStateChange('registerNumber', val.toString());
     };
 
     return (
-      <Modal show={showModal}>
-        <Modal.Body>
-          <KeypadWithInput
-            billType={billType}
-            order={order}
-            setAmount={setAmount}
-            amount={registerNumber}
-            inputLabel={__('Register number')}
-            usePrefix={false}
-            getStringValue={true}
-          />
-        </Modal.Body>
-        <Modal.Footer style={{ padding: '20px', margin: '0' }}>
-          <Button btnStyle="success" icon="check" onClick={() => onSubmit()}>{__('Check')}</Button>
-          <Button btnStyle="simple" icon="cancel-1" onClick={onClose}>{__('Close')}</Button>
-        </Modal.Footer>
-      </Modal>
+      <EntityChecker>
+        <KeypadWithInput
+          billType={billType}
+          order={order}
+          setAmount={setAmount}
+          amount={registerNumber}
+          inputLabel={__('Register number')}
+          usePrefix={false}
+          getStringValue={true}
+        />
+        <ButtonGroup>
+          <Button
+            btnStyle="success"
+            size="small"
+            icon="check"
+            onClick={() => onSubmit()}
+          >
+            {__('Check')}
+          </Button>
+          <Button
+            btnStyle="simple"
+            icon="cancel-1"
+            size="small"
+            onClick={() => onClose(billType)}
+          >
+            {__('Close')}
+          </Button>
+        </ButtonGroup>
+      </EntityChecker>
     );
   }
 }
