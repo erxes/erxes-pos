@@ -193,7 +193,11 @@ export default class CardInput extends React.Component<Props, State> {
           </FormGroup>
           <ButtonWrapper>
             {amount ? (
-              <Button btnStyle="warning" onClick={sendTransaction} size="small">
+              <Button
+                btnStyle="warning"
+                onClick={sendTransaction}
+                style={{ padding: '10px' }}
+              >
                 {__('Send transaction')}
               </Button>
             ) : null}

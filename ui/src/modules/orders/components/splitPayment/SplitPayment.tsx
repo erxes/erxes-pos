@@ -1,6 +1,4 @@
 import React from 'react';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
 import styled from 'styled-components';
 import gql from 'graphql-tag';
 
@@ -37,8 +35,6 @@ const TabContentWrapper = styled.div`
   padding: 20px;
   border-top: ${DASHED_BORDER};
 `;
-
-// const POS_MODE = localStorage.getItem('erxesPosMode') || '';
 
 type Props = {
   order: IOrder;
@@ -208,17 +204,15 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     if (currentTab === 'cash') {
       return (
-        <Row>
-          <Col md={4}>
-            <KeypadWithInput
-              billType={billType}
-              order={order}
-              setAmount={setAmount}
-              amount={amount}
-              inputLabel={__('In Cash')}
-            />
-          </Col>
-        </Row>
+        <FlexCenter>
+          <KeypadWithInput
+            billType={billType}
+            order={order}
+            setAmount={setAmount}
+            amount={amount}
+            inputLabel={__('In Cash')}
+          />
+        </FlexCenter>
       );
     }
 

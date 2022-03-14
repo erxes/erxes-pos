@@ -635,7 +635,6 @@ export const SearchInputWrapper = styledTS<{
   display: flex;
   padding: 0 ${dimensions.unitSpacing}px;
   align-items: center;
-  position: relative;
 
   > span {
     color: ${colors.colorCoreGray};
@@ -724,10 +723,10 @@ export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
   }
 `;
 
-export const Input = styledTS<{ color?: string }>(styled.div)`
+export const Input = styledTS<{ color?: string; setBill?: string }>(styled.div)`
   display: flex;
   align-items: center;
-  width: 150px;
+  width: ${props => (props.setBill ? '320px' : '150px')};
 
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -851,13 +850,15 @@ export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
 `;
 
 export const EntityChecker = styled.div`
-  border: 1px solid antiquewhite;
+  border: 1px solid #ff7800;
   display: flex;
   border-radius: 16px;
-  padding: 15px;
+  padding: 10px;
 `;
 
 export const ButtonGroup = styled.div`
-  margin-left: 30px;
-  height: 30px;
+  margin-left: 20px;
+  height: 50px;
+  display: flex;
+  align-items: center;
 `;

@@ -14,9 +14,10 @@ type Props = {
   order: IOrder;
   setAmount: (amount: number | string) => void;
   amount: number | string;
-  inputLabel: string;
+  inputLabel?: string;
   usePrefix?: boolean;
   getStringValue?: boolean;
+  setBill?: string;
 };
 
 export default class CardInput extends React.Component<Props> {
@@ -40,7 +41,8 @@ export default class CardInput extends React.Component<Props> {
       inputLabel,
       amount,
       usePrefix,
-      getStringValue
+      getStringValue,
+      setBill
     } = this.props;
 
     const inputProps: any = {
@@ -63,8 +65,8 @@ export default class CardInput extends React.Component<Props> {
     return (
       <React.Fragment>
         <FormGroup>
-          <ControlLabel>{__(inputLabel)}</ControlLabel>
-          <Input color={color}>
+          {inputLabel ? <ControlLabel>{__(inputLabel)}</ControlLabel> : ''}
+          <Input color={color} setBill={setBill}>
             <NumberFormat
               value={amount}
               onValueChange={onValueChange}

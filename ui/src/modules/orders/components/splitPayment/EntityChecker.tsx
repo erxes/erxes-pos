@@ -3,7 +3,6 @@ import Button from 'modules/common/components/Button';
 import { __ } from 'modules/common/utils';
 import { IOrder } from 'modules/orders/types';
 import KeypadWithInput from './KeypadWithInput';
-import { BILL_TYPES } from '../drawer/PaymentForm';
 import { ButtonGroup, EntityChecker } from 'modules/orders/styles';
 
 type Props = {
@@ -19,16 +18,9 @@ export default class EbarimtModal extends React.Component<Props> {
     const { billType, order, onStateChange, registerNumber, onSubmit } =
       this.props;
 
-    const onClose = (value: string) => {
-      const billType = value;
-
-      this.setState({
-        billType,
-        showRegModal: billType === BILL_TYPES.CITIZEN
-      });
+    const onClose = () => {
+      onStateChange('showEntity', false);
     };
-    // console.log('close');
-    // onStateChange('showRegModal', false);
 
     const setAmount = val => {
       onStateChange('registerNumber', val.toString());
@@ -41,9 +33,10 @@ export default class EbarimtModal extends React.Component<Props> {
           order={order}
           setAmount={setAmount}
           amount={registerNumber}
-          inputLabel={__('Register number')}
+          inputLabel={__('')}
           usePrefix={false}
           getStringValue={true}
+          setBill="entity"
         />
         <ButtonGroup>
           <Button
@@ -58,7 +51,7 @@ export default class EbarimtModal extends React.Component<Props> {
             btnStyle="simple"
             icon="cancel-1"
             size="small"
-            onClick={() => onClose(billType)}
+            onClick={() => onClose()}
           >
             {__('Close')}
           </Button>

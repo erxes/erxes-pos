@@ -359,6 +359,7 @@ class PaymentForm extends React.Component<Props, State> {
             isPortrait={isPortrait}
             onChange={onChangeReg}
             focusOnKeypads={this.focusOnRegisterInput}
+            setBill="Entity"
           />
         </Header>
         <PaymentWrapper isPortrait={isPortrait}>

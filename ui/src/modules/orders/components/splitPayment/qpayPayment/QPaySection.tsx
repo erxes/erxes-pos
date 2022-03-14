@@ -80,7 +80,7 @@ export default class QPaySection extends React.Component<Props, State> {
       <div>
         <CardInputColumn>
           <FormGroup>
-            <ControlLabel>{__('By QPay')}</ControlLabel>
+            <ControlLabel>{__('Pay with QPay')}</ControlLabel>
             <Input>
               <NumberFormat
                 name="qpayAmount"
