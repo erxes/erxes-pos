@@ -27,6 +27,11 @@ export default class CardInput extends React.Component<Props> {
     if (num === 'CE') {
       return setAmount(0);
     }
+
+    if (num === 'C') {
+      return setAmount(parseFloat(amount.toString().slice(0, -1)));
+    }
+
     if (getStringValue) {
       return setAmount(amount + num);
     }

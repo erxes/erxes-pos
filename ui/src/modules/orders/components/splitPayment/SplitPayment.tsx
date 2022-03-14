@@ -226,6 +226,10 @@ export default class SplitPayment extends React.Component<Props, State> {
       return this.setState({ amount: 0 });
     }
 
+    if (num === 'C') {
+      return this.setState({ amount: parseFloat(amount.toString().slice(0, -1)) });
+    }
+
     return this.setState({ amount: amount + num });
   };
 
