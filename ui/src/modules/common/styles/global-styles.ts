@@ -47,7 +47,6 @@ body {
       width: 60.666667% !important;
     }
   }
- 
 }
 
 a {

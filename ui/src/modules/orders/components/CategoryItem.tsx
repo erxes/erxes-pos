@@ -1,10 +1,8 @@
 import React from 'react';
 
 import { AppContext } from 'appContext';
-import { ProductCategory } from '../styles';
-// import { FlexCenter } from 'modules/common/styles/main';
+import { CategoryItems, Lines, ProductCategory } from '../styles';
 import { IProductCategory } from '../types';
-// import { LeftCategory } from './kiosk/style';
 
 type Props = {
   category: IProductCategory;
@@ -29,20 +27,23 @@ export default function CategoryItem(props: Props) {
     const mode = localStorage.getItem('erxesPosMode');
 
     return (
-      <ProductCategory
-        isActive={category._id === activeCategoryId}
-        onClick={() => onClickCategory(category._id)}
-        color={color}
-        isPortrait={orientation === 'portrait'}
-      >
-        <div className={mode === 'kiosk' ? 'item-list' : 'image-wrapper'}>
-          <img
-            src={attachmentUrl ? attachmentUrl : 'images/no-category.jpg'}
-            alt={name}
-          />
-          <span>{name}</span>
-        </div>
-      </ProductCategory>
+      <CategoryItems>
+        <ProductCategory
+          isActive={category._id === activeCategoryId}
+          onClick={() => onClickCategory(category._id)}
+          color={color}
+          isPortrait={orientation === 'portrait'}
+        >
+          <div className={mode === 'kiosk' ? 'item-list' : 'image-wrapper'}>
+            <img
+              src={attachmentUrl ? attachmentUrl : 'images/no-category.jpg'}
+              alt={name}
+            />
+            <span>{name}</span>
+          </div>
+        </ProductCategory>
+        <Lines isActive={category._id === activeCategoryId}></Lines>
+      </CategoryItems>
     );
   };
 

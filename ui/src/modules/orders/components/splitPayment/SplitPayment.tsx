@@ -184,7 +184,9 @@ export default class SplitPayment extends React.Component<Props, State> {
           order={order}
           addCardPayment={addCardPayment}
           billType={billType}
-          amount={remainder - this.state.amount}
+          // amount={remainder - this.state.amount}
+          amount={amount || 0}
+          remainder={remainder || 0}
         />
       );
     }
@@ -197,7 +199,9 @@ export default class SplitPayment extends React.Component<Props, State> {
           createQPayInvoice={createQPayInvoice}
           checkQPayInvoice={checkQPayInvoice}
           cancelQPayInvoice={cancelQPayInvoice}
+          amount={amount}
           maxAmount={remainder - this.state.amount}
+          remainder={remainder || 0}
         />
       );
     }
@@ -227,7 +231,9 @@ export default class SplitPayment extends React.Component<Props, State> {
     }
 
     if (num === 'C') {
-      return this.setState({ amount: parseFloat(amount.toString().slice(0, -1)) });
+      return this.setState({
+        amount: parseFloat(amount.toString().slice(0, -1))
+      });
     }
 
     return this.setState({ amount: amount + num });
@@ -244,6 +250,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       if (currentTab !== type) {
         return <img src={`/images/${img}`} alt={`payment-${type}`} />;
       }
+
       return this.renderTabContent();
     };
 

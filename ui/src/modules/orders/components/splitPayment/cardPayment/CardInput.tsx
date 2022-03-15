@@ -20,6 +20,7 @@ type Props = {
   addCardPayment: (params: ICardPayment) => void;
   order: IOrder;
   maxAmount?: number;
+  remainder?: number;
 };
 
 type State = {
@@ -39,6 +40,12 @@ export default class CardInput extends React.Component<Props, State> {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.maxAmount !== this.props.maxAmount) {
+      this.setState({ amount: nextProps.maxAmount });
+    }
+  }
+
   onChangeKeyPad = num => {
     const { amount } = this.state;
 
@@ -47,18 +54,26 @@ export default class CardInput extends React.Component<Props, State> {
     }
 
     if (num === 'C') {
-      return this.setState({ amount: parseFloat(amount.toString().slice(0, -1)) });
+      return this.setState({
+        amount: parseFloat(amount.toString().slice(0, -1))
+      });
     }
 
     return this.setState({ amount: amount + num });
   };
 
   render() {
-    const { color = '', addCardPayment, order, maxAmount = 0 } = this.props;
+    const {
+      color = '',
+      addCardPayment,
+      order,
+      maxAmount = 0,
+      remainder
+    } = this.props;
 
     const { amount } = this.state;
 
-    const { number, _id } = order;
+    const { _id } = order;
 
     if (!_id) {
       return null;
@@ -147,7 +162,7 @@ export default class CardInput extends React.Component<Props, State> {
                     version: '334'
                   }
                 };
-                console.log(number);
+
                 if (r && r.status === true && r.response) {
                   if (r.response.response_code === '000') {
                     Alert.success(
@@ -186,7 +201,7 @@ export default class CardInput extends React.Component<Props, State> {
             <Input color={color}>
               <NumberFormat
                 name="cardAmount"
-                value={amount}
+                value={amount ? amount : remainder || 0}
                 onValueChange={values => handleInput(values.floatValue)}
                 {...inputProps}
               />

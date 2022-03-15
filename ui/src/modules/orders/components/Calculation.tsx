@@ -18,7 +18,7 @@ import OrderInfo from './splitPayment/OrderInfo';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
 
-  padding: 0 5px 0 5px;
+  padding: 0 10px 0 10px;
   height: 100%;
   box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
   border-radius: 16px;

@@ -210,6 +210,11 @@ const imgSize = `img {
   height: 36px;
 }`;
 
+export const CategoryItems = styled.div`
+  display: flex;
+  position: relative;
+`;
+
 export const ProductCategory = styledTS<{
   isActive?: boolean;
   color?: string;
@@ -222,7 +227,7 @@ export const ProductCategory = styledTS<{
     props.isPortrait ? '2px 2px 4px rgba(0, 0, 0, 0.25)' : ''};
   margin: ${props => (props.isPortrait ? '0 20px 20px 0' : '10px 0 0 0')};
   padding: ${props => (props.isPortrait ? '' : `5px`)};
-  width: ${props => (props.isPortrait ? '110px' : '')};
+  width: ${props => (props.isPortrait ? '110px' : 'fit-content')};
   height:  ${props => (props.isPortrait ? '120px;' : '')};
   background: ${props =>
     props.isActive
@@ -232,7 +237,11 @@ export const ProductCategory = styledTS<{
       : ''};
   cursor: pointer;
   border: ${props =>
-    props.isActive ? (props.isPortrait ? '' : '1px solid #FF7800') : ''};
+    props.isActive
+      ? props.isPortrait
+        ? ''
+        : '1px solid #FF7800'
+      : '0.3px solid #F5F5F5'};
   color: ${props => props.isActive && props.color};
   transition: all ease .3s;
   display: flex;
@@ -277,6 +286,32 @@ export const ProductCategory = styledTS<{
       props.isPortrait ? '0 0 21px 2px rgba(0, 0, 0, 0.16)' : ''};
     border: ${props => (props.isPortrait ? '' : '0.3px solid #FF7800')};
   }
+`;
+
+export const Lines = styledTS<{ isActive?: boolean }>(styled.div)`
+  height: 20px;
+  transition: all ease 0.3s;
+
+  ::after {
+    content: '';
+    position: absolute;
+    margin: auto;
+    height: 1px;
+    background: ${props => (props.isActive ? '#ff7800' : '')};
+    width:  ${props => (props.isActive ? '65%' : '')};
+    top: 33px;
+    transition: all ease 0.5s;
+  }
+
+  .circle {
+    height: 10px;
+    width: 10px;
+    border: 1px solid #ff7800;
+    border-radius: 50%;
+    top: 29px;
+    position: absolute;
+  }
+ 
 `;
 
 export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(

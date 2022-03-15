@@ -20,6 +20,8 @@ type Props = {
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
   maxAmount?: number;
+  remainder?: number;
+  amount?: number;
 };
 
 type State = {

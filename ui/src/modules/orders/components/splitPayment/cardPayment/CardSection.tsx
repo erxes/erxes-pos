@@ -9,10 +9,11 @@ type Props = {
   addCardPayment: (params: ICardPayment) => void;
   billType: string;
   amount?: number;
+  remainder: number;
 };
 export default class CardSection extends React.Component<Props> {
   render() {
-    const { order, addCardPayment, billType, amount } = this.props;
+    const { order, addCardPayment, billType, amount, remainder } = this.props;
 
     return (
       <FlexCenter>
@@ -20,6 +21,7 @@ export default class CardSection extends React.Component<Props> {
           billType={billType}
           addCardPayment={addCardPayment}
           order={order}
+          remainder={remainder}
           maxAmount={amount}
         />
       </FlexCenter>

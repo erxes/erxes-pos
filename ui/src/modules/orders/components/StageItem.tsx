@@ -12,13 +12,13 @@ import Tip from 'modules/common/components/Tip';
 import { PackageProduct } from '../styles';
 import { __ } from 'erxes-ui/lib/utils/core';
 
-const Item = styled.div`
+const Item = styledTS<{ isTaken?: boolean }>(styled.div)`
   background: #fff;
-  border: 1px solid #ff7800;
+  border: ${props =>
+    props.isTaken ? '1px solid #616E7C' : '1px solid #904300'}; 
   border-radius: 8px;
   position: relative;
   margin-bottom: 10px;
-  margin-right: 4px;
 `;
 
 const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
@@ -48,11 +48,13 @@ const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
   }
 `;
 
-export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
+export const Text = styledTS<{ isPortrait?: boolean; isTaken?: boolean }>(
+  styled.div
+)`
   padding: ${props => (props.isPortrait ? '' : '5px')};
   font-size: ${props => props.isPortrait && '12px'};
   margin-top: ${props => props.isPortrait && ''};
-  color: ${props => (props.isPortrait ? '' : '#904300')};
+  color: ${props => (props.isTaken ? '#616E7C' : '#904300')};
   display: ${props => (props.isPortrait ? '' : 'flex')};
   align-items: center;
 
@@ -71,7 +73,8 @@ export const Text = styledTS<{ isPortrait?: boolean }>(styled.div)`
   input {
     width:20px;
     height: 20px;
-    border-radius: 30px;
+    clip-path: circle();
+
   }
 `;
 
@@ -217,9 +220,9 @@ export default class StageItem extends React.Component<Props, State> {
     }
 
     return (
-      <Item>
+      <Item isTaken={item.isTake}>
         <FlexBetween>
-          <Text>
+          <Text isTaken={item.isTake}>
             {this.renderCheckbox()}
             <div>
               <b>{this.renderName()}</b>
