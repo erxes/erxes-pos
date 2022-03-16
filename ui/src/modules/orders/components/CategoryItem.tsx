@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { AppContext } from 'appContext';
-import { CategoryItems, Lines, ProductCategory } from '../styles';
+import { CategoryItems, LeftCircle, Lines, ProductCategory } from '../styles';
 import { IProductCategory } from '../types';
 
 type Props = {
@@ -42,7 +42,14 @@ export default function CategoryItem(props: Props) {
             <span>{name}</span>
           </div>
         </ProductCategory>
-        <Lines isActive={category._id === activeCategoryId}></Lines>
+        {!mode && (
+          <>
+            <LeftCircle
+              isActive={category._id === activeCategoryId}
+            ></LeftCircle>
+            <Lines isActive={category._id === activeCategoryId}></Lines>
+          </>
+        )}
       </CategoryItems>
     );
   };

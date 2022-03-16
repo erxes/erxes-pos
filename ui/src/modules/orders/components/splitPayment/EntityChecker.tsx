@@ -40,7 +40,7 @@ export default class EbarimtModal extends React.Component<Props> {
         />
         <ButtonGroup>
           <Button
-            btnStyle="success"
+            btnStyle="warning"
             size="small"
             icon="check"
             onClick={() => onSubmit()}
@@ -53,7 +53,7 @@ export default class EbarimtModal extends React.Component<Props> {
             size="small"
             onClick={() => onClose()}
           >
-            {__('Close')}
+            {__('Back')}
           </Button>
         </ButtonGroup>
       </EntityChecker>

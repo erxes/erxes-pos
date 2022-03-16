@@ -38,7 +38,8 @@ export const StageItems = styledTS<{
 
   /* width */
   ::-webkit-scrollbar {
-    width: ${props => (props.innerWidth ? `${props.innerWidth * 0.01}px` : '')}
+    width: ${props =>
+      props.innerWidth ? `${props.innerWidth * 0.01}px` : '6px'}
   }
 
   /* Track */
@@ -199,7 +200,6 @@ export const CategoriesColumn = styled.div`
 
   @media (max-width: 1170px) and (orientation: landscape) {
     max-height: 450px;
-    overflow: auto;
   }
 `;
 
@@ -298,20 +298,25 @@ export const Lines = styledTS<{ isActive?: boolean }>(styled.div)`
     margin: auto;
     height: 1px;
     background: ${props => (props.isActive ? '#ff7800' : '')};
-    width:  ${props => (props.isActive ? '65%' : '')};
-    top: 33px;
+    width:  ${props => (props.isActive ? '80%' : '')};
+    top: 35px;
     transition: all ease 0.5s;
   }
 
-  .circle {
-    height: 10px;
-    width: 10px;
-    border: 1px solid #ff7800;
-    border-radius: 50%;
-    top: 29px;
-    position: absolute;
+  @media (max-width: 1200px) and (orientation:landscape) {
+    ::after {
+      width:  ${props => (props.isActive ? '50%' : '')};
+    }
   }
- 
+`;
+
+export const LeftCircle = styledTS<{ isActive?: boolean }>(styled.div)`
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: ${props => (props.isActive ? '1px solid #ff7800;' : '')};
+  margin-top: 31px;
+  margin-left: 3px;
 `;
 
 export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
@@ -761,13 +766,14 @@ export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
 export const Input = styledTS<{ color?: string; setBill?: string }>(styled.div)`
   display: flex;
   align-items: center;
-  width: ${props => (props.setBill ? '320px' : '150px')};
+  width: ${props => (props.setBill ? '700px' : '150px')};
 
-  border: 1px solid #ddd;
+  border: ${props => (props.setBill ? '1px solid #ff7800' : '1px solid #ddd')};
   border-radius: 8px;
   padding: 3px 10px;
   flex: 1;
   margin-top: 5px;
+  margin-left: 5px;
 
   input {
     border: 0;
@@ -783,6 +789,10 @@ export const Input = styledTS<{ color?: string; setBill?: string }>(styled.div)`
     &:focus {
       outline: 0;
     }
+  }
+
+  @media (max-width: 1250px) and (orientation: landscape){
+    width: ${props => (props.setBill ? '320px' : '')};
   }
 
   > div {
@@ -885,10 +895,8 @@ export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
 `;
 
 export const EntityChecker = styled.div`
-  border: 1px solid #ff7800;
   display: flex;
   border-radius: 16px;
-  padding: 10px;
 `;
 
 export const ButtonGroup = styled.div`

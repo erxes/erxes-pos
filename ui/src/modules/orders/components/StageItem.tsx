@@ -73,8 +73,6 @@ export const Text = styledTS<{ isPortrait?: boolean; isTaken?: boolean }>(
   input {
     width:20px;
     height: 20px;
-    clip-path: circle();
-
   }
 `;
 
@@ -134,6 +132,7 @@ export default class StageItem extends React.Component<Props, State> {
         <label>
           <FormControl
             type="checkbox"
+            round={true}
             name="itemIsTake"
             onChange={onChange}
             checked={item.isTake}

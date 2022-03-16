@@ -132,11 +132,36 @@ export const PortraitStage = styled.div`
   }
 `;
 
-export const KioskStageContent = styled.div`
+export const KioskStageContent = styledTS<{
+  color?: string;
+  innerWidth?: number;
+}>(styled.div)`
   display: flex;
   margin: 38px;
   width: 100%;
   height: '100px';
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: ${props =>
+      props.innerWidth ? `${props.innerWidth * 0.01}px` : '6px'};
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: ${props => (props.color ? props.color : colors.colorSecondary)};
+    border-radius: 40px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${props => (props.color ? props.color : colors.colorSecondary)};
+  }
 `;
 
 export const SelectedItem = styled.div`

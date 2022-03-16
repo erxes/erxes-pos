@@ -44,7 +44,10 @@ export default class Stage extends React.Component<Props> {
 
     if (mode === 'kiosk') {
       return (
-        <KioskStageContent>
+        <KioskStageContent
+          innerWidth={window.innerWidth}
+          color={options.colors.primary}
+        >
           {items.map(i => (
             <StageItem
               orientation={orientation}
@@ -66,7 +69,7 @@ export default class Stage extends React.Component<Props> {
         <StageItems
           height={stageHeight}
           innerWidth={window.innerWidth}
-          color={options.colors.secondary}
+          color={options.colors.primary}
         >
           {items.map(i => (
             <StageItem

@@ -18,15 +18,11 @@ const Wrapper = styledTS<{ color?: string }>(styled.div)`
   display: flex;
   justify-content: space-between;
   overflow: hidden;
-  max-width:1080px;
+  max-width:100%;
 
   button {
     padding: 10px 20px;
     border-radius: 8px;
-  }
-
-  .ioevLe:checked + span:before, .hCqfzh .react-toggle--checked .react-toggle-track {
-    background-color: ${props => props.color && props.color};
   }
 `;
 
