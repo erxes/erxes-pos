@@ -180,7 +180,7 @@ export default class Calculation extends React.Component<Props, State> {
   }
 
   renderPaymentButton() {
-    const { order, onClickDrawer, config, totalAmount, editOrder } = this.props;
+    const { order, onClickDrawer, config, editOrder, items } = this.props;
 
     if (!order || (order && order.paidDate)) {
       return null;
@@ -198,7 +198,7 @@ export default class Calculation extends React.Component<Props, State> {
         onClick={onClick}
         icon="dollar-alt"
         block
-        disabled={!totalAmount || totalAmount === 0 ? true : false}
+        disabled={items.length === 0 ? true : false}
       >
         {__("Pay the bill")}
       </Button>
