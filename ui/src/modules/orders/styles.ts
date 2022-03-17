@@ -455,7 +455,7 @@ export const Types = styled.div`
 
   button {
     width: 50%;
-    padding: 10px 10px;
+    padding: 15px 10px;
     border-radius: 8px;
 
     span {
@@ -855,8 +855,8 @@ export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
   padding: 10px;
   margin-bottom: 10px;
   font-weight: ${props => (props.isPortrait ? '300' : '600')}
-  border-color:${props => props.color && props.color}
-  color:${props => (props.isPortrait ? colors.colorCoreBlack : props.color)}
+  border-color: #904300;
+  color: #904300;
   height: ${props => (props.isPortrait ? ' 115px' : '')}
   display: ${props => (props.isPortrait ? ' block' : '')};
   margin-top: ${props => (props.isPortrait ? ' 20px' : '')};

@@ -35,6 +35,8 @@ import { NavLink } from 'react-router-dom';
 import { NavIcon } from 'modules/layout/styles';
 import FooterCalculation from './kiosk/FooterCalculation';
 import SplitPaymentContainer from '../containers/SplitPaymentContainer';
+import { Cards, TypeWrapper } from './drawer/style';
+import { __ } from 'modules/common/utils';
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ '../containers/ProductsContainer')
@@ -411,6 +413,28 @@ export default class Pos extends React.Component<Props, State> {
     );
   }
 
+  renderDone() {
+    const { orientation, order } = this.props;
+    const isPortrait = orientation === 'portrait';
+
+    return (
+      <TypeWrapper isPortrait={isPortrait}>
+        <h2>{__('Thank you for choosing us')}</h2>
+
+        <Cards isPortrait={isPortrait}>
+          <div>
+            <img src="/images/done-relax.gif" alt="card-reader" />
+          </div>
+        </Cards>
+
+        <h2>
+          {__('Your number')}:
+          <b>{order && order.number ? order.number.split('_')[1] : ''}</b>
+        </h2>
+      </TypeWrapper>
+    );
+  }
+
   renderProductBody() {
     const { addCustomer, order } = this.props;
     const { productBodyType } = this.state;
@@ -436,6 +460,9 @@ export default class Pos extends React.Component<Props, State> {
             onChangeProductBodyType={this.onChangeProductBodyType}
           ></CustomerForm>
         );
+      }
+      case 'done': {
+        return this.renderDone();
       }
       default: {
         return null;

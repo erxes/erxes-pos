@@ -182,34 +182,37 @@ export default class Calculation extends React.Component<Props, State> {
       addOrder(callback);
     };
 
+    const paymentDone = () => {
+      onChangeProductBodyType('done');
+    };
+
     const onCancelOrder = () => {
       setItems([]);
     };
 
-    const buttonType = () => {
-      if (productBodyType === 'payment') {
-        return (
-          <Button btnStyle="simple" onClick={onCancelOrder}>
+    if (productBodyType === 'payment') {
+      return (
+        <Types>
+          <Button style={{ background: '#616E7C' }} onClick={onCancelOrder}>
             {__('Cancel order')}
           </Button>
-        );
-      }
+          <Button btnStyle="success" onClick={paymentDone}>
+            {__('Payment')}
+          </Button>
+        </Types>
+      );
+    }
 
-      return (
+    return (
+      <Types>
         <Button
-          btnStyle="simple"
+          style={{ background: '#616E7C' }}
           onClick={() => this.onChange(ORDER_TYPES.TAKE)}
         >
           {__('Take')}
         </Button>
-      );
-    };
-
-    return (
-      <Types>
-        {buttonType()}
         <Button btnStyle="success" onClick={onClick}>
-          {productBodyType === 'payment' ? __('Payment') : __('Make an order')}
+          {__('Make an order')}
         </Button>
       </Types>
     );
@@ -352,6 +355,7 @@ export default class Calculation extends React.Component<Props, State> {
               this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
             {this.renderOrderInfo()}
             {this.renderSplitPaymentButton()}
+            {this.renderReceiptButton()}
           </ButtonWrapper>
         </Wrapper>
       </>
