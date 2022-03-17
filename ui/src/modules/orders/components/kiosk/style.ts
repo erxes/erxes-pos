@@ -268,9 +268,10 @@ export const EbarimtButton = styledTS<{
   justify-content: center;
   margin: ${props => props.isPortrait && '5px 0 30px 0'};
   font-size: 18px;
+  padding: 0 5px;
 
   button {
-    width: 50%;
+    width: 49%;
     padding: 20px 20px;
     background-color: ${colors.colorWhite};
     border: 1px solid #616E7C;

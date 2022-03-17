@@ -766,7 +766,7 @@ export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
 export const Input = styledTS<{ color?: string; setBill?: string }>(styled.div)`
   display: flex;
   align-items: center;
-  width: ${props => (props.setBill ? '700px' : '150px')};
+  width: ${props => (props.setBill ? '500px' : '150px')};
 
   border: ${props => (props.setBill ? '1px solid #ff7800' : '1px solid #ddd')};
   border-radius: 8px;
@@ -896,7 +896,6 @@ export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
 
 export const EntityChecker = styled.div`
   display: flex;
-  border-radius: 16px;
 `;
 
 export const ButtonGroup = styled.div`
