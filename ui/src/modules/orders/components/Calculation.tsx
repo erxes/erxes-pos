@@ -169,7 +169,8 @@ export default class Calculation extends React.Component<Props, State> {
       addOrder,
       onChangeProductBodyType,
       productBodyType,
-      setItems
+      setItems,
+      type
     } = this.props;
 
     if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
@@ -205,12 +206,23 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <Types>
-        <Button
-          style={{ background: '#616E7C' }}
-          onClick={() => this.onChange(ORDER_TYPES.TAKE)}
-        >
-          {__('Take')}
-        </Button>
+        {
+          type === 'eat'
+            ?
+            <Button
+              style={{ background: '#9ba3ab' }}
+              onClick={() => this.onChange(ORDER_TYPES.TAKE)}
+            >
+              {__('Take')}
+            </Button>
+            :
+            <Button
+              style={{ background: '#525e6a' }}
+              onClick={() => this.onChange(ORDER_TYPES.EAT)}
+            >
+              {__('Take')}
+            </Button>
+        }
         <Button btnStyle="success" onClick={onClick}>
           {__('Make an order')}
         </Button>
@@ -256,7 +268,7 @@ export default class Calculation extends React.Component<Props, State> {
           });
           setOrderState('customerId', data._id);
         })
-        .catch(error => {});
+        .catch(error => { });
     };
 
     const onClearChosenCustomer = () => {
@@ -281,9 +293,9 @@ export default class Calculation extends React.Component<Props, State> {
 
     return order
       ? order.totalAmount -
-          ((order.cardAmount || 0) +
-            (order.cashAmount || 0) +
-            (order.mobileAmount || 0))
+      ((order.cardAmount || 0) +
+        (order.cashAmount || 0) +
+        (order.mobileAmount || 0))
       : 0;
   }
 

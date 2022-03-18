@@ -400,11 +400,6 @@ export default class Pos extends React.Component<Props, State> {
           {this.renderCurrentLogin(
             currentConfig ? currentConfig.uiOptions : {}
           )}
-          <div className="syncMenu">
-            {this.renderSyncMenu()}
-            {this.renderKitchenMenu()}
-            {this.renderWaitingMenu()}
-          </div>
           <ProductSearch productsQuery={productsQuery} />
         </FlexHeader>
         <Divider />
@@ -468,6 +463,28 @@ export default class Pos extends React.Component<Props, State> {
         return null;
       }
     }
+  }
+
+  renderMenu() {
+    const {
+      currentConfig,
+    } = this.props;
+    return (
+      <>
+        <FlexHeader>
+          <NavLink to={'/?home=true'}>
+            <img src={currentConfig.uiOptions.logo} alt="logo11" />
+          </NavLink>
+          <div className="syncMenu">
+            {this.renderSyncMenu()}
+            {this.renderKitchenMenu()}
+            {this.renderWaitingMenu()}
+          </div>
+        </FlexHeader>
+
+      </>
+    )
+
   }
 
   render() {
@@ -556,9 +573,8 @@ export default class Pos extends React.Component<Props, State> {
             <Col sm={3}>
               <MainContent numPadding={true}>
                 <PosMenuContent>
-                  <NavLink to={'/?home=true'}>
-                    <img src={currentConfig.uiOptions.logo} alt="logo11" />
-                  </NavLink>
+                  {this.renderMenu()}
+                  <Divider />
                   {categories}
                 </PosMenuContent>
               </MainContent>

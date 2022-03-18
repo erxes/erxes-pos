@@ -7,14 +7,12 @@ import { FlexCenter } from 'modules/common/styles/main';
 
 export const LogoWrapper = styledTS<{ odd?: boolean }>(styled.div)`
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding: ${props => (props.odd ? '40px 0 20px' : '20px')};
   height: 273px;
 
   img {
-    width: 439px;
     height: 113px;
-    margin-left: 64px;
     margin-top: 64px;
   }
 `;
@@ -292,7 +290,7 @@ export const KioskAmount = styledTS<{ color?: string }>(styled.div)`
   border: 1px solid ${props => props.color && props.color};
   border-radius: 8px;
   padding: 10px;
-  margin: 20px 0  10px 0; 
+  margin: 20px 0  10px 0;
   font-size: 18px;
 
   .total-wrapper {

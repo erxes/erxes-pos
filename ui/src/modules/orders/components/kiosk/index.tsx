@@ -87,7 +87,7 @@ export default class PortraitView extends React.Component<Props, State> {
   render() {
     const { currentConfig } = this.props;
     const { type } = this.state;
-    const { colors, logo, texts = {} } = currentConfig.uiOptions || ({} as any);
+    const { colors, bgImage, texts = {} } = currentConfig.uiOptions || ({} as any);
 
     if (type) {
       return <Pos {...this.props} type={this.state.type}></Pos>;
@@ -97,7 +97,7 @@ export default class PortraitView extends React.Component<Props, State> {
       <PortraitViewWrapper>
         <LogoWrapper>
           <Link to="/">
-            <img src={logo ? logo : `/images/headerKiosk.png`} alt="logo" />
+            <img src={bgImage ? bgImage : `/images/headerKiosk.png`} alt="logo" />
           </Link>
           {/* <Settings>
             <Icon icon="settings" size={20} color={'#fff'} />

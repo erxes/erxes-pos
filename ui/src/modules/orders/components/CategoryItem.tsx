@@ -24,8 +24,6 @@ export default function CategoryItem(props: Props) {
     currentConfig.uiOptions.colors.primary;
 
   const renderCategory = () => {
-    const mode = localStorage.getItem('erxesPosMode');
-
     return (
       <CategoryItems>
         <ProductCategory
@@ -34,7 +32,7 @@ export default function CategoryItem(props: Props) {
           color={color}
           isPortrait={orientation === 'portrait'}
         >
-          <div className={mode === 'kiosk' ? 'item-list' : 'image-wrapper'}>
+          <div className={orientation === 'portrait' ? 'item-list' : 'image-wrapper'}>
             <img
               src={attachmentUrl ? attachmentUrl : 'images/no-category.jpg'}
               alt={name}
@@ -42,14 +40,12 @@ export default function CategoryItem(props: Props) {
             <span>{name}</span>
           </div>
         </ProductCategory>
-        {!mode && (
-          <>
-            <LeftCircle
-              isActive={category._id === activeCategoryId}
-            ></LeftCircle>
-            <Lines isActive={category._id === activeCategoryId}></Lines>
-          </>
-        )}
+        <>
+          <LeftCircle
+            isActive={category._id === activeCategoryId}
+          />
+          <Lines isActive={category._id === activeCategoryId} />
+        </>
       </CategoryItems>
     );
   };

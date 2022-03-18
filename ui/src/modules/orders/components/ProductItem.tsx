@@ -15,7 +15,6 @@ export default function ProductItem(props: Props) {
   const { product, addItem, orientation, isActive } = props;
   const { attachment, name, unitPrice } = product;
   const attachmentUrl = attachment && attachment.url ? attachment.url : '';
-  const mode = localStorage.getItem('erxesPosMode');
 
   const onClick = () => {
     addItem({
@@ -40,7 +39,7 @@ export default function ProductItem(props: Props) {
           alt={name}
         />
       </div>
-      <div className={mode === 'kiosk' ? 'text-kiosk' : 'text-wrapper'}>
+      <div className={orientation === 'portrait' ? 'text-kiosk' : 'text-wrapper'}>
         <h4>{name}</h4>
         <span>{formatNumber(unitPrice || 0)}₮</span>
       </div>

@@ -39,7 +39,7 @@ export const StageItems = styledTS<{
   /* width */
   ::-webkit-scrollbar {
     width: ${props =>
-      props.innerWidth ? `${props.innerWidth * 0.01}px` : '6px'}
+    props.innerWidth ? `${props.innerWidth * 0.01}px` : '6px'}
   }
 
   /* Track */
@@ -56,7 +56,7 @@ export const StageItems = styledTS<{
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: ${props =>
-      props.color ? props.color : colors.colorSecondary};;
+    props.color ? props.color : colors.colorSecondary};;
   }
 `;
 
@@ -89,7 +89,7 @@ export const PosMenuContent = styled.div`
   padding-top: 20px;
 
   img {
-    width: 100%;
+    width: 50px;
   }
 `;
 
@@ -133,6 +133,7 @@ export const KioskMainContent = styledTS<{ mainHeight?: number }>(styled.div)`
 
 export const KioskMenuContent = styled.div`
   width: 20%;
+  margin: 0 15px 0 10px;
 `;
 
 export const KioskProductsContent = styled.div`
@@ -160,7 +161,7 @@ export const ProductsWrapper = styledTS<{
   /* width */
   ::-webkit-scrollbar {
     width: ${props =>
-      props.innerWidth ? `${props.innerWidth * 0.02}px` : '10px'}
+    props.innerWidth ? `${props.innerWidth * 0.02}px` : '10px'}
   }
 
   /* Track */
@@ -177,26 +178,27 @@ export const ProductsWrapper = styledTS<{
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: ${props =>
-      props.color ? props.color : colors.colorSecondary};;
+    props.color ? props.color : colors.colorSecondary};;
   }
 
   @media (max-width: 1170px) and (orientation: landscape) {
     max-height: ${props =>
-      props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 60}px)`
-        : '570px'};
+    props.height && props.height !== 0
+      ? `calc(100% - ${props.height + 60}px)`
+      : '570px'};
   }
 
   @media (orientation: portrait) {
     max-height: ${props =>
-      props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 200}px)`
-        : '100%'};
+    props.height && props.height !== 0
+      ? `calc(100% - ${props.height + 200}px)`
+      : '100%'};
   }
 `;
 
 export const CategoriesColumn = styled.div`
   margin-top: 20px;
+  margin-right: -20px;
 
   @media (max-width: 1170px) and (orientation: landscape) {
     max-height: 450px;
@@ -225,9 +227,9 @@ export const ProductCategory = styledTS<{
   font-weight: 500;
   box-shadow: ${props =>
     props.isPortrait ? '2px 2px 4px rgba(0, 0, 0, 0.25)' : ''};
-  margin: ${props => (props.isPortrait ? '0 20px 20px 0' : '10px 0 0 0')};
+  margin: ${props => (props.isPortrait ? '0 0px 15px 0' : '10px 0 0 0')};
   padding: ${props => (props.isPortrait ? '' : `5px`)};
-  width: ${props => (props.isPortrait ? '110px' : 'fit-content')};
+  width: ${props => (props.isPortrait ? '100%' : 'fit-content')};
   height:  ${props => (props.isPortrait ? '120px;' : '')};
   background: ${props =>
     props.isActive
@@ -258,7 +260,7 @@ export const ProductCategory = styledTS<{
     ${imgSize}
 
     span {
-      padding-left: ${props => (props.isPortrait ? '5px' : '5px')}; 
+      padding-left: ${props => (props.isPortrait ? '5px' : '5px')};
     }
   }
 
@@ -283,7 +285,7 @@ export const ProductCategory = styledTS<{
 
   &:hover {
     box-shadow: ${props =>
-      props.isPortrait ? '0 0 21px 2px rgba(0, 0, 0, 0.16)' : ''};
+    props.isPortrait ? '0 0 21px 2px rgba(0, 0, 0, 0.16)' : ''};
     border: ${props => (props.isPortrait ? '' : '0.3px solid #FF7800')};
   }
 `;
@@ -404,7 +406,7 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
       margin-bottom: 5px;
       font-weight: bold;
       color: ${props =>
-        props.isPortrait && props.isActive ? '#1F2933' : '#616E7C;'};
+    props.isPortrait && props.isActive ? '#1F2933' : '#616E7C;'};
     }
 
     span {
@@ -423,7 +425,7 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
 
   &:hover {
     box-shadow: ${props =>
-      props.isPortrait ? '' : '0px 3px 4px rgba(0, 0, 0, 0.28);'};
+    props.isPortrait ? '' : '0px 3px 4px rgba(0, 0, 0, 0.28);'};
   }
 
 `;
@@ -560,24 +562,24 @@ export const DrawerContent = styledTS<{
   /* Handle */
   ::-webkit-scrollbar-thumb {
     background: ${props =>
-      props.options ? props.options.colors.secondary : colors.colorSecondary};
+    props.options ? props.options.colors.secondary : colors.colorSecondary};
     border-radius: 40px;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
     background: ${props =>
-      props.options ? props.options.colors.secondary : colors.colorSecondary};
+    props.options ? props.options.colors.secondary : colors.colorSecondary};
   }
 
   .ioevLe:checked + span:before, .react-toggle--checked .react-toggle-track {
     background-color: ${props =>
-      props.options && props.options.colors.primary} !important;
+    props.options && props.options.colors.primary} !important;
   }
 
   .react-toggle--checked .react-toggle-thumb, .react-toggle--checked:hover:not(.react-toggle--disabled) .react-toggle-track {
     border-color: ${props =>
-      props.options && props.options.colors.primary} !important;
+    props.options && props.options.colors.primary} !important;
   }
 `;
 
@@ -632,7 +634,7 @@ export const OrderBox = styledTS<{ color?: string; isPortrait: boolean }>(
 
       @media (max-width: 1200px) and (orientation: landscape) {
         font-size: 12px;
-      }  
+      }
     }
   }
 
@@ -670,8 +672,8 @@ export const SearchInputWrapper = styledTS<{
         ? '100%'
         : '280px'
       : props.full
-      ? '100%'
-      : '120px'};
+        ? '100%'
+        : '120px'};
   display: flex;
   padding: 0 ${dimensions.unitSpacing}px;
   align-items: center;
@@ -812,8 +814,8 @@ export const FlexHeader = styled.div`
   justify-content: space-between;
 
   .syncMenu {
-    flex: 1;
-    margin-left: 10px;
+    display: flex;
+    align-items: center;
 
     a {
       padding: 5px;
@@ -890,7 +892,7 @@ export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
         font-weight: 500;
       }
     }
-    
+
   }
 `;
 
