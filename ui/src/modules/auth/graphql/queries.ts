@@ -1,6 +1,6 @@
-const currentUser = `
-  query currentUser {
-    currentUser {
+const posCurrentUser = `
+  query posCurrentUser {
+    posCurrentUser {
       _id
       createdAt
       username
@@ -20,8 +20,8 @@ const currentUser = `
 `;
 
 const userChanged = `
-	subscription userChanged($userId: String) {
-		userChanged(userId: $userId)
+	subscription posUserChanged($userId: String) {
+		posUserChanged(userId: $userId)
   }
 `;
 
@@ -37,6 +37,8 @@ const currentConfig = `
       productDetails
       adminIds
       cashierIds
+      beginNumber
+      maxSkipNumber
       waitingScreen
       kioskMachine
       kitchenScreen
@@ -50,6 +52,7 @@ const currentConfig = `
         logo
         favIcon
         receiptIcon
+        texts
       }
 
       ebarimtConfig {
@@ -60,6 +63,7 @@ const currentConfig = `
         cityTaxPercent
         companyName
         ebarimtUrl
+        footerText
       }
 
       qpayConfig {
@@ -75,8 +79,10 @@ const currentConfig = `
         categoryId
         productId
       }
+      initialCategoryIds
+      kioskExcludeProductIds
     }
   }
 `;
 
-export default { currentUser, userChanged, currentConfig };
+export default { posCurrentUser, userChanged, currentConfig };

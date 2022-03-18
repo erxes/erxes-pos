@@ -9,12 +9,14 @@ import { IRouterProps } from '../../../types';
 import { withProps } from '../../utils';
 import { queries } from '../graphql/index';
 import Receipt from '../components/receipt/Receipt';
+import InnerReceipt from '../components/receipt/InnerReceipt';
 import { OrderDetailQueryResponse } from '../types';
 import KitchenReceipt from '../components/receipt/KitchenReceipt';
 
 type Props = {
   id: string;
   kitchen: string;
+  inner: string;
 };
 
 type FinalProps = {
@@ -23,7 +25,7 @@ type FinalProps = {
 
 class ReceiptContainer extends React.Component<FinalProps> {
   render() {
-    const { orderDetailQuery, kitchen } = this.props;
+    const { orderDetailQuery, kitchen, inner } = this.props;
 
     if (orderDetailQuery.loading) {
       return <Spinner />;
@@ -33,6 +35,10 @@ class ReceiptContainer extends React.Component<FinalProps> {
 
     if (kitchen === 'true') {
       return <KitchenReceipt order={order} />;
+    }
+
+    if (inner === 'true') {
+      return <InnerReceipt order={order} />;
     }
 
     return <Receipt order={order} />;

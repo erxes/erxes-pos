@@ -8,9 +8,8 @@ import { IConfig } from "types";
 import { Alert } from "modules/common/utils";
 
 type Props = {
-  currentUser?: IUser;
+  posCurrentUser?: IUser;
   currentConfig?: IConfig;
-  plugins?: any;
   orientation: string;
   children: React.ReactNode;
 };
@@ -20,7 +19,7 @@ const logout = () => {
     .mutate({
       mutation: gql`
         mutation {
-          logout
+          posLogout
         }
       `,
     })
@@ -35,9 +34,8 @@ const logout = () => {
 
 const container = (props: Props) => (
   <AppProvider
-    currentUser={props.currentUser}
+    posCurrentUser={props.posCurrentUser}
     currentConfig={props.currentConfig}
-    plugins={props.plugins}
   >
     <AppConsumer>{() => <MainLayout {...props} logout={logout} />}</AppConsumer>
   </AppProvider>

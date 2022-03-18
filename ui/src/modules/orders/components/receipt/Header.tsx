@@ -7,8 +7,6 @@ import { IUser } from "modules/auth/types";
 import { HeaderWrapper } from "./styles";
 
 type Props = {
-  ebarimt?: any;
-  ebarimtError?: any;
   order: IOrder;
   logo: string;
   name: string;
@@ -55,7 +53,7 @@ export default class Header extends React.Component<Props> {
   }
 
   render() {
-    const { order, ebarimt, ebarimtError, logo, name } = this.props;
+    const { order, logo, name } = this.props;
 
     return (
       <HeaderWrapper className="block">
@@ -64,15 +62,7 @@ export default class Header extends React.Component<Props> {
           <h5><b>{name}</b></h5>
           <h2><b>&#8470;:</b>{order.number.split("_")[1]}</h2>
         </div>
-        {ebarimtError ? <div>{ebarimtError}</div> : null}
         <div className="header">
-          <div className="ebarimt">
-            {this.renderField("ТТД", ebarimt && ebarimt.ttd)}
-            {this.renderField(
-              "ДДТД",
-              (ebarimt && ebarimt.billId) || order.billId
-            )}
-          </div>
           <p>
             <b>Огноо:</b>
             {order.paidDate ? (

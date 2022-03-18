@@ -1,6 +1,6 @@
-import { injectGlobal } from "styled-components";
-import { robotAnimation } from "./animations";
-import { colors, typography } from "./";
+import { injectGlobal } from 'styled-components';
+import { robotAnimation } from './animations';
+import { colors, typography } from './';
 
 const style = `
 html {
@@ -25,6 +25,27 @@ body {
     flex: 1;
     height: 100%;
     flex-direction: column;
+  }
+
+  .subRoot {
+    height: 100%;
+    max-width: 1920px;
+    background: #F5F5F5 !important;
+  }
+
+  .row {
+    margin-right: 0 !important;
+    margin-left: 0 !important;
+  }
+
+  .col-sm-3 {
+    width: 15% !important;
+  }
+  
+  @media (min-width: 768px) {
+    .col-md-8 {
+      width: 60.666667% !important;
+    }
   }
 }
 
@@ -78,7 +99,7 @@ a:hover {
 
 .modal-dialog {
   padding: 0;
-  margin: 50px auto;
+  margin: 300px auto;
 
   &.modal-dialog-centered {
     margin: 0 auto;
@@ -104,7 +125,7 @@ a:hover {
 }
 
 .modal-content {
-  border-radius: 2px;
+  border-radius: 20px;
   border: 0;
   box-shadow: 0 2px 10px -3px rgba(0, 0, 0, 0.5);
   background: ${colors.bgLight};
@@ -136,7 +157,7 @@ a:hover {
 }
 
 .modal-body {
-  padding: 30px 40px;
+  padding: 80px 80px;
 
   &.md-padding {
     padding: 20px;

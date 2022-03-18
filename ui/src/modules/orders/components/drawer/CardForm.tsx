@@ -1,35 +1,25 @@
 import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import React from 'react';
-import NumberFormat from "react-number-format";
-import styled from "styled-components";
 
-import Button from "modules/common/components/Button";
-import Icon from "modules/common/components/Icon";
-import FormGroup from "modules/common/components/form/Group";
-import ControlLabel from "modules/common/components/form/Label";
-import { __, Alert } from "modules/common/utils";
-import { Input } from "modules/orders/styles";
-import { PAYMENT_TYPES } from './CalculationForm';
-
-const ButtonWrapper = styled.div`
-  margin-bottom: 20px;
-`;
+import Button from 'modules/common/components/Button';
+import { __, Alert } from 'modules/common/utils';
+import { IOrder } from 'modules/orders/types';
 
 type Props = {
   cardAmount: number;
-  reset: (paymentType: string) => void;
   color?: string;
   onStateChange: (key: string, value: any) => void;
   billType: string;
-  orderNumber: string;
   setCardPaymentInfo: (params: any) => void;
-  orderId: string;
-}
+  order: IOrder;
+  isSplit?: boolean;
+  cashAmount?: number;
+};
 
 type State = {
   sentTransaction: boolean;
   checkedTransaction: boolean;
-}
+};
 
 export default class CardForm extends React.Component<Props, State> {
   constructor(props: Props) {
@@ -42,87 +32,114 @@ export default class CardForm extends React.Component<Props, State> {
   }
 
   render() {
-    const { cardAmount, reset, color = '', onStateChange, billType, orderNumber, setCardPaymentInfo, orderId } = this.props;
+    const { cardAmount, onStateChange, billType, setCardPaymentInfo, order } =
+      this.props;
 
-    const inputProps: any = {
-      allowNegative: false,
-      thousandSeparator: true,
-      prefix: "₮",
-      inputMode: "numeric",
-    };
-
-    const handleInput = (value: number | undefined) => {
-      onStateChange(PAYMENT_TYPES.CARD, value);
-    };
-
-    const handleClick = () => {
-      onStateChange('activeInput', PAYMENT_TYPES.CARD);
-    };
-
-    const PATH = 'http://localhost:27028';
+    const PATH = 'http://localhost:7000';
+    // const PATH = 'http://localhost:27028';
 
     const sendTransaction = async () => {
-      fetch(`${PATH}/ajax/get-status-info`).then(res => res.json()).then((res: any) => {
-        if (res && res.status_code === 'ok') {
-          // send transaction upon successful connection
-          fetch(PATH, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-              service_name: 'doSaleTransaction',
-              service_params: {
-                // special character _ is not accepted
-                db_ref_no: orderNumber.replace('_', ''),
-                amount: cardAmount.toString(),
-                vatps_bill_type: billType
+      fetch(`${PATH}/ajax/get-status-info`)
+        // .then(res => res.json())
+        .then((res: any) => {
+          // TODO remove code, fake data
+          res = {
+            status_code: 'ok'
+          };
+          if (res && res.status_code === 'ok') {
+            // send transaction upon successful connection
+            fetch(PATH, {
+              method: 'GET',
+              // method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
               }
+              // body: JSON.stringify({
+              //   service_name: 'doSaleTransaction',
+              //   service_params: {
+              //     // special character _ is not accepted
+              //     db_ref_no: order.number.replace('_', ''),
+              //     amount: cardAmount.toString(),
+              //     vatps_bill_type: billType
+              //   }
+              // })
             })
-          }).then(res => res.json()).then(r => {
-            if (r && r.status === true && r.response) {
-              if (r.response.response_code === '000') {
-                Alert.success(__(r.response.response_msg || 'Transaction was successful'));
+              // .then(res => res.json())
+              // .then(r => {
+              .then(res => {
+                // TODO remove code, fake data
+                const r = {
+                  status: true,
+                  response: {
+                    response_code: '000',
+                    aid: 'A0000000031010',
+                    amount: cardAmount,
+                    app_name: 'VISA DEBIT',
+                    auth_code: '1TS93C',
+                    bank_mb_code: '05',
+                    batch_no: '000000000231',
+                    card_holder_name: '',
+                    date: '02/27',
+                    db_ref_no: '202202270001',
+                    entry_mode: 'Contact Less TAP',
+                    is_vatps: '0',
+                    merchant_name: 'Yoshinoya',
+                    model: 's300',
+                    operation: 'SALE',
+                    pan: '438054XXXXXX2643',
+                    pos_firmware: '2.4.94',
+                    reader_id: '53240799',
+                    response_msg: 'Гүйлгээ зөвшөөрөгдсөн.',
+                    rrn: '003841002333',
+                    tc: '0000000000000000',
+                    term_app_name: 'DtbProlin',
+                    terminal_date: '20220227112935',
+                    terminal_id: '70078754',
+                    time: '11:29:32',
+                    trace_no: '020735',
+                    version: '334'
+                  }
+                };
+                console.log(billType);
+                if (r && r.status === true && r.response) {
+                  if (r.response.response_code === '000') {
+                    Alert.success(
+                      __(
+                        r.response.response_msg || 'Transaction was successful'
+                      )
+                    );
 
-                // enable payment button
-                onStateChange('paymentEnabled', true);
+                    // enable payment button
+                    onStateChange('paymentEnabled', true);
 
-                setCardPaymentInfo({ _id: orderId, info: JSON.stringify(r.response) });
-              } else {
-                return Alert.warning(r.response.response_msg);
-              }
-            }
-          }).catch(e => {
-            Alert.error(e.message);
-          })
-        }
-      }).catch(e => {
-        Alert.error(`${e.message}: Databank-н төлбөрийн програмтай холбогдсонгүй`);
-      });
+                    setCardPaymentInfo({
+                      _id: order._id,
+                      info: JSON.stringify(r.response)
+                    });
+                  } else {
+                    return Alert.warning(r.response.response_msg);
+                  }
+                }
+              })
+              .catch(e => {
+                Alert.error(e.message);
+              });
+          }
+        })
+        .catch(e => {
+          Alert.error(
+            `${e.message}: Databank-н төлбөрийн програмтай холбогдсонгүй`
+          );
+        });
     };
 
     return (
       <React.Fragment>
-        <FormGroup>
-          <ControlLabel>{__("By Card")}</ControlLabel>
-          <Input color={color}>
-            <NumberFormat
-              name="cardAmount"
-              value={cardAmount}
-              onValueChange={(values) => handleInput(values.floatValue)}
-              onClick={() => handleClick()}
-              {...inputProps}
-            />
-            <div onClick={() => reset(PAYMENT_TYPES.CARD)}>
-              <Icon icon="cancel" size={13} />
-            </div>
-          </Input>
-        </FormGroup>
-        <ButtonWrapper>
-          {cardAmount &&
-            <Button btnStyle='warning' onClick={sendTransaction} size='large'>{__("Send transaction")}</Button>
-          }
-        </ButtonWrapper>
+        {cardAmount && (
+          <Button btnStyle="success" onClick={sendTransaction} size="large">
+            {__('Payment')}
+          </Button>
+        )}
       </React.Fragment>
     );
   } // end render()

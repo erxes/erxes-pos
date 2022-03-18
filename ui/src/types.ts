@@ -1,8 +1,9 @@
-import { IProductCategory, IProduct } from "modules/orders/types";
+import { IProductCategory, IProduct } from 'modules/orders/types';
 
 export type QueryResponse = {
   loading: boolean;
-  refetch: () => void;
+  error: any;
+  refetch: (params?: any) => void;
 };
 
 export interface IUserDoc {
@@ -26,7 +27,7 @@ export type AllUsersQueryResponse = {
 } & QueryResponse;
 
 export type CurrentUserQueryResponse = {
-  currentUser: IUser;
+  posCurrentUser: IUser;
   subscribeToMore: any;
 } & QueryResponse;
 
@@ -53,7 +54,7 @@ export interface IRouterProps {
   history: any;
   location: any;
   match: any;
-};
+}
 
 export interface ISubNav {
   permission: string;
@@ -61,7 +62,7 @@ export interface ISubNav {
   value: string;
   icon: string;
   additional?: boolean;
-};
+}
 
 export interface IEbarimtConfig {
   companyName: string;
@@ -74,6 +75,7 @@ export interface IEbarimtConfig {
   defaultGSCode: string;
   vatPercent: number;
   cityTaxPercent: number;
+  footerText: string;
 }
 
 export interface IConfig {
@@ -85,6 +87,8 @@ export interface IConfig {
   productDetails: string[];
   adminIds: string[];
   cashierIds: string[];
+  beginNumber: string;
+  maxSkipNumber: number;
   kitchenScreen: any;
   waitingScreen: any;
   kioskMachine: any;
@@ -94,7 +98,9 @@ export interface IConfig {
   uiOptions: any;
   ebarimtConfig: IEbarimtConfig;
   syncInfo: any;
-};
+  initialCategoryIds: string[];
+  kioskExcludeProductIds: string[];
+}
 
 export type CurrentConfigQueryResponse = {
   currentConfig: IConfig;

@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import Icon from "modules/common/components/Icon";
-import { __ } from "modules/common/utils";
-import { SearchInputWrapper } from "../styles";
+import Icon from 'modules/common/components/Icon';
+import { __ } from 'modules/common/utils';
+import { SearchInputWrapper } from '../styles';
 
 type Props = {
   onSearch: (e: any) => void;
@@ -20,7 +20,7 @@ export default class SearchInput extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      searchValue: props.searchValue || "",
+      searchValue: props.searchValue || ''
     };
   }
 
@@ -28,12 +28,12 @@ export default class SearchInput extends React.Component<Props, State> {
     const { onSearch, clearSearch, placeholder } = this.props;
     const { searchValue } = this.state;
 
-    const handleInput = (e) => {
+    const handleInput = e => {
       this.setState({ searchValue: e.target.value });
     };
 
     const closeInput = () => {
-      this.setState({ searchValue: "" });
+      this.setState({ searchValue: '' });
 
       clearSearch();
     };

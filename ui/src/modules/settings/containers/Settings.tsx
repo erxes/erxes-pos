@@ -7,22 +7,25 @@ import { Alert } from 'modules/common/utils';
 import { graphql } from 'react-apollo';
 import { IConfig, IRouterProps } from '../../../types';
 import { IUser } from 'modules/auth/types';
-import { mutations } from '../graphql';
-import { SyncConfigMutationResponse, SyncOrdersMutationResponse } from '../types';
+import { mutations, queries } from '../graphql';
+import { PosUsersQueryResponse, SyncConfigMutationResponse, SyncOrdersMutationResponse, DeleteOrdersMutationResponse } from '../types';
 import { withProps } from '../../utils';
 import { withRouter } from 'react-router-dom';
+import Spinner from 'modules/common/components/Spinner';
 
 type Props = {
   syncConfigMutation: SyncConfigMutationResponse;
   syncOrdersMutation: SyncOrdersMutationResponse;
-  currentUser: IUser;
+  deleteOrdersMutation: DeleteOrdersMutationResponse;
+  posUsersQuery: PosUsersQueryResponse;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   qp: any;
 } & IRouterProps;
 
 class SettingsContainer extends React.Component<Props> {
   render() {
-    const { syncConfigMutation, syncOrdersMutation } = this.props;
+    const { syncConfigMutation, syncOrdersMutation, deleteOrdersMutation, posUsersQuery } = this.props;
 
     const syncConfig = (type: string) => {
       syncConfigMutation({ variables: { type } }).then(({ data }) => {
@@ -46,10 +49,28 @@ class SettingsContainer extends React.Component<Props> {
       });
     };
 
+    const deleteOrders = () => {
+      deleteOrdersMutation().then(({ data }) => {
+        const { deleteOrders } = data
+        return Alert.success(`${deleteOrders.deletedCount} order has been synced successfully`);
+
+      }).catch(e => {
+        return Alert.error(e.message);
+      });
+    };
+
+
+    if (posUsersQuery.loading) {
+      return <Spinner />
+    }
+    const posUsers = posUsersQuery.posUsers || [];
+
     const updatedProps = {
       ...this.props,
       syncConfig,
-      syncOrders
+      syncOrders,
+      deleteOrders,
+      posUsers
     };
 
     return <Settings {...updatedProps} />;
@@ -63,6 +84,16 @@ export default withProps<Props>(
     }),
     graphql<Props, SyncOrdersMutationResponse>(gql(mutations.syncOrders), {
       name: 'syncOrdersMutation'
+    }),
+    graphql<Props, SyncOrdersMutationResponse>(gql(mutations.deleteOrders), {
+      name: 'deleteOrdersMutation'
+    }),
+    graphql<Props>(gql(queries.posUsers), {
+      name: "posUsersQuery",
+      options: ({ qp }) => ({
+        variables: { _id: qp && qp.id },
+        fetchPolicy: "network-only",
+      }),
     }),
   )(withCurrentUser(withRouter<Props>(SettingsContainer)))
 );

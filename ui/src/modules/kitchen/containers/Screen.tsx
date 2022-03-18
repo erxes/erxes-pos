@@ -17,7 +17,7 @@ type Props = {
   orderQuery: FullOrderQueryResponse;
   orderDoneQuery: FullOrderQueryResponse;
   orderChangeStatusMutation: OrderChangeStatusMutationResponse;
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   qp: any;
 } & IRouterProps;

@@ -1,19 +1,9 @@
 import React from 'react';
-import styledTS from "styled-components-ts";
-import styled from "styled-components";
 
-import FormControl from "modules/common/components/form/Control";
-import ControlLabel from "modules/common/components/form/Label";
-import { FlexCenter } from "modules/common/styles/main";
-import Toggle from "modules/common/components/Toggle";
-import { __ } from "modules/common/utils";
-import { BILL_TYPES } from './CalculationForm';
-
-const HeaderRow = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
-  justify-content: flex-start;
-  margin-bottom: 20px;
-  margin: ${(props) => props.isPortrait && "30px 0 30px 0"};
-`;
+import { __ } from 'modules/common/utils';
+import Button from 'modules/common/components/Button';
+import { EbarimtButton } from '../kiosk/style';
+import { BILL_TYPES } from './PaymentForm';
 
 type Props = {
   billType: string;
@@ -21,55 +11,47 @@ type Props = {
   show: boolean;
   onBillTypeChange: (e: any) => void;
   onStateChange: (key: string, value: any) => void;
-}
+};
 
-export default class Ebarimt extends React.Component<Props> {
-  render() {
-    const { billType, isPortrait, show, onBillTypeChange, onStateChange } = this.props;
+type State = {
+  selectedEbarimtType: string;
+};
+export default class Ebarimt extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
 
-    const onSwitchHandler = (e) => {
-      onStateChange('showE', e.target.checked);
+    this.state = {
+      selectedEbarimtType: BILL_TYPES.CITIZEN
     };
+  }
+
+  onChange = value => {
+    this.setState({ selectedEbarimtType: value });
+    this.props.onBillTypeChange(value);
+  };
+
+  render() {
+    const { isPortrait, onBillTypeChange } = this.props;
+    const { selectedEbarimtType } = this.state;
 
     return (
-      <React.Fragment>
-        <HeaderRow isPortrait={isPortrait}>
-          <ControlLabel>{__("E-barimt")}:</ControlLabel> &ensp;
-          <Toggle
-            checked={show}
-            icons={{
-              checked: <span>Yes</span>,
-              unchecked: <span>No</span>,
-            }}
-            onChange={onSwitchHandler}
-          />
-        </HeaderRow>
-        {show && (
-          <>
-            <FormControl
-              componentClass="radio"
-              value={BILL_TYPES.CITIZEN}
-              inline={true}
-              name="billType"
-              checked={billType === BILL_TYPES.CITIZEN}
-              onChange={onBillTypeChange}
-            >
-              {__("Person")}
-            </FormControl>
-            &ensp;&ensp;
-            <FormControl
-              componentClass="radio"
-              value={BILL_TYPES.ENTITY}
-              inline={true}
-              name="billType"
-              checked={billType === BILL_TYPES.ENTITY}
-              onChange={onBillTypeChange}
-            >
-              {__("Organization")}
-            </FormControl>
-          </>
-        )}
-      </React.Fragment>
+      <EbarimtButton isPortrait={isPortrait}>
+        <Button
+          className={selectedEbarimtType === BILL_TYPES.CITIZEN ? 'active' : ''}
+          onClick={() => this.onChange(BILL_TYPES.CITIZEN)}
+          size="large"
+        >
+          {__('Person')}
+        </Button>
+        <Button
+          className={selectedEbarimtType === BILL_TYPES.ENTITY ? 'active' : ''}
+          onClick={() => this.onChange(BILL_TYPES.ENTITY)}
+          onMouseDown={onBillTypeChange}
+          size="large"
+        >
+          {__('Organization')}
+        </Button>
+      </EbarimtButton>
     );
   } // end render()
 }

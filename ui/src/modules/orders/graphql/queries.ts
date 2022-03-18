@@ -8,6 +8,7 @@ const commonFields = `
 export const orderFields = `
   _id
   createdAt
+  modifiedAt
   number
   status
   paidDate
@@ -35,6 +36,7 @@ export const orderItemsFields = `
     count
     productId
     isPackage
+    isTake
   }
 `;
 
@@ -81,6 +83,19 @@ const putResponseFields = `
   message
   getInformation
   returnBillId
+  billType
+`;
+
+const qpayInvoiceFields = `
+  _id
+  qrText
+  senderInvoiceNo
+  amount
+  qpayInvoiceId
+  qpayPaymentId
+  status
+  paymentDate
+  createdAt
 `;
 
 const orderDetail = `
@@ -106,17 +121,20 @@ const orderDetail = `
       }
 
       qpayInvoice {
-        qrText
-        senderInvoiceNo
-        amount
-        qpayInvoiceId
-        qpayPaymentId
-        status
-        paymentDate
-        createdAt
+        ${qpayInvoiceFields}
+      }
+
+      qpayInvoices {
+        ${qpayInvoiceFields}
       }
 
       cardPaymentInfo
+
+      cardPayments {
+        _id
+        amount
+        cardInfo
+      }
     }
   }
 `;
@@ -141,6 +159,8 @@ const fullOrders = `
         productName
         count
         productId
+        isPackage
+        isTake
       }
     }
   }
@@ -149,6 +169,14 @@ const fullOrders = `
 const customers = `
   query customers($searchValue: String) {
     customers(searchValue: $searchValue) {
+      ${customerFields}
+    }
+  }
+`;
+
+const customerDetail = `
+  query customerDetail($_id: String) {
+    customerDetail(_id: $_id) {
       ${customerFields}
     }
   }
@@ -173,6 +201,7 @@ export default {
   orders,
   fullOrders,
   customers,
+  customerDetail,
   ordersCheckCompany,
   fetchRemoteInvoice
 };

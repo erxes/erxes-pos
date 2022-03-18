@@ -51,13 +51,13 @@ class DetectBrowser extends React.PureComponent<{}, State> {
           in={this.state.isVisible}
           appear={true}
           timeout={300}
-          classNames="slide-in-small"
+          classNames='slide-in-small'
           unmountOnExit={true}
         >
-          <OldBrowserWarning type="error">
+          <OldBrowserWarning type='error'>
             <b>
               {__('Please upgrade your browser to use erxes!')}
-              <Icon icon="cancel" size={10} onClick={this.closeAlert} />
+              <Icon icon='cancel' size={10} onClick={this.closeAlert} />
             </b>
             <div>
               {__(

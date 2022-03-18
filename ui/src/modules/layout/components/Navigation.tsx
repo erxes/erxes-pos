@@ -1,20 +1,18 @@
-import { IUser } from "modules/auth/types";
-import WithPermission from "modules/common/components/WithPermission";
-import { __ } from "modules/common/utils";
-import React from "react";
-import { NavLink } from "react-router-dom";
+import { IUser } from 'modules/auth/types';
+import WithPermission from 'modules/common/components/WithPermission';
+import { __ } from 'modules/common/utils';
+import React from 'react';
+import { NavLink } from 'react-router-dom';
 import {
   LeftNavigation,
   NavIcon,
   SubNav,
-  NavItem,
   SubNavTitle,
   SubNavItem,
   DropSubNav,
-  DropSubNavItem,
-} from "../styles";
-import Tip from "modules/common/components/Tip";
-import { IConfig } from "types";
+  DropSubNavItem
+} from '../styles';
+import { IConfig } from 'types';
 
 export interface ISubNav {
   permission: string;
@@ -29,26 +27,26 @@ type IProps = {
   collapsed: boolean;
   onCollapseNavigation: () => void;
   currentConfig?: IConfig;
-  currentUser: IUser;
+  posCurrentUser: IUser;
   options: any;
 };
 
 class Navigation extends React.Component<IProps> {
-  getLink = (url) => {
-    const storageValue = window.localStorage.getItem("pagination:perPage");
+  getLink = url => {
+    const storageValue = window.localStorage.getItem('pagination:perPage');
 
     let parsedStorageValue;
 
     try {
-      parsedStorageValue = JSON.parse(storageValue || "");
+      parsedStorageValue = JSON.parse(storageValue || '');
     } catch {
       parsedStorageValue = {};
     }
 
-    if (url.includes("?")) {
-      const pathname = url.split("?")[0];
+    if (url.includes('?')) {
+      const pathname = url.split('?')[0];
 
-      if (!url.includes("perPage") && parsedStorageValue[pathname]) {
+      if (!url.includes('perPage') && parsedStorageValue[pathname]) {
         return `${url}&perPage=${parsedStorageValue[pathname]}`;
       }
       return url;
@@ -85,7 +83,7 @@ class Navigation extends React.Component<IProps> {
     }
 
     const urlParams = new URLSearchParams(window.location.search);
-    const parent = urlParams.get("parent");
+    const parent = urlParams.get('parent');
 
     if (
       collapsed &&
@@ -108,123 +106,123 @@ class Navigation extends React.Component<IProps> {
     }
 
     return (
-      <SubNav collapsed={collapsed}>
-        {!collapsed && <SubNavTitle>{__(text)}</SubNavTitle>}
+      <SubNav>
+        <SubNavTitle>{__(text)}</SubNavTitle>
         {childrens.map((child, index) => this.renderSubNavItem(child, index))}
       </SubNav>
     );
   }
 
-  renderNavItem = (
-    permission: string,
-    text: string,
-    url: string,
-    icon: string,
-    childrens?: ISubNav[],
-    label?: React.ReactNode
-  ) => {
-    const { collapsed } = this.props;
+  // renderNavItem = (
+  //   permission: string,
+  //   text: string,
+  //   url: string,
+  //   icon: string,
+  //   childrens?: ISubNav[],
+  //   label?: React.ReactNode
+  // ) => {
+  //   const { collapsed } = this.props;
 
-    const item = (
-      <NavItem>
-        <NavLink to={this.getLink(url)}>
-          <NavIcon className={icon} />
-          {collapsed && <label>{__(text)}</label>}
-          {label}
-        </NavLink>
-        {this.renderChildren(collapsed, url, text, childrens)}
-      </NavItem>
-    );
+  //   const item = (
+  //     <NavItem>
+  //       <NavLink to={this.getLink(url)}>
+  //         <NavIcon className={icon} />
+  //         {collapsed && <label>{__(text)}</label>}
+  //         {label}
+  //       </NavLink>
+  //       {this.renderChildren(collapsed, url, text, childrens)}
+  //     </NavItem>
+  //   );
 
-    if (!childrens || childrens.length === 0) {
-      if (!collapsed) {
-        return (
-          <WithPermission key={url} action={permission}>
-            <Tip placement="right" key={Math.random()} text={__(text)}>
-              {item}
-            </Tip>
-          </WithPermission>
-        );
-      }
-    }
+  //   if (!childrens || childrens.length === 0) {
+  //     if (!collapsed) {
+  //       return (
+  //         <WithPermission key={url} action={permission}>
+  //           <Tip placement='right' key={Math.random()} text={__(text)}>
+  //             {item}
+  //           </Tip>
+  //         </WithPermission>
+  //       );
+  //     }
+  //   }
 
-    return (
-      <WithPermission key={url} action={permission}>
-        {item}
-      </WithPermission>
-    );
-  };
+  //   return (
+  //     <WithPermission key={url} action={permission}>
+  //       {item}
+  //     </WithPermission>
+  //   );
+  // };
 
   renderSyncMenu() {
-    const { currentUser } = this.props;
+    const { posCurrentUser } = this.props;
 
-    if (!currentUser) {
-      return "";
+    if (!posCurrentUser) {
+      return '';
     }
 
-    if (localStorage.getItem("erxesPosMode")) {
-      return "";
+    if (localStorage.getItem('erxesPosMode')) {
+      return '';
     }
 
     return (
-      <NavLink to="/settings">
-        <NavIcon className={"icon-sync-exclamation"} />
+      <NavLink to='/settings'>
+        <NavIcon className={'icon-sync-exclamation'} />
       </NavLink>
     );
   }
 
   renderKitchenMenu() {
-    const { currentUser, currentConfig } = this.props;
+    const { posCurrentUser, currentConfig } = this.props;
 
-    if (!currentUser || !currentConfig) {
-      return "";
+    if (!posCurrentUser || !currentConfig) {
+      return '';
     }
 
     if (!currentConfig.kitchenScreen) {
-      return "";
+      return '';
     }
 
-    if (!["", "kitchen"].includes(localStorage.getItem("erxesPosMode") || "")) {
-      return "";
+    if (!['', 'kitchen'].includes(localStorage.getItem('erxesPosMode') || '')) {
+      return '';
     }
 
     return (
-      <NavLink to="/kitchen-screen">
-        <NavIcon className={"icon-wallclock"} />
+      <NavLink to='/kitchen-screen'>
+        <NavIcon className={'icon-wallclock'} />
       </NavLink>
     );
   }
 
   renderWaitingMenu() {
-    const { currentUser, currentConfig } = this.props;
+    const { posCurrentUser, currentConfig } = this.props;
 
-    if (!currentUser || !currentConfig) {
-      return "";
+    if (!posCurrentUser || !currentConfig) {
+      return '';
     }
 
     if (!currentConfig.waitingScreen) {
-      return "";
+      return '';
     }
 
-    if (!["", "waiting"].includes(localStorage.getItem("erxesPosMode") || "")) {
-      return "";
+    if (!['', 'waiting'].includes(localStorage.getItem('erxesPosMode') || '')) {
+      return '';
     }
 
     return (
-      <NavLink to="/waiting-screen">
-        <NavIcon className={"icon-presentation"} />
+      <NavLink to='/waiting-screen'>
+        <NavIcon className={'icon-presentation'} />
       </NavLink>
     );
   }
 
   render() {
     const { collapsed, options } = this.props;
-    const logo = collapsed ? "logo.png" : "erxes.png";
+    const logo = collapsed ? 'logo.png' : 'erxes.png';
 
     return (
-      <LeftNavigation collapsed={collapsed} color={options.colors.primary}>
-        <NavLink to="/">
-          <img src={options.logo || `/images/${logo}`} alt="logo" />
+      <LeftNavigation color={options.colors.primary}>
+        <NavLink to='/'>
+          <img src={options.favIcon || `/images/${logo}`} alt='logo' />
         </NavLink>
         {this.renderSyncMenu()}
         {this.renderKitchenMenu()}

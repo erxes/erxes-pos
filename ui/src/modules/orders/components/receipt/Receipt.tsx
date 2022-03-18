@@ -25,11 +25,15 @@ export default function OrderReceipt({ order }: Props) {
     currentConfig.uiOptions &&
     currentConfig.uiOptions.colors.primary;
 
+  const footerText = currentConfig && currentConfig.ebarimtConfig && currentConfig.ebarimtConfig.footerText
+
   return (
-    <ReceiptWrapper>
-      <Header order={order} logo={logo} name={name} />
-      <Body items={order.items} />
-      <Footer color={color} order={order} />
-    </ReceiptWrapper>
+    <>
+      <ReceiptWrapper className="printDocument">
+        <Header order={order} logo={logo} name={name} />
+        <Body items={order.items} />
+        <Footer color={color} order={order} footerText={footerText || ''} />
+      </ReceiptWrapper>
+    </>
   );
 }

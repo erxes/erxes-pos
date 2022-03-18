@@ -10,6 +10,7 @@ import { __ } from 'modules/common/utils';
 type Props = {
   color: string;
   order: IOrder;
+  footerText: string;
 };
 
 export default class Footer extends React.Component<Props> {
@@ -68,6 +69,17 @@ export default class Footer extends React.Component<Props> {
       return null;
     }
 
+    if (this.putResponse.billType === '3') {
+      const { order } = this.props;
+      return (
+        <LotteryCode>
+          {__("buyerCompanyNumber")}:
+          <br />
+          {order.registerNumber}
+        </LotteryCode>
+      );
+    }
+
     return (
       this.putResponse.lottery ? (
         <LotteryCode>
@@ -90,7 +102,7 @@ export default class Footer extends React.Component<Props> {
   }
 
   render() {
-    const { color } = this.props;
+    const { color, footerText } = this.props;
 
     return (
       <FooterWrapper>
@@ -100,10 +112,20 @@ export default class Footer extends React.Component<Props> {
           {this.renderSide()}
         </Lottery>
         {this.renderBarCode()}
-        <p className="signature">
-          <label>{__("Signature")}:</label>
-          <span>_____________________</span>
-        </p>
+        {
+          footerText
+            ?
+            <div className="text-center signature">
+              <label>
+                {footerText}
+              </label>
+            </div>
+            :
+            <p className="signature">
+              <label>{__("Signature")}:</label>
+              <span>_____________________</span>
+            </p>
+        }
         <div className="text-center btn-print">
           <Button onClick={() => window.print()} style={{ backgroundColor: color }}>
             {__("Print")}
@@ -115,8 +137,21 @@ export default class Footer extends React.Component<Props> {
 
   componentDidMount() {
     if (this.putResponse) {
+      const { order } = this.props;
+      const mode = localStorage.getItem('erxesPosMode') || '';
+
       window.addEventListener('afterprint', () => {
-        window.close();
+        if (mode !== 'kiosk') {
+          setTimeout(() => {
+            const popup = window.open(`/order-receipt/${order._id}?inner=true`, '__blank');
+            if (!popup) {
+              prompt(`Popup зөвшөөрөгдөөгүй байна. Дараах тохиргоог хийнэ үү. \n 1. Доорх холбоосыг copy-дох  \n 2. шинэ tab нээж, paste хийн копидсон холбоосоор орох \n 3. "Pop-ups and redirects" гэсэн хэсгийг олоод \n 4. "Allow" гэснийг сонгоно. \n 5. Үндсэн хуудасаа рефреш`, `chrome://settings/content/siteDetails?site=${window.location.origin}`);
+            };
+          }, 10);
+        }
+        setTimeout(() => {
+          window.close();
+        }, 50);
       });
 
       const { errorCode, lotteryWarningMsg, qrData, success, message, billId } = this.putResponse;
@@ -153,7 +188,7 @@ export default class Footer extends React.Component<Props> {
 
         setTimeout(() => {
           window.print();
-        }, 10)
+        }, 20)
       } // end qrcode
     }
   } // end componentDidMount

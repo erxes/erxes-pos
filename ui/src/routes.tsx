@@ -1,6 +1,5 @@
 import withCurrentUser from "modules/auth/containers/withCurrentUser";
 import asyncComponent from "modules/common/components/AsyncComponent";
-import { pluginsOfRoutes } from "pluginUtils";
 import queryString from "query-string";
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
@@ -9,20 +8,21 @@ import SettingsRoutes from "./modules/settings/routes";
 import KitchenRoutes from "./modules/kitchen/routes";
 import WaitingRoutes from "./modules/waiting/routes";
 import OrderRoutes from "./modules/orders/routes";
+import QPayRoutes from './modules/qpay/routes';
 import { IUser } from "./modules/auth/types";
 import { IConfig } from "types";
 
 const MainLayout = asyncComponent(
   () =>
     import(
-      /* webpackChunkName: "MainLayout" */ "modules/layout/containers/MainLayout"
+      /* webpackChunkName: "MainLayout" */ 'modules/layout/containers/MainLayout'
     )
 );
 
 const Unsubscribe = asyncComponent(
   () =>
     import(
-      /* webpackChunkName: "Unsubscribe" */ "modules/auth/containers/Unsubscribe"
+      /* webpackChunkName: "Unsubscribe" */ 'modules/auth/containers/Unsubscribe'
     )
 );
 
@@ -32,46 +32,43 @@ export const unsubscribe = ({ location }) => {
   return <Unsubscribe queryParams={queryParams} />;
 };
 
-const renderRoutes = (currentUser, currentConfig, orientation) => {
+const renderRoutes = (posCurrentUser, currentConfig, orientation) => {
   const userConfirmation = ({ location }) => {
     const queryParams = queryString.parse(location.search);
 
-    const UserConfirmation = ({ queryParams, currentUser }) => (
+    const UserConfirmation = ({ queryParams, posCurrentUser }) => (
       <div>user confirmation</div>
     );
 
     return (
-      <UserConfirmation queryParams={queryParams} currentUser={currentUser} />
+      <UserConfirmation
+        queryParams={queryParams}
+        posCurrentUser={posCurrentUser}
+      />
     );
   };
 
-  if (!sessionStorage.getItem("sessioncode")) {
-    sessionStorage.setItem("sessioncode", Math.random().toString());
+  if (!sessionStorage.getItem('sessioncode')) {
+    sessionStorage.setItem('sessioncode', Math.random().toString());
   }
 
-  if (currentUser) {
-    const { plugins, pluginRoutes, specialPluginRoutes } = pluginsOfRoutes(
-      currentUser
-    );
-
+  if (posCurrentUser) {
     return (
       <>
         <MainLayout
-          currentUser={currentUser}
+          posCurrentUser={posCurrentUser}
           orientation={orientation}
           currentConfig={currentConfig}
-          plugins={plugins}
         >
-          {specialPluginRoutes}
-          {pluginRoutes}
           <OrderRoutes />
           <SettingsRoutes />
           <KitchenRoutes />
           <WaitingRoutes />
+          <QPayRoutes />
           <Route
-            key="/confirmation"
+            key='/confirmation'
             exact={true}
-            path="/confirmation"
+            path='/confirmation'
             component={userConfirmation}
           />
         </MainLayout>
@@ -82,9 +79,9 @@ const renderRoutes = (currentUser, currentConfig, orientation) => {
   return (
     <Switch>
       <Route
-        key="/confirmation"
+        key='/confirmation'
         exact={true}
-        path="/confirmation"
+        path='/confirmation'
         component={userConfirmation}
       />
       <AuthRoutes />
@@ -93,24 +90,24 @@ const renderRoutes = (currentUser, currentConfig, orientation) => {
 };
 
 const Routes = ({
-  currentUser,
+  posCurrentUser,
   currentConfig,
-  orientation,
+  orientation
 }: {
-  currentUser: IUser;
+  posCurrentUser: IUser;
   currentConfig: IConfig;
   orientation: string;
 }) => (
   <Router>
     <>
       <Route
-        key="/unsubscribe"
+        key='/unsubscribe'
         exact={true}
-        path="/unsubscribe"
+        path='/unsubscribe'
         component={unsubscribe}
       />
 
-      {renderRoutes(currentUser, currentConfig, orientation)}
+      {renderRoutes(posCurrentUser, currentConfig, orientation)}
     </>
   </Router>
 );

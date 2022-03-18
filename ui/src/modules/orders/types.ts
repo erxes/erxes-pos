@@ -1,5 +1,5 @@
-import { IUser } from "modules/auth/types";
-import { QueryResponse, ICustomField } from "types";
+import { IUser } from 'modules/auth/types';
+import { QueryResponse, ICustomField } from 'types';
 
 export interface IOrderItem {
   _id: string;
@@ -12,6 +12,7 @@ export interface IOrderItem {
   orderId: string;
   productName: string;
   isPackage?: boolean;
+  isTake?: boolean;
 }
 
 export interface IQPayInvoice {
@@ -26,10 +27,17 @@ export interface IQPayInvoice {
   status: string;
 }
 
+export interface ICardPayment {
+  _id: string;
+  amount: number;
+  cardInfo: string;
+}
+
 export interface IOrder {
   _id: string;
   status: string;
   createdAt: Date;
+  modifiedAt: Date;
   paidDate: Date;
   number: string;
   customerId?: string;
@@ -46,12 +54,14 @@ export interface IOrder {
   oldBillId: string;
   type: string;
   cardPaymentInfo?: string;
+  cardPayments?: ICardPayment[];
 
   items: IOrderItem[];
   customer?: ICustomer;
   user: IUser;
   putResponses?: IPutResponse[];
   qpayInvoice: IQPayInvoice;
+  qpayInvoices: IQPayInvoice[];
 }
 
 interface IProductCommonFields {
@@ -89,13 +99,16 @@ export interface IOrderItemInput {
   unitPrice?: number;
   productImgUrl?: string;
   isPackage?: boolean;
+  isTake?: boolean;
 }
 
 export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;
 
 export type OrdersEditMutationResponse = ({ variables: any }) => Promise<any>;
 
-export type OrderChangeStatusMutationResponse = ({ variables: any }) => Promise<any>;
+export type OrderChangeStatusMutationResponse = ({
+  variables: any
+}) => Promise<any>;
 
 export type OrderDetailQueryResponse = {
   orderDetail: IOrder;
@@ -111,7 +124,7 @@ export type FullOrderQueryResponse = {
 } & QueryResponse;
 
 export interface ICustomer {
-  state?: "visitor" | "lead" | "customer";
+  state?: 'visitor' | 'lead' | 'customer';
 
   scopeBrandIds?: string[];
   firstName?: string;
@@ -206,4 +219,22 @@ export interface ICustomerParams {
   phone: string;
   email?: string;
   sex?: number;
+}
+
+export interface IInvoiceParams {
+  orderId: string;
+  amount?: number;
+}
+
+export interface IInvoiceCheckParams {
+  orderId: string;
+  _id: string;
+}
+
+export interface IPaymentParams {
+  cardAmount?: number;
+  cashAmount?: number;
+  mobileAmount?: number;
+  billType: string;
+  registerNumber?: string;
 }

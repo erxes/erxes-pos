@@ -1,14 +1,11 @@
-import React from "react";
+import React from 'react';
 
-import { router } from "modules/common/utils";
-import { IOrderItemInput, IProduct, IProductCategory } from "../types";
-import CategoryItem from "./CategoryItem";
-import ProductItem from "./ProductItem";
-import { ProductCategories, ProductsWrapper } from "../styles";
-import { IConfig, IRouterProps } from "types";
+import { IOrderItemInput, IProduct } from '../types';
+import ProductItem from './ProductItem';
+import { ProductsWrapper } from '../styles';
+import { IConfig, IRouterProps } from 'types';
 
 type Props = {
-  productCategories: IProductCategory[];
   products: IProduct[];
   setItems: (items: IOrderItemInput[]) => void;
   items: IOrderItemInput[];
@@ -27,68 +24,33 @@ export default class Products extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      categoriesHeight: 0,
+      categoriesHeight: 0
     };
   }
 
   componentDidMount() {
-    const height = document.getElementById("product-categories");
+    const height = document.getElementById('product-categories');
 
     this.setState({ categoriesHeight: height ? height.clientHeight : 0 });
   }
 
-  onClickCategory = (activeCategoryId: string) => {
-    const { qp, history, productsQuery } = this.props;
-    const variables = { ...qp, categoryId: activeCategoryId };
-
-    router.setParams(history, variables);
-    productsQuery.refetch({ variables });
-  };
-
-  renderCategories() {
-    const { productCategories, qp, orientation } = this.props;
-    const catId = qp && qp.categoryId ? qp.categoryId : "";
-
-    const categories = productCategories.map((cat) => (
-      <CategoryItem
-        category={cat}
-        key={cat._id}
-        activeCategoryId={catId}
-        orientation={orientation}
-        onClickCategory={this.onClickCategory}
-      />
-    ));
-
-    return (
-      <ProductCategories id="product-categories">
-        {categories}
-      </ProductCategories>
-    );
-  }
-
   addItem(item: IProduct, count: number) {
     const { items, setItems } = this.props;
-    let currentItems = items.slice();
-    const exists = items.find((i) => i.productId === item._id);
 
-    const doc = {
-      _id: Math.random().toString(),
-      productId: item._id,
-      productName: item.name,
-      unitPrice: item.unitPrice || 0,
-      productImgUrl:
-        item.attachment && item.attachment.url ? item.attachment.url : "",
-    };
+    const currentItems = items.slice();
+    const foundItem = currentItems.find(i => i.productId === item._id);
 
-    if (!exists) {
-      currentItems.unshift({ count: 1, ...doc });
+    if (foundItem) {
+      foundItem.count += count;
     } else {
-      currentItems = items.filter((i) => i.productId !== item._id);
-
-      currentItems.unshift({
-        ...doc,
-        count: exists.count + count,
-        _id: exists._id,
+      currentItems.push({
+        _id: Math.random().toString(),
+        productId: item._id,
+        productName: item.name,
+        unitPrice: item.unitPrice || 0,
+        productImgUrl:
+          item.attachment && item.attachment.url ? item.attachment.url : '',
+        count
       });
     }
 
@@ -96,14 +58,24 @@ export default class Products extends React.Component<Props, State> {
   }
 
   renderProducts() {
-    const { products = [], orientation } = this.props;
+    const { products = [], orientation, currentConfig, qp, items } = this.props;
+    const mode = localStorage.getItem('erxesPosMode');
+    const productId = qp && qp.productId ? qp.productId : '';
+    let filteredProducts = products;
 
-    return products.map((product) => {
+    if (mode === 'kiosk') {
+      const excludeIds = currentConfig.kioskExcludeProductIds || [];
+      filteredProducts = products.filter(p => !excludeIds.includes(p._id));
+    }
+
+    return filteredProducts.map(product => {
       return (
         <ProductItem
           product={product}
           key={product._id}
           orientation={orientation}
+          isActive={items.some(item => item.productId === product._id)}
+          activeProductId={productId}
           addItem={this.addItem.bind(this, product, 1)}
         />
       );
@@ -112,13 +84,15 @@ export default class Products extends React.Component<Props, State> {
 
   render() {
     const { uiOptions } = this.props.currentConfig;
+
     return (
-      <>
-        {this.renderCategories()}
-        <ProductsWrapper height={this.state.categoriesHeight} color={uiOptions.colors.secondary} innerWidth={window.innerWidth}>
-          {this.renderProducts()}
-        </ProductsWrapper>
-      </>
+      <ProductsWrapper
+        height={this.state.categoriesHeight}
+        color={uiOptions.colors.secondary}
+        innerWidth={window.innerWidth}
+      >
+        {this.renderProducts()}
+      </ProductsWrapper>
     );
   }
 }

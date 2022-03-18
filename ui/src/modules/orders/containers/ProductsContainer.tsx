@@ -1,20 +1,14 @@
-import { withRouter } from "react-router-dom";
-import React from "react";
-import queryString from "query-string";
+import { withRouter } from 'react-router-dom';
+import React from 'react';
+import queryString from 'query-string';
 
-import {
-  IRouterProps,
-  IConfig,
-  ProductCategoriesQueryResponse,
-  ProductsQueryResponse,
-} from "../../../types";
-import { IOrderItemInput } from "../types";
-import Products from "../components/Products";
-import Spinner from "modules/common/components/Spinner";
-import withCurrentUser from "modules/auth/containers/withCurrentUser";
+import { IRouterProps, IConfig, ProductsQueryResponse } from '../../../types';
+import { IOrderItemInput } from '../types';
+import Products from '../components/Products';
+import Spinner from 'modules/common/components/Spinner';
+import withCurrentUser from 'modules/auth/containers/withCurrentUser';
 
 type Props = {
-  productCategoriesQuery: ProductCategoriesQueryResponse;
   productsQuery: ProductsQueryResponse;
   setItems: (items: IOrderItemInput[]) => void;
   items: IOrderItemInput[];
@@ -24,17 +18,16 @@ type Props = {
 
 class ProductsContainer extends React.Component<Props> {
   render() {
-    const { productCategoriesQuery, productsQuery, location } = this.props;
+    const { productsQuery, location } = this.props;
 
-    if (productCategoriesQuery.loading || productsQuery.loading) {
+    if (productsQuery.loading) {
       return <Spinner />;
     }
 
     const updatedProps = {
       ...this.props,
-      productCategories: productCategoriesQuery.productCategories || [],
       products: productsQuery.products || [],
-      qp: queryString.parse(location.search),
+      qp: queryString.parse(location.search)
     };
 
     return <Products {...updatedProps} />;

@@ -4,21 +4,19 @@ import { IUser, IConfig } from './types';
 import React from 'react';
 
 interface IState {
-  currentUser?: IUser;
-  plugins?;
+  posCurrentUser?: IUser;
   currentLanguage: string;
   currentConfig?: IConfig;
 }
 
 interface IStore extends IState {
-  currentUser?: IUser;
+  posCurrentUser?: IUser;
   currentConfig?: IConfig;
   changeLanguage: (languageCode: string) => void;
 }
 
 interface IProps {
-  currentUser?: IUser;
-  plugins?: any;
+  posCurrentUser?: IUser;
   currentConfig?: IConfig;
 }
 
@@ -34,7 +32,7 @@ export class AppProvider extends React.Component<IProps, IState> {
     const currentLanguage = localStorage.getItem('currentLanguage') || 'mn';
 
     this.state = {
-      currentUser: props.currentUser,
+      posCurrentUser: props.posCurrentUser,
       currentLanguage,
       currentConfig: props.currentConfig
     };
@@ -65,13 +63,12 @@ export class AppProvider extends React.Component<IProps, IState> {
   };
 
   public render() {
-    const { currentUser, currentLanguage, currentConfig } = this.state;
+    const { posCurrentUser, currentLanguage, currentConfig } = this.state;
 
     return (
       <AppContext.Provider
         value={{
-          currentUser,
-          plugins: this.props.plugins,
+          posCurrentUser,
           currentLanguage,
           changeLanguage: this.changeLanguage,
           currentConfig

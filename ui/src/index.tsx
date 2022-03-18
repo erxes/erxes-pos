@@ -6,7 +6,7 @@ import utc from 'dayjs/plugin/utc';
 import 'erxes-icon/css/erxes.min.css';
 // global style
 import 'modules/common/styles/global-styles.ts';
-import '../public/print.css'
+import './print.css'
 import { getEnv } from './utils';
 import React from 'react';
 import { ApolloProvider } from 'react-apollo';
