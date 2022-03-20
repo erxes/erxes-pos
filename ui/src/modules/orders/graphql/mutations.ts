@@ -77,18 +77,11 @@ const customersAdd = `
   }
 `;
 
-const ordersSetPaymentInfo = `
-  mutation ordersSetPaymentInfo($_id: String!, $info: String) {
-    ordersSetPaymentInfo(_id: $_id, info: $info) {
-      _id
-    }
-  }
-`;
-
 const ordersAddCardPayment = `
   mutation ordersAddCardPayment($_id: String!, $amount: Float!, $cardInfo: String!) {
     ordersAddCardPayment(_id: $_id, amount: $amount, cardInfo: $cardInfo) {
       ${orderFields}
+      ${orderItemsFields}
     }
   }
 `;
@@ -107,7 +100,6 @@ export default {
   createQpaySimpleInvoice,
   qpayCheckPayment,
   customersAdd,
-  ordersSetPaymentInfo,
   ordersAddCardPayment,
   qpayCancelInvoice
 };

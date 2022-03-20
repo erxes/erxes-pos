@@ -5,7 +5,6 @@ import * as compose from 'lodash.flowright';
 import React from 'react';
 
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
-import Spinner from 'modules/common/components/Spinner';
 import { IRouterProps } from '../../../types';
 import { withProps, trimGraphqlError } from '../../utils';
 import { Alert, __ } from 'modules/common/utils';
@@ -13,18 +12,17 @@ import { queries, mutations } from '../graphql/index';
 import SplitPayment from '../components/splitPayment/SplitPayment';
 import {
   ICardPayment,
-  OrderDetailQueryResponse,
   IInvoiceParams,
   IInvoiceCheckParams,
-  IPaymentParams
+  IPaymentParams,
+  IOrder
 } from '../types';
 
 type Props = {
-  id: string;
+  order: IOrder;
 };
 
 type FinalProps = {
-  orderDetailQuery: OrderDetailQueryResponse;
   addCardPaymentMutation: any;
   createInvoiceMutation: any;
   checkInvoiceMutation: any;
@@ -36,7 +34,6 @@ type FinalProps = {
 class SplitPaymentContainer extends React.Component<FinalProps> {
   render() {
     const {
-      orderDetailQuery,
       addCardPaymentMutation,
       createInvoiceMutation,
       checkInvoiceMutation,
@@ -44,18 +41,9 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       makePaymentMutation
     } = this.props;
 
-    if (orderDetailQuery.loading) {
-      return <Spinner />;
-    }
-
-    if (orderDetailQuery.error) {
-      return <div>{orderDetailQuery.error.message}</div>;
-    }
-
     const addCardPayment = (params: ICardPayment) => {
       addCardPaymentMutation({ variables: params })
         .then(() => {
-          orderDetailQuery.refetch();
         })
         .catch(e => {
           Alert.error(__(trimGraphqlError(e.message)));
@@ -64,8 +52,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
 
     const createQPayInvoice = (params: IInvoiceParams) => {
       createInvoiceMutation({ variables: params })
-        .then(({ data }) => {
-          orderDetailQuery.refetch();
+        .then(() => {
         })
         .catch(e => {
           Alert.error(__(trimGraphqlError(e.message)));
@@ -75,7 +62,6 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
     const checkQPayInvoice = (params: IInvoiceCheckParams) => {
       checkInvoiceMutation({ variables: params })
         .then(() => {
-          orderDetailQuery.refetch();
         })
         .catch(e => {
           Alert.error(__(trimGraphqlError(e.message)));
@@ -85,8 +71,6 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
     const cancelInvoice = (_id: string) => {
       cancelInvoiceMutation({ variables: { _id } })
         .then(() => {
-          orderDetailQuery.refetch();
-
           Alert.success(__('Success'));
         })
         .catch(e => {
@@ -125,7 +109,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
 
     return (
       <SplitPayment
-        order={orderDetailQuery.orderDetail}
+        order={this.props.order}
         addCardPayment={addCardPayment}
         createQPayInvoice={createQPayInvoice}
         checkQPayInvoice={checkQPayInvoice}
@@ -136,28 +120,46 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
   }
 }
 
+const getRefetchQueries = _id => {
+  return [
+    {
+      query: gql(queries.orderDetail),
+      variables: { _id }
+    }
+  ];
+};
+
 export default withProps<Props>(
   compose(
-    graphql<Props, OrderDetailQueryResponse>(gql(queries.orderDetail), {
-      name: 'orderDetailQuery',
-      options: ({ id }) => ({
-        variables: { _id: id }
+    graphql<Props>(gql(mutations.ordersAddCardPayment), {
+      name: 'addCardPaymentMutation',
+      options: ({ order }) => ({
+        refetchQueries: getRefetchQueries(order._id)
       })
     }),
-    graphql<Props>(gql(mutations.ordersAddCardPayment), {
-      name: 'addCardPaymentMutation'
-    }),
     graphql<Props>(gql(mutations.createQpaySimpleInvoice), {
-      name: 'createInvoiceMutation'
+      name: 'createInvoiceMutation',
+      options: ({ order }) => ({
+        refetchQueries: getRefetchQueries(order._id)
+      })
     }),
     graphql<Props>(gql(mutations.qpayCheckPayment), {
-      name: 'checkInvoiceMutation'
+      name: 'checkInvoiceMutation',
+      options: ({ order }) => ({
+        refetchQueries: getRefetchQueries(order._id)
+      })
     }),
     graphql<Props>(gql(mutations.qpayCancelInvoice), {
-      name: 'cancelInvoiceMutation'
+      name: 'cancelInvoiceMutation',
+      options: ({ order }) => ({
+        refetchQueries: getRefetchQueries(order._id)
+      })
     }),
     graphql<Props>(gql(mutations.ordersMakePayment), {
-      name: 'makePaymentMutation'
+      name: 'makePaymentMutation',
+      options: ({ order }) => ({
+        refetchQueries: getRefetchQueries(order._id)
+      })
     })
   )(withCurrentUser(withRouter<FinalProps>(SplitPaymentContainer)))
 );

@@ -127,7 +127,7 @@ export const ProductCategories = styledTS<{ isPortrait?: boolean }>(styled.div)`
 export const KioskMainContent = styledTS<{ mainHeight?: number }>(styled.div)`
   width: 100%;
   height: ${props =>
-    props.mainHeight && props.mainHeight > 0 ? `1429px` : '89%;'}
+    props.mainHeight && props.mainHeight > 0 ? `80%` : '89%;'}
   display: flex;
 `;
 

@@ -14,7 +14,6 @@ import { IConfig, IOption } from 'types';
 import { ICustomer, IOrder, IOrderItemInput } from '../types';
 import { Amount, ProductLabel, Types } from '../styles';
 import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from '../../../constants';
-import OrderInfo from './splitPayment/OrderInfo';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
 
@@ -77,7 +76,7 @@ type Props = {
   changeItemCount: (item: IOrderItemInput) => void;
   changeItemIsTake: (item: IOrderItemInput, value: boolean) => void;
   config: IConfig;
-  editOrder: () => void;
+  editOrder: (callback?: () => void) => void;
   order: IOrder | null;
   type: string;
   productBodyType?: any;
@@ -167,6 +166,7 @@ export default class Calculation extends React.Component<Props, State> {
     const {
       order,
       addOrder,
+      editOrder,
       onChangeProductBodyType,
       productBodyType,
       setItems,
@@ -180,7 +180,11 @@ export default class Calculation extends React.Component<Props, State> {
     const onClick = () => {
       const callback = () => onChangeProductBodyType('payment');
 
-      addOrder(callback);
+      if (order && order._id) {
+        editOrder(callback)
+      } else {
+        addOrder(callback);
+      }
     };
 
     const paymentDone = () => {
@@ -302,29 +306,13 @@ export default class Calculation extends React.Component<Props, State> {
   renderAmount(text: string, amount: number, color?: string) {
     const prop = { color };
 
+    const { order } = this.props;
     return (
       <Amount {...prop}>
+        <span>№: {order && order.number ? order.number.split('_')[1] : ''}</span>
         <span>{text}</span>
         {formatNumber(amount || 0)}₮
       </Amount>
-    );
-  }
-
-  renderOrderInfo() {
-    const { order } = this.props;
-    const { cashAmount, companyName, registerNumber } = this.state;
-
-    if (!order) {
-      return null;
-    }
-
-    return (
-      <OrderInfo
-        order={order}
-        remainderAmount={this.getRemainderAmount() - cashAmount}
-        companyName={companyName}
-        registerNumber={registerNumber}
-      />
     );
   }
 
@@ -336,8 +324,7 @@ export default class Calculation extends React.Component<Props, State> {
       changeItemCount,
       changeItemIsTake,
       orientation,
-      type,
-      order
+      type
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
@@ -363,9 +350,7 @@ export default class Calculation extends React.Component<Props, State> {
           <ButtonWrapper
             className={orientation === 'portrait' ? 'payment-section' : ''}
           >
-            {!order &&
-              this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
-            {this.renderOrderInfo()}
+            {this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
             {this.renderSplitPaymentButton()}
             {this.renderReceiptButton()}
           </ButtonWrapper>

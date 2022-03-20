@@ -30,3 +30,9 @@ export const BILL_TYPES = {
   CITIZEN: "1", // иргэнд өгөх баримт
   ENTITY: "3", // байгууллагад өгөх баримт
 };
+
+export const PAYMENT_TYPES = {
+  CARD: 'cardAmount',
+  CASH: 'cashAmount',
+  REGISTER: 'registerNumber'
+};

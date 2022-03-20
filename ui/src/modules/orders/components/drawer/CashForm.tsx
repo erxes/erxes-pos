@@ -9,7 +9,7 @@ import { __ } from 'modules/common/utils';
 import { Amount, Input } from 'modules/orders/styles';
 import { formatNumber } from 'modules/utils';
 import { IOrder } from 'modules/orders/types';
-import { PAYMENT_TYPES } from './PaymentForm';
+import { PAYMENT_TYPES } from '../../../../constants';
 
 type Props = {
   cashAmount: number;

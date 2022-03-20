@@ -1,4 +1,5 @@
 import { graphql } from 'react-apollo';
+import { router } from "modules/common/utils";
 import { withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
 import * as compose from 'lodash.flowright';
@@ -11,7 +12,6 @@ import Pos from '../components/Pos';
 import {
   OrdersAddMutationResponse,
   OrdersEditMutationResponse,
-  OrderDetailQueryResponse,
   IOrder
 } from '../types';
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
@@ -25,12 +25,10 @@ type Props = {
   currentConfig: IConfig;
   qp: any;
   orientation: string;
-  orderDetailQuery: OrderDetailQueryResponse;
   makePaymentMutation: any;
   productCategoriesQuery: any;
   productsQuery: any;
   customersAddMutation: any;
-  setPaymentInfoMutation: any;
 } & IRouterProps;
 
 export interface IPaymentParams {
@@ -50,13 +48,11 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
     };
   }
 
-  componentDidMount() {
-    const { qp } = this.props;
-
+  qry = (_id) => {
     client
       .query({
         query: gql(queries.orderDetail),
-        variables: { _id: qp.id },
+        variables: { _id },
         fetchPolicy: 'network-only'
       })
       .then(({ data }) => {
@@ -66,20 +62,24 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
       });
   }
 
+  componentDidMount() {
+    const { qp } = this.props;
+    this.qry(qp.id);
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.qp.id !== this.props.qp.id) {
+      this.qry(nextProps.qp.id)
+    }
+  }
+
   render() {
     const {
       ordersAddMutation,
       ordersEditMutation,
       makePaymentMutation,
       customersAddMutation,
-      setPaymentInfoMutation
     } = this.props;
-
-    // if (qp && qp.id && orderDetailQuery.loading) {
-    //   return <Spinner />;
-    // }
-
-    // const order = qp && qp.id ? orderDetailQuery.orderDetail : null;
 
     const createOrder = (params: any, callback?) => {
       ordersAddMutation({ variables: params })
@@ -97,6 +97,7 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
             Alert.success(`Order has been created successfully.`);
 
             this.setState({ order });
+            router.setParams(this.props.history, { id: order._id, home: null });
 
             if (callback) {
               callback();
@@ -108,11 +109,15 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
         });
     };
 
-    const updateOrder = (params: any) => {
+    const updateOrder = (params: any, callback?) => {
       return ordersEditMutation({ variables: params })
         .then(({ data }) => {
           if (data && data.ordersEdit && data.ordersEdit._id) {
             Alert.success(`Order has been updated successfully.`);
+
+            if (callback) {
+              callback();
+            }
 
             return data.ordersEdit;
           }
@@ -163,22 +168,6 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
         });
     };
 
-    const setCardPaymentInfo = (params: any) => {
-      setPaymentInfoMutation({ variables: params })
-        .then(({ data }) => {
-          if (
-            data &&
-            data.ordersSetPaymentInfo &&
-            data.ordersSetPaymentInfo._id
-          ) {
-            Alert.success('Card payment info saved');
-          }
-        })
-        .catch(e => {
-          Alert.error(__(e.message));
-        });
-    };
-
     const updatedProps = {
       ...this.props,
       createOrder,
@@ -186,19 +175,18 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
       makePayment,
       addCustomer,
       order: this.state.order,
-      setCardPaymentInfo
     };
 
     return <Pos {...updatedProps} />;
   }
 }
 
-export const getRefetchQueries = _id => {
+const getRefetchQueries = _id => {
   return [
     {
       query: gql(queries.orderDetail),
-      variables: { _id }
-      // fetchPolicy: "network-only",
+      variables: { _id },
+      fetchPolicy: "network-only",
     }
   ];
 };
@@ -232,8 +220,5 @@ export default withProps<Props>(
     graphql<Props>(gql(mutations.customersAdd), {
       name: 'customersAddMutation'
     }),
-    graphql<Props>(gql(mutations.ordersSetPaymentInfo), {
-      name: 'setPaymentInfoMutation'
-    })
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );

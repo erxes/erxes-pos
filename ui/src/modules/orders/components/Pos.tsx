@@ -24,7 +24,7 @@ import {
   PosMenuContent
 } from '../styles';
 import { IConfig } from 'types';
-import PaymentForm from './drawer/PaymentForm';
+// import PaymentForm from './drawer/PaymentForm';
 import CustomerForm from './drawer/CustomerForm';
 import ProductSearch from '../containers/ProductSearch';
 import { IPaymentParams } from '../containers/PosContainer';
@@ -53,13 +53,12 @@ type Props = {
   currentConfig: IConfig;
   order: IOrder | null;
   orientation: string;
-  updateOrder: (params) => Promise<IOrder>;
+  updateOrder: (params, callback?) => Promise<IOrder>;
   makePayment: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
   qp: any;
-  setCardPaymentInfo: (params: any) => void;
   type?: string;
 };
 
@@ -191,7 +190,7 @@ export default class Pos extends React.Component<Props, State> {
     );
   };
 
-  editOrder = () => {
+  editOrder = (callback?: () => void) => {
     const { updateOrder, order } = this.props;
     const { totalAmount, type, items, customerId } = this.state;
 
@@ -211,7 +210,7 @@ export default class Pos extends React.Component<Props, State> {
         totalAmount,
         type,
         customerId
-      }).then(updatedOrder => {
+      }, callback).then(updatedOrder => {
         this.setState({
           items: updatedOrder.items,
           totalAmount: getTotalAmount(updatedOrder.items)
@@ -236,40 +235,40 @@ export default class Pos extends React.Component<Props, State> {
     makePayment(order ? order._id : '', params);
   };
 
-  renderKioskModalContent() {
-    const {
-      currentConfig,
-      makePayment,
-      order,
-      setCardPaymentInfo,
-      orientation
-    } = this.props;
-    const { modalContentType, totalAmount, paymentType } = this.state;
+  // renderKioskModalContent() {
+  //   const {
+  //     currentConfig,
+  //     makePayment,
+  //     order,
+  //     setCardPaymentInfo,
+  //     orientation
+  //   } = this.props;
+  //   const { modalContentType, totalAmount, paymentType } = this.state;
 
-    const options = currentConfig ? currentConfig.uiOptions : {};
+  //   const options = currentConfig ? currentConfig.uiOptions : {};
 
-    switch (modalContentType) {
-      case 'payment':
-        return (
-          order && (
-            <PaymentForm
-              orderId={order ? order._id : ''}
-              options={options}
-              totalAmount={totalAmount}
-              closeDrawer={this.toggleModal}
-              makePayment={makePayment}
-              order={order}
-              setCardPaymentInfo={setCardPaymentInfo}
-              orientation={orientation}
-              handlePayment={this.handlePayment}
-              paymentMethod={paymentType}
-            />
-          )
-        );
-      default:
-        return null;
-    }
-  }
+  //   switch (modalContentType) {
+  //     case 'payment':
+  //       return (
+  //         order && (
+  //           <PaymentForm
+  //             orderId={order ? order._id : ''}
+  //             options={options}
+  //             totalAmount={totalAmount}
+  //             closeDrawer={this.toggleModal}
+  //             makePayment={makePayment}
+  //             order={order}
+  //             setCardPaymentInfo={setCardPaymentInfo}
+  //             orientation={orientation}
+  //             handlePayment={this.handlePayment}
+  //             paymentMethod={paymentType}
+  //           />
+  //         )
+  //       );
+  //     default:
+  //       return null;
+  //   }
+  // }
 
   renderCurrentLogin(uiOptions) {
     const mode = localStorage.getItem('erxesPosMode');
@@ -440,7 +439,7 @@ export default class Pos extends React.Component<Props, State> {
       }
       case 'payment': {
         if (order) {
-          return <SplitPaymentContainer id={order._id} />;
+          return <SplitPaymentContainer order={order} />;
         }
 
         return null;
@@ -560,7 +559,7 @@ export default class Pos extends React.Component<Props, State> {
             animation={false}
             size="lg"
           >
-            <Modal.Body>{this.renderKioskModalContent()}</Modal.Body>
+            {/* <Modal.Body>{this.renderKioskModalContent()}</Modal.Body> */}
           </Modal>
         </>
       );

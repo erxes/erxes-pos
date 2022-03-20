@@ -3,7 +3,7 @@ import React from 'react';
 import { __ } from 'modules/common/utils';
 import Button from 'modules/common/components/Button';
 import { EbarimtButton } from '../kiosk/style';
-import { BILL_TYPES } from './PaymentForm';
+import { BILL_TYPES } from '../../../../constants';
 
 type Props = {
   billType: string;

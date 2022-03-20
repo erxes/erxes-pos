@@ -29,7 +29,6 @@ type Props = {
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
   qp: any;
-  setCardPaymentInfo: (params: any) => void;
 };
 
 type State = {
