@@ -217,7 +217,7 @@ export default class Calculation extends React.Component<Props, State> {
             </Button>
             :
             <Button
-              style={{ background: '#525e6a' }}
+              style={{ background: '#616E7C' }}
               onClick={() => this.onChange(ORDER_TYPES.EAT)}
             >
               {__('Take')}

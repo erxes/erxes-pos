@@ -95,6 +95,10 @@ class PaymentForm extends React.Component<Props, State> {
       return this.setState({ [activeInput]: 0 } as any);
     }
 
+    if (num === 'C') {
+      return this.setState({ [activeInput]: parseFloat(val.toString().slice(0, -1)) } as any);
+    }
+
     return this.setState({
       [activeInput]: val + num
     } as any);

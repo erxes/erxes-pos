@@ -113,46 +113,6 @@ class Navigation extends React.Component<IProps> {
     );
   }
 
-  // renderNavItem = (
-  //   permission: string,
-  //   text: string,
-  //   url: string,
-  //   icon: string,
-  //   childrens?: ISubNav[],
-  //   label?: React.ReactNode
-  // ) => {
-  //   const { collapsed } = this.props;
-
-  //   const item = (
-  //     <NavItem>
-  //       <NavLink to={this.getLink(url)}>
-  //         <NavIcon className={icon} />
-  //         {collapsed && <label>{__(text)}</label>}
-  //         {label}
-  //       </NavLink>
-  //       {this.renderChildren(collapsed, url, text, childrens)}
-  //     </NavItem>
-  //   );
-
-  //   if (!childrens || childrens.length === 0) {
-  //     if (!collapsed) {
-  //       return (
-  //         <WithPermission key={url} action={permission}>
-  //           <Tip placement='right' key={Math.random()} text={__(text)}>
-  //             {item}
-  //           </Tip>
-  //         </WithPermission>
-  //       );
-  //     }
-  //   }
-
-  //   return (
-  //     <WithPermission key={url} action={permission}>
-  //       {item}
-  //     </WithPermission>
-  //   );
-  // };
-
   renderSyncMenu() {
     const { posCurrentUser } = this.props;
 
