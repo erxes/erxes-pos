@@ -25,7 +25,6 @@ type Props = {
   currentConfig: IConfig;
   qp: any;
   orientation: string;
-  makePaymentMutation: any;
   productCategoriesQuery: any;
   productsQuery: any;
   customersAddMutation: any;
@@ -77,7 +76,6 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
     const {
       ordersAddMutation,
       ordersEditMutation,
-      makePaymentMutation,
       customersAddMutation,
     } = this.props;
 
@@ -127,35 +125,6 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
         });
     };
 
-    const makePayment = (_id: string, params: IPaymentParams) => {
-      makePaymentMutation({ variables: { doc: params, _id } })
-        .then(({ data }) => {
-          if (data.ordersMakePayment) {
-            const resp = data.ordersMakePayment;
-
-            if (resp.success === 'true') {
-              return Alert.success(__('Payment successful'));
-            }
-            if (resp.message) {
-              return Alert.warning(resp.message);
-            }
-            if (resp.lotteryWarningMsg) {
-              return Alert.warning(resp.lotteryWarningMsg);
-            }
-            if (resp.getInformation) {
-              return Alert.warning(resp.getInformation);
-            }
-          }
-        })
-        .then(() => {
-          window.open(`/order-receipt/${_id}`, '_blank');
-          window.location.href = '/pos';
-        })
-        .catch(e => {
-          Alert.error(__(e.message));
-        });
-    };
-
     const addCustomer = (params: any) => {
       customersAddMutation({ variables: params })
         .then(({ data }) => {
@@ -172,7 +141,6 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
       ...this.props,
       createOrder,
       updateOrder,
-      makePayment,
       addCustomer,
       order: this.state.order,
     };

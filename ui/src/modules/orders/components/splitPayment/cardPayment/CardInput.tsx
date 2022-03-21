@@ -173,7 +173,7 @@ export default class CardInput extends React.Component<Props, State> {
 
                     addCardPayment({
                       _id,
-                      cardInfo: JSON.stringify(r.response),
+                      cardInfo: r.response,
                       amount
                     });
                   } else {

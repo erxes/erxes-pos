@@ -16,12 +16,12 @@ import {
 } from 'modules/orders/types';
 import CardSection from './cardPayment/CardSection';
 import QPaySection from './qpayPayment/QPaySection';
-import KeypadWithInput from './KeypadWithInput';
 import Ebarimt from '../drawer/Ebarimt';
 import { Card, Cards, TypeWrapper } from '../drawer/style';
 import KeyPads from '../drawer/KeyPads';
 import EntityChecker from './EntityChecker';
-import { FooterContent } from 'modules/orders/styles';
+import OrderInfo from './OrderInfo';
+import CashSection from './CashSection';
 
 const DASHED_BORDER = '1px dashed #ddd';
 
@@ -44,7 +44,6 @@ type Props = {
   cancelQPayInvoice: (id: string) => void;
   makePayment: (_id: string, params: IPaymentParams) => void;
   isPortrait?: boolean;
-  maxAmount?: number;
 };
 
 type State = {
@@ -56,38 +55,42 @@ type State = {
   showE: boolean;
   showRegModal: boolean;
   companyName: string;
-  amount: number;
+  mode: string;
+  currentAmount: number;
+  remainder: number;
 };
 
 export default class SplitPayment extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
+    const { order } = this.props;
+
+    const sumCashAmount = order.cashAmount || 0;
+    const sumCardAmount = (order.cardPayments || [])
+      .reduce((am, c) => am + c.amount, 0);
+    const sumMobileAmount = ((order.qpayInvoices || [])
+      .filter(q => q.status === 'done') || [])
+      .reduce((am, q) => am + Number(q.amount), 0);
+
+    const remainder = order.totalAmount - sumCashAmount - sumCardAmount - sumMobileAmount;
+
     this.state = {
       billType: BILL_TYPES.CITIZEN,
       currentTab: 'empty',
       order: props.order,
-      cashAmount: 0,
+      cashAmount: order.cashAmount || 0,
       registerNumber: '',
       showE: true,
       showRegModal: false,
       companyName: '',
-      amount: props.maxAmount || 0
+      currentAmount: remainder > 0 ? remainder : 0,
+      mode: localStorage.getItem('erxesPosMode') || '',
+      remainder
     };
 
     this.checkOrganization = this.checkOrganization.bind(this);
     this.handlePayment = this.handlePayment.bind(this);
-  }
-
-  getRemainderAmount() {
-    const { order } = this.props;
-
-    return order
-      ? order.totalAmount -
-          ((order.cardAmount || 0) +
-            (order.cashAmount || 0) +
-            (order.mobileAmount || 0))
-      : 0;
   }
 
   checkOrganization() {
@@ -133,11 +136,11 @@ export default class SplitPayment extends React.Component<Props, State> {
       if (billType === BILL_TYPES.ENTITY) {
         return (
           <EntityChecker
-            billType={billType}
             onStateChange={onStateChange}
             order={order}
             registerNumber={registerNumber}
             onSubmit={this.checkOrganization}
+            onBillTypeChange={onBillTypeChange}
           />
         );
       }
@@ -163,20 +166,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       checkQPayInvoice,
       cancelQPayInvoice
     } = this.props;
-    const { billType, currentTab, order, amount } = this.state;
-    const remainder = this.getRemainderAmount();
-
-    const setAmount = (am: number | string) => {
-      let amount = am;
-
-      if (amount > remainder) {
-        amount = remainder;
-
-        Alert.warning('Amount exceeds total amount');
-      }
-
-      this.setState({ amount: Number(amount) });
-    };
+    const { billType, currentTab, order, currentAmount, remainder, cashAmount } = this.state;
 
     if (currentTab === 'card') {
       return (
@@ -185,7 +175,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           addCardPayment={addCardPayment}
           billType={billType}
           // amount={remainder - this.state.amount}
-          amount={amount || 0}
+          amount={currentAmount || 0}
           remainder={remainder || 0}
         />
       );
@@ -199,8 +189,8 @@ export default class SplitPayment extends React.Component<Props, State> {
           createQPayInvoice={createQPayInvoice}
           checkQPayInvoice={checkQPayInvoice}
           cancelQPayInvoice={cancelQPayInvoice}
-          amount={amount}
-          maxAmount={remainder - this.state.amount}
+          amount={currentAmount}
+          maxAmount={remainder}
           remainder={remainder || 0}
         />
       );
@@ -208,35 +198,33 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     if (currentTab === 'cash') {
       return (
-        <FlexCenter>
-          <KeypadWithInput
-            billType={billType}
-            order={order}
-            setAmount={setAmount}
-            amount={amount}
-            inputLabel={__('In Cash')}
-          />
-        </FlexCenter>
-      );
+        <CashSection
+          order={order}
+          cashAmount={cashAmount}
+          remainder={remainder || 0}
+          currentAmount={currentAmount}
+          setState={(param) => this.setState({ ...param })}
+        />
+      )
     }
 
     return null;
   }
 
   onChangeKeyPad = num => {
-    const { amount } = this.state;
+    const { currentAmount } = this.state;
 
     if (num === 'CE') {
-      return this.setState({ amount: 0 });
+      return this.setState({ currentAmount: 0 });
     }
 
     if (num === 'C') {
       return this.setState({
-        amount: parseFloat(amount.toString().slice(0, -1))
+        currentAmount: parseFloat(currentAmount.toString().slice(0, -1))
       });
     }
 
-    return this.setState({ amount: amount + num });
+    return this.setState({ currentAmount: currentAmount + num });
   };
 
   renderPaymentType(type: string, img: string) {
@@ -266,22 +254,22 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   render() {
-    const { isPortrait } = this.props;
-    const { billType } = this.state;
+    const { isPortrait, order } = this.props;
+    const { billType, mode, remainder, cashAmount } = this.state;
 
     return (
       <PaymentWrapper>
         <TypeWrapper isPortrait={isPortrait}>
-          <h2>{__('Choose the payment method')}</h2>
-          <h4>{__('Customers can pay your paymnet in share')}</h4>
+          <OrderInfo order={order} remainderAmount={remainder} cashAmount={cashAmount} />
+          <h4>{__('Choose the payment method')}</h4>
 
           <Cards isPortrait={isPortrait}>
-            {this.renderPaymentType('cash', 'payment2.png')}
+            {mode !== 'kiosk' && this.renderPaymentType('cash', 'payment2.png')}
             {this.renderPaymentType('card', 'payment4.png')}
             {this.renderPaymentType('qpay', 'payment1.png')}
           </Cards>
         </TypeWrapper>
-        <FooterContent>{this.renderEbarimt()}</FooterContent>
+        {remainder <= 0 && this.renderEbarimt()}
         <TabContentWrapper>
           <FlexCenter>
             <KeyPads

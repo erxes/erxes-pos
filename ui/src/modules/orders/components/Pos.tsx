@@ -27,7 +27,7 @@ import { IConfig } from 'types';
 // import PaymentForm from './drawer/PaymentForm';
 import CustomerForm from './drawer/CustomerForm';
 import ProductSearch from '../containers/ProductSearch';
-import { IPaymentParams } from '../containers/PosContainer';
+// import { IPaymentParams } from '../containers/PosContainer';
 import PortraitView from './kiosk';
 import { renderFullName } from 'modules/common/utils';
 import Icon from 'modules/common/components/Icon';
@@ -54,7 +54,7 @@ type Props = {
   order: IOrder | null;
   orientation: string;
   updateOrder: (params, callback?) => Promise<IOrder>;
-  makePayment: (_id: string, params: IPaymentParams) => void;
+  // makePayment: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
@@ -71,7 +71,7 @@ type State = {
   productBodyType: string;
   customerId: string;
   registerNumber: string;
-  paymentType: string;
+  // paymentType: string;
 };
 
 const getTotalAmount = (items: IOrderItemInput[]) => {
@@ -100,7 +100,7 @@ export default class Pos extends React.Component<Props, State> {
       modalContentType: '',
       customerId: order && order.customerId ? order.customerId : '',
       registerNumber: '',
-      paymentType: 'card'
+      // paymentType: 'card'
     };
   }
 
@@ -229,11 +229,11 @@ export default class Pos extends React.Component<Props, State> {
     return <OrderSearch orientation={orientation} />;
   }
 
-  handlePayment = (params: IPaymentParams) => {
-    const { order, makePayment } = this.props;
+  // handlePayment = (params: IPaymentParams) => {
+  //   const { order, makePayment } = this.props;
 
-    makePayment(order ? order._id : '', params);
-  };
+  //   makePayment(order ? order._id : '', params);
+  // };
 
   // renderKioskModalContent() {
   //   const {

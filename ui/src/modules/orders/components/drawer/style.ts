@@ -2,11 +2,11 @@ import styledTS from 'styled-components-ts';
 import styled from 'styled-components';
 
 export const TypeWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
-margin-top: ${props => (props.isPortrait ? '50px' : '20px')}; 
+margin-top: ${props => (props.isPortrait ? '50px' : '20px')};
 text-align: center;
 
 h2 {
-  margin-bottom:  ${props => (props.isPortrait ? '20px' : '')}; 
+  margin-bottom:  ${props => (props.isPortrait ? '20px' : '')};
   font-size: ${props => props.isPortrait && '34px'};
 
   b {
@@ -43,28 +43,27 @@ p {
 }
 
 .activeCard {
-  border: 1px solid #FF7800; 
+  border: 1px solid #FF7800;
 }
 `;
 
 export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
-border: 1px solid #ddd; 
-border-radius: 16px;
-padding: 40px 40px 30px; 
-text-align: center;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-width: ${props => (props.isPortrait ? '46%' : '32%')};
-margin: 0 10px 20px 0;
-flex-shrink: 0;
-cursor: pointer;
-transition: all ease 0.3s;
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  padding: 40px 40px 30px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: ${props => (props.isPortrait ? '46%' : '32%')};
+  margin: 0 10px 20px 0;
+  flex-shrink: 0;
+  cursor: pointer;
+  transition: all ease 0.3s;
 
   > div {
     height: 150px;
-    display: flex;
     align-items: center;
     justify-content: center;
     > img {
@@ -80,6 +79,14 @@ transition: all ease 0.3s;
     @media (max-width: 1250px) and (orientation:landscape) {
       height: 80px;
     }
+  }
+
+  span {
+    position: absolute;
+    margin-top: -40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
   }
 
   &:hover {

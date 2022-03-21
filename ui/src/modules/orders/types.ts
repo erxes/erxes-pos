@@ -30,7 +30,7 @@ export interface IQPayInvoice {
 export interface ICardPayment {
   _id: string;
   amount: number;
-  cardInfo: string;
+  cardInfo: any;
 }
 
 export interface IOrder {
@@ -53,14 +53,12 @@ export interface IOrder {
   registerNumber: string;
   oldBillId: string;
   type: string;
-  cardPaymentInfo?: string;
   cardPayments?: ICardPayment[];
 
   items: IOrderItem[];
   customer?: ICustomer;
   user: IUser;
   putResponses?: IPutResponse[];
-  qpayInvoice: IQPayInvoice;
   qpayInvoices: IQPayInvoice[];
 }
 

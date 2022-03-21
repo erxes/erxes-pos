@@ -120,15 +120,9 @@ const orderDetail = `
         ${putResponseFields}
       }
 
-      qpayInvoice {
-        ${qpayInvoiceFields}
-      }
-
       qpayInvoices {
         ${qpayInvoiceFields}
       }
-
-      cardPaymentInfo
 
       cardPayments {
         _id

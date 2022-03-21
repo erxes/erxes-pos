@@ -78,7 +78,7 @@ const customersAdd = `
 `;
 
 const ordersAddCardPayment = `
-  mutation ordersAddCardPayment($_id: String!, $amount: Float!, $cardInfo: String!) {
+  mutation ordersAddCardPayment($_id: String!, $amount: Float!, $cardInfo: JSON) {
     ordersAddCardPayment(_id: $_id, amount: $amount, cardInfo: $cardInfo) {
       ${orderFields}
       ${orderItemsFields}

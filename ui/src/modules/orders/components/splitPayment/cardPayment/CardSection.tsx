@@ -11,6 +11,7 @@ type Props = {
   amount?: number;
   remainder: number;
 };
+
 export default class CardSection extends React.Component<Props> {
   render() {
     const { order, addCardPayment, billType, amount, remainder } = this.props;

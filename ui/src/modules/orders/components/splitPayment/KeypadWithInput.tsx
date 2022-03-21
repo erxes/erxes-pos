@@ -10,7 +10,6 @@ import { IOrder } from 'modules/orders/types';
 
 type Props = {
   color?: string;
-  billType: string;
   order: IOrder;
   setAmount: (amount: number | string) => void;
   amount: number | string;
@@ -21,24 +20,6 @@ type Props = {
 };
 
 export default class CardInput extends React.Component<Props> {
-  onChangeKeyPad = (num: string) => {
-    const { setAmount, amount, getStringValue } = this.props;
-
-    if (num === 'CE') {
-      return setAmount(0);
-    }
-
-    if (num === 'C') {
-      return setAmount(parseFloat(amount.toString().slice(0, -1)));
-    }
-
-    if (getStringValue) {
-      return setAmount(amount + num);
-    }
-
-    return setAmount(Number(amount + num));
-  };
-
   render() {
     const {
       color = '',
@@ -61,7 +42,7 @@ export default class CardInput extends React.Component<Props> {
       let value = values.floatValue || 0;
 
       if (getStringValue) {
-        value = values.value;
+        value = values.value.toString();
       }
 
       setAmount(value);

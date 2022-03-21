@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { ICustomerParams, IOrder } from '../../types';
 import { IUser } from 'modules/auth/types';
 import { IConfig } from 'types';
-import { IPaymentParams } from '../../containers/PosContainer';
+// import { IPaymentParams } from '../../containers/PosContainer';
 import {
   LogoWrapper,
   ChooseType,
@@ -24,7 +24,7 @@ type Props = {
   order: IOrder | null;
   orientation: string;
   updateOrder: (params) => Promise<IOrder>;
-  makePayment: (_id: string, params: IPaymentParams) => void;
+  // makePayment: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;

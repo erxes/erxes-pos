@@ -1,3 +1,4 @@
+import { BILL_TYPES } from '../../../../constants';
 import React from 'react';
 import Button from 'modules/common/components/Button';
 import { __ } from 'modules/common/utils';
@@ -6,19 +7,20 @@ import KeypadWithInput from './KeypadWithInput';
 import { ButtonGroup, EntityChecker } from 'modules/orders/styles';
 
 type Props = {
-  billType: string;
   onStateChange: (key: string, value: any) => void;
   order: IOrder;
   registerNumber: string;
   onSubmit: () => void;
+  onBillTypeChange: (value: string) => void;
 };
 
 export default class EbarimtModal extends React.Component<Props> {
   render() {
-    const { billType, order, onStateChange, registerNumber, onSubmit } =
+    const { order, onStateChange, registerNumber, onSubmit, onBillTypeChange } =
       this.props;
 
     const onClose = () => {
+      onBillTypeChange(BILL_TYPES.CITIZEN);
       onStateChange('showEntity', false);
     };
 
@@ -29,12 +31,11 @@ export default class EbarimtModal extends React.Component<Props> {
     return (
       <EntityChecker>
         <KeypadWithInput
-          billType={billType}
           order={order}
           setAmount={setAmount}
           amount={registerNumber}
           inputLabel={__('')}
-          usePrefix={false}
+          // usePrefix={false}
           getStringValue={true}
           setBill="entity"
         />
