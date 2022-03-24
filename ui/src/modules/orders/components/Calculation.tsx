@@ -1,31 +1,31 @@
-import Button from 'modules/common/components/Button';
-import client from 'apolloClient';
-import gql from 'graphql-tag';
-import queries from '../graphql/queries';
-import React from 'react';
-import Stage from './Stage';
-import styled from 'styled-components';
-import styledTS from 'styled-components-ts';
-import { __ } from 'modules/common/utils';
-import { ColumnBetween } from 'modules/common/styles/main';
-import { formatNumber } from 'modules/utils';
-import { FormControl } from 'modules/common/components/form';
-import { IConfig, IOption } from 'types';
-import { ICustomer, IOrder, IOrderItemInput } from '../types';
-import { Amount, ProductLabel, Types } from '../styles';
-import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from '../../../constants';
+import Button from "modules/common/components/Button";
+import client from "apolloClient";
+import gql from "graphql-tag";
+import queries from "../graphql/queries";
+import React from "react";
+import Stage from "./Stage";
+import styled from "styled-components";
+import styledTS from "styled-components-ts";
+import { __ } from "modules/common/utils";
+import { ColumnBetween } from "modules/common/styles/main";
+import { formatNumber } from "modules/utils";
+import { FormControl } from "modules/common/components/form";
+import { IConfig, IOption } from "types";
+import { ICustomer, IOrder, IOrderItemInput } from "../types";
+import { Amount, ProductLabel, Types } from "../styles";
+import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from "../../../constants";
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
 
   padding: 0 10px 0 10px;
   height: 100%;
-  box-shadow: 0px 2px 4px rgb(0 0 0 / 25%);
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.10);
   border-radius: 16px;
   background: #fff;
   overflow: auto;
 
   .ioevLe:checked + span:before, .hCqfzh .react-toggle--checked .react-toggle-track {
-    background-color: ${props => props.color && props.color};
+    background-color: ${(props) => props.color && props.color};
   }
 `;
 
@@ -38,11 +38,11 @@ const ButtonWrapper = styled.div`
   }
 `;
 
-const generateLabel = customer => {
+const generateLabel = (customer) => {
   const { firstName, primaryEmail, primaryPhone, lastName } =
     customer || ({} as ICustomer);
 
-  let value = firstName ? firstName.toUpperCase() : '';
+  let value = firstName ? firstName.toUpperCase() : "";
 
   if (lastName) {
     value = `${value} ${lastName}`;
@@ -59,7 +59,7 @@ const generateLabel = customer => {
 
 // get user options for react-select-plus
 export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
-  return array.map(item => {
+  return array.map((item) => {
     const value = generateLabel(item);
     return { value: item._id, label: value };
   });
@@ -97,24 +97,24 @@ export default class Calculation extends React.Component<Props, State> {
     super(props);
 
     const { order, orientation } = this.props;
-    const customerId = order ? order.customerId : '';
-    const customerLabel = order ? generateLabel(order.customer) : '';
+    const customerId = order ? order.customerId : "";
+    const customerLabel = order ? generateLabel(order.customer) : "";
 
     let stageHeight = window.innerHeight - 40; // types title
-    const mode = localStorage.getItem('erxesPosMode') || '';
+    const mode = localStorage.getItem("erxesPosMode") || "";
 
-    if (mode === '') {
+    if (mode === "") {
       stageHeight -= 45; // findOrder
     }
     stageHeight -= 78; // customer
 
-    if (orientation === 'portrait') {
+    if (orientation === "portrait") {
       stageHeight -= 135; // amount
-      stageHeight -= mode === 'kiosk' ? 0 : 125; // printButton
+      stageHeight -= mode === "kiosk" ? 0 : 125; // printButton
       stageHeight -= order && order.paidDate ? 0 : 100; // oneButton
     } else {
       stageHeight -= 52; // amount
-      stageHeight -= mode === 'kiosk' ? 0 : 50; // printButton
+      stageHeight -= mode === "kiosk" ? 0 : 50; // printButton
       stageHeight -= order && order.paidDate ? 0 : 50; // oneButton
     }
 
@@ -122,18 +122,18 @@ export default class Calculation extends React.Component<Props, State> {
       stageHeight = 50;
     }
     this.state = {
-      customerId: customerId || '',
+      customerId: customerId || "",
       customerLabel,
       stageHeight,
       mode,
       cashAmount: 0,
-      companyName: '',
-      registerNumber: ''
+      companyName: "",
+      registerNumber: "",
     };
   }
 
-  onChange = value => {
-    this.props.setOrderState('type', value);
+  onChange = (value) => {
+    this.props.setOrderState("type", value);
   };
 
   renderReceiptButton() {
@@ -154,10 +154,10 @@ export default class Calculation extends React.Component<Props, State> {
         btnStyle="warning"
         block
         onClick={() => {
-          window.open(`/order-receipt/${order._id}`, '_blank');
+          window.open(`/order-receipt/${order._id}`, "_blank");
         }}
       >
-        {__('Print receipt')}
+        {__("Print receipt")}
       </Button>
     );
   }
@@ -170,7 +170,7 @@ export default class Calculation extends React.Component<Props, State> {
       onChangeProductBodyType,
       productBodyType,
       setItems,
-      type
+      type,
     } = this.props;
 
     if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
@@ -178,31 +178,31 @@ export default class Calculation extends React.Component<Props, State> {
     }
 
     const onClick = () => {
-      const callback = () => onChangeProductBodyType('payment');
+      const callback = () => onChangeProductBodyType("payment");
 
       if (order && order._id) {
-        editOrder(callback)
+        editOrder(callback);
       } else {
         addOrder(callback);
       }
     };
 
     const paymentDone = () => {
-      onChangeProductBodyType('done');
+      onChangeProductBodyType("done");
     };
 
     const onCancelOrder = () => {
       setItems([]);
     };
 
-    if (productBodyType === 'payment') {
+    if (productBodyType === "payment") {
       return (
         <Types>
-          <Button style={{ background: '#616E7C' }} onClick={onCancelOrder}>
-            {__('Cancel order')}
+          <Button style={{ background: "#616E7C" }} onClick={onCancelOrder}>
+            {__("Cancel order")}
           </Button>
           <Button btnStyle="success" onClick={paymentDone}>
-            {__('Payment')}
+            {__("Payment")}
           </Button>
         </Types>
       );
@@ -210,32 +210,30 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <Types>
-        {
-          type === 'eat'
-            ?
-            <Button
-              style={{ background: '#9ba3ab' }}
-              onClick={() => this.onChange(ORDER_TYPES.TAKE)}
-            >
-              {__('Take')}
-            </Button>
-            :
-            <Button
-              style={{ background: '#616E7C' }}
-              onClick={() => this.onChange(ORDER_TYPES.EAT)}
-            >
-              {__('Take')}
-            </Button>
-        }
+        {type === "eat" ? (
+          <Button
+            style={{ background: "#9ba3ab" }}
+            onClick={() => this.onChange(ORDER_TYPES.TAKE)}
+          >
+            {__("Take")}
+          </Button>
+        ) : (
+          <Button
+            style={{ background: "#616E7C" }}
+            onClick={() => this.onChange(ORDER_TYPES.EAT)}
+          >
+            {__("Take")}
+          </Button>
+        )}
         <Button btnStyle="success" onClick={onClick}>
-          {__('Make an order')}
+          {__("Make an order")}
         </Button>
       </Types>
     );
   }
 
   renderFindOrder(mode) {
-    if (mode === 'kiosk') {
+    if (mode === "kiosk") {
       return <></>;
     }
 
@@ -243,10 +241,10 @@ export default class Calculation extends React.Component<Props, State> {
     const color = config.uiOptions && config.uiOptions.colors.primary;
     return (
       <ProductLabel
-        onClick={() => onChangeProductBodyType('orderSearch')}
+        onClick={() => onChangeProductBodyType("orderSearch")}
         color={color}
       >
-        {__('Find orders')}
+        {__("Find orders")}
       </ProductLabel>
     );
   }
@@ -254,30 +252,30 @@ export default class Calculation extends React.Component<Props, State> {
   renderCustomerChooser() {
     const { setOrderState } = this.props;
 
-    const onChangeQrcode = e => {
-      const value = (e.currentTarget as HTMLInputElement).value || '';
+    const onChangeQrcode = (e) => {
+      const value = (e.currentTarget as HTMLInputElement).value || "";
       client
         .query({
           query: gql(queries.customerDetail),
-          fetchPolicy: 'network-only',
+          fetchPolicy: "network-only",
           variables: {
-            _id: value.trim()
-          }
+            _id: value.trim(),
+          },
         })
-        .then(async response => {
+        .then(async (response) => {
           const data = response.data.customerDetail;
           this.setState({
             customerLabel: generateLabel(data),
-            customerId: data._id
+            customerId: data._id,
           });
-          setOrderState('customerId', data._id);
+          setOrderState("customerId", data._id);
         })
-        .catch(error => { });
+        .catch((error) => {});
     };
 
     const onClearChosenCustomer = () => {
-      this.setState({ customerLabel: '', customerId: '' });
-      setOrderState('customerId', '');
+      this.setState({ customerLabel: "", customerId: "" });
+      setOrderState("customerId", "");
     };
 
     return (
@@ -297,9 +295,9 @@ export default class Calculation extends React.Component<Props, State> {
 
     return order
       ? order.totalAmount -
-      ((order.cardAmount || 0) +
-        (order.cashAmount || 0) +
-        (order.mobileAmount || 0))
+          ((order.cardAmount || 0) +
+            (order.cashAmount || 0) +
+            (order.mobileAmount || 0))
       : 0;
   }
 
@@ -309,7 +307,9 @@ export default class Calculation extends React.Component<Props, State> {
     const { order } = this.props;
     return (
       <Amount {...prop}>
-        <span>№: {order && order.number ? order.number.split('_')[1] : ''}</span>
+        <span>
+          №: {order && order.number ? order.number.split("_")[1] : ""}
+        </span>
         <span>{text}</span>
         {formatNumber(amount || 0)}₮
       </Amount>
@@ -324,7 +324,7 @@ export default class Calculation extends React.Component<Props, State> {
       changeItemCount,
       changeItemIsTake,
       orientation,
-      type
+      type,
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
@@ -333,7 +333,7 @@ export default class Calculation extends React.Component<Props, State> {
       <>
         <Wrapper color={color}>
           {this.renderFindOrder(mode)}
-          {__('Identify a customer')}
+          {__("Identify a customer")}
           {this.renderCustomerChooser()}
           <ColumnBetween>
             <Stage
@@ -348,9 +348,9 @@ export default class Calculation extends React.Component<Props, State> {
             />
           </ColumnBetween>
           <ButtonWrapper
-            className={orientation === 'portrait' ? 'payment-section' : ''}
+            className={orientation === "portrait" ? "payment-section" : ""}
           >
-            {this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
+            {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
             {this.renderSplitPaymentButton()}
             {this.renderReceiptButton()}
           </ButtonWrapper>

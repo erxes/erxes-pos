@@ -1,6 +1,6 @@
-import { injectGlobal } from 'styled-components';
-import { robotAnimation } from './animations';
-import { colors, typography } from './';
+import { injectGlobal } from "styled-components";
+import { robotAnimation } from "./animations";
+import { colors, typography } from "./";
 
 const style = `
 html {
@@ -14,7 +14,7 @@ body {
   line-height: ${typography.lineHeightBody};
   color: ${colors.textPrimary};
   height: 100%;
-  background: ${colors.bgMain} !important;
+  background: ${colors.bgLight} !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
@@ -25,12 +25,6 @@ body {
     flex: 1;
     height: 100%;
     flex-direction: column;
-  }
-
-  .subRoot {
-    height: 100%;
-    max-width: 1920px;
-    background: #F5F5F5 !important;
   }
 
   .row {

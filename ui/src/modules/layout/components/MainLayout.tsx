@@ -1,19 +1,19 @@
-import { IUser } from 'modules/auth/types';
-import { IRouterProps, IConfig } from '../../../types';
-import { bustIframe, __ } from 'modules/common/utils';
-import React from 'react';
-import { withRouter } from 'react-router-dom';
+import { IUser } from "modules/auth/types";
+import { IRouterProps, IConfig } from "../../../types";
+import { bustIframe, __ } from "modules/common/utils";
+import React from "react";
+import { withRouter } from "react-router-dom";
 import {
   Layout,
   MainWrapper,
-  Bottom,
-  NavItem,
-  NavIcon,
-  PortraitWrapper
-} from '../styles';
-import DetectBrowser from './DetectBrowser';
-import { setHeader } from 'modules/utils';
-import Tip from 'modules/common/components/Tip';
+  // Bottom,
+  // NavItem,
+  // NavIcon,
+  PortraitWrapper,
+} from "../styles";
+import DetectBrowser from "./DetectBrowser";
+import { setHeader } from "modules/utils";
+// import Tip from "modules/common/components/Tip";
 
 interface IProps extends IRouterProps {
   posCurrentUser?: IUser;
@@ -27,8 +27,8 @@ class MainLayout extends React.Component<IProps> {
   componentDidMount() {
     const { history, posCurrentUser, currentConfig } = this.props;
 
-    if (history.location.pathname !== '/reset-password' && !posCurrentUser) {
-      history.push('/sign-in');
+    if (history.location.pathname !== "/reset-password" && !posCurrentUser) {
+      history.push("/sign-in");
     }
 
     // click-jack attack defense
@@ -41,17 +41,17 @@ class MainLayout extends React.Component<IProps> {
   }
 
   render() {
-    const { children, logout, location } = this.props;
+    const { children, location } = this.props;
 
     if (
-      ['kiosk', 'waiting'].includes(
-        localStorage.getItem('erxesPosMode') || ''
+      ["kiosk", "waiting"].includes(
+        localStorage.getItem("erxesPosMode") || ""
       ) ||
-      location.pathname.includes('waiting-screen')
+      location.pathname.includes("waiting-screen")
     ) {
       return (
         <div className="subRoot">
-          <div id="anti-clickjack" style={{ display: 'none' }} />
+          <div id="anti-clickjack" style={{ display: "none" }} />
           <Layout>
             <PortraitWrapper>{children}</PortraitWrapper>
             <DetectBrowser />
@@ -61,22 +61,22 @@ class MainLayout extends React.Component<IProps> {
     }
 
     return (
-      <div className="subRoot">
-        <div id="anti-clickjack" style={{ display: 'none' }} />
+      <>
+        <div id="anti-clickjack" style={{ display: "none" }} />
         <Layout>
           <MainWrapper className="main-wrapper">{children}</MainWrapper>
           <DetectBrowser />
         </Layout>
 
-        <Bottom onClick={logout} className="logout">
+        {/* <Bottom onClick={logout} className="logout">
           <Tip placement="right" key={Math.random()} text="Гарах">
             <NavItem>
               <NavIcon className="icon-logout-2" />
-              <b>{__('ГАРАХ')}</b>
+              <b>{__("ГАРАХ")}</b>
             </NavItem>
           </Tip>
-        </Bottom>
-      </div>
+        </Bottom> */}
+      </>
     );
   }
 }

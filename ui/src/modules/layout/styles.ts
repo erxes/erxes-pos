@@ -19,19 +19,14 @@ import {
   SidebarList,
   SidebarTitle,
   WhiteBox,
-  WhiteBoxRoot
-} from 'erxes-ui/lib/layout/styles';
-import { twinkling } from 'modules/common/styles/animations';
-import styled, { css } from 'styled-components';
-import styledTS from 'styled-components-ts';
+  WhiteBoxRoot,
+} from "erxes-ui/lib/layout/styles";
+import { twinkling } from "modules/common/styles/animations";
+import styled, { css } from "styled-components";
+import styledTS from "styled-components-ts";
 
-import { colors, dimensions } from '../common/styles';
-import { rgba } from 'modules/common/styles/ecolor';
-
-// const wideNavigation =
-//   dimensions.headerSpacingWide +
-//   dimensions.headerSpacingWide +
-//   dimensions.coreSpacing;
+import { colors, dimensions } from "../common/styles";
+import { rgba } from "modules/common/styles/ecolor";
 
 const UserHelper = styled.div`
   height: 50px;
@@ -44,13 +39,13 @@ const UserHelper = styled.div`
 `;
 
 const Layout = styledTS<{ isSqueezed?: boolean }>(styled.main)`
-  height: ${props => (props.isSqueezed ? 'calc(100% - 36px)' : '100%')};
+  height: ${(props) => (props.isSqueezed ? "calc(100% - 36px)" : "100%")};
   display: flex;
   flex: 1;
   max-width: 100%;
   position: relative;
 
-  ${props =>
+  ${(props) =>
     props.isSqueezed &&
     css`
       ${PageHeader} {
@@ -82,7 +77,7 @@ const Authlayout = styledTS<{ hasConfig: boolean }>(styled.div)`
   height: 100%;
   overflow: auto;
   position: relative;
-  background: ${props =>
+  background: ${(props) =>
     !props.hasConfig &&
     `#5629B6 url("/images/stars.png") repeat top
   center`};
@@ -90,7 +85,7 @@ const Authlayout = styledTS<{ hasConfig: boolean }>(styled.div)`
   display: flex;
 
   &:before {
-    content: ${props => !props.hasConfig && '""'};
+    content: ${(props) => !props.hasConfig && '""'};
     position: absolute;
     width: 100%;
     height: 100%;
@@ -121,25 +116,25 @@ const AuthDescription = styledTS<{ hasConfig: boolean }>(styled.div)`
     font-weight: bold;
     font-size: 34px;
     margin: 10px 0 30px;
-    color: ${props => !props.hasConfig && colors.colorWhite};
+    color: ${(props) => !props.hasConfig && colors.colorWhite};
   }
 
   h2 {
     font-size: 24px;
-    color: ${props => !props.hasConfig && 'rgba(255, 255, 255, 0.9)'};
+    color: ${(props) => !props.hasConfig && "rgba(255, 255, 255, 0.9)"};
     line-height: 1.4em;
     font-weight: 500;
   }
 
   p {
-    color: ${props => !props.hasConfig && 'rgba(255, 255, 255, 0.7)'};
+    color: ${(props) => !props.hasConfig && "rgba(255, 255, 255, 0.7)"};
     margin-bottom: 50px;
     font-size: 18px;
     line-height: 1.8em;
   }
 
   a {
-    color: ${props => !props.hasConfig && 'rgba(255, 255, 255, 0.7)'};
+    color: ${(props) => !props.hasConfig && "rgba(255, 255, 255, 0.7)"};
     &:hover {
       color: ${colors.colorWhite};
     }
@@ -182,7 +177,8 @@ const PasswordWithEye = styled.div`
 `;
 
 const LeftNavigation = styled.div`
-  background: ${props => (props.color ? props.color : colors.colorPrimaryDark)};
+  background: ${(props) =>
+    props.color ? props.color : colors.colorPrimaryDark};
   box-shadow: 1px 0px 5px rgba(0, 0, 0, 0.1);
 
   @media (max-width: 1170px) and (orientation: landscape) {
@@ -216,7 +212,7 @@ const SubNav = styled.ul`
   border-bottom-right-radius: 5px;
 
   &:after {
-    content: ' ';
+    content: " ";
     border: solid transparent;
     height: 0;
     width: 0;
@@ -242,13 +238,13 @@ const SubNavItem = styledTS<{ additional: boolean }>(styled.li)`
       opacity: .8;
       display: flex;
       align-items: center;
-      border-radius: ${props =>
+      border-radius: ${(props) =>
         !props.additional && dimensions.unitSpacing - 5}px;
-      border-top: ${props =>
+      border-top: ${(props) =>
         props.additional && `1px solid ${rgba(colors.borderPrimary, 0.6)}`};
-      border-bottom-left-radius: ${props =>
+      border-bottom-left-radius: ${(props) =>
         props.additional && dimensions.unitSpacing - 5}px;
-      border-bottom-right-radius: ${props =>
+      border-bottom-right-radius: ${(props) =>
         props.additional && dimensions.unitSpacing - 5}px;
 
       > i {
@@ -325,7 +321,7 @@ const DropSubNav = styled.ul`
   transition: all 0.9s ease-out;
 
   &:after {
-    content: ' ';
+    content: " ";
     position: absolute;
     pointer-events: none;
     z-index: 10000;
@@ -374,7 +370,7 @@ const DropSubNavItem = styled.li`
 `;
 
 const ExpandIcon = styledTS<{ collapsed: boolean }>(styled.div)`
-  background: ${props =>
+  background: ${(props) =>
     !props.collapsed ? colors.colorPrimaryDark : colors.colorWhite};
   position: absolute;
   top: 12px;
@@ -388,7 +384,7 @@ const ExpandIcon = styledTS<{ collapsed: boolean }>(styled.div)`
   transition: all 0.3s;
 
   > i {
-    color: ${props =>
+    color: ${(props) =>
       props.collapsed ? colors.colorPrimaryDark : colors.colorWhite};
     line-height: ${dimensions.coreSpacing + 5}px;
     transition: all ease 0.3s;
@@ -399,7 +395,7 @@ const ExpandIcon = styledTS<{ collapsed: boolean }>(styled.div)`
     right: -15px;
 
     > i {
-      float: ${props => (props.collapsed ? 'left' : 'right')};
+      float: ${(props) => (props.collapsed ? "left" : "right")};
     }
   }
 }
@@ -471,5 +467,5 @@ export {
   DropSubNavItem,
   DropNav,
   ExpandIcon,
-  PortraitWrapper
+  PortraitWrapper,
 };
