@@ -1,9 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import { IOrderItemInput, IProduct } from '../types';
-import ProductItem from './ProductItem';
-import { ProductsWrapper } from '../styles';
-import { IConfig, IRouterProps } from 'types';
+import { IOrderItemInput, IProduct } from "../types";
+import ProductItem from "./ProductItem";
+import { EmptyContentWrapper, ProductsWrapper } from "../styles";
+import { IConfig, IRouterProps } from "types";
+import EmptyState from "modules/common/components/EmptyState";
+import { __ } from "modules/common/utils";
 
 type Props = {
   products: IProduct[];
@@ -24,12 +26,12 @@ export default class Products extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      categoriesHeight: 0
+      categoriesHeight: 0,
     };
   }
 
   componentDidMount() {
-    const height = document.getElementById('product-categories');
+    const height = document.getElementById("product-categories");
 
     this.setState({ categoriesHeight: height ? height.clientHeight : 0 });
   }
@@ -38,7 +40,7 @@ export default class Products extends React.Component<Props, State> {
     const { items, setItems } = this.props;
 
     const currentItems = items.slice();
-    const foundItem = currentItems.find(i => i.productId === item._id);
+    const foundItem = currentItems.find((i) => i.productId === item._id);
 
     if (foundItem) {
       foundItem.count += count;
@@ -49,8 +51,8 @@ export default class Products extends React.Component<Props, State> {
         productName: item.name,
         unitPrice: item.unitPrice || 0,
         productImgUrl:
-          item.attachment && item.attachment.url ? item.attachment.url : '',
-        count
+          item.attachment && item.attachment.url ? item.attachment.url : "",
+        count,
       });
     }
 
@@ -59,22 +61,34 @@ export default class Products extends React.Component<Props, State> {
 
   renderProducts() {
     const { products = [], orientation, currentConfig, qp, items } = this.props;
-    const mode = localStorage.getItem('erxesPosMode');
-    const productId = qp && qp.productId ? qp.productId : '';
+    const mode = localStorage.getItem("erxesPosMode");
+    const productId = qp && qp.productId ? qp.productId : "";
     let filteredProducts = products;
 
-    if (mode === 'kiosk') {
+    if (mode === "kiosk") {
       const excludeIds = currentConfig.kioskExcludeProductIds || [];
-      filteredProducts = products.filter(p => !excludeIds.includes(p._id));
+      filteredProducts = products.filter((p) => !excludeIds.includes(p._id));
     }
 
-    return filteredProducts.map(product => {
+    if (!filteredProducts || filteredProducts.length === 0) {
+      return (
+        <EmptyContentWrapper>
+          <EmptyState
+            image="/images/actions/5.svg"
+            text={__("There are no products yet")}
+            size={"large"}
+          />
+        </EmptyContentWrapper>
+      );
+    }
+
+    return filteredProducts.map((product) => {
       return (
         <ProductItem
           product={product}
           key={product._id}
           orientation={orientation}
-          isActive={items.some(item => item.productId === product._id)}
+          isActive={items.some((item) => item.productId === product._id)}
           activeProductId={productId}
           addItem={this.addItem.bind(this, product, 1)}
         />

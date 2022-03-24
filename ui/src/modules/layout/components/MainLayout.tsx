@@ -1,6 +1,6 @@
 import { IUser } from "modules/auth/types";
 import { IRouterProps, IConfig } from "../../../types";
-import { bustIframe, __ } from "modules/common/utils";
+import { bustIframe } from "modules/common/utils";
 import React from "react";
 import { withRouter } from "react-router-dom";
 import {

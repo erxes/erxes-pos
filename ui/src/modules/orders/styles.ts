@@ -156,7 +156,7 @@ export const ProductsWrapper = styledTS<{
 }>(styled.div)`
   display: flex;
   flex-wrap: wrap;
-  max-height: 80%;
+  max-height: calc(100vh - 170px);
   overflow: auto;
 
   /* width */
@@ -244,7 +244,7 @@ export const ProductCategory = styledTS<{
           ? props.color
           : colors.colorSecondary
         : colors.textPrimary};
-    font-weight: ${(props) => props.isActive && "500"};
+    font-weight: ${(props) => (props.isActive ? "600" : "500")};
     font-size: 12px;
     word-break: break-word;
   }
@@ -260,6 +260,11 @@ export const CategoryName = styledTS<{ color?: string }>(styled.div)`
     height: 32px;
     margin-right: ${dimensions.unitSpacing - 5}px;
   }
+`;
+
+export const EmptyContentWrapper = styled.div`
+  height: 100%;
+  flex: 1;
 `;
 
 export const CategoryItemWrapper = styledTS<{ color?: string }>(styled.div)`
@@ -314,31 +319,35 @@ export const LeftCircle = styledTS<{ isActive?: boolean; color?: string }>(
   }
 `;
 
-export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
-  styled.div
-)`
+export const Item = styledTS<{
+  isPortrait: boolean;
+  isActive?: boolean;
+  color?: string;
+}>(styled.div)`
   box-shadow: ${(props) =>
-    props.isPortrait ? "" : "0px 2px 4px rgba(0, 0, 0, 0.25)"};
+    props.isPortrait ? "" : "0px 2px 4px rgba(0, 0, 0, 0.1)"};
   border-radius: 24px;
   background: ${(props) => (props.isPortrait ? "" : `${colors.colorWhite}`)};
   display: ${(props) => (props.isPortrait ? "" : "flex")};
   align-items: center;
-  flex-basis: 28%;
   cursor: pointer;
   margin: 0 20px 20px 0;
+  padding: ${dimensions.unitSpacing}px;
+  height: 100%;
+  position: relative;
   transition: all ease 0.3s;
 
   .image-wrapper {
-    width: ${(props) => (props.isPortrait ? "" : "132px")};
-    height: ${(props) => (props.isPortrait ? "170px" : "120px")};
+    width: 35%;
+    max-height: ${(props) => (props.isPortrait ? "170px" : "120px")};
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
 
     > img {
       max-width: 100%;
       max-height: 100%;
-      margin-left: 10px;
     }
 
     @media (max-width: 1200px) and (orientation:landscape) {
@@ -349,24 +358,23 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
   }
 
   .text-wrapper {
-    padding: 10px;
-    margin-left: 5px;
-    align-items: center;
-    overflow-wrap: break-word;
-    text-align: ${(props) => (props.isPortrait ? "center" : "left")};
+    padding: 0 ${dimensions.unitSpacing}px;
 
     h4 {
-      font-size: ${(props) => (props.isPortrait ? "16px" : "16px")};
-      margin: 10px 0 5px;
-      line-height: 24px;
-      letter-spacing: 0.15px;
+      font-size: 14px;
+      margin: 0 0 ${dimensions.coreSpacing}px;
+      line-height: 18px;
       font-weight: bold;
+      word-break: break-word;
     }
 
     span {
-      color: #FF7800;
-      font-size: 16px;
+      color: ${(props) => (props.color ? props.color : colors.colorSecondary)};
+      font-size: 15px;
       font-weight: bold;
+      position: absolute;
+      bottom: ${dimensions.unitSpacing}px;
+      word-break: break-word;
     }
 
     @media (max-width: 1200px) and (orientation:landscape) {
@@ -403,7 +411,7 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
     }
 
     span {
-      color: #FF7800;
+      color: ${(props) => (props.color ? props.color : colors.colorSecondary)};
       font-size: 16px;
       font-weight: bold;
     }
@@ -418,9 +426,19 @@ export const Item = styledTS<{ isPortrait: boolean; isActive?: boolean }>(
 
   &:hover {
     box-shadow: ${(props) =>
-      props.isPortrait ? "" : "0px 3px 4px rgba(0, 0, 0, 0.28);"};
+      props.isPortrait ? "" : "0px 3px 4px rgba(0, 0, 0, 0.12);"};
   }
+`;
 
+export const ItemWrapper = styled.div`
+  width: 33.3333%;
+  margin-bottom: ${dimensions.coreSpacing}px;
+
+  &:nth-child(3n) {
+    ${Item} {
+      margin-right: ${dimensions.unitSpacing - 5}px;
+    }
+  }
 `;
 
 export const FinderButtons = styled.div`

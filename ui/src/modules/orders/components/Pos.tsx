@@ -386,17 +386,7 @@ export default class Pos extends React.Component<Props, State> {
 
   renderProduct() {
     const { currentConfig, orientation, productsQuery } = this.props;
-
     const { items } = this.state;
-
-    const products = (
-      <ProductsContainer
-        setItems={this.setItems}
-        items={items}
-        productsQuery={productsQuery}
-        orientation={orientation}
-      />
-    );
 
     return (
       <>
@@ -407,7 +397,12 @@ export default class Pos extends React.Component<Props, State> {
           <ProductSearch productsQuery={productsQuery} />
         </FlexHeader>
         <Divider />
-        {products}
+        <ProductsContainer
+          setItems={this.setItems}
+          items={items}
+          productsQuery={productsQuery}
+          orientation={orientation}
+        />
       </>
     );
   }
@@ -434,7 +429,7 @@ export default class Pos extends React.Component<Props, State> {
     );
   }
 
-  renderProductBody() {
+  renderMainContent() {
     const { addCustomer, order } = this.props;
     const { productBodyType } = this.state;
 
@@ -581,7 +576,7 @@ export default class Pos extends React.Component<Props, State> {
             </Col>
             <Col md={8}>
               <MainContent numPadding={true}>
-                <ProductsContent>{this.renderProductBody()}</ProductsContent>
+                <ProductsContent>{this.renderMainContent()}</ProductsContent>
               </MainContent>
             </Col>
             <Col md={3}>

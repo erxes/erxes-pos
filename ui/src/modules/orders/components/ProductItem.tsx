@@ -1,7 +1,8 @@
-import React from 'react';
-import { IProduct, IOrderItemInput } from '../types';
-import { Item } from '../styles';
-import { formatNumber } from 'modules/utils';
+import React from "react";
+import { IProduct, IOrderItemInput } from "../types";
+import { Item, ItemWrapper } from "../styles";
+import { formatNumber } from "modules/utils";
+import { AppContext } from "appContext";
 
 type Props = {
   product: IProduct;
@@ -12,9 +13,17 @@ type Props = {
 };
 
 export default function ProductItem(props: Props) {
+  const { currentConfig } = React.useContext(AppContext);
   const { product, addItem, orientation, isActive } = props;
   const { attachment, name, unitPrice } = product;
-  const attachmentUrl = attachment && attachment.url ? attachment.url : '';
+
+  const attachmentUrl = attachment && attachment.url ? attachment.url : "";
+
+  const color =
+    currentConfig &&
+    currentConfig.uiOptions &&
+    currentConfig.uiOptions.colors &&
+    currentConfig.uiOptions.colors.primary;
 
   const onClick = () => {
     addItem({
@@ -23,26 +32,31 @@ export default function ProductItem(props: Props) {
       productName: product.name,
       _id: Math.random().toString(),
       unitPrice: product.unitPrice,
-      productImgUrl: attachmentUrl
+      productImgUrl: attachmentUrl,
     });
   };
 
   return (
-    <Item
-      onClick={onClick}
-      isPortrait={orientation === 'portrait'}
-      isActive={isActive}
-    >
-      <div className="image-wrapper">
-        <img
-          src={attachmentUrl ? attachmentUrl : 'images/no-category.jpg'}
-          alt={name}
-        />
-      </div>
-      <div className={orientation === 'portrait' ? 'text-kiosk' : 'text-wrapper'}>
-        <h4>{name}</h4>
-        <span>{formatNumber(unitPrice || 0)}₮</span>
-      </div>
-    </Item>
+    <ItemWrapper>
+      <Item
+        onClick={onClick}
+        isPortrait={orientation === "portrait"}
+        isActive={isActive}
+        color={color}
+      >
+        <div className="image-wrapper">
+          <img
+            src={attachmentUrl ? attachmentUrl : "images/no-category.jpg"}
+            alt={name}
+          />
+        </div>
+        <div
+          className={orientation === "portrait" ? "text-kiosk" : "text-wrapper"}
+        >
+          <h4>{name}</h4>
+          <span>{formatNumber(unitPrice || 0)}₮</span>
+        </div>
+      </Item>
+    </ItemWrapper>
   );
 }
