@@ -2,6 +2,7 @@ import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
 import React from 'react';
 import NumberFormat from 'react-number-format';
 import styled from 'styled-components';
+
 import Button from 'modules/common/components/Button';
 import Icon from 'modules/common/components/Icon';
 import FormGroup from 'modules/common/components/form/Group';
@@ -19,14 +20,14 @@ type Props = {
   billType: string;
   addCardPayment: (params: ICardPayment) => void;
   order: IOrder;
-  maxAmount?: number;
-  remainder?: number;
+  maxAmount: number | undefined;
+  cardAmount: number;
+  setAmount: (amount) => void;
 };
 
 type State = {
   sentTransaction: boolean;
   checkedTransaction: boolean;
-  amount: number;
 };
 
 export default class CardInput extends React.Component<Props, State> {
@@ -36,31 +37,8 @@ export default class CardInput extends React.Component<Props, State> {
     this.state = {
       sentTransaction: false,
       checkedTransaction: false,
-      amount: props.maxAmount || 0
     };
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.maxAmount !== this.props.maxAmount) {
-      this.setState({ amount: nextProps.maxAmount });
-    }
-  }
-
-  onChangeKeyPad = num => {
-    const { amount } = this.state;
-
-    if (num === 'CE') {
-      return this.setState({ amount: 0 });
-    }
-
-    if (num === 'C') {
-      return this.setState({
-        amount: parseFloat(amount.toString().slice(0, -1))
-      });
-    }
-
-    return this.setState({ amount: amount + num });
-  };
 
   render() {
     const {
@@ -68,12 +46,12 @@ export default class CardInput extends React.Component<Props, State> {
       addCardPayment,
       order,
       maxAmount = 0,
-      remainder
+      setAmount,
+      cardAmount,
+      billType
     } = this.props;
 
-    const { amount } = this.state;
-
-    const { _id } = order;
+    const { _id, number } = order;
 
     if (!_id) {
       return null;
@@ -90,79 +68,38 @@ export default class CardInput extends React.Component<Props, State> {
       // do not accept amount greater than payable amount
       const val = Number((value > maxAmount ? maxAmount : value).toFixed(2));
 
-      this.setState({ amount: val });
+      setAmount(val);
     };
 
     const resetInput = () => {
-      this.setState({ amount: 0 });
+      setAmount(0);
     };
 
-    // const PATH = 'http://localhost:27028';
-    const PATH = 'http://localhost:7000';
+    const PATH = 'http://localhost:27028';
 
     const sendTransaction = async () => {
       fetch(`${PATH}/ajax/get-status-info`)
-        // .then(res => res.json())
+        .then(res => res.json())
         .then((res: any) => {
-          // TODO remove code, fake data
-          res = {
-            status_code: 'ok'
-          };
           if (res && res.status_code === 'ok') {
             // send transaction upon successful connection
             fetch(PATH, {
-              method: 'GET',
-              // method: 'POST',
+              method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
-              }
-              // body: JSON.stringify({
-              //   service_name: 'doSaleTransaction',
-              //   service_params: {
-              //     // special character _ is not accepted
-              //     db_ref_no: number.replace('_', ''),
-              //     amount: amount.toString(),
-              //     vatps_bill_type: billType
-              //   }
-              // })
+              },
+              body: JSON.stringify({
+                service_name: 'doSaleTransaction',
+                service_params: {
+                  // special character _ is not accepted
+                  db_ref_no: number.replace('_', ''),
+                  amount: cardAmount.toString(),
+                  vatps_bill_type: billType
+                }
+              })
             })
-              // .then(res => res.json())
-              // .then(r => {
-              .then(res => {
-                // TODO remove code, fake data
-                const r = {
-                  status: true,
-                  response: {
-                    response_code: '000',
-                    aid: 'A0000000031010',
-                    amount: amount,
-                    app_name: 'VISA DEBIT',
-                    auth_code: '1TS93C',
-                    bank_mb_code: '05',
-                    batch_no: '000000000231',
-                    card_holder_name: '',
-                    date: '02/27',
-                    db_ref_no: '202202270001',
-                    entry_mode: 'Contact Less TAP',
-                    is_vatps: '0',
-                    merchant_name: 'Yoshinoya',
-                    model: 's300',
-                    operation: 'SALE',
-                    pan: '438054XXXXXX2643',
-                    pos_firmware: '2.4.94',
-                    reader_id: '53240799',
-                    response_msg: 'Гүйлгээ зөвшөөрөгдсөн.',
-                    rrn: '003841002333',
-                    tc: '0000000000000000',
-                    term_app_name: 'DtbProlin',
-                    terminal_date: '20220227112935',
-                    terminal_id: '70078754',
-                    time: '11:29:32',
-                    trace_no: '020735',
-                    version: '334'
-                  }
-                };
-
+              .then(res => res.json())
+              .then(r => {
                 if (r && r.status === true && r.response) {
                   if (r.response.response_code === '000') {
                     Alert.success(
@@ -173,8 +110,9 @@ export default class CardInput extends React.Component<Props, State> {
 
                     addCardPayment({
                       _id,
+                      // cardInfo: JSON.stringify(r.response),
                       cardInfo: r.response,
-                      amount
+                      amount: cardAmount
                     });
                   } else {
                     return Alert.warning(r.response.response_msg);
@@ -201,7 +139,7 @@ export default class CardInput extends React.Component<Props, State> {
             <Input color={color}>
               <NumberFormat
                 name="cardAmount"
-                value={amount ? amount : remainder || 0}
+                value={cardAmount || 0}
                 onValueChange={values => handleInput(values.floatValue)}
                 {...inputProps}
               />
@@ -211,11 +149,10 @@ export default class CardInput extends React.Component<Props, State> {
             </Input>
           </FormGroup>
           <ButtonWrapper>
-            {amount ? (
+            {cardAmount ? (
               <Button
                 btnStyle="warning"
                 onClick={sendTransaction}
-                style={{ padding: '10px' }}
               >
                 {__('Send transaction')}
               </Button>

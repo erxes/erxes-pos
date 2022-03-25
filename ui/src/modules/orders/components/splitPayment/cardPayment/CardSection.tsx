@@ -1,6 +1,5 @@
 import React from 'react';
 import { IOrder, ICardPayment } from 'modules/orders/types';
-// import SplitCardForm from './SplitCardForm';
 import { FlexCenter } from 'modules/common/styles/main';
 import CardInput from './CardInput';
 
@@ -8,13 +7,14 @@ type Props = {
   order: IOrder;
   addCardPayment: (params: ICardPayment) => void;
   billType: string;
-  amount?: number;
-  remainder: number;
+  cardAmount: number;
+  maxAmount: number;
+  setAmount: (amount) => void;
 };
 
 export default class CardSection extends React.Component<Props> {
   render() {
-    const { order, addCardPayment, billType, amount, remainder } = this.props;
+    const { order, addCardPayment, billType, cardAmount, maxAmount, setAmount } = this.props;
 
     return (
       <FlexCenter>
@@ -22,8 +22,9 @@ export default class CardSection extends React.Component<Props> {
           billType={billType}
           addCardPayment={addCardPayment}
           order={order}
-          remainder={remainder}
-          maxAmount={amount}
+          cardAmount={cardAmount}
+          maxAmount={maxAmount}
+          setAmount={setAmount}
         />
       </FlexCenter>
     );

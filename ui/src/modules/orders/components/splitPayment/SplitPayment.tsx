@@ -188,9 +188,9 @@ export default class SplitPayment extends React.Component<Props, State> {
           order={order}
           addCardPayment={addCardPayment}
           billType={billType}
-          // amount={remainder - this.state.amount}
-          amount={cardAmount || 0}
-          remainder={remainder || 0}
+          cardAmount={cardAmount}
+          maxAmount={remainder}
+          setAmount={setAmount}
         />
       );
     }
