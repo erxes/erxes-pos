@@ -3,30 +3,27 @@ import styled from "styled-components";
 import styledTS from "styled-components-ts";
 import { FlexCenter } from "modules/common/styles/main";
 import Icon from "modules/common/components/Icon";
+import { dimensions } from "modules/common/styles";
 
 const Wrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
   display: flex;
+  flex-direction: column;
   align-items: center;
   overflow: hidden;
   flex-shrink: 0;
-  margin-right: 50px;
   margin: ${(props) => props.isPortrait && "10px 0 20px 0"};
 
 
   > input {
-    font-size: ${(props) => (props.isPortrait ? "28px" : "15px")};
+    font-size: ${(props) => (props.isPortrait ? "28px" : "12px")};
     color: #616e7c;
     border: 1px solid #cbd2d9;
     border-radius: 4px;
-    padding: 0 10px;
+    padding: 0 ${dimensions.unitSpacing - 5}px;
     font-weight: 500;
     min-width: 32px;
     margin:  ${(props) => (props.isPortrait ? "0 20px" : "0")};
     text-align: center;
-  }
-
-  @media (max-width: 1170px) and (orientation:landscape) {
-    margin-right: 35px;
   }
 `;
 
@@ -38,7 +35,7 @@ const Button = styledTS<{
   width: 20px;
   height: 20px;
   margin: 0 8px;
-  font-size: ${(props) => (props.isPortrait ? "26px" : "12px")};
+  font-size: ${(props) => (props.isPortrait ? "26px" : "11px")};
   color: #616E7C;
   pointer-events: ${(props) => props.disabled && "none"};
   cursor: pointer;
@@ -113,11 +110,12 @@ const Quantity = (props: Props) => {
   return (
     <Wrapper isPortrait={isPortrait}>
       <Button
-        disabled={isDisabled(false)}
-        onClick={() => onChangeByStep(false)}
+        disabled={isDisabled(true)}
+        onClick={() => onChangeByStep(true)}
+        color={color}
         isPortrait={isPortrait}
       >
-        <Icon icon="minus" />
+        <Icon icon="plus" />
       </Button>
       <input
         style={{ width: inputValue.length * 9 + widthValue + "px" }}
@@ -126,12 +124,11 @@ const Quantity = (props: Props) => {
         onChange={onChangeInput}
       />
       <Button
-        disabled={isDisabled(true)}
-        onClick={() => onChangeByStep(true)}
-        color={color}
+        disabled={isDisabled(false)}
+        onClick={() => onChangeByStep(false)}
         isPortrait={isPortrait}
       >
-        <Icon icon="plus" />
+        <Icon icon="minus" />
       </Button>
     </Wrapper>
   );

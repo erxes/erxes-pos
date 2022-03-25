@@ -159,7 +159,7 @@ a:hover {
 }
 
 .modal-body.less-padding {
-  padding: 0px;
+  padding: 40px 30px;
 }
 
 .modal-footer {

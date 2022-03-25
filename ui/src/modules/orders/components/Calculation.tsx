@@ -9,14 +9,20 @@ import styledTS from "styled-components-ts";
 import { __ } from "modules/common/utils";
 import { ColumnBetween } from "modules/common/styles/main";
 import { formatNumber } from "modules/utils";
-import { FormControl } from "modules/common/components/form";
+import { ControlLabel, FormControl } from "modules/common/components/form";
 import { IConfig, IOption } from "types";
 import { ICustomer, IOrder, IOrderItemInput } from "../types";
-import { Amount, ProductLabel, Types } from "../styles";
+import {
+  Amount,
+  CalculationHeader,
+  Divider,
+  ProductLabel,
+  Types,
+} from "../styles";
 import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from "../../../constants";
+import ModalTrigger from "modules/common/components/ModalTrigger";
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
-
   padding: 0 10px 0 10px;
   height: 100%;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.10);
@@ -30,8 +36,6 @@ const Wrapper = styledTS<{ color?: string }>(styled.div)`
 `;
 
 const ButtonWrapper = styled.div`
-  margin-bottom: 20px;
-
   > button {
     margin-bottom: 10px;
     margin-left: 0;
@@ -85,7 +89,6 @@ type Props = {
 type State = {
   customerId: string;
   customerLabel: string;
-  stageHeight: number;
   mode: string;
   cashAmount: number;
   companyName: string;
@@ -96,35 +99,15 @@ export default class Calculation extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const { order, orientation } = this.props;
+    const { order } = this.props;
     const customerId = order ? order.customerId : "";
     const customerLabel = order ? generateLabel(order.customer) : "";
 
-    let stageHeight = window.innerHeight - 40; // types title
     const mode = localStorage.getItem("erxesPosMode") || "";
 
-    if (mode === "") {
-      stageHeight -= 45; // findOrder
-    }
-    stageHeight -= 78; // customer
-
-    if (orientation === "portrait") {
-      stageHeight -= 135; // amount
-      stageHeight -= mode === "kiosk" ? 0 : 125; // printButton
-      stageHeight -= order && order.paidDate ? 0 : 100; // oneButton
-    } else {
-      stageHeight -= 52; // amount
-      stageHeight -= mode === "kiosk" ? 0 : 50; // printButton
-      stageHeight -= order && order.paidDate ? 0 : 50; // oneButton
-    }
-
-    if (stageHeight < 50) {
-      stageHeight = 50;
-    }
     this.state = {
       customerId: customerId || "",
       customerLabel,
-      stageHeight,
       mode,
       cashAmount: 0,
       companyName: "",
@@ -232,28 +215,51 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
-  renderFindOrder(mode) {
+  renderHeader(mode) {
     if (mode === "kiosk") {
       return <></>;
     }
 
     const { onChangeProductBodyType, config } = this.props;
     const color = config.uiOptions && config.uiOptions.colors.primary;
-    return (
+
+    const trigger = (
       <ProductLabel
         onClick={() => onChangeProductBodyType("orderSearch")}
         color={color}
       >
-        {__("Find orders")}
+        {__("Identify a customer")}
       </ProductLabel>
+    );
+
+    return (
+      <>
+        <ProductLabel
+          onClick={() => onChangeProductBodyType("orderSearch")}
+          color={color}
+        >
+          {__("Find orders")}
+        </ProductLabel>
+
+        <ModalTrigger
+          title={__("Identify a customer")}
+          trigger={trigger}
+          hideHeader={true}
+          size="sm"
+          paddingContent="less-padding"
+          content={(props) => this.renderCustomerChooser(props)}
+        />
+      </>
     );
   }
 
-  renderCustomerChooser() {
+  renderCustomerChooser(props) {
     const { setOrderState } = this.props;
 
     const onChangeQrcode = (e) => {
       const value = (e.currentTarget as HTMLInputElement).value || "";
+
+      console.log(value);
       client
         .query({
           query: gql(queries.customerDetail),
@@ -279,14 +285,18 @@ export default class Calculation extends React.Component<Props, State> {
     };
 
     return (
-      <FormControl
-        autoFocus={true}
-        id="customerIdInput"
-        name="customerId"
-        value={this.state.customerLabel}
-        onChange={onChangeQrcode}
-        onClick={onClearChosenCustomer}
-      />
+      <>
+        <ControlLabel>{__("Identify a customer")}</ControlLabel>
+        <FormControl
+          {...props}
+          autoFocus={true}
+          id="customerIdInput"
+          name="customerId"
+          value={this.state.customerLabel}
+          onChange={onChangeQrcode}
+          onClick={onClearChosenCustomer}
+        />
+      </>
     );
   }
 
@@ -316,9 +326,26 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
+  renderTotal(color) {
+    const { totalAmount, orientation, items } = this.props;
+
+    if (!items || items.length === 0) {
+      return null;
+    }
+
+    return (
+      <ButtonWrapper
+        className={orientation === "portrait" ? "payment-section" : ""}
+      >
+        {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
+        {this.renderSplitPaymentButton()}
+        {this.renderReceiptButton()}
+      </ButtonWrapper>
+    );
+  }
+
   render() {
     const {
-      totalAmount,
       config,
       items,
       changeItemCount,
@@ -332,9 +359,8 @@ export default class Calculation extends React.Component<Props, State> {
     return (
       <>
         <Wrapper color={color}>
-          {this.renderFindOrder(mode)}
-          {__("Identify a customer")}
-          {this.renderCustomerChooser()}
+          <CalculationHeader>{this.renderHeader(mode)}</CalculationHeader>
+          <Divider />
           <ColumnBetween>
             <Stage
               orientation={orientation}
@@ -342,18 +368,12 @@ export default class Calculation extends React.Component<Props, State> {
               changeItemCount={changeItemCount}
               changeItemIsTake={changeItemIsTake}
               options={config.uiOptions}
-              stageHeight={this.state.stageHeight}
+              // stageHeight={this.state.stageHeight}
               type={type}
               mode={mode}
             />
+            {this.renderTotal(color)}
           </ColumnBetween>
-          <ButtonWrapper
-            className={orientation === "portrait" ? "payment-section" : ""}
-          >
-            {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
-            {this.renderSplitPaymentButton()}
-            {this.renderReceiptButton()}
-          </ButtonWrapper>
         </Wrapper>
       </>
     );

@@ -1,84 +1,109 @@
-import React from 'react';
-import styled from 'styled-components';
-import styledTS from 'styled-components-ts';
-import { IOrderItemInput } from '../types';
-import { FlexBetween, FlexCenter } from 'modules/common/styles/main';
-import Icon from 'modules/common/components/Icon';
-import Quantity from './Quantity';
-import { SelectedItem, SelectedStage } from './kiosk/style';
-import FormControl from 'modules/common/components/form/Control';
-import { ORDER_TYPES } from '../../../constants';
-import Tip from 'modules/common/components/Tip';
-import { PackageProduct } from '../styles';
-import { __ } from 'erxes-ui/lib/utils/core';
+import React from "react";
+import styled from "styled-components";
+import styledTS from "styled-components-ts";
+import { IOrderItemInput } from "../types";
+import { FlexBetween, FlexCenter } from "modules/common/styles/main";
+import Icon from "modules/common/components/Icon";
+import Quantity from "./Quantity";
+import { SelectedItem, SelectedStage } from "./kiosk/style";
+import FormControl from "modules/common/components/form/Control";
+import { ORDER_TYPES } from "../../../constants";
+import Tip from "modules/common/components/Tip";
+import { PackageProduct } from "../styles";
+import { __ } from "erxes-ui/lib/utils/core";
+import { darken, rgba } from "modules/common/styles/ecolor";
+import colors from "modules/common/styles/colors";
+import { dimensions } from "modules/common/styles";
 
-const Item = styledTS<{ isTaken?: boolean }>(styled.div)`
+const Item = styledTS<{ isTaken?: boolean; color?: string }>(styled.div)`
   background: #fff;
-  border: ${props =>
-    props.isTaken ? '1px solid #616E7C' : '1px solid #904300'}; 
+  border: ${(props) =>
+    props.isTaken
+      ? `1px solid #616E7C`
+      : `1px solid ${rgba(
+          props.color ? props.color : colors.colorSecondary,
+          0.4
+        )}`}; 
   border-radius: 8px;
   position: relative;
   margin-bottom: 10px;
 `;
 
-const Close = styledTS<{ isPortrait?: boolean }>(styled(FlexCenter))`
-  background: ${props =>
-    props.isPortrait ? '#e4ebf1' : 'rgba(255, 120, 0, 0.12)'};
-  width: ${props => (props.isPortrait ? '0' : '30px')};
-  position: ${props => (props.isPortrait ? '' : 'absolute')}; ;
-  right: ${props => (props.isPortrait ? '0' : '0')};
-  top: ${props => (props.isPortrait ? '0' : '0')};
-  bottom: ${props => (props.isPortrait ? '0' : '0')};
+const Close = styledTS<{ isPortrait?: boolean; color?: string }>(
+  styled(FlexCenter)
+)`
+  background: ${(props) =>
+    props.color ? rgba(props.color, 0.12) : rgba(colors.colorSecondary, 0.12)};
+  width: ${(props) => (props.isPortrait ? "0" : "20px")};
   cursor: pointer;
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
   transition: all ease 0.3s;
-  font-size: ${props => (props.isPortrait ? '10px' : '14px')};
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  font-size: 10px
   justify-content: center;
-
-  &:hover {
-    i {
-      font-size: ${props => (props.isPortrait ? '' : '17px;')};
-    }
-  }
+  transition: all ease .3s;
 
   input {
-    width: ${props => (props.isPortrait ? '36px' : '18px;')};
-    height: ${props => (props.isPortrait ? '124px' : '18px;')};
+    width: ${(props) => (props.isPortrait ? "36px" : "18px;")};
+    height: ${(props) => (props.isPortrait ? "124px" : "18px;")};
+  }
+
+  &:hover {
+    background: ${(props) =>
+      props.color
+        ? rgba(props.color, 0.18)
+        : rgba(colors.colorSecondary, 0.18)};
   }
 `;
 
-export const Text = styledTS<{ isPortrait?: boolean; isTaken?: boolean }>(
-  styled.div
-)`
-  padding: ${props => (props.isPortrait ? '' : '5px')};
-  font-size: ${props => props.isPortrait && '12px'};
-  margin-top: ${props => props.isPortrait && ''};
-  color: ${props => (props.isTaken ? '#616E7C' : '#904300')};
-  display: ${props => (props.isPortrait ? '' : 'flex')};
+export const ItemInfo = styledTS<{ isPortrait?: boolean }>(styled.div)`
+  padding: ${(props) => (props.isPortrait ? "" : "5px")};
+  font-size: ${(props) => props.isPortrait && "12px"};
+  margin-top: ${(props) => props.isPortrait && ""};
+  margin-right: ${dimensions.coreSpacing}px;
+  display: ${(props) => (props.isPortrait ? "" : "flex")};
   align-items: center;
+  justify-content: space-between;
+  flex: 1;
 
   > div {
-    line-height: ${props => (props.isPortrait ? '20px' : '15px')};
-    font-size: ${props => (props.isPortrait ? '16px' : '12px')};  
-    margin-left: 5px;
-    display: grid;
-
-    > span {
-      margin-top: 5px;
-      font-size: ${props => (props.isPortrait ? '16px' : '11px')};  
-    }
+    display: flex;
+    align-items: center;
   }
 
   input {
-    width:20px;
-    height: 20px;
+    width: ${dimensions.coreSpacing - 5}px;
+    height:  ${dimensions.coreSpacing - 5}px;
+  }
+`;
+
+const ProductName = styledTS<{ isTaken?: boolean; color?: string }>(styled.div)`
+  line-height: 15px;
+  font-size: 12px;
+  margin-left: 5px;
+  display: grid;
+  color: ${(props) =>
+    props.isTaken
+      ? "#616E7C"
+      : darken(props.color ? props.color : colors.colorSecondary, 35)};
+
+  > span {
+    margin: 5px 0;
+    font-size: 11px;
+  }
+
+  b {
+    word-break: break-word;
   }
 `;
 
 export const COUNT_TYPES = {
-  MINUS: 'minus',
-  PLUS: 'plus'
+  MINUS: "minus",
+  PLUS: "plus",
 };
 
 type Props = {
@@ -106,7 +131,7 @@ export default class StageItem extends React.Component<Props, State> {
 
     this.state = {
       isTake: type === ORDER_TYPES.EAT ? item.isTake || false : true,
-      countType: ''
+      countType: "",
     };
   }
 
@@ -119,16 +144,16 @@ export default class StageItem extends React.Component<Props, State> {
   renderCheckbox() {
     const { item, changeItemIsTake, mode, type } = this.props;
 
-    if (mode === 'kiosk' || type !== ORDER_TYPES.EAT) {
+    if (mode === "kiosk" || type !== ORDER_TYPES.EAT) {
       return <></>;
     }
 
-    const onChange = e => {
+    const onChange = (e) => {
       changeItemIsTake(item, e.target.checked);
     };
 
     return (
-      <Tip text={'Тусгайлан авч явах бол тэмдэглэх'} placement="right">
+      <Tip text={"Тусгайлан авч явах бол тэмдэглэх"} placement="right">
         <label>
           <FormControl
             type="checkbox"
@@ -136,7 +161,7 @@ export default class StageItem extends React.Component<Props, State> {
             name="itemIsTake"
             onChange={onChange}
             checked={item.isTake}
-            onClick={e => {
+            onClick={(e) => {
               e.stopPropagation();
             }}
           />
@@ -164,28 +189,28 @@ export default class StageItem extends React.Component<Props, State> {
       changeItemCount({ ...item, count: 0 });
     };
 
-    const onIncCount = value => {
+    const onIncCount = (value) => {
       const count = item.count + 1;
 
       this.setState({ countType: value });
       changeItemCount({ ...item, count });
     };
 
-    const onDecCount = value => {
+    const onDecCount = (value) => {
       const count = item.count - 1;
 
       this.setState({ countType: value });
       changeItemCount({ ...item, count });
     };
 
-    if (mode === 'kiosk') {
+    if (mode === "kiosk") {
       return (
         <SelectedItem>
           <SelectedStage>
             <Icon onClick={onRemoveItem} icon="cancel-1" color={color} />
             <div className="image-wrapper">
               <img
-                src={productImgUrl ? productImgUrl : 'images/no-category.jpg'}
+                src={productImgUrl ? productImgUrl : "images/no-category.jpg"}
                 alt={productName}
               />
             </div>
@@ -194,23 +219,23 @@ export default class StageItem extends React.Component<Props, State> {
                 <b>{this.renderName()}</b>
               </div>
               <span>
-                <b>{count}</b> x{' '}
+                <b>{count}</b> x{" "}
                 {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
               </span>
             </div>
             <div className="count-wrapper">
               <button
-                className={countType === COUNT_TYPES.MINUS ? 'active' : ''}
+                className={countType === COUNT_TYPES.MINUS ? "active" : ""}
                 onClick={() => onDecCount(COUNT_TYPES.MINUS)}
               >
-                <b>{__('-')}</b>
+                <b>{__("-")}</b>
               </button>
               {/* <span>{count}</span> */}
               <button
-                className={countType === COUNT_TYPES.PLUS ? 'active' : ''}
+                className={countType === COUNT_TYPES.PLUS ? "active" : ""}
                 onClick={() => onIncCount(COUNT_TYPES.PLUS)}
               >
-                <b>{__('+')}</b>
+                <b>{__("+")}</b>
               </button>
             </div>
           </SelectedStage>
@@ -219,18 +244,18 @@ export default class StageItem extends React.Component<Props, State> {
     }
 
     return (
-      <Item isTaken={item.isTake}>
+      <Item isTaken={item.isTake} color={color}>
         <FlexBetween>
-          <Text isTaken={item.isTake}>
-            {this.renderCheckbox()}
+          <ItemInfo>
             <div>
-              <b>{this.renderName()}</b>
-              <span>
-                {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
-              </span>
+              {this.renderCheckbox()}
+              <ProductName color={color} isTaken={item.isTake}>
+                <b>{this.renderName()}</b>
+                <span>
+                  {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
+                </span>
+              </ProductName>
             </div>
-          </Text>
-          <FlexCenter>
             <Quantity
               step={1}
               max={1000}
@@ -238,8 +263,8 @@ export default class StageItem extends React.Component<Props, State> {
               onChange={this.onChange}
               color={color}
             />
-          </FlexCenter>
-          <Close onClick={onRemoveItem}>
+          </ItemInfo>
+          <Close onClick={onRemoveItem} color={color}>
             <Icon icon="cancel-1" />
           </Close>
         </FlexBetween>

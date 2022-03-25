@@ -23,6 +23,19 @@ export const FlexCustomer = styled.div`
   align-items: center;
 `;
 
+export const CalculationHeader = styled(FlexCustomer)`
+  justify-content: space-between;
+  margin-top: ${dimensions.unitSpacing + 3}px;
+
+  > div {
+    flex: 1;
+
+    &:first-child {
+      margin-right: ${dimensions.unitSpacing}px;
+    }
+  }
+`;
+
 export const Column = styled.div`
   border: 1px solid #ddd;
 `;
@@ -33,7 +46,7 @@ export const StageItems = styledTS<{
   innerWidth?: number;
 }>(styled.div)`
   overflow: auto;
-  height: ${(props) => (props.height ? `${props.height}px` : "250px")};
+  height: calc(100vh - 280px);
   margin-bottom: 5px;
 
   /* width */
@@ -183,12 +196,7 @@ export const ProductsWrapper = styledTS<{
       props.color ? props.color : colors.colorSecondary};;
   }
 
-  @media (max-width: 1170px) and (orientation: landscape) {
-    max-height: ${(props) =>
-      props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 60}px)`
-        : "570px"};
-  }
+
 
   @media (orientation: portrait) {
     max-height: ${(props) =>
@@ -454,7 +462,7 @@ export const ProductLabel = styledTS<{ color?: string; isPortrait?: boolean }>(
   color: ${colors.colorWhite};
   padding: 10px;
   margin-top: 10px;
-  border-radius: 12px;
+  border-radius: 8px;
   font-size: ${(props) => (props.isPortrait ? "24px" : "12px")};
   text-align: center;
   font-weight: 500;
@@ -506,17 +514,12 @@ export const Type = styledTS<{ checked?: boolean; color?: string }>(styled.div)`
  transition: all ease .3s;
 `;
 
-export const Stages = styled.div`
-  height: 100%;
-`;
-
 export const StageContent = styledTS<{ odd?: boolean }>(styled.div)`
-margin-top: ${dimensions.unitSpacing}px;
-height: ${(props) => props.odd && "100%"};
+  height: ${(props) => props.odd && "100%"};
 
-@media (max-heigth: 768px) {
-  overflow: auto
-}
+  @media (max-heigth: 768px) {
+    overflow: auto
+  }
 `;
 
 export const Drawer = styledTS<{ show: boolean }>(styled.div)`
@@ -865,13 +868,13 @@ export const MarginTop = styledTS<{ margin: number }>(styled.div)`
 export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
   styled(FlexBetween)
 )`
-  border: 1px solid #904300;
+  border: 1px solid ${(props) =>
+    props.color ? props.color : colors.colorSecondary};
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
   font-weight: ${(props) => (props.isPortrait ? "300" : "600")}
-  border-color: #904300;
-  color: #904300;
+  color: ${(props) => (props.color ? props.color : colors.colorSecondary)};
   height: ${(props) => (props.isPortrait ? " 115px" : "")}
   display: ${(props) => (props.isPortrait ? " block" : "")};
   margin-top: ${(props) => (props.isPortrait ? " 20px" : "")};
