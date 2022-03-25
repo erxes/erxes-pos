@@ -19,7 +19,7 @@ const Item = styledTS<{ isTaken?: boolean; color?: string }>(styled.div)`
   background: #fff;
   border: ${(props) =>
     props.isTaken
-      ? `1px solid #616E7C`
+      ? `1px solid ${colors.borderDarker}`
       : `1px solid ${rgba(
           props.color ? props.color : colors.colorSecondary,
           0.4
@@ -29,11 +29,19 @@ const Item = styledTS<{ isTaken?: boolean; color?: string }>(styled.div)`
   margin-bottom: 10px;
 `;
 
-const Close = styledTS<{ isPortrait?: boolean; color?: string }>(
-  styled(FlexCenter)
-)`
+const Close = styledTS<{
+  isPortrait?: boolean;
+  color?: string;
+  isTaken?: boolean;
+}>(styled(FlexCenter))`
   background: ${(props) =>
-    props.color ? rgba(props.color, 0.12) : rgba(colors.colorSecondary, 0.12)};
+    props.color
+      ? props.isTaken
+        ? colors.borderPrimary
+        : rgba(props.color, 0.12)
+      : props.isTaken
+      ? colors.borderPrimary
+      : rgba(colors.colorSecondary, 0.12)};
   width: ${(props) => (props.isPortrait ? "0" : "20px")};
   cursor: pointer;
   border-top-right-radius: 8px;
@@ -264,7 +272,7 @@ export default class StageItem extends React.Component<Props, State> {
               color={color}
             />
           </ItemInfo>
-          <Close onClick={onRemoveItem} color={color}>
+          <Close onClick={onRemoveItem} color={color} isTaken={item.isTake}>
             <Icon icon="cancel-1" />
           </Close>
         </FlexBetween>

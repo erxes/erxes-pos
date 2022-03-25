@@ -601,11 +601,9 @@ export const DrawerContent = styledTS<{
 /**
  * Order search components shown in drawer
  */
-export const Orders = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 20px;
-  overflow: auto;
+
+export const OrderBoxItem = styled.div`
+  width: 33.33333%;
 `;
 
 export const OrderBox = styledTS<{ color?: string; isPortrait: boolean }>(
@@ -617,7 +615,6 @@ export const OrderBox = styledTS<{ color?: string; isPortrait: boolean }>(
   margin: 0 15px 15px 0;
   border: 1px solid #ddd;
   border-radius: 8px;
-  width: 30.333%;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -659,14 +656,22 @@ export const OrderBox = styledTS<{ color?: string; isPortrait: boolean }>(
 
   label {
     color: #00124E;
-    padding: 8px;
+    padding: 2px 6px;
+    font-size: 11px;
     border-radius: 20px;
     border: 1px solid #00124E;
   }
 
-  @media (max-width: 1500px) {
-    width: 30%;
+  &:nth-child(3n) {
+    margin-right: 0;
   }
+`;
+
+export const Orders = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  overflow: auto;
 `;
 
 export const SearchInputWrapper = styledTS<{
