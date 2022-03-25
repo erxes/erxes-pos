@@ -20,7 +20,6 @@ export default class CashSection extends React.Component<Props, { change: number
     this.state = {
       change: 0
     };
-
   }
 
   componentDidMount() {
