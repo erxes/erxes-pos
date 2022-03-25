@@ -96,5 +96,6 @@
   "Make the payment you will make according to the card instructions to the card reader on the right hand side": "Та баруун гар талд байгаа карт уншигчид картаа зааврын  дагуу хийнэ төлбөрөө хийнэ үү.",
   "Thank you for choosing us": "Манайхыг сонгон үйлчлүүлсэн танд баярлалаа.",
   "Your number": "Таны дугаар",
-  "Back": "Болих"
+  "Back": "Болих",
+  "QPay invoice amount is too small": "QPay нэхэмжлэхийн дүн хэт бага байна. 10₮-с багагүй дүн оруулна уу"
 }

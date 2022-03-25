@@ -46,17 +46,25 @@ type Props = {
   isPortrait?: boolean;
 };
 
+const ACTIVE_INPUT_TYPES = {
+  CASH: 'cashAmount',
+  CARD: 'cardAmount',
+  QPAY: 'mobileAmount',
+  REGISTER: 'register'
+}
+
 type State = {
   billType: string;
   currentTab: string;
   order: IOrder;
   cashAmount: number;
+  cardAmount: number;
+  mobileAmount: number;
   registerNumber: string;
   showE: boolean;
   showRegModal: boolean;
   companyName: string;
   mode: string;
-  currentAmount: number;
   remainder: number;
 };
 
@@ -79,12 +87,13 @@ export default class SplitPayment extends React.Component<Props, State> {
       billType: BILL_TYPES.CITIZEN,
       currentTab: 'empty',
       order: props.order,
-      cashAmount: order.cashAmount || 0,
+      cashAmount: 0,
+      cardAmount: 0,
+      mobileAmount: 0,
       registerNumber: '',
       showE: true,
       showRegModal: false,
       companyName: '',
-      currentAmount: remainder > 0 ? remainder : 0,
       mode: localStorage.getItem('erxesPosMode') || '',
       remainder
     };
@@ -162,47 +171,49 @@ export default class SplitPayment extends React.Component<Props, State> {
   renderTabContent() {
     const {
       addCardPayment,
-      createQPayInvoice,
       checkQPayInvoice,
       cancelQPayInvoice
     } = this.props;
-    const { billType, currentTab, order, currentAmount, remainder, cashAmount } = this.state;
+    const { billType, currentTab, order, cardAmount, remainder, cashAmount, mobileAmount } = this.state;
 
-    if (currentTab === 'card') {
+    const setAmount = (amount) => {
+      this.setState({ [currentTab]: amount } as Pick<State, keyof State>);
+    }
+
+    if (currentTab === ACTIVE_INPUT_TYPES.CARD) {
       return (
         <CardSection
           order={order}
           addCardPayment={addCardPayment}
           billType={billType}
           // amount={remainder - this.state.amount}
-          amount={currentAmount || 0}
+          amount={cardAmount || 0}
           remainder={remainder || 0}
         />
       );
     }
 
-    if (currentTab === 'qpay') {
+    if (currentTab === ACTIVE_INPUT_TYPES.QPAY) {
       return (
         <QPaySection
           order={order}
           billType={billType}
-          createQPayInvoice={createQPayInvoice}
           checkQPayInvoice={checkQPayInvoice}
           cancelQPayInvoice={cancelQPayInvoice}
-          amount={currentAmount}
           maxAmount={remainder}
-          remainder={remainder || 0}
+          mobileAmount={mobileAmount}
+          setAmount={setAmount}
         />
       );
     }
 
-    if (currentTab === 'cash') {
+    if (currentTab === ACTIVE_INPUT_TYPES.CASH) {
       return (
         <CashSection
           order={order}
           cashAmount={cashAmount}
           remainder={remainder || 0}
-          currentAmount={currentAmount}
+          currentAmount={cashAmount}
           setState={(param) => this.setState({ ...param })}
         />
       )
@@ -212,29 +223,29 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   onChangeKeyPad = num => {
-    const { currentAmount } = this.state;
+    const { currentTab } = this.state;
 
+    let amount = this.state[currentTab] || 0;
+    
+    // clear input
     if (num === 'CE') {
-      return this.setState({ currentAmount: 0 });
+      this.setState({ [currentTab]: 0 } as unknown as Pick<State, keyof State>)
+    } else if (num === 'C') {
+      // remove last character
+      this.setState({ [currentTab]: Number(amount.toString().slice(0, -1)) } as unknown as Pick<State, keyof State>)
+    } else {
+      this.setState({ [currentTab]: Number(amount + num) } as unknown as Pick<State, keyof State>)
     }
-
-    if (num === 'C') {
-      return this.setState({
-        currentAmount: parseFloat(currentAmount.toString().slice(0, -1))
-      });
-    }
-
-    return this.setState({ currentAmount: currentAmount + num });
   };
 
   renderPaymentType(type: string, img: string) {
     const { currentTab } = this.state;
 
-    const onClick = value => {
-      this.setState({ currentTab: value });
+    const onClick = () => {
+      this.setState({ currentTab: type });
     };
 
-    const currentTypeChange = () => {
+    const renderImgOrInput = () => {
       if (currentTab !== type) {
         return <img src={`/images/${img}`} alt={`payment-${type}`} />;
       }
@@ -245,10 +256,10 @@ export default class SplitPayment extends React.Component<Props, State> {
     return (
       <Card
         className={currentTab === type ? 'activeCard' : ''}
-        onClick={() => onClick(type)}
+        onClick={onClick}
         isPortrait={this.props.isPortrait}
       >
-        <div>{currentTypeChange()}</div>
+        <div>{renderImgOrInput()}</div>
       </Card>
     );
   }
@@ -264,9 +275,9 @@ export default class SplitPayment extends React.Component<Props, State> {
           <h4>{__('Choose the payment method')}</h4>
 
           <Cards isPortrait={isPortrait}>
-            {mode !== 'kiosk' && this.renderPaymentType('cash', 'payment2.png')}
-            {this.renderPaymentType('card', 'payment4.png')}
-            {this.renderPaymentType('qpay', 'payment1.png')}
+            {mode !== 'kiosk' && this.renderPaymentType(ACTIVE_INPUT_TYPES.CASH, 'payment2.png')}
+            {this.renderPaymentType(ACTIVE_INPUT_TYPES.CARD, 'payment4.png')}
+            {this.renderPaymentType(ACTIVE_INPUT_TYPES.QPAY, 'payment1.png')}
           </Cards>
         </TypeWrapper>
         {remainder <= 0 && this.renderEbarimt()}

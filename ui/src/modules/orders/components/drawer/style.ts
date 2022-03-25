@@ -81,13 +81,13 @@ export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
     }
   }
 
-  span {
-    position: absolute;
-    margin-top: -40px;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-  }
+  // span {
+  //   position: absolute;
+  //   margin-top: -40px;
+  //   display: flex;
+  //   flex-direction: row;
+  //   align-items: center;
+  // }
 
   &:hover {
     box-shadow: 0 6px 10px 1px rgba(136, 136, 136, 0.08);

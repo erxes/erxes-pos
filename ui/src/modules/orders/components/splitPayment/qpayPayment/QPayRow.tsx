@@ -12,9 +12,10 @@ type Props = {
   orderId: string;
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
+  toggleModal: () => void;
 }
 
-export default class CardRow extends React.Component<Props> {
+export default class QPayRow extends React.Component<Props> {
   drawQR() {
     const { item } = this.props;
     const canvas = document.getElementById(item._id);
@@ -36,7 +37,7 @@ export default class CardRow extends React.Component<Props> {
   }
 
   render() {
-    const { item, checkQPayInvoice, orderId, cancelQPayInvoice } = this.props;
+    const { item, checkQPayInvoice, orderId, cancelQPayInvoice, toggleModal } = this.props;
 
     const labelStyle = item.status === 'PAID' ? 'success' : 'warning';
 
@@ -47,6 +48,7 @@ export default class CardRow extends React.Component<Props> {
     const onCancel = () => {
       confirm().then(() => {
         cancelQPayInvoice(item._id);
+        toggleModal();
       }).catch(e => {
         Alert.error(e.message);
       })

@@ -45,6 +45,8 @@ const orderChangeStatus = `
 `;
 
 const invoiceFields = `
+  _id
+  amount
   qrText
   senderInvoiceNo
   status
