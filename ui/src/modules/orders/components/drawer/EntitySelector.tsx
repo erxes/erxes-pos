@@ -13,39 +13,22 @@ type Props = {
   onStateChange: (key: string, value: any) => void;
 };
 
-type State = {
-  selectedEbarimtType: string;
-};
-export default class Ebarimt extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      selectedEbarimtType: BILL_TYPES.CITIZEN
-    };
-  }
-
-  onChange = value => {
-    this.setState({ selectedEbarimtType: value });
-    this.props.onBillTypeChange(value);
-  };
-
+export default class EntitySelector extends React.Component<Props> {
   render() {
-    const { isPortrait, onBillTypeChange } = this.props;
-    const { selectedEbarimtType } = this.state;
+    const { isPortrait, onBillTypeChange, billType } = this.props;
 
     return (
       <EbarimtButton isPortrait={isPortrait}>
         <Button
-          className={selectedEbarimtType === BILL_TYPES.CITIZEN ? 'active' : ''}
-          onClick={() => this.onChange(BILL_TYPES.CITIZEN)}
+          className={billType === BILL_TYPES.CITIZEN ? 'active' : ''}
+          onClick={() => onBillTypeChange(BILL_TYPES.CITIZEN)}
           size="large"
         >
           {__('Person')}
         </Button>
         <Button
-          className={selectedEbarimtType === BILL_TYPES.ENTITY ? 'active' : ''}
-          onClick={() => this.onChange(BILL_TYPES.ENTITY)}
+          className={billType === BILL_TYPES.ENTITY ? 'active' : ''}
+          onClick={() => onBillTypeChange(BILL_TYPES.ENTITY)}
           onMouseDown={onBillTypeChange}
           size="large"
         >

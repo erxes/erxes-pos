@@ -16,7 +16,7 @@ import {
 } from 'modules/orders/types';
 import CardSection from './cardPayment/CardSection';
 import QPaySection from './qpayPayment/QPaySection';
-import Ebarimt from '../drawer/Ebarimt';
+import EntitySelector from '../drawer/EntitySelector';
 import { Card, Cards, TypeWrapper } from '../drawer/style';
 import KeyPads from '../drawer/KeyPads';
 import EntityChecker from './EntityChecker';
@@ -46,16 +46,16 @@ type Props = {
   isPortrait?: boolean;
 };
 
-const ACTIVE_INPUT_TYPES = {
+const INPUT_TYPES = {
   CASH: 'cashAmount',
   CARD: 'cardAmount',
   QPAY: 'mobileAmount',
-  REGISTER: 'register'
+  REGISTER: 'registerNumber'
 }
 
 type State = {
   billType: string;
-  currentTab: string;
+  activeInput: string;
   order: IOrder;
   cashAmount: number;
   cardAmount: number;
@@ -85,7 +85,7 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     this.state = {
       billType: BILL_TYPES.CITIZEN,
-      currentTab: 'empty',
+      activeInput: 'empty',
       order: props.order,
       cashAmount: 0,
       cardAmount: 0,
@@ -129,12 +129,14 @@ export default class SplitPayment extends React.Component<Props, State> {
 
   renderEbarimt() {
     const { order } = this.props;
-    const { showE, billType, registerNumber } = this.state;
+    const { showE, billType, registerNumber, activeInput } = this.state;
 
     const onBillTypeChange = (value: string) => {
-      const billType = value;
-
-      this.setState({ billType, showRegModal: billType === BILL_TYPES.ENTITY });
+      this.setState({
+        billType: value,
+        showRegModal: billType === BILL_TYPES.ENTITY,
+        activeInput: value === BILL_TYPES.ENTITY ? INPUT_TYPES.REGISTER : activeInput
+      });
     };
 
     const onStateChange = (key: string, value: any) => {
@@ -155,7 +157,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       }
 
       return (
-        <Ebarimt
+        <EntitySelector
           billType={billType}
           isPortrait={false}
           show={showE}
@@ -174,13 +176,13 @@ export default class SplitPayment extends React.Component<Props, State> {
       checkQPayInvoice,
       cancelQPayInvoice
     } = this.props;
-    const { billType, currentTab, order, cardAmount, remainder, cashAmount, mobileAmount } = this.state;
+    const { billType, activeInput, order, cardAmount, remainder, cashAmount, mobileAmount } = this.state;
 
     const setAmount = (amount) => {
-      this.setState({ [currentTab]: amount } as Pick<State, keyof State>);
+      this.setState({ [activeInput]: amount } as Pick<State, keyof State>);
     }
 
-    if (currentTab === ACTIVE_INPUT_TYPES.CARD) {
+    if (activeInput === INPUT_TYPES.CARD) {
       return (
         <CardSection
           order={order}
@@ -193,7 +195,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       );
     }
 
-    if (currentTab === ACTIVE_INPUT_TYPES.QPAY) {
+    if (activeInput === INPUT_TYPES.QPAY) {
       return (
         <QPaySection
           order={order}
@@ -207,7 +209,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       );
     }
 
-    if (currentTab === ACTIVE_INPUT_TYPES.CASH) {
+    if (activeInput === INPUT_TYPES.CASH) {
       return (
         <CashSection
           order={order}
@@ -223,30 +225,34 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   onChangeKeyPad = num => {
-    const { currentTab } = this.state;
+    const { activeInput } = this.state;
 
-    let amount = this.state[currentTab] || 0;
-    
+    let currentValue = this.state[activeInput];
+    const isNumberFocused = [INPUT_TYPES.CARD, INPUT_TYPES.CASH, INPUT_TYPES.QPAY].includes(activeInput);
+
     // clear input
     if (num === 'CE') {
-      this.setState({ [currentTab]: 0 } as unknown as Pick<State, keyof State>)
+      currentValue = isNumberFocused ? 0 : '';
     } else if (num === 'C') {
       // remove last character
-      this.setState({ [currentTab]: Number(amount.toString().slice(0, -1)) } as unknown as Pick<State, keyof State>)
+      currentValue = currentValue.toString().slice(0, -1);
+      currentValue = isNumberFocused ? Number(currentValue) : currentValue;
     } else {
-      this.setState({ [currentTab]: Number(amount + num) } as unknown as Pick<State, keyof State>)
+      currentValue = isNumberFocused ? Number(currentValue + num) : currentValue + num;
     }
+
+    this.setState({ [activeInput]: currentValue } as Pick<State, keyof State>);
   };
 
   renderPaymentType(type: string, img: string) {
-    const { currentTab } = this.state;
+    const { activeInput } = this.state;
 
     const onClick = () => {
-      this.setState({ currentTab: type });
+      this.setState({ activeInput: type });
     };
 
     const renderImgOrInput = () => {
-      if (currentTab !== type) {
+      if (activeInput !== type) {
         return <img src={`/images/${img}`} alt={`payment-${type}`} />;
       }
 
@@ -255,7 +261,7 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     return (
       <Card
-        className={currentTab === type ? 'activeCard' : ''}
+        className={activeInput === type ? 'activeCard' : ''}
         onClick={onClick}
         isPortrait={this.props.isPortrait}
       >
@@ -275,9 +281,9 @@ export default class SplitPayment extends React.Component<Props, State> {
           <h4>{__('Choose the payment method')}</h4>
 
           <Cards isPortrait={isPortrait}>
-            {mode !== 'kiosk' && this.renderPaymentType(ACTIVE_INPUT_TYPES.CASH, 'payment2.png')}
-            {this.renderPaymentType(ACTIVE_INPUT_TYPES.CARD, 'payment4.png')}
-            {this.renderPaymentType(ACTIVE_INPUT_TYPES.QPAY, 'payment1.png')}
+            {mode !== 'kiosk' && this.renderPaymentType(INPUT_TYPES.CASH, 'payment2.png')}
+            {this.renderPaymentType(INPUT_TYPES.CARD, 'payment4.png')}
+            {this.renderPaymentType(INPUT_TYPES.QPAY, 'payment1.png')}
           </Cards>
         </TypeWrapper>
         {remainder <= 0 && this.renderEbarimt()}
