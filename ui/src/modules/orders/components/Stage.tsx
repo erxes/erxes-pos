@@ -1,10 +1,10 @@
-import React from 'react';
-import { __ } from 'modules/common/utils';
-import { IOrderItemInput } from '../types';
-import StageItem from './StageItem';
-import { Stages, StageContent, StageItems } from '../styles';
-import EmptyState from 'modules/common/components/EmptyState';
-import { KioskStageContent } from './kiosk/style';
+import React from "react";
+import { __ } from "modules/common/utils";
+import { IOrderItemInput } from "../types";
+import StageItem from "./StageItem";
+import { StageContent, StageItems } from "../styles";
+import EmptyState from "modules/common/components/EmptyState";
+import { KioskStageContent } from "./kiosk/style";
 
 type Props = {
   orientation: string;
@@ -18,7 +18,7 @@ type Props = {
 };
 
 export default class Stage extends React.Component<Props> {
-  renderItems() {
+  render() {
     const {
       items,
       changeItemCount,
@@ -27,7 +27,7 @@ export default class Stage extends React.Component<Props> {
       orientation,
       stageHeight,
       type,
-      mode
+      mode,
     } = this.props;
 
     if (!items || items.length === 0) {
@@ -35,27 +35,27 @@ export default class Stage extends React.Component<Props> {
         <StageContent odd={false}>
           <EmptyState
             image="/images/actions/8.svg"
-            text={__('Add some reservations')}
-            size={'large'}
+            text={__("Add some reservations")}
+            size={"large"}
           />
         </StageContent>
       );
     }
 
-    if (mode === 'kiosk') {
+    if (mode === "kiosk") {
       return (
         <KioskStageContent
           innerWidth={window.innerWidth}
           color={options.colors.primary}
         >
-          {items.map(i => (
+          {items.map((i) => (
             <StageItem
               orientation={orientation}
               item={i}
               key={`${i._id}`}
               changeItemCount={changeItemCount}
               changeItemIsTake={changeItemIsTake}
-              color={options.colors.primary || ''}
+              color={options.colors.primary || ""}
               type={type}
               mode={mode}
             />
@@ -71,14 +71,14 @@ export default class Stage extends React.Component<Props> {
           innerWidth={window.innerWidth}
           color={options.colors.primary}
         >
-          {items.map(i => (
+          {items.map((i) => (
             <StageItem
               orientation={orientation}
               item={i}
               key={`${i._id}`}
               changeItemCount={changeItemCount}
               changeItemIsTake={changeItemIsTake}
-              color={options.colors.primary || ''}
+              color={options.colors.primary || ""}
               type={type}
               mode={mode}
             />
@@ -86,9 +86,5 @@ export default class Stage extends React.Component<Props> {
         </StageItems>
       </StageContent>
     );
-  }
-
-  render() {
-    return <Stages>{this.renderItems()}</Stages>;
   }
 }
