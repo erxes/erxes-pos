@@ -215,8 +215,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           order={order}
           cashAmount={cashAmount}
           remainder={remainder || 0}
-          currentAmount={cashAmount}
-          setState={(param) => this.setState({ ...param })}
+          setAmount={setAmount}
         />
       )
     }

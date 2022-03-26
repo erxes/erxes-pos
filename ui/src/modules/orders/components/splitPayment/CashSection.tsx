@@ -1,5 +1,5 @@
 import { __ } from 'modules/common/utils';
-import KeypadWithInput from './KeypadWithInput';
+import KeypadWithInput from './CashInput';
 import React from 'react';
 import { FlexCenter } from 'modules/common/styles/main';
 import { IOrder } from 'modules/orders/types';
@@ -9,47 +9,14 @@ type Props = {
   order: IOrder;
   remainder: number;
   cashAmount: number;
-  currentAmount: number | string;
-  setState: (param: object) => void;
+  // setState: (param: object) => void;
+  setAmount: (num: number | string) => void;
 };
 
-export default class CashSection extends React.Component<Props, { change: number }> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      change: 0
-    };
-  }
-
-  componentDidMount() {
-    const { remainder, setState } = this.props;
-    setState({ cashAmount: remainder, remainder: 0 });
-  }
-
-  setAmount = (am: number | string) => {
-    const { remainder, setState, cashAmount } = this.props;
-
-    let currentAmount = am;
-    let change = 0;
-    let cash = currentAmount;
-
-    const prevRem = remainder + (cashAmount || 0);
-    let newRem = prevRem - Number(cash);
-
-    if (currentAmount > prevRem) {
-      change = Number(currentAmount) - prevRem
-      cash = prevRem;
-      newRem = 0;
-    }
-
-    this.setState({ change })
-    setState({ currentAmount, cashAmount: cash, remainder: newRem });
-  };
-
+export default class CashSection extends React.Component<Props> {
   render() {
-    const { order, currentAmount } = this.props;
-    const { change } = this.state;
+    // TODO show remainder amount
+    const { order, cashAmount, setAmount } = this.props;
 
     return (
       <>
@@ -57,13 +24,12 @@ export default class CashSection extends React.Component<Props, { change: number
           <FormGroup>
             <KeypadWithInput
               order={order}
-              setAmount={this.setAmount}
-              amount={currentAmount}
+              setAmount={setAmount}
+              amount={cashAmount}
               inputLabel={__('In Cash')}
             />
           </FormGroup>
         </FlexCenter>
-        {(change) ? <span>{__('Change amount')}: {this.state.change}</span> : ''}
       </>
     );
   }
