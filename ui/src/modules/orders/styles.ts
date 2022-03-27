@@ -23,6 +23,15 @@ export const FlexCustomer = styled.div`
   align-items: center;
 `;
 
+export const BackButton = styled.div`
+  height: 32px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+  cursor: pointer;
+  margin-right: ${dimensions.coreSpacing}px;
+`;
+
 export const CalculationHeader = styled(FlexCustomer)`
   justify-content: space-between;
   margin-top: ${dimensions.unitSpacing + 3}px;
@@ -606,9 +615,11 @@ export const OrderBoxItem = styled.div`
   width: 33.33333%;
 `;
 
-export const OrderBox = styledTS<{ color?: string; isPortrait: boolean }>(
-  styled.div
-)`
+export const OrderBox = styledTS<{
+  color?: string;
+  isPortrait: boolean;
+  type?: string;
+}>(styled.div)`
   background: #fff;
   padding: 5px;
   text-align: center;
@@ -638,14 +649,14 @@ export const OrderBox = styledTS<{ color?: string; isPortrait: boolean }>(
     }
 
     b {
-      margin-left: 5px;
+      margin-left: 2px;
       color: #616E7C;
       word-break: break-word;
       line-height: 15px;
-      font-size: ${(props) => (props.isPortrait ? "12px" : "16px")};
+      font-size: ${(props) => (props.isPortrait ? "11px" : "16px")};
 
       @media (max-width: 1200px) and (orientation: landscape) {
-        font-size: 12px;
+        font-size: 11px;
       }
     }
   }
@@ -655,11 +666,21 @@ export const OrderBox = styledTS<{ color?: string; isPortrait: boolean }>(
   }
 
   label {
-    color: #00124E;
+    color: ${(props) =>
+      props.type === "Take"
+        ? props.color
+          ? props.color
+          : colors.colorSecondary
+        : "#00124E"};
     padding: 2px 6px;
     font-size: 11px;
     border-radius: 20px;
-    border: 1px solid #00124E;
+    border: 1px solid ${(props) =>
+      props.type === "Take"
+        ? props.color
+          ? props.color
+          : colors.colorSecondary
+        : "#00124E"};
   }
 
   &:nth-child(3n) {

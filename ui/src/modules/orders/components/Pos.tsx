@@ -231,49 +231,13 @@ export default class Pos extends React.Component<Props, State> {
   renderOrderSearch() {
     const { orientation } = this.props;
 
-    return <OrderSearch orientation={orientation} />;
+    return (
+      <OrderSearch
+        orientation={orientation}
+        onChange={this.onChangeProductBodyType}
+      />
+    );
   }
-
-  // handlePayment = (params: IPaymentParams) => {
-  //   const { order, makePayment } = this.props;
-
-  //   makePayment(order ? order._id : '', params);
-  // };
-
-  // renderKioskModalContent() {
-  //   const {
-  //     currentConfig,
-  //     makePayment,
-  //     order,
-  //     setCardPaymentInfo,
-  //     orientation
-  //   } = this.props;
-  //   const { modalContentType, totalAmount, paymentType } = this.state;
-
-  //   const options = currentConfig ? currentConfig.uiOptions : {};
-
-  //   switch (modalContentType) {
-  //     case 'payment':
-  //       return (
-  //         order && (
-  //           <PaymentForm
-  //             orderId={order ? order._id : ''}
-  //             options={options}
-  //             totalAmount={totalAmount}
-  //             closeDrawer={this.toggleModal}
-  //             makePayment={makePayment}
-  //             order={order}
-  //             setCardPaymentInfo={setCardPaymentInfo}
-  //             orientation={orientation}
-  //             handlePayment={this.handlePayment}
-  //             paymentMethod={paymentType}
-  //           />
-  //         )
-  //       );
-  //     default:
-  //       return null;
-  //   }
-  // }
 
   renderCurrentLogin(uiOptions) {
     const mode = localStorage.getItem("erxesPosMode");

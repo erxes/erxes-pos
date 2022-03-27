@@ -39,6 +39,7 @@ export default function OrderItem({ order, orientation }: Props) {
         isPortrait={orientation === "portrait"}
         color={color}
         key={order._id}
+        type={type}
         onClick={onClick}
       >
         <Link to={`/pos?id=${order._id}`}>
