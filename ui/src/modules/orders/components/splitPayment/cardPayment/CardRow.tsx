@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { ICardPayment } from 'modules/orders/types';
+import { IPaymentInput } from 'modules/orders/types';
 
 type Props = {
-  item: ICardPayment;
+  item: IPaymentInput;
 };
 
 export default function CardRow({ item }: Props) {
   return (
     <tr key={item._id}>
-      <td>{item.amount}</td>
+      <td>{item.cardAmount}</td>
       <td>{item.cardInfo}</td>
     </tr>
   );

@@ -9,7 +9,7 @@ import FormGroup from 'modules/common/components/form/Group';
 import ControlLabel from 'modules/common/components/form/Label';
 import { __, Alert } from 'modules/common/utils';
 import { CardInputColumn, Input } from 'modules/orders/styles';
-import { IOrder, ICardPayment } from 'modules/orders/types';
+import { IOrder, IPaymentInput } from 'modules/orders/types';
 
 const ButtonWrapper = styled.div`
   margin-bottom: 20px;
@@ -18,7 +18,7 @@ const ButtonWrapper = styled.div`
 type Props = {
   color?: string;
   billType: string;
-  addCardPayment: (params: ICardPayment) => void;
+  addPayment: (params: IPaymentInput) => void;
   order: IOrder;
   maxAmount: number | undefined;
   cardAmount: number;
@@ -43,7 +43,7 @@ export default class CardInput extends React.Component<Props, State> {
   render() {
     const {
       color = '',
-      addCardPayment,
+      addPayment,
       order,
       maxAmount = 0,
       setAmount,
@@ -108,12 +108,7 @@ export default class CardInput extends React.Component<Props, State> {
                       )
                     );
 
-                    addCardPayment({
-                      _id,
-                      // cardInfo: JSON.stringify(r.response),
-                      cardInfo: r.response,
-                      amount: cardAmount
-                    });
+                    addPayment({ _id, cardInfo: r.response, cardAmount });
                   } else {
                     return Alert.warning(r.response.response_msg);
                   }

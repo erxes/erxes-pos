@@ -1,11 +1,11 @@
 import React from 'react';
-import { IOrder, ICardPayment } from 'modules/orders/types';
+import { IOrder, IPaymentInput } from 'modules/orders/types';
 import { FlexCenter } from 'modules/common/styles/main';
 import CardInput from './CardInput';
 
 type Props = {
   order: IOrder;
-  addCardPayment: (params: ICardPayment) => void;
+  addPayment: (params: IPaymentInput) => void;
   billType: string;
   cardAmount: number;
   maxAmount: number;
@@ -14,13 +14,13 @@ type Props = {
 
 export default class CardSection extends React.Component<Props> {
   render() {
-    const { order, addCardPayment, billType, cardAmount, maxAmount, setAmount } = this.props;
+    const { order, addPayment, billType, cardAmount, maxAmount, setAmount } = this.props;
 
     return (
       <FlexCenter>
         <CardInput
           billType={billType}
-          addCardPayment={addCardPayment}
+          addPayment={addPayment}
           order={order}
           cardAmount={cardAmount}
           maxAmount={maxAmount}

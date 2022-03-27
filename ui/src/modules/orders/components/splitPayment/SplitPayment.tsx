@@ -9,7 +9,7 @@ import { FlexCenter } from 'modules/common/styles/main';
 import { __, Alert } from 'modules/common/utils';
 import {
   IOrder,
-  ICardPayment,
+  IPaymentInput,
   IInvoiceParams,
   IInvoiceCheckParams,
   IPaymentParams
@@ -38,7 +38,7 @@ const TabContentWrapper = styled.div`
 
 type Props = {
   order: IOrder;
-  addCardPayment: (params: ICardPayment) => void;
+  addPayment: (params: IPaymentInput) => void;
   createQPayInvoice: (params: IInvoiceParams) => void;
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
@@ -75,8 +75,7 @@ export default class SplitPayment extends React.Component<Props, State> {
     const { order } = this.props;
 
     const sumCashAmount = order.cashAmount || 0;
-    const sumCardAmount = (order.cardPayments || [])
-      .reduce((am, c) => am + c.amount, 0);
+    const sumCardAmount = (order.cardAmount || 0);
     const sumMobileAmount = ((order.qpayInvoices || [])
       .filter(q => q.status === 'done') || [])
       .reduce((am, q) => am + Number(q.amount), 0);
@@ -171,11 +170,7 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   renderTabContent() {
-    const {
-      addCardPayment,
-      checkQPayInvoice,
-      cancelQPayInvoice
-    } = this.props;
+    const { addPayment, checkQPayInvoice, cancelQPayInvoice } = this.props;
     const { billType, activeInput, order, cardAmount, remainder, cashAmount, mobileAmount } = this.state;
 
     const setAmount = (amount) => {
@@ -186,7 +181,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       return (
         <CardSection
           order={order}
-          addCardPayment={addCardPayment}
+          addPayment={addPayment}
           billType={billType}
           cardAmount={cardAmount}
           maxAmount={remainder}
