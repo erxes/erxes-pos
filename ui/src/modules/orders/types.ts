@@ -31,7 +31,7 @@ export interface IPaymentInput {
   _id: string;
   cashAmount?: number;
   cardAmount?: number;
-  cardInfo: any;
+  cardInfo?: any;
 }
 
 export interface IOrder {
