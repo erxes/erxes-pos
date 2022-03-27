@@ -16,14 +16,14 @@ export const orderFields = `
   mobileAmount
   cashAmount
   totalAmount
-  finalAmount
+
   registerNumber
   customerId
   printedEbarimt
   billType
   billId
   registerNumber
-  oldBillId
+
   type
 `;
 

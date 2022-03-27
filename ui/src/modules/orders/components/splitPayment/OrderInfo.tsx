@@ -7,13 +7,15 @@ import { Amount } from 'modules/orders/styles';
 type Props = {
   order: IOrder;
   remainderAmount: number;
-  cashAmount: number;
+  companyName: string;
+  registerNumber: string;
 };
 
 export default function OrderInfo({
   order,
   remainderAmount,
-  cashAmount
+  companyName,
+  registerNumber
 }: Props) {
   return (
     <Amount>
@@ -23,6 +25,8 @@ export default function OrderInfo({
             {__('Payment info')}: №:{' '}
             {order && order.number ? order.number.split('_')[1] : ''}
           </li>
+          {companyName && <li>{__('Entity name')}: <b>{companyName}</b></li>}
+          {registerNumber && <li>{__('Register number')}: <b>{registerNumber}</b></li>}
           {order.cardAmount && (
             <>
               {
@@ -43,7 +47,7 @@ export default function OrderInfo({
                   return (
                     <li>
                       {__('Paid mobile amount')}:
-                      {q.amount}₮
+                      <b>{q.amount}₮</b>
                     </li>
                   )
                 })
@@ -52,8 +56,8 @@ export default function OrderInfo({
                 ((order.qpayInvoices || []).filter(q => q.status !== 'done') || []).map(q => {
                   return (
                     <li>
-                      {__('Paid mobile amount')}:
-                      {q.amount}₮
+                      {__('Unpaid mobile amount')}:
+                      <b>{q.amount}₮</b>
                     </li>
                   )
                 })
@@ -62,21 +66,21 @@ export default function OrderInfo({
 
           )}
 
-          {cashAmount ? (
+          {order.cashAmount ? (
             <li>
-              {__('Paid cash amount')}: {cashAmount}₮
+              {__('Paid cash amount')}: <b>{order.cashAmount}₮</b>
             </li>
           ) : ''}
 
           {remainderAmount > 0 && (
             <li>
-              {__('Remainder amount')}: {remainderAmount}₮
+              {__('Remainder amount')}: <b>{remainderAmount}₮</b>
             </li>
           )}
 
           <li>
             {__('Total amount')}:
-            {order.totalAmount || 0}₮
+            <b>{order.totalAmount || 0}₮</b>
           </li>
         </ul>
       </div>

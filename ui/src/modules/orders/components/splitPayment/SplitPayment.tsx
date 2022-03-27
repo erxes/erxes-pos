@@ -21,7 +21,7 @@ import { Card, Cards, TypeWrapper } from '../drawer/style';
 import KeyPads from '../drawer/KeyPads';
 import EntityChecker from './EntityChecker';
 import OrderInfo from './OrderInfo';
-import CashSection from './CashSection';
+import CashSection from './cashPayment/CashSection';
 
 const DASHED_BORDER = '1px dashed #ddd';
 
@@ -74,14 +74,6 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     const { order } = this.props;
 
-    const sumCashAmount = order.cashAmount || 0;
-    const sumCardAmount = (order.cardAmount || 0);
-    const sumMobileAmount = ((order.qpayInvoices || [])
-      .filter(q => q.status === 'done') || [])
-      .reduce((am, q) => am + Number(q.amount), 0);
-
-    const remainder = order.totalAmount - sumCashAmount - sumCardAmount - sumMobileAmount;
-
     this.state = {
       billType: BILL_TYPES.CITIZEN,
       activeInput: 'empty',
@@ -94,11 +86,21 @@ export default class SplitPayment extends React.Component<Props, State> {
       showRegModal: false,
       companyName: '',
       mode: localStorage.getItem('erxesPosMode') || '',
-      remainder
+      remainder: this.getRemainderAmount(order)
     };
 
     this.checkOrganization = this.checkOrganization.bind(this);
     this.handlePayment = this.handlePayment.bind(this);
+  }
+
+  getRemainderAmount(order: IOrder) {
+    const sumCashAmount = order.cashAmount || 0;
+    const sumCardAmount = (order.cardAmount || 0);
+    const sumMobileAmount = ((order.qpayInvoices || [])
+      .filter(q => q.status === 'done') || [])
+      .reduce((am, q) => am + Number(q.amount), 0);
+
+    return order.totalAmount - sumCashAmount - sumCardAmount - sumMobileAmount;
   }
 
   checkOrganization() {
@@ -211,6 +213,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           cashAmount={cashAmount}
           remainder={remainder || 0}
           setAmount={setAmount}
+          addPayment={addPayment}
         />
       )
     }
@@ -266,12 +269,12 @@ export default class SplitPayment extends React.Component<Props, State> {
 
   render() {
     const { isPortrait, order } = this.props;
-    const { billType, mode, remainder, cashAmount } = this.state;
+    const { billType, mode, remainder, companyName, registerNumber } = this.state;
 
     return (
       <PaymentWrapper>
         <TypeWrapper isPortrait={isPortrait}>
-          <OrderInfo order={order} remainderAmount={remainder} cashAmount={cashAmount} />
+          <OrderInfo order={order} remainderAmount={remainder} companyName={companyName} registerNumber={registerNumber} />
           <h4>{__('Choose the payment method')}</h4>
 
           <Cards isPortrait={isPortrait}>
@@ -294,4 +297,13 @@ export default class SplitPayment extends React.Component<Props, State> {
       </PaymentWrapper>
     );
   } // end render()
+
+  componentDidUpdate(_prevProps: Props, prevState: State) {
+    const { order } = this.props;    
+    const remainder = this.getRemainderAmount(order);
+
+    if (prevState.remainder !== remainder) {
+      this.setState({ remainder });
+    }
+  }
 }
