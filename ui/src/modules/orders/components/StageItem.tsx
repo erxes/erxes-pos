@@ -213,7 +213,7 @@ export default class StageItem extends React.Component<Props, State> {
 
     if (mode === "kiosk") {
       return (
-        <SelectedItem>
+        <SelectedItem color={color}>
           <SelectedStage>
             <Icon onClick={onRemoveItem} icon="cancel-1" color={color} />
             <div className="image-wrapper">

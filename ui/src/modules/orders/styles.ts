@@ -9,6 +9,7 @@ export const PosWrapper = styled.div`
 
   .headerKiosk {
     position: relative;
+    height: 200px;
   }
 
   @media (max-width: 1170px) and (orientation: landscape) {
@@ -149,8 +150,7 @@ export const ProductCategories = styledTS<{ isPortrait?: boolean }>(styled.div)`
 //Kiosk
 export const KioskMainContent = styledTS<{ mainHeight?: number }>(styled.div)`
   width: 100%;
-  height: ${(props) =>
-    props.mainHeight && props.mainHeight > 0 ? `80%` : "89%;"}
+  height: calc(100% - 200px);
   display: flex;
 `;
 

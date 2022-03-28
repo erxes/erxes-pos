@@ -508,7 +508,7 @@ export default class Pos extends React.Component<Props, State> {
           <div className="headerKiosk">
             <img src="/images/headerKiosk.png" alt="type" />
           </div>
-          <KioskMainContent mainHeight={items.length}>
+          <KioskMainContent>
             <KioskMenuContent>
               <MenuContent>{categories}</MenuContent>
             </KioskMenuContent>

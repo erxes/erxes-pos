@@ -1,14 +1,14 @@
-import Button from 'modules/common/components/Button';
-import React from 'react';
-import styled from 'styled-components';
-import styledTS from 'styled-components-ts';
-import { __ } from 'modules/common/utils';
-import { FlexBetween } from 'modules/common/styles/main';
-import { formatNumber } from 'modules/utils';
-import { IConfig, IOption } from 'types';
-import { ICustomer, IOrder, IOrderItemInput } from 'modules/orders/types';
-import Stage from '../Stage';
-import { FlexColumn, TypeButtons } from './style';
+import Button from "modules/common/components/Button";
+import React from "react";
+import styled from "styled-components";
+import styledTS from "styled-components-ts";
+import { __ } from "modules/common/utils";
+import { FlexBetween } from "modules/common/styles/main";
+import { formatNumber } from "modules/utils";
+import { IConfig, IOption } from "types";
+import { ICustomer, IOrder, IOrderItemInput } from "modules/orders/types";
+import Stage from "../Stage";
+import { FlexColumn, TypeButtons } from "./style";
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   position: absolute;
@@ -16,7 +16,7 @@ const Wrapper = styledTS<{ color?: string }>(styled.div)`
   left: 0;
   right: 0;
   width: 100%;
-  height: 286px;
+  height: 300px;
   background: #F5F5F5;
   display: flex;
   justify-content: space-between;
@@ -40,18 +40,18 @@ export const Amount = styled(FlexBetween)`
 
 const ButtonWrapper = styled.div`
   margin: 40px;
-  min-width: 310px;
+  width: 30%;
 
   > button {
     width: 300px;
   }
 `;
 
-const generateLabel = customer => {
+const generateLabel = (customer) => {
   const { firstName, primaryEmail, primaryPhone, lastName } =
     customer || ({} as ICustomer);
 
-  let value = firstName ? firstName.toUpperCase() : '';
+  let value = firstName ? firstName.toUpperCase() : "";
 
   if (lastName) {
     value = `${value} ${lastName}`;
@@ -68,7 +68,7 @@ const generateLabel = customer => {
 
 // get user options for react-select-plus
 export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
-  return array.map(item => {
+  return array.map((item) => {
     const value = generateLabel(item);
     return { value: item._id, label: value };
   });
@@ -102,22 +102,22 @@ export default class FooterCalculation extends React.Component<Props, State> {
     super(props);
 
     const { order } = this.props;
-    const customerId = order ? order.customerId : '';
-    const customerLabel = order ? generateLabel(order.customer) : '';
+    const customerId = order ? order.customerId : "";
+    const customerLabel = order ? generateLabel(order.customer) : "";
 
     let stageHeight = 100; // types title
-    const mode = localStorage.getItem('erxesPosMode') || '';
+    const mode = localStorage.getItem("erxesPosMode") || "";
 
     this.state = {
-      customerId: customerId || '',
+      customerId: customerId || "",
       customerLabel,
       stageHeight,
-      mode
+      mode,
     };
   }
 
-  onChange = value => {
-    this.props.setOrderState('type', value);
+  onChange = (value) => {
+    this.props.setOrderState("type", value);
   };
 
   renderPaymentButton() {
@@ -130,7 +130,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
     const onClick = () => {
       addOrder();
 
-      onClickModal('payment');
+      onClickModal("payment");
     };
 
     const onCancelOrder = () => {
@@ -140,14 +140,14 @@ export default class FooterCalculation extends React.Component<Props, State> {
     return (
       <TypeButtons>
         <Button onClick={onCancelOrder} btnStyle="simple" block>
-          {__('Cancel order')}
+          {__("Cancel order")}
         </Button>
         <Button
           style={{ backgroundColor: config.uiOptions.colors.primary }}
           onClick={onClick}
           block
         >
-          {__('Payment')}
+          {__("Payment")}
         </Button>
       </TypeButtons>
     );
@@ -156,7 +156,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
   renderAmount(text: string, amount: number) {
     return (
       <>
-        <h4>{__('Payment info')}</h4>
+        <h4>{__("Payment info")}</h4>
         <Amount>
           {text}
           <span>{formatNumber(amount || 0)}₮</span>
@@ -173,7 +173,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
       changeItemCount,
       orientation,
       type,
-      changeItemIsTake
+      changeItemIsTake,
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
@@ -194,9 +194,9 @@ export default class FooterCalculation extends React.Component<Props, State> {
             />
           </FlexColumn>
           <ButtonWrapper
-            className={orientation === 'portrait' ? 'payment-section' : ''}
+            className={orientation === "portrait" ? "payment-section" : ""}
           >
-            {this.renderAmount(`${__('Amount to pay')}:`, totalAmount)}
+            {this.renderAmount(`${__("Amount to pay")}:`, totalAmount)}
             {this.renderPaymentButton()}
           </ButtonWrapper>
         </Wrapper>

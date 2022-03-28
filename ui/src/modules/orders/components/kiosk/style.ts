@@ -1,14 +1,14 @@
-import styled from 'styled-components';
-import styledTS from 'styled-components-ts';
-import { slideDown } from 'modules/common/styles/animations';
-import { colors } from 'modules/common/styles';
-import { rgba } from 'modules/common/styles/ecolor';
-import { FlexCenter } from 'modules/common/styles/main';
+import styled from "styled-components";
+import styledTS from "styled-components-ts";
+import { slideDown } from "modules/common/styles/animations";
+import { colors, dimensions } from "modules/common/styles";
+import { rgba } from "modules/common/styles/ecolor";
+import { FlexCenter } from "modules/common/styles/main";
 
 export const LogoWrapper = styledTS<{ odd?: boolean }>(styled.div)`
   display: flex;
   justify-content: center;
-  padding: ${props => (props.odd ? '40px 0 20px' : '20px')};
+  padding: ${(props) => (props.odd ? "40px 0 20px" : "20px")};
   height: 273px;
 
   img {
@@ -39,7 +39,7 @@ export const Footer = styledTS<{ color?: string }>(styled.div)`
   bottom: 0;
   left: 0;
   right: 0;
-  background: ${props => (props.color ? props.color : colors.colorSecondary)}
+  background: ${(props) => (props.color ? props.color : colors.colorSecondary)}
   color: ${colors.colorWhite};
   border-radius: 28px 28px 0px 0px;
   padding: 20px 40px;
@@ -76,10 +76,10 @@ export const PortraitViewWrapper = styled.div`
 `;
 
 export const Type = styledTS<{ color?: string }>(styled(FlexCenter))`
- border: 1px solid ${props =>
+ border: 1px solid ${(props) =>
    props.color ? props.color : colors.colorSecondary};
    border-radius: 8px;
-   background: ${props =>
+   background: ${(props) =>
      rgba(props.color ? props.color : colors.colorSecondary, 0.08)};
   display: flex;
   flex-direction: column;
@@ -135,14 +135,13 @@ export const KioskStageContent = styledTS<{
   innerWidth?: number;
 }>(styled.div)`
   display: flex;
-  margin: 38px;
+  margin: 30px;
   width: 100%;
-  height: '100px';
 
   /* width */
   ::-webkit-scrollbar {
-    width: ${props =>
-      props.innerWidth ? `${props.innerWidth * 0.01}px` : '6px'};
+    width: ${(props) =>
+      props.innerWidth ? `${props.innerWidth * 0.01}px` : "6px"};
   }
 
   /* Track */
@@ -152,20 +151,23 @@ export const KioskStageContent = styledTS<{
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: ${props => (props.color ? props.color : colors.colorSecondary)};
+    background: ${(props) =>
+      props.color ? props.color : colors.colorSecondary};
     border-radius: 40px;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: ${props => (props.color ? props.color : colors.colorSecondary)};
+    background: ${(props) =>
+      props.color ? props.color : colors.colorSecondary};
   }
 `;
 
-export const SelectedItem = styled.div`
+export const SelectedItem = styledTS<{ color?: string }>(styled.div)`
   width: 210px;
   height: 210px;
-  border: 1px solid #ff7800;
+  border: 1px solid ${(props) =>
+    props.color ? props.color : colors.colorSecondary};
   box-sizing: border-box;
   border-radius: 16px;
   margin-right: 15px;
@@ -199,9 +201,9 @@ export const SelectedStage = styled.div`
 
   .text-wrapper {
     text-align: center;
-    line-height: 20px;
-    font-size: 14px;
-    padding-top: 5px;
+    line-height: ${dimensions.coreSpacing}px;
+    font-size: 16px;
+    padding-top: ${dimensions.unitSpacing}px;
 
     span {
       color: #616e7c;
@@ -245,7 +247,7 @@ export const CloseIcon = styled.div`
 export const FlexColumn = styled.div`
   display: flex;
   overflow-x: auto;
-  max-width: 770px;
+  max-width: 70%;
 `;
 
 export const TypeButtons = styled.div`
@@ -264,7 +266,7 @@ export const EbarimtButton = styledTS<{
   isPortrait?: boolean;
 }>(styled(FlexCenter))`
   justify-content: center;
-  margin: ${props => props.isPortrait && '5px 0 30px 0'};
+  margin: ${(props) => props.isPortrait && "5px 0 30px 0"};
   font-size: 18px;
   padding: 0 5px;
 
@@ -287,7 +289,7 @@ export const EbarimtButton = styledTS<{
 `;
 
 export const KioskAmount = styledTS<{ color?: string }>(styled.div)`
-  border: 1px solid ${props => props.color && props.color};
+  border: 1px solid ${(props) => props.color && props.color};
   border-radius: 8px;
   padding: 10px;
   margin: 20px 0  10px 0;
@@ -305,13 +307,13 @@ export const KioskAmount = styledTS<{ color?: string }>(styled.div)`
 `;
 
 export const PaymentWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  margin:  ${props => (props.isPortrait ? '30px 20px 20px;' : '10px 0')};
+  margin:  ${(props) => (props.isPortrait ? "30px 20px 20px;" : "10px 0")};
   text-align: center;
 
   button {
-    padding: ${props => (props.isPortrait ? '20px 15px' : '10px 20px')};
+    padding: ${(props) => (props.isPortrait ? "20px 15px" : "10px 20px")};
     border-radius: 8px;
-    font-size: ${props => props.isPortrait && '20px'};
+    font-size: ${(props) => props.isPortrait && "20px"};
     width: 50%;
   }
 `;
