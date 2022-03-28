@@ -21,6 +21,8 @@ import { Card, Cards, TypeWrapper } from "../drawer/style";
 import KeyPads from "../drawer/KeyPads";
 import EntityChecker from "./EntityChecker";
 import CashSection from "./cashPayment/CashSection";
+import { BackButton } from "modules/orders/styles";
+import Icon from "modules/common/components/Icon";
 
 const DASHED_BORDER = "1px dashed #ddd";
 
@@ -44,6 +46,7 @@ type Props = {
   cancelQPayInvoice: (id: string) => void;
   makePayment: (_id: string, params: IPaymentParams) => void;
   onOrdersChange: (props) => void;
+  onChangeProductBodyType: (type: string) => void;
   isPortrait?: boolean;
 };
 
@@ -102,7 +105,6 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   onBoxClick = (activeInput) => {
-    console.log("here", activeInput);
     this.setState({ activeInput });
   };
 
@@ -298,6 +300,14 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     return (
       <PaymentWrapper>
+        <div>
+          <BackButton
+            onClick={() => this.props.onChangeProductBodyType("product")}
+          >
+            <Icon icon="leftarrow-3" />
+            {__("Cancel")}
+          </BackButton>
+        </div>
         <TypeWrapper isPortrait={isPortrait}>
           {remainder > 0 ? (
             <React.Fragment>
