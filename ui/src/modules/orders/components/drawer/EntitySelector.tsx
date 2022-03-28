@@ -18,7 +18,7 @@ export default class EntitySelector extends React.Component<Props> {
   render() {
     const { isPortrait, onBillTypeChange, billType, makePayment } = this.props;
 
-    const onClick = (type: string) => {
+    const onClickCitizen = (type: string) => {
       onBillTypeChange(type);
 
       makePayment();
@@ -28,14 +28,14 @@ export default class EntitySelector extends React.Component<Props> {
       <EbarimtButton isPortrait={isPortrait}>
         <Button
           className={billType === BILL_TYPES.CITIZEN ? 'active' : ''}
-          onClick={() => onClick(BILL_TYPES.CITIZEN)}
+          onClick={() => onClickCitizen(BILL_TYPES.CITIZEN)}
           size="large"
         >
           {__('Person')}
         </Button>
         <Button
           className={billType === BILL_TYPES.ENTITY ? 'active' : ''}
-          onClick={() => onClick(BILL_TYPES.ENTITY)}
+          onClick={() => onBillTypeChange(BILL_TYPES.ENTITY)}
           size="large"
         >
           {__('Organization')}

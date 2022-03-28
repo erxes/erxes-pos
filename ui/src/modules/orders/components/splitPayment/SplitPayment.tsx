@@ -118,6 +118,8 @@ export default class SplitPayment extends React.Component<Props, State> {
 
           this.setState({ companyName: data.ordersCheckCompany.name });
         }
+      }).then(() => {
+        this.handlePayment();
       });
   }
 
