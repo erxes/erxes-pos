@@ -11,25 +11,31 @@ type Props = {
   show: boolean;
   onBillTypeChange: (e: any) => void;
   onStateChange: (key: string, value: any) => void;
+  makePayment: () => void;
 };
 
 export default class EntitySelector extends React.Component<Props> {
   render() {
-    const { isPortrait, onBillTypeChange, billType } = this.props;
+    const { isPortrait, onBillTypeChange, billType, makePayment } = this.props;
+
+    const onClick = (type: string) => {
+      onBillTypeChange(type);
+
+      makePayment();
+    }
 
     return (
       <EbarimtButton isPortrait={isPortrait}>
         <Button
           className={billType === BILL_TYPES.CITIZEN ? 'active' : ''}
-          onClick={() => onBillTypeChange(BILL_TYPES.CITIZEN)}
+          onClick={() => onClick(BILL_TYPES.CITIZEN)}
           size="large"
         >
           {__('Person')}
         </Button>
         <Button
           className={billType === BILL_TYPES.ENTITY ? 'active' : ''}
-          onClick={() => onBillTypeChange(BILL_TYPES.ENTITY)}
-          onMouseDown={onBillTypeChange}
+          onClick={() => onClick(BILL_TYPES.ENTITY)}
           size="large"
         >
           {__('Organization')}

@@ -38,7 +38,8 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       createInvoiceMutation,
       checkInvoiceMutation,
       cancelInvoiceMutation,
-      makePaymentMutation
+      makePaymentMutation,
+      order
     } = this.props;
 
     const addPayment = (params: IPaymentInput) => {
@@ -109,7 +110,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
 
     return (
       <SplitPayment
-        order={this.props.order}
+        order={order}
         addPayment={addPayment}
         createQPayInvoice={createQPayInvoice}
         checkQPayInvoice={checkQPayInvoice}

@@ -99,5 +99,8 @@
   "Your number": "Your number",
   "Back": "Back",
   "QPay invoice amount is too small": "QPay invoice amount is too small",
-  "Pay bill": "Pay bill"
+  "Pay bill": "Pay bill",
+  "Please pay the remaining amount": "Please pay the remaining amount",
+  "Unpaid QPay amount": "Unpaid QPay amount",
+  "Paid QPay amount": "Paid QPay amount"
 }

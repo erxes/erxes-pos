@@ -27,44 +27,19 @@ export default function OrderInfo({
           </li>
           {companyName && <li>{__('Entity name')}: <b>{companyName}</b></li>}
           {registerNumber && <li>{__('Register number')}: <b>{registerNumber}</b></li>}
-          {order.cardAmount && (
-            <>
-              {
-                (order.cardPayments || []).map(c => {
-                  return (<li>
-                    {__('Paid card amount')}:{' '}
-                    <b>{c.amount || 0}₮</b> ({c.cardInfo.pan})
-                  </li>)
-                })
-              }
-            </>
-
-          )}
-          {order.mobileAmount && (
-            <>
-              {
-                ((order.qpayInvoices || []).filter(q => q.status === 'done') || []).map(q => {
-                  return (
-                    <li>
-                      {__('Paid mobile amount')}:
-                      <b>{q.amount}₮</b>
-                    </li>
-                  )
-                })
-              }
-              {
-                ((order.qpayInvoices || []).filter(q => q.status !== 'done') || []).map(q => {
-                  return (
-                    <li>
-                      {__('Unpaid mobile amount')}:
-                      <b>{q.amount}₮</b>
-                    </li>
-                  )
-                })
-              }
-            </>
-
-          )}
+          {order.cardAmount ? (
+            <li>
+              {__('Paid card amount')}:{' '}
+              <b>{order.cardAmount}₮</b>
+            </li>
+          ) : null}
+          {
+            order.mobileAmount ? (
+              <li>
+                {__('Paid mobile amount')}: <b>{order.mobileAmount}₮</b>
+              </li>
+            ) : null
+          }
 
           {order.cashAmount ? (
             <li>

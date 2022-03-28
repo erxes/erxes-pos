@@ -123,7 +123,11 @@ export default class SplitPayment extends React.Component<Props, State> {
 
   handlePayment() {
     const { makePayment, order } = this.props;
-    const { registerNumber, billType, cashAmount } = this.state;
+    const { registerNumber, billType, cashAmount, remainder } = this.state;
+
+    if (remainder > 0) {
+      return Alert.warning(`${__('Please pay the remaining amount')}: ${remainder}`);
+    }
 
     makePayment(order._id, { registerNumber, billType, cashAmount });
   }
@@ -164,6 +168,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           show={showE}
           onBillTypeChange={onBillTypeChange}
           onStateChange={onStateChange}
+          makePayment={this.handlePayment}
         />
       );
     };
@@ -275,31 +280,37 @@ export default class SplitPayment extends React.Component<Props, State> {
       <PaymentWrapper>
         <TypeWrapper isPortrait={isPortrait}>
           <OrderInfo order={order} remainderAmount={remainder} companyName={companyName} registerNumber={registerNumber} />
-          <h4>{__('Choose the payment method')}</h4>
+          {remainder > 0 ? (
+            <React.Fragment>
+              <h4>{__('Choose the payment method')}</h4>
 
-          <Cards isPortrait={isPortrait}>
-            {mode !== 'kiosk' && this.renderPaymentType(INPUT_TYPES.CASH, 'payment2.png')}
-            {this.renderPaymentType(INPUT_TYPES.CARD, 'payment4.png')}
-            {this.renderPaymentType(INPUT_TYPES.QPAY, 'payment1.png')}
-          </Cards>
+              <Cards isPortrait={isPortrait}>
+                {mode !== 'kiosk' && this.renderPaymentType(INPUT_TYPES.CASH, 'payment2.png')}
+                {this.renderPaymentType(INPUT_TYPES.CARD, 'payment4.png')}
+                {this.renderPaymentType(INPUT_TYPES.QPAY, 'payment1.png')}
+              </Cards>
+            </React.Fragment>
+          ) : null}
         </TypeWrapper>
         {remainder <= 0 && this.renderEbarimt()}
-        <TabContentWrapper>
-          <FlexCenter>
-            <KeyPads
-              isPayment={false}
-              isPortrait={true}
-              onChangeKeyPad={this.onChangeKeyPad}
-              billType={billType}
-            />
-          </FlexCenter>
-        </TabContentWrapper>
+        {remainder > 0 || billType === BILL_TYPES.ENTITY ? (
+          <TabContentWrapper>
+            <FlexCenter>
+              <KeyPads
+                isPayment={false}
+                isPortrait={true}
+                onChangeKeyPad={this.onChangeKeyPad}
+                billType={billType}
+              />
+            </FlexCenter>
+          </TabContentWrapper>
+        ) : null}
       </PaymentWrapper>
     );
   } // end render()
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    const { order } = this.props;    
+    const { order } = this.props;
     const remainder = this.getRemainderAmount(order);
 
     if (prevState.remainder !== remainder) {
