@@ -7,13 +7,15 @@ import { Amount } from 'modules/orders/styles';
 type Props = {
   order: IOrder;
   remainderAmount: number;
-  cashAmount: number;
+  companyName: string;
+  registerNumber: string;
 };
 
 export default function OrderInfo({
   order,
   remainderAmount,
-  cashAmount
+  companyName,
+  registerNumber
 }: Props) {
   return (
     <Amount>
@@ -23,60 +25,37 @@ export default function OrderInfo({
             {__('Payment info')}: №:{' '}
             {order && order.number ? order.number.split('_')[1] : ''}
           </li>
-          {order.cardAmount && (
-            <>
-              {
-                (order.cardPayments || []).map(c => {
-                  return (<li>
-                    {__('Paid card amount')}:{' '}
-                    <b>{c.amount || 0}₮</b> ({c.cardInfo.pan})
-                  </li>)
-                })
-              }
-            </>
-
-          )}
-          {order.mobileAmount && (
-            <>
-              {
-                ((order.qpayInvoices || []).filter(q => q.status === 'done') || []).map(q => {
-                  return (
-                    <li>
-                      {__('Paid mobile amount')}:
-                      {q.amount}₮
-                    </li>
-                  )
-                })
-              }
-              {
-                ((order.qpayInvoices || []).filter(q => q.status !== 'done') || []).map(q => {
-                  return (
-                    <li>
-                      {__('Paid mobile amount')}:
-                      {q.amount}₮
-                    </li>
-                  )
-                })
-              }
-            </>
-
-          )}
-
-          {cashAmount ? (
+          {companyName && <li>{__('Entity name')}: <b>{companyName}</b></li>}
+          {registerNumber && <li>{__('Register number')}: <b>{registerNumber}</b></li>}
+          {order.cardAmount ? (
             <li>
-              {__('Paid cash amount')}: {cashAmount}₮
+              {__('Paid card amount')}:{' '}
+              <b>{order.cardAmount}₮</b>
+            </li>
+          ) : null}
+          {
+            order.mobileAmount ? (
+              <li>
+                {__('Paid mobile amount')}: <b>{order.mobileAmount}₮</b>
+              </li>
+            ) : null
+          }
+
+          {order.cashAmount ? (
+            <li>
+              {__('Paid cash amount')}: <b>{order.cashAmount}₮</b>
             </li>
           ) : ''}
 
           {remainderAmount > 0 && (
             <li>
-              {__('Remainder amount')}: {remainderAmount}₮
+              {__('Remainder amount')}: <b>{remainderAmount}₮</b>
             </li>
           )}
 
           <li>
             {__('Total amount')}:
-            {order.totalAmount || 0}₮
+            <b>{order.totalAmount || 0}₮</b>
           </li>
         </ul>
       </div>

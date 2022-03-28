@@ -1,10 +1,11 @@
 import { graphql } from 'react-apollo';
-import { router } from "modules/common/utils";
 import { withRouter } from 'react-router-dom';
 import gql from 'graphql-tag';
-import * as compose from 'lodash.flowright';
 import React from 'react';
-import { Alert, __ } from 'modules/common/utils';
+import * as compose from 'lodash.flowright';
+
+import Spinner from 'modules/common/components/Spinner';
+import { Alert, __, router } from 'modules/common/utils';
 import { IRouterProps, IConfig } from '../../../types';
 import { withProps } from '../../utils';
 import { mutations, queries } from '../graphql/index';
@@ -12,15 +13,15 @@ import Pos from '../components/Pos';
 import {
   OrdersAddMutationResponse,
   OrdersEditMutationResponse,
-  IOrder
+  OrderDetailQueryResponse
 } from '../types';
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
 import { IUser } from 'modules/auth/types';
-import client from 'erxes-ui/lib/apolloClient';
 
 type Props = {
   ordersAddMutation: OrdersAddMutationResponse;
   ordersEditMutation: OrdersEditMutationResponse;
+  orderDetailQuery: OrderDetailQueryResponse;
   posCurrentUser: IUser;
   currentConfig: IConfig;
   qp: any;
@@ -38,46 +39,18 @@ export interface IPaymentParams {
   registerNumber?: string;
 }
 
-class PosContainer extends React.Component<Props, { order: IOrder | null }> {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      order: null
-    };
-  }
-
-  qry = (_id) => {
-    client
-      .query({
-        query: gql(queries.orderDetail),
-        variables: { _id },
-        fetchPolicy: 'network-only'
-      })
-      .then(({ data }) => {
-        this.setState({
-          order: data.orderDetail
-        });
-      });
-  }
-
-  componentDidMount() {
-    const { qp } = this.props;
-    this.qry(qp.id);
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.qp.id !== this.props.qp.id) {
-      this.qry(nextProps.qp.id)
-    }
-  }
-
+class PosContainer extends React.Component<Props> {
   render() {
     const {
       ordersAddMutation,
       ordersEditMutation,
       customersAddMutation,
+      orderDetailQuery
     } = this.props;
+
+    if (orderDetailQuery.loading) {
+      return <Spinner />;
+    }
 
     const createOrder = (params: any, callback?) => {
       ordersAddMutation({ variables: params })
@@ -94,7 +67,6 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
           if (order && order._id) {
             Alert.success(`Order has been created successfully.`);
 
-            this.setState({ order });
             router.setParams(this.props.history, { id: order._id, home: null });
 
             if (callback) {
@@ -142,7 +114,7 @@ class PosContainer extends React.Component<Props, { order: IOrder | null }> {
       createOrder,
       updateOrder,
       addCustomer,
-      order: this.state.order,
+      order: orderDetailQuery.orderDetail,
     };
 
     return <Pos {...updatedProps} />;
@@ -188,5 +160,11 @@ export default withProps<Props>(
     graphql<Props>(gql(mutations.customersAdd), {
       name: 'customersAddMutation'
     }),
+    graphql<Props>(gql(queries.orderDetail), {
+      name: 'orderDetailQuery',
+      options: ({ qp }) => ({
+        variables: { _id: qp && qp.id }
+      })
+    })
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );

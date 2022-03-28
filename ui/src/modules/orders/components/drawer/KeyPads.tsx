@@ -34,7 +34,7 @@ export default class KeyPads extends React.Component<Props> {
 
   render() {
     const mode = localStorage.getItem('erxesPosMode') || '';
-    const { isPayment, billType } = this.props;
+    const { billType } = this.props;
 
     if (billType === BILL_TYPES.CITIZEN && mode === 'kiosk') {
       return null;
@@ -45,7 +45,7 @@ export default class KeyPads extends React.Component<Props> {
         {Array.from({ length: 9 }, (_, i) => i + 1).map((num, index) =>
           this.renderKeyPad(index, num)
         )}
-        {this.renderKeyPad(15, isPayment ? '+' : '.')}
+        {/* {this.renderKeyPad(15, isPayment ? '+' : '.')} */}
         {this.renderKeyPad(0, 0)}
         {this.renderKeyPad(20, '00')}
         {this.renderKeyPad(21, '000')}

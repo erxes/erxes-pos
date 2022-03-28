@@ -11,7 +11,7 @@ import { Alert, __ } from 'modules/common/utils';
 import { queries, mutations } from '../graphql/index';
 import SplitPayment from '../components/splitPayment/SplitPayment';
 import {
-  ICardPayment,
+  IPaymentInput,
   IInvoiceParams,
   IInvoiceCheckParams,
   IPaymentParams,
@@ -23,7 +23,7 @@ type Props = {
 };
 
 type FinalProps = {
-  addCardPaymentMutation: any;
+  addPaymentMutation: any;
   createInvoiceMutation: any;
   checkInvoiceMutation: any;
   cancelInvoiceMutation: any;
@@ -34,15 +34,16 @@ type FinalProps = {
 class SplitPaymentContainer extends React.Component<FinalProps> {
   render() {
     const {
-      addCardPaymentMutation,
+      addPaymentMutation,
       createInvoiceMutation,
       checkInvoiceMutation,
       cancelInvoiceMutation,
-      makePaymentMutation
+      makePaymentMutation,
+      order
     } = this.props;
 
-    const addCardPayment = (params: ICardPayment) => {
-      addCardPaymentMutation({ variables: params })
+    const addPayment = (params: IPaymentInput) => {
+      addPaymentMutation({ variables: params })
         .then(() => {
         })
         .catch(e => {
@@ -109,8 +110,8 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
 
     return (
       <SplitPayment
-        order={this.props.order}
-        addCardPayment={addCardPayment}
+        order={order}
+        addPayment={addPayment}
         createQPayInvoice={createQPayInvoice}
         checkQPayInvoice={checkQPayInvoice}
         cancelQPayInvoice={cancelInvoice}
@@ -131,8 +132,8 @@ const getRefetchQueries = _id => {
 
 export default withProps<Props>(
   compose(
-    graphql<Props>(gql(mutations.ordersAddCardPayment), {
-      name: 'addCardPaymentMutation',
+    graphql<Props>(gql(mutations.ordersAddPayment), {
+      name: 'addPaymentMutation',
       options: ({ order }) => ({
         refetchQueries: getRefetchQueries(order._id)
       })

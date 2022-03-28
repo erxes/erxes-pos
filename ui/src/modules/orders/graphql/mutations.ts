@@ -79,18 +79,18 @@ const customersAdd = `
   }
 `;
 
-const ordersAddCardPayment = `
-  mutation ordersAddCardPayment($_id: String!, $amount: Float!, $cardInfo: JSON) {
-    ordersAddCardPayment(_id: $_id, amount: $amount, cardInfo: $cardInfo) {
-      ${orderFields}
-      ${orderItemsFields}
-    }
-  }
-`;
-
 const qpayCancelInvoice = `
   mutation qpayCancelInvoice($_id: String!) {
     qpayCancelInvoice(_id: $_id)
+  }
+`;
+
+const ordersAddPayment = `
+  mutation ordersAddPayment($_id: String!, $cashAmount: Float, $cardAmount: Float, $cardInfo: JSON) {
+    ordersAddPayment(_id: $_id, cashAmount: $cashAmount, cardAmount: $cardAmount, cardInfo: $cardInfo) {
+      ${orderFields}
+      ${orderItemsFields}
+    }
   }
 `;
 
@@ -102,6 +102,6 @@ export default {
   createQpaySimpleInvoice,
   qpayCheckPayment,
   customersAdd,
-  ordersAddCardPayment,
-  qpayCancelInvoice
+  qpayCancelInvoice,
+  ordersAddPayment
 };

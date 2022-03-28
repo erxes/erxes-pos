@@ -1,6 +1,9 @@
 import React from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
+import Modal from "react-bootstrap/Modal";
+import { NavLink } from "react-router-dom";
+
 import NameCard from "modules/common/components/nameCard/NameCard";
 import AsyncComponent from "modules/common/components/AsyncComponent";
 import { ICustomerParams, IOrder, IOrderItemInput } from "../types";
@@ -8,7 +11,6 @@ import { ORDER_TYPES } from "../../../constants";
 import Calculation from "./Calculation";
 import OrderSearch from "../containers/layout/OrderSearch";
 import { IUser } from "modules/auth/types";
-import Modal from "react-bootstrap/Modal";
 import {
   PosWrapper,
   MainContent,
@@ -31,7 +33,6 @@ import ProductSearch from "../containers/ProductSearch";
 import PortraitView from "./kiosk";
 import { renderFullName } from "modules/common/utils";
 import Icon from "modules/common/components/Icon";
-import { NavLink } from "react-router-dom";
 import { NavIcon } from "modules/layout/styles";
 import FooterCalculation from "./kiosk/FooterCalculation";
 import SplitPaymentContainer from "../containers/SplitPaymentContainer";
@@ -88,19 +89,17 @@ export default class Pos extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const { order } = props;
+    const { order, type } = props;
 
     this.state = {
       items: order ? order.items : [],
       totalAmount: order ? getTotalAmount(order.items) : 0,
       showMenu: false,
       productBodyType: "product",
-      type:
-        this.props.type || (order && order.type ? order.type : ORDER_TYPES.EAT),
+      type: type || (order && order.type ? order.type : ORDER_TYPES.EAT),
       modalContentType: "",
       customerId: order && order.customerId ? order.customerId : "",
       registerNumber: "",
-      // paymentType: 'card'
     };
   }
 

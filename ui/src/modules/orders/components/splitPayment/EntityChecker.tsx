@@ -1,10 +1,12 @@
-import { BILL_TYPES } from '../../../../constants';
 import React from 'react';
+
+import FormControl from "modules/common/components/form/Control";
+import Icon from "modules/common/components/Icon";
+import { BILL_TYPES } from '../../../../constants';
 import Button from 'modules/common/components/Button';
 import { __ } from 'modules/common/utils';
 import { IOrder } from 'modules/orders/types';
-import KeypadWithInput from './KeypadWithInput';
-import { ButtonGroup, EntityChecker } from 'modules/orders/styles';
+import { ButtonGroup, EntityChecker, Input } from 'modules/orders/styles';
 
 type Props = {
   onStateChange: (key: string, value: any) => void;
@@ -16,29 +18,33 @@ type Props = {
 
 export default class EbarimtModal extends React.Component<Props> {
   render() {
-    const { order, onStateChange, registerNumber, onSubmit, onBillTypeChange } =
-      this.props;
+    const { onStateChange, registerNumber, onSubmit, onBillTypeChange } = this.props;
 
     const onClose = () => {
       onBillTypeChange(BILL_TYPES.CITIZEN);
       onStateChange('showEntity', false);
     };
 
-    const setAmount = val => {
-      onStateChange('registerNumber', val.toString());
-    };
+    const onChange = e => {
+      const value = (e.target as HTMLInputElement).value;
+
+      onStateChange('registerNumber', value);
+    }
 
     return (
       <EntityChecker>
-        <KeypadWithInput
-          order={order}
-          setAmount={setAmount}
-          amount={registerNumber}
-          inputLabel={__('')}
-          // usePrefix={false}
-          getStringValue={true}
-          setBill="entity"
-        />
+        <Input>
+          <FormControl
+            type="text"
+            name="registerNumber"
+            onChange={onChange}
+            value={registerNumber}
+            onFocus={() => onStateChange('activeInput', 'registerNumber')}
+          />
+          <div onClick={() => onStateChange('registerNumber', '')}>
+            <Icon icon="cancel" size={13} />
+          </div>
+        </Input>
         <ButtonGroup>
           <Button
             btnStyle="warning"
