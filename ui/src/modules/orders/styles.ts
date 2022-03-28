@@ -1,7 +1,7 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import styledTS from "styled-components-ts";
 import { dimensions, colors } from "modules/common/styles";
-import { darken } from "modules/common/styles/ecolor";
+import { darken, rgba } from "modules/common/styles/ecolor";
 import { FlexBetween, SimpleButton } from "modules/common/styles/main";
 
 export const PosWrapper = styled.div`
@@ -102,6 +102,7 @@ export const MainContent = styledTS<{
 
 export const MenuContent = styled.div`
   height: 100%;
+  overflow: auto;
   padding: 20px;
   justify-content: center;
 `;
@@ -224,18 +225,14 @@ export const ProductCategory = styledTS<{
   isActive?: boolean;
   color?: string;
   isPortrait?: boolean;
+  isKiosk?: boolean;
 }>(styled.div)`
   border-radius: 16px;
   box-shadow: ${(props) =>
     props.isPortrait ? "2px 2px 4px rgba(0, 0, 0, 0.25)" : ""};
   margin: ${(props) => (props.isPortrait ? "0 0px 15px 0" : "10px 0 0 0")};
   padding: ${(props) => (props.isPortrait ? "" : `5px`)};
-  background: ${(props) =>
-    props.isActive
-      ? props.isPortrait
-        ? "rgba(255, 120, 0, 0.12)"
-        : "#fff"
-      : ""};
+  background: ${(props) => (props.isActive ? "#fff" : "")};
   cursor: pointer;
   border: ${(props) =>
     props.isActive
@@ -264,9 +261,34 @@ export const ProductCategory = styledTS<{
     font-size: 12px;
     word-break: break-word;
   }
+
+  ${(props) =>
+    props.isKiosk &&
+    css`
+      width: 100%;
+      padding: 20px;
+      margin-bottom: 30px;
+      background: ${(props) =>
+        props.isActive &&
+        rgba(props.color ? props.color : colors.colorSecondary, 0.1)};
+
+      > div {
+        img {
+          width: 60px;
+          height: 60px;
+          margin-bottom: ${dimensions.coreSpacing}px;
+        }
+
+        span {
+          font-size: 22px;
+        }
+      }
+    `}
 `;
 
-export const CategoryName = styledTS<{ color?: string }>(styled.div)`
+export const CategoryName = styledTS<{ color?: string; isKiosk?: boolean }>(
+  styled.div
+)`
   display: flex;
   align-items: center;
   justify-content: center;
@@ -276,6 +298,19 @@ export const CategoryName = styledTS<{ color?: string }>(styled.div)`
     height: 32px;
     margin-right: ${dimensions.unitSpacing - 5}px;
   }
+
+  ${(props) =>
+    props.isKiosk &&
+    css`
+      align-items: center;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+
+      span {
+        padding: 0 10px 0 10px;
+      }
+    `}
 `;
 
 export const EmptyContentWrapper = styled.div`

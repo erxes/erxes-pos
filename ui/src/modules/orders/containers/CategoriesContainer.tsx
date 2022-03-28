@@ -1,22 +1,23 @@
-import { withRouter } from 'react-router-dom';
-import React from 'react';
-import queryString from 'query-string';
+import { withRouter } from "react-router-dom";
+import React from "react";
+import queryString from "query-string";
 
 import {
   IRouterProps,
   IConfig,
   ProductCategoriesQueryResponse,
-  ProductsQueryResponse
-} from '../../../types';
-import Spinner from 'modules/common/components/Spinner';
-import withCurrentUser from 'modules/auth/containers/withCurrentUser';
-import Categories from '../components/Categories';
+  ProductsQueryResponse,
+} from "../../../types";
+import Spinner from "modules/common/components/Spinner";
+import withCurrentUser from "modules/auth/containers/withCurrentUser";
+import Categories from "../components/Categories";
 
 type Props = {
   productCategoriesQuery: ProductCategoriesQueryResponse;
   productsQuery: ProductsQueryResponse;
   currentConfig: IConfig;
   orientation: string;
+  mode: string;
 } & IRouterProps;
 
 class CategoriesContainer extends React.Component<Props> {
@@ -31,7 +32,7 @@ class CategoriesContainer extends React.Component<Props> {
       ...this.props,
       productCategories: productCategoriesQuery.productCategories || [],
       products: productsQuery.products || [],
-      qp: queryString.parse(location.search)
+      qp: queryString.parse(location.search),
     };
 
     return <Categories {...updatedProps} />;

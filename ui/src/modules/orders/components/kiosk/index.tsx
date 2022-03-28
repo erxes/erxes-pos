@@ -1,8 +1,8 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ICustomerParams, IOrder } from '../../types';
-import { IUser } from 'modules/auth/types';
-import { IConfig } from 'types';
+import React from "react";
+import { Link } from "react-router-dom";
+import { ICustomerParams, IOrder } from "../../types";
+import { IUser } from "modules/auth/types";
+import { IConfig } from "types";
 // import { IPaymentParams } from '../../containers/PosContainer';
 import {
   LogoWrapper,
@@ -10,12 +10,12 @@ import {
   Footer,
   PortraitViewWrapper,
   Type,
-  AppWrapper
-} from './style';
-import Icon from 'modules/common/components/Icon';
-import { FlexBetween, FlexCenter } from 'modules/common/styles/main';
-import { __ } from 'modules/common/utils';
-import Pos from '../Pos';
+  AppWrapper,
+} from "./style";
+import Icon from "modules/common/components/Icon";
+import { FlexBetween, FlexCenter } from "modules/common/styles/main";
+import { __ } from "modules/common/utils";
+import Pos from "../Pos";
 
 type Props = {
   createOrder: (params) => void;
@@ -40,7 +40,7 @@ export default class PortraitView extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      type: ''
+      type: "",
     };
   }
 
@@ -55,13 +55,13 @@ export default class PortraitView extends React.Component<Props, State> {
           Та үйлчилгээний <br /> төрлөө сонгоно уу?
         </h4>
         <FlexCenter>
-          <Type color={color} onClick={() => this.onClickType('take')}>
+          <Type color={color} onClick={() => this.onClickType("take")}>
             <img src="images/type1.png" alt="type" />
-            {__('Take')}
+            {__("Take")}
           </Type>
-          <Type color={color} onClick={() => this.onClickType('eat')}>
+          <Type color={color} onClick={() => this.onClickType("eat")}>
             <img src="images/type2.png" alt="type" />
-            {__('Eat')}
+            {__("Eat")}
           </Type>
         </FlexCenter>
         <AppWrapper>
@@ -86,7 +86,11 @@ export default class PortraitView extends React.Component<Props, State> {
   render() {
     const { currentConfig } = this.props;
     const { type } = this.state;
-    const { colors, bgImage, texts = {} } = currentConfig.uiOptions || ({} as any);
+    const {
+      colors,
+      bgImage,
+      texts = {},
+    } = currentConfig.uiOptions || ({} as any);
 
     if (type) {
       return <Pos {...this.props} type={this.state.type}></Pos>;
@@ -96,20 +100,20 @@ export default class PortraitView extends React.Component<Props, State> {
       <PortraitViewWrapper>
         <LogoWrapper>
           <Link to="/">
-            <img src={bgImage ? bgImage : `/images/headerKiosk.png`} alt="logo" />
+            <img
+              src={bgImage ? bgImage : `/images/headerKiosk.png`}
+              alt="logo"
+            />
           </Link>
-          {/* <Settings>
-            <Icon icon="settings" size={20} color={'#fff'} />
-          </Settings> */}
         </LogoWrapper>
         {this.renderContent(colors.primary)}
         <Footer color={colors.primary}>
           <FlexBetween>
             <span>
-              <Icon icon="earthgrid" /> {texts ? texts.website : '' || ''}
+              <Icon icon="earthgrid" /> {texts ? texts.website : "" || ""}
             </span>
             <span>
-              <Icon icon="phone" /> {texts ? texts.phone : '' || ''}
+              <Icon icon="phone" /> {texts ? texts.phone : "" || ""}
             </span>
           </FlexBetween>
         </Footer>

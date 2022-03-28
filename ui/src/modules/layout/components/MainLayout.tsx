@@ -41,13 +41,13 @@ class MainLayout extends React.Component<IProps> {
       location.pathname.includes("waiting-screen")
     ) {
       return (
-        <div className="subRoot">
+        <>
           <div id="anti-clickjack" style={{ display: "none" }} />
           <Layout>
             <PortraitWrapper>{children}</PortraitWrapper>
             <DetectBrowser />
           </Layout>
-        </div>
+        </>
       );
     }
 

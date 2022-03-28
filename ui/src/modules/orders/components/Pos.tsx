@@ -494,6 +494,7 @@ export default class Pos extends React.Component<Props, State> {
         productCategoriesQuery={productCategoriesQuery}
         productsQuery={productsQuery}
         orientation={orientation}
+        mode={mode}
       />
     );
 
