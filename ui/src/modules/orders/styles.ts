@@ -632,7 +632,8 @@ export const OrderBox = styledTS<{
   cursor: pointer;
 
   &:hover {
-    border-color: ${(props) => (props.color ? props.color : "#6569df")};
+    border-color: ${(props) =>
+      props.color ? props.color : colors.colorSecondary};
   }
 
   div {
@@ -889,6 +890,29 @@ export const Divider = styled.div`
 
 export const MarginTop = styledTS<{ margin: number }>(styled.div)`
   margin-top: ${(props) => props.margin}px
+`;
+
+export const PaymentInfo = styledTS<{ color?: string }>(styled.div)`
+  border: 1px solid ${(props) =>
+    props.color ? props.color : colors.colorSecondary};
+  border-radius: 8px;
+  padding: ${dimensions.unitSpacing}px;
+  margin-bottom: ${dimensions.unitSpacing}px;
+  font-size: 12px;
+
+  .middle {
+    margin: ${dimensions.unitSpacing}px 0;
+  }
+
+  > div, .middle > div {
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+
+    > span b {
+      color: ${(props) => (props.color ? props.color : colors.colorSecondary)};
+    }
+  }
 `;
 
 export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(

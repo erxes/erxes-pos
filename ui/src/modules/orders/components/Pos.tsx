@@ -396,7 +396,7 @@ export default class Pos extends React.Component<Props, State> {
   renderMainContent() {
     const { addCustomer, order } = this.props;
     const { productBodyType } = this.state;
-
+    console.log(productBodyType);
     switch (productBodyType) {
       case "product": {
         return this.renderProduct();

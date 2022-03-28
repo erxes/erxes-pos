@@ -1,13 +1,13 @@
-import styledTS from 'styled-components-ts';
-import styled from 'styled-components';
+import styledTS from "styled-components-ts";
+import styled from "styled-components";
 
 export const TypeWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
-margin-top: ${props => (props.isPortrait ? '50px' : '20px')};
+margin-top: ${(props) => (props.isPortrait ? "50px" : "20px")};
 text-align: center;
 
 h2 {
-  margin-bottom:  ${props => (props.isPortrait ? '20px' : '')};
-  font-size: ${props => props.isPortrait && '34px'};
+  margin-bottom:  ${(props) => (props.isPortrait ? "20px" : "")};
+  font-size: ${(props) => props.isPortrait && "34px"};
 
   b {
     margin-left: 5px;
@@ -20,9 +20,8 @@ h2 {
 }
 
 h4 {
-  padding-bottom: 20px;
-  border-bottom: 1px dashed #cccc;
-  font-weight: 300;
+  text-transform: uppercase;
+  font-weight: 600;
 }
 `;
 
@@ -33,8 +32,8 @@ display: flex;
 flex-wrap: wrap;
 justify-content: center;
 p {
-  color: ${props => props.color && props.color};
-  font-size: ${props => (props.isPortrait ? '35px' : '18px')};
+  color: ${(props) => props.color && props.color};
+  font-size: ${(props) => (props.isPortrait ? "35px" : "18px")};
   font-weight: 500;
   @media (max-width: 1250px) and (orientation:landscape) {
     line-height: 22px;
@@ -56,7 +55,7 @@ export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: ${props => (props.isPortrait ? '46%' : '32%')};
+  width: ${(props) => (props.isPortrait ? "46%" : "32%")};
   margin: 0 10px 20px 0;
   flex-shrink: 0;
   cursor: pointer;
@@ -67,8 +66,8 @@ export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
     align-items: center;
     justify-content: center;
     > img {
-      max-height: ${props => (props.isPortrait ? '250px' : '150px')};
-      max-width: ${props => (props.isPortrait ? '250px' : '150px')};
+      max-height: ${(props) => (props.isPortrait ? "250px" : "150px")};
+      max-width: ${(props) => (props.isPortrait ? "250px" : "150px")};
       margin-bottom: 30px;
       @media (max-width: 1250px) and (orientation:landscape) {
         max-height: 80px;
@@ -98,6 +97,6 @@ export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
   }
 
   @media (max-width: 1250px) and (orientation:landscape) {
-    padding: 30px 30px 15px;
+    padding: 15px;
   }
 `;

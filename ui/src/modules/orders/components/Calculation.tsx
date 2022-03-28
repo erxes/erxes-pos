@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 import queries from "../graphql/queries";
 import React from "react";
 import Stage from "./Stage";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import styledTS from "styled-components-ts";
 import { __ } from "modules/common/utils";
 import { ColumnBetween } from "modules/common/styles/main";
@@ -16,15 +16,17 @@ import {
   Amount,
   CalculationHeader,
   Divider,
+  PaymentInfo,
   ProductLabel,
   Types,
 } from "../styles";
 import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from "../../../constants";
 import ModalTrigger from "modules/common/components/ModalTrigger";
 
-const Wrapper = styledTS<{ color?: string }>(styled.div)`
+const Wrapper = styledTS<{ color?: string; showPayment?: boolean }>(styled.div)`
   padding: 0 10px 0 10px;
   height: 100%;
+  position: relative;
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.10);
   border-radius: 16px;
   background: #fff;
@@ -33,13 +35,41 @@ const Wrapper = styledTS<{ color?: string }>(styled.div)`
   .ioevLe:checked + span:before, .hCqfzh .react-toggle--checked .react-toggle-track {
     background-color: ${(props) => props.color && props.color};
   }
+
+
+  ${(props) =>
+    props.showPayment &&
+    css`
+      &:before {
+        content: "";
+        background: rgba(0, 0, 0, 0.25);
+        position: absolute;
+        z-index: 2;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+      }
+    `}
 `;
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styledTS<{ showPayment?: boolean }>(styled.div)`
   > button {
     margin-bottom: 10px;
     margin-left: 0;
   }
+
+  ${(props) =>
+    props.showPayment &&
+    css`
+      background: #fff;
+      z-index: 100;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 10px;
+    `}
 `;
 
 const generateLabel = (customer) => {
@@ -259,7 +289,6 @@ export default class Calculation extends React.Component<Props, State> {
     const onChangeQrcode = (e) => {
       const value = (e.currentTarget as HTMLInputElement).value || "";
 
-      console.log(value);
       client
         .query({
           query: gql(queries.customerDetail),
@@ -314,7 +343,39 @@ export default class Calculation extends React.Component<Props, State> {
   renderAmount(text: string, amount: number, color?: string) {
     const prop = { color };
 
-    const { order } = this.props;
+    const { order, productBodyType } = this.props;
+
+    if (productBodyType === "payment") {
+      return (
+        <PaymentInfo {...prop}>
+          <div>
+            <span>
+              <b>{__("Payment info")}</b>
+            </span>
+            <span>
+              <b>
+                №: {order && order.number ? order.number.split("_")[1] : ""}
+              </b>
+            </span>
+          </div>
+          <div className="middle">
+            <div>
+              <span>Картаар төлсөн дүн</span>
+              {formatNumber(amount || 0)}₮
+            </div>
+          </div>
+          <div>
+            <span>
+              <b>{text}</b>
+            </span>
+            <span>
+              <b>{formatNumber(amount || 0)}₮</b>
+            </span>
+          </div>
+        </PaymentInfo>
+      );
+    }
+
     return (
       <Amount {...prop}>
         <span>
@@ -327,15 +388,18 @@ export default class Calculation extends React.Component<Props, State> {
   }
 
   renderTotal(color) {
-    const { totalAmount, orientation, items } = this.props;
+    const { totalAmount, orientation, items, productBodyType } = this.props;
 
     if (!items || items.length === 0) {
       return null;
     }
 
+    const showPayment = productBodyType === "payment";
+
     return (
       <ButtonWrapper
         className={orientation === "portrait" ? "payment-section" : ""}
+        showPayment={showPayment}
       >
         {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
         {this.renderSplitPaymentButton()}
@@ -352,13 +416,14 @@ export default class Calculation extends React.Component<Props, State> {
       changeItemIsTake,
       orientation,
       type,
+      productBodyType,
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
 
     return (
       <>
-        <Wrapper color={color}>
+        <Wrapper color={color} showPayment={productBodyType === "payment"}>
           <CalculationHeader>{this.renderHeader(mode)}</CalculationHeader>
           <Divider />
           <ColumnBetween>
@@ -368,7 +433,6 @@ export default class Calculation extends React.Component<Props, State> {
               changeItemCount={changeItemCount}
               changeItemIsTake={changeItemIsTake}
               options={config.uiOptions}
-              // stageHeight={this.state.stageHeight}
               type={type}
               mode={mode}
             />

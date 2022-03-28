@@ -1,33 +1,34 @@
-import React from 'react';
-import styled from 'styled-components';
-import gql from 'graphql-tag';
+import React from "react";
+import styled from "styled-components";
+import gql from "graphql-tag";
 
-import apolloClient from 'apolloClient';
-import { queries } from '../../graphql/index';
-import { BILL_TYPES } from '../../../../constants';
-import { FlexCenter } from 'modules/common/styles/main';
-import { __, Alert } from 'modules/common/utils';
+import apolloClient from "apolloClient";
+import { queries } from "../../graphql/index";
+import { BILL_TYPES } from "../../../../constants";
+import { FlexCenter } from "modules/common/styles/main";
+import { __, Alert } from "modules/common/utils";
 import {
   IOrder,
   ICardPayment,
   IInvoiceParams,
   IInvoiceCheckParams,
-  IPaymentParams
-} from 'modules/orders/types';
-import CardSection from './cardPayment/CardSection';
-import QPaySection from './qpayPayment/QPaySection';
-import Ebarimt from '../drawer/Ebarimt';
-import { Card, Cards, TypeWrapper } from '../drawer/style';
-import KeyPads from '../drawer/KeyPads';
-import EntityChecker from './EntityChecker';
-import OrderInfo from './OrderInfo';
-import CashSection from './CashSection';
+  IPaymentParams,
+} from "modules/orders/types";
+import CardSection from "./cardPayment/CardSection";
+import QPaySection from "./qpayPayment/QPaySection";
+import Ebarimt from "../drawer/Ebarimt";
+import { Card, Cards, TypeWrapper } from "../drawer/style";
+import KeyPads from "../drawer/KeyPads";
+import EntityChecker from "./EntityChecker";
+// import OrderInfo from "./OrderInfo";
+import CashSection from "./CashSection";
 
-const DASHED_BORDER = '1px dashed #ddd';
+const DASHED_BORDER = "1px dashed #ddd";
 
 const PaymentWrapper = styled.div`
   background-color: #fff;
-  overflow: scroll;
+  overflow: auto;
+  flex: 1;
 `;
 
 const TabContentWrapper = styled.div`
@@ -47,11 +48,11 @@ type Props = {
 };
 
 const ACTIVE_INPUT_TYPES = {
-  CASH: 'cashAmount',
-  CARD: 'cardAmount',
-  QPAY: 'mobileAmount',
-  REGISTER: 'register'
-}
+  CASH: "cashAmount",
+  CARD: "cardAmount",
+  QPAY: "mobileAmount",
+  REGISTER: "register",
+};
 
 type State = {
   billType: string;
@@ -75,38 +76,38 @@ export default class SplitPayment extends React.Component<Props, State> {
     const { order } = this.props;
 
     const sumCashAmount = order.cashAmount || 0;
-    const sumCardAmount = (order.cardPayments || [])
-      .reduce((am, c) => am + c.amount, 0);
-    const sumMobileAmount = ((order.qpayInvoices || [])
-      .filter(q => q.status === 'done') || [])
-      .reduce((am, q) => am + Number(q.amount), 0);
+    const sumCardAmount = (order.cardPayments || []).reduce(
+      (am, c) => am + c.amount,
+      0
+    );
+    const sumMobileAmount = (
+      (order.qpayInvoices || []).filter((q) => q.status === "done") || []
+    ).reduce((am, q) => am + Number(q.amount), 0);
 
-    const remainder = order.totalAmount - sumCashAmount - sumCardAmount - sumMobileAmount;
+    const remainder =
+      order.totalAmount - sumCashAmount - sumCardAmount - sumMobileAmount;
 
     this.state = {
       billType: BILL_TYPES.CITIZEN,
-      currentTab: 'empty',
+      currentTab: "empty",
       order: props.order,
       cashAmount: 0,
       cardAmount: 0,
       mobileAmount: 0,
-      registerNumber: '',
+      registerNumber: "",
       showE: true,
       showRegModal: false,
-      companyName: '',
-      mode: localStorage.getItem('erxesPosMode') || '',
-      remainder
+      companyName: "",
+      mode: localStorage.getItem("erxesPosMode") || "",
+      remainder,
     };
-
-    this.checkOrganization = this.checkOrganization.bind(this);
-    this.handlePayment = this.handlePayment.bind(this);
   }
 
-  checkOrganization() {
+  checkOrganization = () => {
     apolloClient
       .query({
         query: gql(queries.ordersCheckCompany),
-        variables: { registerNumber: this.state.registerNumber }
+        variables: { registerNumber: this.state.registerNumber },
       })
       .then(({ data, errors }) => {
         if (errors) {
@@ -118,14 +119,14 @@ export default class SplitPayment extends React.Component<Props, State> {
           this.setState({ companyName: data.ordersCheckCompany.name });
         }
       });
-  }
+  };
 
-  handlePayment() {
+  handlePayment = () => {
     const { makePayment, order } = this.props;
     const { registerNumber, billType, cashAmount } = this.state;
 
     makePayment(order._id, { registerNumber, billType, cashAmount });
-  }
+  };
 
   renderEbarimt() {
     const { order } = this.props;
@@ -169,16 +170,20 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   renderTabContent() {
+    const { addCardPayment, checkQPayInvoice, cancelQPayInvoice } = this.props;
     const {
-      addCardPayment,
-      checkQPayInvoice,
-      cancelQPayInvoice
-    } = this.props;
-    const { billType, currentTab, order, cardAmount, remainder, cashAmount, mobileAmount } = this.state;
+      billType,
+      currentTab,
+      order,
+      cardAmount,
+      remainder,
+      cashAmount,
+      mobileAmount,
+    } = this.state;
 
     const setAmount = (amount) => {
       this.setState({ [currentTab]: amount } as Pick<State, keyof State>);
-    }
+    };
 
     if (currentTab === ACTIVE_INPUT_TYPES.CARD) {
       return (
@@ -216,25 +221,30 @@ export default class SplitPayment extends React.Component<Props, State> {
           currentAmount={cashAmount}
           setState={(param) => this.setState({ ...param })}
         />
-      )
+      );
     }
 
     return null;
   }
 
-  onChangeKeyPad = num => {
+  onChangeKeyPad = (num) => {
     const { currentTab } = this.state;
 
     let amount = this.state[currentTab] || 0;
-    
+
     // clear input
-    if (num === 'CE') {
-      this.setState({ [currentTab]: 0 } as unknown as Pick<State, keyof State>)
-    } else if (num === 'C') {
+    if (num === "CE") {
+      this.setState({ [currentTab]: 0 } as unknown as Pick<State, keyof State>);
+    } else if (num === "C") {
       // remove last character
-      this.setState({ [currentTab]: Number(amount.toString().slice(0, -1)) } as unknown as Pick<State, keyof State>)
+      this.setState({
+        [currentTab]: Number(amount.toString().slice(0, -1)),
+      } as unknown as Pick<State, keyof State>);
     } else {
-      this.setState({ [currentTab]: Number(amount + num) } as unknown as Pick<State, keyof State>)
+      this.setState({ [currentTab]: Number(amount + num) } as unknown as Pick<
+        State,
+        keyof State
+      >);
     }
   };
 
@@ -255,7 +265,7 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     return (
       <Card
-        className={currentTab === type ? 'activeCard' : ''}
+        className={currentTab === type ? "activeCard" : ""}
         onClick={onClick}
         isPortrait={this.props.isPortrait}
       >
@@ -265,19 +275,24 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   render() {
-    const { isPortrait, order } = this.props;
-    const { billType, mode, remainder, cashAmount } = this.state;
+    const { isPortrait } = this.props;
+    const { billType, mode, remainder } = this.state;
 
     return (
       <PaymentWrapper>
         <TypeWrapper isPortrait={isPortrait}>
-          <OrderInfo order={order} remainderAmount={remainder} cashAmount={cashAmount} />
-          <h4>{__('Choose the payment method')}</h4>
+          {/* <OrderInfo
+            order={order}
+            remainderAmount={remainder}
+            cashAmount={cashAmount}
+          /> */}
+          <h4>{__("Choose the payment method")}</h4>
 
           <Cards isPortrait={isPortrait}>
-            {mode !== 'kiosk' && this.renderPaymentType(ACTIVE_INPUT_TYPES.CASH, 'payment2.png')}
-            {this.renderPaymentType(ACTIVE_INPUT_TYPES.CARD, 'payment4.png')}
-            {this.renderPaymentType(ACTIVE_INPUT_TYPES.QPAY, 'payment1.png')}
+            {mode !== "kiosk" &&
+              this.renderPaymentType(ACTIVE_INPUT_TYPES.CASH, "payment2.png")}
+            {this.renderPaymentType(ACTIVE_INPUT_TYPES.CARD, "payment4.png")}
+            {this.renderPaymentType(ACTIVE_INPUT_TYPES.QPAY, "payment1.png")}
           </Cards>
         </TypeWrapper>
         {remainder <= 0 && this.renderEbarimt()}
