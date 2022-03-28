@@ -23,6 +23,7 @@ import {
   KioskProductsContent,
   FooterContent,
   PosMenuContent,
+  LogoSection,
 } from "../styles";
 import { IConfig } from "types";
 // import PaymentForm from './drawer/PaymentForm';
@@ -291,9 +292,9 @@ export default class Pos extends React.Component<Props, State> {
       return "";
     }
 
-    if (localStorage.getItem("erxesPosMode")) {
-      return "";
-    }
+    // if (localStorage.getItem("erxesPosMode")) {
+    //   return "";
+    // }
 
     return (
       <NavLink to="/settings">
@@ -309,13 +310,13 @@ export default class Pos extends React.Component<Props, State> {
       return "";
     }
 
-    if (!currentConfig.kitchenScreen) {
-      return "";
-    }
+    // if (!currentConfig.kitchenScreen) {
+    //   return "";
+    // }
 
-    if (!["", "kitchen"].includes(localStorage.getItem("erxesPosMode") || "")) {
-      return "";
-    }
+    // if (!["", "kitchen"].includes(localStorage.getItem("erxesPosMode") || "")) {
+    //   return "";
+    // }
 
     return (
       <NavLink to="/kitchen-screen">
@@ -331,13 +332,13 @@ export default class Pos extends React.Component<Props, State> {
       return "";
     }
 
-    if (!currentConfig.waitingScreen) {
-      return "";
-    }
+    // if (!currentConfig.waitingScreen) {
+    //   return "";
+    // }
 
-    if (!["", "waiting"].includes(localStorage.getItem("erxesPosMode") || "")) {
-      return "";
-    }
+    // if (!["", "waiting"].includes(localStorage.getItem("erxesPosMode") || "")) {
+    //   return "";
+    // }
 
     return (
       <NavLink to="/waiting-screen">
@@ -440,20 +441,19 @@ export default class Pos extends React.Component<Props, State> {
 
   renderLogo() {
     const { currentConfig } = this.props;
+    const data = currentConfig ? currentConfig.uiOptions : {};
 
     return (
-      <>
-        <FlexHeader>
-          <NavLink to={"/?home=true"}>
-            <img src={currentConfig.uiOptions.logo} alt="logo11" />
-          </NavLink>
-          <div className="syncMenu">
-            {this.renderSyncMenu()}
-            {this.renderKitchenMenu()}
-            {this.renderWaitingMenu()}
-          </div>
-        </FlexHeader>
-      </>
+      <LogoSection color={data.colors ? data.colors.primary : ""}>
+        <NavLink to={"/?home=true"}>
+          <img src={data.logo} alt="logo11" />
+        </NavLink>
+        <div className="syncMenu">
+          {this.renderSyncMenu()}
+          {this.renderKitchenMenu()}
+          {this.renderWaitingMenu()}
+        </div>
+      </LogoSection>
     );
   }
 

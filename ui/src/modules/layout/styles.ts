@@ -188,8 +188,7 @@ const LeftNavigation = styled.div`
 
 const NavIcon = styled.i`
   font-size: 18px;
-  line-height: ${dimensions.headerSpacing - 10}px;
-  color: ${colors.colorCoreSunYellow};
+  line-height: ${dimensions.coreSpacing + dimensions.unitSpacing}px;
   padding-right: 5px;
 `;
 

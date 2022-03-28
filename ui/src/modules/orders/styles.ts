@@ -109,7 +109,6 @@ export const MenuContent = styled.div`
 export const PosMenuContent = styled.div`
   height: 100%;
   justify-content: center;
-  padding-top: 20px;
 
   img {
     width: 50px;
@@ -855,13 +854,20 @@ export const Input = styledTS<{ color?: string; setBill?: string }>(styled.div)`
 export const FlexHeader = styled.div`
   display: flex;
   justify-content: space-between;
+`;
 
+export const LogoSection = styledTS<{ color?: string }>(styled.div)`
   .syncMenu {
     display: flex;
     align-items: center;
+    margin-top: ${dimensions.unitSpacing}px;
 
-    a {
-      padding: 5px;
+    > a {
+      margin-right: 5px;
+    }
+
+    i {
+      color: ${(props) => (props.color ? props.color : colors.colorSecondary)};
     }
   }
 `;
