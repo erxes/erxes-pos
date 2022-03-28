@@ -1,12 +1,12 @@
-import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
-import React from 'react';
-import NumberFormat from 'react-number-format';
-import Icon from 'modules/common/components/Icon';
-import FormGroup from 'modules/common/components/form/Group';
-import ControlLabel from 'modules/common/components/form/Label';
-import { __ } from 'modules/common/utils';
-import { Input } from 'modules/orders/styles';
-import { IOrder } from 'modules/orders/types';
+import "abortcontroller-polyfill/dist/polyfill-patch-fetch";
+import React from "react";
+import NumberFormat from "react-number-format";
+import Icon from "modules/common/components/Icon";
+import FormGroup from "modules/common/components/form/Group";
+import ControlLabel from "modules/common/components/form/Label";
+import { __ } from "modules/common/utils";
+import { Input } from "modules/orders/styles";
+import { IOrder } from "modules/orders/types";
 
 type Props = {
   color?: string;
@@ -22,23 +22,23 @@ type Props = {
 export default class CardInput extends React.Component<Props> {
   render() {
     const {
-      color = '',
+      color = "",
       setAmount,
       inputLabel,
       amount,
       usePrefix,
       getStringValue,
-      setBill
+      setBill,
     } = this.props;
 
     const inputProps: any = {
       allowNegative: false,
       thousandSeparator: !getStringValue && true,
-      prefix: !getStringValue && usePrefix && '₮',
-      inputMode: 'numeric'
+      prefix: !getStringValue && usePrefix && "₮",
+      inputMode: "numeric",
     };
 
-    const onValueChange = values => {
+    const onValueChange = (values) => {
       let value = values.floatValue || 0;
 
       if (getStringValue) {
@@ -51,7 +51,7 @@ export default class CardInput extends React.Component<Props> {
     return (
       <React.Fragment>
         <FormGroup>
-          {inputLabel ? <ControlLabel>{__(inputLabel)}</ControlLabel> : ''}
+          {inputLabel ? <ControlLabel>{__(inputLabel)}</ControlLabel> : ""}
           <Input color={color} setBill={setBill}>
             <NumberFormat
               value={amount}

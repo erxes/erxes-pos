@@ -5,6 +5,7 @@ import { __ } from "modules/common/utils";
 import CashInput from "./CashInput";
 import { IOrder, IPaymentInput } from "modules/orders/types";
 import { CardInputColumn } from "modules/orders/styles";
+import { FlexCenter } from "modules/common/styles/main";
 
 type Props = {
   order: IOrder;
@@ -28,7 +29,7 @@ export default class CashSection extends React.Component<Props> {
     };
 
     return (
-      <>
+      <FlexCenter>
         <CardInputColumn>
           <CashInput
             order={order}
@@ -36,6 +37,7 @@ export default class CashSection extends React.Component<Props> {
             amount={cashAmount}
             inputLabel={__("In Cash")}
           />
+
           {cashAmount ? (
             <Button
               size="small"
@@ -47,7 +49,7 @@ export default class CashSection extends React.Component<Props> {
             </Button>
           ) : null}
         </CardInputColumn>
-      </>
+      </FlexCenter>
     );
   }
 }

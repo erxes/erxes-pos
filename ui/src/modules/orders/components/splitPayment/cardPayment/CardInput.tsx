@@ -1,7 +1,6 @@
 import "abortcontroller-polyfill/dist/polyfill-patch-fetch";
 import React from "react";
 import NumberFormat from "react-number-format";
-import styled from "styled-components";
 
 import Button from "modules/common/components/Button";
 import Icon from "modules/common/components/Icon";
@@ -10,10 +9,6 @@ import ControlLabel from "modules/common/components/form/Label";
 import { __, Alert } from "modules/common/utils";
 import { CardInputColumn, Input } from "modules/orders/styles";
 import { IOrder, IPaymentInput } from "modules/orders/types";
-
-const ButtonWrapper = styled.div`
-  margin-bottom: 20px;
-`;
 
 type Props = {
   color?: string;
@@ -143,13 +138,16 @@ export default class CardInput extends React.Component<Props, State> {
               </div>
             </Input>
           </FormGroup>
-          <ButtonWrapper>
-            {cardAmount ? (
-              <Button btnStyle="warning" onClick={sendTransaction}>
-                {__("Send transaction")}
-              </Button>
-            ) : null}
-          </ButtonWrapper>
+          {cardAmount ? (
+            <Button
+              size="small"
+              btnStyle="warning"
+              onClick={sendTransaction}
+              block={true}
+            >
+              {__("Send transaction")}
+            </Button>
+          ) : null}
         </CardInputColumn>
       </>
     );
