@@ -3,24 +3,15 @@ import { IRouterProps, IConfig } from "../../../types";
 import { bustIframe } from "modules/common/utils";
 import React from "react";
 import { withRouter } from "react-router-dom";
-import {
-  Layout,
-  MainWrapper,
-  // Bottom,
-  // NavItem,
-  // NavIcon,
-  PortraitWrapper,
-} from "../styles";
+import { Layout, MainWrapper, PortraitWrapper } from "../styles";
 import DetectBrowser from "./DetectBrowser";
 import { setHeader } from "modules/utils";
-// import Tip from "modules/common/components/Tip";
 
 interface IProps extends IRouterProps {
   posCurrentUser?: IUser;
   currentConfig?: IConfig;
   orientation: string;
   children: React.ReactNode;
-  logout: () => void;
 }
 
 class MainLayout extends React.Component<IProps> {
@@ -67,15 +58,6 @@ class MainLayout extends React.Component<IProps> {
           <MainWrapper className="main-wrapper">{children}</MainWrapper>
           <DetectBrowser />
         </Layout>
-
-        {/* <Bottom onClick={logout} className="logout">
-          <Tip placement="right" key={Math.random()} text="Гарах">
-            <NavItem>
-              <NavIcon className="icon-logout-2" />
-              <b>{__("ГАРАХ")}</b>
-            </NavItem>
-          </Tip>
-        </Bottom> */}
       </>
     );
   }

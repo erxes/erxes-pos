@@ -33,11 +33,11 @@ import ProductSearch from "../containers/ProductSearch";
 import PortraitView from "./kiosk";
 import { renderFullName } from "modules/common/utils";
 import Icon from "modules/common/components/Icon";
-import { NavIcon } from "modules/layout/styles";
 import FooterCalculation from "./kiosk/FooterCalculation";
 import SplitPaymentContainer from "../containers/SplitPaymentContainer";
 import { Cards, TypeWrapper } from "./drawer/style";
 import { __ } from "modules/common/utils";
+import Tip from "modules/common/components/Tip";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -60,6 +60,7 @@ type Props = {
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
   qp: any;
+  logout?: () => void;
   type?: string;
 };
 
@@ -292,13 +293,15 @@ export default class Pos extends React.Component<Props, State> {
       return "";
     }
 
-    // if (localStorage.getItem("erxesPosMode")) {
-    //   return "";
-    // }
+    if (localStorage.getItem("erxesPosMode")) {
+      return "";
+    }
 
     return (
       <NavLink to="/settings">
-        <NavIcon className={"icon-sync-exclamation"} />
+        <Tip placement="top" key={Math.random()} text="Settings">
+          <Icon icon={"settings"} size={18} />
+        </Tip>
       </NavLink>
     );
   }
@@ -310,17 +313,19 @@ export default class Pos extends React.Component<Props, State> {
       return "";
     }
 
-    // if (!currentConfig.kitchenScreen) {
-    //   return "";
-    // }
+    if (!currentConfig.kitchenScreen) {
+      return "";
+    }
 
-    // if (!["", "kitchen"].includes(localStorage.getItem("erxesPosMode") || "")) {
-    //   return "";
-    // }
+    if (!["", "kitchen"].includes(localStorage.getItem("erxesPosMode") || "")) {
+      return "";
+    }
 
     return (
       <NavLink to="/kitchen-screen">
-        <NavIcon className={"icon-wallclock"} />
+        <Tip placement="top" key={Math.random()} text="Show kitchen screen">
+          <Icon icon={"desktop"} size={20} />
+        </Tip>
       </NavLink>
     );
   }
@@ -332,17 +337,19 @@ export default class Pos extends React.Component<Props, State> {
       return "";
     }
 
-    // if (!currentConfig.waitingScreen) {
-    //   return "";
-    // }
+    if (!currentConfig.waitingScreen) {
+      return "";
+    }
 
-    // if (!["", "waiting"].includes(localStorage.getItem("erxesPosMode") || "")) {
-    //   return "";
-    // }
+    if (!["", "waiting"].includes(localStorage.getItem("erxesPosMode") || "")) {
+      return "";
+    }
 
     return (
       <NavLink to="/waiting-screen">
-        <NavIcon className={"icon-presentation"} />
+        <Tip placement="top" key={Math.random()} text="Show waiting screen">
+          <Icon icon={"wallclock"} size={17} />
+        </Tip>
       </NavLink>
     );
   }
@@ -452,6 +459,9 @@ export default class Pos extends React.Component<Props, State> {
           {this.renderSyncMenu()}
           {this.renderKitchenMenu()}
           {this.renderWaitingMenu()}
+          <Tip placement="top" key={Math.random()} text="Logout">
+            <Icon icon={"logout-2"} size={17} onClick={this.props.logout} />
+          </Tip>
         </div>
       </LogoSection>
     );

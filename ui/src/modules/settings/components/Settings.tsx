@@ -1,24 +1,24 @@
-import dayjs from 'dayjs';
-import Button from 'modules/common/components/Button';
-import client from 'apolloClient';
-import Col from 'react-bootstrap/Col';
-import ControlLabel from 'modules/common/components/form/Label';
-import FormControl from 'modules/common/components/form/Control';
-import gql from 'graphql-tag';
-import NameCard from 'modules/common/components/nameCard/NameCard';
-import React from 'react';
-import Row from 'react-bootstrap/Row';
-import Select from 'react-select-plus';
-import { __ } from 'modules/common/utils';
-import { Alert } from 'modules/common/utils';
-import { FlexBetween } from 'modules/common/styles/main';
-import { FormGroup } from 'modules/common/components/form';
-import { IConfig } from 'types';
-import { IUser } from 'modules/auth/types';
-import { MainContent, PosWrapper } from '../../orders/styles';
-import { StageContent } from '../../orders/styles';
-import { queries } from '../graphql';
-import DailyReportReceipt from './DailyReport';
+import dayjs from "dayjs";
+import Button from "modules/common/components/Button";
+import client from "apolloClient";
+import Col from "react-bootstrap/Col";
+import ControlLabel from "modules/common/components/form/Label";
+import FormControl from "modules/common/components/form/Control";
+import gql from "graphql-tag";
+import NameCard from "modules/common/components/nameCard/NameCard";
+import React from "react";
+import Row from "react-bootstrap/Row";
+import Select from "react-select-plus";
+import { __ } from "modules/common/utils";
+import { Alert } from "modules/common/utils";
+import { FlexBetween } from "modules/common/styles/main";
+import { FormGroup } from "modules/common/components/form";
+import { IConfig } from "types";
+import { IUser } from "modules/auth/types";
+import { MainContent, PosWrapper, SettingsButtons } from "../../orders/styles";
+import { StageContent } from "../../orders/styles";
+import { queries } from "../graphql";
+import DailyReportReceipt from "./DailyReport";
 
 type Props = {
   syncConfig: (type: string) => void;
@@ -41,26 +41,26 @@ export default class Settings extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    const mode = localStorage.getItem('erxesPosMode') || '';
+    const mode = localStorage.getItem("erxesPosMode") || "";
     this.state = {
       mode,
       disableSendData: false,
       reportUserIds: [],
-      reportNumber: dayjs().format('YYYYMMDD').toString(),
-      dailyReport: undefined
+      reportNumber: dayjs().format("YYYYMMDD").toString(),
+      dailyReport: undefined,
     };
   }
 
   onSyncConfig = () => {
-    this.props.syncConfig('config');
+    this.props.syncConfig("config");
   };
 
   onSyncCustomers = () => {
-    this.props.syncConfig('customers');
+    this.props.syncConfig("customers");
   };
 
   onSyncProducts = () => {
-    this.props.syncConfig('products');
+    this.props.syncConfig("products");
   };
 
   onSendData = async () => {
@@ -69,13 +69,13 @@ export default class Settings extends React.Component<Props, State> {
 
     fetch(`${ebarimtConfig.ebarimtUrl}/sendData?lib=${ebarimtConfig.companyRD}`)
       .then((res: any) => res.json())
-      .then(res => {
+      .then((res) => {
         if (res.success) {
           return Alert.success(`Амжилттай.`);
         }
         return Alert.success(`Амжилтгүй: ${res.message}.`);
       })
-      .catch(e => {
+      .catch((e) => {
         Alert.error(`${e.message}`);
       })
       .then(() => {
@@ -83,22 +83,22 @@ export default class Settings extends React.Component<Props, State> {
       });
   };
 
-  onChangeMode = e => {
+  onChangeMode = (e) => {
     e.preventDefault();
     const mode = e.target.value;
 
     this.setState({ mode });
-    localStorage.setItem('erxesPosMode', mode);
+    localStorage.setItem("erxesPosMode", mode);
   };
 
-  onSelectUsers = values => {
+  onSelectUsers = (values) => {
     this.setState({
-      reportUserIds: values.map(v => v.value),
-      dailyReport: undefined
+      reportUserIds: values.map((v) => v.value),
+      dailyReport: undefined,
     });
   };
 
-  onChangeNumber = e => {
+  onChangeNumber = (e) => {
     this.setState({ reportNumber: e.target.value, dailyReport: undefined });
   };
 
@@ -107,23 +107,23 @@ export default class Settings extends React.Component<Props, State> {
 
     if (reportNumber && reportNumber.length !== 8) {
       return Alert.error(
-        'Эхлэл дугаарыг YYYYMMDD форматаар оруулна уу. Эсвэл хоосон байж болно.'
+        "Эхлэл дугаарыг YYYYMMDD форматаар оруулна уу. Эсвэл хоосон байж болно."
       );
     }
 
     client
       .query({
         query: gql(queries.dailyReport),
-        fetchPolicy: 'network-only',
+        fetchPolicy: "network-only",
         variables: {
           posNumber: reportNumber,
-          posUserIds: reportUserIds
-        }
+          posUserIds: reportUserIds,
+        },
       })
-      .then(async response => {
+      .then(async (response) => {
         this.setState({ dailyReport: response.data.dailyReport.report });
       })
-      .catch(error => {
+      .catch((error) => {
         Alert.error(error.message);
       });
   };
@@ -162,86 +162,87 @@ export default class Settings extends React.Component<Props, State> {
               </FlexBetween>
               <br />
               <FormGroup>
-                <ControlLabel>{__('Select Mode')}</ControlLabel>
+                <ControlLabel>{__("Select Mode")}</ControlLabel>
                 <FormControl
                   componentClass="select"
                   name="chooseMode"
                   defaultValue={this.state.mode}
                   options={[
-                    { value: '', label: 'Pos and full mode' },
-                    { value: 'kiosk', label: 'Kiosk Mode' },
-                    { value: 'kitchen', label: 'Kitchen Screen' },
-                    { value: 'waiting', label: 'Waiting Screen' }
+                    { value: "", label: "Pos and full mode" },
+                    { value: "kiosk", label: "Kiosk Mode" },
+                    { value: "kitchen", label: "Kitchen Screen" },
+                    { value: "waiting", label: "Waiting Screen" },
                   ]}
                   onChange={this.onChangeMode}
                   required={true}
                 />
               </FormGroup>
+              <SettingsButtons>
+                <StageContent>
+                  <Button
+                    btnStyle="success"
+                    onClick={this.onSyncConfig}
+                    icon="check-circle"
+                    block
+                  >
+                    {__("ReSync Config")}
+                  </Button>
+                </StageContent>
+                <StageContent>
+                  <Button
+                    btnStyle="success"
+                    onClick={this.onSyncCustomers}
+                    icon="check-circle"
+                    block
+                  >
+                    {__("ReSync Customers")}
+                  </Button>
+                </StageContent>
+                <StageContent>
+                  <Button
+                    btnStyle="success"
+                    onClick={this.onSyncProducts}
+                    icon="check-circle"
+                    block
+                  >
+                    {__("ReSync Products")}
+                  </Button>
+                </StageContent>
 
-              <StageContent>
-                <Button
-                  btnStyle="success"
-                  onClick={this.onSyncConfig}
-                  icon="check-circle"
-                  block
-                >
-                  {__('ReSync Config')}
-                </Button>
-              </StageContent>
-              <StageContent>
-                <Button
-                  btnStyle="success"
-                  onClick={this.onSyncCustomers}
-                  icon="check-circle"
-                  block
-                >
-                  {__('ReSync Customers')}
-                </Button>
-              </StageContent>
-              <StageContent>
-                <Button
-                  btnStyle="success"
-                  onClick={this.onSyncProducts}
-                  icon="check-circle"
-                  block
-                >
-                  {__('ReSync Products')}
-                </Button>
-              </StageContent>
+                <StageContent>
+                  <Button
+                    btnStyle="warning"
+                    onClick={this.props.syncOrders}
+                    icon="check-circle"
+                    block
+                  >
+                    {__("Sync Orders")}
+                  </Button>
+                </StageContent>
 
-              <StageContent>
-                <Button
-                  btnStyle="warning"
-                  onClick={this.props.syncOrders}
-                  icon="check-circle"
-                  block
-                >
-                  {__('Sync Orders')}
-                </Button>
-              </StageContent>
+                <StageContent>
+                  <Button
+                    btnStyle="warning"
+                    onClick={this.props.deleteOrders}
+                    icon="check-circle"
+                    block
+                  >
+                    {__("Delete Less Orders")}
+                  </Button>
+                </StageContent>
 
-              <StageContent>
-                <Button
-                  btnStyle="warning"
-                  onClick={this.props.deleteOrders}
-                  icon="check-circle"
-                  block
-                >
-                  {__('Delete Less Orders')}
-                </Button>
-              </StageContent>
-
-              <StageContent>
-                <Button
-                  btnStyle="warning"
-                  onClick={this.onSendData}
-                  icon="check-circle"
-                  block
-                  disabled={this.state.disableSendData}
-                >
-                  {__('Send-Data')}
-                </Button>
-              </StageContent>
+                <StageContent>
+                  <Button
+                    btnStyle="warning"
+                    onClick={this.onSendData}
+                    icon="check-circle"
+                    block
+                    disabled={this.state.disableSendData}
+                  >
+                    {__("Send-Data")}
+                  </Button>
+                </StageContent>
+              </SettingsButtons>
             </MainContent>
           </Col>
           <Col md={4}>
@@ -258,13 +259,13 @@ export default class Settings extends React.Component<Props, State> {
               <FormGroup>
                 <ControlLabel>{`Хэрэглэгч сонгох...`}</ControlLabel>
                 <Select
-                  placeholder={__('Хэрэглэгч')}
+                  placeholder={__("Хэрэглэгч")}
                   value={this.state.reportUserIds}
                   clearable={true}
                   onChange={this.onSelectUsers}
-                  options={(posUsers || []).map(u => ({
+                  options={(posUsers || []).map((u) => ({
                     value: u._id,
-                    label: u.email
+                    label: u.email,
                   }))}
                   multi={true}
                   block
@@ -276,7 +277,7 @@ export default class Settings extends React.Component<Props, State> {
                 icon="check-circle"
                 disabled={this.state.disableSendData}
               >
-                {__('Report')}
+                {__("Report")}
               </Button>
             </MainContent>
           </Col>

@@ -530,6 +530,12 @@ export const StageContent = styledTS<{ odd?: boolean }>(styled.div)`
   }
 `;
 
+export const SettingsButtons = styledTS<{ odd?: boolean }>(styled.div)`
+  button {
+    margin-bottom: ${dimensions.unitSpacing}px;
+  }
+`;
+
 export const Drawer = styledTS<{ show: boolean }>(styled.div)`
   position: fixed;
   z-index: 100;
@@ -860,7 +866,7 @@ export const LogoSection = styledTS<{ color?: string }>(styled.div)`
   .syncMenu {
     display: flex;
     align-items: center;
-    margin-top: ${dimensions.unitSpacing}px;
+    margin: ${dimensions.unitSpacing}px 0 30px;
 
     > a {
       margin-right: 5px;
@@ -868,6 +874,8 @@ export const LogoSection = styledTS<{ color?: string }>(styled.div)`
 
     i {
       color: ${(props) => (props.color ? props.color : colors.colorSecondary)};
+      line-height: ${dimensions.coreSpacing + dimensions.unitSpacing}px;
+      padding-right: ${dimensions.unitSpacing}px;
     }
   }
 `;
