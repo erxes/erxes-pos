@@ -56,12 +56,12 @@ export default function OrderInfo({
       )}
 
       <div className="middle">
-        {order.cardAmount && (
+        {order.cardAmount ? (
           <div>
             <span>{__("Paid card amount")}</span>
             <b>{formatNumber(order.cardAmount || 0)}₮</b>
           </div>
-        )}
+        ) : null}
         {order.mobileAmount && (
           <div>
             <span>{__("Paid mobile amount")}</span>
@@ -81,7 +81,6 @@ export default function OrderInfo({
           </div>
         )}
       </div>
-
       <div>
         <span>
           <b>{__("Total amount")}</b>

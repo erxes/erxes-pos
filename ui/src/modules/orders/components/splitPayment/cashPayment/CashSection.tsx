@@ -1,12 +1,10 @@
-import React from 'react';
+import React from "react";
 
-import Button from 'modules/common/components/Button';
-import { __ } from 'modules/common/utils';
-import CashInput from './CashInput';
-import { FlexCenter } from 'modules/common/styles/main';
-import { IOrder, IPaymentInput } from 'modules/orders/types';
-import FormGroup from 'modules/common/components/form/Group';
-import { MarginTop } from 'modules/orders/styles';
+import Button from "modules/common/components/Button";
+import { __ } from "modules/common/utils";
+import CashInput from "./CashInput";
+import { IOrder, IPaymentInput } from "modules/orders/types";
+import { CardInputColumn } from "modules/orders/styles";
 
 type Props = {
   order: IOrder;
@@ -14,7 +12,8 @@ type Props = {
   cashAmount: number;
   // setState: (param: object) => void;
   setAmount: (num: number | string) => void;
-  addPayment: (params: IPaymentInput) => void;
+  addPayment: (params: IPaymentInput, callback?: () => void) => void;
+  onCallback: (type: string) => void;
 };
 
 export default class CashSection extends React.Component<Props> {
@@ -23,32 +22,31 @@ export default class CashSection extends React.Component<Props> {
     const { order, cashAmount, setAmount, addPayment } = this.props;
 
     const onClick = () => {
-      addPayment({ _id: order._id, cashAmount });
-    }
-    
+      addPayment({ _id: order._id, cashAmount }, () => {
+        setAmount(0);
+      });
+    };
+
     return (
       <>
-        <FlexCenter>
-          <FormGroup>
-            <CashInput
-              order={order}
-              setAmount={setAmount}
-              amount={cashAmount}
-              inputLabel={__('In Cash')}
-            />
-          </FormGroup>
+        <CardInputColumn>
+          <CashInput
+            order={order}
+            setAmount={setAmount}
+            amount={cashAmount}
+            inputLabel={__("In Cash")}
+          />
           {cashAmount ? (
-            <MarginTop margin={20}>
-              <Button
-                size="small"
-                btnStyle="warning"
-                onClick={onClick}
-              >
-                {__('Pay bill')}
-              </Button>
-            </MarginTop>
-            ) : null}
-        </FlexCenter>
+            <Button
+              size="small"
+              btnStyle="warning"
+              onClick={onClick}
+              block={true}
+            >
+              {__("Pay bill")}
+            </Button>
+          ) : null}
+        </CardInputColumn>
       </>
     );
   }

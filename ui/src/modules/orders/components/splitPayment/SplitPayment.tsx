@@ -38,7 +38,7 @@ const TabContentWrapper = styled.div`
 
 type Props = {
   order: IOrder;
-  addPayment: (params: IPaymentInput) => void;
+  addPayment: (params: IPaymentInput, callback?: () => void) => void;
   createQPayInvoice: (params: IInvoiceParams) => void;
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
@@ -100,6 +100,11 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     return order.totalAmount - sumCashAmount - sumCardAmount - sumMobileAmount;
   }
+
+  onBoxClick = (activeInput) => {
+    console.log("here", activeInput);
+    this.setState({ activeInput });
+  };
 
   checkOrganization() {
     apolloClient
@@ -231,6 +236,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           remainder={remainder || 0}
           setAmount={setAmount}
           addPayment={addPayment}
+          onCallback={this.onBoxClick}
         />
       );
     }
@@ -267,10 +273,6 @@ export default class SplitPayment extends React.Component<Props, State> {
   renderPaymentType(type: string, img: string) {
     const { activeInput } = this.state;
 
-    const onClick = () => {
-      this.setState({ activeInput: type });
-    };
-
     const renderImgOrInput = () => {
       if (activeInput !== type) {
         return <img src={`/images/${img}`} alt={`payment-${type}`} />;
@@ -282,7 +284,7 @@ export default class SplitPayment extends React.Component<Props, State> {
     return (
       <Card
         className={activeInput === type ? "activeCard" : ""}
-        onClick={onClick}
+        onClick={() => this.onBoxClick(type)}
         isPortrait={this.props.isPortrait}
       >
         <div>{renderImgOrInput()}</div>

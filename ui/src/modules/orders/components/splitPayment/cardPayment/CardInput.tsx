@@ -1,15 +1,15 @@
-import 'abortcontroller-polyfill/dist/polyfill-patch-fetch';
-import React from 'react';
-import NumberFormat from 'react-number-format';
-import styled from 'styled-components';
+import "abortcontroller-polyfill/dist/polyfill-patch-fetch";
+import React from "react";
+import NumberFormat from "react-number-format";
+import styled from "styled-components";
 
-import Button from 'modules/common/components/Button';
-import Icon from 'modules/common/components/Icon';
-import FormGroup from 'modules/common/components/form/Group';
-import ControlLabel from 'modules/common/components/form/Label';
-import { __, Alert } from 'modules/common/utils';
-import { CardInputColumn, Input } from 'modules/orders/styles';
-import { IOrder, IPaymentInput } from 'modules/orders/types';
+import Button from "modules/common/components/Button";
+import Icon from "modules/common/components/Icon";
+import FormGroup from "modules/common/components/form/Group";
+import ControlLabel from "modules/common/components/form/Label";
+import { __, Alert } from "modules/common/utils";
+import { CardInputColumn, Input } from "modules/orders/styles";
+import { IOrder, IPaymentInput } from "modules/orders/types";
 
 const ButtonWrapper = styled.div`
   margin-bottom: 20px;
@@ -18,7 +18,7 @@ const ButtonWrapper = styled.div`
 type Props = {
   color?: string;
   billType: string;
-  addPayment: (params: IPaymentInput) => void;
+  addPayment: (params: IPaymentInput, callback?: () => void) => void;
   order: IOrder;
   maxAmount: number | undefined;
   cardAmount: number;
@@ -42,13 +42,13 @@ export default class CardInput extends React.Component<Props, State> {
 
   render() {
     const {
-      color = '',
+      color = "",
       addPayment,
       order,
       maxAmount = 0,
       setAmount,
       cardAmount,
-      billType
+      billType,
     } = this.props;
 
     const { _id, number } = order;
@@ -60,8 +60,8 @@ export default class CardInput extends React.Component<Props, State> {
     const inputProps: any = {
       allowNegative: false,
       thousandSeparator: true,
-      prefix: '₮',
-      inputMode: 'numeric'
+      prefix: "₮",
+      inputMode: "numeric",
     };
 
     const handleInput = (value: number | undefined = 0) => {
@@ -75,36 +75,36 @@ export default class CardInput extends React.Component<Props, State> {
       setAmount(0);
     };
 
-    const PATH = 'http://localhost:27028';
+    const PATH = "http://localhost:27028";
 
     const sendTransaction = async () => {
       fetch(`${PATH}/ajax/get-status-info`)
-        .then(res => res.json())
+        .then((res) => res.json())
         .then((res: any) => {
-          if (res && res.status_code === 'ok') {
+          if (res && res.status_code === "ok") {
             // send transaction upon successful connection
             fetch(PATH, {
-              method: 'POST',
+              method: "POST",
               headers: {
-                'Content-Type': 'application/json'
+                "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                service_name: 'doSaleTransaction',
+                service_name: "doSaleTransaction",
                 service_params: {
                   // special character _ is not accepted
-                  db_ref_no: number.replace('_', ''),
+                  db_ref_no: number.replace("_", ""),
                   amount: cardAmount.toString(),
-                  vatps_bill_type: billType
-                }
-              })
+                  vatps_bill_type: billType,
+                },
+              }),
             })
-              .then(res => res.json())
-              .then(r => {
+              .then((res) => res.json())
+              .then((r) => {
                 if (r && r.status === true && r.response) {
-                  if (r.response.response_code === '000') {
+                  if (r.response.response_code === "000") {
                     Alert.success(
                       __(
-                        r.response.response_msg || 'Transaction was successful'
+                        r.response.response_msg || "Transaction was successful"
                       )
                     );
 
@@ -114,12 +114,12 @@ export default class CardInput extends React.Component<Props, State> {
                   }
                 }
               })
-              .catch(e => {
+              .catch((e) => {
                 Alert.error(e.message);
               });
           }
         })
-        .catch(e => {
+        .catch((e) => {
           Alert.error(
             `${e.message}: Databank-н төлбөрийн програмтай холбогдсонгүй`
           );
@@ -127,15 +127,15 @@ export default class CardInput extends React.Component<Props, State> {
     };
 
     return (
-      <React.Fragment>
+      <>
         <CardInputColumn>
           <FormGroup>
-            <ControlLabel>{__('By Card')}</ControlLabel>
+            <ControlLabel>{__("By Card")}</ControlLabel>
             <Input color={color}>
               <NumberFormat
                 name="cardAmount"
                 value={cardAmount || 0}
-                onValueChange={values => handleInput(values.floatValue)}
+                onValueChange={(values) => handleInput(values.floatValue)}
                 {...inputProps}
               />
               <div onClick={resetInput}>
@@ -145,16 +145,13 @@ export default class CardInput extends React.Component<Props, State> {
           </FormGroup>
           <ButtonWrapper>
             {cardAmount ? (
-              <Button
-                btnStyle="warning"
-                onClick={sendTransaction}
-              >
-                {__('Send transaction')}
+              <Button btnStyle="warning" onClick={sendTransaction}>
+                {__("Send transaction")}
               </Button>
             ) : null}
           </ButtonWrapper>
         </CardInputColumn>
-      </React.Fragment>
+      </>
     );
   } // end render()
 }

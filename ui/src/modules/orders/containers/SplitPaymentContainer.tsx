@@ -44,9 +44,13 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       onOrdersChange,
     } = this.props;
 
-    const addPayment = (params: IPaymentInput) => {
+    const addPayment = (params: IPaymentInput, callback) => {
       addPaymentMutation({ variables: params })
-        .then(() => {})
+        .then(() => {
+          if (callback) {
+            callback();
+          }
+        })
         .catch((e) => {
           Alert.error(__(trimGraphqlError(e.message)));
         });

@@ -1,5 +1,6 @@
 import styledTS from "styled-components-ts";
 import styled from "styled-components";
+import { colors, dimensions } from "modules/common/styles";
 
 export const TypeWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
 margin-top: ${(props) => (props.isPortrait ? "50px" : "20px")};
@@ -42,14 +43,15 @@ p {
 }
 
 .activeCard {
-  border: 1px solid #FF7800;
+  border: 1px solid ${(props) =>
+    props.color ? props.color : colors.colorSecondary};
 }
 `;
 
 export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  border: 1px solid #ddd;
+  border: 1px solid ${colors.borderPrimary};
   border-radius: 16px;
-  padding: 40px 40px 30px;
+  padding: ${dimensions.coreSpacing}px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -62,31 +64,25 @@ export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
   transition: all ease 0.3s;
 
   > div {
-    height: 150px;
+    display: flex;
     align-items: center;
     justify-content: center;
+
     > img {
-      max-height: ${(props) => (props.isPortrait ? "250px" : "150px")};
-      max-width: ${(props) => (props.isPortrait ? "250px" : "150px")};
-      margin-bottom: 30px;
+      max-height: ${(props) => (props.isPortrait ? "250px" : "120px")};
+      max-width: ${(props) => (props.isPortrait ? "250px" : "120px")};
+
       @media (max-width: 1250px) and (orientation:landscape) {
         max-height: 80px;
         max-width: 80px;
         margin-bottom: 20px;
       }
     }
+
     @media (max-width: 1250px) and (orientation:landscape) {
       height: 80px;
     }
   }
-
-  // span {
-  //   position: absolute;
-  //   margin-top: -40px;
-  //   display: flex;
-  //   flex-direction: row;
-  //   align-items: center;
-  // }
 
   &:hover {
     box-shadow: 0 6px 10px 1px rgba(136, 136, 136, 0.08);
