@@ -3,7 +3,6 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Modal from "react-bootstrap/Modal";
 import { NavLink } from "react-router-dom";
-
 import NameCard from "modules/common/components/nameCard/NameCard";
 import AsyncComponent from "modules/common/components/AsyncComponent";
 import { ICustomerParams, IOrder, IOrderItemInput } from "../types";
@@ -412,6 +411,7 @@ export default class Pos extends React.Component<Props, State> {
             <SplitPaymentContainer
               order={order}
               onOrdersChange={this.onOrdersChange}
+              onChangeProductBodyType={this.onChangeProductBodyType}
             />
           );
         }

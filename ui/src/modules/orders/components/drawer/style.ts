@@ -75,12 +75,7 @@ export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
       @media (max-width: 1250px) and (orientation:landscape) {
         max-height: 80px;
         max-width: 80px;
-        margin-bottom: 20px;
       }
-    }
-
-    @media (max-width: 1250px) and (orientation:landscape) {
-      height: 80px;
     }
   }
 
@@ -90,9 +85,5 @@ export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
 
   &:nth-child(3) {
     margin-right: 0;
-  }
-
-  @media (max-width: 1250px) and (orientation:landscape) {
-    padding: 15px;
   }
 `;

@@ -1,15 +1,15 @@
-import React from 'react';
-import Col from 'react-bootstrap/Col';
-import Row from 'react-bootstrap/Row';
-import { IUser } from 'modules/auth/types';
-import { PosWrapper, MainContent } from '../../orders/styles';
-import { IConfig } from 'types';
-import { __ } from 'modules/common/utils';
-import { IOrder, FullOrderQueryResponse } from '../../orders/types';
-import Table from 'modules/common/components/table';
-import { FlexEnd, ScreenWrapper } from '../styles';
-import Button from 'modules/common/components/Button';
-import OrderDetail from './OrderDetail';
+import React from "react";
+import Col from "react-bootstrap/Col";
+import Row from "react-bootstrap/Row";
+import { IUser } from "modules/auth/types";
+import { PosWrapper, MainContent } from "../../orders/styles";
+import { IConfig } from "types";
+import { __ } from "modules/common/utils";
+import { IOrder, FullOrderQueryResponse } from "../../orders/types";
+import Table from "modules/common/components/table";
+import { FlexEnd, ScreenWrapper } from "../styles";
+import Button from "modules/common/components/Button";
+import OrderDetail from "./OrderDetail";
 
 type Props = {
   editOrder: (doc) => void;
@@ -26,8 +26,8 @@ export default class Screen extends React.Component<Props> {
   }
 
   renderDoneOrders(order: IOrder) {
-    const onClickUndo = e => {
-      this.props.editOrder({ _id: order._id, status: 'doing' });
+    const onClickUndo = (e) => {
+      this.props.editOrder({ _id: order._id, status: "doing" });
     };
 
     return (
@@ -37,14 +37,13 @@ export default class Screen extends React.Component<Props> {
         size="large"
         icon="arrow-from-top"
       >
-        {order.number.split('_')[1]}
+        {order.number.split("_")[1]}
       </Button>
     );
   }
 
   render() {
     const { orders, doneOrders, currentConfig } = this.props;
-    console.log('window.innerWidth', window.innerWidth);
 
     return (
       <MainContent hasBackground={true}>
@@ -65,15 +64,15 @@ export default class Screen extends React.Component<Props> {
                 <Table>
                   <thead>
                     <tr>
-                      <th>{__('Number')}</th>
-                      <th>{__('Order')}</th>
-                      <th>{__('Time')}</th>
-                      <th>{__('Type')}</th>
-                      <th>{__('Actions')}</th>
+                      <th>{__("Number")}</th>
+                      <th>{__("Order")}</th>
+                      <th>{__("Time")}</th>
+                      <th>{__("Type")}</th>
+                      <th>{__("Actions")}</th>
                     </tr>
                   </thead>
                   <tbody id="products">
-                    {orders.map(order => this.renderOrder(order))}
+                    {orders.map((order) => this.renderOrder(order))}
                   </tbody>
                 </Table>
               </ScreenWrapper>

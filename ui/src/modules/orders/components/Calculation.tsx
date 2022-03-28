@@ -386,7 +386,7 @@ export default class Calculation extends React.Component<Props, State> {
       >
         {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
         {this.renderSplitPaymentButton()}
-        {this.renderReceiptButton()}
+        {/* {this.renderReceiptButton()} */}
       </ButtonWrapper>
     );
   }

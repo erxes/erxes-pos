@@ -21,6 +21,7 @@ import {
 type Props = {
   order: IOrder;
   onOrdersChange: (orderProps) => void;
+  onChangeProductBodyType: (type: string) => void;
 };
 
 type FinalProps = {
@@ -41,6 +42,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       cancelInvoiceMutation,
       makePaymentMutation,
       order,
+      onChangeProductBodyType,
       onOrdersChange,
     } = this.props;
 
@@ -120,6 +122,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
         checkQPayInvoice={checkQPayInvoice}
         cancelQPayInvoice={cancelInvoice}
         makePayment={makePayment}
+        onChangeProductBodyType={onChangeProductBodyType}
       />
     );
   }

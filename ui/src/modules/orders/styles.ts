@@ -361,6 +361,7 @@ export const Item = styledTS<{
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
+    margin-right: 5px;
 
     > img {
       max-width: 100%;
@@ -368,9 +369,8 @@ export const Item = styledTS<{
     }
 
     @media (max-width: 1200px) and (orientation:landscape) {
-      width: 80px;
-      height: 100px;
-      min-width: 50px;
+      width: 60px;
+      max-height: 80px;
     }
   }
 
