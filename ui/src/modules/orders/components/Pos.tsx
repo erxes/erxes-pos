@@ -72,6 +72,7 @@ type State = {
   productBodyType: string;
   customerId: string;
   registerNumber: string;
+  orderProps: any;
   // paymentType: string;
 };
 
@@ -100,6 +101,7 @@ export default class Pos extends React.Component<Props, State> {
       modalContentType: "",
       customerId: order && order.customerId ? order.customerId : "",
       registerNumber: "",
+      orderProps: {},
     };
   }
 
@@ -225,6 +227,10 @@ export default class Pos extends React.Component<Props, State> {
 
   onChangeProductBodyType = (productBodyType: string) => {
     this.setState({ productBodyType });
+  };
+
+  onOrdersChange = (orderProps) => {
+    this.setState({ orderProps });
   };
 
   renderOrderSearch() {
@@ -395,14 +401,19 @@ export default class Pos extends React.Component<Props, State> {
   renderMainContent() {
     const { addCustomer, order } = this.props;
     const { productBodyType } = this.state;
-    console.log(productBodyType);
+
     switch (productBodyType) {
       case "product": {
         return this.renderProduct();
       }
       case "payment": {
         if (order) {
-          return <SplitPaymentContainer order={order} />;
+          return (
+            <SplitPaymentContainer
+              order={order}
+              onOrdersChange={this.onOrdersChange}
+            />
+          );
         }
 
         return null;
@@ -558,6 +569,7 @@ export default class Pos extends React.Component<Props, State> {
                   productBodyType={this.state.productBodyType}
                   config={currentConfig}
                   order={order}
+                  orderProps={this.state.orderProps}
                   type={type}
                 />
               </MainContent>

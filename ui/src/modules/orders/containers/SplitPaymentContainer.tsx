@@ -1,25 +1,26 @@
-import { graphql } from 'react-apollo';
-import { withRouter } from 'react-router-dom';
-import gql from 'graphql-tag';
-import * as compose from 'lodash.flowright';
-import React from 'react';
+import { graphql } from "react-apollo";
+import { withRouter } from "react-router-dom";
+import gql from "graphql-tag";
+import * as compose from "lodash.flowright";
+import React from "react";
 
-import withCurrentUser from 'modules/auth/containers/withCurrentUser';
-import { IRouterProps } from '../../../types';
-import { withProps, trimGraphqlError } from '../../utils';
-import { Alert, __ } from 'modules/common/utils';
-import { queries, mutations } from '../graphql/index';
-import SplitPayment from '../components/splitPayment/SplitPayment';
+import withCurrentUser from "modules/auth/containers/withCurrentUser";
+import { IRouterProps } from "../../../types";
+import { withProps, trimGraphqlError } from "../../utils";
+import { Alert, __ } from "modules/common/utils";
+import { queries, mutations } from "../graphql/index";
+import SplitPayment from "../components/splitPayment/SplitPayment";
 import {
   IPaymentInput,
   IInvoiceParams,
   IInvoiceCheckParams,
   IPaymentParams,
-  IOrder
-} from '../types';
+  IOrder,
+} from "../types";
 
 type Props = {
   order: IOrder;
+  onOrdersChange: (orderProps) => void;
 };
 
 type FinalProps = {
@@ -39,32 +40,30 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       checkInvoiceMutation,
       cancelInvoiceMutation,
       makePaymentMutation,
-      order
+      order,
+      onOrdersChange,
     } = this.props;
 
     const addPayment = (params: IPaymentInput) => {
       addPaymentMutation({ variables: params })
-        .then(() => {
-        })
-        .catch(e => {
+        .then(() => {})
+        .catch((e) => {
           Alert.error(__(trimGraphqlError(e.message)));
         });
     };
 
     const createQPayInvoice = (params: IInvoiceParams) => {
       createInvoiceMutation({ variables: params })
-        .then(() => {
-        })
-        .catch(e => {
+        .then(() => {})
+        .catch((e) => {
           Alert.error(__(trimGraphqlError(e.message)));
         });
     };
 
     const checkQPayInvoice = (params: IInvoiceCheckParams) => {
       checkInvoiceMutation({ variables: params })
-        .then(() => {
-        })
-        .catch(e => {
+        .then(() => {})
+        .catch((e) => {
           Alert.error(__(trimGraphqlError(e.message)));
         });
     };
@@ -72,9 +71,9 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
     const cancelInvoice = (_id: string) => {
       cancelInvoiceMutation({ variables: { _id } })
         .then(() => {
-          Alert.success(__('Success'));
+          Alert.success(__("Success"));
         })
-        .catch(e => {
+        .catch((e) => {
           Alert.error(__(trimGraphqlError(e.message)));
         });
     };
@@ -85,8 +84,8 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
           if (data.ordersMakePayment) {
             const resp = data.ordersMakePayment;
 
-            if (resp.success === 'true') {
-              return Alert.success(__('Payment successful'));
+            if (resp.success === "true") {
+              return Alert.success(__("Payment successful"));
             }
             if (resp.message) {
               return Alert.warning(resp.message);
@@ -100,10 +99,10 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
           }
         })
         .then(() => {
-          window.open(`/order-receipt/${_id}`, '_blank');
-          window.location.href = '/pos';
+          window.open(`/order-receipt/${_id}`, "_blank");
+          window.location.href = "/pos";
         })
-        .catch(e => {
+        .catch((e) => {
           Alert.error(__(trimGraphqlError(e.message)));
         });
     };
@@ -111,6 +110,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
     return (
       <SplitPayment
         order={order}
+        onOrdersChange={onOrdersChange}
         addPayment={addPayment}
         createQPayInvoice={createQPayInvoice}
         checkQPayInvoice={checkQPayInvoice}
@@ -121,46 +121,46 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
   }
 }
 
-const getRefetchQueries = _id => {
+const getRefetchQueries = (_id) => {
   return [
     {
       query: gql(queries.orderDetail),
-      variables: { _id }
-    }
+      variables: { _id },
+    },
   ];
 };
 
 export default withProps<Props>(
   compose(
     graphql<Props>(gql(mutations.ordersAddPayment), {
-      name: 'addPaymentMutation',
+      name: "addPaymentMutation",
       options: ({ order }) => ({
-        refetchQueries: getRefetchQueries(order._id)
-      })
+        refetchQueries: getRefetchQueries(order._id),
+      }),
     }),
     graphql<Props>(gql(mutations.createQpaySimpleInvoice), {
-      name: 'createInvoiceMutation',
+      name: "createInvoiceMutation",
       options: ({ order }) => ({
-        refetchQueries: getRefetchQueries(order._id)
-      })
+        refetchQueries: getRefetchQueries(order._id),
+      }),
     }),
     graphql<Props>(gql(mutations.qpayCheckPayment), {
-      name: 'checkInvoiceMutation',
+      name: "checkInvoiceMutation",
       options: ({ order }) => ({
-        refetchQueries: getRefetchQueries(order._id)
-      })
+        refetchQueries: getRefetchQueries(order._id),
+      }),
     }),
     graphql<Props>(gql(mutations.qpayCancelInvoice), {
-      name: 'cancelInvoiceMutation',
+      name: "cancelInvoiceMutation",
       options: ({ order }) => ({
-        refetchQueries: getRefetchQueries(order._id)
-      })
+        refetchQueries: getRefetchQueries(order._id),
+      }),
     }),
     graphql<Props>(gql(mutations.ordersMakePayment), {
-      name: 'makePaymentMutation',
+      name: "makePaymentMutation",
       options: ({ order }) => ({
-        refetchQueries: getRefetchQueries(order._id)
-      })
+        refetchQueries: getRefetchQueries(order._id),
+      }),
     })
   )(withCurrentUser(withRouter<FinalProps>(SplitPaymentContainer)))
 );

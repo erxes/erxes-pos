@@ -1,64 +1,95 @@
-import React from 'react';
+import React from "react";
 
-import { IOrder } from 'modules/orders/types';
-import { __ } from 'modules/common/utils';
-import { Amount } from 'modules/orders/styles';
+import { IOrder } from "modules/orders/types";
+import { __ } from "modules/common/utils";
+import { PaymentInfo } from "modules/orders/styles";
+import { formatNumber } from "modules/utils";
 
 type Props = {
-  order: IOrder;
+  order: IOrder | null;
   remainderAmount: number;
   companyName: string;
   registerNumber: string;
+  color?: string;
 };
 
 export default function OrderInfo({
   order,
   remainderAmount,
   companyName,
-  registerNumber
+  registerNumber,
+  color,
 }: Props) {
+  if (!order) {
+    return null;
+  }
+
   return (
-    <Amount>
-      <div className="amount-wrapper">
-        <ul className="a">
-          <li>
-            {__('Payment info')}: №:{' '}
-            {order && order.number ? order.number.split('_')[1] : ''}
-          </li>
-          {companyName && <li>{__('Entity name')}: <b>{companyName}</b></li>}
-          {registerNumber && <li>{__('Register number')}: <b>{registerNumber}</b></li>}
-          {order.cardAmount ? (
-            <li>
-              {__('Paid card amount')}:{' '}
-              <b>{order.cardAmount}₮</b>
-            </li>
-          ) : null}
-          {
-            order.mobileAmount ? (
-              <li>
-                {__('Paid mobile amount')}: <b>{order.mobileAmount}₮</b>
-              </li>
-            ) : null
-          }
-
-          {order.cashAmount ? (
-            <li>
-              {__('Paid cash amount')}: <b>{order.cashAmount}₮</b>
-            </li>
-          ) : ''}
-
-          {remainderAmount > 0 && (
-            <li>
-              {__('Remainder amount')}: <b>{remainderAmount}₮</b>
-            </li>
-          )}
-
-          <li>
-            {__('Total amount')}:
-            <b>{order.totalAmount || 0}₮</b>
-          </li>
-        </ul>
+    <PaymentInfo color={color}>
+      <div>
+        <span>
+          <b>{__("Payment info")}</b>
+        </span>
+        <span>
+          <b>№: {order && order.number ? order.number.split("_")[1] : ""}</b>
+        </span>
       </div>
-    </Amount>
+      {companyName && (
+        <div>
+          <span>
+            <b>{__("Entity name")}</b>
+          </span>
+          <span>
+            <b>{companyName}</b>
+          </span>
+        </div>
+      )}
+      {registerNumber && (
+        <div>
+          <span>
+            <b>{__("Register number")}</b>
+          </span>
+          <span>
+            <b>{registerNumber}</b>
+          </span>
+        </div>
+      )}
+
+      <div className="middle">
+        {order.cardAmount && (
+          <div>
+            <span>{__("Paid card amount")}</span>
+            <b>{formatNumber(order.cardAmount || 0)}₮</b>
+          </div>
+        )}
+        {order.mobileAmount && (
+          <div>
+            <span>{__("Paid mobile amount")}</span>
+            <b>{formatNumber(order.mobileAmount || 0)}₮</b>
+          </div>
+        )}
+        {order.cashAmount && (
+          <div>
+            <span>{__("Paid cash amount")}</span>
+            <b>{formatNumber(order.cashAmount || 0)}₮</b>
+          </div>
+        )}
+        {remainderAmount > 0 && (
+          <div>
+            <span>{__("Remainder amount")}</span>
+            <b>{formatNumber(remainderAmount || 0)}₮</b>
+          </div>
+        )}
+      </div>
+
+      <div>
+        <span>
+          <b>{__("Total amount")}</b>
+        </span>
+        <span>
+          <b>{formatNumber(order.totalAmount || 0)}₮</b>
+        </span>
+      </div>
+    </PaymentInfo>
   );
 }

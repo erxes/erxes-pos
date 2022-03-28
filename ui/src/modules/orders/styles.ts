@@ -902,6 +902,7 @@ export const PaymentInfo = styledTS<{ color?: string }>(styled.div)`
 
   .middle {
     margin: ${dimensions.unitSpacing}px 0;
+    flex-direction: column;
   }
 
   > div, .middle > div {

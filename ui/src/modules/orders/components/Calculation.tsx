@@ -16,12 +16,13 @@ import {
   Amount,
   CalculationHeader,
   Divider,
-  PaymentInfo,
+  // PaymentInfo,
   ProductLabel,
   Types,
 } from "../styles";
 import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from "../../../constants";
 import ModalTrigger from "modules/common/components/ModalTrigger";
+import OrderInfo from "./splitPayment/OrderInfo";
 
 const Wrapper = styledTS<{ color?: string; showPayment?: boolean }>(styled.div)`
   padding: 0 10px 0 10px;
@@ -114,6 +115,7 @@ type Props = {
   order: IOrder | null;
   type: string;
   productBodyType?: any;
+  orderProps?: any;
 };
 
 type State = {
@@ -343,36 +345,17 @@ export default class Calculation extends React.Component<Props, State> {
   renderAmount(text: string, amount: number, color?: string) {
     const prop = { color };
 
-    const { order, productBodyType } = this.props;
+    const { order, productBodyType, orderProps } = this.props;
 
     if (productBodyType === "payment") {
       return (
-        <PaymentInfo {...prop}>
-          <div>
-            <span>
-              <b>{__("Payment info")}</b>
-            </span>
-            <span>
-              <b>
-                №: {order && order.number ? order.number.split("_")[1] : ""}
-              </b>
-            </span>
-          </div>
-          <div className="middle">
-            <div>
-              <span>Картаар төлсөн дүн</span>
-              {formatNumber(amount || 0)}₮
-            </div>
-          </div>
-          <div>
-            <span>
-              <b>{text}</b>
-            </span>
-            <span>
-              <b>{formatNumber(amount || 0)}₮</b>
-            </span>
-          </div>
-        </PaymentInfo>
+        <OrderInfo
+          order={order}
+          remainderAmount={orderProps ? orderProps.remainder : 0}
+          companyName={orderProps ? orderProps.companyName : 0}
+          registerNumber={orderProps ? orderProps.registerNumber : 0}
+          color={prop.color}
+        />
       );
     }
 

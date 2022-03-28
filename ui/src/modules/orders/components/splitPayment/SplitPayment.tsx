@@ -20,7 +20,6 @@ import EntitySelector from "../drawer/EntitySelector";
 import { Card, Cards, TypeWrapper } from "../drawer/style";
 import KeyPads from "../drawer/KeyPads";
 import EntityChecker from "./EntityChecker";
-import OrderInfo from "./OrderInfo";
 import CashSection from "./cashPayment/CashSection";
 
 const DASHED_BORDER = "1px dashed #ddd";
@@ -44,6 +43,7 @@ type Props = {
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
   makePayment: (_id: string, params: IPaymentParams) => void;
+  onOrdersChange: (props) => void;
   isPortrait?: boolean;
 };
 
@@ -291,19 +291,12 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   render() {
-    const { isPortrait, order } = this.props;
-    const { billType, mode, remainder, companyName, registerNumber } =
-      this.state;
+    const { isPortrait } = this.props;
+    const { billType, mode, remainder } = this.state;
 
     return (
       <PaymentWrapper>
         <TypeWrapper isPortrait={isPortrait}>
-          <OrderInfo
-            order={order}
-            remainderAmount={remainder}
-            companyName={companyName}
-            registerNumber={registerNumber}
-          />
           {remainder > 0 ? (
             <React.Fragment>
               <h4>{__("Choose the payment method")}</h4>
@@ -335,11 +328,20 @@ export default class SplitPayment extends React.Component<Props, State> {
   } // end render()
 
   componentDidUpdate(_prevProps: Props, prevState: State) {
-    const { order } = this.props;
+    const { order, onOrdersChange } = this.props;
     const remainder = this.getRemainderAmount(order);
+    const { companyName, registerNumber } = this.state;
 
     if (prevState.remainder !== remainder) {
       this.setState({ remainder });
+    }
+
+    if (
+      prevState.remainder !== remainder ||
+      prevState.companyName !== companyName ||
+      prevState.registerNumber !== registerNumber
+    ) {
+      onOrdersChange({ companyName, registerNumber, remainder });
     }
   }
 }
