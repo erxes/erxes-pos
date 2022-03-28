@@ -270,7 +270,7 @@ export const ProductCategory = styledTS<{
       margin-bottom: 30px;
       background: ${(props) =>
         props.isActive &&
-        rgba(props.color ? props.color : colors.colorSecondary, 0.1)};
+        rgba(props.color ? props.color : colors.colorSecondary, 0.15)};
 
       > div {
         img {
@@ -373,6 +373,7 @@ export const LeftCircle = styledTS<{ isActive?: boolean; color?: string }>(
 export const Item = styledTS<{
   isPortrait: boolean;
   isActive?: boolean;
+  isKiosk?: boolean;
   color?: string;
 }>(styled.div)`
   box-shadow: ${(props) =>
@@ -386,6 +387,7 @@ export const Item = styledTS<{
   padding: ${dimensions.unitSpacing}px;
   height: 100%;
   position: relative;
+  overflow: hidden;
   transition: all ease 0.3s;
 
   .image-wrapper {
@@ -401,6 +403,14 @@ export const Item = styledTS<{
       max-width: 100%;
       max-height: 100%;
     }
+
+    ${(props) =>
+      props.isKiosk &&
+      css`
+        width: 70%;
+        margin: 0 auto;
+        height: 170px;
+      `}
 
     @media (max-width: 1200px) and (orientation:landscape) {
       width: 60px;
@@ -445,17 +455,15 @@ export const Item = styledTS<{
   .text-kiosk {
     background: #F3F3F3;
     border-radius: 8px;
-    height: 100px;
     text-align: center;
-    align-items: center;
-    display: grid;
+    position: relative;
+    padding: ${dimensions.unitSpacing}px;
+    height: calc(100% - 170px);
 
     h4 {
-      font-size: '16px';
+      font-size: 24px;
       letter-spacing: 0.15px;
-      line-height: 25px;
-      margin-top: 0;
-      margin-bottom: 5px;
+      margin: 0 0 20px 0;
       font-weight: bold;
       color: ${(props) =>
         props.isPortrait && props.isActive ? "#1F2933" : "#616E7C;"};
@@ -463,8 +471,12 @@ export const Item = styledTS<{
 
     span {
       color: ${(props) => (props.color ? props.color : colors.colorSecondary)};
-      font-size: 16px;
+      font-size: 24px;
       font-weight: bold;
+      position: absolute;
+      bottom: 5px;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 

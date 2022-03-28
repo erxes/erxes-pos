@@ -18,6 +18,8 @@ export default function ProductItem(props: Props) {
   const { attachment, name, unitPrice } = product;
 
   const attachmentUrl = attachment && attachment.url ? attachment.url : "";
+  const mode = localStorage.getItem("erxesPosMode");
+  const isKiosk = mode === "kiosk";
 
   const color =
     currentConfig &&
@@ -42,6 +44,7 @@ export default function ProductItem(props: Props) {
         onClick={onClick}
         isPortrait={orientation === "portrait"}
         isActive={isActive}
+        isKiosk={isKiosk}
         color={color}
       >
         <div className="image-wrapper">
@@ -50,9 +53,7 @@ export default function ProductItem(props: Props) {
             alt={name}
           />
         </div>
-        <div
-          className={orientation === "portrait" ? "text-kiosk" : "text-wrapper"}
-        >
+        <div className={mode === "kiosk" ? "text-kiosk" : "text-wrapper"}>
           <h4>{name}</h4>
           <span>{formatNumber(unitPrice || 0)}₮</span>
         </div>
