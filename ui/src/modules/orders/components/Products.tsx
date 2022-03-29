@@ -40,7 +40,9 @@ export default class Products extends React.Component<Props, State> {
     const { items, setItems } = this.props;
 
     const currentItems = items.slice();
-    const foundItem = currentItems.find((i) => i.productId === item._id);
+    const foundItem = currentItems.find(
+      (i) => i.productId === item._id && !i.isTake
+    );
 
     if (foundItem) {
       foundItem.count += count;

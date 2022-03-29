@@ -167,7 +167,7 @@ export default class Pos extends React.Component<Props, State> {
   // set state field that doesn't need amount calculation
   setOrderState = (name: string, value: any) => {
     this.setState({ [name]: value } as Pick<State, keyof State>);
-    console.log(name, value, "kkkkkkk");
+
     if (name === "type") {
       const { items } = this.state;
       const isTake = value !== ORDER_TYPES.EAT;
@@ -479,7 +479,7 @@ export default class Pos extends React.Component<Props, State> {
 
     const { items, totalAmount, showMenu, type } = this.state;
     const mode = localStorage.getItem("erxesPosMode");
-
+    console.log("posss", items);
     const products = (
       <ProductsContainer
         setItems={this.setItems}
