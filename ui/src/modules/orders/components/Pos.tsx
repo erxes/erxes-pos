@@ -479,7 +479,7 @@ export default class Pos extends React.Component<Props, State> {
 
     const { items, totalAmount, showMenu, type } = this.state;
     const mode = localStorage.getItem("erxesPosMode");
-    console.log("posss", items);
+
     const products = (
       <ProductsContainer
         setItems={this.setItems}
