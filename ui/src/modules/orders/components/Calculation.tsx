@@ -254,6 +254,8 @@ export default class Calculation extends React.Component<Props, State> {
     }
 
     const { onChangeProductBodyType, config } = this.props;
+    const { customerLabel } = this.state;
+
     const color = config.uiOptions && config.uiOptions.colors.primary;
 
     const trigger = (
@@ -261,9 +263,11 @@ export default class Calculation extends React.Component<Props, State> {
         onClick={() => onChangeProductBodyType("orderSearch")}
         color={color}
       >
-        {__("Identify a customer")}
+        {customerLabel ? customerLabel : __("Identify a customer")}
       </ProductLabel>
     );
+
+    const content = (props) => this.renderCustomerChooser(props);
 
     return (
       <>
@@ -274,14 +278,18 @@ export default class Calculation extends React.Component<Props, State> {
           {__("Find orders")}
         </ProductLabel>
 
-        <ModalTrigger
-          title={__("Identify a customer")}
-          trigger={trigger}
-          hideHeader={true}
-          size="sm"
-          paddingContent="less-padding"
-          content={(props) => this.renderCustomerChooser(props)}
-        />
+        {customerLabel ? (
+          trigger
+        ) : (
+          <ModalTrigger
+            title={__("Identify a customer")}
+            trigger={trigger}
+            hideHeader={true}
+            size="sm"
+            paddingContent="less-padding"
+            content={content}
+          />
+        )}
       </>
     );
   }
@@ -307,8 +315,9 @@ export default class Calculation extends React.Component<Props, State> {
             customerId: data._id,
           });
           setOrderState("customerId", data._id);
+          props.closeModal();
         })
-        .catch((error) => {});
+        .catch((error) => props.closeModal());
     };
 
     const onClearChosenCustomer = () => {

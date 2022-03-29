@@ -41,7 +41,7 @@ export const CalculationHeader = styled(FlexCustomer)`
     flex: 1;
 
     &:first-child {
-      margin-right: ${dimensions.unitSpacing}px;
+      margin-right: ${dimensions.unitSpacing + 2}px;
     }
   }
 `;
@@ -183,8 +183,7 @@ export const ProductsWrapper = styledTS<{
 
   /* width */
   ::-webkit-scrollbar {
-    width: ${(props) =>
-      props.innerWidth ? `${props.innerWidth * 0.02}px` : "10px"}
+    width: 15px;
   }
 
   /* Track */
@@ -204,8 +203,6 @@ export const ProductsWrapper = styledTS<{
     background: ${(props) =>
       props.color ? props.color : colors.colorSecondary};;
   }
-
-
 
   @media (orientation: portrait) {
     max-height: ${(props) =>
