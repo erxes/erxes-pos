@@ -920,6 +920,7 @@ export const LogoSection = styledTS<{ color?: string }>(styled.div)`
       color: ${(props) => (props.color ? props.color : colors.colorSecondary)};
       line-height: ${dimensions.coreSpacing + dimensions.unitSpacing}px;
       padding-right: ${dimensions.unitSpacing}px;
+      cursor: pointer;
     }
   }
 `;

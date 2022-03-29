@@ -102,5 +102,9 @@
   "Pay bill": "Pay bill",
   "Please pay the remaining amount": "Please pay the remaining amount",
   "Unpaid QPay amount": "Unpaid QPay amount",
-  "Paid QPay amount": "Paid QPay amount"
+  "Paid QPay amount": "Paid QPay amount",
+  "Logout": "Logout",
+  "Settings": "Settings",
+  "Show kitchen screen": "Show kitchen screen",
+  "Show waiting screen": "Show waiting screen"
 }

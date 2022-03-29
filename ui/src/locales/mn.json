@@ -101,5 +101,9 @@
   "Pay bill": "Төлөх",
   "Please pay the remaining amount": "Үлдэгдэл төлбөрөө төлнө үү",
   "Unpaid QPay amount": "Төлөгдөөгүй QPay дүн",
-  "Paid QPay amount": "Төлөгдсөн QPay дүн"
+  "Paid QPay amount": "Төлөгдсөн QPay дүн",
+  "Logout": "Гарах",
+  "Settings": "Тохиргоо",
+  "Show kitchen screen": "Гал тогооны дэлгэц харах",
+  "Show waiting screen": "Хүлээлгийн дэлгэц харах"
 }

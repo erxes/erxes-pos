@@ -299,7 +299,7 @@ export default class Pos extends React.Component<Props, State> {
 
     return (
       <NavLink to="/settings">
-        <Tip placement="top" key={Math.random()} text="Settings">
+        <Tip placement="top" key={Math.random()} text={__("Settings")}>
           <Icon icon={"settings"} size={18} />
         </Tip>
       </NavLink>
@@ -323,7 +323,11 @@ export default class Pos extends React.Component<Props, State> {
 
     return (
       <NavLink to="/kitchen-screen">
-        <Tip placement="top" key={Math.random()} text="Show kitchen screen">
+        <Tip
+          placement="top"
+          key={Math.random()}
+          text={__("Show kitchen screen")}
+        >
           <Icon icon={"desktop"} size={20} />
         </Tip>
       </NavLink>
@@ -347,7 +351,11 @@ export default class Pos extends React.Component<Props, State> {
 
     return (
       <NavLink to="/waiting-screen">
-        <Tip placement="top" key={Math.random()} text="Show waiting screen">
+        <Tip
+          placement="top"
+          key={Math.random()}
+          text={__("Show waiting screen")}
+        >
           <Icon icon={"wallclock"} size={17} />
         </Tip>
       </NavLink>
@@ -446,7 +454,7 @@ export default class Pos extends React.Component<Props, State> {
     }
   }
 
-  renderLogo() {
+  renderHeader() {
     const { currentConfig } = this.props;
     const data = currentConfig ? currentConfig.uiOptions : {};
 
@@ -459,7 +467,7 @@ export default class Pos extends React.Component<Props, State> {
           {this.renderSyncMenu()}
           {this.renderKitchenMenu()}
           {this.renderWaitingMenu()}
-          <Tip placement="top" key={Math.random()} text="Logout">
+          <Tip placement="top" key={Math.random()} text={__("Logout")}>
             <Icon icon={"logout-2"} size={17} onClick={this.props.logout} />
           </Tip>
         </div>
@@ -554,7 +562,7 @@ export default class Pos extends React.Component<Props, State> {
             <Col sm={3}>
               <MainContent numPadding={true}>
                 <PosMenuContent>
-                  {this.renderLogo()}
+                  {this.renderHeader()}
                   {categories}
                 </PosMenuContent>
               </MainContent>
