@@ -74,7 +74,8 @@ export default class CardInput extends React.Component<Props, State> {
     const PATH = "http://localhost:7000";
 
     const sendTransaction = async () => {
-      fetch(`${PATH}/ajax/get-status-info`)
+      // fetch(`${PATH}/ajax/get-status-info`)
+      fetch(`${PATH}`)
         // .then((res) => res.json())
         .then((res: any) => {
           // TODO remove code, fake data
