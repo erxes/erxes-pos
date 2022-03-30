@@ -94,6 +94,12 @@ const ordersAddPayment = `
   }
 `;
 
+const ordersCancel = `
+  mutation ordersCancel($_id: String!) {
+    ordersCancel(_id: $_id)
+  }
+`;
+
 export default {
   ordersAdd,
   ordersMakePayment,
@@ -103,5 +109,6 @@ export default {
   qpayCheckPayment,
   customersAdd,
   qpayCancelInvoice,
-  ordersAddPayment
+  ordersAddPayment,
+  ordersCancel
 };

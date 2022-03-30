@@ -106,5 +106,10 @@
   "Logout": "Logout",
   "Settings": "Settings",
   "Show kitchen screen": "Show kitchen screen",
-  "Show waiting screen": "Show waiting screen"
+  "Show waiting screen": "Show waiting screen",
+  "There are paid QPay invoices for this order": "There are paid QPay invoices for this order",
+  "Card payment exists for this order": "Card payment exists for this order",
+  "Order is already synced to erxes": "Order is already synced to erxes",
+  "All order items will be deleted": "All order items will be deleted",
+  "Order successfully cancelled": "Order successfully cancelled"
 }

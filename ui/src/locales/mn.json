@@ -105,5 +105,10 @@
   "Logout": "Гарах",
   "Settings": "Тохиргоо",
   "Show kitchen screen": "Гал тогооны дэлгэц харах",
-  "Show waiting screen": "Хүлээлгийн дэлгэц харах"
+  "Show waiting screen": "Хүлээлгийн дэлгэц харах",
+  "There are paid QPay invoices for this order": "Уг захиалганд төлбөр хийсэн QPay нэхэмжлэх байна",
+  "Card payment exists for this order": "Картаар гүйлгээ хийсэн байна",
+  "Order is already synced to erxes": "Захиалгыг эрхэс рүү илгээсэн байна",
+  "All order items will be deleted": "Захиалгын бүх зүйлс устах болно",
+  "Order successfully cancelled": "Захиалга амжилттай цуцлагдлаа"
 }

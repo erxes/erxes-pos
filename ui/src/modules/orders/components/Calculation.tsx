@@ -116,6 +116,7 @@ type Props = {
   type: string;
   productBodyType?: any;
   orderProps?: any;
+  cancelOrder: (id: string) => void;
 };
 
 type State = {
@@ -186,6 +187,7 @@ export default class Calculation extends React.Component<Props, State> {
       productBodyType,
       setItems,
       type,
+      cancelOrder
     } = this.props;
 
     if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
@@ -207,6 +209,10 @@ export default class Calculation extends React.Component<Props, State> {
     };
 
     const onCancelOrder = () => {
+      if (order) {
+        cancelOrder(order._id);
+      }
+
       setItems([]);
       onChangeProductBodyType("product");
     };

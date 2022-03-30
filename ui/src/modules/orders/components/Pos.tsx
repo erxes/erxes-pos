@@ -3,6 +3,7 @@ import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
 import Modal from "react-bootstrap/Modal";
 import { NavLink } from "react-router-dom";
+
 import NameCard from "modules/common/components/nameCard/NameCard";
 import AsyncComponent from "modules/common/components/AsyncComponent";
 import { ICustomerParams, IOrder, IOrderItemInput } from "../types";
@@ -26,10 +27,8 @@ import {
   LogoSection,
 } from "../styles";
 import { IConfig } from "types";
-// import PaymentForm from './drawer/PaymentForm';
 import CustomerForm from "./drawer/CustomerForm";
 import ProductSearch from "../containers/ProductSearch";
-// import { IPaymentParams } from '../containers/PosContainer';
 import PortraitView from "./kiosk";
 import { renderFullName } from "modules/common/utils";
 import Icon from "modules/common/components/Icon";
@@ -55,13 +54,13 @@ type Props = {
   order: IOrder | null;
   orientation: string;
   updateOrder: (params, callback?) => Promise<IOrder>;
-  // makePayment: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
   qp: any;
   logout?: () => void;
   type?: string;
+  cancelOrder: (id: string) => void;
 };
 
 type State = {
@@ -74,7 +73,6 @@ type State = {
   customerId: string;
   registerNumber: string;
   orderProps: any;
-  // paymentType: string;
 };
 
 const getTotalAmount = (items: IOrderItemInput[]) => {
@@ -483,6 +481,7 @@ export default class Pos extends React.Component<Props, State> {
       productCategoriesQuery,
       productsQuery,
       qp,
+      cancelOrder
     } = this.props;
 
     const { items, totalAmount, showMenu, type } = this.state;
@@ -590,6 +589,7 @@ export default class Pos extends React.Component<Props, State> {
                   order={order}
                   orderProps={this.state.orderProps}
                   type={type}
+                  cancelOrder={cancelOrder}
                 />
               </MainContent>
             </Col>

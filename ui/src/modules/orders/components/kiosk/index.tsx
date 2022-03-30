@@ -29,6 +29,7 @@ type Props = {
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
   qp: any;
+  cancelOrder: (id: string) => void;
 };
 
 type State = {

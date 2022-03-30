@@ -6,9 +6,9 @@ import React from "react";
 import * as compose from "lodash.flowright";
 
 import Spinner from "modules/common/components/Spinner";
-import { Alert, __, router } from "modules/common/utils";
+import { Alert, __, router, confirm } from "modules/common/utils";
 import { IRouterProps, IConfig } from "../../../types";
-import { withProps } from "../../utils";
+import { trimGraphqlError, withProps } from "../../utils";
 import { mutations, queries } from "../graphql/index";
 import Pos from "../components/Pos";
 import {
@@ -30,6 +30,7 @@ type Props = {
   productCategoriesQuery: any;
   productsQuery: any;
   customersAddMutation: any;
+  ordersCancelMutation: any;
 } & IRouterProps;
 
 export interface IPaymentParams {
@@ -47,6 +48,7 @@ class PosContainer extends React.Component<Props> {
       ordersEditMutation,
       customersAddMutation,
       orderDetailQuery,
+      ordersCancelMutation
     } = this.props;
 
     if (orderDetailQuery.loading) {
@@ -67,7 +69,7 @@ class PosContainer extends React.Component<Props> {
           window.location.href = "/";
         })
         .catch((error) => {
-          Alert.error(error.message);
+          Alert.error(__(trimGraphqlError(error.message)));
         });
     };
 
@@ -94,7 +96,7 @@ class PosContainer extends React.Component<Props> {
           }
         })
         .catch((e) => {
-          return Alert.error(__(e.message));
+          return Alert.error(__(trimGraphqlError(e.message)));
         });
     };
 
@@ -112,7 +114,7 @@ class PosContainer extends React.Component<Props> {
           }
         })
         .catch((e) => {
-          return Alert.error(__(e.message));
+          return Alert.error(__(trimGraphqlError(e.message)));
         });
     };
 
@@ -120,12 +122,23 @@ class PosContainer extends React.Component<Props> {
       customersAddMutation({ variables: params })
         .then(({ data }) => {
           if (data && data.customersAdd && data.customersAdd._id) {
-            Alert.success("Customer successfully created.");
+            Alert.success(__("Customer successfully created"));
           }
         })
         .catch((e) => {
-          Alert.error(__(e.message));
+          Alert.error(__(trimGraphqlError(e.message)));
         });
+    };
+
+    const cancelOrder = (_id: string) => {
+      confirm(`${__('All order items will be deleted')}. ${__('Are you sure')}?`).then(() => {
+        ordersCancelMutation({ variables: { _id } }).then(() => {
+          Alert.success('Order successfully cancelled');
+          window.location.href = "/";
+        }).catch(e => {
+          return Alert.error(__(trimGraphqlError(e.message)));
+        })
+      });
     };
 
     const updatedProps = {
@@ -135,6 +148,7 @@ class PosContainer extends React.Component<Props> {
       addCustomer,
       logout,
       order: orderDetailQuery.orderDetail,
+      cancelOrder
     };
 
     return <Pos {...updatedProps} />;
@@ -185,6 +199,9 @@ export default withProps<Props>(
       options: ({ qp }) => ({
         variables: { _id: qp && qp.id },
       }),
+    }),
+    graphql<Props>(gql(mutations.ordersCancel), {
+      name: 'ordersCancelMutation'
     })
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );
