@@ -48,6 +48,7 @@ export default class QPaySection extends React.Component<Props, State> {
         showModal={this.state.showModal}
         invoice={this.state.invoice}
         toggleModal={() => this.setState({ showModal: !this.state.showModal })}
+        setInvoice={invoice => this.setState({ invoice })}
       />
     );
   }

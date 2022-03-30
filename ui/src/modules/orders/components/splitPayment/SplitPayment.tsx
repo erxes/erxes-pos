@@ -98,7 +98,7 @@ export default class SplitPayment extends React.Component<Props, State> {
     const sumCashAmount = order.cashAmount || 0;
     const sumCardAmount = order.cardAmount || 0;
     const sumMobileAmount = (
-      (order.qpayInvoices || []).filter((q) => q.status === "done") || []
+      (order.qpayInvoices || []).filter((q) => q.status === "PAID") || []
     ).reduce((am, q) => am + Number(q.amount), 0);
 
     return order.totalAmount - sumCashAmount - sumCardAmount - sumMobileAmount;
