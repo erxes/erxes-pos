@@ -90,9 +90,9 @@ export default class QPaySection extends React.Component<Props, State> {
           .catch((e) => {
             Alert.error(e.message);
           });
+      } else {
+        return Alert.warning(__("QPay invoice amount is too small"));
       }
-
-      return Alert.warning(__("QPay invoice amount is too small"));
     };
 
     return (
