@@ -94,6 +94,8 @@ export default class SplitPayment extends React.Component<Props, State> {
       mode: localStorage.getItem("erxesPosMode") || "",
       remainder,
     };
+
+    this.checkOrganization = this.checkOrganization.bind(this);
   }
 
   getRemainderAmount(order: IOrder) {
