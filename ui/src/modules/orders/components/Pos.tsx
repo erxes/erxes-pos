@@ -103,26 +103,6 @@ export default class Pos extends React.Component<Props, State> {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.order !== this.props.order) {
-      const order = nextProps.order;
-
-      this.setState({
-        totalAmount: order ? getTotalAmount(order.items) : 0,
-        items: order ? order.items || [] : [],
-      });
-    }
-
-    if (
-      nextProps.qp.categoryId ||
-      (Object.keys(nextProps.qp).length === 1 && nextProps.qp.home)
-    ) {
-      this.setState({
-        productBodyType: "product",
-      });
-    }
-  }
-
   setItems = (items: IOrderItemInput[]) => {
     this.setState({ items, totalAmount: getTotalAmount(items) });
   };
