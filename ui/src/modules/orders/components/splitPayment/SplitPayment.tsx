@@ -106,11 +106,16 @@ export default class SplitPayment extends React.Component<Props, State> {
     return order.totalAmount - sumCashAmount - sumCardAmount - sumMobileAmount;
   }
 
-  onBoxClick = (activeInput) => {
-    this.setState({
-      activeInput,
-      [activeInput]: this.getRemainderAmount(this.props.order)
-    } as Pick<State, keyof State>);
+  onBoxClick = (e, activeInput) => {
+    const remainder = this.getRemainderAmount(this.props.order);
+    const state = { activeInput };
+
+    if (e.target && e.target.nodeName === 'DIV') {
+      // when clicked on wrapper box, auto fill remainder
+      state[activeInput] = remainder;
+    }
+
+    this.setState({ ...state });
   };
 
   checkOrganization() {
@@ -243,7 +248,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           remainder={remainder || 0}
           setAmount={setAmount}
           addPayment={addPayment}
-          onCallback={this.onBoxClick}
+          // onCallback={e => this.onBoxClick(e, '')}
         />
       );
     }
@@ -291,7 +296,7 @@ export default class SplitPayment extends React.Component<Props, State> {
     return (
       <Card
         className={activeInput === type ? "activeCard" : ""}
-        onClick={() => this.onBoxClick(type)}
+        onClick={(e) => this.onBoxClick(e, type)}
         isPortrait={this.props.isPortrait}
       >
         <div>{renderImgOrInput()}</div>

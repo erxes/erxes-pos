@@ -14,7 +14,7 @@ type Props = {
   // setState: (param: object) => void;
   setAmount: (num: number | string) => void;
   addPayment: (params: IPaymentInput, callback?: () => void) => void;
-  onCallback: (type: string) => void;
+  // onCallback: (type: string) => void;
 };
 
 export default class CashSection extends React.Component<Props> {
