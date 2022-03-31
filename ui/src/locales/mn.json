@@ -110,5 +110,7 @@
   "Card payment exists for this order": "Картаар гүйлгээ хийсэн байна",
   "Order is already synced to erxes": "Захиалгыг эрхэс рүү илгээсэн байна",
   "All order items will be deleted": "Захиалгын бүх зүйлс устах болно",
-  "Order successfully cancelled": "Захиалга амжилттай цуцлагдлаа"
+  "Order successfully cancelled": "Захиалга амжилттай цуцлагдлаа",
+  "Order has been created successfully": "Захиалга амжилттай үүсгэлээ",
+  "Order has been updated successfully": "Захиалга амжилттай хадгалагдлаа"
 }

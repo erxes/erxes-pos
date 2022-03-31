@@ -86,7 +86,7 @@ class PosContainer extends React.Component<Props> {
         })
         .then((order) => {
           if (order && order._id) {
-            Alert.success(`Order has been created successfully.`);
+            Alert.success(__('Order has been created successfully'));
 
             router.setParams(this.props.history, { id: order._id, home: null });
 
@@ -104,7 +104,7 @@ class PosContainer extends React.Component<Props> {
       return ordersEditMutation({ variables: params })
         .then(({ data }) => {
           if (data && data.ordersEdit && data.ordersEdit._id) {
-            Alert.success(`Order has been updated successfully.`);
+            Alert.success(__('Order has been updated successfully'));
 
             if (callback) {
               callback();
