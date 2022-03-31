@@ -20,13 +20,17 @@ type Props = {
 export default class CashSection extends React.Component<Props> {
   render() {
     // TODO show remainder amount
-    const { order, cashAmount, setAmount, addPayment } = this.props;
+    const { order, cashAmount, setAmount, addPayment, remainder } = this.props;
 
     const onClick = () => {
-      addPayment({ _id: order._id, cashAmount }, () => {
+      const amount = cashAmount > remainder ? remainder : cashAmount;
+
+      addPayment({ _id: order._id, cashAmount: amount }, () => {
         setAmount(0);
       });
     };
+
+    const remainderAmount = Math.abs(cashAmount - remainder).toLocaleString();
 
     return (
       <FlexCenter>
@@ -39,14 +43,17 @@ export default class CashSection extends React.Component<Props> {
           />
 
           {cashAmount ? (
-            <Button
-              size="small"
-              btnStyle="warning"
-              onClick={onClick}
-              block={true}
-            >
-              {__("Pay bill")}
-            </Button>
+            <React.Fragment>
+              <Button
+                size="small"
+                btnStyle="warning"
+                onClick={onClick}
+                block={true}
+              >
+                {__("Pay bill")}
+              </Button>
+              <span>{__(cashAmount < remainder ? 'Remainder amount' : 'Change amount')}: {remainderAmount}</span>
+            </React.Fragment>
           ) : null}
         </CardInputColumn>
       </FlexCenter>
