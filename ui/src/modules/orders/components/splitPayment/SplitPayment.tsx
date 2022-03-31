@@ -78,19 +78,21 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     const { order } = this.props;
 
+    const remainder = this.getRemainderAmount(order);
+
     this.state = {
       billType: BILL_TYPES.CITIZEN,
       activeInput: "empty",
       order: props.order,
       cashAmount: 0,
-      cardAmount: 0,
+      cardAmount: remainder,
       mobileAmount: 0,
       registerNumber: "",
       showE: true,
       showRegModal: false,
       companyName: "",
       mode: localStorage.getItem("erxesPosMode") || "",
-      remainder: this.getRemainderAmount(order),
+      remainder,
     };
   }
 
@@ -105,7 +107,10 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   onBoxClick = (activeInput) => {
-    this.setState({ activeInput });
+    this.setState({
+      activeInput,
+      [activeInput]: this.getRemainderAmount(this.props.order)
+    } as Pick<State, keyof State>);
   };
 
   checkOrganization() {

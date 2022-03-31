@@ -1,7 +1,6 @@
 import React from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import Modal from "react-bootstrap/Modal";
 import { NavLink } from "react-router-dom";
 
 import NameCard from "modules/common/components/nameCard/NameCard";
@@ -232,17 +231,6 @@ export default class Pos extends React.Component<Props, State> {
     this.setState({ orderProps });
   };
 
-  renderOrderSearch() {
-    const { orientation } = this.props;
-
-    return (
-      <OrderSearch
-        orientation={orientation}
-        onChange={this.onChangeProductBodyType}
-      />
-    );
-  }
-
   renderCurrentLogin(uiOptions) {
     const mode = localStorage.getItem("erxesPosMode");
     const { order, posCurrentUser } = this.props;
@@ -360,12 +348,6 @@ export default class Pos extends React.Component<Props, State> {
     );
   }
 
-  handleModal = () => {
-    this.setState({
-      showMenu: !this.state.showMenu,
-    });
-  };
-
   renderProduct() {
     const { currentConfig, orientation, productsQuery } = this.props;
     const { items } = this.state;
@@ -389,30 +371,8 @@ export default class Pos extends React.Component<Props, State> {
     );
   }
 
-  renderDone() {
-    const { orientation, order } = this.props;
-    const isPortrait = orientation === "portrait";
-
-    return (
-      <TypeWrapper isPortrait={isPortrait}>
-        <h2>{__("Thank you for choosing us")}</h2>
-
-        <Cards isPortrait={isPortrait}>
-          <div>
-            <img src="/images/done-relax.gif" alt="card-reader" />
-          </div>
-        </Cards>
-
-        <h2>
-          {__("Your number")}:
-          <b>{order && order.number ? order.number.split("_")[1] : ""}</b>
-        </h2>
-      </TypeWrapper>
-    );
-  }
-
   renderMainContent() {
-    const { addCustomer, order } = this.props;
+    const { addCustomer, order, orientation } = this.props;
     const { productBodyType } = this.state;
 
     switch (productBodyType) {
@@ -433,7 +393,12 @@ export default class Pos extends React.Component<Props, State> {
         return null;
       }
       case "orderSearch": {
-        return this.renderOrderSearch();
+        return (
+          <OrderSearch
+            orientation={orientation}
+            onChange={this.onChangeProductBodyType}
+          />
+        );
       }
       case "customer": {
         return (
@@ -444,7 +409,24 @@ export default class Pos extends React.Component<Props, State> {
         );
       }
       case "done": {
-        return this.renderDone();
+        const isPortrait = orientation === "portrait";
+
+        return (
+          <TypeWrapper isPortrait={isPortrait}>
+            <h2>{__("Thank you for choosing us")}</h2>
+
+            <Cards isPortrait={isPortrait}>
+              <div>
+                <img src="/images/done-relax.gif" alt="card-reader" />
+              </div>
+            </Cards>
+
+            <h2>
+              {__("Your number")}:
+              <b>{order && order.number ? order.number.split("_")[1] : ""}</b>
+            </h2>
+          </TypeWrapper>
+        );
       }
       default: {
         return null;
@@ -484,7 +466,7 @@ export default class Pos extends React.Component<Props, State> {
       cancelOrder
     } = this.props;
 
-    const { items, totalAmount, showMenu, type } = this.state;
+    const { items, totalAmount, type } = this.state;
     const mode = localStorage.getItem("erxesPosMode");
 
     const products = (
@@ -540,16 +522,6 @@ export default class Pos extends React.Component<Props, State> {
               />
             </FooterContent>
           )}
-
-          <Modal
-            enforceFocus={false}
-            onHide={this.handleModal}
-            show={showMenu}
-            animation={false}
-            size="lg"
-          >
-            {/* <Modal.Body>{this.renderKioskModalContent()}</Modal.Body> */}
-          </Modal>
         </>
       );
     }
