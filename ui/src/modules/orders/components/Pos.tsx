@@ -34,8 +34,11 @@ import Icon from "modules/common/components/Icon";
 import FooterCalculation from "./kiosk/FooterCalculation";
 import SplitPaymentContainer from "../containers/SplitPaymentContainer";
 import { Cards, TypeWrapper } from "./drawer/style";
+import Modal from "react-bootstrap/Modal";
 import { __ } from "modules/common/utils";
 import Tip from "modules/common/components/Tip";
+import { IPaymentParams } from "../containers/PosContainer";
+import PaymentForm from "./drawer/PaymentForm";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -53,6 +56,7 @@ type Props = {
   order: IOrder | null;
   orientation: string;
   updateOrder: (params, callback?) => Promise<IOrder>;
+  makePayment?: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
@@ -72,6 +76,7 @@ type State = {
   customerId: string;
   registerNumber: string;
   orderProps: any;
+  paymentType: string;
 };
 
 const getTotalAmount = (items: IOrderItemInput[]) => {
@@ -99,6 +104,7 @@ export default class Pos extends React.Component<Props, State> {
       modalContentType: "",
       customerId: order && order.customerId ? order.customerId : "",
       registerNumber: "",
+      paymentType: "card",
       orderProps: {},
     };
   }
@@ -109,6 +115,12 @@ export default class Pos extends React.Component<Props, State> {
 
   toggleModal = (modalContentType: string) => {
     this.setState({ showMenu: !this.state.showMenu, modalContentType });
+  };
+
+  handleModal = () => {
+    this.setState({
+      showMenu: !this.state.showMenu,
+    });
   };
 
   changeItemCount = (item: IOrderItemInput) => {
@@ -210,6 +222,47 @@ export default class Pos extends React.Component<Props, State> {
   onOrdersChange = (orderProps) => {
     this.setState({ orderProps });
   };
+
+  handlePayment = (params: IPaymentParams) => {
+    // const { order, makePayment } = this.props;
+    // makePayment(order ? order._id : "", params);
+  };
+
+  renderKioskModalContent() {
+    const {
+      currentConfig,
+      makePayment,
+      order,
+      // setCardPaymentInfo,
+      orientation,
+    } = this.props;
+    const { modalContentType, totalAmount, paymentType } = this.state;
+
+    const options = currentConfig ? currentConfig.uiOptions : {};
+
+    switch (modalContentType) {
+      case "payment":
+        return (
+          order && (
+            <PaymentForm
+              orderId={order ? order._id : ""}
+              options={options}
+              totalAmount={totalAmount}
+              closeDrawer={this.toggleModal}
+              makePayment={makePayment}
+              order={order}
+              // setCardPaymentInfo={setCardPaymentInfo}
+              orientation={orientation}
+              handlePayment={this.handlePayment}
+              addOrder={this.addOrder}
+              paymentMethod={paymentType}
+            />
+          )
+        );
+      default:
+        return null;
+    }
+  }
 
   renderCurrentLogin(uiOptions) {
     const mode = localStorage.getItem("erxesPosMode");
@@ -443,10 +496,10 @@ export default class Pos extends React.Component<Props, State> {
       productCategoriesQuery,
       productsQuery,
       qp,
-      cancelOrder
+      cancelOrder,
     } = this.props;
 
-    const { items, totalAmount, type } = this.state;
+    const { items, totalAmount, type, showMenu } = this.state;
     const mode = localStorage.getItem("erxesPosMode");
 
     const products = (
@@ -502,6 +555,16 @@ export default class Pos extends React.Component<Props, State> {
               />
             </FooterContent>
           )}
+
+          <Modal
+            enforceFocus={false}
+            onHide={this.handleModal}
+            show={showMenu}
+            animation={false}
+            size="lg"
+          >
+            <Modal.Body>{this.renderKioskModalContent()}</Modal.Body>
+          </Modal>
         </>
       );
     }

@@ -39,12 +39,9 @@ export const Amount = styled(FlexBetween)`
 `;
 
 const ButtonWrapper = styled.div`
-  margin: 40px;
+  padding: 40px;
   width: 30%;
-
-  > button {
-    width: 300px;
-  }
+  min-width: 360px;
 `;
 
 const generateLabel = (customer) => {
@@ -121,14 +118,14 @@ export default class FooterCalculation extends React.Component<Props, State> {
   };
 
   renderPaymentButton() {
-    const { order, onClickModal, config, addOrder, setItems } = this.props;
+    const { order, onClickModal, config, setItems } = this.props;
 
     if (order && order.paidDate) {
       return null;
     }
 
     const onClick = () => {
-      addOrder();
+      // addOrder();
 
       onClickModal("payment");
     };
