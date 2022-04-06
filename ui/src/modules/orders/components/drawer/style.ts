@@ -3,49 +3,49 @@ import styled from "styled-components";
 import { colors, dimensions } from "modules/common/styles";
 
 export const TypeWrapper = styledTS<{ isPortrait?: boolean }>(styled.div)`
-margin-top: ${(props) => (props.isPortrait ? "50px" : "20px")};
-text-align: center;
+  margin-top: ${(props) => (props.isPortrait ? "50px" : "20px")};
+  text-align: center;
 
-h2 {
-  margin-bottom:  ${(props) => (props.isPortrait ? "20px" : "")};
-  font-size: ${(props) => props.isPortrait && "34px"};
+  h2 {
+    margin-bottom:  ${(props) => (props.isPortrait ? "20px" : "")};
+    font-size: ${(props) => props.isPortrait && "34px"};
 
-  b {
-    margin-left: 5px;
-    color: #FF7800;
+    b {
+      margin-left: 5px;
+      color: #FF7800;
+    }
+
+    @media (max-width: 1250px) and (orientation:landscape) {
+      font-size: 25px;
+    }
   }
 
-  @media (max-width: 1250px) and (orientation:landscape) {
-    font-size: 25px;
+  h4 {
+    text-transform: uppercase;
+    font-weight: 600;
   }
-}
-
-h4 {
-  text-transform: uppercase;
-  font-weight: 600;
-}
 `;
 
 export const Cards = styledTS<{ color?: string; isPortrait?: boolean }>(
   styled.div
 )`
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-p {
-  color: ${(props) => props.color && props.color};
-  font-size: ${(props) => (props.isPortrait ? "35px" : "18px")};
-  font-weight: 500;
-  @media (max-width: 1250px) and (orientation:landscape) {
-    line-height: 22px;
-    font-size: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  p {
+    color: ${(props) => props.color && props.color};
+    font-size: ${(props) => (props.isPortrait ? "35px" : "18px")};
+    font-weight: 500;
+    @media (max-width: 1250px) and (orientation:landscape) {
+      line-height: 22px;
+      font-size: 16px;
+    }
   }
-}
 
-.activeCard {
-  border: 1px solid ${(props) =>
-    props.color ? props.color : colors.colorSecondary};
-}
+  .activeCard {
+    border: 1px solid ${(props) =>
+      props.color ? props.color : colors.colorSecondary};
+  }
 `;
 
 export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`

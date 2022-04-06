@@ -24,11 +24,15 @@ type Props = {
   order: IOrder | null;
   orientation: string;
   updateOrder: (params) => Promise<IOrder>;
-  // makePayment: (_id: string, params: IPaymentParams) => void;
+  onChangeProductBodyType: (type: string) => void;
+  makePayment: (_id: string, params: any) => void;
   productCategoriesQuery: any;
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
+  toggleModal: (modalContentType: string) => void;
+  setCardPaymentInfo: (params: any) => void;
   qp: any;
+  handleModal: () => void;
   cancelOrder: (id: string) => void;
 };
 

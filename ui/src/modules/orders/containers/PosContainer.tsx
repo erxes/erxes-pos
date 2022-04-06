@@ -22,6 +22,7 @@ import { IUser } from "modules/auth/types";
 type Props = {
   ordersAddMutation: OrdersAddMutationResponse;
   ordersEditMutation: OrdersEditMutationResponse;
+  addPaymentMutation: any;
   orderDetailQuery: OrderDetailQueryResponse;
   posCurrentUser: IUser;
   currentConfig: IConfig;
@@ -30,8 +31,15 @@ type Props = {
   productCategoriesQuery: any;
   productsQuery: any;
   customersAddMutation: any;
+  makePaymentMutation: any;
   ordersCancelMutation: any;
 } & IRouterProps;
+
+type States = {
+  productBodyType: string;
+  showMenu: boolean;
+  modalContentType: string;
+};
 
 export interface IPaymentParams {
   cardAmount?: number;
@@ -41,19 +49,46 @@ export interface IPaymentParams {
   registerNumber?: string;
 }
 
-class PosContainer extends React.Component<Props> {
+class PosContainer extends React.Component<Props, States> {
+  constructor(props: Props) {
+    super(props);
+
+    this.state = {
+      productBodyType: "product",
+      showMenu: false,
+      modalContentType: "",
+    };
+  }
+
   render() {
     const {
       ordersAddMutation,
       ordersEditMutation,
       customersAddMutation,
       orderDetailQuery,
-      ordersCancelMutation
+      ordersCancelMutation,
+      addPaymentMutation,
+      makePaymentMutation,
     } = this.props;
+    const { showMenu, modalContentType, productBodyType } = this.state;
 
     if (orderDetailQuery.loading) {
       return <Spinner />;
     }
+
+    const onChangeProductBodyType = (productBodyType: string) => {
+      this.setState({ productBodyType });
+    };
+
+    const toggleModal = (modalContentType: string) => {
+      this.setState({ showMenu: !this.state.showMenu, modalContentType });
+    };
+
+    const handleModal = () => {
+      this.setState({
+        showMenu: !this.state.showMenu,
+      });
+    };
 
     const logout = () => {
       client
@@ -86,10 +121,10 @@ class PosContainer extends React.Component<Props> {
         })
         .then((order) => {
           if (order && order._id) {
-            Alert.success(__('Order has been created successfully'));
+            Alert.success(__("Order has been created successfully"));
 
             router.setParams(this.props.history, { id: order._id, home: null });
-
+            console.log("in container");
             if (callback) {
               callback();
             }
@@ -104,7 +139,7 @@ class PosContainer extends React.Component<Props> {
       return ordersEditMutation({ variables: params })
         .then(({ data }) => {
           if (data && data.ordersEdit && data.ordersEdit._id) {
-            Alert.success(__('Order has been updated successfully'));
+            Alert.success(__("Order has been updated successfully"));
 
             if (callback) {
               callback();
@@ -131,14 +166,67 @@ class PosContainer extends React.Component<Props> {
     };
 
     const cancelOrder = (_id: string) => {
-      confirm(`${__('All order items will be deleted')}. ${__('Are you sure')}?`).then(() => {
-        ordersCancelMutation({ variables: { _id } }).then(() => {
-          Alert.success('Order successfully cancelled');
-          window.location.href = "/";
-        }).catch(e => {
-          return Alert.error(__(trimGraphqlError(e.message)));
-        })
+      confirm(
+        `${__("All order items will be deleted")}. ${__("Are you sure")}?`
+      ).then(() => {
+        ordersCancelMutation({ variables: { _id } })
+          .then(() => {
+            Alert.success("Order successfully cancelled");
+            window.location.href = "/";
+          })
+          .catch((e) => {
+            return Alert.error(__(trimGraphqlError(e.message)));
+          });
       });
+    };
+
+    const makePayment = (_id: string, params: IPaymentParams) => {
+      makePaymentMutation({ variables: { doc: params, _id } })
+        .then(({ data }) => {
+          if (data.ordersMakePayment) {
+            const resp = data.ordersMakePayment;
+
+            if (resp.success === "true") {
+              return Alert.success(__("Payment successful"));
+            }
+            if (resp.message) {
+              return Alert.warning(resp.message);
+            }
+            if (resp.lotteryWarningMsg) {
+              return Alert.warning(resp.lotteryWarningMsg);
+            }
+            if (resp.getInformation) {
+              return Alert.warning(resp.getInformation);
+            }
+          }
+        })
+        .then(() => {
+          window.open(`/order-receipt/${_id}`, "_blank");
+          window.location.href = "/";
+        })
+        .catch((e) => {
+          Alert.error(__(e.message));
+        });
+    };
+
+    const setCardPaymentInfo = (params: any, callback?: any) => {
+      addPaymentMutation({ variables: params })
+        .then(({ data }) => {
+          if (
+            data &&
+            data.ordersSetPaymentInfo &&
+            data.ordersSetPaymentInfo._id
+          ) {
+            Alert.success("Card payment info saved");
+          }
+
+          if (callback) {
+            callback();
+          }
+        })
+        .catch((e) => {
+          Alert.error(__(e.message));
+        });
     };
 
     const updatedProps = {
@@ -148,7 +236,15 @@ class PosContainer extends React.Component<Props> {
       addCustomer,
       logout,
       order: orderDetailQuery.orderDetail,
-      cancelOrder
+      cancelOrder,
+      toggleModal,
+      onChangeProductBodyType,
+      handleModal,
+      productBodyType,
+      setCardPaymentInfo,
+      makePayment,
+      showMenu,
+      modalContentType,
     };
 
     return <Pos {...updatedProps} />;
@@ -169,6 +265,9 @@ export default withProps<Props>(
   compose(
     graphql<Props, OrdersAddMutationResponse>(gql(mutations.ordersAdd), {
       name: "ordersAddMutation",
+    }),
+    graphql<Props>(gql(mutations.ordersAddPayment), {
+      name: "addPaymentMutation",
     }),
     graphql<Props, OrdersEditMutationResponse>(gql(mutations.ordersEdit), {
       name: "ordersEditMutation",
@@ -201,7 +300,7 @@ export default withProps<Props>(
       }),
     }),
     graphql<Props>(gql(mutations.ordersCancel), {
-      name: 'ordersCancelMutation'
+      name: "ordersCancelMutation",
     })
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );

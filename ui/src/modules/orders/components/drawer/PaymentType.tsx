@@ -1,6 +1,6 @@
-import React from 'react';
-import { __ } from 'modules/common/utils';
-import { Card, Cards, TypeWrapper } from './style';
+import React from "react";
+import { __ } from "modules/common/utils";
+import { Card, Cards, TypeWrapper } from "./style";
 
 type Props = {
   color: string;
@@ -13,9 +13,9 @@ type State = {
 };
 
 export const PAYMENT_METHODS = {
-  CARD: 'card',
-  CASH: 'cash',
-  QPAY: 'qpay'
+  CARD: "card",
+  CASH: "cash",
+  QPAY: "qpay",
 };
 
 class PaymentType extends React.Component<Props, State> {
@@ -23,11 +23,11 @@ class PaymentType extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      selectedPaymentType: PAYMENT_METHODS.CARD
+      selectedPaymentType: PAYMENT_METHODS.CARD,
     };
   }
 
-  onChangeCard = value => {
+  onChangeCard = (value) => {
     this.setState({ selectedPaymentType: value });
     this.props.togglePaymentType(value);
   };
@@ -38,12 +38,12 @@ class PaymentType extends React.Component<Props, State> {
 
     return (
       <TypeWrapper isPortrait={isPortrait}>
-        <h2>{__('Choose the payment method')}</h2>
+        <h2>{__("Choose the payment method")}</h2>
 
         <Cards isPortrait={isPortrait}>
           <Card
             className={
-              selectedPaymentType === PAYMENT_METHODS.CARD ? 'activeCard' : ''
+              selectedPaymentType === PAYMENT_METHODS.CARD ? "activeCard" : ""
             }
             isPortrait={isPortrait}
             onClick={() => this.onChangeCard(PAYMENT_METHODS.CARD)}
@@ -54,7 +54,7 @@ class PaymentType extends React.Component<Props, State> {
           </Card>
           <Card
             className={
-              selectedPaymentType === PAYMENT_METHODS.QPAY ? 'activeCard' : ''
+              selectedPaymentType === PAYMENT_METHODS.QPAY ? "activeCard" : ""
             }
             isPortrait={isPortrait}
             onClick={() => this.onChangeCard(PAYMENT_METHODS.QPAY)}

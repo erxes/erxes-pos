@@ -28,7 +28,7 @@ import {
 import { IConfig } from "types";
 import CustomerForm from "./drawer/CustomerForm";
 import ProductSearch from "../containers/ProductSearch";
-import PortraitView from "./kiosk";
+import KioskView from "./kiosk";
 import { renderFullName } from "modules/common/utils";
 import Icon from "modules/common/components/Icon";
 import FooterCalculation from "./kiosk/FooterCalculation";
@@ -56,23 +56,27 @@ type Props = {
   order: IOrder | null;
   orientation: string;
   updateOrder: (params, callback?) => Promise<IOrder>;
-  makePayment?: (_id: string, params: IPaymentParams) => void;
+  makePayment: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
   qp: any;
+  setCardPaymentInfo: (params: any) => void;
   logout?: () => void;
   type?: string;
+  onChangeProductBodyType: (type: string) => void;
+  toggleModal: (modalContentType: string) => void;
   cancelOrder: (id: string) => void;
+  handleModal: () => void;
+  productBodyType?: string;
+  modalContentType?: string;
+  showMenu?: boolean;
 };
 
 type State = {
   items: IOrderItemInput[];
   totalAmount: number;
   type: string;
-  modalContentType: string;
-  showMenu: boolean;
-  productBodyType: string;
   customerId: string;
   registerNumber: string;
   orderProps: any;
@@ -98,10 +102,7 @@ export default class Pos extends React.Component<Props, State> {
     this.state = {
       items: order ? order.items : [],
       totalAmount: order ? getTotalAmount(order.items) : 0,
-      showMenu: false,
-      productBodyType: "product",
       type: type || (order && order.type ? order.type : ORDER_TYPES.EAT),
-      modalContentType: "",
       customerId: order && order.customerId ? order.customerId : "",
       registerNumber: "",
       paymentType: "card",
@@ -111,16 +112,6 @@ export default class Pos extends React.Component<Props, State> {
 
   setItems = (items: IOrderItemInput[]) => {
     this.setState({ items, totalAmount: getTotalAmount(items) });
-  };
-
-  toggleModal = (modalContentType: string) => {
-    this.setState({ showMenu: !this.state.showMenu, modalContentType });
-  };
-
-  handleModal = () => {
-    this.setState({
-      showMenu: !this.state.showMenu,
-    });
   };
 
   changeItemCount = (item: IOrderItemInput) => {
@@ -215,17 +206,13 @@ export default class Pos extends React.Component<Props, State> {
     }
   };
 
-  onChangeProductBodyType = (productBodyType: string) => {
-    this.setState({ productBodyType });
-  };
-
   onOrdersChange = (orderProps) => {
     this.setState({ orderProps });
   };
 
   handlePayment = (params: IPaymentParams) => {
-    // const { order, makePayment } = this.props;
-    // makePayment(order ? order._id : "", params);
+    const { order, makePayment } = this.props;
+    makePayment(order ? order._id : "", params);
   };
 
   renderKioskModalContent() {
@@ -233,10 +220,12 @@ export default class Pos extends React.Component<Props, State> {
       currentConfig,
       makePayment,
       order,
-      // setCardPaymentInfo,
+      modalContentType,
       orientation,
+      toggleModal,
+      setCardPaymentInfo,
     } = this.props;
-    const { modalContentType, totalAmount, paymentType } = this.state;
+    const { totalAmount, paymentType } = this.state;
 
     const options = currentConfig ? currentConfig.uiOptions : {};
 
@@ -248,10 +237,10 @@ export default class Pos extends React.Component<Props, State> {
               orderId={order ? order._id : ""}
               options={options}
               totalAmount={totalAmount}
-              closeDrawer={this.toggleModal}
+              closeDrawer={toggleModal}
               makePayment={makePayment}
               order={order}
-              // setCardPaymentInfo={setCardPaymentInfo}
+              setCardPaymentInfo={setCardPaymentInfo}
               orientation={orientation}
               handlePayment={this.handlePayment}
               addOrder={this.addOrder}
@@ -405,8 +394,13 @@ export default class Pos extends React.Component<Props, State> {
   }
 
   renderMainContent() {
-    const { addCustomer, order, orientation } = this.props;
-    const { productBodyType } = this.state;
+    const {
+      addCustomer,
+      order,
+      orientation,
+      productBodyType,
+      onChangeProductBodyType,
+    } = this.props;
 
     switch (productBodyType) {
       case "product": {
@@ -418,7 +412,7 @@ export default class Pos extends React.Component<Props, State> {
             <SplitPaymentContainer
               order={order}
               onOrdersChange={this.onOrdersChange}
-              onChangeProductBodyType={this.onChangeProductBodyType}
+              onChangeProductBodyType={onChangeProductBodyType}
             />
           );
         }
@@ -429,7 +423,7 @@ export default class Pos extends React.Component<Props, State> {
         return (
           <OrderSearch
             orientation={orientation}
-            onChange={this.onChangeProductBodyType}
+            onChange={onChangeProductBodyType}
           />
         );
       }
@@ -437,7 +431,7 @@ export default class Pos extends React.Component<Props, State> {
         return (
           <CustomerForm
             addCustomer={addCustomer}
-            onChangeProductBodyType={this.onChangeProductBodyType}
+            onChangeProductBodyType={onChangeProductBodyType}
           ></CustomerForm>
         );
       }
@@ -495,11 +489,16 @@ export default class Pos extends React.Component<Props, State> {
       orientation,
       productCategoriesQuery,
       productsQuery,
+      productBodyType,
       qp,
+      showMenu,
+      toggleModal,
+      handleModal,
       cancelOrder,
+      onChangeProductBodyType,
     } = this.props;
 
-    const { items, totalAmount, type, showMenu } = this.state;
+    const { items, totalAmount, type } = this.state;
     const mode = localStorage.getItem("erxesPosMode");
 
     const products = (
@@ -521,7 +520,7 @@ export default class Pos extends React.Component<Props, State> {
     );
 
     if (mode === "kiosk" && !this.props.type && !(qp && qp.id)) {
-      return <PortraitView {...this.props} order={order} />;
+      return <KioskView {...this.props} order={order} />;
     }
 
     if (mode === "kiosk") {
@@ -545,10 +544,12 @@ export default class Pos extends React.Component<Props, State> {
                 setItems={this.setItems}
                 editOrder={this.editOrder}
                 setOrderState={this.setOrderState}
-                onClickModal={this.toggleModal}
+                onClickModal={toggleModal}
                 items={items}
                 changeItemCount={this.changeItemCount}
                 changeItemIsTake={this.changeItemIsTake}
+                onChangeProductBodyType={onChangeProductBodyType}
+                productBodyType={productBodyType}
                 config={currentConfig}
                 order={order}
                 type={type}
@@ -556,15 +557,17 @@ export default class Pos extends React.Component<Props, State> {
             </FooterContent>
           )}
 
-          <Modal
-            enforceFocus={false}
-            onHide={this.handleModal}
-            show={showMenu}
-            animation={false}
-            size="lg"
-          >
-            <Modal.Body>{this.renderKioskModalContent()}</Modal.Body>
-          </Modal>
+          {showMenu && (
+            <Modal
+              enforceFocus={false}
+              onHide={handleModal}
+              show={showMenu}
+              animation={false}
+              size="lg"
+            >
+              <Modal.Body>{this.renderKioskModalContent()}</Modal.Body>
+            </Modal>
+          )}
         </>
       );
     }
@@ -595,11 +598,11 @@ export default class Pos extends React.Component<Props, State> {
                   editOrder={this.editOrder}
                   setOrderState={this.setOrderState}
                   setItems={this.setItems}
-                  onChangeProductBodyType={this.onChangeProductBodyType}
+                  onChangeProductBodyType={onChangeProductBodyType}
                   items={items}
                   changeItemCount={this.changeItemCount}
                   changeItemIsTake={this.changeItemIsTake}
-                  productBodyType={this.state.productBodyType}
+                  productBodyType={productBodyType}
                   config={currentConfig}
                   order={order}
                   orderProps={this.state.orderProps}

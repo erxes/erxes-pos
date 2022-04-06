@@ -1,11 +1,11 @@
-import React from 'react';
+import React from "react";
 
-import { Alert, __ } from 'modules/common/utils';
-import Button from 'modules/common/components/Button';
-import FormGroup from 'modules/common/components/form/Group';
-import FormControl from 'modules/common/components/form/Control';
-import ControlLabel from 'modules/common/components/form/Label';
-import { ICustomerParams } from 'modules/orders/types';
+import { Alert, __ } from "modules/common/utils";
+import Button from "modules/common/components/Button";
+import FormGroup from "modules/common/components/form/Group";
+import FormControl from "modules/common/components/form/Control";
+import ControlLabel from "modules/common/components/form/Label";
+import { ICustomerParams } from "modules/orders/types";
 
 type Props = {
   addCustomer: (params: ICustomerParams) => void;
@@ -20,10 +20,10 @@ export default class CustomerForm extends React.Component<
     super(props);
 
     this.state = {
-      firstName: '',
-      lastName: '',
-      phone: '',
-      email: ''
+      firstName: "",
+      lastName: "",
+      phone: "",
+      email: "",
     };
   }
 
@@ -34,11 +34,11 @@ export default class CustomerForm extends React.Component<
     const { firstName, lastName, phone } = this.state;
 
     if (!(firstName || lastName || phone)) {
-      return Alert.warning('Please type first name & last name & phone number');
+      return Alert.warning("Please type first name & last name & phone number");
     }
 
     addCustomer({ ...this.state });
-    onChangeProductBodyType('customer');
+    onChangeProductBodyType("customer");
   }
 
   onChange(e, field: string) {
@@ -52,37 +52,40 @@ export default class CustomerForm extends React.Component<
 
   render() {
     return (
-      <form onSubmit={e => this.onSubmit(e)}>
+      <form onSubmit={(e) => this.onSubmit(e)}>
         <FormGroup>
-          <ControlLabel required={true}>{__('Last name')}</ControlLabel>
+          <ControlLabel required={true}>{__("Last name")}</ControlLabel>
           <FormControl
             name="lastName"
-            onChange={e => this.onChange(e, 'lastName')}
+            onChange={(e) => this.onChange(e, "lastName")}
             required={true}
           />
         </FormGroup>
         <FormGroup>
-          <ControlLabel required={true}>{__('First name')}</ControlLabel>
+          <ControlLabel required={true}>{__("First name")}</ControlLabel>
           <FormControl
             name="firstName"
-            onChange={e => this.onChange(e, 'firstName')}
+            onChange={(e) => this.onChange(e, "firstName")}
             required={true}
           />
         </FormGroup>
         <FormGroup>
-          <ControlLabel required={true}>{__('Phone number')}</ControlLabel>
+          <ControlLabel required={true}>{__("Phone number")}</ControlLabel>
           <FormControl
             name="phone"
-            onChange={e => this.onChange(e, 'phone')}
+            onChange={(e) => this.onChange(e, "phone")}
             required={true}
           />
         </FormGroup>
         <FormGroup>
-          <ControlLabel>{__('Email address')}</ControlLabel>
-          <FormControl name="email" onChange={e => this.onChange(e, 'email')} />
+          <ControlLabel>{__("Email address")}</ControlLabel>
+          <FormControl
+            name="email"
+            onChange={(e) => this.onChange(e, "email")}
+          />
         </FormGroup>
         <Button type="submit" btnStyle="success">
-          {__('Register')}
+          {__("Register")}
         </Button>
       </form>
     );

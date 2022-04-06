@@ -1,23 +1,19 @@
 import "abortcontroller-polyfill/dist/polyfill-patch-fetch";
 import React from "react";
-import NumberFormat from "react-number-format";
 
 import Button from "modules/common/components/Button";
-import Icon from "modules/common/components/Icon";
-import FormGroup from "modules/common/components/form/Group";
-import ControlLabel from "modules/common/components/form/Label";
 import { __, Alert } from "modules/common/utils";
-import { CardInputColumn, Input } from "modules/orders/styles";
-import { IOrder, IPaymentInput } from "modules/orders/types";
+import { IOrder } from "modules/orders/types";
 
 type Props = {
-  color?: string;
-  billType: string;
-  addPayment: (params: IPaymentInput, callback?: () => void) => void;
-  order: IOrder;
-  maxAmount: number | undefined;
   cardAmount: number;
-  setAmount: (amount) => void;
+  color?: string;
+  onStateChange: (key: string, value: any) => void;
+  billType: string;
+  setCardPaymentInfo: (params: any) => void;
+  order: IOrder;
+  isSplit?: boolean;
+  cashAmount?: number;
 };
 
 type State = {
@@ -25,7 +21,7 @@ type State = {
   checkedTransaction: boolean;
 };
 
-export default class CardInput extends React.Component<Props, State> {
+export default class CardForm extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
@@ -36,74 +32,39 @@ export default class CardInput extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      color = "",
-      addPayment,
-      order,
-      maxAmount = 0,
-      setAmount,
-      cardAmount,
-      // billType,
-    } = this.props;
+    const { cardAmount, onStateChange, setCardPaymentInfo, order } = this.props;
 
-    const { _id } = order;
-
-    if (!_id) {
-      return null;
-    }
-
-    const inputProps: any = {
-      allowNegative: false,
-      thousandSeparator: true,
-      prefix: "₮",
-      inputMode: "numeric",
-    };
-
-    const handleInput = (value: number | undefined = 0) => {
-      // do not accept amount greater than payable amount
-      const val = Number((value > maxAmount ? maxAmount : value).toFixed(2));
-
-      setAmount(val);
-    };
-
-    const resetInput = () => {
-      setAmount(0);
-    };
-
-    // const PATH = "http://localhost:27028";
-    // const PATH = "https://test-pos.erxes.io/";
-    const PATH = "http://localhost:7000/";
+    const PATH = "http://localhost:7000";
+    // const PATH = 'http://localhost:27028';
 
     const sendTransaction = async () => {
-      // fetch(`${PATH}/ajax/get-status-info`)
       fetch(`${PATH}`)
-        // .then((res) => res.json())
+        // .then(res => res.json())
         .then((res: any) => {
           // TODO remove code, fake data
           res = {
             status_code: "ok",
           };
-
           if (res && res.status_code === "ok") {
             // send transaction upon successful connection
             fetch(PATH, {
-              // method: "POST",
               method: "GET",
+              // method: 'POST',
               headers: {
                 "Content-Type": "application/json",
               },
               // body: JSON.stringify({
-              //   service_name: "doSaleTransaction",
+              //   service_name: 'doSaleTransaction',
               //   service_params: {
               //     // special character _ is not accepted
-              //     db_ref_no: number.replace("_", ""),
+              //     db_ref_no: order.number.replace('_', ''),
               //     amount: cardAmount.toString(),
-              //     vatps_bill_type: billType,
-              //   },
-              // }),
+              //     vatps_bill_type: billType
+              //   }
+              // })
             })
-              // .then((res) => res.json())
-              // .then((r) => {
+              // .then(res => res.json())
+              // .then(r => {
               .then((res) => {
                 // TODO remove code, fake data
                 const r = {
@@ -147,7 +108,14 @@ export default class CardInput extends React.Component<Props, State> {
                       )
                     );
 
-                    addPayment({ _id, cardInfo: r.response, cardAmount });
+                    // enable payment button
+                    onStateChange("paymentEnabled", true);
+
+                    setCardPaymentInfo({
+                      _id: order._id,
+                      cardInfo: r.response,
+                      cardAmount,
+                    });
                   } else {
                     return Alert.warning(r.response.response_msg);
                   }
@@ -167,32 +135,11 @@ export default class CardInput extends React.Component<Props, State> {
 
     return (
       <>
-        <CardInputColumn>
-          <FormGroup>
-            <ControlLabel>{__("By Card")}</ControlLabel>
-            <Input color={color}>
-              <NumberFormat
-                name="cardAmount"
-                value={cardAmount || 0}
-                onValueChange={(values) => handleInput(values.floatValue)}
-                {...inputProps}
-              />
-              <div onClick={resetInput}>
-                <Icon icon="cancel" size={13} />
-              </div>
-            </Input>
-          </FormGroup>
-          {cardAmount ? (
-            <Button
-              size="small"
-              btnStyle="warning"
-              onClick={sendTransaction}
-              block={true}
-            >
-              {__("Send transaction")}
-            </Button>
-          ) : null}
-        </CardInputColumn>
+        {cardAmount && (
+          <Button btnStyle="success" onClick={sendTransaction} size="large">
+            {__("Payment")}
+          </Button>
+        )}
       </>
     );
   } // end render()

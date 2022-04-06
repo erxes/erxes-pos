@@ -16,7 +16,14 @@ import { __ } from "modules/common/utils";
 import { Alert } from "modules/common/utils";
 import gql from "graphql-tag";
 import { Cards, TypeWrapper } from "./style";
-import { Header, KioskAmount, PaymentWrapper, Title } from "../kiosk/style";
+import {
+  EbarimtButton,
+  Header,
+  KioskAmount,
+  PaymentWrapper,
+  Title,
+} from "../kiosk/style";
+import CardForm from "./CardForm";
 
 type Props = {
   orderId: string;
@@ -34,6 +41,7 @@ type Props = {
   header?: React.ReactNode;
   extraButton?: React.ReactNode;
   handlePayment: (params: IPaymentParams) => void;
+  setCardPaymentInfo: (params: any) => void;
   paymentMethod: string;
 };
 
@@ -110,14 +118,12 @@ class PaymentForm extends React.Component<Props, State> {
   };
 
   handleSubmit = () => {
-    const { order } = this.props;
-    const { registerNumber, billType, cardAmount, cashAmount = 0 } = this.state;
+    const { registerNumber, billType, cashAmount = 0 } = this.state;
 
     this.props.handlePayment({
       registerNumber,
-      cardAmount,
-      cashAmount:
-        cashAmount > order.totalAmount ? order.totalAmount : cashAmount,
+      // cardAmount,
+      cashAmount,
       billType,
     });
   };
@@ -161,47 +167,56 @@ class PaymentForm extends React.Component<Props, State> {
     );
   }
 
-  //render Ebarimt
-  //   renderEbarimt() {
-  //     const { showE, billType } = this.state;
-  //     const { isPortrait, paymentMethod } = this.props;
+  // render VatReceipt
+  renderVatReceipt() {
+    // const { showE, billType } = this.state;
+    // const { isPortrait, paymentMethod } = this.props;
 
-  //     const onBillTypeChange = (value) => {
-  //       const billType = value;
+    // const onBillTypeChange = (value) => {
+    //   const billType = value;
 
-  //       this.setState({ billType });
+    //   this.setState({ billType });
 
-  //       if (billType === BILL_TYPES.ENTITY) {
-  //         this.focusOnRegisterInput();
-  //       } else {
-  //         this.setState({
-  //           activeInput:
-  //             paymentMethod === PAYMENT_METHODS.CARD
-  //               ? PAYMENT_TYPES.CARD
-  //               : PAYMENT_TYPES.CASH,
-  //         });
-  //       }
-  //     };
+    //   if (billType === BILL_TYPES.ENTITY) {
+    //     this.focusOnRegisterInput();
+    //   } else {
+    //     this.setState({
+    //       activeInput:
+    //         paymentMethod === PAYMENT_METHODS.CARD
+    //           ? PAYMENT_TYPES.CARD
+    //           : PAYMENT_TYPES.CASH,
+    //     });
+    //   }
+    // };
 
-  //     const onStateChange = (key: string, value: any) => {
-  //       this.setState({ [key]: value } as Pick<State, keyof State>);
-  //     };
+    // const onStateChange = (key: string, value: any) => {
+    //   this.setState({ [key]: value } as Pick<State, keyof State>);
+    // };
 
-  //     return (
-  //       <Header>
-  //         <FlexCenter>
-  //           <h2>{__("Obtain a VAT receipt")}</h2>
-  //         </FlexCenter>
-  //         {/* <Ebarimt
-  //           billType={billType}
-  //           isPortrait={isPortrait}
-  //           show={showE}
-  //           onBillTypeChange={onBillTypeChange}
-  //           onStateChange={onStateChange}
-  //         /> */}
-  //       </Header>
-  //     );
-  //   }
+    return (
+      <Header>
+        <FlexCenter>
+          <h2>{__("Obtain a VAT receipt")}</h2>
+        </FlexCenter>
+        <EbarimtButton>
+          <Button
+            // className={billType === BILL_TYPES.CITIZEN ? 'active' : ''}
+            // onClick={() => onClickCitizen(BILL_TYPES.CITIZEN)}
+            size="large"
+          >
+            {__("Person")}
+          </Button>
+          <Button
+            // className={billType === BILL_TYPES.ENTITY ? 'active' : ''}
+            // onClick={() => onBillTypeChange(BILL_TYPES.ENTITY)}
+            size="large"
+          >
+            {__("Organization")}
+          </Button>
+        </EbarimtButton>
+      </Header>
+    );
+  }
 
   //render Amount
   renderAmount() {
@@ -276,15 +291,19 @@ class PaymentForm extends React.Component<Props, State> {
 
     return (
       <>
-        {/* {this.renderEbarimt()} */}
+        {this.renderVatReceipt()}
         {this.renderPayment()}
       </>
     );
   }
 
   renderCardButtons() {
-    const { options, addOrder } = this.props;
-    const { paymentEnabled, cardAmount = 0 } = this.state;
+    const { options, order, setCardPaymentInfo } = this.props;
+    const { paymentEnabled, cardAmount = 0, billType } = this.state;
+    console.log(paymentEnabled, "paymentEnabled:");
+    const onStateChange = (key: string, value: any) => {
+      this.setState({ [key]: value } as Pick<State, keyof State>);
+    };
 
     if (paymentEnabled) {
       return (
@@ -292,22 +311,23 @@ class PaymentForm extends React.Component<Props, State> {
           style={{ backgroundColor: options.colors.primary }}
           size="medium"
           icon="check-circle"
-          onClick={() => this.handleSubmit}
+          onClick={this.handleSubmit}
         >
           {__("Waiting for payment")}
         </Button>
       );
     }
 
-    if (cardAmount) {
-      return (
-        <Button btnStyle="success" onClick={() => addOrder()} size="large">
-          {__("Payment")}
-        </Button>
-      );
-    }
-
-    return null;
+    return (
+      <CardForm
+        onStateChange={onStateChange}
+        cardAmount={cardAmount}
+        color={options.colors.primary}
+        billType={billType}
+        order={order}
+        setCardPaymentInfo={setCardPaymentInfo}
+      />
+    );
   }
 
   render() {

@@ -187,7 +187,7 @@ export default class Calculation extends React.Component<Props, State> {
       productBodyType,
       setItems,
       type,
-      cancelOrder
+      cancelOrder,
     } = this.props;
 
     if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
@@ -402,7 +402,6 @@ export default class Calculation extends React.Component<Props, State> {
       >
         {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
         {this.renderSplitPaymentButton()}
-        {/* {this.renderReceiptButton()} */}
       </ButtonWrapper>
     );
   }

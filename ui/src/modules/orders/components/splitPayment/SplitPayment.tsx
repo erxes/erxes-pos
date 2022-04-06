@@ -112,7 +112,7 @@ export default class SplitPayment extends React.Component<Props, State> {
     const remainder = this.getRemainderAmount(this.props.order);
     const state = { activeInput };
 
-    if (e.target && e.target.nodeName === 'DIV') {
+    if (e.target && e.target.nodeName === "DIV") {
       // when clicked on wrapper box, auto fill remainder
       state[activeInput] = remainder;
     }

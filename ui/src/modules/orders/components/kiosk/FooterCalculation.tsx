@@ -74,7 +74,7 @@ export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
 type Props = {
   orientation: string;
   totalAmount: number;
-  addOrder: () => void;
+  addOrder: (callback?: () => void) => void;
   setItems: (items: IOrderItemInput[]) => void;
   setOrderState: (name: string, value: any) => void;
   onClickModal: (modalContentType: string) => void;
@@ -85,6 +85,8 @@ type Props = {
   editOrder: () => void;
   order: IOrder | null;
   type: string;
+  onChangeProductBodyType: (type: string) => void;
+  productBodyType?: string;
 };
 
 type State = {
@@ -118,16 +120,14 @@ export default class FooterCalculation extends React.Component<Props, State> {
   };
 
   renderPaymentButton() {
-    const { order, onClickModal, config, setItems } = this.props;
+    const { order, addOrder, config, setItems, onClickModal } = this.props;
 
     if (order && order.paidDate) {
       return null;
     }
 
-    const onClick = () => {
-      // addOrder();
-
-      onClickModal("payment");
+    const onClickPayment = () => {
+      addOrder(() => onClickModal("payment"));
     };
 
     const onCancelOrder = () => {
@@ -141,7 +141,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
         </Button>
         <Button
           style={{ backgroundColor: config.uiOptions.colors.primary }}
-          onClick={onClick}
+          onClick={onClickPayment}
           block
         >
           {__("Payment")}
