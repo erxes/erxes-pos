@@ -8,7 +8,7 @@ import { formatNumber } from "modules/utils";
 import { IConfig, IOption } from "types";
 import { ICustomer, IOrder, IOrderItemInput } from "modules/orders/types";
 import Stage from "../Stage";
-import { FlexColumn, TypeButtons } from "./style";
+import { FlexColumn } from "./style";
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   position: absolute;
@@ -30,8 +30,8 @@ const Wrapper = styledTS<{ color?: string }>(styled.div)`
 `;
 
 export const Amount = styled(FlexBetween)`
-  margin-bottom: 10px;
-  font-size: 16px;
+  margin-bottom: 20px;
+  font-size: 22px;
 
   span {
     font-weight: 600;
@@ -39,9 +39,18 @@ export const Amount = styled(FlexBetween)`
 `;
 
 const ButtonWrapper = styled.div`
-  padding: 40px;
+  padding: 20px 40px;
+  margin: 20px 0;
   width: 30%;
   min-width: 360px;
+  border-left: 1px solid #ddd;
+
+  button {
+    margin-left: 0;
+    margin-top: 10px;
+    height: 60px;
+    font-size: 20px;
+  }
 `;
 
 const generateLabel = (customer) => {
@@ -135,7 +144,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
     };
 
     return (
-      <TypeButtons>
+      <>
         <Button onClick={onCancelOrder} btnStyle="simple" block>
           {__("Cancel order")}
         </Button>
@@ -146,14 +155,14 @@ export default class FooterCalculation extends React.Component<Props, State> {
         >
           {__("Payment")}
         </Button>
-      </TypeButtons>
+      </>
     );
   }
 
   renderAmount(text: string, amount: number) {
     return (
       <>
-        <h4>{__("Payment info")}</h4>
+        {/* <h4>{__("Payment info")}</h4> */}
         <Amount>
           {text}
           <span>{formatNumber(amount || 0)}₮</span>

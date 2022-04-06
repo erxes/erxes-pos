@@ -250,14 +250,6 @@ export const FlexColumn = styled.div`
   max-width: 70%;
 `;
 
-export const TypeButtons = styled.div`
-  button {
-    margin-left: 0;
-    margin-top: 10px;
-    height: 60px;
-  }
-`;
-
 const style = `
   color: #fff !important;
   background: #616E7C;`;
