@@ -106,6 +106,7 @@ export default class Products extends React.Component<Props, State> {
         height={this.state.categoriesHeight}
         color={uiOptions.colors.secondary}
         innerWidth={window.innerWidth}
+        hasItems={this.props.items.length > 0}
       >
         {this.renderProducts()}
       </ProductsWrapper>

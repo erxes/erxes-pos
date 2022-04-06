@@ -101,11 +101,12 @@ export const MainContent = styledTS<{
   }
 `;
 
-export const MenuContent = styled.div`
+export const MenuContent = styledTS<{ hasItems?: boolean }>(styled.div)`
   height: 100%;
   overflow: auto;
   padding: 20px;
   justify-content: center;
+  max-height: ${(props) => props.hasItems && "calc(100% - 300px)"};
 `;
 
 export const PosMenuContent = styled.div`
@@ -148,7 +149,7 @@ export const ProductCategories = styledTS<{ isPortrait?: boolean }>(styled.div)`
 `;
 
 //Kiosk
-export const KioskMainContent = styledTS<{ mainHeight?: number }>(styled.div)`
+export const KioskMainContent = styledTS<{ hasItems?: boolean }>(styled.div)`
   width: 100%;
   height: calc(100% - 200px);
   display: flex;
@@ -175,6 +176,7 @@ export const ProductsWrapper = styledTS<{
   height?: number;
   color?: string;
   innerWidth?: number;
+  hasItems?: boolean;
 }>(styled.div)`
   display: flex;
   flex-wrap: wrap;
@@ -205,10 +207,7 @@ export const ProductsWrapper = styledTS<{
   }
 
   @media (orientation: portrait) {
-    max-height: ${(props) =>
-      props.height && props.height !== 0
-        ? `calc(100% - ${props.height + 200}px)`
-        : "100%"};
+    max-height: ${(props) => (props.hasItems ? "calc(100% - 300px)" : "100%")};
   }
 `;
 

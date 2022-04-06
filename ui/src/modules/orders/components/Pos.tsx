@@ -531,7 +531,9 @@ export default class Pos extends React.Component<Props, State> {
           </div>
           <KioskMainContent>
             <KioskMenuContent>
-              <MenuContent>{categories}</MenuContent>
+              <MenuContent hasItems={items.length > 0}>
+                {categories}
+              </MenuContent>
             </KioskMenuContent>
             <KioskProductsContent>{products}</KioskProductsContent>
           </KioskMainContent>
