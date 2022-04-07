@@ -109,6 +109,7 @@ export default class QPay extends React.Component<Props, State> {
 
   checkPayment(isAuto = false) {
     const { order } = this.props;
+    const { invoice, errorMessage } = this.state;
 
     this.requestCount++;
 
@@ -118,10 +119,16 @@ export default class QPay extends React.Component<Props, State> {
       return;
     }
 
+    const variables: any = { orderId: order._id };
+
+    if (invoice && !errorMessage) {
+      variables._id = invoice._id;
+    }
+
     client
       .mutate({
         mutation: gql(mutations.qpayCheckPayment),
-        variables: { orderId: order._id }
+        variables
       })
       .then(({ data }) => {
         const invoice = data.qpayCheckPayment;
