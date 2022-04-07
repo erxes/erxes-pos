@@ -205,17 +205,17 @@ class PosContainer extends React.Component<Props, States> {
           window.location.href = "/";
         })
         .catch((e) => {
-          Alert.error(__(e.message));
+          Alert.error(__(trimGraphqlError(e.message)));
         });
     };
 
-    const setCardPaymentInfo = (params: any, callback?: any) => {
+    const addOrderPayment = (params: any, callback?: any) => {
       addPaymentMutation({ variables: params })
         .then(({ data }) => {
           if (
             data &&
-            data.ordersSetPaymentInfo &&
-            data.ordersSetPaymentInfo._id
+            data.ordersAddPayment &&
+            data.ordersAddPayment._id
           ) {
             Alert.success("Card payment info saved");
           }
@@ -225,7 +225,7 @@ class PosContainer extends React.Component<Props, States> {
           }
         })
         .catch((e) => {
-          Alert.error(__(e.message));
+          Alert.error(__(trimGraphqlError(e.message)));
         });
     };
 
@@ -241,7 +241,7 @@ class PosContainer extends React.Component<Props, States> {
       onChangeProductBodyType,
       handleModal,
       productBodyType,
-      setCardPaymentInfo,
+      addOrderPayment,
       makePayment,
       showMenu,
       modalContentType,

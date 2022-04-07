@@ -30,7 +30,7 @@ type Props = {
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
   toggleModal: (modalContentType: string) => void;
-  setCardPaymentInfo: (params: any) => void;
+  addOrderPayment: (params: any) => void;
   qp: any;
   handleModal: () => void;
   cancelOrder: (id: string) => void;

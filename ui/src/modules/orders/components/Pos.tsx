@@ -61,7 +61,7 @@ type Props = {
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
   qp: any;
-  setCardPaymentInfo: (params: any) => void;
+  addOrderPayment: (params: any) => void;
   logout?: () => void;
   type?: string;
   onChangeProductBodyType: (type: string) => void;
@@ -223,7 +223,7 @@ export default class Pos extends React.Component<Props, State> {
       modalContentType,
       orientation,
       toggleModal,
-      setCardPaymentInfo,
+      addOrderPayment,
     } = this.props;
     const { totalAmount, paymentType } = this.state;
 
@@ -240,7 +240,7 @@ export default class Pos extends React.Component<Props, State> {
               closeDrawer={toggleModal}
               makePayment={makePayment}
               order={order}
-              setCardPaymentInfo={setCardPaymentInfo}
+              addOrderPayment={addOrderPayment}
               orientation={orientation}
               handlePayment={this.handlePayment}
               addOrder={this.addOrder}

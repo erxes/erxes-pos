@@ -42,7 +42,7 @@ type Props = {
   header?: React.ReactNode;
   extraButton?: React.ReactNode;
   handlePayment: (params: IPaymentParams) => void;
-  setCardPaymentInfo: (params: any) => void;
+  addOrderPayment: (params: any) => void;
   paymentMethod: string;
 };
 
@@ -303,7 +303,7 @@ class PaymentForm extends React.Component<Props, State> {
   }
 
   renderCardButtons() {
-    const { options, order, setCardPaymentInfo } = this.props;
+    const { options, order, addOrderPayment } = this.props;
     const { paymentEnabled, cardAmount = 0, billType } = this.state;
 
     if (paymentEnabled) {
@@ -326,7 +326,7 @@ class PaymentForm extends React.Component<Props, State> {
         color={options.colors.primary}
         billType={billType}
         order={order}
-        setCardPaymentInfo={setCardPaymentInfo}
+        addOrderPayment={addOrderPayment}
       />
     );
   }
