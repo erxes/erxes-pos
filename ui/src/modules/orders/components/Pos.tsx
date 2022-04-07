@@ -555,6 +555,7 @@ export default class Pos extends React.Component<Props, State> {
                 config={currentConfig}
                 order={order}
                 type={type}
+                cancelOrder={cancelOrder}
               />
             </FooterContent>
           )}

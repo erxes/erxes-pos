@@ -91,11 +91,12 @@ type Props = {
   changeItemCount: (item: IOrderItemInput) => void;
   changeItemIsTake: (item: IOrderItemInput, value: boolean) => void;
   config: IConfig;
-  editOrder: () => void;
+  editOrder: (callback?: () => void) => void;
   order: IOrder | null;
   type: string;
   onChangeProductBodyType: (type: string) => void;
   productBodyType?: string;
+  cancelOrder: (id: string) => void;
 };
 
 type State = {
@@ -129,18 +130,24 @@ export default class FooterCalculation extends React.Component<Props, State> {
   };
 
   renderPaymentButton() {
-    const { order, addOrder, config, setItems, onClickModal } = this.props;
+    const { order, addOrder, config, onClickModal, editOrder, cancelOrder } = this.props;
 
     if (order && order.paidDate) {
       return null;
     }
 
     const onClickPayment = () => {
-      addOrder(() => onClickModal("payment"));
+      if (order && order._id && !order.paidDate) {
+        editOrder(() => onClickModal('payment'));
+      } else {
+        addOrder(() => onClickModal("payment"));
+      }
     };
 
     const onCancelOrder = () => {
-      setItems([]);
+      if (order && order._id && !order.paidDate) {
+        cancelOrder(order._id);
+      }
     };
 
     return (
