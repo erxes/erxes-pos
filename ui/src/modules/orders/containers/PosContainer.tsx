@@ -124,7 +124,7 @@ class PosContainer extends React.Component<Props, States> {
             Alert.success(__("Order has been created successfully"));
 
             router.setParams(this.props.history, { id: order._id, home: null });
-            console.log("in container");
+
             if (callback) {
               callback();
             }

@@ -87,3 +87,11 @@ export const Card = styledTS<{ isPortrait?: boolean }>(styled.div)`
     margin-right: 0;
   }
 `;
+
+export const VatWrapper = styledTS<{ color?: string; isPortrait?: boolean }>(
+  styled.div
+)`
+  button {
+    font-size: 22px;
+  }
+`;

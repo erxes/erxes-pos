@@ -1,14 +1,14 @@
-import React from 'react';
-import styledTS from 'styled-components-ts';
-import styled from 'styled-components';
+import React from "react";
+import styledTS from "styled-components-ts";
+import styled from "styled-components";
 
-import Button from 'modules/common/components/Button';
-import FormControl from 'modules/common/components/form/Control';
-import { FlexCenter } from 'modules/common/styles/main';
-import Icon from 'modules/common/components/Icon';
-import { __ } from 'modules/common/utils';
-import { Input, FormHead, ButtonGroup } from 'modules/orders/styles';
-import { BILL_TYPES } from '../../../../constants';
+import Button from "modules/common/components/Button";
+import FormControl from "modules/common/components/form/Control";
+import { FlexCenter } from "modules/common/styles/main";
+import Icon from "modules/common/components/Icon";
+import { __ } from "modules/common/utils";
+import { Input, FormHead, ButtonGroup } from "modules/orders/styles";
+import { BILL_TYPES } from "../../../../constants";
 
 export const FlexCenterFix = styledTS<{ isPortrait?: boolean }>(
   styled(FlexCenter)
@@ -16,7 +16,7 @@ export const FlexCenterFix = styledTS<{ isPortrait?: boolean }>(
   display: flex;
 
   button {
-    margin: ${props => (props.isPortrait ? '10px 0px 0px 40%' : '0 0 0 5px')};
+    margin: ${(props) => (props.isPortrait ? "10px 0px 0px 40%" : "0 0 0 5px")};
   }
 `;
 
@@ -45,7 +45,7 @@ export default class RegisterChecker extends React.Component<Props> {
       registerNumber,
       onChange,
       focusOnKeypads,
-      setBill
+      setBill,
     } = this.props;
 
     if (!show || billType !== BILL_TYPES.ENTITY) {
@@ -59,11 +59,11 @@ export default class RegisterChecker extends React.Component<Props> {
             <FormControl
               type="text"
               name="registerNumber"
-              onChange={e => onChange(e)}
+              onChange={onChange}
               value={registerNumber}
               onClick={() => focusOnKeypads()}
             />
-            <div onClick={() => reset('registerNumber')}>
+            <div onClick={() => reset("registerNumber")}>
               <Icon icon="cancel" size={13} />
             </div>
           </Input>
@@ -72,7 +72,7 @@ export default class RegisterChecker extends React.Component<Props> {
               style={{ backgroundColor: color }}
               onClick={() => checkOrganization()}
             >
-              {__('Check')}
+              {__("Check")}
             </Button>
           </ButtonGroup>
         </FlexCenterFix>
