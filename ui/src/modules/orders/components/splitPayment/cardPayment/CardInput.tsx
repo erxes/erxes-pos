@@ -71,8 +71,8 @@ export default class CardInput extends React.Component<Props, State> {
     };
 
     // const PATH = "http://localhost:27028";
-    // const PATH = "https://test-pos.erxes.io/";
-    const PATH = "http://localhost:7000/";
+    const PATH = "https://test-pos.erxes.io/";
+    // const PATH = "http://localhost:7000/";
 
     const sendTransaction = async () => {
       // fetch(`${PATH}/ajax/get-status-info`)

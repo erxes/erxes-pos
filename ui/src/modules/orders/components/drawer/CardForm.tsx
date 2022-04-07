@@ -34,7 +34,7 @@ export default class CardForm extends React.Component<Props, State> {
   render() {
     const { cardAmount, onStateChange, setCardPaymentInfo, order } = this.props;
 
-    const PATH = "http://localhost:7000";
+    const PATH = "https://test-pos.erxes.io/";
     // const PATH = 'http://localhost:27028';
 
     const sendTransaction = async () => {
