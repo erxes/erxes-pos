@@ -6,7 +6,6 @@ import { IOrder } from "modules/orders/types";
 import apolloClient from "apolloClient";
 import { queries } from "modules/orders/graphql/index";
 import { FormHead } from "modules/orders/styles";
-// import Ebarimt from "./Ebarimt";
 import { formatNumber } from "modules/utils";
 import RegisterChecker from "./RegisterChecker";
 import KeyPads from "./KeyPads";
@@ -17,7 +16,6 @@ import { Alert } from "modules/common/utils";
 import gql from "graphql-tag";
 import { Cards, TypeWrapper, VatWrapper } from "./style";
 import {
-  // EbarimtButton,
   Header,
   KioskAmount,
   PaymentWrapper,
@@ -80,13 +78,11 @@ class PaymentForm extends React.Component<Props, State> {
       activeInput:
         paymentMethod === PAYMENT_METHODS.CARD
           ? PAYMENT_TYPES.CARD
-          : PAYMENT_TYPES.CASH,
+          : PAYMENT_TYPES.REGISTER,
       // payment doc
       registerNumber: "",
       companyName: "",
       billType: BILL_TYPES.CITIZEN,
-      cashAmount:
-        paymentMethod === PAYMENT_METHODS.CASH ? order.totalAmount : 0,
       cardAmount:
         paymentMethod === PAYMENT_METHODS.CARD ? order.totalAmount : 0,
       paymentEnabled: paymentMethod === PAYMENT_METHODS.CASH ? true : false,

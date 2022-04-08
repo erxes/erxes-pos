@@ -163,15 +163,15 @@ export default class CardForm extends React.Component<Props, State> {
     );
   } // end render()
 
-  componentDidMount() {
-    this.setupTimer();
-  }
+  // componentDidMount() {
+  //   this.setupTimer();
+  // }
 
-  componentDidUpdate() {
-    this.setupTimer();
-  }
+  // componentDidUpdate() {
+  //   this.setupTimer();
+  // }
 
-  componentWillUnmount() {
-    clearTimeout(this.timeoutId);
-  }
+  // componentWillUnmount() {
+  //   clearTimeout(this.timeoutId);
+  // }
 }
