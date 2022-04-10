@@ -1,19 +1,17 @@
 import "abortcontroller-polyfill/dist/polyfill-patch-fetch";
 import React from "react";
 
-import Button from "modules/common/components/Button";
 import { __, Alert } from "modules/common/utils";
 import { IOrder } from "modules/orders/types";
+import { Cards, TypeWrapper } from "./style";
 
 type Props = {
-  cardAmount: number;
   color?: string;
   onStateChange: (key: string, value: any) => void;
   billType: string;
   addOrderPayment: (params: any) => void;
   order: IOrder;
-  isSplit?: boolean;
-  cashAmount?: number;
+  orientation?: string;
 };
 
 type State = { sentTransaction: boolean };
@@ -37,13 +35,13 @@ export default class CardForm extends React.Component<Props, State> {
   }
 
   sendTransaction(isAuto = false) {
-    const { cardAmount, onStateChange, order, addOrderPayment } = this.props;
+    const { order, addOrderPayment, onStateChange } = this.props;
     // const PATH = "http://localhost:27028";
     const PATH = "http://localhost:7000";
 
     this.requestCount++;
 
-    if (isAuto && this.requestCount > 20) {
+    if ((isAuto && this.requestCount > 20) || (order.totalAmount === order.cardAmount)) {
       clearTimeout(this.timeoutId);
 
       return;
@@ -84,7 +82,7 @@ export default class CardForm extends React.Component<Props, State> {
                 response: {
                   response_code: "000",
                   aid: "A0000000031010",
-                  amount: cardAmount,
+                  amount: order.totalAmount,
                   app_name: "VISA DEBIT",
                   auth_code: "1TS93C",
                   bank_mb_code: "05",
@@ -120,14 +118,13 @@ export default class CardForm extends React.Component<Props, State> {
                     )
                   );
 
-                  // enable payment button
-                  onStateChange("paymentEnabled", true);
-
                   addOrderPayment({
                     _id: order._id,
                     cardInfo: r.response,
-                    cardAmount,
+                    cardAmount: order.totalAmount,
                   });
+
+                  onStateChange('isDone', true);
                 } else {
                   return Alert.warning(r.response.response_msg);
                 }
@@ -146,32 +143,34 @@ export default class CardForm extends React.Component<Props, State> {
   }
 
   render() {
-    const { cardAmount, onStateChange } = this.props;
+    const { orientation } = this.props;
+    const isPortrait = orientation === 'portrait';
 
     return (
       <>
-        {cardAmount && (
-          <Button
-            btnStyle="success"
-            onClick={() => onStateChange("paymentEnabled", true)}
-            size="large"
-          >
-            {__("Payment")}
-          </Button>
-        )}
+        <TypeWrapper isPortrait={isPortrait}>
+          <h2>
+            {__("Please follow the instructions on the card reader to make payment")}
+          </h2>
+          <Cards isPortrait={isPortrait}>
+            <div>
+              <img src="/images/payment-success.gif" alt="card-reader" />
+            </div>
+          </Cards>
+        </TypeWrapper>
       </>
     );
   } // end render()
 
-  // componentDidMount() {
-  //   this.setupTimer();
-  // }
+  componentDidMount() {
+    this.setupTimer();
+  }
 
-  // componentDidUpdate() {
-  //   this.setupTimer();
-  // }
+  componentDidUpdate() {
+    this.setupTimer();
+  }
 
-  // componentWillUnmount() {
-  //   clearTimeout(this.timeoutId);
-  // }
+  componentWillUnmount() {
+    clearTimeout(this.timeoutId);
+  }
 }

@@ -38,7 +38,7 @@ import Modal from "react-bootstrap/Modal";
 import { __ } from "modules/common/utils";
 import Tip from "modules/common/components/Tip";
 import { IPaymentParams } from "../containers/PosContainer";
-import PaymentForm from "./drawer/PaymentForm";
+import KioskPaymentForm from "./drawer/KioskPaymentForm";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -225,7 +225,7 @@ export default class Pos extends React.Component<Props, State> {
       toggleModal,
       addOrderPayment,
     } = this.props;
-    const { totalAmount, paymentType } = this.state;
+    const { paymentType } = this.state;
 
     const options = currentConfig ? currentConfig.uiOptions : {};
 
@@ -233,10 +233,9 @@ export default class Pos extends React.Component<Props, State> {
       case "payment":
         return (
           order && (
-            <PaymentForm
+            <KioskPaymentForm
               orderId={order ? order._id : ""}
               options={options}
-              totalAmount={totalAmount}
               closeDrawer={toggleModal}
               makePayment={makePayment}
               order={order}

@@ -4,7 +4,7 @@ import { __ } from "modules/common/utils";
 import Button from "modules/common/components/Button";
 import { EbarimtButton } from "../kiosk/style";
 import { FlexCenter } from "modules/common/styles/main";
-import { BILL_TYPES } from "./PaymentForm";
+import { BILL_TYPES } from "./KioskPaymentForm";
 
 type Props = {
   billType: string;

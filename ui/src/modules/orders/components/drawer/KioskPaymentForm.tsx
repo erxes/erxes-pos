@@ -21,13 +21,12 @@ import {
   PaymentWrapper,
   Title,
 } from "../kiosk/style";
-import CardForm from "./CardForm";
+import KioskCard from "./KioskCard";
 import Ebarimt from "./Ebarimt";
 
 type Props = {
   orderId: string;
   options: any;
-  totalAmount: number;
   closeDrawer: (type: string) => void;
   makePayment: any;
   order: IOrder;
@@ -59,7 +58,6 @@ export const PAYMENT_TYPES = {
 type State = {
   showE: boolean;
   activeInput: string;
-  paymentEnabled: boolean;
   paymentType: string;
   companyName: string;
   isDone: boolean;
@@ -72,9 +70,9 @@ class PaymentForm extends React.Component<Props, State> {
     const { paymentMethod, order } = props;
 
     this.state = {
-      paymentType: "card",
+      paymentType: '',
       showE: true,
-      isDone: false,
+      isDone: order.cardAmount === order.totalAmount ? true : false,
       activeInput:
         paymentMethod === PAYMENT_METHODS.CARD
           ? PAYMENT_TYPES.CARD
@@ -83,9 +81,6 @@ class PaymentForm extends React.Component<Props, State> {
       registerNumber: "",
       companyName: "",
       billType: BILL_TYPES.CITIZEN,
-      cardAmount:
-        paymentMethod === PAYMENT_METHODS.CARD ? order.totalAmount : 0,
-      paymentEnabled: paymentMethod === PAYMENT_METHODS.CASH ? true : false,
     };
   }
 
@@ -120,10 +115,6 @@ class PaymentForm extends React.Component<Props, State> {
 
   reset = (key: string) => {
     this.setState({ [key]: key === "registerNumber" ? "" : 0 } as any);
-  };
-
-  handleSubmit = () => {
-    this.onStateChange("isDone", true);
   };
 
   handlePaymentBefore = () => {
@@ -161,24 +152,6 @@ class PaymentForm extends React.Component<Props, State> {
   focusOnRegisterInput = () => {
     this.setState({ activeInput: PAYMENT_TYPES.REGISTER });
   };
-
-  //render PaymentType
-  renderPayment() {
-    const { options, orientation } = this.props;
-    const isPortrait = orientation === "portrait";
-
-    const togglePaymentType = (paymentType: string) => {
-      this.setState({ paymentType });
-    };
-
-    return (
-      <PaymentType
-        color={options.colors.primary}
-        togglePaymentType={togglePaymentType}
-        isPortrait={isPortrait}
-      />
-    );
-  }
 
   // render VatReceipt
   renderVatReceipt() {
@@ -242,28 +215,6 @@ class PaymentForm extends React.Component<Props, State> {
     );
   }
 
-  //render Kiosk PaymentPopUp2
-  renderPaymentPopUp() {
-    const { orientation } = this.props;
-    const isPortrait = orientation === "portrait";
-
-    return (
-      <TypeWrapper isPortrait={isPortrait}>
-        <h2>
-          {__(
-            "Make the payment you will make according to the card instructions to the card reader on the right hand side"
-          )}
-        </h2>
-
-        <Cards isPortrait={isPortrait}>
-          <div>
-            <img src="/images/payment-success.gif" alt="card-reader" />
-          </div>
-        </Cards>
-      </TypeWrapper>
-    );
-  }
-
   //Final tulbur tulugdsunii daraa
   renderDone() {
     const { orientation, order } = this.props;
@@ -287,42 +238,19 @@ class PaymentForm extends React.Component<Props, State> {
     );
   }
 
-  renderPopUpType() {
-    const { paymentEnabled } = this.state;
+  renderPaymentChoice() {
+    const { options, orientation } = this.props;
+    const isPortrait = orientation === "portrait";
 
-    if (paymentEnabled) {
-      return this.renderPaymentPopUp();
-      // return this.renderDone();
-    }
-
-    return this.renderPayment();
-  }
-
-  renderCardButtons() {
-    const { options, order, addOrderPayment } = this.props;
-    const { paymentEnabled, cardAmount = 0, billType } = this.state;
-
-    if (paymentEnabled) {
-      return (
-        <Button
-          style={{ backgroundColor: options.colors.primary }}
-          size="medium"
-          icon="check-circle"
-          onClick={this.handleSubmit}
-        >
-          {__("Waiting for payment")}
-        </Button>
-      );
-    }
+    const togglePaymentType = (paymentType: string) => {
+      this.setState({ paymentType });
+    };
 
     return (
-      <CardForm
-        onStateChange={this.onStateChange}
-        cardAmount={cardAmount}
+      <PaymentType
         color={options.colors.primary}
-        billType={billType}
-        order={order}
-        addOrderPayment={addOrderPayment}
+        togglePaymentType={togglePaymentType}
+        isPortrait={isPortrait}
       />
     );
   }
@@ -335,7 +263,7 @@ class PaymentForm extends React.Component<Props, State> {
       options,
       orderId,
       orientation,
-      totalAmount,
+      addOrderPayment
     } = this.props;
 
     const {
@@ -358,11 +286,7 @@ class PaymentForm extends React.Component<Props, State> {
       return null;
     }
 
-    if (paymentType === PAYMENT_METHODS.QPAY) {
-      return <QPay order={order} handlePayment={this.handlePayment} />;
-    }
-
-    if (totalAmount === 0) {
+    if (order.paidDate) {
       return this.renderDone();
     }
 
@@ -392,9 +316,26 @@ class PaymentForm extends React.Component<Props, State> {
       );
     }
 
+    if (paymentType === PAYMENT_METHODS.QPAY) {
+      return <QPay order={order} handlePayment={this.handlePayment} />;
+    }
+
+    if (paymentType === PAYMENT_METHODS.CARD) {
+      return (
+        <KioskCard
+          onStateChange={this.onStateChange}
+          color={options.colors.primary}
+          billType={billType}
+          order={order}
+          addOrderPayment={addOrderPayment}
+          orientation={orientation}
+        />
+      );
+    }
+
     return (
       <>
-        {this.renderPopUpType()}
+        {this.renderPaymentChoice()}
         {title && <Title>{__(title)}</Title>}
         <Header>{this.renderAmount()}</Header>
         <PaymentWrapper isPortrait={isPortrait}>
@@ -406,7 +347,6 @@ class PaymentForm extends React.Component<Props, State> {
             >
               {__("Cancel")}
             </Button>
-            {this.renderCardButtons()}
           </FlexCenter>
         </PaymentWrapper>
       </>
