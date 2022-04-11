@@ -130,7 +130,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
   };
 
   renderPaymentButton() {
-    const { order, addOrder, config, onClickModal, editOrder, cancelOrder } =
+    const { order, addOrder, config, onClickModal, editOrder, cancelOrder, setItems } =
       this.props;
 
     if (order && order.paidDate) {
@@ -148,6 +148,8 @@ export default class FooterCalculation extends React.Component<Props, State> {
     const onCancelOrder = () => {
       if (order && order._id && !order.paidDate) {
         cancelOrder(order._id);
+      } else {
+        setItems([]);
       }
     };
 
