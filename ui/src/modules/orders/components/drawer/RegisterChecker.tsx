@@ -13,10 +13,10 @@ import { BILL_TYPES } from "../../../../constants";
 export const FlexCenterFix = styledTS<{ isPortrait?: boolean }>(
   styled(FlexCenter)
 )`
-  display: flex;
+  margin-bottom: 30px;
 
-  button {
-    margin: ${(props) => (props.isPortrait ? "10px 0px 0px 40%" : "0 0 0 5px")};
+  > div {
+    height: 80px;
   }
 `;
 

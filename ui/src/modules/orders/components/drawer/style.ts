@@ -94,4 +94,8 @@ export const VatWrapper = styledTS<{ color?: string; isPortrait?: boolean }>(
   button {
     font-size: 22px;
   }
+
+  input {
+    font-size: 28px;
+  }
 `;

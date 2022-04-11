@@ -140,8 +140,8 @@ export const KioskStageContent = styledTS<{
 
   /* width */
   ::-webkit-scrollbar {
-    width: ${(props) =>
-      props.innerWidth ? `${props.innerWidth * 0.01}px` : "6px"};
+    height: ${(props) =>
+      props.innerWidth ? `${props.innerWidth * 0.01}px` : "15px"};
   }
 
   /* Track */
@@ -165,7 +165,7 @@ export const KioskStageContent = styledTS<{
 
 export const SelectedItem = styledTS<{ color?: string }>(styled.div)`
   width: 210px;
-  height: 210px;
+  flex-shrink: 0;
   border: 1px solid ${(props) =>
     props.color ? props.color : colors.colorSecondary};
   box-sizing: border-box;
@@ -173,11 +173,11 @@ export const SelectedItem = styledTS<{ color?: string }>(styled.div)`
   margin-right: 15px;
   display: flex;
   justify-content: center;
+  overflow: hidden;
 `;
 
 export const SelectedStage = styled.div`
   min-width: 210px;
-  max-height: 210px;
   text-align: center;
   position: relative;
   padding: 5px;
@@ -201,9 +201,13 @@ export const SelectedStage = styled.div`
 
   .text-wrapper {
     text-align: center;
-    line-height: ${dimensions.coreSpacing}px;
-    font-size: 16px;
-    padding-top: ${dimensions.unitSpacing}px;
+    line-height: ${dimensions.coreSpacing + 2}px;
+    font-size: ${dimensions.coreSpacing + 2}px;
+    padding: ${dimensions.unitSpacing}px 0;
+
+    > div {
+      margin-bottom: 5px;
+    }
 
     span {
       color: #616e7c;
@@ -248,6 +252,29 @@ export const FlexColumn = styled.div`
   display: flex;
   overflow-x: auto;
   max-width: 70%;
+
+  /* width */
+  ::-webkit-scrollbar {
+    width: 15px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: ${(props) =>
+      props.color ? props.color : colors.colorSecondary};
+    border-radius: 40px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: ${(props) =>
+      props.color ? props.color : colors.colorSecondary};
+  }
 `;
 
 const style = `
