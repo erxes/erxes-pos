@@ -23,7 +23,7 @@ class PaymentType extends React.Component<Props, State> {
     super(props);
 
     this.state = {
-      selectedPaymentType: PAYMENT_METHODS.CARD,
+      selectedPaymentType: '',
     };
   }
 
