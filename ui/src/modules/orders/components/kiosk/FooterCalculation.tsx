@@ -12,7 +12,7 @@ import { FlexColumn } from "./style";
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   position: absolute;
-  bottom: 0;
+  bottom: 5px;
   left: 0;
   right: 0;
   width: 100%;
@@ -130,7 +130,8 @@ export default class FooterCalculation extends React.Component<Props, State> {
   };
 
   renderPaymentButton() {
-    const { order, addOrder, config, onClickModal, editOrder, cancelOrder } = this.props;
+    const { order, addOrder, config, onClickModal, editOrder, cancelOrder } =
+      this.props;
 
     if (order && order.paidDate) {
       return null;
@@ -138,7 +139,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
 
     const onClickPayment = () => {
       if (order && order._id && !order.paidDate) {
-        editOrder(() => onClickModal('payment'));
+        editOrder(() => onClickModal("payment"));
       } else {
         addOrder(() => onClickModal("payment"));
       }
