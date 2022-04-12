@@ -35,10 +35,8 @@ export default class CardForm extends React.Component<Props, State> {
   }
 
   sendTransaction(isAuto = false) {
-    const { order, addOrderPayment, onStateChange } = this.props;
-    // const PATH = "http://localhost:27028";
-    // const PATH = "http://localhost:7000";
-    const PATH = "https://test-pos.erxes.io";
+    const { order, addOrderPayment, onStateChange, billType } = this.props;
+    const PATH = "http://localhost:27028";
 
     this.requestCount++;
 
@@ -48,69 +46,28 @@ export default class CardForm extends React.Component<Props, State> {
       return;
     }
 
-    fetch(`${PATH}`)
-      // .then(res => res.json())
+    fetch(`${PATH}/ajax/get-status-info`)
+      .then(res => res.json())
       .then((res: any) => {
-        // TODO remove code, fake data
-        res = {
-          status_code: "ok",
-        };
-
         if (res && res.status_code === "ok") {
           // send transaction upon successful connection
           fetch(PATH, {
-            method: "GET",
-            // method: 'POST',
+            method: 'POST',
             headers: {
               "Content-Type": "application/json",
             },
-            // body: JSON.stringify({
-            //   service_name: 'doSaleTransaction',
-            //   service_params: {
-            //     // special character _ is not accepted
-            //     db_ref_no: order.number.replace('_', ''),
-            //     amount: cardAmount.toString(),
-            //     vatps_bill_type: billType
-            //   }
-            // })
+            body: JSON.stringify({
+              service_name: 'doSaleTransaction',
+              service_params: {
+                // special character _ is not accepted
+                db_ref_no: order.number.replace('_', ''),
+                amount: order.totalAmount.toString(),
+                vatps_bill_type: billType
+              }
+            })
           })
-            // .then(res => res.json())
-            // .then(r => {
-            .then((res) => {
-              // TODO remove code, fake data
-              const r = {
-                status: true,
-                response: {
-                  response_code: "000",
-                  aid: "A0000000031010",
-                  amount: order.totalAmount,
-                  app_name: "VISA DEBIT",
-                  auth_code: "1TS93C",
-                  bank_mb_code: "05",
-                  batch_no: "000000000231",
-                  card_holder_name: "",
-                  date: "02/27",
-                  db_ref_no: "202202270001",
-                  entry_mode: "Contact Less TAP",
-                  is_vatps: "0",
-                  merchant_name: "Yoshinoya",
-                  model: "s300",
-                  operation: "SALE",
-                  pan: "438054XXXXXX2643",
-                  pos_firmware: "2.4.94",
-                  reader_id: "53240799",
-                  response_msg: "Гүйлгээ зөвшөөрөгдсөн.",
-                  rrn: "003841002333",
-                  tc: "0000000000000000",
-                  term_app_name: "DtbProlin",
-                  terminal_date: "20220227112935",
-                  terminal_id: "70078754",
-                  time: "11:29:32",
-                  trace_no: "020735",
-                  version: "334",
-                },
-              };
-
+            .then(res => res.json())
+            .then(r => {
               if (r && r.status === true && r.response) {
                 if (r.response.response_code === "000") {
                   Alert.success(
