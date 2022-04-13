@@ -1,7 +1,7 @@
 import React from "react";
 import Col from "react-bootstrap/Col";
 import Row from "react-bootstrap/Row";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 import NameCard from "modules/common/components/nameCard/NameCard";
 import AsyncComponent from "modules/common/components/AsyncComponent";
@@ -526,7 +526,9 @@ export default class Pos extends React.Component<Props, State> {
       return (
         <>
           <div className="headerKiosk">
-            <img src="/images/headerKiosk.png" alt="type" />
+            <Link to="/">
+              <img src="/images/headerKiosk.png" alt="type" />
+            </Link>
           </div>
           <KioskMainContent>
             <KioskMenuContent>
