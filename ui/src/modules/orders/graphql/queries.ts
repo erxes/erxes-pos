@@ -37,6 +37,7 @@ export const orderItemsFields = `
     productId
     isPackage
     isTake
+    productImgUrl
   }
 `;
 
