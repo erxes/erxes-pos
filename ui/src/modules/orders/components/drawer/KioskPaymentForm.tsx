@@ -197,6 +197,14 @@ class PaymentForm extends React.Component<Props, State> {
     );
   }
 
+  renderItem(item) {
+    const total = item.unitPrice * (item.count || 0);
+
+    return (
+      <li key={item._id}>{item.productName} x {item.count} = {total}</li>
+    );
+  }
+
   //render Amount
   renderAmount() {
     const { options, orientation, order } = this.props;
@@ -205,6 +213,7 @@ class PaymentForm extends React.Component<Props, State> {
     return (
       <FormHead isPortrait={isPortrait}>
         <h4>{__("Payment info")}</h4>
+        <ol>{order.items.map(i => this.renderItem(i))}</ol>
         <KioskAmount color={options.colors.primary}>
           <div className="total-wrapper">
             {__("Amount to pay")}:
