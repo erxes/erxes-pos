@@ -112,5 +112,7 @@
   "All order items will be deleted": "Захиалгын бүх зүйлс устах болно",
   "Order successfully cancelled": "Захиалга амжилттай цуцлагдлаа",
   "Order has been created successfully": "Захиалга амжилттай үүсгэлээ",
-  "Order has been updated successfully": "Захиалга амжилттай хадгалагдлаа"
+  "Order has been updated successfully": "Захиалга амжилттай хадгалагдлаа",
+  "Payment is not made yet": "Төлбөр төлөгдөөгүй байна",
+  "Payment made": "Төлбөр төлөгдсөн"
 }

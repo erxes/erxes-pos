@@ -113,5 +113,7 @@
   "All order items will be deleted": "All order items will be deleted",
   "Order successfully cancelled": "Order successfully cancelled",
   "Order has been created successfully": "Order has been created successfully",
-  "Order has been updated successfully": "Order has been updated successfully"
+  "Order has been updated successfully": "Order has been updated successfully",
+  "Payment is not made yet": "Payment is not made yet",
+  "Payment made": "Payment made"
 }

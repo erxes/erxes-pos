@@ -36,6 +36,13 @@ const ButtonWrapper = styled.div`
   margin-top: 50px;
 `;
 
+const LabelWrapper = styled.div`
+  span {
+    font-size: 14px;
+    margin: 15px;
+  }
+`;
+
 const processErrorMessage = (msg: string) => {
   let info = msg;
 
@@ -81,13 +88,16 @@ export default class QPay extends React.Component<Props, State> {
     }
 
     const labelStyle = invoice.status === 'PAID' ? 'success' : 'warning';
+    const labelText = invoice.status === 'PAID' ? __('Payment made') : __('Payment is not made yet');
 
     return (
       <React.Fragment>
         <h2>{__('Scan the QR code below with payment app to continue')}</h2>
         <QRCodeWrapper>
           <canvas id="qrcode" />
-          <Label lblStyle={labelStyle}>{invoice.status}</Label>
+          <LabelWrapper>
+            <Label lblStyle={labelStyle}>{labelText}</Label>
+          </LabelWrapper>
         </QRCodeWrapper>
       </React.Fragment>
     );
