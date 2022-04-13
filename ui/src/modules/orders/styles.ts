@@ -262,17 +262,17 @@ export const ProductCategory = styledTS<{
     props.isKiosk &&
     css`
       width: 100%;
-      padding: 20px;
-      margin-bottom: 30px;
+      padding: 15px;
+      margin-bottom: 20px;
       background: ${(props) =>
         props.isActive &&
         rgba(props.color ? props.color : colors.colorSecondary, 0.15)};
 
       > div {
         img {
-          width: 60px;
-          height: 60px;
-          margin-bottom: ${dimensions.coreSpacing}px;
+          width: 70px;
+          height: 70px;
+          margin-bottom: ${dimensions.coreSpacing - 5}px;
         }
 
         span {
