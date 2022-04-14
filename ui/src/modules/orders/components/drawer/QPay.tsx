@@ -9,7 +9,6 @@ import TextInfo from 'modules/common/components/TextInfo';
 import Label from 'modules/common/components/Label';
 import { Alert, __ } from 'modules/common/utils';
 import { mutations } from '../../graphql/index';
-import { BILL_TYPES } from '../../../../constants';
 import { IOrder, IQPayInvoice } from 'modules/orders/types';
 
 const QRCodeWrapper = styled.div`
@@ -54,8 +53,9 @@ const processErrorMessage = (msg: string) => {
 };
 
 type Props = {
-  handlePayment: any;
   order: IOrder;
+  onStateChange: (key: string, value: any) => void;
+  closeDrawer: (contentType: string) => void;
 };
 
 type State = {
@@ -103,22 +103,8 @@ export default class QPay extends React.Component<Props, State> {
     );
   }
 
-  makePayment() {
-    const { handlePayment, order } = this.props;
-    const { invoice } = this.state;
-
-    const { status = '', qpayPaymentId = '', paymentDate } = invoice;
-
-    if (status === 'PAID' && qpayPaymentId && paymentDate) {
-      handlePayment({
-        mobileAmount: order.totalAmount,
-        billType: BILL_TYPES.CITIZEN
-      });
-    }
-  }
-
   checkPayment(isAuto = false) {
-    const { order } = this.props;
+    const { order, onStateChange } = this.props;
     const { invoice, errorMessage } = this.state;
 
     this.requestCount++;
@@ -145,10 +131,12 @@ export default class QPay extends React.Component<Props, State> {
 
         this.setState({ invoice });
 
-        const paid = invoice && invoice.qpayPaymentId && invoice.paymentDate;
+        const paid = invoice && invoice.qpayPaymentId && invoice.paymentDate && invoice.status === 'PAID';
 
         if (paid) {
           clearTimeout(this.timeoutId);
+
+          onStateChange('isDone', true);
         }
       })
       .catch(e => {
@@ -184,25 +172,20 @@ export default class QPay extends React.Component<Props, State> {
     }, 3000);
   }
 
-  renderReceiptButton() {
-    const { order } = this.props;
-    const { invoice } = this.state;
+  renderBackButton() {
+    const { order, closeDrawer } = this.props;
 
     if (order.paidDate) {
       return <TextInfo>{__('Payment already made')}</TextInfo>;
     }
 
-    const disabled = !(invoice && invoice.qpayPaymentId && invoice.paymentDate);
-
     return (
       <Button
-        disabled={disabled}
-        btnStyle="success"
-        icon="check-circle"
-        size="large"
-        onClick={() => this.makePayment()}
+        btnStyle="simple"
+        icon="arrow-left"
+        onClick={() => closeDrawer('payment')}
       >
-        {__('Print receipt')}
+        {__('Cancel')}
       </Button>
     );
   }
@@ -220,7 +203,7 @@ export default class QPay extends React.Component<Props, State> {
             {this.renderQrCode()}
             <ButtonWrapper>
               {!mode && this.renderCheckPaymentButton()}
-              {this.renderReceiptButton()}
+              {this.renderBackButton()}
             </ButtonWrapper>
           </MainContent>
         )}

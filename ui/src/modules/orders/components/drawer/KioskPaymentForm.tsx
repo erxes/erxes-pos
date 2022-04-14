@@ -272,7 +272,8 @@ class PaymentForm extends React.Component<Props, State> {
       options,
       orderId,
       orientation,
-      addOrderPayment
+      addOrderPayment,
+      closeDrawer
     } = this.props;
 
     const {
@@ -326,7 +327,9 @@ class PaymentForm extends React.Component<Props, State> {
     }
 
     if (paymentType === PAYMENT_METHODS.QPAY) {
-      return <QPay order={order} handlePayment={this.handlePayment} />;
+      return (
+        <QPay order={order} onStateChange={this.onStateChange} closeDrawer={closeDrawer} />
+      );
     }
 
     if (paymentType === PAYMENT_METHODS.CARD) {
