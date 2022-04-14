@@ -81,7 +81,10 @@ class PosContainer extends React.Component<Props, States> {
     };
 
     const toggleModal = (modalContentType: string) => {
-      this.setState({ showMenu: !this.state.showMenu, modalContentType });
+      this.setState({
+        showMenu: modalContentType === "payment" ? true : !this.state.showMenu,
+        modalContentType,
+      });
     };
 
     const handleModal = () => {
@@ -212,11 +215,7 @@ class PosContainer extends React.Component<Props, States> {
     const addOrderPayment = (params: any, callback?: any) => {
       addPaymentMutation({ variables: params })
         .then(({ data }) => {
-          if (
-            data &&
-            data.ordersAddPayment &&
-            data.ordersAddPayment._id
-          ) {
+          if (data && data.ordersAddPayment && data.ordersAddPayment._id) {
             Alert.success("Card payment info saved");
           }
 

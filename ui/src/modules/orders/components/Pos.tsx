@@ -40,6 +40,7 @@ import Tip from "modules/common/components/Tip";
 import { IPaymentParams } from "../containers/PosContainer";
 import KioskPaymentForm from "./drawer/KioskPaymentForm";
 import Button from "modules/common/components/Button";
+import ConfirmList from "./kiosk/ConfirmList";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -253,6 +254,18 @@ export default class Pos extends React.Component<Props, State> {
               paymentMethod={paymentType}
             />
           )
+        );
+      case "check":
+        return (
+          <ConfirmList
+            order={order}
+            isPortrait={orientation === "portrait"}
+            config={currentConfig}
+            totalAmount={this.state.totalAmount}
+            editOrder={this.editOrder}
+            addOrder={this.addOrder}
+            onClickModal={toggleModal}
+          />
         );
       default:
         return null;
@@ -551,9 +564,7 @@ export default class Pos extends React.Component<Props, State> {
             <FooterCalculation
               orientation={orientation}
               totalAmount={totalAmount}
-              addOrder={this.addOrder}
               setItems={this.setItems}
-              editOrder={this.editOrder}
               setOrderState={this.setOrderState}
               onClickModal={toggleModal}
               items={items}

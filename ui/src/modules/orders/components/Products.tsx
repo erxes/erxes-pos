@@ -100,7 +100,7 @@ export default class Products extends React.Component<Props, State> {
 
   render() {
     const { uiOptions } = this.props.currentConfig;
-    console.log("widdd:", window.innerWidth);
+
     return (
       <ProductsWrapper
         height={this.state.categoriesHeight}

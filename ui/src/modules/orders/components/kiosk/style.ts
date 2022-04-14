@@ -248,6 +248,80 @@ export const CloseIcon = styled.div`
   cursor: pointer;
 `;
 
+export const ConfirmListWrapper = styled.div`
+  ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 0;
+
+    li {
+      border-bottom: 1px solid #ccc;
+      padding-bottom: ${dimensions.coreSpacing}px;
+      margin-bottom: ${dimensions.coreSpacing}px;
+      display: flex;
+      align-items: center;
+
+      h4 {
+        margin: 0;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 10px;
+      }
+
+      .item {
+        flex: 1;
+      }
+
+      .product-count {
+        display: flex;
+        justify-content: space-between;
+        font-size: 26px;
+
+        b {
+          color: ${(props) =>
+            props.color ? props.color : colors.colorSecondary};
+        }
+
+        span {
+          color: ${colors.colorCoreGray};
+        }
+      }
+
+      .image-wrapper {
+        width: 100px;
+        height: 100px;
+        overflow: hidden;
+        margin-right: 20px;
+        flex-shrink: 0;
+
+        > img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .total {
+    text-align: right;
+    margin-bottom: 25px;
+
+    b {
+      margin-left: ${dimensions.unitSpacing}px;
+
+      &:last-child {
+        color: ${(props) =>
+          props.color ? props.color : colors.colorSecondary};
+      }
+    }
+  }
+
+  button {
+    font-size: 24px;
+    padding: 20px;
+  }
+`;
+
 export const FlexColumn = styledTS<{ color?: string; orientation?: string }>(
   styled.div
 )`

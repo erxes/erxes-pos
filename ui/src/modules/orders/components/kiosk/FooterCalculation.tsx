@@ -83,7 +83,6 @@ export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
 type Props = {
   orientation: string;
   totalAmount: number;
-  addOrder: (callback?: () => void) => void;
   setItems: (items: IOrderItemInput[]) => void;
   setOrderState: (name: string, value: any) => void;
   onClickModal: (modalContentType: string) => void;
@@ -91,7 +90,6 @@ type Props = {
   changeItemCount: (item: IOrderItemInput) => void;
   changeItemIsTake: (item: IOrderItemInput, value: boolean) => void;
   config: IConfig;
-  editOrder: (callback?: () => void) => void;
   order: IOrder | null;
   type: string;
   onChangeProductBodyType: (type: string) => void;
@@ -130,26 +128,14 @@ export default class FooterCalculation extends React.Component<Props, State> {
   };
 
   renderPaymentButton() {
-    const {
-      order,
-      addOrder,
-      config,
-      onClickModal,
-      editOrder,
-      cancelOrder,
-      setItems,
-    } = this.props;
+    const { order, config, onClickModal, cancelOrder, setItems } = this.props;
 
     if (order && order.paidDate) {
       return null;
     }
 
     const onClickPayment = () => {
-      if (order && order._id && !order.paidDate) {
-        editOrder(() => onClickModal("payment"));
-      } else {
-        addOrder(() => onClickModal("payment"));
-      }
+      onClickModal("check");
     };
 
     const onCancelOrder = () => {

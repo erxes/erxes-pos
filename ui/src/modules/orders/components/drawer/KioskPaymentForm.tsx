@@ -15,12 +15,7 @@ import { __ } from "modules/common/utils";
 import { Alert } from "modules/common/utils";
 import gql from "graphql-tag";
 import { Cards, TypeWrapper, VatWrapper } from "./style";
-import {
-  Header,
-  KioskAmount,
-  PaymentWrapper,
-  Title,
-} from "../kiosk/style";
+import { Header, KioskAmount, PaymentWrapper, Title } from "../kiosk/style";
 import KioskCard from "./KioskCard";
 import Ebarimt from "./Ebarimt";
 
@@ -70,7 +65,7 @@ class PaymentForm extends React.Component<Props, State> {
     const { paymentMethod, order } = props;
 
     this.state = {
-      paymentType: '',
+      paymentType: "",
       showE: true,
       isDone: order.cardAmount === order.totalAmount ? true : false,
       activeInput:
@@ -197,14 +192,6 @@ class PaymentForm extends React.Component<Props, State> {
     );
   }
 
-  renderItem(item) {
-    const total = item.unitPrice * (item.count || 0);
-
-    return (
-      <li key={item._id}>{item.productName} x {item.count} = {total}</li>
-    );
-  }
-
   //render Amount
   renderAmount() {
     const { options, orientation, order } = this.props;
@@ -213,7 +200,6 @@ class PaymentForm extends React.Component<Props, State> {
     return (
       <FormHead isPortrait={isPortrait}>
         <h4>{__("Payment info")}</h4>
-        <ol>{order.items.map(i => this.renderItem(i))}</ol>
         <KioskAmount color={options.colors.primary}>
           <div className="total-wrapper">
             {__("Amount to pay")}:
@@ -273,7 +259,7 @@ class PaymentForm extends React.Component<Props, State> {
       orderId,
       orientation,
       addOrderPayment,
-      closeDrawer
+      closeDrawer,
     } = this.props;
 
     const {
@@ -328,7 +314,11 @@ class PaymentForm extends React.Component<Props, State> {
 
     if (paymentType === PAYMENT_METHODS.QPAY) {
       return (
-        <QPay order={order} onStateChange={this.onStateChange} closeDrawer={closeDrawer} />
+        <QPay
+          order={order}
+          onStateChange={this.onStateChange}
+          closeDrawer={closeDrawer}
+        />
       );
     }
 
