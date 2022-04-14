@@ -233,7 +233,7 @@ export default class Pos extends React.Component<Props, State> {
       toggleModal,
       addOrderPayment,
     } = this.props;
-    const { paymentType } = this.state;
+    const { paymentType, items } = this.state;
 
     const options = currentConfig ? currentConfig.uiOptions : {};
 
@@ -259,6 +259,7 @@ export default class Pos extends React.Component<Props, State> {
         return (
           <ConfirmList
             order={order}
+            items={items}
             isPortrait={orientation === "portrait"}
             config={currentConfig}
             totalAmount={this.state.totalAmount}

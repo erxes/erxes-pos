@@ -9,6 +9,7 @@ import { ConfirmListWrapper } from "./style";
 
 type Props = {
   order: IOrder | null;
+  items: any;
   isPortrait: boolean;
   config: IConfig;
   totalAmount: number;
@@ -17,7 +18,7 @@ type Props = {
   onClickModal: (modalContentType: string) => void;
 };
 
-export default class FooterCalculation extends React.Component<Props> {
+export default class ConfirmList extends React.Component<Props> {
   onConfirm = () => {
     const { order, addOrder, editOrder, onClickModal } = this.props;
 
@@ -30,8 +31,6 @@ export default class FooterCalculation extends React.Component<Props> {
 
   renderItem(item) {
     const { unitPrice, count, productImgUrl, _id, productName } = item;
-
-    // const total = unitPrice * (count || 0);
 
     return (
       <li key={_id}>
@@ -55,17 +54,16 @@ export default class FooterCalculation extends React.Component<Props> {
   }
 
   render() {
-    const { order, isPortrait, config, totalAmount, onClickModal } = this.props;
+    const { order, isPortrait, config, totalAmount, items, onClickModal } =
+      this.props;
     const color = config.uiOptions.colors.primary;
 
-    if (!order) {
-      return null;
-    }
+    const datas = order ? order.items : items;
 
     return (
       <ConfirmListWrapper color={color}>
         <FormHead isPortrait={isPortrait}>
-          <ul>{order.items.map((i) => this.renderItem(i))}</ul>
+          <ul>{datas.map((i) => this.renderItem(i))}</ul>
           <div className="total">
             <b>{__("Total")}</b>
             <b>{Number((totalAmount || 0).toFixed(1)).toLocaleString()}₮</b>
