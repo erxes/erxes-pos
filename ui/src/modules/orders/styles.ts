@@ -107,6 +107,11 @@ export const MenuContent = styledTS<{ hasItems?: boolean }>(styled.div)`
   padding: 20px;
   justify-content: center;
   max-height: ${(props) => props.hasItems && "calc(100% - 300px)"};
+
+  button {
+    font-size: 22px;
+    margin-bottom: ${dimensions.coreSpacing}px;
+  }
 `;
 
 export const PosMenuContent = styled.div`

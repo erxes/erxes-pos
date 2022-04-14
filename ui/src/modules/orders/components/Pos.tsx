@@ -39,6 +39,7 @@ import { __ } from "modules/common/utils";
 import Tip from "modules/common/components/Tip";
 import { IPaymentParams } from "../containers/PosContainer";
 import KioskPaymentForm from "./drawer/KioskPaymentForm";
+import Button from "modules/common/components/Button";
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
@@ -77,6 +78,7 @@ type State = {
   items: IOrderItemInput[];
   totalAmount: number;
   type: string;
+  isTypeChosen: boolean;
   customerId: string;
   registerNumber: string;
   orderProps: any;
@@ -107,8 +109,13 @@ export default class Pos extends React.Component<Props, State> {
       registerNumber: "",
       paymentType: "card",
       orderProps: {},
+      isTypeChosen: false,
     };
   }
+
+  onClickType = (type: string) => {
+    this.setState({ type, isTypeChosen: !this.state.isTypeChosen });
+  };
 
   setItems = (items: IOrderItemInput[]) => {
     this.setState({ items, totalAmount: getTotalAmount(items) });
@@ -481,12 +488,11 @@ export default class Pos extends React.Component<Props, State> {
     );
   }
 
-  render() {
+  renderKioskView(categories) {
     const {
       currentConfig,
       order,
       orientation,
-      productCategoriesQuery,
       productsQuery,
       productBodyType,
       qp,
@@ -497,8 +503,7 @@ export default class Pos extends React.Component<Props, State> {
       onChangeProductBodyType,
     } = this.props;
 
-    const { items, totalAmount, type } = this.state;
-    const mode = localStorage.getItem("erxesPosMode");
+    const { items, totalAmount, type, isTypeChosen } = this.state;
 
     const products = (
       <ProductsContainer
@@ -509,6 +514,91 @@ export default class Pos extends React.Component<Props, State> {
       />
     );
 
+    if (!isTypeChosen && !(qp && qp.id)) {
+      return (
+        <KioskView
+          onClickType={this.onClickType}
+          currentConfig={currentConfig}
+        />
+      );
+    }
+
+    return (
+      <>
+        <div className="headerKiosk">
+          <Link to="/">
+            <img src="/images/headerKiosk.png" alt="type" />
+          </Link>
+        </div>
+        <KioskMainContent>
+          <KioskMenuContent>
+            <MenuContent hasItems={items.length > 0}>
+              <Button
+                btnStyle="simple"
+                icon="angle-left"
+                block
+                onClick={() => this.onClickType("eat")}
+              >
+                Cancel
+              </Button>
+              {categories}
+            </MenuContent>
+          </KioskMenuContent>
+          <KioskProductsContent>{products}</KioskProductsContent>
+        </KioskMainContent>
+        {items.length > 0 && (
+          <FooterContent>
+            <FooterCalculation
+              orientation={orientation}
+              totalAmount={totalAmount}
+              addOrder={this.addOrder}
+              setItems={this.setItems}
+              editOrder={this.editOrder}
+              setOrderState={this.setOrderState}
+              onClickModal={toggleModal}
+              items={items}
+              changeItemCount={this.changeItemCount}
+              changeItemIsTake={this.changeItemIsTake}
+              onChangeProductBodyType={onChangeProductBodyType}
+              productBodyType={productBodyType}
+              config={currentConfig}
+              order={order}
+              type={type}
+              cancelOrder={cancelOrder}
+            />
+          </FooterContent>
+        )}
+
+        {showMenu && (
+          <Modal
+            enforceFocus={false}
+            onHide={handleModal}
+            show={showMenu}
+            animation={false}
+            size="lg"
+          >
+            <Modal.Body>{this.renderKioskModalContent()}</Modal.Body>
+          </Modal>
+        )}
+      </>
+    );
+  }
+
+  render() {
+    const {
+      currentConfig,
+      order,
+      orientation,
+      productCategoriesQuery,
+      productsQuery,
+      productBodyType,
+      cancelOrder,
+      onChangeProductBodyType,
+    } = this.props;
+
+    const { items, totalAmount, type } = this.state;
+    const mode = localStorage.getItem("erxesPosMode");
+
     const categories = (
       <CategoriesContainer
         productCategoriesQuery={productCategoriesQuery}
@@ -518,62 +608,8 @@ export default class Pos extends React.Component<Props, State> {
       />
     );
 
-    if (mode === "kiosk" && !this.props.type && !(qp && qp.id)) {
-      return <KioskView {...this.props} order={order} />;
-    }
-
     if (mode === "kiosk") {
-      return (
-        <>
-          <div className="headerKiosk">
-            <Link to="/">
-              <img src="/images/headerKiosk.png" alt="type" />
-            </Link>
-          </div>
-          <KioskMainContent>
-            <KioskMenuContent>
-              <MenuContent hasItems={items.length > 0}>
-                {categories}
-              </MenuContent>
-            </KioskMenuContent>
-            <KioskProductsContent>{products}</KioskProductsContent>
-          </KioskMainContent>
-          {items.length > 0 && (
-            <FooterContent>
-              <FooterCalculation
-                orientation={orientation}
-                totalAmount={totalAmount}
-                addOrder={this.addOrder}
-                setItems={this.setItems}
-                editOrder={this.editOrder}
-                setOrderState={this.setOrderState}
-                onClickModal={toggleModal}
-                items={items}
-                changeItemCount={this.changeItemCount}
-                changeItemIsTake={this.changeItemIsTake}
-                onChangeProductBodyType={onChangeProductBodyType}
-                productBodyType={productBodyType}
-                config={currentConfig}
-                order={order}
-                type={type}
-                cancelOrder={cancelOrder}
-              />
-            </FooterContent>
-          )}
-
-          {showMenu && (
-            <Modal
-              enforceFocus={false}
-              onHide={handleModal}
-              show={showMenu}
-              animation={false}
-              size="lg"
-            >
-              <Modal.Body>{this.renderKioskModalContent()}</Modal.Body>
-            </Modal>
-          )}
-        </>
-      );
+      return this.renderKioskView(categories);
     }
 
     return (

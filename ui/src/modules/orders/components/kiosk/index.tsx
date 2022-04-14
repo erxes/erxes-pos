@@ -1,9 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { ICustomerParams, IOrder } from "../../types";
-import { IUser } from "modules/auth/types";
 import { IConfig } from "types";
-// import { IPaymentParams } from '../../containers/PosContainer';
 import {
   LogoWrapper,
   ChooseType,
@@ -15,56 +12,27 @@ import {
 import Icon from "modules/common/components/Icon";
 import { FlexBetween, FlexCenter } from "modules/common/styles/main";
 import { __ } from "modules/common/utils";
-import Pos from "../Pos";
 
 type Props = {
-  createOrder: (params) => void;
-  posCurrentUser: IUser;
   currentConfig: IConfig;
-  order: IOrder | null;
-  orientation: string;
-  updateOrder: (params) => Promise<IOrder>;
-  onChangeProductBodyType: (type: string) => void;
-  makePayment: (_id: string, params: any) => void;
-  productCategoriesQuery: any;
-  productsQuery: any;
-  addCustomer: (params: ICustomerParams) => void;
-  toggleModal: (modalContentType: string) => void;
-  addOrderPayment: (params: any) => void;
-  qp: any;
-  handleModal: () => void;
-  cancelOrder: (id: string) => void;
+  onClickType: (type: string) => void;
 };
 
-type State = {
-  type: string;
-};
-
-export default class PortraitView extends React.Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-
-    this.state = {
-      type: "",
-    };
-  }
-
-  onClickType = (type: string) => {
-    this.setState({ type });
-  };
-
+export default class PortraitView extends React.Component<Props> {
   renderContent(color) {
+    const { onClickType } = this.props;
+
     return (
       <ChooseType>
         <h4>
           Та үйлчилгээний <br /> төрлөө сонгоно уу?
         </h4>
         <FlexCenter>
-          <Type color={color} onClick={() => this.onClickType("take")}>
+          <Type color={color} onClick={() => onClickType("take")}>
             <img src="images/type1.png" alt="type" />
             {__("Take")}
           </Type>
-          <Type color={color} onClick={() => this.onClickType("eat")}>
+          <Type color={color} onClick={() => onClickType("eat")}>
             <img src="images/type2.png" alt="type" />
             {__("Eat")}
           </Type>
@@ -90,16 +58,11 @@ export default class PortraitView extends React.Component<Props, State> {
 
   render() {
     const { currentConfig } = this.props;
-    const { type } = this.state;
     const {
       colors,
       bgImage,
       texts = {},
     } = currentConfig.uiOptions || ({} as any);
-
-    if (type) {
-      return <Pos {...this.props} type={this.state.type}></Pos>;
-    }
 
     return (
       <PortraitViewWrapper>
