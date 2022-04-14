@@ -130,8 +130,15 @@ export default class FooterCalculation extends React.Component<Props, State> {
   };
 
   renderPaymentButton() {
-    const { order, addOrder, config, onClickModal, editOrder, cancelOrder, setItems } =
-      this.props;
+    const {
+      order,
+      addOrder,
+      config,
+      onClickModal,
+      editOrder,
+      cancelOrder,
+      setItems,
+    } = this.props;
 
     if (order && order.paidDate) {
       return null;
@@ -197,7 +204,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
     return (
       <>
         <Wrapper color={color}>
-          <FlexColumn>
+          <FlexColumn color={color} orientation={orientation}>
             <Stage
               orientation={orientation}
               items={items}

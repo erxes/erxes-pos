@@ -171,7 +171,6 @@ export const FooterContent = styled.div`
 `;
 
 /********end kiosk***** */
-
 export const ProductsWrapper = styledTS<{
   height?: number;
   color?: string;
@@ -185,7 +184,7 @@ export const ProductsWrapper = styledTS<{
 
   /* width */
   ::-webkit-scrollbar {
-    width: 15px;
+    width: 30px;
   }
 
   /* Track */
@@ -270,8 +269,8 @@ export const ProductCategory = styledTS<{
 
       > div {
         img {
-          width: 70px;
-          height: 70px;
+          width: 80px;
+          height: 80px;
           margin-bottom: ${dimensions.coreSpacing - 5}px;
         }
 

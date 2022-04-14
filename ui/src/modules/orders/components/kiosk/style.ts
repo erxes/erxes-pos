@@ -248,7 +248,9 @@ export const CloseIcon = styled.div`
   cursor: pointer;
 `;
 
-export const FlexColumn = styled.div`
+export const FlexColumn = styledTS<{ color?: string; orientation?: string }>(
+  styled.div
+)`
   display: flex;
   overflow-x: auto;
   max-width: 70%;
@@ -256,6 +258,8 @@ export const FlexColumn = styled.div`
   /* width */
   ::-webkit-scrollbar {
     width: 15px;
+    height: ${(props) =>
+      props.orientation && props.orientation === "portrait" && "20px"};
   }
 
   /* Track */
