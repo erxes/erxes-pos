@@ -175,10 +175,6 @@ class PaymentForm extends React.Component<Props, State> {
       }
     };
 
-    const onStateChange = (key: string, value: any) => {
-      this.setState({ [key]: value } as Pick<State, keyof State>);
-    };
-
     return (
       <Header>
         <Ebarimt
@@ -186,7 +182,6 @@ class PaymentForm extends React.Component<Props, State> {
           isPortrait={isPortrait}
           show={showE}
           onBillTypeChange={onBillTypeChange}
-          onStateChange={onStateChange}
         />
       </Header>
     );
