@@ -11,15 +11,12 @@ type Props = {
   order: IOrder;
   remainder: number;
   cashAmount: number;
-  // setState: (param: object) => void;
   setAmount: (num: number | string) => void;
   addPayment: (params: IPaymentInput, callback?: () => void) => void;
-  // onCallback: (type: string) => void;
 };
 
 export default class CashSection extends React.Component<Props> {
   render() {
-    // TODO show remainder amount
     const { order, cashAmount, setAmount, addPayment, remainder } = this.props;
 
     const onClick = () => {

@@ -22,6 +22,7 @@ type Props = {
   order: IOrder;
   onOrdersChange: (orderProps) => void;
   onChangeProductBodyType: (type: string) => void;
+  refetchOrder: () => void;
 };
 
 type FinalProps = {
@@ -44,6 +45,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       order,
       onChangeProductBodyType,
       onOrdersChange,
+      refetchOrder
     } = this.props;
 
     const addPayment = (params: IPaymentInput, callback) => {
@@ -123,6 +125,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
         cancelQPayInvoice={cancelInvoice}
         makePayment={makePayment}
         onChangeProductBodyType={onChangeProductBodyType}
+        refetchOrder={refetchOrder}
       />
     );
   }

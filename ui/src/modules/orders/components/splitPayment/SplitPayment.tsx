@@ -48,6 +48,7 @@ type Props = {
   onOrdersChange: (props) => void;
   onChangeProductBodyType: (type: string) => void;
   isPortrait?: boolean;
+  refetchOrder: () => void;
 };
 
 const INPUT_TYPES = {
@@ -68,7 +69,6 @@ type State = {
   showE: boolean;
   showRegModal: boolean;
   companyName: string;
-  mode: string;
   remainder: number;
 };
 
@@ -91,7 +91,6 @@ export default class SplitPayment extends React.Component<Props, State> {
       showE: true,
       showRegModal: false,
       companyName: "",
-      mode: localStorage.getItem("erxesPosMode") || "",
       remainder,
     };
 
@@ -200,7 +199,7 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   renderTabContent() {
-    const { addPayment, checkQPayInvoice, cancelQPayInvoice } = this.props;
+    const { addPayment, checkQPayInvoice, cancelQPayInvoice, refetchOrder } = this.props;
     const {
       billType,
       activeInput,
@@ -238,6 +237,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           maxAmount={remainder}
           mobileAmount={mobileAmount}
           setAmount={setAmount}
+          refetchOrder={refetchOrder}
         />
       );
     }
@@ -308,7 +308,9 @@ export default class SplitPayment extends React.Component<Props, State> {
 
   render() {
     const { isPortrait } = this.props;
-    const { billType, mode, remainder } = this.state;
+    const { billType, remainder } = this.state;
+
+    const mode = localStorage.getItem("erxesPosMode") || "";
 
     return (
       <PaymentWrapper>

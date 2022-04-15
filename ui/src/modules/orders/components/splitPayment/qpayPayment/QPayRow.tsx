@@ -17,6 +17,7 @@ type Props = {
   cancelQPayInvoice: (id: string) => void;
   toggleModal: () => void;
   setInvoice: (invoice: IQPayInvoice) => void;
+  refetchOrder: () => void;
 }
 
 export default class QPayRow extends React.Component<Props> {
@@ -44,7 +45,7 @@ export default class QPayRow extends React.Component<Props> {
   }
 
   checkPayment(isAuto = false) {
-    const { orderId, setInvoice, item } = this.props;
+    const { orderId, setInvoice, item, refetchOrder } = this.props;
 
     this.requestCount++;
 
@@ -64,11 +65,13 @@ export default class QPayRow extends React.Component<Props> {
 
         setInvoice(invoice);
 
-        const paid = invoice && invoice.qpayPaymentId && invoice.paymentDate;
+        const paid = invoice && invoice.qpayPaymentId && invoice.paymentDate && invoice.status === 'PAID';
 
         if (paid) {
           clearTimeout(this.timeoutId);
         }
+
+        refetchOrder();
       })
       .catch(e => {
         Alert.error(e.message);

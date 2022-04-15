@@ -73,6 +73,7 @@ type Props = {
   productBodyType?: string;
   modalContentType?: string;
   showMenu?: boolean;
+  refetchOrder: () => void;
 };
 
 type State = {
@@ -420,6 +421,7 @@ export default class Pos extends React.Component<Props, State> {
       orientation,
       productBodyType,
       onChangeProductBodyType,
+      refetchOrder
     } = this.props;
 
     switch (productBodyType) {
@@ -433,6 +435,7 @@ export default class Pos extends React.Component<Props, State> {
               order={order}
               onOrdersChange={this.onOrdersChange}
               onChangeProductBodyType={onChangeProductBodyType}
+              refetchOrder={refetchOrder}
             />
           );
         }

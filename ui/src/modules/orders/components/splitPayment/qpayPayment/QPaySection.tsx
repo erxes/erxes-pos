@@ -23,6 +23,7 @@ type Props = {
   maxAmount?: number;
   mobileAmount: number;
   setAmount: (n: number) => void;
+  refetchOrder: () => void;
 };
 
 type State = {
@@ -38,7 +39,7 @@ export default class QPaySection extends React.Component<Props, State> {
   }
 
   renderModal() {
-    const { cancelQPayInvoice, checkQPayInvoice, order } = this.props;
+    const { cancelQPayInvoice, checkQPayInvoice, order, refetchOrder } = this.props;
 
     return (
       <QPayModalContent
@@ -49,6 +50,7 @@ export default class QPaySection extends React.Component<Props, State> {
         invoice={this.state.invoice}
         toggleModal={() => this.setState({ showModal: !this.state.showModal })}
         setInvoice={invoice => this.setState({ invoice })}
+        refetchOrder={refetchOrder}
       />
     );
   }

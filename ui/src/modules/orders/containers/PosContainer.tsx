@@ -244,6 +244,7 @@ class PosContainer extends React.Component<Props, States> {
       makePayment,
       showMenu,
       modalContentType,
+      refetchOrder: orderDetailQuery.refetch
     };
 
     return <Pos {...updatedProps} />;

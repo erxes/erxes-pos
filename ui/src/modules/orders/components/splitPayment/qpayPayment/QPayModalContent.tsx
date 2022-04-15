@@ -15,11 +15,12 @@ type Props = {
   toggleModal: () => void;
   invoice: IQPayInvoice | null;
   setInvoice: (invoice: IQPayInvoice) => void;
+  refetchOrder: () => void;
 }
 
 export default class QPayModalContent extends React.Component<Props> {
   render() {
-    const { cancelQPayInvoice, checkQPayInvoice, order, toggleModal, showModal, invoice, setInvoice } = this.props;
+    const { cancelQPayInvoice, checkQPayInvoice, order, toggleModal, showModal, invoice, setInvoice, refetchOrder } = this.props;
 
     const { _id } = order;
 
@@ -53,6 +54,7 @@ export default class QPayModalContent extends React.Component<Props> {
                 orderId={_id}
                 toggleModal={toggleModal}
                 setInvoice={setInvoice}
+                refetchOrder={refetchOrder}
               />}
           </tbody>
         </Table>
