@@ -345,7 +345,7 @@ class PaymentForm extends React.Component<Props, State> {
             <Button
               btnStyle="simple"
               icon="arrow-left"
-              onClick={() => this.props.closeDrawer("payment")}
+              onClick={() => this.props.closeDrawer("")}
             >
               {__("Cancel")}
             </Button>

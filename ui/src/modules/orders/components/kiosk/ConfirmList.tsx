@@ -54,16 +54,14 @@ export default class ConfirmList extends React.Component<Props> {
   }
 
   render() {
-    const { order, isPortrait, config, totalAmount, items, onClickModal } =
+    const { isPortrait, config, totalAmount, items = [], onClickModal } =
       this.props;
     const color = config.uiOptions.colors.primary;
-
-    const datas = order ? order.items : items;
 
     return (
       <ConfirmListWrapper color={color}>
         <FormHead isPortrait={isPortrait}>
-          <ul>{datas.map((i) => this.renderItem(i))}</ul>
+          <ul>{items.map((i) => this.renderItem(i))}</ul>
           <div className="total">
             <b>{__("Total")}</b>
             <b>{Number((totalAmount || 0).toFixed(1)).toLocaleString()}₮</b>

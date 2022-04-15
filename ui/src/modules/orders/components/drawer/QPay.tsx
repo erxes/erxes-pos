@@ -183,7 +183,7 @@ export default class QPay extends React.Component<Props, State> {
       <Button
         btnStyle="simple"
         icon="arrow-left"
-        onClick={() => closeDrawer('payment')}
+        onClick={() => closeDrawer('')}
       >
         {__('Cancel')}
       </Button>
