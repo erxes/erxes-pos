@@ -47,6 +47,10 @@ export default class QPayRow extends React.Component<Props> {
   checkPayment(isAuto = false) {
     const { orderId, setInvoice, item, refetchOrder } = this.props;
 
+    if (item && item.status === 'PAID' && item.qpayPaymentId) {
+      return;
+    }
+
     this.requestCount++;
 
     if (isAuto && this.requestCount > 20) {
