@@ -206,11 +206,13 @@ export default class Pos extends React.Component<Props, State> {
           customerId,
         },
         callback
-      ).then((updatedOrder) => {
-        this.setState({
-          items: updatedOrder.items,
-          totalAmount: getTotalAmount(updatedOrder.items),
-        });
+      ).then((updatedOrder: any) => {
+        if (updatedOrder && updatedOrder.items) {
+          this.setState({
+            items: updatedOrder.items,
+            totalAmount: getTotalAmount(updatedOrder.items),
+          });
+        }
       });
     }
   };
