@@ -11,17 +11,17 @@ type Props = {
   show: boolean;
   onBillTypeChange: (e: any) => void;
   onStateChange: (key: string, value: any) => void;
-  makePayment: () => void;
+  settlePayment: () => void;
 };
 
 export default class EntitySelector extends React.Component<Props> {
   render() {
-    const { isPortrait, onBillTypeChange, billType, makePayment } = this.props;
+    const { isPortrait, onBillTypeChange, billType, settlePayment } = this.props;
 
     const onClickCitizen = (type: string) => {
       onBillTypeChange(type);
 
-      makePayment();
+      settlePayment();
     }
 
     return (

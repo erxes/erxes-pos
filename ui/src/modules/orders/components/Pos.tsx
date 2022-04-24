@@ -58,7 +58,7 @@ type Props = {
   order: IOrder | null;
   orientation: string;
   updateOrder: (params, callback?) => Promise<IOrder>;
-  makePayment: (_id: string, params: IPaymentParams) => void;
+  settlePayment: (_id: string, params: IPaymentParams) => void;
   productCategoriesQuery: any;
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
@@ -222,14 +222,15 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   handlePayment = (params: IPaymentParams) => {
-    const { order, makePayment } = this.props;
-    makePayment(order ? order._id : "", params);
+    const { order, settlePayment } = this.props;
+
+    settlePayment(order ? order._id : "", params);
   };
 
   renderKioskModalContent() {
     const {
       currentConfig,
-      makePayment,
+      settlePayment,
       order,
       modalContentType,
       orientation,
@@ -248,7 +249,7 @@ export default class Pos extends React.Component<Props, State> {
               orderId={order ? order._id : ""}
               options={options}
               closeDrawer={toggleModal}
-              makePayment={makePayment}
+              settlePayment={settlePayment}
               order={order}
               addOrderPayment={addOrderPayment}
               orientation={orientation}

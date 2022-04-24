@@ -44,7 +44,7 @@ type Props = {
   createQPayInvoice: (params: IInvoiceParams) => void;
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
   cancelQPayInvoice: (id: string) => void;
-  makePayment: (_id: string, params: IPaymentParams) => void;
+  settlePayment: (_id: string, params: IPaymentParams) => void;
   onOrdersChange: (props) => void;
   onChangeProductBodyType: (type: string) => void;
   isPortrait?: boolean;
@@ -141,8 +141,8 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   handlePayment = () => {
-    const { makePayment, order } = this.props;
-    const { registerNumber, billType, cashAmount, remainder } = this.state;
+    const { settlePayment, order } = this.props;
+    const { registerNumber, billType, remainder } = this.state;
 
     if (remainder > 0) {
       return Alert.warning(
@@ -150,7 +150,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       );
     }
 
-    makePayment(order._id, { registerNumber, billType, cashAmount });
+    settlePayment(order._id, { registerNumber, billType });
   };
 
   renderEbarimt() {
@@ -190,7 +190,7 @@ export default class SplitPayment extends React.Component<Props, State> {
           show={showE}
           onBillTypeChange={onBillTypeChange}
           onStateChange={onStateChange}
-          makePayment={this.handlePayment}
+          settlePayment={this.handlePayment}
         />
       );
     };

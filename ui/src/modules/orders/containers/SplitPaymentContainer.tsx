@@ -30,7 +30,7 @@ type FinalProps = {
   createInvoiceMutation: any;
   checkInvoiceMutation: any;
   cancelInvoiceMutation: any;
-  makePaymentMutation: any;
+  settlePaymentMutation: any;
 } & Props &
   IRouterProps;
 
@@ -41,7 +41,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       createInvoiceMutation,
       checkInvoiceMutation,
       cancelInvoiceMutation,
-      makePaymentMutation,
+      settlePaymentMutation,
       order,
       onChangeProductBodyType,
       onOrdersChange,
@@ -86,11 +86,11 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
         });
     };
 
-    const makePayment = (_id: string, params: IPaymentParams) => {
-      makePaymentMutation({ variables: { doc: params, _id } })
+    const settlePayment = (_id: string, params: IPaymentParams) => {
+      settlePaymentMutation({ variables: { ...params, _id } })
         .then(({ data }) => {
-          if (data.ordersMakePayment) {
-            const resp = data.ordersMakePayment;
+          if (data.ordersSettlePayment) {
+            const resp = data.ordersSettlePayment;
 
             if (resp.success === "true") {
               return Alert.success(__("Payment successful"));
@@ -123,7 +123,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
         createQPayInvoice={createQPayInvoice}
         checkQPayInvoice={checkQPayInvoice}
         cancelQPayInvoice={cancelInvoice}
-        makePayment={makePayment}
+        settlePayment={settlePayment}
         onChangeProductBodyType={onChangeProductBodyType}
         refetchOrder={refetchOrder}
       />
@@ -166,8 +166,8 @@ export default withProps<Props>(
         refetchQueries: getRefetchQueries(order._id),
       }),
     }),
-    graphql<Props>(gql(mutations.ordersMakePayment), {
-      name: "makePaymentMutation",
+    graphql<Props>(gql(mutations.ordersSettlePayment), {
+      name: "settlePaymentMutation",
       options: ({ order }) => ({
         refetchQueries: getRefetchQueries(order._id),
       }),

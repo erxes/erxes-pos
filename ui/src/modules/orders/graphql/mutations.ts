@@ -3,26 +3,11 @@ import { orderFields, orderItemsFields } from './queries';
 const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String`;
 const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId`;
 
-const paymentParamDefs = `$_id: String!, $doc: OrderPaymentInput`;
-const paymentParams = `_id: $_id, doc: $doc`;
-
 const ordersAdd = `
   mutation ordersAdd(${addEditParamDefs}) {
     ordersAdd(${addEditParams}) {
       ${orderFields}
       ${orderItemsFields}
-    }
-  }
-`;
-
-const ordersMakePayment = `
-  mutation ordersMakePayment(${paymentParamDefs}) {
-    ordersMakePayment(${paymentParams}) {
-      success
-      lotteryWarningMsg
-      errorCode
-      message
-      getInformation
     }
   }
 `;
@@ -100,9 +85,20 @@ const ordersCancel = `
   }
 `;
 
+const ordersSettlePayment = `
+  mutation ordersSettlePayment($_id: String!, $billType: String!, $registerNumber: String) {
+    ordersSettlePayment(_id: $_id, billType: $billType, registerNumber: $registerNumber) {
+      success
+      lotteryWarningMsg
+      errorCode
+      message
+      getInformation
+    }
+  }
+`;
+
 export default {
   ordersAdd,
-  ordersMakePayment,
   ordersEdit,
   orderChangeStatus,
   createQpaySimpleInvoice,
@@ -110,5 +106,6 @@ export default {
   customersAdd,
   qpayCancelInvoice,
   ordersAddPayment,
-  ordersCancel
+  ordersCancel,
+  ordersSettlePayment
 };

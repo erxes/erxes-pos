@@ -23,7 +23,7 @@ type Props = {
   orderId: string;
   options: any;
   closeDrawer: (type: string) => void;
-  makePayment: any;
+  settlePayment: any;
   order: IOrder;
   orientation?: string;
   addOrder: () => void;
@@ -80,9 +80,9 @@ class PaymentForm extends React.Component<Props, State> {
   }
 
   handlePayment = (params: IPaymentParams) => {
-    const { orderId, makePayment } = this.props;
+    const { orderId, settlePayment } = this.props;
 
-    makePayment(orderId, params);
+    settlePayment(orderId, params);
   };
 
   onStateChange = (key: string, value: any) => {

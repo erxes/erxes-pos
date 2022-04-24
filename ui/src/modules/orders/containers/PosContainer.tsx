@@ -31,7 +31,7 @@ type Props = {
   productCategoriesQuery: any;
   productsQuery: any;
   customersAddMutation: any;
-  makePaymentMutation: any;
+  settlePaymentMutation: any;
   ordersCancelMutation: any;
 } & IRouterProps;
 
@@ -68,7 +68,7 @@ class PosContainer extends React.Component<Props, States> {
       orderDetailQuery,
       ordersCancelMutation,
       addPaymentMutation,
-      makePaymentMutation,
+      settlePaymentMutation,
     } = this.props;
     const { showMenu, modalContentType, productBodyType } = this.state;
 
@@ -183,11 +183,11 @@ class PosContainer extends React.Component<Props, States> {
       });
     };
 
-    const makePayment = (_id: string, params: IPaymentParams) => {
-      makePaymentMutation({ variables: { doc: params, _id } })
+    const settlePayment = (_id: string, params: IPaymentParams) => {
+      settlePaymentMutation({ variables: { ...params, _id } })
         .then(({ data }) => {
-          if (data.ordersMakePayment) {
-            const resp = data.ordersMakePayment;
+          if (data.ordersSettlePayment) {
+            const resp = data.ordersSettlePayment;
 
             if (resp.success === "true") {
               return Alert.success(__("Payment successful"));
@@ -241,7 +241,7 @@ class PosContainer extends React.Component<Props, States> {
       handleModal,
       productBodyType,
       addOrderPayment,
-      makePayment,
+      settlePayment,
       showMenu,
       modalContentType,
       refetchOrder: orderDetailQuery.refetch
@@ -275,8 +275,8 @@ export default withProps<Props>(
         refetchQueries: getRefetchQueries(qp.id),
       }),
     }),
-    graphql<Props>(gql(mutations.ordersMakePayment), {
-      name: "makePaymentMutation",
+    graphql<Props>(gql(mutations.ordersSettlePayment), {
+      name: "settlePaymentMutation",
     }),
     graphql<Props>(gql(queries.productCategories), {
       name: "productCategoriesQuery",
