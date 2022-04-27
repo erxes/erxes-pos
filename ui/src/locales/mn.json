@@ -115,5 +115,7 @@
   "Order has been updated successfully": "Захиалга амжилттай хадгалагдлаа",
   "Payment is not made yet": "Төлбөр төлөгдөөгүй байна",
   "Payment made": "Төлбөр төлөгдсөн",
-  "From where": "Хаанаас"
+  "From where": "Хаанаас",
+  "Choose receipt type": "Баримтын төрөл сонгоно уу",
+  "Type register number": "Байгууллагын регистрийн дугаар оруулна уу"
 }

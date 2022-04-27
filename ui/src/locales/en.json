@@ -117,5 +117,7 @@
   "Order has been updated successfully": "Order has been updated successfully",
   "Payment is not made yet": "Payment is not made yet",
   "Payment made": "Payment made",
-  "From where": "From where"
+  "From where": "From where",
+  "Choose receipt type": "Choose receipt type",
+  "Type register number": "Please type register number"
 }

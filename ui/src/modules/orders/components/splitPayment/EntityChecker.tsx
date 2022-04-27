@@ -32,38 +32,41 @@ export default class EbarimtModal extends React.Component<Props> {
     }
 
     return (
-      <EntityChecker>
-        <Input>
-          <FormControl
-            type="text"
-            name="registerNumber"
-            onChange={onChange}
-            value={registerNumber}
-            onFocus={() => onStateChange('activeInput', 'registerNumber')}
-          />
-          <div onClick={() => onStateChange('registerNumber', '')}>
-            <Icon icon="cancel" size={13} />
-          </div>
-        </Input>
-        <ButtonGroup>
-          <Button
-            btnStyle="warning"
-            size="small"
-            icon="check"
-            onClick={() => onSubmit()}
-          >
-            {__('Check')}
-          </Button>
-          <Button
-            btnStyle="simple"
-            icon="cancel-1"
-            size="small"
-            onClick={() => onClose()}
-          >
-            {__('Back')}
-          </Button>
-        </ButtonGroup>
-      </EntityChecker>
+      <React.Fragment>
+        <h4>{__('Type register number')}</h4>
+        <EntityChecker>
+          <Input>
+            <FormControl
+              type="text"
+              name="registerNumber"
+              onChange={onChange}
+              value={registerNumber}
+              onFocus={() => onStateChange('activeInput', 'registerNumber')}
+            />
+            <div onClick={() => onStateChange('registerNumber', '')}>
+              <Icon icon="cancel" size={13} />
+            </div>
+          </Input>
+          <ButtonGroup>
+            <Button
+              btnStyle="warning"
+              size="small"
+              icon="check"
+              onClick={() => onSubmit()}
+            >
+              {__('Check')}
+            </Button>
+            <Button
+              btnStyle="simple"
+              icon="cancel-1"
+              size="small"
+              onClick={() => onClose()}
+            >
+              {__('Back')}
+            </Button>
+          </ButtonGroup>
+        </EntityChecker>
+      </React.Fragment>
     );
   }
 }

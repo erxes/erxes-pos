@@ -137,6 +137,8 @@ export default class SplitPayment extends React.Component<Props, State> {
       })
       .then(() => {
         this.handlePayment();
+      }).catch(e => {
+        Alert.error(e.mssage);
       });
   }
 
@@ -184,18 +186,21 @@ export default class SplitPayment extends React.Component<Props, State> {
       }
 
       return (
-        <EntitySelector
-          billType={billType}
-          isPortrait={false}
-          show={showE}
-          onBillTypeChange={onBillTypeChange}
-          onStateChange={onStateChange}
-          settlePayment={this.handlePayment}
-        />
+        <React.Fragment>
+          <h4>{__('Payment made')}. {__('Choose receipt type')}:</h4>
+          <EntitySelector
+            billType={billType}
+            isPortrait={false}
+            show={showE}
+            onBillTypeChange={onBillTypeChange}
+            onStateChange={onStateChange}
+            settlePayment={this.handlePayment}
+          />
+        </React.Fragment>
       );
     };
 
-    return <div>{ebarimtBillType()}</div>;
+    return (<div>{ebarimtBillType()}</div>);
   }
 
   renderTabContent() {
