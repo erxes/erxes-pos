@@ -4,8 +4,8 @@ const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type:
 const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId`;
 
 const ordersAdd = `
-  mutation ordersAdd(${addEditParamDefs}) {
-    ordersAdd(${addEditParams}) {
+  mutation ordersAdd(${addEditParamDefs}, $origin: String) {
+    ordersAdd(${addEditParams}, origin: $origin) {
       ${orderFields}
       ${orderItemsFields}
     }

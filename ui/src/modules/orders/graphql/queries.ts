@@ -22,7 +22,7 @@ export const orderFields = `
   printedEbarimt
   billType
   billId
-  registerNumber
+  origin
 
   type
 `;

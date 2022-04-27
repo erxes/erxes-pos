@@ -114,5 +114,6 @@
   "Order has been created successfully": "Захиалга амжилттай үүсгэлээ",
   "Order has been updated successfully": "Захиалга амжилттай хадгалагдлаа",
   "Payment is not made yet": "Төлбөр төлөгдөөгүй байна",
-  "Payment made": "Төлбөр төлөгдсөн"
+  "Payment made": "Төлбөр төлөгдсөн",
+  "From where": "Хаанаас"
 }

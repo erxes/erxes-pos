@@ -120,6 +120,7 @@ export default class OrderDetail extends React.Component<Props, State> {
       <TableRow key={order._id} id={order._id} color={color}>
         <td className="number center">{order.number.split('_')[1]}</td>
         <td>{this.renderDetail(order, color, color2)}</td>
+        <td>{order.origin}</td>
         <td>{this.renderTime(order)}</td>
         <td className="center">
           <Status color={order.type === 'eat' ? color2 : color}>

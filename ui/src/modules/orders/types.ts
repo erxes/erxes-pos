@@ -55,6 +55,7 @@ export interface IOrder {
   oldBillId: string;
   type: string;
   cardPayments?: any[];
+  origin?: string;
 
   items: IOrderItem[];
   customer?: ICustomer;

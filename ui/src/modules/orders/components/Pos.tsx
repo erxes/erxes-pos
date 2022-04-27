@@ -6,7 +6,7 @@ import { NavLink, Link } from "react-router-dom";
 import NameCard from "modules/common/components/nameCard/NameCard";
 import AsyncComponent from "modules/common/components/AsyncComponent";
 import { ICustomerParams, IOrder, IOrderItemInput } from "../types";
-import { ORDER_TYPES } from "../../../constants";
+import { ORDER_TYPES, POS_MODES } from "../../../constants";
 import Calculation from "./Calculation";
 import OrderSearch from "../containers/layout/OrderSearch";
 import { IUser } from "modules/auth/types";
@@ -177,8 +177,10 @@ export default class Pos extends React.Component<Props, State> {
       isTake: type !== ORDER_TYPES.EAT ? true : item.isTake,
     }));
 
+    const mode = localStorage.getItem('erxesPosMode') || '';
+
     createOrder(
-      { items: currentItems, totalAmount, type, customerId },
+      { items: currentItems, totalAmount, type, customerId, origin: mode },
       callback
     );
   };
@@ -281,7 +283,7 @@ export default class Pos extends React.Component<Props, State> {
     const mode = localStorage.getItem("erxesPosMode");
     const { order, posCurrentUser } = this.props;
 
-    if (mode === "kiosk") {
+    if (mode === POS_MODES.KIOSK) {
       if (order && order.customer) {
         const customer = order.customer;
 
@@ -349,7 +351,7 @@ export default class Pos extends React.Component<Props, State> {
       return "";
     }
 
-    if (!["", "kitchen"].includes(localStorage.getItem("erxesPosMode") || "")) {
+    if (![POS_MODES.POS, POS_MODES.KITCHEN].includes(localStorage.getItem("erxesPosMode") || "")) {
       return "";
     }
 
@@ -377,7 +379,7 @@ export default class Pos extends React.Component<Props, State> {
       return "";
     }
 
-    if (!["", "waiting"].includes(localStorage.getItem("erxesPosMode") || "")) {
+    if (![POS_MODES.POS, POS_MODES.WAITING].includes(localStorage.getItem("erxesPosMode") || "")) {
       return "";
     }
 
@@ -626,7 +628,7 @@ export default class Pos extends React.Component<Props, State> {
       />
     );
 
-    if (mode === "kiosk") {
+    if (mode === POS_MODES.KIOSK) {
       return this.renderKioskView(categories);
     }
 

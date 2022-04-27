@@ -66,6 +66,7 @@ export default class Screen extends React.Component<Props> {
                     <tr>
                       <th>{__("Number")}</th>
                       <th>{__("Order")}</th>
+                      <th>{__('From where')}</th>
                       <th>{__("Time")}</th>
                       <th>{__("Type")}</th>
                       <th>{__("Actions")}</th>
