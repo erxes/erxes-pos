@@ -6,6 +6,7 @@ import { EmptyContentWrapper, ProductsWrapper } from "../styles";
 import { IConfig, IRouterProps } from "types";
 import EmptyState from "modules/common/components/EmptyState";
 import { __ } from "modules/common/utils";
+import { POS_MODES } from '../../../constants';
 
 type Props = {
   products: IProduct[];
@@ -67,7 +68,7 @@ export default class Products extends React.Component<Props, State> {
     const productId = qp && qp.productId ? qp.productId : "";
     let filteredProducts = products;
 
-    if (mode === "kiosk") {
+    if (mode === POS_MODES.KIOSK) {
       const excludeIds = currentConfig.kioskExcludeProductIds || [];
       filteredProducts = products.filter((p) => !excludeIds.includes(p._id));
     }

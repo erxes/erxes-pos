@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 
 import apolloClient from "apolloClient";
 import { queries } from "../../graphql/index";
-import { BILL_TYPES } from "../../../../constants";
+import { BILL_TYPES, POS_MODES } from "../../../../constants";
 import { FlexCenter } from "modules/common/styles/main";
 import { __, Alert } from "modules/common/utils";
 import {
@@ -328,7 +328,7 @@ export default class SplitPayment extends React.Component<Props, State> {
               <h4>{__("Choose the payment method")}</h4>
 
               <Cards isPortrait={isPortrait}>
-                {mode !== "kiosk" &&
+                {mode !== POS_MODES.KIOSK &&
                   this.renderPaymentType(INPUT_TYPES.CASH, "payment2.png")}
                 {this.renderPaymentType(INPUT_TYPES.CARD, "payment4.png")}
                 {this.renderPaymentType(INPUT_TYPES.QPAY, "payment1.png")}

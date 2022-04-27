@@ -13,6 +13,7 @@ import {
   DropSubNavItem
 } from '../styles';
 import { IConfig } from 'types';
+import { POS_MODES } from '../../../constants';
 
 export interface ISubNav {
   permission: string;
@@ -142,7 +143,7 @@ class Navigation extends React.Component<IProps> {
       return '';
     }
 
-    if (!['', 'kitchen'].includes(localStorage.getItem('erxesPosMode') || '')) {
+    if (![POS_MODES.POS, POS_MODES.KITCHEN].includes(localStorage.getItem('erxesPosMode') || '')) {
       return '';
     }
 
@@ -164,7 +165,7 @@ class Navigation extends React.Component<IProps> {
       return '';
     }
 
-    if (!['', 'waiting'].includes(localStorage.getItem('erxesPosMode') || '')) {
+    if (![POS_MODES.POS, POS_MODES.WAITING].includes(localStorage.getItem('erxesPosMode') || '')) {
       return '';
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 import KeyPad from './KeyPad';
-import { BILL_TYPES } from '../../../../constants';
+import { BILL_TYPES, POS_MODES } from '../../../../constants';
 
 const KeyBoard = styled.div`
   display: inline-grid;
@@ -36,7 +36,7 @@ export default class KeyPads extends React.Component<Props> {
     const mode = localStorage.getItem('erxesPosMode') || '';
     const { billType } = this.props;
 
-    if (billType === BILL_TYPES.CITIZEN && mode === 'kiosk') {
+    if (billType === BILL_TYPES.CITIZEN && mode === POS_MODES.KIOSK) {
       return null;
     }
 

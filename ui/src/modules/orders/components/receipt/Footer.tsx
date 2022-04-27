@@ -6,6 +6,7 @@ import Amount from "./Amount";
 import Button from "modules/common/components/Button";
 import { IOrder } from "modules/orders/types";
 import { __ } from 'modules/common/utils';
+import { POS_MODES } from "../../../../constants";
 
 type Props = {
   color: string;
@@ -141,7 +142,7 @@ export default class Footer extends React.Component<Props> {
       const mode = localStorage.getItem('erxesPosMode') || '';
 
       window.addEventListener('afterprint', () => {
-        if (mode !== 'kiosk') {
+        if (mode !== POS_MODES.KIOSK) {
           setTimeout(() => {
             const popup = window.open(`/order-receipt/${order._id}?inner=true`, '__blank');
             if (!popup) {

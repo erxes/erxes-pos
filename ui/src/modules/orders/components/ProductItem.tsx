@@ -3,6 +3,7 @@ import { IProduct, IOrderItemInput } from "../types";
 import { Item, ItemWrapper } from "../styles";
 import { formatNumber } from "modules/utils";
 import { AppContext } from "appContext";
+import { POS_MODES } from "../../../constants";
 
 type Props = {
   product: IProduct;
@@ -19,7 +20,6 @@ export default function ProductItem(props: Props) {
 
   const attachmentUrl = attachment && attachment.url ? attachment.url : "";
   const mode = localStorage.getItem("erxesPosMode");
-  const isKiosk = mode === "kiosk";
 
   const color =
     currentConfig &&
@@ -44,7 +44,7 @@ export default function ProductItem(props: Props) {
         onClick={onClick}
         isPortrait={orientation === "portrait"}
         isActive={isActive}
-        isKiosk={isKiosk}
+        isKiosk={mode === POS_MODES.KIOSK}
         color={color}
       >
         <div className="image-wrapper">

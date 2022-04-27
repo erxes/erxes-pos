@@ -1,8 +1,9 @@
 import { Route } from 'react-router-dom';
 import queryString from 'query-string';
+import React from 'react';
 
 import asyncComponent from 'modules/common/components/AsyncComponent';
-import React from 'react';
+import { POS_MODES } from '../../constants';
 
 const KitchenScreenContainer = asyncComponent(
   () =>
@@ -18,7 +19,7 @@ const KitchenScreen = ({ location }) => {
 };
 
 const routes = () => {
-  if (!['', 'kitchen'].includes(localStorage.getItem('erxesPosMode') || '')) {
+  if (![POS_MODES.POS, POS_MODES.KITCHEN].includes(localStorage.getItem('erxesPosMode') || '')) {
     return <></>;
   }
 

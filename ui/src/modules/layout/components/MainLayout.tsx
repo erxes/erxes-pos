@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import { Layout, MainWrapper, PortraitWrapper } from "../styles";
 import DetectBrowser from "./DetectBrowser";
 import { setHeader } from "modules/utils";
+import { POS_MODES } from '../../../constants';
 
 interface IProps extends IRouterProps {
   posCurrentUser?: IUser;
@@ -35,7 +36,7 @@ class MainLayout extends React.Component<IProps> {
     const { children, location } = this.props;
 
     if (
-      ["kiosk", "waiting"].includes(
+      [POS_MODES.KIOSK, POS_MODES.WAITING].includes(
         localStorage.getItem("erxesPosMode") || ""
       ) ||
       location.pathname.includes("waiting-screen")
