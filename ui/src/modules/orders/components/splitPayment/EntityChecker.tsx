@@ -12,13 +12,15 @@ type Props = {
   onStateChange: (key: string, value: any) => void;
   order: IOrder;
   registerNumber: string;
-  onSubmit: () => void;
+  checkOrganization: () => void;
   onBillTypeChange: (value: string) => void;
+  settlePayment: () => void;
+  companyName: string;
 };
 
 export default class EbarimtModal extends React.Component<Props> {
   render() {
-    const { onStateChange, registerNumber, onSubmit, onBillTypeChange } = this.props;
+    const { onStateChange, registerNumber, checkOrganization, onBillTypeChange, settlePayment, companyName } = this.props;
 
     const onClose = () => {
       onBillTypeChange(BILL_TYPES.CITIZEN);
@@ -52,10 +54,18 @@ export default class EbarimtModal extends React.Component<Props> {
               btnStyle="warning"
               size="small"
               icon="check"
-              onClick={() => onSubmit()}
+              onClick={() => checkOrganization()}
             >
               {__('Check')}
             </Button>
+            {registerNumber && companyName && <Button
+              btnStyle="success"
+              size="small"
+              icon="print"
+              onClick={() => settlePayment()}
+            >
+              {__('Print receipt')}
+            </Button>}
             <Button
               btnStyle="simple"
               icon="cancel-1"
