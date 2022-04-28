@@ -1,6 +1,7 @@
 import React from "react";
 import QRCode from 'qrcode';
 import JsBarcode from 'jsbarcode';
+
 import { FooterWrapper, Lottery, LotteryCode, LotterySide } from "./styles";
 import Amount from "./Amount";
 import Button from "modules/common/components/Button";
@@ -72,11 +73,14 @@ export default class Footer extends React.Component<Props> {
 
     if (this.putResponse.billType === '3') {
       const { order } = this.props;
+      const { customerName = '' } = this.putResponse;
+
       return (
         <LotteryCode>
-          {__("buyerCompanyNumber")}:
+          <span>{__("buyerCompanyNumber")}:</span>
           <br />
-          {order.registerNumber}
+          <span>{order.registerNumber}</span>
+          {customerName && <p>{__('Name')}: <b>{customerName}</b></p>}
         </LotteryCode>
       );
     }

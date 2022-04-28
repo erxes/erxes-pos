@@ -15,12 +15,11 @@ type Props = {
   checkOrganization: () => void;
   onBillTypeChange: (value: string) => void;
   settlePayment: () => void;
-  companyName: string;
 };
 
 export default class EbarimtModal extends React.Component<Props> {
   render() {
-    const { onStateChange, registerNumber, checkOrganization, onBillTypeChange, settlePayment, companyName } = this.props;
+    const { onStateChange, registerNumber, checkOrganization, onBillTypeChange, settlePayment } = this.props;
 
     const onClose = () => {
       onBillTypeChange(BILL_TYPES.CITIZEN);
@@ -58,7 +57,7 @@ export default class EbarimtModal extends React.Component<Props> {
             >
               {__('Check')}
             </Button>
-            {registerNumber && companyName && <Button
+            {registerNumber && <Button
               btnStyle="success"
               size="small"
               icon="print"

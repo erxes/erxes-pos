@@ -154,7 +154,7 @@ export default class SplitPayment extends React.Component<Props, State> {
 
   renderEbarimt() {
     const { order } = this.props;
-    const { showE, billType, registerNumber, activeInput, companyName } = this.state;
+    const { showE, billType, registerNumber, activeInput } = this.state;
 
     const onBillTypeChange = (value: string) => {
       this.setState({
@@ -179,7 +179,6 @@ export default class SplitPayment extends React.Component<Props, State> {
             checkOrganization={this.checkOrganization}
             onBillTypeChange={onBillTypeChange}
             settlePayment={this.handlePayment}
-            companyName={companyName}
           />
         );
       }
