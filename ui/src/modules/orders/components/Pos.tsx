@@ -540,6 +540,11 @@ export default class Pos extends React.Component<Props, State> {
 
     const { items, totalAmount, type, isTypeChosen } = this.state;
 
+    const onBack = () => {
+      this.onClickType("eat");
+      this.setItems([]);
+    };
+
     const products = (
       <ProductsContainer
         setItems={this.setItems}
@@ -572,7 +577,7 @@ export default class Pos extends React.Component<Props, State> {
                 btnStyle="simple"
                 icon="angle-left"
                 block
-                onClick={() => this.onClickType("eat")}
+                onClick={onBack}
               >
                 Cancel
               </Button>
