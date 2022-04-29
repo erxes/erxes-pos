@@ -83,15 +83,15 @@ export const Type = styledTS<{ color?: string }>(styled(FlexCenter))`
      rgba(props.color ? props.color : colors.colorSecondary, 0.08)};
   display: flex;
   flex-direction: column;
-  padding: 20px;
-  width: 250px;
-  height: 186px;
+  padding: 30px;
+  width: 350px;
+  height: 250px;
   font-weight: 500;
-  font-size: 24px;
+  font-size: 32px;
 
   > img {
-    width: 95px;
-    min-height: 95px;
+    width: 150px;
+    min-height: 150px;
     margin-bottom: 20px;
   }
 
@@ -104,7 +104,7 @@ export const AppWrapper = styled.div`
   margin: 60px 0;
 
   > img {
-    width: 600px;
+    width: 500px;
     margin-bottom: 20px;
   }
 

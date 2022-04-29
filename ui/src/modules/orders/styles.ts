@@ -260,7 +260,6 @@ export const ProductCategory = styledTS<{
         : colors.textPrimary};
     font-weight: ${(props) => (props.isActive ? "600" : "500")};
     font-size: 12px;
-    word-break: break-word;
   }
 
   ${(props) =>
