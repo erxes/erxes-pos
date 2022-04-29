@@ -99,3 +99,23 @@ export const VatWrapper = styledTS<{ color?: string; isPortrait?: boolean }>(
     font-size: 28px;
   }
 `;
+
+export const SuccessfulText = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .icon-wrapper {
+    background: ${colors.colorCoreGreen};
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    margin-right: ${dimensions.unitSpacing}px;
+
+    > i {
+      color: ${colors.colorWhite};
+    }
+  }
+`;

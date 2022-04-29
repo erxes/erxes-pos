@@ -5,6 +5,8 @@ import Button from "modules/common/components/Button";
 import { EbarimtButton } from "../kiosk/style";
 import { FlexCenter } from "modules/common/styles/main";
 import { BILL_TYPES } from "./KioskPaymentForm";
+import Icon from "modules/common/components/Icon";
+import { SuccessfulText } from "./style";
 
 type Props = {
   billType: string;
@@ -19,23 +21,25 @@ export default class Ebarimt extends React.Component<Props> {
 
     return (
       <>
+        <SuccessfulText>
+          <div className="icon-wrapper">
+            <Icon icon="check-1" size={40} />
+          </div>
+          <h2 className="success">{__("Payment successful")}.</h2>
+        </SuccessfulText>
         <FlexCenter>
           <h2>{__("Obtain a VAT receipt")}</h2>
         </FlexCenter>
         <EbarimtButton isPortrait={isPortrait}>
           <Button
-            className={
-              billType === BILL_TYPES.CITIZEN ? "active" : ""
-            }
+            className={billType === BILL_TYPES.CITIZEN ? "active" : ""}
             onClick={() => onBillTypeChange(BILL_TYPES.CITIZEN)}
             size="large"
           >
             {__("Person")}
           </Button>
           <Button
-            className={
-              billType === BILL_TYPES.ENTITY ? "active" : ""
-            }
+            className={billType === BILL_TYPES.ENTITY ? "active" : ""}
             onClick={() => onBillTypeChange(BILL_TYPES.ENTITY)}
             size="large"
           >

@@ -40,40 +40,41 @@ export default class CardForm extends React.Component<Props, State> {
 
     this.requestCount++;
 
-    if ((isAuto && this.requestCount > 20) || (order.totalAmount === order.cardAmount)) {
+    if (
+      (isAuto && this.requestCount > 20) ||
+      order.totalAmount === order.cardAmount
+    ) {
       clearTimeout(this.timeoutId);
 
       return;
     }
 
     fetch(`${PATH}/ajax/get-status-info`)
-      .then(res => res.json())
+      .then((res) => res.json())
       .then((res: any) => {
         if (res && res.status_code === "ok") {
           // send transaction upon successful connection
           fetch(PATH, {
-            method: 'POST',
+            method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              service_name: 'doSaleTransaction',
+              service_name: "doSaleTransaction",
               service_params: {
                 // special character _ is not accepted
-                db_ref_no: order.number.replace('_', ''),
+                db_ref_no: order.number.replace("_", ""),
                 amount: order.totalAmount.toString(),
-                vatps_bill_type: billType
-              }
-            })
+                vatps_bill_type: billType,
+              },
+            }),
           })
-            .then(res => res.json())
-            .then(r => {
+            .then((res) => res.json())
+            .then((r) => {
               if (r && r.status === true && r.response) {
                 if (r.response.response_code === "000") {
                   Alert.success(
-                    __(
-                      r.response.response_msg || "Transaction was successful"
-                    )
+                    __(r.response.response_msg || "Transaction was successful")
                   );
 
                   addOrderPayment({
@@ -82,7 +83,7 @@ export default class CardForm extends React.Component<Props, State> {
                     cardAmount: order.totalAmount,
                   });
 
-                  onStateChange('isDone', true);
+                  onStateChange("isDone", true);
                 } else {
                   return Alert.warning(r.response.response_msg);
                 }
@@ -102,13 +103,14 @@ export default class CardForm extends React.Component<Props, State> {
 
   render() {
     const { orientation } = this.props;
-    const isPortrait = orientation === 'portrait';
+    const isPortrait = orientation === "portrait";
 
     return (
       <>
         <TypeWrapper isPortrait={isPortrait}>
           <h2>
-            {__("Please follow the instructions on the card reader to make payment")}
+            <b>{__("Please follow the instructions")}</b>&nbsp;
+            {__("on the card reader to make payment")}
           </h2>
           <Cards isPortrait={isPortrait}>
             <div>
