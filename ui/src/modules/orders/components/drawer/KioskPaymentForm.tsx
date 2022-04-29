@@ -2,7 +2,7 @@ import React from "react";
 import PaymentType, { PAYMENT_METHODS } from "./PaymentType";
 import { IPaymentParams } from "modules/orders/containers/PosContainer";
 import QPay from "./QPay";
-import { IOrder } from "modules/orders/types";
+import { IOrder, IOrderItemInput } from "modules/orders/types";
 import apolloClient from "apolloClient";
 import { queries } from "modules/orders/graphql/index";
 import { FormHead } from "modules/orders/styles";
@@ -35,6 +35,7 @@ type Props = {
   extraButton?: React.ReactNode;
   handlePayment: (params: IPaymentParams) => void;
   addOrderPayment: (params: any) => void;
+  setItems: (items: IOrderItemInput[]) => void;
   paymentMethod: string;
 };
 

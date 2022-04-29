@@ -58,7 +58,11 @@ type Props = {
   order: IOrder | null;
   orientation: string;
   updateOrder: (params, callback?) => Promise<IOrder>;
-  settlePayment: (_id: string, params: IPaymentParams) => void;
+  settlePayment: (
+    _id: string,
+    params: IPaymentParams,
+    callback?: () => void
+  ) => void;
   productCategoriesQuery: any;
   productsQuery: any;
   addCustomer: (params: ICustomerParams) => void;
@@ -177,7 +181,7 @@ export default class Pos extends React.Component<Props, State> {
       isTake: type !== ORDER_TYPES.EAT ? true : item.isTake,
     }));
 
-    const mode = localStorage.getItem('erxesPosMode') || '';
+    const mode = localStorage.getItem("erxesPosMode") || "";
 
     createOrder(
       { items: currentItems, totalAmount, type, customerId, origin: mode },
@@ -226,7 +230,7 @@ export default class Pos extends React.Component<Props, State> {
   handlePayment = (params: IPaymentParams) => {
     const { order, settlePayment } = this.props;
 
-    settlePayment(order ? order._id : "", params);
+    settlePayment(order ? order._id : "", params, () => this.setItems([]));
   };
 
   renderKioskModalContent() {
@@ -257,6 +261,7 @@ export default class Pos extends React.Component<Props, State> {
               orientation={orientation}
               handlePayment={this.handlePayment}
               addOrder={this.addOrder}
+              setItems={this.setItems}
               paymentMethod={paymentType}
             />
           )
@@ -351,7 +356,11 @@ export default class Pos extends React.Component<Props, State> {
       return "";
     }
 
-    if (![POS_MODES.POS, POS_MODES.KITCHEN].includes(localStorage.getItem("erxesPosMode") || "")) {
+    if (
+      ![POS_MODES.POS, POS_MODES.KITCHEN].includes(
+        localStorage.getItem("erxesPosMode") || ""
+      )
+    ) {
       return "";
     }
 
@@ -379,7 +388,11 @@ export default class Pos extends React.Component<Props, State> {
       return "";
     }
 
-    if (![POS_MODES.POS, POS_MODES.WAITING].includes(localStorage.getItem("erxesPosMode") || "")) {
+    if (
+      ![POS_MODES.POS, POS_MODES.WAITING].includes(
+        localStorage.getItem("erxesPosMode") || ""
+      )
+    ) {
       return "";
     }
 
@@ -426,7 +439,7 @@ export default class Pos extends React.Component<Props, State> {
       orientation,
       productBodyType,
       onChangeProductBodyType,
-      refetchOrder
+      refetchOrder,
     } = this.props;
 
     switch (productBodyType) {

@@ -183,7 +183,11 @@ class PosContainer extends React.Component<Props, States> {
       });
     };
 
-    const settlePayment = (_id: string, params: IPaymentParams) => {
+    const settlePayment = (
+      _id: string,
+      params: IPaymentParams,
+      callback?: () => void
+    ) => {
       settlePaymentMutation({ variables: { ...params, _id } })
         .then(({ data }) => {
           if (data.ordersSettlePayment) {
@@ -204,6 +208,10 @@ class PosContainer extends React.Component<Props, States> {
           }
         })
         .then(() => {
+          if (callback) {
+            callback();
+          }
+
           window.open(`/order-receipt/${_id}`, "_blank");
           window.location.href = "/";
         })
@@ -244,7 +252,7 @@ class PosContainer extends React.Component<Props, States> {
       settlePayment,
       showMenu,
       modalContentType,
-      refetchOrder: orderDetailQuery.refetch
+      refetchOrder: orderDetailQuery.refetch,
     };
 
     return <Pos {...updatedProps} />;
