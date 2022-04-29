@@ -1,12 +1,14 @@
-import Button from 'modules/common/components/Button';
 import React from 'react';
+import { useTime } from 'react-timer-hook';
+
+import Button from 'modules/common/components/Button';
 import { __ } from 'modules/common/utils';
 import { Detail, Status, TableRow, TimeGroup } from '../styles';
 import { IConfig } from 'types';
 import { IOrder } from '../../orders/types';
 import { IUser } from 'modules/auth/types';
-import { useTime } from 'react-timer-hook';
 import Icon from 'modules/common/components/Icon';
+import { POS_MODES } from '../../../constants';
 
 type Props = {
   editOrder: (doc) => void;
@@ -120,7 +122,7 @@ export default class OrderDetail extends React.Component<Props, State> {
       <TableRow key={order._id} id={order._id} color={color}>
         <td className="number center">{order.number.split('_')[1]}</td>
         <td>{this.renderDetail(order, color, color2)}</td>
-        <td>{order.origin}</td>
+        <td>{order.origin === POS_MODES.POS ? 'POS' : order.origin}</td>
         <td>{this.renderTime(order)}</td>
         <td className="center">
           <Status color={order.type === 'eat' ? color2 : color}>
