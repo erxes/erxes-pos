@@ -33,7 +33,7 @@ body {
   }
 
   .col-sm-3 {
-    width: 15% !important;
+    width: 17% !important;
   }
   
   @media (min-width: 768px) {
