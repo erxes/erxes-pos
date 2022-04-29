@@ -39,9 +39,10 @@ export const CalculationHeader = styled(FlexCustomer)`
 
   > div {
     flex: 1;
+    padding: 10px 5px;
 
     &:first-child {
-      margin-right: ${dimensions.unitSpacing + 2}px;
+      margin-right: ${dimensions.unitSpacing}px;
     }
   }
 `;
