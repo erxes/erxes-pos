@@ -156,7 +156,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
           onClick={onClickPayment}
           block
         >
-          {__("Payment")}
+          {__("Make an order")}
         </Button>
       </>
     );
@@ -164,13 +164,10 @@ export default class FooterCalculation extends React.Component<Props, State> {
 
   renderAmount(text: string, amount: number) {
     return (
-      <>
-        {/* <h4>{__("Payment info")}</h4> */}
-        <Amount>
-          {text}
-          <span>{formatNumber(amount || 0)}₮</span>
-        </Amount>
-      </>
+      <Amount>
+        {text}
+        <span>{formatNumber(amount || 0)}₮</span>
+      </Amount>
     );
   }
 
@@ -211,5 +208,5 @@ export default class FooterCalculation extends React.Component<Props, State> {
         </Wrapper>
       </>
     );
-  } // end render()
+  }
 }

@@ -92,7 +92,7 @@ export const Type = styledTS<{ color?: string }>(styled(FlexCenter))`
   > img {
     width: 150px;
     min-height: 150px;
-    margin-bottom: 20px;
+    margin-bottom: ${dimensions.unitSpacing}px;
   }
 
    &:first-child {
@@ -207,6 +207,8 @@ export const SelectedStage = styled.div`
 
     > div {
       margin-bottom: 5px;
+      max-height: 45px;
+      overflow: hidden;
     }
 
     span {

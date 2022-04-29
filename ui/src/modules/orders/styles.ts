@@ -273,14 +273,8 @@ export const ProductCategory = styledTS<{
         rgba(props.color ? props.color : colors.colorSecondary, 0.15)};
 
       > div {
-        img {
-          width: 80px;
-          height: 80px;
-          margin-bottom: ${dimensions.coreSpacing - 5}px;
-        }
-
         span {
-          font-size: 22px;
+          font-size: 25px;
         }
       }
     `}
@@ -293,23 +287,41 @@ export const CategoryName = styledTS<{ color?: string; isKiosk?: boolean }>(
   align-items: center;
   justify-content: center;
 
-  img {
-    width: 32px;
-    height: 32px;
-    margin-right: ${dimensions.unitSpacing - 5}px;
-  }
-
   ${(props) =>
     props.isKiosk &&
     css`
-      align-items: center;
-      display: flex;
       flex-direction: column;
       text-align: center;
 
       span {
         padding: 0 10px 0 10px;
+        font-size: 24px;
+        line-height: 25px;
       }
+    `}
+`;
+
+export const CategoryImage = styledTS<{ isKiosk?: boolean }>(styled.div)`
+  width: 32px;
+  height: 32px;
+  margin-right: ${dimensions.unitSpacing - 5}px;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 5px;
+  }
+
+  ${(props) =>
+    props.isKiosk &&
+    css`
+      width: 100px;
+      height: 100px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: ${dimensions.coreSpacing - 5}px;
+      margin-right: 0;
     `}
 `;
 
@@ -402,6 +414,7 @@ export const Item = styledTS<{
     > img {
       max-width: 100%;
       max-height: 100%;
+      border-radius: 5px;
     }
 
     ${(props) =>
@@ -463,8 +476,12 @@ export const Item = styledTS<{
     h4 {
       font-size: 24px;
       letter-spacing: 0.15px;
-      margin: 0 0 20px 0;
+      margin: 0 0 40px 0;
       font-weight: bold;
+      height: 80%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       color: ${(props) =>
         props.isPortrait && props.isActive ? "#1F2933" : "#616E7C;"};
     }
@@ -474,7 +491,7 @@ export const Item = styledTS<{
       font-size: 24px;
       font-weight: bold;
       position: absolute;
-      bottom: 5px;
+      bottom: ${dimensions.unitSpacing}px;
       left: 50%;
       transform: translateX(-50%);
     }

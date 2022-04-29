@@ -6,7 +6,7 @@ import { EmptyContentWrapper, ProductsWrapper } from "../styles";
 import { IConfig, IRouterProps } from "types";
 import EmptyState from "modules/common/components/EmptyState";
 import { __ } from "modules/common/utils";
-import { POS_MODES } from '../../../constants';
+import { POS_MODES } from "../../../constants";
 
 type Props = {
   products: IProduct[];
@@ -85,18 +85,16 @@ export default class Products extends React.Component<Props, State> {
       );
     }
 
-    return filteredProducts.map((product) => {
-      return (
-        <ProductItem
-          product={product}
-          key={product._id}
-          orientation={orientation}
-          isActive={items.some((item) => item.productId === product._id)}
-          activeProductId={productId}
-          addItem={this.addItem.bind(this, product, 1)}
-        />
-      );
-    });
+    return filteredProducts.map((product) => (
+      <ProductItem
+        product={product}
+        key={product._id}
+        orientation={orientation}
+        isActive={items.some((item) => item.productId === product._id)}
+        activeProductId={productId}
+        addItem={this.addItem.bind(this, product, 1)}
+      />
+    ));
   }
 
   render() {

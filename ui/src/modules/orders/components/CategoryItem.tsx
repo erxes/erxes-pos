@@ -1,6 +1,7 @@
 import React from "react";
 import { AppContext } from "appContext";
 import {
+  CategoryImage,
   CategoryItemWrapper,
   CategoryName,
   LeftCircle,
@@ -45,10 +46,12 @@ export default function CategoryItem(props: Props) {
         isPortrait={orientation === "portrait"}
       >
         <CategoryName color={color} isKiosk={isKiosk}>
-          <img
-            src={attachmentUrl ? attachmentUrl : "images/no-category.jpg"}
-            alt={name}
-          />
+          <CategoryImage isKiosk={isKiosk}>
+            <img
+              src={attachmentUrl ? attachmentUrl : "images/no-category.jpg"}
+              alt={name}
+            />
+          </CategoryImage>
           <span>{name}</span>
         </CategoryName>
       </ProductCategory>
