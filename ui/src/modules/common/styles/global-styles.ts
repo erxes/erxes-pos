@@ -172,6 +172,10 @@ a:hover {
   margin-top: 10px !important;
 }
 
+.mt-40 {
+  margin-top: 40px;
+}
+
 .wide-modal {
   width: 90%;
 }

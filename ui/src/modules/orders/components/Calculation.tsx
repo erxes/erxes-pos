@@ -363,7 +363,7 @@ export default class Calculation extends React.Component<Props, State> {
 
     const { order, productBodyType, orderProps } = this.props;
 
-    if (productBodyType === "payment") {
+    if ((order && order.paidDate) || productBodyType === "payment") {
       return (
         <OrderInfo
           order={order}

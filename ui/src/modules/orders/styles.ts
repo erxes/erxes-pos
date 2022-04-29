@@ -693,17 +693,13 @@ export const OrderBox = styledTS<{
   padding: 5px;
   text-align: center;
   margin: 0 15px 15px 0;
-  border: 1px solid #ddd;
+  border: 1px solid ;
   border-radius: 8px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
-
-  &:hover {
-    border-color: ${(props) =>
-      props.color ? props.color : colors.colorSecondary};
-  }
+  border-color: ${(props) => (props.color ? props.color : "#ddd")};
 
   div {
     margin-top: 10px;

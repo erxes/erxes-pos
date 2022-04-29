@@ -17,7 +17,7 @@ import {
 import CardSection from "./cardPayment/CardSection";
 import QPaySection from "./qpayPayment/QPaySection";
 import EntitySelector from "../drawer/EntitySelector";
-import { Card, Cards, TypeWrapper } from "../drawer/style";
+import { Card, Cards, SuccessfulText, TypeWrapper } from "../drawer/style";
 import KeyPads from "../drawer/KeyPads";
 import EntityChecker from "./EntityChecker";
 import CashSection from "./cashPayment/CashSection";
@@ -134,7 +134,8 @@ export default class SplitPayment extends React.Component<Props, State> {
 
           this.setState({ companyName: data.ordersCheckCompany.name });
         }
-      }).catch(e => {
+      })
+      .catch((e) => {
         Alert.error(e.mssage);
       });
   }
@@ -184,8 +185,18 @@ export default class SplitPayment extends React.Component<Props, State> {
       }
 
       return (
-        <React.Fragment>
-          <h4>{__('Payment made')}. {__('Choose receipt type')}:</h4>
+        <>
+          <FlexCenter>
+            <SuccessfulText>
+              <div className="icon-wrapper small">
+                <Icon icon="check-1" size={20} />
+              </div>
+              <h4 className="success">{__("Payment successful")}.</h4>
+            </SuccessfulText>
+          </FlexCenter>
+          <FlexCenter>
+            <h4 className="mt-40">{__("Choose receipt type")}:</h4>
+          </FlexCenter>
           <EntitySelector
             billType={billType}
             isPortrait={false}
@@ -194,15 +205,16 @@ export default class SplitPayment extends React.Component<Props, State> {
             onStateChange={onStateChange}
             settlePayment={this.handlePayment}
           />
-        </React.Fragment>
+        </>
       );
     };
 
-    return (<div>{ebarimtBillType()}</div>);
+    return <div>{ebarimtBillType()}</div>;
   }
 
   renderTabContent() {
-    const { addPayment, checkQPayInvoice, cancelQPayInvoice, refetchOrder } = this.props;
+    const { addPayment, checkQPayInvoice, cancelQPayInvoice, refetchOrder } =
+      this.props;
     const {
       billType,
       activeInput,

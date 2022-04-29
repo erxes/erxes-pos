@@ -106,7 +106,7 @@ export default class Pos extends React.Component<Props, State> {
     super(props);
 
     const { order, type } = props;
-
+    console.log(order);
     this.state = {
       items: order ? order.items : [],
       totalAmount: order ? getTotalAmount(order.items) : 0,

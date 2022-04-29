@@ -114,8 +114,18 @@ export const SuccessfulText = styled.div`
     text-align: center;
     margin-right: ${dimensions.unitSpacing}px;
 
+    &.small {
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+    }
+
     > i {
       color: ${colors.colorWhite};
     }
+  }
+
+  h4 {
+    margin: 0;
   }
 `;
