@@ -191,7 +191,7 @@ export default class Calculation extends React.Component<Props, State> {
     } = this.props;
 
     if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
-      return null;
+      return this.renderReceiptButton();
     }
 
     const onClick = () => {
