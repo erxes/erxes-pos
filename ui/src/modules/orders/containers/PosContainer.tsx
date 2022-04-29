@@ -288,6 +288,7 @@ export default withProps<Props>(
     }),
     graphql<Props>(gql(queries.productCategories), {
       name: "productCategoriesQuery",
+      options: { variables: { excludeEmpty: true } }
     }),
     graphql<Props>(gql(queries.products), {
       name: "productsQuery",

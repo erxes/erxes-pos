@@ -3,7 +3,6 @@ import React from "react";
 import { router } from "modules/common/utils";
 import { IProduct, IProductCategory } from "../types";
 import CategoryItem from "./CategoryItem";
-// import { ProductCategories } from '../styles';
 import { IConfig, IRouterProps } from "types";
 import { CategoriesColumn } from "../styles";
 

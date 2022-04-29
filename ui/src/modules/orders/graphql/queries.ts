@@ -50,8 +50,8 @@ const customerFields = `
 `;
 
 const productCategories = `
-  query productCategories {
-    productCategories {
+  query productCategories($excludeEmpty: Boolean) {
+    productCategories(excludeEmpty: $excludeEmpty) {
       ${commonFields}
     }
   }
