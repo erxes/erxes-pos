@@ -40,7 +40,7 @@ export default class PortraitView extends React.Component<Props> {
           </Type>
         </FlexCenter>
         <AppWrapper>
-          <img src={uiOptions.mobileAppImage || "/images/Phone-XI.png"} alt="mobile app image" />
+          <img src={uiOptions.mobileAppImage || "/images/Phone-XI.png"} alt="mobile app" />
           <div>
             <h3>{__('Scan Me')}</h3>
             <img className="qrCode" src={uiOptions.qrCodeImage || "/images/qr-code.png"} alt="qr-code" />

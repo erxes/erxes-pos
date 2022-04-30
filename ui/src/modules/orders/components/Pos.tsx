@@ -568,7 +568,7 @@ export default class Pos extends React.Component<Props, State> {
       <>
         <div className="headerKiosk">
           <Link to="/">
-            <img src={uiOptions.kioskHeaderImage || "/images/headerKiosk.png"} alt="Kiosk header image" />
+            <img src={uiOptions.kioskHeaderImage || "/images/headerKiosk.png"} alt="Kiosk header" />
           </Link>
         </div>
         <KioskMainContent>
