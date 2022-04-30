@@ -539,6 +539,7 @@ export default class Pos extends React.Component<Props, State> {
     } = this.props;
 
     const { items, totalAmount, type, isTypeChosen } = this.state;
+    const uiOptions = currentConfig ? currentConfig.uiOptions : {};
 
     const onBack = () => {
       this.onClickType("eat");
@@ -567,7 +568,7 @@ export default class Pos extends React.Component<Props, State> {
       <>
         <div className="headerKiosk">
           <Link to="/">
-            <img src="/images/headerKiosk.png" alt="type" />
+            <img src={uiOptions.kioskHeaderImage || "/images/headerKiosk.png"} alt="Kiosk header image" />
           </Link>
         </div>
         <KioskMainContent>

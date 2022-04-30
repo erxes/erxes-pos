@@ -20,7 +20,9 @@ type Props = {
 
 export default class PortraitView extends React.Component<Props> {
   renderContent(color) {
-    const { onClickType } = this.props;
+    const { onClickType, currentConfig } = this.props;
+
+    const uiOptions = currentConfig ? currentConfig.uiOptions : {};
 
     return (
       <ChooseType>
@@ -38,10 +40,10 @@ export default class PortraitView extends React.Component<Props> {
           </Type>
         </FlexCenter>
         <AppWrapper>
-          <img src="/images/Phone-XI.png" alt="phone" />
+          <img src={uiOptions.mobileAppImage || "/images/Phone-XI.png"} alt="mobile app image" />
           <div>
-            <h3>Scan Me</h3>
-            <img className="qrCode" src="/images/qr-code.png" alt="qr-code" />
+            <h3>{__('Scan Me')}</h3>
+            <img className="qrCode" src={uiOptions.qrCodeImage || "/images/qr-code.png"} alt="qr-code" />
           </div>
           <FlexCenter>
             <img className="app-download" src="/images/ios.png" alt="ios" />
