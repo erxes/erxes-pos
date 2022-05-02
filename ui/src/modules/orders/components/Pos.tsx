@@ -703,14 +703,14 @@ export default class Pos extends React.Component<Props, State> {
     const { isTypeChosen } = this.state;
     const mode = localStorage.getItem("erxesPosMode") || "";
 
-    // auto-refresh within 5 minutes if an order is not made in kiosk mode
+    // auto-refresh within 3 minutes if an order is not made in kiosk mode
     if (mode === POS_MODES.KIOSK) {
       // 5 min is enough to make an order
       this.timeoutId = setTimeout(() => {
         if (!order && isTypeChosen) {
           window.location.href = '/';
         }
-      }, 60000 * 5);
+      }, 60000 * 3);
     }
   }
 
