@@ -46,6 +46,7 @@ const currentConfig = `
       formIntegrationIds
       brandId
       token
+
       uiOptions {
         colors
         bgImage
@@ -53,6 +54,9 @@ const currentConfig = `
         favIcon
         receiptIcon
         texts
+        kioskHeaderImage
+        mobileAppImage
+        qrCodeImage
       }
 
       ebarimtConfig {
