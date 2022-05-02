@@ -11,7 +11,7 @@ import RegisterChecker from "./RegisterChecker";
 import KeyPads from "./KeyPads";
 import { FlexCenter } from "modules/common/styles/main";
 import Button from "modules/common/components/Button";
-import { __ } from "modules/common/utils";
+import { __, confirm } from "modules/common/utils";
 import { Alert } from "modules/common/utils";
 import gql from "graphql-tag";
 import { Cards, TypeWrapper, VatWrapper } from "./style";
@@ -141,7 +141,11 @@ class PaymentForm extends React.Component<Props, State> {
         }
       })
       .then(() => {
-        this.handlePaymentBefore();
+        const { companyName } = this.state;
+
+        confirm(`${__('Confirm entity name and then print receipt')}: ${companyName}`).then(() => {
+          this.handlePaymentBefore();
+        })
       });
   };
 

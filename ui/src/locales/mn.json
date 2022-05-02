@@ -120,5 +120,6 @@
   "Choose receipt type": "Баримтын төрөл сонгоно уу",
   "Type register number": "Байгууллагын регистрийн дугаар оруулна уу",
   "Name": "Нэр",
-  "Scan Me": "Намайг уншуулна уу"
+  "Scan Me": "Намайг уншуулна уу",
+  "Confirm entity name and then print receipt": "Байгууллагын нэрийг нягтлаад э-баримтаа хэвлэнэ үү"
 }
