@@ -102,6 +102,8 @@ const getTotalAmount = (items: IOrderItemInput[]) => {
 };
 
 export default class Pos extends React.Component<Props, State> {
+  timeoutId;
+
   constructor(props: Props) {
     super(props);
 
@@ -695,4 +697,32 @@ export default class Pos extends React.Component<Props, State> {
       </>
     );
   } // end render()
+
+  setupTimer() {
+    const { order } = this.props;
+    const { isTypeChosen } = this.state;
+    const mode = localStorage.getItem("erxesPosMode") || "";
+
+    // auto-refresh within 5 minutes if an order is not made in kiosk mode
+    if (mode === POS_MODES.KIOSK) {
+      // 5 min is enough to make an order
+      this.timeoutId = setTimeout(() => {
+        if (!order && isTypeChosen) {
+          window.location.href = '/';
+        }
+      }, 60000 * 5);
+    }
+  }
+
+  componentDidUpdate() {
+    const mode = localStorage.getItem("erxesPosMode") || "";
+
+    if (mode === POS_MODES.KIOSK) {
+      this.setupTimer();
+    }
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timeoutId);
+  }
 }
