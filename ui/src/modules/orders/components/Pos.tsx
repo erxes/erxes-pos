@@ -714,13 +714,13 @@ export default class Pos extends React.Component<Props, State> {
     }
   }
 
-  componentDidUpdate() {
-    const mode = localStorage.getItem("erxesPosMode") || "";
+  // componentDidUpdate() {
+  //   const mode = localStorage.getItem("erxesPosMode") || "";
 
-    if (mode === POS_MODES.KIOSK) {
-      this.setupTimer();
-    }
-  }
+  //   if (mode === POS_MODES.KIOSK) {
+  //     this.setupTimer();
+  //   }
+  // }
 
   componentWillUnmount() {
     clearTimeout(this.timeoutId);
