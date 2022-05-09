@@ -108,6 +108,12 @@ export default class CardInput extends React.Component<Props, State> {
                     return Alert.warning(r.response.response_msg);
                   }
                 }
+
+                if (!r.status && r.response) {
+                  const { Exception = { ErrorMessage: '' } } = r.response;
+
+                  Alert.error(`${Exception.ErrorMessage}`);
+                }
               })
               .catch((e) => {
                 Alert.error(e.message);
@@ -138,7 +144,8 @@ export default class CardInput extends React.Component<Props, State> {
               </div>
             </Input>
           </FormGroup>
-          {cardAmount ? (
+          {/** Гүйлгээ хийх доод дүн 100₮ */}
+          {cardAmount >= 100 ? (
             <Button
               size="small"
               btnStyle="warning"
