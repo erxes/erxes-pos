@@ -105,7 +105,7 @@ export default class CardInput extends React.Component<Props, State> {
 
                     addPayment({ _id, cardInfo: r.response, cardAmount });
                   } else {
-                    return Alert.warning(r.response.response_msg);
+                    Alert.warning(r.response.response_msg);
                   }
                 }
 

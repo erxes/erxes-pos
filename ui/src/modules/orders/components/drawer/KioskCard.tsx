@@ -85,12 +85,11 @@ export default class CardForm extends React.Component<Props, State> {
 
                   onStateChange("isDone", true);
                 }
+              }
+              if (!r.status && r.response) {
+                const { Exception = { ErrorMessage: '' } } = r.response;
 
-                if (!r.status && r.response) {
-                  const { Exception = { ErrorMessage: '' } } = r.response;
-
-                  Alert.error(`${Exception.ErrorMessage}`);
-                }
+                Alert.error(`${Exception.ErrorMessage}`);
               }
             })
             .catch((e) => {
