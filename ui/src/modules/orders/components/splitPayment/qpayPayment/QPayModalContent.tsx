@@ -1,11 +1,10 @@
-import React from 'react';
+import React from "react";
 import Modal from "react-bootstrap/Modal";
 
-import { __ } from 'modules/common/utils';
-import Table from 'modules/common/components/table/index';
-import { IInvoiceCheckParams, IOrder } from 'modules/orders/types';
-import QPayRow from './QPayRow';
-import { IQPayInvoice } from 'modules/qpay/types';
+import { __, confirm, Alert } from "modules/common/utils";
+import { IInvoiceCheckParams, IOrder } from "modules/orders/types";
+import QPayRow from "./QPayRow";
+import { IQPayInvoice } from "modules/qpay/types";
 
 type Props = {
   checkQPayInvoice: (params: IInvoiceCheckParams) => void;
@@ -16,48 +15,68 @@ type Props = {
   invoice: IQPayInvoice | null;
   setInvoice: (invoice: IQPayInvoice) => void;
   refetchOrder: () => void;
-}
+};
 
 export default class QPayModalContent extends React.Component<Props> {
-  render() {
-    const { cancelQPayInvoice, checkQPayInvoice, order, toggleModal, showModal, invoice, setInvoice, refetchOrder } = this.props;
+  onHide = () => {
+    const { invoice, cancelQPayInvoice, toggleModal } = this.props;
+
+    if (!invoice) {
+      return;
+    }
+
+    confirm()
+      .then(() => {
+        cancelQPayInvoice(invoice._id);
+        toggleModal();
+      })
+      .catch((e) => {
+        Alert.error(e.message);
+      });
+  };
+
+  renderContent() {
+    const {
+      cancelQPayInvoice,
+      checkQPayInvoice,
+      order,
+      toggleModal,
+      invoice,
+      setInvoice,
+      refetchOrder,
+    } = this.props;
 
     const { _id } = order;
+
+    if (!invoice) {
+      return null;
+    }
+
+    return (
+      <QPayRow
+        item={invoice}
+        key={invoice._id}
+        checkQPayInvoice={checkQPayInvoice}
+        cancelQPayInvoice={cancelQPayInvoice}
+        orderId={_id}
+        toggleModal={toggleModal}
+        setInvoice={setInvoice}
+        refetchOrder={refetchOrder}
+      />
+    );
+  }
+
+  render() {
+    const { showModal } = this.props;
 
     return (
       <Modal
         enforceFocus={false}
-        onHide={toggleModal}
+        onHide={this.onHide}
         show={showModal}
         animation={false}
-        size="lg"
       >
-        <Modal.Header closeButton>
-          <Modal.Title>{__('Invoices')}</Modal.Title>
-        </Modal.Header>
-        <Table hover={true} bordered={true} responsive={true}>
-          <thead>
-            <tr>
-              <th>{__('Amount')}</th>
-              <th>{__('Status')}</th>
-              <th>{__('Scan the QR code below with payment app to continue')}</th>
-              <th>{__('Actions')}</th>
-            </tr>
-          </thead>
-          <tbody>
-            {invoice &&
-              <QPayRow
-                item={invoice}
-                key={invoice._id}
-                checkQPayInvoice={checkQPayInvoice}
-                cancelQPayInvoice={cancelQPayInvoice}
-                orderId={_id}
-                toggleModal={toggleModal}
-                setInvoice={setInvoice}
-                refetchOrder={refetchOrder}
-              />}
-          </tbody>
-        </Table>
+        {this.renderContent()}
       </Modal>
     );
   }

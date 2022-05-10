@@ -39,7 +39,8 @@ export default class QPaySection extends React.Component<Props, State> {
   }
 
   renderModal() {
-    const { cancelQPayInvoice, checkQPayInvoice, order, refetchOrder } = this.props;
+    const { cancelQPayInvoice, checkQPayInvoice, order, refetchOrder } =
+      this.props;
 
     return (
       <QPayModalContent
@@ -49,7 +50,7 @@ export default class QPaySection extends React.Component<Props, State> {
         showModal={this.state.showModal}
         invoice={this.state.invoice}
         toggleModal={() => this.setState({ showModal: !this.state.showModal })}
-        setInvoice={invoice => this.setState({ invoice })}
+        setInvoice={(invoice) => this.setState({ invoice })}
         refetchOrder={refetchOrder}
       />
     );
@@ -114,6 +115,7 @@ export default class QPaySection extends React.Component<Props, State> {
               </div>
             </Input>
           </FormGroup>
+
           {mobileAmount ? (
             <Button
               size="small"
@@ -124,6 +126,7 @@ export default class QPaySection extends React.Component<Props, State> {
               {__("Create invoice")}
             </Button>
           ) : null}
+
           {this.renderModal()}
         </CardInputColumn>
       </FlexCenter>

@@ -1,14 +1,17 @@
-import React from 'react';
-import QRCode from 'qrcode';
-import gql from 'graphql-tag';
+import React from "react";
+import QRCode from "qrcode";
+import gql from "graphql-tag";
 
-import apolloClient from 'apolloClient';
-import { __, confirm, Alert } from 'modules/common/utils';
-import Button from 'modules/common/components/Button';
-import Label from 'modules/common/components/Label';
-import { IQPayInvoice } from 'modules/qpay/types';
-import { IInvoiceCheckParams } from 'modules/orders/types';
-import { mutations } from 'modules/orders/graphql/index';
+import apolloClient from "apolloClient";
+import { __, confirm, Alert } from "modules/common/utils";
+import Button from "modules/common/components/Button";
+import Label from "modules/common/components/Label";
+import { IQPayInvoice } from "modules/qpay/types";
+import { IInvoiceCheckParams } from "modules/orders/types";
+import { mutations } from "modules/orders/graphql/index";
+import { formatNumber } from "modules/utils";
+import { QPayWrapper, TotalAmount } from "./styles";
+import Icon from "modules/common/components/Icon";
 
 type Props = {
   item: IQPayInvoice;
@@ -18,7 +21,7 @@ type Props = {
   toggleModal: () => void;
   setInvoice: (invoice: IQPayInvoice) => void;
   refetchOrder: () => void;
-}
+};
 
 export default class QPayRow extends React.Component<Props> {
   timeoutId;
@@ -41,13 +44,13 @@ export default class QPayRow extends React.Component<Props> {
       return null;
     }
 
-    return (<canvas id={item._id} />);
+    return <canvas id={item._id} />;
   }
 
   checkPayment(isAuto = false) {
     const { orderId, setInvoice, item, refetchOrder } = this.props;
 
-    if (item && item.status === 'PAID' && item.qpayPaymentId) {
+    if (item && item.status === "PAID" && item.qpayPaymentId) {
       return;
     }
 
@@ -62,14 +65,18 @@ export default class QPayRow extends React.Component<Props> {
     apolloClient
       .mutate({
         mutation: gql(mutations.qpayCheckPayment),
-        variables: { orderId, _id: item._id }
+        variables: { orderId, _id: item._id },
       })
       .then(({ data }) => {
         const invoice = data.qpayCheckPayment;
 
         setInvoice(invoice);
 
-        const paid = invoice && invoice.qpayPaymentId && invoice.paymentDate && invoice.status === 'PAID';
+        const paid =
+          invoice &&
+          invoice.qpayPaymentId &&
+          invoice.paymentDate &&
+          invoice.status === "PAID";
 
         if (paid) {
           clearTimeout(this.timeoutId);
@@ -77,7 +84,7 @@ export default class QPayRow extends React.Component<Props> {
 
         refetchOrder();
       })
-      .catch(e => {
+      .catch((e) => {
         Alert.error(e.message);
       });
   }
@@ -89,37 +96,61 @@ export default class QPayRow extends React.Component<Props> {
   }
 
   render() {
-    const { item, checkQPayInvoice, orderId, cancelQPayInvoice, toggleModal } = this.props;
+    const { item, checkQPayInvoice, orderId, cancelQPayInvoice, toggleModal } =
+      this.props;
 
-    const labelStyle = item.status === 'PAID' ? 'success' : 'warning';
+    const labelStyle = item.status === "PAID" ? "success" : "warning";
 
     const onCheck = () => {
       checkQPayInvoice({ orderId, _id: item._id });
     };
 
     const onCancel = () => {
-      confirm().then(() => {
-        cancelQPayInvoice(item._id);
-        toggleModal();
-      }).catch(e => {
-        Alert.error(e.message);
-      })
+      confirm()
+        .then(() => {
+          cancelQPayInvoice(item._id);
+          toggleModal();
+        })
+        .catch((e) => {
+          Alert.error(e.message);
+        });
     };
 
     return (
-      <tr key={item._id}>
-        <td>{item.amount}</td>
-        <td><Label lblStyle={labelStyle}>{item.status}</Label></td>
-        <td>
-          <div>{item.status !== 'PAID' ? this.renderQrCode() : __('Already paid')}</div>
-        </td>
-        <td>
-          <div>
-            {item.status !== 'PAID' && <Button size="small" btnStyle="warning" icon="check-1" onClick={onCheck}>{__('Check')}</Button>}
-            <Button size="small" btnStyle="danger" icon="trash-alt" onClick={onCancel}>{__('Cancel1')}</Button>
+      <QPayWrapper key={item._id}>
+        <h5>
+          <div className="icon-wrapper">
+            <Icon icon="check-1" />
           </div>
-        </td>
-      </tr>
+          Нэхэмжлэх амжилттай үүслээ!
+        </h5>
+        <h4>{__("Scan the QR code below with payment app to continue")}</h4>
+        {item.status !== "PAID" ? this.renderQrCode() : __("Already paid")}
+        <TotalAmount>
+          {formatNumber(Number(item.amount) || 0)}₮
+          <Label lblStyle={labelStyle}>{item.status}</Label>
+        </TotalAmount>
+        <div>
+          {item.status !== "PAID" && (
+            <Button
+              size="small"
+              btnStyle="warning"
+              icon="check-1"
+              onClick={onCheck}
+            >
+              {__("Check")}
+            </Button>
+          )}
+          <Button
+            size="small"
+            btnStyle="danger"
+            icon="cancel-1"
+            onClick={onCancel}
+          >
+            {__("Cancel1")}
+          </Button>
+        </div>
+      </QPayWrapper>
     );
   }
 
