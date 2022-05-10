@@ -1,7 +1,7 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 
-import { __, confirm, Alert } from "modules/common/utils";
+import { __ } from "modules/common/utils";
 import { IInvoiceCheckParams, IOrder } from "modules/orders/types";
 import QPayRow from "./QPayRow";
 import { IQPayInvoice } from "modules/qpay/types";
@@ -18,23 +18,6 @@ type Props = {
 };
 
 export default class QPayModalContent extends React.Component<Props> {
-  onHide = () => {
-    const { invoice, cancelQPayInvoice, toggleModal } = this.props;
-
-    if (!invoice) {
-      return;
-    }
-
-    confirm()
-      .then(() => {
-        cancelQPayInvoice(invoice._id);
-        toggleModal();
-      })
-      .catch((e) => {
-        Alert.error(e.message);
-      });
-  };
-
   renderContent() {
     const {
       cancelQPayInvoice,
@@ -67,12 +50,12 @@ export default class QPayModalContent extends React.Component<Props> {
   }
 
   render() {
-    const { showModal } = this.props;
+    const { showModal, toggleModal } = this.props;
 
     return (
       <Modal
         enforceFocus={false}
-        onHide={this.onHide}
+        onHide={() => toggleModal()}
         show={showModal}
         animation={false}
       >
