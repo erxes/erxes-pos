@@ -39,6 +39,13 @@ export default class QPaySection extends React.Component<Props, State> {
     this.state = { showModal: false, invoice: null };
   }
 
+  toggleModal = (invoice?: IQPayInvoice | null) => {
+    this.setState({
+      showModal: !this.state.showModal,
+      invoice: invoice || null,
+    });
+  };
+
   renderModal() {
     const { cancelQPayInvoice, checkQPayInvoice, order, refetchOrder } =
       this.props;
@@ -50,7 +57,7 @@ export default class QPaySection extends React.Component<Props, State> {
         order={order}
         showModal={this.state.showModal}
         invoice={this.state.invoice}
-        toggleModal={() => this.setState({ showModal: !this.state.showModal })}
+        toggleModal={this.toggleModal}
         setInvoice={(invoice) => this.setState({ invoice })}
         refetchOrder={refetchOrder}
       />
@@ -58,14 +65,7 @@ export default class QPaySection extends React.Component<Props, State> {
   }
 
   render() {
-    const {
-      order,
-      maxAmount = 0,
-      setAmount,
-      mobileAmount,
-      cancelQPayInvoice,
-      checkQPayInvoice,
-    } = this.props;
+    const { order, maxAmount = 0, setAmount, mobileAmount } = this.props;
 
     const handleInput = (value: number | undefined = 0) => {
       // do not accept amount greater than payable amount
@@ -134,11 +134,7 @@ export default class QPaySection extends React.Component<Props, State> {
               >
                 {__("Create invoice")}
               </Button>
-              <InvoiceModal
-                order={order}
-                cancelQPayInvoice={cancelQPayInvoice}
-                checkQPayInvoice={checkQPayInvoice}
-              />
+              <InvoiceModal order={order} toggleQPayModal={this.toggleModal} />
             </FlexCenter>
           ) : null}
 
