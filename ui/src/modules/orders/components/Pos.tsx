@@ -570,7 +570,10 @@ export default class Pos extends React.Component<Props, State> {
       <>
         <div className="headerKiosk">
           <Link to="/">
-            <img src={uiOptions.kioskHeaderImage || "/images/headerKiosk.png"} alt="Kiosk header" />
+            <img
+              src={uiOptions.kioskHeaderImage || "/images/headerKiosk.png"}
+              alt="Kiosk header"
+            />
           </Link>
         </div>
         <KioskMainContent>
@@ -708,19 +711,11 @@ export default class Pos extends React.Component<Props, State> {
       // 5 min is enough to make an order
       this.timeoutId = setTimeout(() => {
         if (!order && isTypeChosen) {
-          window.location.href = '/';
+          window.location.href = "/";
         }
       }, 60000 * 3);
     }
   }
-
-  // componentDidUpdate() {
-  //   const mode = localStorage.getItem("erxesPosMode") || "";
-
-  //   if (mode === POS_MODES.KIOSK) {
-  //     this.setupTimer();
-  //   }
-  // }
 
   componentWillUnmount() {
     clearTimeout(this.timeoutId);

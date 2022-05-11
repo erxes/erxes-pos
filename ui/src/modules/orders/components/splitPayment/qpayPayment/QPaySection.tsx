@@ -30,13 +30,14 @@ type Props = {
 type State = {
   showModal: boolean;
   invoice: IQPayInvoice | null;
+  qpayInvoices: IQPayInvoice[];
 };
 
 export default class QPaySection extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = { showModal: false, invoice: null };
+    this.state = { showModal: false, invoice: null, qpayInvoices: [] };
   }
 
   toggleModal = (invoice?: IQPayInvoice | null) => {

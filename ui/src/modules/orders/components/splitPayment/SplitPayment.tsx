@@ -97,6 +97,12 @@ export default class SplitPayment extends React.Component<Props, State> {
     this.checkOrganization = this.checkOrganization.bind(this);
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.order !== this.props.order) {
+      this.setState({ order: nextProps.order });
+    }
+  }
+
   getRemainderAmount(order: IOrder) {
     const sumCashAmount = order.cashAmount || 0;
     const sumCardAmount = order.cardAmount || 0;

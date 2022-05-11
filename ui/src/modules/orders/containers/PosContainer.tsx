@@ -252,7 +252,7 @@ class PosContainer extends React.Component<Props, States> {
       settlePayment,
       showMenu,
       modalContentType,
-      refetchOrder: orderDetailQuery.refetch,
+      refetchOrder: () => orderDetailQuery.refetch(),
     };
 
     return <Pos {...updatedProps} />;
@@ -288,7 +288,7 @@ export default withProps<Props>(
     }),
     graphql<Props>(gql(queries.productCategories), {
       name: "productCategoriesQuery",
-      options: { variables: { excludeEmpty: true } }
+      options: { variables: { excludeEmpty: true } },
     }),
     graphql<Props>(gql(queries.products), {
       name: "productsQuery",
