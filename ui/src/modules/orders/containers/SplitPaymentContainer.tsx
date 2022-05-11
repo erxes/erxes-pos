@@ -45,7 +45,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       order,
       onChangeProductBodyType,
       onOrdersChange,
-      refetchOrder
+      refetchOrder,
     } = this.props;
 
     const addPayment = (params: IPaymentInput, callback) => {
@@ -79,7 +79,8 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
     const cancelInvoice = (_id: string) => {
       cancelInvoiceMutation({ variables: { _id } })
         .then(() => {
-          Alert.success(__("Success"));
+          Alert.success(__("successfully cancelled"));
+          refetchOrder();
         })
         .catch((e) => {
           Alert.error(__(trimGraphqlError(e.message)));

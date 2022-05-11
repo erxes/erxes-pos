@@ -33,3 +33,19 @@ export const TotalAmount = styled.div`
     margin-left: ${dimensions.unitSpacing}px;
   }
 `;
+
+export const InvoiceListIcon = styled.div`
+  margin-left: ${dimensions.unitSpacing}px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  width: 25px;
+  height: 25px;
+  line-height: 25px;
+  background: ${colors.borderPrimary};
+  border: 1px solid ${colors.borderDarker};
+  cursor: pointer;
+`;
+
+export const InvoiceList = styled.div`
+  padding: 30px;
+`;

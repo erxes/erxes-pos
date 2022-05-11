@@ -110,7 +110,7 @@ export default class CardInput extends React.Component<Props, State> {
                 }
 
                 if (!r.status && r.response) {
-                  const { Exception = { ErrorMessage: '' } } = r.response;
+                  const { Exception = { ErrorMessage: "" } } = r.response;
 
                   Alert.error(`${Exception.ErrorMessage}`);
                 }
@@ -129,7 +129,7 @@ export default class CardInput extends React.Component<Props, State> {
 
     return (
       <>
-        <CardInputColumn>
+        <CardInputColumn style={{ alignItems: "center" }}>
           <FormGroup>
             <ControlLabel>{__("By Card")}</ControlLabel>
             <Input color={color}>

@@ -14,6 +14,7 @@ import Button from "modules/common/components/Button";
 import QPayModalContent from "./QPayModalContent";
 import { IQPayInvoice } from "modules/qpay/types";
 import { FlexCenter } from "modules/common/styles/main";
+import InvoiceModal from "./InvoiceModal";
 
 type Props = {
   order: IOrder;
@@ -57,7 +58,14 @@ export default class QPaySection extends React.Component<Props, State> {
   }
 
   render() {
-    const { order, maxAmount = 0, setAmount, mobileAmount } = this.props;
+    const {
+      order,
+      maxAmount = 0,
+      setAmount,
+      mobileAmount,
+      cancelQPayInvoice,
+      checkQPayInvoice,
+    } = this.props;
 
     const handleInput = (value: number | undefined = 0) => {
       // do not accept amount greater than payable amount
@@ -100,7 +108,7 @@ export default class QPaySection extends React.Component<Props, State> {
 
     return (
       <FlexCenter>
-        <CardInputColumn>
+        <CardInputColumn style={{ alignItems: "center" }}>
           <FormGroup>
             <ControlLabel>{__("Pay with QPay")}</ControlLabel>
             <Input>
@@ -117,14 +125,21 @@ export default class QPaySection extends React.Component<Props, State> {
           </FormGroup>
 
           {mobileAmount ? (
-            <Button
-              size="small"
-              btnStyle="warning"
-              block
-              onClick={createInvoice}
-            >
-              {__("Create invoice")}
-            </Button>
+            <FlexCenter>
+              <Button
+                size="small"
+                btnStyle="warning"
+                block
+                onClick={createInvoice}
+              >
+                {__("Create invoice")}
+              </Button>
+              <InvoiceModal
+                order={order}
+                cancelQPayInvoice={cancelQPayInvoice}
+                checkQPayInvoice={checkQPayInvoice}
+              />
+            </FlexCenter>
           ) : null}
 
           {this.renderModal()}

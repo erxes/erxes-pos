@@ -1,7 +1,6 @@
 import React from "react";
 import Modal from "react-bootstrap/Modal";
 
-import { __ } from "modules/common/utils";
 import { IInvoiceCheckParams, IOrder } from "modules/orders/types";
 import QPayRow from "./QPayRow";
 import { IQPayInvoice } from "modules/qpay/types";
