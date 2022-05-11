@@ -34,6 +34,8 @@ export default class InvoiceModal extends React.Component<Props, State> {
   };
 
   renderList(invoice) {
+    const isSuccess = invoice.status === "PAID" ? "success" : "warning";
+
     return (
       <tr key={invoice._id}>
         <td>
@@ -47,10 +49,12 @@ export default class InvoiceModal extends React.Component<Props, State> {
           <Button
             size="small"
             btnStyle="warning"
-            icon="eye"
-            onClick={() => this.props.toggleQPayModal(invoice)}
+            icon={isSuccess ? "check-1" : "eye"}
+            onClick={() =>
+              isSuccess ? this.props.toggleQPayModal(invoice) : {}
+            }
           >
-            {__("Show")}
+            {isSuccess ? __("Success") : __("Show")}
           </Button>
         </td>
       </tr>
