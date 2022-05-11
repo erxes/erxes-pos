@@ -79,7 +79,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
     const cancelInvoice = (_id: string) => {
       cancelInvoiceMutation({ variables: { _id } })
         .then(() => {
-          Alert.success(__("successfully cancelled"));
+          Alert.success(__("QPay invoice has been cancelled"));
           refetchOrder();
         })
         .catch((e) => {

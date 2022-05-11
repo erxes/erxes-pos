@@ -34,8 +34,6 @@ export default class InvoiceModal extends React.Component<Props, State> {
   };
 
   renderList(invoice) {
-    const isSuccess = invoice.status === "PAID" ? "success" : "warning";
-
     return (
       <tr key={invoice._id}>
         <td>
@@ -44,17 +42,15 @@ export default class InvoiceModal extends React.Component<Props, State> {
           </Label>
         </td>
         <td>{formatNumber(Number(invoice.amount) || 0)}₮</td>
-        <td>{dayjs(invoice.createdAt).format("YY/MM/DD")}</td>
+        <td>{invoice.paymentDate ? dayjs(invoice.paymentDate).format("YY/MM/DD HH:mm") : '-'}</td>
         <td>
           <Button
             size="small"
             btnStyle="warning"
-            icon={isSuccess ? "check-1" : "eye"}
-            onClick={() =>
-              isSuccess ? this.props.toggleQPayModal(invoice) : {}
-            }
+            icon="eye"
+            onClick={() => this.props.toggleQPayModal(invoice)}
           >
-            {isSuccess ? __("Success") : __("Show")}
+            {__("Show")}
           </Button>
         </td>
       </tr>
@@ -71,7 +67,7 @@ export default class InvoiceModal extends React.Component<Props, State> {
             <tr>
               <th>{__("Status")}</th>
               <th>{__("Amount")}</th>
-              <th>{__("Date")}</th>
+              <th>{__("Paid date")}</th>
               <th>{__("Actions")}</th>
             </tr>
           </thead>

@@ -271,7 +271,6 @@ export default class SplitPayment extends React.Component<Props, State> {
           remainder={remainder || 0}
           setAmount={setAmount}
           addPayment={addPayment}
-          // onCallback={e => this.onBoxClick(e, '')}
         />
       );
     }

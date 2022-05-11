@@ -125,5 +125,7 @@
   "Name": "Name",
   "Scan Me": "Scan Me",
   "Show": "Show",
-  "Confirm entity name and then print receipt": "Confirm entity name and then print receipt"
+  "Confirm entity name and then print receipt": "Confirm entity name and then print receipt",
+  "QPay invoice has been cancelled": "QPay invoice has been cancelled",
+  "Paid date": "Paid date"
 }
