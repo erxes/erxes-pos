@@ -44,6 +44,10 @@ export const InvoiceListIcon = styled.div`
   background: ${colors.borderPrimary};
   border: 1px solid ${colors.borderDarker};
   cursor: pointer;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  text-align: center;
 `;
 
 export const InvoiceList = styled.div`

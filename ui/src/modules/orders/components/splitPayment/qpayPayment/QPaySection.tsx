@@ -11,10 +11,8 @@ import ControlLabel from "modules/common/components/form/Label";
 import NumberFormat from "react-number-format";
 import Icon from "modules/common/components/Icon";
 import Button from "modules/common/components/Button";
-import QPayModalContent from "./QPayModalContent";
 import { IQPayInvoice } from "modules/qpay/types";
 import { FlexCenter } from "modules/common/styles/main";
-import InvoiceModal from "./InvoiceModal";
 
 type Props = {
   order: IOrder;
@@ -24,12 +22,14 @@ type Props = {
   maxAmount?: number;
   mobileAmount: number;
   setAmount: (n: number) => void;
+  setInvoice: (invoice: IQPayInvoice) => void;
   refetchOrder: () => void;
+  showQpayList: (invoice?: any) => void;
+  showModal: boolean;
+  invoice: IQPayInvoice | null;
 };
 
 type State = {
-  showModal: boolean;
-  invoice: IQPayInvoice | null;
   qpayInvoices: IQPayInvoice[];
 };
 
@@ -37,32 +37,9 @@ export default class QPaySection extends React.Component<Props, State> {
   constructor(props: Props) {
     super(props);
 
-    this.state = { showModal: false, invoice: null, qpayInvoices: [] };
-  }
-
-  toggleModal = (invoice?: IQPayInvoice | null) => {
-    this.setState({
-      showModal: !this.state.showModal,
-      invoice: invoice || null,
-    });
-  };
-
-  renderModal() {
-    const { cancelQPayInvoice, checkQPayInvoice, order, refetchOrder } =
-      this.props;
-
-    return (
-      <QPayModalContent
-        cancelQPayInvoice={cancelQPayInvoice}
-        checkQPayInvoice={checkQPayInvoice}
-        order={order}
-        showModal={this.state.showModal}
-        invoice={this.state.invoice}
-        toggleModal={this.toggleModal}
-        setInvoice={(invoice) => this.setState({ invoice })}
-        refetchOrder={refetchOrder}
-      />
-    );
+    this.state = {
+      qpayInvoices: [],
+    };
   }
 
   render() {
@@ -94,10 +71,7 @@ export default class QPaySection extends React.Component<Props, State> {
             variables: { orderId: order._id, amount: mobileAmount },
           })
           .then(({ data }) => {
-            this.setState({
-              showModal: true,
-              invoice: data.createQpaySimpleInvoice,
-            });
+            this.props.showQpayList(data.createQpaySimpleInvoice);
           })
           .catch((e) => {
             Alert.error(e.message);
@@ -135,11 +109,8 @@ export default class QPaySection extends React.Component<Props, State> {
               >
                 {__("Create invoice")}
               </Button>
-              <InvoiceModal order={order} toggleQPayModal={this.toggleModal} />
             </FlexCenter>
           ) : null}
-
-          {this.renderModal()}
         </CardInputColumn>
       </FlexCenter>
     );

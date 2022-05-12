@@ -13,6 +13,7 @@ import {
   IInvoiceParams,
   IInvoiceCheckParams,
   IPaymentParams,
+  IQPayInvoice,
 } from "modules/orders/types";
 import CardSection from "./cardPayment/CardSection";
 import QPaySection from "./qpayPayment/QPaySection";
@@ -23,6 +24,8 @@ import EntityChecker from "./EntityChecker";
 import CashSection from "./cashPayment/CashSection";
 import { BackButton } from "modules/orders/styles";
 import Icon from "modules/common/components/Icon";
+import InvoiceModal from "./qpayPayment/InvoiceModal";
+import QPayModalContent from "./qpayPayment/QPayModalContent";
 
 const DASHED_BORDER = "1px dashed #ddd";
 
@@ -70,6 +73,8 @@ type State = {
   showRegModal: boolean;
   companyName: string;
   remainder: number;
+  showQpayListModal: boolean;
+  invoice: IQPayInvoice | null;
 };
 
 export default class SplitPayment extends React.Component<Props, State> {
@@ -92,6 +97,8 @@ export default class SplitPayment extends React.Component<Props, State> {
       showRegModal: false,
       companyName: "",
       remainder,
+      showQpayListModal: false,
+      invoice: null,
     };
 
     this.checkOrganization = this.checkOrganization.bind(this);
@@ -112,6 +119,32 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     return order.totalAmount - sumCashAmount - sumCardAmount - sumMobileAmount;
   }
+
+  onChangeKeyPad = (num) => {
+    const { activeInput } = this.state;
+
+    let currentValue = this.state[activeInput];
+    const isNumberFocused = [
+      INPUT_TYPES.CARD,
+      INPUT_TYPES.CASH,
+      INPUT_TYPES.QPAY,
+    ].includes(activeInput);
+
+    // clear input
+    if (num === "CE") {
+      currentValue = isNumberFocused ? 0 : "";
+    } else if (num === "C") {
+      // remove last character
+      currentValue = currentValue.toString().slice(0, -1);
+      currentValue = isNumberFocused ? Number(currentValue) : currentValue;
+    } else {
+      currentValue = isNumberFocused
+        ? Number(currentValue + num)
+        : currentValue + num;
+    }
+
+    this.setState({ [activeInput]: currentValue } as Pick<State, keyof State>);
+  };
 
   onBoxClick = (e, activeInput) => {
     const remainder = this.getRemainderAmount(this.props.order);
@@ -145,6 +178,17 @@ export default class SplitPayment extends React.Component<Props, State> {
         Alert.error(e.mssage);
       });
   }
+
+  onToggleQpayListModal = (invoice?: any) => {
+    this.setState({
+      showQpayListModal: !this.state.showQpayListModal,
+      invoice: invoice || null,
+    });
+  };
+
+  setInvoice = (invoice) => {
+    this.setState({ invoice });
+  };
 
   handlePayment = () => {
     const { settlePayment, order } = this.props;
@@ -218,6 +262,24 @@ export default class SplitPayment extends React.Component<Props, State> {
     return <div>{ebarimtBillType()}</div>;
   }
 
+  renderQpayModal() {
+    const { cancelQPayInvoice, checkQPayInvoice, order, refetchOrder } =
+      this.props;
+
+    return (
+      <QPayModalContent
+        cancelQPayInvoice={cancelQPayInvoice}
+        checkQPayInvoice={checkQPayInvoice}
+        order={order}
+        showModal={this.state.showQpayListModal}
+        invoice={this.state.invoice}
+        toggleModal={this.onToggleQpayListModal}
+        setInvoice={this.setInvoice}
+        refetchOrder={refetchOrder}
+      />
+    );
+  }
+
   renderTabContent() {
     const { addPayment, checkQPayInvoice, cancelQPayInvoice, refetchOrder } =
       this.props;
@@ -229,6 +291,8 @@ export default class SplitPayment extends React.Component<Props, State> {
       remainder,
       cashAmount,
       mobileAmount,
+      invoice,
+      showQpayListModal,
     } = this.state;
 
     const setAmount = (amount) => {
@@ -252,6 +316,8 @@ export default class SplitPayment extends React.Component<Props, State> {
       return (
         <QPaySection
           order={order}
+          invoice={invoice}
+          showModal={showQpayListModal}
           billType={billType}
           checkQPayInvoice={checkQPayInvoice}
           cancelQPayInvoice={cancelQPayInvoice}
@@ -259,6 +325,8 @@ export default class SplitPayment extends React.Component<Props, State> {
           mobileAmount={mobileAmount}
           setAmount={setAmount}
           refetchOrder={refetchOrder}
+          setInvoice={this.setInvoice}
+          showQpayList={this.onToggleQpayListModal}
         />
       );
     }
@@ -277,32 +345,6 @@ export default class SplitPayment extends React.Component<Props, State> {
 
     return null;
   }
-
-  onChangeKeyPad = (num) => {
-    const { activeInput } = this.state;
-
-    let currentValue = this.state[activeInput];
-    const isNumberFocused = [
-      INPUT_TYPES.CARD,
-      INPUT_TYPES.CASH,
-      INPUT_TYPES.QPAY,
-    ].includes(activeInput);
-
-    // clear input
-    if (num === "CE") {
-      currentValue = isNumberFocused ? 0 : "";
-    } else if (num === "C") {
-      // remove last character
-      currentValue = currentValue.toString().slice(0, -1);
-      currentValue = isNumberFocused ? Number(currentValue) : currentValue;
-    } else {
-      currentValue = isNumberFocused
-        ? Number(currentValue + num)
-        : currentValue + num;
-    }
-
-    this.setState({ [activeInput]: currentValue } as Pick<State, keyof State>);
-  };
 
   renderPaymentType(type: string, img: string) {
     const { activeInput } = this.state;
@@ -327,7 +369,7 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   render() {
-    const { isPortrait } = this.props;
+    const { isPortrait, order } = this.props;
     const { billType, remainder } = this.state;
 
     const mode = localStorage.getItem("erxesPosMode") || "";
@@ -341,6 +383,11 @@ export default class SplitPayment extends React.Component<Props, State> {
             <Icon icon="leftarrow-3" />
             {__("Cancel")}
           </BackButton>
+          <InvoiceModal
+            order={order}
+            toggleQPayModal={this.onToggleQpayListModal}
+          />
+          {this.renderQpayModal()}
         </div>
         <TypeWrapper isPortrait={isPortrait}>
           {remainder > 0 ? (

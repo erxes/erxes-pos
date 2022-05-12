@@ -42,7 +42,11 @@ export default class InvoiceModal extends React.Component<Props, State> {
           </Label>
         </td>
         <td>{formatNumber(Number(invoice.amount) || 0)}₮</td>
-        <td>{invoice.paymentDate ? dayjs(invoice.paymentDate).format("YY/MM/DD HH:mm") : '-'}</td>
+        <td>
+          {invoice.paymentDate
+            ? dayjs(invoice.paymentDate).format("YY/MM/DD HH:mm")
+            : "-"}
+        </td>
         <td>
           <Button
             size="small"
