@@ -124,5 +124,7 @@
   "Scan Me": "Намайг уншуулна уу",
   "Confirm entity name and then print receipt": "Байгууллагын нэрийг нягтлаад э-баримтаа хэвлэнэ үү",
   "QPay invoice has been cancelled": "QPay нэхэмжлэх цуцлагдлаа",
-  "Paid date": "Төлсөн огноо"
+  "Paid date": "Төлсөн огноо",
+  "Invoice amount exceeds order amount": "Нэхэмжлэхийн дүн захиалгын нийт дүнгээс хэтэрсэн байна",
+  "Invoice amount exceeds remainder amount": "Нэхэмжлэхийн дүн захиалгын үлдэгдэл дүнгээс хэтэрсэн байна"
 }
