@@ -181,6 +181,7 @@ export default class Calculation extends React.Component<Props, State> {
   renderSplitPaymentButton() {
     const {
       order,
+      orderProps,
       addOrder,
       editOrder,
       onChangeProductBodyType,
@@ -193,6 +194,12 @@ export default class Calculation extends React.Component<Props, State> {
     if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
       return this.renderReceiptButton();
     }
+
+    const isDisabled = orderProps
+      ? orderProps.remainder !== 0
+        ? true
+        : false
+      : false;
 
     const onClick = () => {
       const callback = () => onChangeProductBodyType("payment");
@@ -223,7 +230,11 @@ export default class Calculation extends React.Component<Props, State> {
           <Button style={{ background: "#616E7C" }} onClick={onCancelOrder}>
             {__("Cancel order")}
           </Button>
-          <Button btnStyle="success" onClick={paymentDone}>
+          <Button
+            btnStyle="success"
+            onClick={paymentDone}
+            disabled={isDisabled}
+          >
             {__("Payment")}
           </Button>
         </Types>
@@ -244,7 +255,7 @@ export default class Calculation extends React.Component<Props, State> {
             style={{ background: "#616E7C" }}
             onClick={() => this.onChange(ORDER_TYPES.EAT)}
           >
-            {__("Take")}
+            {__("Eat")}
           </Button>
         )}
         <Button btnStyle="success" onClick={onClick}>
