@@ -1,11 +1,13 @@
-import styled from 'styled-components';
-import styledTS from 'styled-components-ts';
-import { dimensions, colors } from 'modules/common/styles';
-import { rgba } from 'modules/common/styles/ecolor';
+import styled from "styled-components";
+import styledTS from "styled-components-ts";
+import { dimensions, colors } from "modules/common/styles";
+import { rgba } from "modules/common/styles/ecolor";
 
-export const TableRow = styledTS<{ color?: string }>(styled.tr)`
-  background: ${props =>
-    props.color ? rgba(props.color, 0.04) : colors.colorShadowGray};
+export const TableRow = styledTS<{ color?: string; background?: string }>(
+  styled.tr
+)`
+  background: ${(props) =>
+    props.background ? rgba(props.background, 0.07) : colors.colorShadowGray};
 
   .number {
     font-size: 20px;
@@ -35,24 +37,10 @@ export const TimeGroup = styled.div`
 `;
 
 export const Status = styledTS<{ color?: string; odd?: boolean }>(styled.span)`
-  background: ${props =>
-    props.odd
-      ? colors.colorWhite
-      : props.color
-      ? props.color
-      : colors.colorShadowGray};
-  color: ${props =>
-    props.odd
-      ? props.color
-        ? props.color
-        : colors.colorSecondary
-      : colors.colorWhite};
-  border: 1px solid ${props =>
-    props.odd
-      ? props.color
-        ? props.color
-        : colors.colorSecondary
-      : props.color};
+
+  color: ${(props) => (props.color ? props.color : colors.colorSecondary)};
+  border: 1px solid ${(props) =>
+    props.color ? props.color : colors.colorSecondary};
   padding: 6px 12px;
   border-radius: 6px;
   text-transform: uppercase;
@@ -81,7 +69,8 @@ export const ScreenWrapper = styledTS<{
 
   /* width */
   ::-webkit-scrollbar {
-    width: ${props => (props.innerWidth ? `${props.innerWidth * 0.015}px` : '')}
+    width: ${(props) =>
+      props.innerWidth ? `${props.innerWidth * 0.015}px` : ""}
   }
 
   /* Track */
@@ -91,13 +80,14 @@ export const ScreenWrapper = styledTS<{
 
   /* Handle */
   ::-webkit-scrollbar-thumb {
-    background: ${props => (props.color ? props.color : colors.colorSecondary)};
+    background: ${(props) =>
+      props.color ? props.color : colors.colorSecondary};
     border-radius: 40px;
   }
 
   /* Handle on hover */
   ::-webkit-scrollbar-thumb:hover {
-    background: ${props =>
+    background: ${(props) =>
       props.color ? props.color : colors.colorSecondary};;
   }
 
