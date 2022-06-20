@@ -19,7 +19,7 @@ dayjs.extend(utc, { parseLocal: true });
 const target = document.querySelector("#root");
 const envs = getEnv();
 
-fetch(`${envs.REACT_APP_API_URL}/initial-setup?envs=${JSON.stringify(envs)}`, {
+fetch(`${envs.REACT_APP_API_URL}/pl:posclient/initial-setup?envs=${JSON.stringify(envs)}`, {
   credentials: "include",
 })
   .then((response) => response.text())
