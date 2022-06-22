@@ -121,9 +121,9 @@ export interface ICustomField {
 }
 
 export type ProductsQueryResponse = {
-  products: IProduct[];
+  poscProducts: IProduct[];
 } & QueryResponse;
 
 export type ProductCategoriesQueryResponse = {
-  productCategories: IProductCategory[];
+  poscProductCategories: IProductCategory[];
 } & QueryResponse;

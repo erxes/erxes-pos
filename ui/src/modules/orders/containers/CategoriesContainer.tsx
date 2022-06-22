@@ -30,8 +30,8 @@ class CategoriesContainer extends React.Component<Props> {
 
     const updatedProps = {
       ...this.props,
-      productCategories: productCategoriesQuery.productCategories || [],
-      products: productsQuery.products || [],
+      productCategories: productCategoriesQuery.poscProductCategories || [],
+      products: productsQuery.poscProducts || [],
       qp: queryString.parse(location.search),
     };
 

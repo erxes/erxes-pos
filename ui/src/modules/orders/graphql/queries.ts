@@ -58,8 +58,8 @@ const productCategories = `
 `;
 
 const products = `
-  query products($searchValue: String, $type: String, $categoryId: String, $page: Int, $perPage: Int) {
-    products(searchValue: $searchValue, categoryId: $categoryId, type: $type, page: $page, perPage: $perPage) {
+  query poscProducts($searchValue: String, $type: String, $categoryId: String, $page: Int, $perPage: Int) {
+    poscProducts(searchValue: $searchValue, categoryId: $categoryId, type: $type, page: $page, perPage: $perPage) {
       ${commonFields}
       categoryId
       unitPrice
@@ -72,7 +72,6 @@ const products = `
         type
         url
       }
- 
     }
   }
 `;

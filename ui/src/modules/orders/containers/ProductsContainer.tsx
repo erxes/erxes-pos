@@ -26,7 +26,7 @@ class ProductsContainer extends React.Component<Props> {
 
     const updatedProps = {
       ...this.props,
-      products: productsQuery.products || [],
+      products: productsQuery.poscProducts || [],
       qp: queryString.parse(location.search)
     };
 
