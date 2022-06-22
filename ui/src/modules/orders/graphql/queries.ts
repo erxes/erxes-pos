@@ -50,8 +50,8 @@ const customerFields = `
 `;
 
 const productCategories = `
-  query posProductCategories($excludeEmpty: Boolean) {
-    posProductCategories(excludeEmpty: $excludeEmpty) {
+  query poscProductCategories($excludeEmpty: Boolean) {
+    poscProductCategories(excludeEmpty: $excludeEmpty) {
       ${commonFields}
     }
   }
@@ -198,5 +198,5 @@ export default {
   customers,
   customerDetail,
   ordersCheckCompany,
-  fetchRemoteInvoice
+  fetchRemoteInvoice,
 };
