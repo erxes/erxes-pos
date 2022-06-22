@@ -2,7 +2,7 @@ const commonFields = `
   _id
   name
   code
-  attachment
+
 `;
 
 export const orderFields = `
@@ -65,7 +65,14 @@ const products = `
       unitPrice
       type
       description
-      attachment
+      attachment {
+        duration
+        name
+        size
+        type
+        url
+      }
+ 
     }
   }
 `;
@@ -106,14 +113,14 @@ const orderDetail = `
 
       ${orderItemsFields}
 
-      user {
+      customer {
         details {
           fullName
           shortName
         }
       }
 
-      customer {
+      user {
         ${customerFields}
       }
 
