@@ -1,14 +1,15 @@
-import React from 'react';
-import { useTime } from 'react-timer-hook';
+import React from "react";
+import { useTime } from "react-timer-hook";
 
-import Button from 'modules/common/components/Button';
-import { __ } from 'modules/common/utils';
-import { Detail, Status, TableRow, TimeGroup } from '../styles';
-import { IConfig } from 'types';
-import { IOrder } from '../../orders/types';
-import { IUser } from 'modules/auth/types';
-import Icon from 'modules/common/components/Icon';
-import { POS_MODES } from '../../../constants';
+import Button from "modules/common/components/Button";
+import { __ } from "modules/common/utils";
+import { Detail, Status, TableRow, TimeGroup } from "../styles";
+import { IConfig } from "types";
+import { IOrder } from "../../orders/types";
+import { IUser } from "modules/auth/types";
+import Icon from "modules/common/components/Icon";
+import { POS_MODES } from "../../../constants";
+import { colors } from "modules/common/styles";
 
 type Props = {
   editOrder: (doc) => void;
@@ -61,16 +62,16 @@ export default class OrderDetail extends React.Component<Props, State> {
       return null;
     }
 
-    return items.map(item => (
+    return items.map((item) => (
       <Detail key={item._id}>
         <p>
           <Icon
-            icon={item.isTake ? 'plane-departure' : 'utensils'}
+            icon={item.isTake ? "plane-departure" : "utensils"}
             color={item.isTake ? color : color2}
           />
           <b>{item.productName}</b>
         </p>
-        <span>{__('Quantity')}:&nbsp;</span>
+        <span>{__("Quantity")}:&nbsp;</span>
         <p>
           <b>{item.count}</b>
         </p>
@@ -78,8 +79,8 @@ export default class OrderDetail extends React.Component<Props, State> {
     ));
   }
 
-  renderActions = order => {
-    if (order.status === 'new') {
+  renderActions = (order) => {
+    if (order.status === "new") {
       return (
         <>
           <Button size="small" btnStyle="primary" icon="play-1">
@@ -95,8 +96,8 @@ export default class OrderDetail extends React.Component<Props, State> {
     const toDone = () => {
       this.props.editOrder({
         _id: order._id,
-        status: 'done',
-        number: order.number
+        status: "done",
+        number: order.number,
       });
     };
 
@@ -115,17 +116,29 @@ export default class OrderDetail extends React.Component<Props, State> {
   render() {
     const { order, currentConfig } = this.props;
     const { uiOptions } = currentConfig || ({} as IConfig);
+    let background = colors.colorWhite;
     const color = uiOptions.colors.primary;
     const color2 = uiOptions.colors.secondary;
 
+    const backgroundColor = () => {
+      switch (order.type) {
+        case "take":
+          return (background = colors.colorCoreRed);
+        case "delivery":
+          return (background = colors.colorCoreBlue);
+        default:
+          return background;
+      }
+    };
+
     return (
-      <TableRow key={order._id} id={order._id} color={color}>
-        <td className="number center">{order.number.split('_')[1]}</td>
+      <TableRow key={order._id} id={order._id} background={backgroundColor()}>
+        <td className="number center">{order.number.split("_")[1]}</td>
         <td>{this.renderDetail(order, color, color2)}</td>
-        <td>{order.origin === POS_MODES.POS ? 'POS' : order.origin}</td>
+        <td>{order.origin === POS_MODES.POS ? "POS" : order.origin}</td>
         <td>{this.renderTime(order)}</td>
         <td className="center">
-          <Status color={order.type === 'eat' ? color2 : color}>
+          <Status color={order.type === "eat" ? color2 : color}>
             {__(order.type)}
           </Status>
         </td>
