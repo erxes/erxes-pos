@@ -113,10 +113,12 @@ const orderDetail = `
       ${orderItemsFields}
 
       customer {
-        details {
-          fullName
-          shortName
-        }
+        firstName
+        lastName
+        middleName
+        primaryEmail
+        primaryPhone
+        code
       }
 
       user {

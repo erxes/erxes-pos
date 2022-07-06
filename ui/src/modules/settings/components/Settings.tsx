@@ -19,6 +19,7 @@ import { MainContent, PosWrapper, SettingsButtons } from "../../orders/styles";
 import { StageContent } from "../../orders/styles";
 import { queries } from "../graphql";
 import DailyReportReceipt from "./DailyReport";
+import { NavLink } from 'react-router-dom';
 
 type Props = {
   syncConfig: (type: string) => void;
@@ -157,8 +158,11 @@ export default class Settings extends React.Component<Props, State> {
               </FlexBetween>
               <br />
               <FlexBetween>
-                {currentConfig.name}
-                {currentConfig.syncInfo && currentConfig.syncInfo.date}
+                <NavLink to={"/?home=true"}>
+                  {currentConfig.name} |
+                  {currentConfig.syncInfo && currentConfig.syncInfo.date}
+                </NavLink>
+
               </FlexBetween>
               <br />
               <FormGroup>
