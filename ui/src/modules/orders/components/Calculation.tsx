@@ -120,6 +120,7 @@ type Props = {
 };
 
 type State = {
+  customerSearchValue: string;
   customerId: string;
   customerLabel: string;
   mode: string;
@@ -129,6 +130,8 @@ type State = {
 };
 
 export default class Calculation extends React.Component<Props, State> {
+  private timer?: NodeJS.Timer;
+
   constructor(props: Props) {
     super(props);
 
@@ -139,6 +142,7 @@ export default class Calculation extends React.Component<Props, State> {
     const mode = localStorage.getItem("erxesPosMode") || "";
 
     this.state = {
+      customerSearchValue: "",
       customerId: customerId || "",
       customerLabel,
       mode,
@@ -295,18 +299,14 @@ export default class Calculation extends React.Component<Props, State> {
           {__("Find orders")}
         </ProductLabel>
 
-        {customerLabel ? (
-          trigger
-        ) : (
-          <ModalTrigger
-            title={__("Identify a customer")}
-            trigger={trigger}
-            hideHeader={true}
-            size="sm"
-            paddingContent="less-padding"
-            content={content}
-          />
-        )}
+        <ModalTrigger
+          title={__("Identify a customer")}
+          trigger={trigger}
+          hideHeader={true}
+          size="sm"
+          paddingContent="less-padding"
+          content={content}
+        />
       </>
     );
   }
@@ -315,26 +315,36 @@ export default class Calculation extends React.Component<Props, State> {
     const { setOrderState } = this.props;
 
     const onChangeQrcode = (e) => {
-      const value = (e.currentTarget as HTMLInputElement).value || "";
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
 
-      client
-        .query({
-          query: gql(queries.customerDetail),
-          fetchPolicy: "network-only",
-          variables: {
-            _id: value.trim(),
-          },
-        })
-        .then(async (response) => {
-          const data = response.data.customerDetail;
-          this.setState({
-            customerLabel: generateLabel(data),
-            customerId: data._id,
-          });
-          setOrderState("customerId", data._id);
-          props.closeModal();
-        })
-        .catch((error) => props.closeModal());
+      const value = (e.currentTarget as HTMLInputElement).value || "";
+      this.setState({ customerSearchValue: value });
+
+      this.timer = setTimeout(() => {
+        client
+          .query({
+            query: gql(queries.customerDetail),
+            fetchPolicy: "network-only",
+            variables: {
+              _id: value.trim(),
+            },
+          })
+          .then(async (response) => {
+            const data = response.data.poscCustomerDetail;
+
+            if (data && data._id) {
+              this.setState({
+                customerLabel: generateLabel(data),
+                customerId: data._id,
+              });
+              setOrderState("customerId", data._id);
+              props.closeModal();
+            }
+          })
+          .catch((error) => props.closeModal());
+      }, 500);
     };
 
     const onClearChosenCustomer = () => {
@@ -350,7 +360,7 @@ export default class Calculation extends React.Component<Props, State> {
           autoFocus={true}
           id="customerIdInput"
           name="customerId"
-          value={this.state.customerLabel}
+          value={this.state.customerSearchValue}
           onChange={onChangeQrcode}
           onClick={onClearChosenCustomer}
         />
@@ -363,9 +373,9 @@ export default class Calculation extends React.Component<Props, State> {
 
     return order
       ? order.totalAmount -
-          ((order.cardAmount || 0) +
-            (order.cashAmount || 0) +
-            (order.mobileAmount || 0))
+      ((order.cardAmount || 0) +
+        (order.cashAmount || 0) +
+        (order.mobileAmount || 0))
       : 0;
   }
 

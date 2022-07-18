@@ -170,16 +170,16 @@ const fullOrders = `
 `;
 
 const customers = `
-  query customers($searchValue: String) {
-    customers(searchValue: $searchValue) {
+  query poscCustomers($searchValue: String) {
+    poscCustomers(searchValue: $searchValue) {
       ${customerFields}
     }
   }
 `;
 
 const customerDetail = `
-  query customerDetail($_id: String) {
-    customerDetail(_id: $_id) {
+  query poscCustomerDetail($_id: String!) {
+    poscCustomerDetail(_id: $_id) {
       ${customerFields}
     }
   }
@@ -192,8 +192,8 @@ const ordersCheckCompany = `
 `;
 
 const fetchRemoteInvoice = `
-  query fetchRemoteInvoice($orderId: String!) {
-    fetchRemoteInvoice(orderId: $orderId)
+  query poscFetchRemoteInvoice($orderId: String!) {
+    poscFetchRemoteInvoice(orderId: $orderId)
   }
 `;
 
