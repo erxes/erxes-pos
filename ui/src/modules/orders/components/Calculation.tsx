@@ -6,7 +6,7 @@ import React from "react";
 import Stage from "./Stage";
 import styled, { css } from "styled-components";
 import styledTS from "styled-components-ts";
-import { __ } from "modules/common/utils";
+import { __, Alert, confirm } from "modules/common/utils";
 import { ColumnBetween } from "modules/common/styles/main";
 import { formatNumber } from "modules/utils";
 import { ControlLabel, FormControl } from "modules/common/components/form";
@@ -341,6 +341,15 @@ export default class Calculation extends React.Component<Props, State> {
               });
               setOrderState("customerId", data._id);
               props.closeModal();
+            } else {
+              confirm('Хэрэглэгч олдсонгүй, Хайлт зогсоох уу?')
+                .then(() => {
+                  this.setState({ customerSearchValue: '' });
+                  props.closeModal();
+                })
+                .catch((error) => {
+                  Alert.error(error);
+                });
             }
           })
           .catch((error) => props.closeModal());
@@ -351,6 +360,8 @@ export default class Calculation extends React.Component<Props, State> {
       this.setState({ customerLabel: "", customerId: "" });
       setOrderState("customerId", "");
     };
+
+    const handleFocus = event => event.target.select();
 
     return (
       <>
@@ -363,6 +374,7 @@ export default class Calculation extends React.Component<Props, State> {
           value={this.state.customerSearchValue}
           onChange={onChangeQrcode}
           onClick={onClearChosenCustomer}
+          onFocus={handleFocus}
         />
       </>
     );
