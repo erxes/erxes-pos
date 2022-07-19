@@ -1,28 +1,29 @@
-import Button from "modules/common/components/Button";
-import client from "apolloClient";
-import gql from "graphql-tag";
-import queries from "../graphql/queries";
-import React from "react";
-import Stage from "./Stage";
-import styled, { css } from "styled-components";
-import styledTS from "styled-components-ts";
-import { __ } from "modules/common/utils";
-import { ColumnBetween } from "modules/common/styles/main";
-import { formatNumber } from "modules/utils";
-import { ControlLabel, FormControl } from "modules/common/components/form";
-import { IConfig, IOption } from "types";
-import { ICustomer, IOrder, IOrderItemInput } from "../types";
+import Button from 'modules/common/components/Button';
+import client from 'apolloClient';
+import gql from 'graphql-tag';
+import queries from '../graphql/queries';
+import React from 'react';
+import Stage from './Stage';
+import styled, { css } from 'styled-components';
+import styledTS from 'styled-components-ts';
+import { __ } from 'modules/common/utils';
+import { ColumnBetween } from 'modules/common/styles/main';
+import { formatNumber } from 'modules/utils';
+import { ControlLabel, FormControl } from 'modules/common/components/form';
+import { IConfig, IOption } from 'types';
+import { ICustomer, IOrder, IOrderItemInput } from '../types';
 import {
   Amount,
   CalculationHeader,
   Divider,
   // PaymentInfo,
   ProductLabel,
-  Types,
-} from "../styles";
-import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from "../../../constants";
-import ModalTrigger from "modules/common/components/ModalTrigger";
-import OrderInfo from "./splitPayment/OrderInfo";
+  Types
+} from '../styles';
+import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from '../../../constants';
+import ModalTrigger from 'modules/common/components/ModalTrigger';
+import OrderInfo from './splitPayment/OrderInfo';
+import Select from 'react-select-plus';
 
 const Wrapper = styledTS<{ color?: string; showPayment?: boolean }>(styled.div)`
   padding: 0 10px 0 10px;
@@ -34,15 +35,15 @@ const Wrapper = styledTS<{ color?: string; showPayment?: boolean }>(styled.div)`
   overflow: auto;
 
   .ioevLe:checked + span:before, .hCqfzh .react-toggle--checked .react-toggle-track {
-    background-color: ${(props) => props.color && props.color};
+    background-color: ${props => props.color && props.color};
   }
 
 
-  ${(props) =>
+  ${props =>
     props.showPayment &&
     css`
       &:before {
-        content: "";
+        content: '';
         background: rgba(0, 0, 0, 0.25);
         position: absolute;
         z-index: 2;
@@ -60,7 +61,7 @@ const ButtonWrapper = styledTS<{ showPayment?: boolean }>(styled.div)`
     margin-left: 0;
   }
 
-  ${(props) =>
+  ${props =>
     props.showPayment &&
     css`
       background: #fff;
@@ -72,12 +73,15 @@ const ButtonWrapper = styledTS<{ showPayment?: boolean }>(styled.div)`
       padding: 10px;
     `}
 `;
+const SelectOption = styled.div`
+  margin-top: 10px;
+`;
 
-const generateLabel = (customer) => {
+const generateLabel = customer => {
   const { firstName, primaryEmail, primaryPhone, lastName } =
     customer || ({} as ICustomer);
 
-  let value = firstName ? firstName.toUpperCase() : "";
+  let value = firstName ? firstName.toUpperCase() : '';
 
   if (lastName) {
     value = `${value} ${lastName}`;
@@ -94,7 +98,7 @@ const generateLabel = (customer) => {
 
 // get user options for react-select-plus
 export const generateLabelOptions = (array: ICustomer[] = []): IOption[] => {
-  return array.map((item) => {
+  return array.map(item => {
     const value = generateLabel(item);
     return { value: item._id, label: value };
   });
@@ -133,23 +137,23 @@ export default class Calculation extends React.Component<Props, State> {
     super(props);
 
     const { order } = this.props;
-    const customerId = order ? order.customerId : "";
-    const customerLabel = order ? generateLabel(order.customer) : "";
+    const customerId = order ? order.customerId : '';
+    const customerLabel = order ? generateLabel(order.customer) : '';
 
-    const mode = localStorage.getItem("erxesPosMode") || "";
+    const mode = localStorage.getItem('erxesPosMode') || '';
 
     this.state = {
-      customerId: customerId || "",
+      customerId: customerId || '',
       customerLabel,
       mode,
       cashAmount: 0,
-      companyName: "",
-      registerNumber: "",
+      companyName: '',
+      registerNumber: ''
     };
   }
 
-  onChange = (value) => {
-    this.props.setOrderState("type", value);
+  onChange = value => {
+    this.props.setOrderState('type', value);
   };
 
   renderReceiptButton() {
@@ -170,10 +174,10 @@ export default class Calculation extends React.Component<Props, State> {
         btnStyle="warning"
         block
         onClick={() => {
-          window.open(`/order-receipt/${order._id}`, "_blank");
+          window.open(`/order-receipt/${order._id}`, '_blank');
         }}
       >
-        {__("Print receipt")}
+        {__('Print receipt')}
       </Button>
     );
   }
@@ -188,7 +192,7 @@ export default class Calculation extends React.Component<Props, State> {
       productBodyType,
       setItems,
       type,
-      cancelOrder,
+      cancelOrder
     } = this.props;
 
     if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
@@ -202,7 +206,7 @@ export default class Calculation extends React.Component<Props, State> {
       : false;
 
     const onClick = () => {
-      const callback = () => onChangeProductBodyType("payment");
+      const callback = () => onChangeProductBodyType('payment');
 
       if (order && order._id) {
         editOrder(callback);
@@ -212,7 +216,7 @@ export default class Calculation extends React.Component<Props, State> {
     };
 
     const paymentDone = () => {
-      onChangeProductBodyType("done");
+      onChangeProductBodyType('done');
     };
 
     const onCancelOrder = () => {
@@ -221,21 +225,21 @@ export default class Calculation extends React.Component<Props, State> {
       }
 
       setItems([]);
-      onChangeProductBodyType("product");
+      onChangeProductBodyType('product');
     };
 
-    if (productBodyType === "payment") {
+    if (productBodyType === 'payment') {
       return (
         <Types>
-          <Button style={{ background: "#616E7C" }} onClick={onCancelOrder}>
-            {__("Cancel order")}
+          <Button style={{ background: '#616E7C' }} onClick={onCancelOrder}>
+            {__('Cancel order')}
           </Button>
           <Button
             btnStyle="success"
             onClick={paymentDone}
             disabled={isDisabled}
           >
-            {__("Payment")}
+            {__('Payment')}
           </Button>
         </Types>
       );
@@ -243,30 +247,30 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <Types>
-        {type === "eat" ? (
+        {type === 'eat' ? (
           <Button
-            style={{ background: "#9ba3ab" }}
+            style={{ background: '#9ba3ab' }}
             onClick={() => this.onChange(ORDER_TYPES.TAKE)}
           >
-            {__("Take")}
+            {__('Take')}
           </Button>
         ) : (
           <Button
-            style={{ background: "#616E7C" }}
+            style={{ background: '#616E7C' }}
             onClick={() => this.onChange(ORDER_TYPES.EAT)}
           >
-            {__("Eat")}
+            {__('Eat')}
           </Button>
         )}
         <Button btnStyle="success" onClick={onClick}>
-          {__("Make an order")}
+          {__('Make an order')}
         </Button>
       </Types>
     );
   }
 
   renderHeader(mode) {
-    if (mode === "kiosk") {
+    if (mode === 'kiosk') {
       return <></>;
     }
 
@@ -277,36 +281,38 @@ export default class Calculation extends React.Component<Props, State> {
 
     const trigger = (
       <ProductLabel
-        onClick={() => onChangeProductBodyType("orderSearch")}
+        onClick={() => onChangeProductBodyType('orderSearch')}
         color={color}
       >
-        {customerLabel ? customerLabel : __("Identify a customer")}
+        {customerLabel ? customerLabel : __('Identify a customer')}
       </ProductLabel>
     );
 
-    const content = (props) => this.renderCustomerChooser(props);
+    const content = props => this.renderCustomerChooser(props);
 
     return (
       <>
-        <ProductLabel
-          onClick={() => onChangeProductBodyType("orderSearch")}
-          color={color}
-        >
-          {__("Find orders")}
-        </ProductLabel>
+        <>
+          <ProductLabel
+            onClick={() => onChangeProductBodyType('orderSearch')}
+            color={color}
+          >
+            {__('Find orders')}
+          </ProductLabel>
 
-        {customerLabel ? (
-          trigger
-        ) : (
-          <ModalTrigger
-            title={__("Identify a customer")}
-            trigger={trigger}
-            hideHeader={true}
-            size="sm"
-            paddingContent="less-padding"
-            content={content}
-          />
-        )}
+          {customerLabel ? (
+            trigger
+          ) : (
+            <ModalTrigger
+              title={__('Identify a customer')}
+              trigger={trigger}
+              hideHeader={true}
+              size="sm"
+              paddingContent="less-padding"
+              content={content}
+            />
+          )}
+        </>
       </>
     );
   }
@@ -314,37 +320,37 @@ export default class Calculation extends React.Component<Props, State> {
   renderCustomerChooser(props) {
     const { setOrderState } = this.props;
 
-    const onChangeQrcode = (e) => {
-      const value = (e.currentTarget as HTMLInputElement).value || "";
+    const onChangeQrcode = e => {
+      const value = (e.currentTarget as HTMLInputElement).value || '';
 
       client
         .query({
           query: gql(queries.customerDetail),
-          fetchPolicy: "network-only",
+          fetchPolicy: 'network-only',
           variables: {
-            _id: value.trim(),
-          },
+            _id: value.trim()
+          }
         })
-        .then(async (response) => {
+        .then(async response => {
           const data = response.data.customerDetail;
           this.setState({
             customerLabel: generateLabel(data),
-            customerId: data._id,
+            customerId: data._id
           });
-          setOrderState("customerId", data._id);
+          setOrderState('customerId', data._id);
           props.closeModal();
         })
-        .catch((error) => props.closeModal());
+        .catch(error => props.closeModal());
     };
 
     const onClearChosenCustomer = () => {
-      this.setState({ customerLabel: "", customerId: "" });
-      setOrderState("customerId", "");
+      this.setState({ customerLabel: '', customerId: '' });
+      setOrderState('customerId', '');
     };
 
     return (
       <>
-        <ControlLabel>{__("Identify a customer")}</ControlLabel>
+        <ControlLabel>{__('Identify a customer')}</ControlLabel>
         <FormControl
           {...props}
           autoFocus={true}
@@ -374,7 +380,7 @@ export default class Calculation extends React.Component<Props, State> {
 
     const { order, productBodyType, orderProps } = this.props;
 
-    if ((order && order.paidDate) || productBodyType === "payment") {
+    if ((order && order.paidDate) || productBodyType === 'payment') {
       return (
         <OrderInfo
           order={order}
@@ -389,7 +395,7 @@ export default class Calculation extends React.Component<Props, State> {
     return (
       <Amount {...prop}>
         <span>
-          №: {order && order.number ? order.number.split("_")[1] : ""}
+          №: {order && order.number ? order.number.split('_')[1] : ''}
         </span>
         <span>{text}</span>
         {formatNumber(amount || 0)}₮
@@ -404,14 +410,14 @@ export default class Calculation extends React.Component<Props, State> {
       return null;
     }
 
-    const showPayment = productBodyType === "payment";
+    const showPayment = productBodyType === 'payment';
 
     return (
       <ButtonWrapper
-        className={orientation === "portrait" ? "payment-section" : ""}
+        className={orientation === 'portrait' ? 'payment-section' : ''}
         showPayment={showPayment}
       >
-        {this.renderAmount(`${__("Total amount")}:`, totalAmount, color)}
+        {this.renderAmount(`${__('Total amount')}:`, totalAmount, color)}
         {this.renderSplitPaymentButton()}
       </ButtonWrapper>
     );
@@ -425,15 +431,25 @@ export default class Calculation extends React.Component<Props, State> {
       changeItemIsTake,
       orientation,
       type,
-      productBodyType,
+      productBodyType
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
 
     return (
       <>
-        <Wrapper color={color} showPayment={productBodyType === "payment"}>
+        <Wrapper color={color} showPayment={productBodyType === 'payment'}>
           <CalculationHeader>{this.renderHeader(mode)}</CalculationHeader>
+          <div>
+            <SelectOption>
+              <Select
+                placeholder="Code Name"
+                options={[{ value: 'Code', label: 'code name' }]}
+                clearable={true}
+                input={false}
+              ></Select>
+            </SelectOption>
+          </div>
           <Divider />
           <ColumnBetween>
             <Stage
