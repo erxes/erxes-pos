@@ -71,7 +71,7 @@ export default class QPaySection extends React.Component<Props, State> {
             variables: { orderId: order._id, amount: mobileAmount },
           })
           .then(({ data }) => {
-            this.props.showQpayList(data.createQpaySimpleInvoice);
+            this.props.showQpayList(data.poscCreateQpaySimpleInvoice);
           })
           .catch((e) => {
             Alert.error(e.message);

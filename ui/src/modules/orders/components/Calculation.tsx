@@ -6,7 +6,7 @@ import React from 'react';
 import Stage from './Stage';
 import styled, { css } from 'styled-components';
 import styledTS from 'styled-components-ts';
-import { __ } from 'modules/common/utils';
+import { __, Alert, confirm } from 'modules/common/utils';
 import { ColumnBetween } from 'modules/common/styles/main';
 import { formatNumber } from 'modules/utils';
 import { ControlLabel, FormControl } from 'modules/common/components/form';
@@ -124,6 +124,7 @@ type Props = {
 };
 
 type State = {
+  customerSearchValue: string;
   customerId: string;
   customerLabel: string;
   mode: string;
@@ -133,6 +134,8 @@ type State = {
 };
 
 export default class Calculation extends React.Component<Props, State> {
+  private timer?: NodeJS.Timer;
+
   constructor(props: Props) {
     super(props);
 
@@ -143,6 +146,7 @@ export default class Calculation extends React.Component<Props, State> {
     const mode = localStorage.getItem('erxesPosMode') || '';
 
     this.state = {
+      customerSearchValue: '',
       customerId: customerId || '',
       customerLabel,
       mode,
@@ -292,27 +296,21 @@ export default class Calculation extends React.Component<Props, State> {
 
     return (
       <>
-        <>
-          <ProductLabel
-            onClick={() => onChangeProductBodyType('orderSearch')}
-            color={color}
-          >
-            {__('Find orders')}
-          </ProductLabel>
+        <ProductLabel
+          onClick={() => onChangeProductBodyType('orderSearch')}
+          color={color}
+        >
+          {__('Find orders')}
+        </ProductLabel>
 
-          {customerLabel ? (
-            trigger
-          ) : (
-            <ModalTrigger
-              title={__('Identify a customer')}
-              trigger={trigger}
-              hideHeader={true}
-              size="sm"
-              paddingContent="less-padding"
-              content={content}
-            />
-          )}
-        </>
+        <ModalTrigger
+          title={__('Identify a customer')}
+          trigger={trigger}
+          hideHeader={true}
+          size="sm"
+          paddingContent="less-padding"
+          content={content}
+        />
       </>
     );
   }
@@ -321,32 +319,53 @@ export default class Calculation extends React.Component<Props, State> {
     const { setOrderState } = this.props;
 
     const onChangeQrcode = e => {
-      const value = (e.currentTarget as HTMLInputElement).value || '';
+      if (this.timer) {
+        clearTimeout(this.timer);
+      }
 
-      client
-        .query({
-          query: gql(queries.customerDetail),
-          fetchPolicy: 'network-only',
-          variables: {
-            _id: value.trim()
-          }
-        })
-        .then(async response => {
-          const data = response.data.customerDetail;
-          this.setState({
-            customerLabel: generateLabel(data),
-            customerId: data._id
-          });
-          setOrderState('customerId', data._id);
-          props.closeModal();
-        })
-        .catch(error => props.closeModal());
+      const value = (e.currentTarget as HTMLInputElement).value || '';
+      this.setState({ customerSearchValue: value });
+
+      this.timer = setTimeout(() => {
+        client
+          .query({
+            query: gql(queries.customerDetail),
+            fetchPolicy: 'network-only',
+            variables: {
+              _id: value.trim()
+            }
+          })
+          .then(async response => {
+            const data = response.data.poscCustomerDetail;
+
+            if (data && data._id) {
+              this.setState({
+                customerLabel: generateLabel(data),
+                customerId: data._id
+              });
+              setOrderState('customerId', data._id);
+              props.closeModal();
+            } else {
+              confirm('Хэрэглэгч олдсонгүй, Хайлт зогсоох уу?')
+                .then(() => {
+                  this.setState({ customerSearchValue: '' });
+                  props.closeModal();
+                })
+                .catch(error => {
+                  Alert.error(error);
+                });
+            }
+          })
+          .catch(error => props.closeModal());
+      }, 500);
     };
 
     const onClearChosenCustomer = () => {
       this.setState({ customerLabel: '', customerId: '' });
       setOrderState('customerId', '');
     };
+
+    const handleFocus = event => event.target.select();
 
     return (
       <>
@@ -356,9 +375,10 @@ export default class Calculation extends React.Component<Props, State> {
           autoFocus={true}
           id="customerIdInput"
           name="customerId"
-          value={this.state.customerLabel}
+          value={this.state.customerSearchValue}
           onChange={onChangeQrcode}
           onClick={onClearChosenCustomer}
+          onFocus={handleFocus}
         />
       </>
     );

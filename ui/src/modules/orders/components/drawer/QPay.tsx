@@ -222,8 +222,8 @@ export default class QPay extends React.Component<Props, State> {
           variables: { orderId: order._id }
         })
         .then(({ data }) => {
-          if (data && data.createQpaySimpleInvoice) {
-            this.setState({ invoice: data.createQpaySimpleInvoice });
+          if (data && data.poscCreateQpaySimpleInvoice) {
+            this.setState({ invoice: data.poscCreateQpaySimpleInvoice });
           }
         })
         .catch(e => {
