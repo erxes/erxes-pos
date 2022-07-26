@@ -33,7 +33,6 @@ const currentConfig = `
       description
       userId
       createdAt
-      integrationId
       productDetails
       adminIds
       cashierIds
@@ -42,12 +41,7 @@ const currentConfig = `
       waitingScreen
       kioskMachine
       kitchenScreen
-      formSectionTitle
-      formIntegrationIds
-      brandId
       token
-      slots
-
 
       uiOptions {
         colors

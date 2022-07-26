@@ -56,10 +56,6 @@ export default class Settings extends React.Component<Props, State> {
     this.props.syncConfig("config");
   };
 
-  onSyncCustomers = () => {
-    this.props.syncConfig("customers");
-  };
-
   onSyncProducts = () => {
     this.props.syncConfig("products");
   };
@@ -190,16 +186,6 @@ export default class Settings extends React.Component<Props, State> {
                     block
                   >
                     {__("ReSync Config")}
-                  </Button>
-                </StageContent>
-                <StageContent>
-                  <Button
-                    btnStyle="success"
-                    onClick={this.onSyncCustomers}
-                    icon="check-circle"
-                    block
-                  >
-                    {__("ReSync Customers")}
                   </Button>
                 </StageContent>
                 <StageContent>

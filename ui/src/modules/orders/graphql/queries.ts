@@ -17,7 +17,7 @@ export const orderFields = `
   cashAmount
   totalAmount
 
-  slotId
+  slotCode
 
   registerNumber
   customerId
@@ -198,6 +198,15 @@ const fetchRemoteInvoice = `
     poscFetchRemoteInvoice(orderId: $orderId)
   }
 `;
+const slots = `
+  query poscSlots {
+    poscSlots{
+      _id
+      code
+      name
+    }
+  }
+`;
 
 export default {
   productCategories,
@@ -208,5 +217,6 @@ export default {
   customers,
   customerDetail,
   ordersCheckCompany,
-  fetchRemoteInvoice
+  fetchRemoteInvoice,
+  slots
 };

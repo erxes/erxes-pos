@@ -1,29 +1,31 @@
 import Button from 'modules/common/components/Button';
 import client from 'apolloClient';
 import gql from 'graphql-tag';
+import ModalTrigger from 'modules/common/components/ModalTrigger';
+import OrderInfo from './splitPayment/OrderInfo';
 import queries from '../graphql/queries';
 import React from 'react';
+import Select from 'react-select-plus';
 import Stage from './Stage';
 import styled, { css } from 'styled-components';
 import styledTS from 'styled-components-ts';
 import { __, Alert, confirm } from 'modules/common/utils';
 import { ColumnBetween } from 'modules/common/styles/main';
-import { formatNumber } from 'modules/utils';
 import { ControlLabel, FormControl } from 'modules/common/components/form';
+import { formatNumber } from 'modules/utils';
 import { IConfig, IOption } from 'types';
 import { ICustomer, IOrder, IOrderItemInput } from '../types';
+import { ISlot } from '../../../types';
+import { ORDER_STATUSES, ORDER_TYPES, POS_MODES } from '../../../constants';
 import {
   Amount,
   CalculationHeader,
+  Divid,
   Divider,
   // PaymentInfo,
   ProductLabel,
   Types
 } from '../styles';
-import { ORDER_TYPES, ORDER_STATUSES, POS_MODES } from '../../../constants';
-import ModalTrigger from 'modules/common/components/ModalTrigger';
-import OrderInfo from './splitPayment/OrderInfo';
-import Select from 'react-select-plus';
 
 const Wrapper = styledTS<{ color?: string; showPayment?: boolean }>(styled.div)`
   padding: 0 10px 0 10px;
@@ -121,8 +123,9 @@ type Props = {
   productBodyType?: any;
   orderProps?: any;
   cancelOrder: (id: string) => void;
-  slotId: string;
+  slotCode: string;
   onChangeSlot: (value: string) => void;
+  slots: ISlot[];
 };
 
 type State = {
@@ -391,9 +394,9 @@ export default class Calculation extends React.Component<Props, State> {
 
     return order
       ? order.totalAmount -
-          ((order.cardAmount || 0) +
-            (order.cashAmount || 0) +
-            (order.mobileAmount || 0))
+      ((order.cardAmount || 0) +
+        (order.cashAmount || 0) +
+        (order.mobileAmount || 0))
       : 0;
   }
 
@@ -445,15 +448,35 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
-  renderSlotOptions() {
-    const { config } = this.props;
-
-    return (config.slots || []).map(slot => {
+  renderSlotOptions(slots) {
+    return (slots || []).map(slot => {
       return {
-        label: slot.name,
-        value: slot._id
+        label: `${slot.code} - ${slot.name}`,
+        value: slot.code
       };
     });
+  }
+
+  renderSlots() {
+    const { slots } = this.props;
+    if (!slots || !slots.length) {
+      return (<Divider />);
+    }
+
+    return (
+      <>
+        <SelectOption>
+          <Select
+            placeholder="Pos Slot"
+            options={this.renderSlotOptions(slots)}
+            clearable={true}
+            value={this.props.slotCode}
+            onChange={({ value }) => this.props.onChangeSlot(value)}
+          />
+        </SelectOption>
+        <Divid />
+      </>
+    )
   }
 
   render() {
@@ -473,18 +496,7 @@ export default class Calculation extends React.Component<Props, State> {
       <>
         <Wrapper color={color} showPayment={productBodyType === 'payment'}>
           <CalculationHeader>{this.renderHeader(mode)}</CalculationHeader>
-          <div>
-            <SelectOption>
-              <Select
-                placeholder="Pos Slot"
-                options={this.renderSlotOptions()}
-                clearable={true}
-                value={this.props.slotId}
-                onChange={({ value }) => this.props.onChangeSlot(value)}
-              />
-            </SelectOption>
-          </div>
-          <Divider />
+          {this.renderSlots()}
           <ColumnBetween>
             <Stage
               orientation={orientation}

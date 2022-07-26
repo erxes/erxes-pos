@@ -128,3 +128,9 @@ export type ProductsQueryResponse = {
 export type ProductCategoriesQueryResponse = {
   poscProductCategories: IProductCategory[];
 } & QueryResponse;
+
+export interface ISlot {
+  _id: string;
+  code: string;
+  name: string;
+}

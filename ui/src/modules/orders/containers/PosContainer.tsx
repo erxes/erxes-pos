@@ -18,6 +18,7 @@ import {
 } from '../types';
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
 import { IUser } from 'modules/auth/types';
+import { SlotsQueryResponse } from '../types';
 
 type Props = {
   ordersAddMutation: OrdersAddMutationResponse;
@@ -33,6 +34,7 @@ type Props = {
   customersAddMutation: any;
   settlePaymentMutation: any;
   ordersCancelMutation: any;
+  slotsQuery: SlotsQueryResponse;
 } & IRouterProps;
 
 type States = {
@@ -68,11 +70,12 @@ class PosContainer extends React.Component<Props, States> {
       orderDetailQuery,
       ordersCancelMutation,
       addPaymentMutation,
-      settlePaymentMutation
+      settlePaymentMutation,
+      slotsQuery
     } = this.props;
     const { showMenu, modalContentType, productBodyType } = this.state;
 
-    if (orderDetailQuery.loading) {
+    if (orderDetailQuery.loading || slotsQuery.loading) {
       return <Spinner />;
     }
 
@@ -252,7 +255,8 @@ class PosContainer extends React.Component<Props, States> {
       settlePayment,
       showMenu,
       modalContentType,
-      refetchOrder: () => orderDetailQuery.refetch()
+      refetchOrder: () => orderDetailQuery.refetch(),
+      slots: slotsQuery.poscSlots
     };
 
     return <Pos {...updatedProps} />;
@@ -307,6 +311,9 @@ export default withProps<Props>(
       options: ({ qp }) => ({
         variables: { _id: qp && qp.id }
       })
+    }),
+    graphql<Props>(gql(queries.slots), {
+      name: 'slotsQuery'
     }),
     graphql<Props>(gql(mutations.ordersCancel), {
       name: 'ordersCancelMutation'

@@ -42,7 +42,10 @@ export const OrderCard = styledTS<{ color?: string }>(styled.div)`
   color: ${(props) => props.color && props.color};
 
   p {
-    display: none
+    font-size: 8px;
+    font-weight: 300;
+    margin: -45px 20px 0px 20px;
+    color: #c9c9c9;
   }
 `;
 

@@ -1,5 +1,6 @@
 import { IUser } from 'modules/auth/types';
 import { QueryResponse, ICustomField } from 'types';
+import { ISlot } from '../../types';
 
 export interface IOrderItem {
   _id: string;
@@ -62,7 +63,7 @@ export interface IOrder {
   user: IUser;
   putResponses?: IPutResponse[];
   qpayInvoices: IQPayInvoice[];
-  selectedSlotId: String;
+  slotCode?: string
 }
 
 interface IProductCommonFields {
@@ -101,7 +102,7 @@ export interface IOrderItemInput {
   productImgUrl?: string;
   isPackage?: boolean;
   isTake?: boolean;
-  slotId?: string;
+  slotCode?: string;
 }
 
 export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;
@@ -114,6 +115,10 @@ export type OrderChangeStatusMutationResponse = ({
 
 export type OrderDetailQueryResponse = {
   orderDetail: IOrder;
+} & QueryResponse;
+
+export type SlotsQueryResponse = {
+  poscSlots: ISlot[];
 } & QueryResponse;
 
 export type OrderQueryResponse = {
@@ -151,22 +156,13 @@ export interface ICustomer {
   emailValidationStatus?: string;
   phoneValidationStatus?: string;
   links?: any;
-  relatedIntegrationIds?: string[];
-  integrationId?: string;
-  tagIds?: string[];
 
   // TODO migrate after remove 1row
   companyIds?: string[];
 
   mergedIds?: string[];
   status?: string;
-  customFieldsData?: any;
-  trackedData?: any;
-  location?: any;
-  visitorContactInfo?: any;
-  deviceTokens?: string[];
   code?: string;
-  isOnline?: boolean;
   lastSeenAt?: Date;
   sessionCount?: number;
   visitorId?: string;

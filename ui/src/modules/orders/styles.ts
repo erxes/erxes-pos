@@ -963,6 +963,15 @@ export const Divider = styled.div`
   }
 `;
 
+export const Divid = styled.div`
+  border-bottom: 1px dotted ${darken(colors.borderDarker, 5)};
+  margin: 0 0 ${dimensions.coreSpacing}px 0;
+
+  @media (max-width: 1170px) {
+    margin-left: ${dimensions.coreSpacing}px;
+  }
+`;
+
 export const MarginTop = styledTS<{ margin: number }>(styled.div)`
   margin-top: ${(props) => props.margin}px
 `;

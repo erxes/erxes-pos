@@ -41,6 +41,7 @@ import { IPaymentParams } from '../containers/PosContainer';
 import KioskPaymentForm from './drawer/KioskPaymentForm';
 import Button from 'modules/common/components/Button';
 import ConfirmList from './kiosk/ConfirmList';
+import { ISlot } from '../../../types';
 
 const ProductsContainer = AsyncComponent(
   () => import(/* webpackChunkName: "Pos" */ '../containers/ProductsContainer')
@@ -78,6 +79,7 @@ type Props = {
   modalContentType?: string;
   showMenu?: boolean;
   refetchOrder: () => void;
+  slots: ISlot[];
 };
 
 type State = {
@@ -89,7 +91,7 @@ type State = {
   registerNumber: string;
   orderProps: any;
   paymentType: string;
-  slotId: string;
+  slotCode: string;
 };
 
 const getTotalAmount = (items: IOrderItemInput[]) => {
@@ -109,17 +111,18 @@ export default class Pos extends React.Component<Props, State> {
     super(props);
 
     const { order, type } = props;
+    const checkOrder = order || {} as IOrder;
 
     this.state = {
-      items: order ? order.items : [],
-      totalAmount: order ? getTotalAmount(order.items) : 0,
-      type: type || (order && order.type ? order.type : ORDER_TYPES.EAT),
-      customerId: order && order.customerId ? order.customerId : '',
+      items: checkOrder.items || [],
+      totalAmount: getTotalAmount(checkOrder.items || []) || 0,
+      type: type || (checkOrder.type || ORDER_TYPES.EAT),
+      customerId: checkOrder.customerId || '',
       registerNumber: '',
       paymentType: 'card',
       orderProps: {},
       isTypeChosen: false,
-      slotId: ''
+      slotCode: checkOrder.slotCode || ''
     };
   }
 
@@ -172,7 +175,7 @@ export default class Pos extends React.Component<Props, State> {
 
   addOrder = (callback?: () => void) => {
     const { createOrder } = this.props;
-    const { totalAmount, type, items, customerId, slotId } = this.state;
+    const { totalAmount, type, items, customerId, slotCode } = this.state;
 
     const currentItems = items.map(item => ({
       _id: item._id,
@@ -192,7 +195,7 @@ export default class Pos extends React.Component<Props, State> {
         type,
         customerId,
         origin: mode,
-        slotId
+        slotCode
       },
       callback
     );
@@ -200,7 +203,7 @@ export default class Pos extends React.Component<Props, State> {
 
   editOrder = (callback?: () => void) => {
     const { updateOrder, order } = this.props;
-    const { totalAmount, type, items, customerId, slotId } = this.state;
+    const { totalAmount, type, items, customerId, slotCode } = this.state;
 
     if (order && order._id) {
       const currentItems = items.map(item => ({
@@ -219,7 +222,7 @@ export default class Pos extends React.Component<Props, State> {
           totalAmount,
           type,
           customerId,
-          slotId
+          slotCode
         },
         callback
       ).then((updatedOrder: any) => {
@@ -245,7 +248,7 @@ export default class Pos extends React.Component<Props, State> {
 
   onChangeSlot = value => {
     this.setState({
-      slotId: value
+      slotCode: value
     });
   };
 
@@ -651,7 +654,8 @@ export default class Pos extends React.Component<Props, State> {
       productsQuery,
       productBodyType,
       cancelOrder,
-      onChangeProductBodyType
+      onChangeProductBodyType,
+      slots
     } = this.props;
 
     const { items, totalAmount, type } = this.state;
@@ -706,8 +710,9 @@ export default class Pos extends React.Component<Props, State> {
                   orderProps={this.state.orderProps}
                   type={type}
                   cancelOrder={cancelOrder}
-                  slotId={this.state.slotId}
+                  slotCode={this.state.slotCode}
                   onChangeSlot={this.onChangeSlot}
+                  slots={slots}
                 />
               </MainContent>
             </Col>
