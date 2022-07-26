@@ -62,6 +62,7 @@ export interface IOrder {
   user: IUser;
   putResponses?: IPutResponse[];
   qpayInvoices: IQPayInvoice[];
+  selectedSlotId: String;
 }
 
 interface IProductCommonFields {
@@ -100,6 +101,7 @@ export interface IOrderItemInput {
   productImgUrl?: string;
   isPackage?: boolean;
   isTake?: boolean;
+  slotId?: string;
 }
 
 export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;

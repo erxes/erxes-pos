@@ -121,6 +121,8 @@ type Props = {
   productBodyType?: any;
   orderProps?: any;
   cancelOrder: (id: string) => void;
+  slotId: string;
+  onChangeSlot: (value: string) => void;
 };
 
 type State = {
@@ -131,7 +133,6 @@ type State = {
   cashAmount: number;
   companyName: string;
   registerNumber: string;
-  slotId: string;
 };
 
 export default class Calculation extends React.Component<Props, State> {
@@ -153,8 +154,7 @@ export default class Calculation extends React.Component<Props, State> {
       mode,
       cashAmount: 0,
       companyName: '',
-      registerNumber: '',
-      slotId: ''
+      registerNumber: ''
     };
   }
 
@@ -455,11 +455,6 @@ export default class Calculation extends React.Component<Props, State> {
       };
     });
   }
-  onChangeSlot = slotId => {
-    this.setState({
-      slotId: slotId.value
-    });
-  };
 
   render() {
     const {
@@ -484,8 +479,8 @@ export default class Calculation extends React.Component<Props, State> {
                 placeholder="Pos Slot"
                 options={this.renderSlotOptions()}
                 clearable={true}
-                value={this.state.slotId}
-                onChange={options => this.onChangeSlot(options)}
+                value={this.props.slotId}
+                onChange={({ value }) => this.props.onChangeSlot(value)}
               />
             </SelectOption>
           </div>

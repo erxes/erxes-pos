@@ -17,6 +17,8 @@ export const orderFields = `
   cashAmount
   totalAmount
 
+  slotId
+
   registerNumber
   customerId
   printedEbarimt
@@ -206,5 +208,5 @@ export default {
   customers,
   customerDetail,
   ordersCheckCompany,
-  fetchRemoteInvoice,
+  fetchRemoteInvoice
 };

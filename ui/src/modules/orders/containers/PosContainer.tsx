@@ -1,23 +1,23 @@
-import { graphql } from "react-apollo";
-import { withRouter } from "react-router-dom";
-import gql from "graphql-tag";
-import client from "apolloClient";
-import React from "react";
-import * as compose from "lodash.flowright";
+import { graphql } from 'react-apollo';
+import { withRouter } from 'react-router-dom';
+import gql from 'graphql-tag';
+import client from 'apolloClient';
+import React from 'react';
+import * as compose from 'lodash.flowright';
 
-import Spinner from "modules/common/components/Spinner";
-import { Alert, __, router, confirm } from "modules/common/utils";
-import { IRouterProps, IConfig } from "../../../types";
-import { trimGraphqlError, withProps } from "../../utils";
-import { mutations, queries } from "../graphql/index";
-import Pos from "../components/Pos";
+import Spinner from 'modules/common/components/Spinner';
+import { Alert, __, router, confirm } from 'modules/common/utils';
+import { IRouterProps, IConfig } from '../../../types';
+import { trimGraphqlError, withProps } from '../../utils';
+import { mutations, queries } from '../graphql/index';
+import Pos from '../components/Pos';
 import {
   OrdersAddMutationResponse,
   OrdersEditMutationResponse,
-  OrderDetailQueryResponse,
-} from "../types";
-import withCurrentUser from "modules/auth/containers/withCurrentUser";
-import { IUser } from "modules/auth/types";
+  OrderDetailQueryResponse
+} from '../types';
+import withCurrentUser from 'modules/auth/containers/withCurrentUser';
+import { IUser } from 'modules/auth/types';
 
 type Props = {
   ordersAddMutation: OrdersAddMutationResponse;
@@ -54,9 +54,9 @@ class PosContainer extends React.Component<Props, States> {
     super(props);
 
     this.state = {
-      productBodyType: "product",
+      productBodyType: 'product',
       showMenu: false,
-      modalContentType: "",
+      modalContentType: ''
     };
   }
 
@@ -68,7 +68,7 @@ class PosContainer extends React.Component<Props, States> {
       orderDetailQuery,
       ordersCancelMutation,
       addPaymentMutation,
-      settlePaymentMutation,
+      settlePaymentMutation
     } = this.props;
     const { showMenu, modalContentType, productBodyType } = this.state;
 
@@ -82,14 +82,14 @@ class PosContainer extends React.Component<Props, States> {
 
     const toggleModal = (modalContentType: string) => {
       this.setState({
-        showMenu: modalContentType === "payment" ? true : !this.state.showMenu,
-        modalContentType,
+        showMenu: modalContentType === 'payment' ? true : !this.state.showMenu,
+        modalContentType
       });
     };
 
     const handleModal = () => {
       this.setState({
-        showMenu: !this.state.showMenu,
+        showMenu: !this.state.showMenu
       });
     };
 
@@ -100,13 +100,13 @@ class PosContainer extends React.Component<Props, States> {
             mutation {
               posLogout
             }
-          `,
+          `
         })
 
         .then(() => {
-          window.location.href = "/";
+          window.location.href = '/';
         })
-        .catch((error) => {
+        .catch(error => {
           Alert.error(__(trimGraphqlError(error.message)));
         });
     };
@@ -122,9 +122,9 @@ class PosContainer extends React.Component<Props, States> {
 
           return data.ordersAdd;
         })
-        .then((order) => {
+        .then(order => {
           if (order && order._id) {
-            Alert.success(__("Order has been created successfully"));
+            Alert.success(__('Order has been created successfully'));
 
             router.setParams(this.props.history, { id: order._id, home: null });
 
@@ -133,7 +133,7 @@ class PosContainer extends React.Component<Props, States> {
             }
           }
         })
-        .catch((e) => {
+        .catch(e => {
           return Alert.error(__(trimGraphqlError(e.message)));
         });
     };
@@ -142,7 +142,7 @@ class PosContainer extends React.Component<Props, States> {
       return ordersEditMutation({ variables: params })
         .then(({ data }) => {
           if (data && data.ordersEdit && data.ordersEdit._id) {
-            Alert.success(__("Order has been updated successfully"));
+            Alert.success(__('Order has been updated successfully'));
 
             if (callback) {
               callback();
@@ -151,7 +151,7 @@ class PosContainer extends React.Component<Props, States> {
             return data.ordersEdit;
           }
         })
-        .catch((e) => {
+        .catch(e => {
           return Alert.error(__(trimGraphqlError(e.message)));
         });
     };
@@ -160,24 +160,24 @@ class PosContainer extends React.Component<Props, States> {
       customersAddMutation({ variables: params })
         .then(({ data }) => {
           if (data && data.customersAdd && data.customersAdd._id) {
-            Alert.success(__("Customer successfully created"));
+            Alert.success(__('Customer successfully created'));
           }
         })
-        .catch((e) => {
+        .catch(e => {
           Alert.error(__(trimGraphqlError(e.message)));
         });
     };
 
     const cancelOrder = (_id: string) => {
       confirm(
-        `${__("All order items will be deleted")}. ${__("Are you sure")}?`
+        `${__('All order items will be deleted')}. ${__('Are you sure')}?`
       ).then(() => {
         ordersCancelMutation({ variables: { _id } })
           .then(() => {
-            Alert.success("Order successfully cancelled");
-            window.location.href = "/";
+            Alert.success('Order successfully cancelled');
+            window.location.href = '/';
           })
-          .catch((e) => {
+          .catch(e => {
             return Alert.error(__(trimGraphqlError(e.message)));
           });
       });
@@ -193,8 +193,8 @@ class PosContainer extends React.Component<Props, States> {
           if (data.ordersSettlePayment) {
             const resp = data.ordersSettlePayment;
 
-            if (resp.success === "true") {
-              return Alert.success(__("Payment successful"));
+            if (resp.success === 'true') {
+              return Alert.success(__('Payment successful'));
             }
             if (resp.message) {
               return Alert.warning(resp.message);
@@ -212,10 +212,10 @@ class PosContainer extends React.Component<Props, States> {
             callback();
           }
 
-          window.open(`/order-receipt/${_id}`, "_blank");
-          window.location.href = "/";
+          window.open(`/order-receipt/${_id}`, '_blank');
+          window.location.href = '/';
         })
-        .catch((e) => {
+        .catch(e => {
           Alert.error(__(trimGraphqlError(e.message)));
         });
     };
@@ -224,14 +224,14 @@ class PosContainer extends React.Component<Props, States> {
       addPaymentMutation({ variables: params })
         .then(({ data }) => {
           if (data && data.ordersAddPayment && data.ordersAddPayment._id) {
-            Alert.success("Card payment info saved");
+            Alert.success('Card payment info saved');
           }
 
           if (callback) {
             callback();
           }
         })
-        .catch((e) => {
+        .catch(e => {
           Alert.error(__(trimGraphqlError(e.message)));
         });
     };
@@ -252,64 +252,64 @@ class PosContainer extends React.Component<Props, States> {
       settlePayment,
       showMenu,
       modalContentType,
-      refetchOrder: () => orderDetailQuery.refetch(),
+      refetchOrder: () => orderDetailQuery.refetch()
     };
 
     return <Pos {...updatedProps} />;
   }
 }
 
-const getRefetchQueries = (_id) => {
+const getRefetchQueries = _id => {
   return [
     {
       query: gql(queries.orderDetail),
       variables: { _id },
-      fetchPolicy: "network-only",
-    },
+      fetchPolicy: 'network-only'
+    }
   ];
 };
 
 export default withProps<Props>(
   compose(
     graphql<Props, OrdersAddMutationResponse>(gql(mutations.ordersAdd), {
-      name: "ordersAddMutation",
+      name: 'ordersAddMutation'
     }),
     graphql<Props>(gql(mutations.ordersAddPayment), {
-      name: "addPaymentMutation",
+      name: 'addPaymentMutation'
     }),
     graphql<Props, OrdersEditMutationResponse>(gql(mutations.ordersEdit), {
-      name: "ordersEditMutation",
+      name: 'ordersEditMutation',
       options: ({ qp }) => ({
-        refetchQueries: getRefetchQueries(qp.id),
-      }),
+        refetchQueries: getRefetchQueries(qp.id)
+      })
     }),
     graphql<Props>(gql(mutations.ordersSettlePayment), {
-      name: "settlePaymentMutation",
+      name: 'settlePaymentMutation'
     }),
     graphql<Props>(gql(queries.productCategories), {
-      name: "productCategoriesQuery",
-      options: { variables: { excludeEmpty: true } },
+      name: 'productCategoriesQuery',
+      options: { variables: { excludeEmpty: true } }
     }),
     graphql<Props>(gql(queries.products), {
-      name: "productsQuery",
+      name: 'productsQuery',
       options: ({ qp }) => ({
         variables: {
-          searchValue: qp && qp.searchValue ? qp.searchValue : "",
-          categoryId: qp && qp.categoryId ? qp.categoryId : "",
-        },
-      }),
+          searchValue: qp && qp.searchValue ? qp.searchValue : '',
+          categoryId: qp && qp.categoryId ? qp.categoryId : ''
+        }
+      })
     }),
     graphql<Props>(gql(mutations.customersAdd), {
-      name: "customersAddMutation",
+      name: 'customersAddMutation'
     }),
     graphql<Props>(gql(queries.orderDetail), {
-      name: "orderDetailQuery",
+      name: 'orderDetailQuery',
       options: ({ qp }) => ({
-        variables: { _id: qp && qp.id },
-      }),
+        variables: { _id: qp && qp.id }
+      })
     }),
     graphql<Props>(gql(mutations.ordersCancel), {
-      name: "ordersCancelMutation",
+      name: 'ordersCancelMutation'
     })
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );

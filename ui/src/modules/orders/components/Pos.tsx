@@ -1,15 +1,15 @@
-import React from "react";
-import Col from "react-bootstrap/Col";
-import Row from "react-bootstrap/Row";
-import { NavLink, Link } from "react-router-dom";
+import React from 'react';
+import Col from 'react-bootstrap/Col';
+import Row from 'react-bootstrap/Row';
+import { NavLink, Link } from 'react-router-dom';
 
-import NameCard from "modules/common/components/nameCard/NameCard";
-import AsyncComponent from "modules/common/components/AsyncComponent";
-import { ICustomerParams, IOrder, IOrderItemInput } from "../types";
-import { ORDER_TYPES, POS_MODES } from "../../../constants";
-import Calculation from "./Calculation";
-import OrderSearch from "../containers/layout/OrderSearch";
-import { IUser } from "modules/auth/types";
+import NameCard from 'modules/common/components/nameCard/NameCard';
+import AsyncComponent from 'modules/common/components/AsyncComponent';
+import { ICustomerParams, IOrder, IOrderItemInput } from '../types';
+import { ORDER_TYPES, POS_MODES } from '../../../constants';
+import Calculation from './Calculation';
+import OrderSearch from '../containers/layout/OrderSearch';
+import { IUser } from 'modules/auth/types';
 import {
   PosWrapper,
   MainContent,
@@ -23,32 +23,32 @@ import {
   KioskProductsContent,
   FooterContent,
   PosMenuContent,
-  LogoSection,
-} from "../styles";
-import { IConfig } from "types";
-import CustomerForm from "./drawer/CustomerForm";
-import ProductSearch from "../containers/ProductSearch";
-import KioskView from "./kiosk";
-import { renderFullName } from "modules/common/utils";
-import Icon from "modules/common/components/Icon";
-import FooterCalculation from "./kiosk/FooterCalculation";
-import SplitPaymentContainer from "../containers/SplitPaymentContainer";
-import { Cards, TypeWrapper } from "./drawer/style";
-import Modal from "react-bootstrap/Modal";
-import { __ } from "modules/common/utils";
-import Tip from "modules/common/components/Tip";
-import { IPaymentParams } from "../containers/PosContainer";
-import KioskPaymentForm from "./drawer/KioskPaymentForm";
-import Button from "modules/common/components/Button";
-import ConfirmList from "./kiosk/ConfirmList";
+  LogoSection
+} from '../styles';
+import { IConfig } from 'types';
+import CustomerForm from './drawer/CustomerForm';
+import ProductSearch from '../containers/ProductSearch';
+import KioskView from './kiosk';
+import { renderFullName } from 'modules/common/utils';
+import Icon from 'modules/common/components/Icon';
+import FooterCalculation from './kiosk/FooterCalculation';
+import SplitPaymentContainer from '../containers/SplitPaymentContainer';
+import { Cards, TypeWrapper } from './drawer/style';
+import Modal from 'react-bootstrap/Modal';
+import { __ } from 'modules/common/utils';
+import Tip from 'modules/common/components/Tip';
+import { IPaymentParams } from '../containers/PosContainer';
+import KioskPaymentForm from './drawer/KioskPaymentForm';
+import Button from 'modules/common/components/Button';
+import ConfirmList from './kiosk/ConfirmList';
 
 const ProductsContainer = AsyncComponent(
-  () => import(/* webpackChunkName: "Pos" */ "../containers/ProductsContainer")
+  () => import(/* webpackChunkName: "Pos" */ '../containers/ProductsContainer')
 );
 
 const CategoriesContainer = AsyncComponent(
   () =>
-    import(/* webpackChunkName: "Pos" */ "../containers/CategoriesContainer")
+    import(/* webpackChunkName: "Pos" */ '../containers/CategoriesContainer')
 );
 
 type Props = {
@@ -89,6 +89,7 @@ type State = {
   registerNumber: string;
   orderProps: any;
   paymentType: string;
+  slotId: string;
 };
 
 const getTotalAmount = (items: IOrderItemInput[]) => {
@@ -113,11 +114,12 @@ export default class Pos extends React.Component<Props, State> {
       items: order ? order.items : [],
       totalAmount: order ? getTotalAmount(order.items) : 0,
       type: type || (order && order.type ? order.type : ORDER_TYPES.EAT),
-      customerId: order && order.customerId ? order.customerId : "",
-      registerNumber: "",
-      paymentType: "card",
+      customerId: order && order.customerId ? order.customerId : '',
+      registerNumber: '',
+      paymentType: 'card',
       orderProps: {},
       isTypeChosen: false,
+      slotId: ''
     };
   }
 
@@ -130,7 +132,7 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   changeItemCount = (item: IOrderItemInput) => {
-    let items = this.state.items.map((i) => {
+    let items = this.state.items.map(i => {
       if (i.productId === item.productId && item._id === i._id) {
         i.count = item.count;
       }
@@ -138,7 +140,7 @@ export default class Pos extends React.Component<Props, State> {
       return i;
     });
 
-    items = items.filter((i) => i.count > 0);
+    items = items.filter(i => i.count > 0);
 
     const totalAmount = getTotalAmount(items);
 
@@ -148,14 +150,12 @@ export default class Pos extends React.Component<Props, State> {
   changeItemIsTake = (item: IOrderItemInput, value: boolean) => {
     const { type, items } = this.state;
     if (type !== ORDER_TYPES.EAT) {
-      this.setState({ items: items.map((i) => ({ ...i, isTake: true })) });
+      this.setState({ items: items.map(i => ({ ...i, isTake: true })) });
       return;
     }
 
     this.setState({
-      items: items.map((i) =>
-        item._id === i._id ? { ...i, isTake: value } : i
-      ),
+      items: items.map(i => (item._id === i._id ? { ...i, isTake: value } : i))
     });
   };
 
@@ -163,46 +163,53 @@ export default class Pos extends React.Component<Props, State> {
   setOrderState = (name: string, value: any) => {
     this.setState({ [name]: value } as Pick<State, keyof State>);
 
-    if (name === "type") {
+    if (name === 'type') {
       const { items } = this.state;
       const isTake = value !== ORDER_TYPES.EAT;
-      this.setState({ items: items.map((i) => ({ ...i, isTake })) });
+      this.setState({ items: items.map(i => ({ ...i, isTake })) });
     }
   };
 
   addOrder = (callback?: () => void) => {
     const { createOrder } = this.props;
-    const { totalAmount, type, items, customerId } = this.state;
+    const { totalAmount, type, items, customerId, slotId } = this.state;
 
-    const currentItems = items.map((item) => ({
+    const currentItems = items.map(item => ({
       _id: item._id,
       productId: item.productId,
       count: item.count,
       unitPrice: item.unitPrice,
       isPackage: item.isPackage,
-      isTake: type !== ORDER_TYPES.EAT ? true : item.isTake,
+      isTake: type !== ORDER_TYPES.EAT ? true : item.isTake
     }));
 
-    const mode = localStorage.getItem("erxesPosMode") || "";
+    const mode = localStorage.getItem('erxesPosMode') || '';
 
     createOrder(
-      { items: currentItems, totalAmount, type, customerId, origin: mode },
+      {
+        items: currentItems,
+        totalAmount,
+        type,
+        customerId,
+        origin: mode,
+        slotId
+      },
       callback
     );
   };
 
   editOrder = (callback?: () => void) => {
     const { updateOrder, order } = this.props;
-    const { totalAmount, type, items, customerId } = this.state;
+    const { totalAmount, type, items, customerId, slotId } = this.state;
 
     if (order && order._id) {
-      const currentItems = items.map((item) => ({
+      const currentItems = items.map(item => ({
         _id: item._id,
         productId: item.productId,
         count: item.count,
         unitPrice: item.unitPrice,
         isPackage: item.isPackage,
-        isTake: type !== ORDER_TYPES.EAT ? true : item.isTake,
+        isTake: type !== ORDER_TYPES.EAT ? true : item.isTake
       }));
 
       updateOrder(
@@ -212,27 +219,34 @@ export default class Pos extends React.Component<Props, State> {
           totalAmount,
           type,
           customerId,
+          slotId
         },
         callback
       ).then((updatedOrder: any) => {
         if (updatedOrder && updatedOrder.items) {
           this.setState({
             items: updatedOrder.items,
-            totalAmount: getTotalAmount(updatedOrder.items),
+            totalAmount: getTotalAmount(updatedOrder.items)
           });
         }
       });
     }
   };
 
-  onOrdersChange = (orderProps) => {
+  onOrdersChange = orderProps => {
     this.setState({ orderProps });
   };
 
   handlePayment = (params: IPaymentParams) => {
     const { order, settlePayment } = this.props;
 
-    settlePayment(order ? order._id : "", params, () => this.setItems([]));
+    settlePayment(order ? order._id : '', params, () => this.setItems([]));
+  };
+
+  onChangeSlot = value => {
+    this.setState({
+      slotId: value
+    });
   };
 
   renderKioskModalContent() {
@@ -243,18 +257,18 @@ export default class Pos extends React.Component<Props, State> {
       modalContentType,
       orientation,
       toggleModal,
-      addOrderPayment,
+      addOrderPayment
     } = this.props;
     const { paymentType, items } = this.state;
 
     const options = currentConfig ? currentConfig.uiOptions : {};
 
     switch (modalContentType) {
-      case "payment":
+      case 'payment':
         return (
           order && (
             <KioskPaymentForm
-              orderId={order ? order._id : ""}
+              orderId={order ? order._id : ''}
               options={options}
               closeDrawer={toggleModal}
               settlePayment={settlePayment}
@@ -268,12 +282,12 @@ export default class Pos extends React.Component<Props, State> {
             />
           )
         );
-      case "check":
+      case 'check':
         return (
           <ConfirmList
             order={order}
             items={items}
-            isPortrait={orientation === "portrait"}
+            isPortrait={orientation === 'portrait'}
             config={currentConfig}
             totalAmount={this.state.totalAmount}
             editOrder={this.editOrder}
@@ -287,7 +301,7 @@ export default class Pos extends React.Component<Props, State> {
   }
 
   renderCurrentLogin(uiOptions) {
-    const mode = localStorage.getItem("erxesPosMode");
+    const mode = localStorage.getItem('erxesPosMode');
     const { order, posCurrentUser } = this.props;
 
     if (mode === POS_MODES.KIOSK) {
@@ -299,10 +313,10 @@ export default class Pos extends React.Component<Props, State> {
             <Icon
               icon="home"
               onClick={() => {
-                window.location.href = "/";
+                window.location.href = '/';
               }}
               size={36}
-              color={uiOptions.colors ? uiOptions.colors.primary : ""}
+              color={uiOptions.colors ? uiOptions.colors.primary : ''}
             />
             <FlexCustomer>
               <NameCard.Avatar customer={customer} size={40} />
@@ -316,10 +330,10 @@ export default class Pos extends React.Component<Props, State> {
         <Icon
           icon="home"
           onClick={() => {
-            window.location.href = "/";
+            window.location.href = '/';
           }}
           size={36}
-          color={uiOptions.colors ? uiOptions.colors.primary : ""}
+          color={uiOptions.colors ? uiOptions.colors.primary : ''}
         />
       );
     }
@@ -331,17 +345,17 @@ export default class Pos extends React.Component<Props, State> {
     const { posCurrentUser } = this.props;
 
     if (!posCurrentUser) {
-      return "";
+      return '';
     }
 
-    if (localStorage.getItem("erxesPosMode")) {
-      return "";
+    if (localStorage.getItem('erxesPosMode')) {
+      return '';
     }
 
     return (
       <NavLink to="/settings">
-        <Tip placement="top" key={Math.random()} text={__("Settings")}>
-          <Icon icon={"settings"} size={18} />
+        <Tip placement="top" key={Math.random()} text={__('Settings')}>
+          <Icon icon={'settings'} size={18} />
         </Tip>
       </NavLink>
     );
@@ -351,19 +365,19 @@ export default class Pos extends React.Component<Props, State> {
     const { posCurrentUser, currentConfig } = this.props;
 
     if (!posCurrentUser || !currentConfig) {
-      return "";
+      return '';
     }
 
     if (!currentConfig.kitchenScreen) {
-      return "";
+      return '';
     }
 
     if (
       ![POS_MODES.POS, POS_MODES.KITCHEN].includes(
-        localStorage.getItem("erxesPosMode") || ""
+        localStorage.getItem('erxesPosMode') || ''
       )
     ) {
-      return "";
+      return '';
     }
 
     return (
@@ -371,9 +385,9 @@ export default class Pos extends React.Component<Props, State> {
         <Tip
           placement="top"
           key={Math.random()}
-          text={__("Show kitchen screen")}
+          text={__('Show kitchen screen')}
         >
-          <Icon icon={"desktop"} size={20} />
+          <Icon icon={'desktop'} size={20} />
         </Tip>
       </NavLink>
     );
@@ -383,19 +397,19 @@ export default class Pos extends React.Component<Props, State> {
     const { posCurrentUser, currentConfig } = this.props;
 
     if (!posCurrentUser || !currentConfig) {
-      return "";
+      return '';
     }
 
     if (!currentConfig.waitingScreen) {
-      return "";
+      return '';
     }
 
     if (
       ![POS_MODES.POS, POS_MODES.WAITING].includes(
-        localStorage.getItem("erxesPosMode") || ""
+        localStorage.getItem('erxesPosMode') || ''
       )
     ) {
-      return "";
+      return '';
     }
 
     return (
@@ -403,9 +417,9 @@ export default class Pos extends React.Component<Props, State> {
         <Tip
           placement="top"
           key={Math.random()}
-          text={__("Show waiting screen")}
+          text={__('Show waiting screen')}
         >
-          <Icon icon={"wallclock"} size={17} />
+          <Icon icon={'wallclock'} size={17} />
         </Tip>
       </NavLink>
     );
@@ -441,14 +455,14 @@ export default class Pos extends React.Component<Props, State> {
       orientation,
       productBodyType,
       onChangeProductBodyType,
-      refetchOrder,
+      refetchOrder
     } = this.props;
 
     switch (productBodyType) {
-      case "product": {
+      case 'product': {
         return this.renderProduct();
       }
-      case "payment": {
+      case 'payment': {
         if (order) {
           return (
             <SplitPaymentContainer
@@ -462,7 +476,7 @@ export default class Pos extends React.Component<Props, State> {
 
         return null;
       }
-      case "orderSearch": {
+      case 'orderSearch': {
         return (
           <OrderSearch
             orientation={orientation}
@@ -470,7 +484,7 @@ export default class Pos extends React.Component<Props, State> {
           />
         );
       }
-      case "customer": {
+      case 'customer': {
         return (
           <CustomerForm
             addCustomer={addCustomer}
@@ -478,12 +492,12 @@ export default class Pos extends React.Component<Props, State> {
           ></CustomerForm>
         );
       }
-      case "done": {
-        const isPortrait = orientation === "portrait";
+      case 'done': {
+        const isPortrait = orientation === 'portrait';
 
         return (
           <TypeWrapper isPortrait={isPortrait}>
-            <h2>{__("Thank you for choosing us")}</h2>
+            <h2>{__('Thank you for choosing us')}</h2>
 
             <Cards isPortrait={isPortrait}>
               <div>
@@ -492,8 +506,8 @@ export default class Pos extends React.Component<Props, State> {
             </Cards>
 
             <h2>
-              {__("Your number")}:
-              <b>{order && order.number ? order.number.split("_")[1] : ""}</b>
+              {__('Your number')}:
+              <b>{order && order.number ? order.number.split('_')[1] : ''}</b>
             </h2>
           </TypeWrapper>
         );
@@ -509,16 +523,16 @@ export default class Pos extends React.Component<Props, State> {
     const data = currentConfig ? currentConfig.uiOptions : {};
 
     return (
-      <LogoSection color={data.colors ? data.colors.primary : ""}>
-        <NavLink to={"/?home=true"}>
+      <LogoSection color={data.colors ? data.colors.primary : ''}>
+        <NavLink to={'/?home=true'}>
           <img src={data.logo} alt="logo11" />
         </NavLink>
         <div className="syncMenu">
           {this.renderSyncMenu()}
           {this.renderKitchenMenu()}
           {this.renderWaitingMenu()}
-          <Tip placement="top" key={Math.random()} text={__("Logout")}>
-            <Icon icon={"logout-2"} size={17} onClick={this.props.logout} />
+          <Tip placement="top" key={Math.random()} text={__('Logout')}>
+            <Icon icon={'logout-2'} size={17} onClick={this.props.logout} />
           </Tip>
         </div>
       </LogoSection>
@@ -537,14 +551,14 @@ export default class Pos extends React.Component<Props, State> {
       toggleModal,
       handleModal,
       cancelOrder,
-      onChangeProductBodyType,
+      onChangeProductBodyType
     } = this.props;
 
     const { items, totalAmount, type, isTypeChosen } = this.state;
     const uiOptions = currentConfig ? currentConfig.uiOptions : {};
 
     const onBack = () => {
-      this.onClickType("eat");
+      this.onClickType('eat');
       this.setItems([]);
     };
 
@@ -571,7 +585,7 @@ export default class Pos extends React.Component<Props, State> {
         <div className="headerKiosk">
           <Link to="/">
             <img
-              src={uiOptions.kioskHeaderImage || "/images/headerKiosk.png"}
+              src={uiOptions.kioskHeaderImage || '/images/headerKiosk.png'}
               alt="Kiosk header"
             />
           </Link>
@@ -637,11 +651,11 @@ export default class Pos extends React.Component<Props, State> {
       productsQuery,
       productBodyType,
       cancelOrder,
-      onChangeProductBodyType,
+      onChangeProductBodyType
     } = this.props;
 
     const { items, totalAmount, type } = this.state;
-    const mode = localStorage.getItem("erxesPosMode");
+    const mode = localStorage.getItem('erxesPosMode');
 
     const categories = (
       <CategoriesContainer
@@ -692,6 +706,8 @@ export default class Pos extends React.Component<Props, State> {
                   orderProps={this.state.orderProps}
                   type={type}
                   cancelOrder={cancelOrder}
+                  slotId={this.state.slotId}
+                  onChangeSlot={this.onChangeSlot}
                 />
               </MainContent>
             </Col>
@@ -704,14 +720,14 @@ export default class Pos extends React.Component<Props, State> {
   setupTimer() {
     const { order } = this.props;
     const { isTypeChosen } = this.state;
-    const mode = localStorage.getItem("erxesPosMode") || "";
+    const mode = localStorage.getItem('erxesPosMode') || '';
 
     // auto-refresh within 3 minutes if an order is not made in kiosk mode
     if (mode === POS_MODES.KIOSK) {
       // 5 min is enough to make an order
       this.timeoutId = setTimeout(() => {
         if (!order && isTypeChosen) {
-          window.location.href = "/";
+          window.location.href = '/';
         }
       }, 60000 * 3);
     }
