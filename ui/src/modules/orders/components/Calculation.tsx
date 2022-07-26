@@ -131,6 +131,7 @@ type State = {
   cashAmount: number;
   companyName: string;
   registerNumber: string;
+  slotId: string;
 };
 
 export default class Calculation extends React.Component<Props, State> {
@@ -152,7 +153,8 @@ export default class Calculation extends React.Component<Props, State> {
       mode,
       cashAmount: 0,
       companyName: '',
-      registerNumber: ''
+      registerNumber: '',
+      slotId: ''
     };
   }
 
@@ -443,6 +445,22 @@ export default class Calculation extends React.Component<Props, State> {
     );
   }
 
+  renderSlotOptions() {
+    const { config } = this.props;
+
+    return (config.slots || []).map(slot => {
+      return {
+        label: slot.name,
+        value: slot._id
+      };
+    });
+  }
+  onChangeSlot = slotId => {
+    this.setState({
+      slotId: slotId.value
+    });
+  };
+
   render() {
     const {
       config,
@@ -463,11 +481,12 @@ export default class Calculation extends React.Component<Props, State> {
           <div>
             <SelectOption>
               <Select
-                placeholder="Code Name"
-                options={[{ value: 'Code', label: 'code name' }]}
+                placeholder="Pos Slot"
+                options={this.renderSlotOptions()}
                 clearable={true}
-                input={false}
-              ></Select>
+                value={this.state.slotId}
+                onChange={options => this.onChangeSlot(options)}
+              />
             </SelectOption>
           </div>
           <Divider />

@@ -100,6 +100,7 @@ export interface IConfig {
   syncInfo: any;
   initialCategoryIds: string[];
   kioskExcludeProductIds: string[];
+  slots: any[];
 }
 
 export type CurrentConfigQueryResponse = {

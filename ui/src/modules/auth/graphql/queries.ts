@@ -46,6 +46,8 @@ const currentConfig = `
       formIntegrationIds
       brandId
       token
+      slots
+
 
       uiOptions {
         colors
