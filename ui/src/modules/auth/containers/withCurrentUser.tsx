@@ -7,17 +7,18 @@ import React from "react";
 import { graphql } from "react-apollo";
 import { queries } from "../graphql/index";
 import { CurrentUserQueryResponse } from "../types";
-import { CurrentConfigQueryResponse } from "../../../types";
+import { ConfigsQueryResponse, CurrentConfigQueryResponse } from '../../../types';
 
 type Props = {
   currentUserQuery: CurrentUserQueryResponse;
   currentConfigQuery: CurrentConfigQueryResponse;
-};
+  configsQuery: ConfigsQueryResponse;
+}
 
 const withCurrentUser = (Component) => {
   const Container = (props: Props) => {
     const [orientation, setPortraitOrientation] = React.useState("landscape");
-    const { currentUserQuery, currentConfigQuery } = props;
+    const { currentUserQuery, currentConfigQuery, configsQuery } = props;
 
     React.useEffect(() => {
       if (
@@ -28,7 +29,7 @@ const withCurrentUser = (Component) => {
       }
     }, [setPortraitOrientation]);
 
-    if (currentUserQuery.loading || currentConfigQuery.loading) {
+    if (currentUserQuery.loading || currentConfigQuery.loading || configsQuery.loading) {
       return <Spinner />;
     }
 
@@ -39,6 +40,7 @@ const withCurrentUser = (Component) => {
       posCurrentUser,
       orientation,
       currentConfig: currentConfigQuery.currentConfig,
+      configs: configsQuery.posclientConfigs || [],
     };
 
     if (posCurrentUser) {
@@ -57,7 +59,10 @@ const withCurrentUser = (Component) => {
       }),
       graphql<CurrentConfigQueryResponse>(gql(queries.currentConfig), {
         name: "currentConfigQuery",
-      })
+      }),
+      graphql<ConfigsQueryResponse>(gql(queries.configs), {
+        name: "configsQuery",
+      }),
     )(Container)
   );
 };

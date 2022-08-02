@@ -46,6 +46,17 @@ const AuthBox = styledTS<{ mainColor?: string }>(styled.div)`
   }
 `;
 
+const ChooseConfig = styledTS<{ mainColor?: string }>(styled.div)`
+  margin: -30px 0 30px 0 ;
+  h1 {
+    color: ${(props) =>
+      props.mainColor ? props.mainColor : colors.colorPrimary};
+    font-size: 20px;
+    font-weight: 400;
+    margin: 0 0 10px;
+  }
+`;
+
 const Links = styled.div`
   margin-top: 50px;
   text-align: center;
@@ -73,4 +84,4 @@ const ColumnTitle = styled.h4`
   margin: ${dimensions.coreSpacing}px 0;
 `;
 
-export { AuthBox, Links, ProfileWrapper, ProfileColumn, ColumnTitle };
+export { AuthBox, Links, ProfileWrapper, ProfileColumn, ColumnTitle, ChooseConfig };

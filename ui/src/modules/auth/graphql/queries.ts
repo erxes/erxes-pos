@@ -25,63 +25,75 @@ const userChanged = `
   }
 `;
 
+const configFields = `
+  _id
+  name
+  description
+  userId
+  createdAt
+  productDetails
+  adminIds
+  cashierIds
+  beginNumber
+  maxSkipNumber
+  waitingScreen
+  kioskMachine
+  kitchenScreen
+  token
+
+  uiOptions {
+    colors
+    bgImage
+    logo
+    favIcon
+    receiptIcon
+    texts
+    kioskHeaderImage
+    mobileAppImage
+    qrCodeImage
+  }
+
+  ebarimtConfig {
+    companyRD
+    hasVat
+    hasCitytax
+    vatPercent
+    cityTaxPercent
+    companyName
+    ebarimtUrl
+    footerText
+  }
+
+  qpayConfig {
+    url
+    callbackUrl
+    username
+    password
+    invoiceCode
+  }
+  catProdMappings {
+    _id
+    categoryId
+    productId
+  }
+  initialCategoryIds
+  kioskExcludeProductIds
+`
+
 const currentConfig = `
   query currentConfig {
     currentConfig {
-      _id
-      name
-      description
-      userId
-      createdAt
-      productDetails
-      adminIds
-      cashierIds
-      beginNumber
-      maxSkipNumber
-      waitingScreen
-      kioskMachine
-      kitchenScreen
-      token
-
-      uiOptions {
-        colors
-        bgImage
-        logo
-        favIcon
-        receiptIcon
-        texts
-        kioskHeaderImage
-        mobileAppImage
-        qrCodeImage
-      }
-
-      ebarimtConfig {
-        companyRD
-        hasVat
-        hasCitytax
-        vatPercent
-        cityTaxPercent
-        companyName
-        ebarimtUrl
-        footerText
-      }
-
-      qpayConfig {
-        url
-        callbackUrl
-        username
-        password
-        invoiceCode
-      }
-      catProdMappings {
-        _id
-        categoryId
-        productId
-      }
-      initialCategoryIds
-      kioskExcludeProductIds
+      ${configFields}
     }
   }
 `;
 
-export default { posCurrentUser, userChanged, currentConfig };
+const configs = `
+  query posclientConfigs {
+    posclientConfigs {
+      ${configFields}
+    }
+  }
+`;
+
+export default { posCurrentUser, userChanged, currentConfig, configs };

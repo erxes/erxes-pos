@@ -12,7 +12,14 @@ const configsFetch = `
   }
 `;
 
+const chooseConfig = `
+  mutation posChooseConfig($token: String!) {
+    posChooseConfig(token: $token)
+  }
+`;
+
 export default {
   login,
-  configsFetch
+  configsFetch,
+  chooseConfig
 };

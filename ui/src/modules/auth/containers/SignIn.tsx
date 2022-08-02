@@ -1,19 +1,22 @@
-import apolloClient from "apolloClient";
-import { __ } from "modules/common/utils";
-import React from "react";
-import { withRouter } from "react-router-dom";
-import ButtonMutate from "../../common/components/ButtonMutate";
-import { IButtonMutateProps, IRouterProps, IConfig } from "../../../types";
-import SignIn from "../components/SignIn";
-import { mutations } from "../graphql";
-import withCurrentUser from "./withCurrentUser";
+import apolloClient from 'apolloClient';
+import ButtonMutate from '../../common/components/ButtonMutate';
+import client from 'apolloClient';
+import gql from 'graphql-tag';
+import React from 'react';
+import SignIn from '../components/SignIn';
+import withCurrentUser from './withCurrentUser';
+import { __ } from 'modules/common/utils';
+import { IButtonMutateProps, IConfig, IRouterProps } from '../../../types';
+import { mutations, queries } from '../graphql';
+import { withRouter } from 'react-router-dom';
 
 type Props = {
   currentConfig: IConfig;
+  configs: IConfig[];
 } & IRouterProps;
 
 const SignInContainer = (props: Props) => {
-  const { history } = props;
+  const { history, configs } = props;
 
   const renderButton = ({ values, isSubmitted }: IButtonMutateProps) => {
     const callbackResponse = () => {
@@ -39,9 +42,23 @@ const SignInContainer = (props: Props) => {
     );
   };
 
+  const onChangeConfig = (token) => {
+    client.mutate({
+      mutation: gql(mutations.chooseConfig),
+      variables: { token },
+      refetchQueries: [
+        {
+          query: gql(queries.currentConfig),
+        }
+      ]
+    })
+  }
+
   const updatedProps = {
     ...props,
     renderButton,
+    onChangeConfig,
+    configs
   };
 
   return <SignIn {...updatedProps} />;

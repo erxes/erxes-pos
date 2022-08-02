@@ -106,6 +106,16 @@ export type CurrentConfigQueryResponse = {
   currentConfig: IConfig;
 } & QueryResponse;
 
+export type ConfigsQueryResponse = {
+  posclientConfigs: IConfig[];
+} & QueryResponse;
+
+export type ChooseConfigMutationResponse = {
+  chooseConfigMutation: (params: {
+    variables: { token: string };
+  }) => Promise<any>;
+}
+
 export type IOption = {
   label: string;
   value: string;
