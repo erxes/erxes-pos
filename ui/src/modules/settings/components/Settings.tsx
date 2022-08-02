@@ -156,7 +156,6 @@ export default class Settings extends React.Component<Props, State> {
               <FlexBetween>
                 <NavLink to={"/?home=true"}>
                   {currentConfig.name} |
-                  {currentConfig.syncInfo && currentConfig.syncInfo.date}
                 </NavLink>
 
               </FlexBetween>

@@ -97,7 +97,6 @@ export interface IConfig {
   token?: string;
   uiOptions: any;
   ebarimtConfig: IEbarimtConfig;
-  syncInfo: any;
   initialCategoryIds: string[];
   kioskExcludeProductIds: string[];
   slots: any[];

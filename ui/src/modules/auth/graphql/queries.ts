@@ -73,7 +73,6 @@ const currentConfig = `
         password
         invoiceCode
       }
-      syncInfo
       catProdMappings {
         _id
         categoryId
