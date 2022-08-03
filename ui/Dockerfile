@@ -18,6 +18,5 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
 COPY nginx/default.conf /etc/nginx/conf.d/default.conf
 COPY build /usr/share/nginx/html
-COPY build /etc/nginx/html
 ENTRYPOINT [ "sh", "/usr/local/bin/docker-entrypoint.sh" ]
 CMD ["nginx", "-g", "daemon off;"]
