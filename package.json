@@ -1,8 +1,0 @@
-{
-  "name": "erxes-pos",
-  "version": "0.0.1",
-  "description": "Erxes POS",
-  "main": "index.js",
-  "author": "Buyantogtokh <buyantogtokh.s@nmma.co>",
-  "license": "MIT"
-}

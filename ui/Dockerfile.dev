@@ -1,5 +1,0 @@
-FROM node:12-alpine
-WORKDIR /erxes
-COPY . ./
-RUN yarn install
-CMD ["yarn", "start"]
