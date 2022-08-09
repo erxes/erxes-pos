@@ -1,0 +1,49 @@
+.slot {
+  &-header {
+    display: flex;
+    align-items: center;
+    flex: 1 1 auto;
+    overflow: hidden;
+
+    .slot-number {
+      background-color: $success;
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      font-weight: 800;
+      padding: 0.5rem 1rem;
+
+      &:hover {
+        background-color: $success-hover;
+      }
+      &::after {
+        content: '';
+      }
+    }
+    .react-horizontal-scrolling-menu--separator {
+      padding: 0 0.5rem;
+    }
+  }
+  &-dropdown {
+    font-weight: 700;
+    display: flex;
+    justify-content: center;
+    padding: 0.5rem;
+    border-radius: 0.25rem;
+    transition: 0.3s;
+    margin-right: 1rem;
+    flex: 0 0 auto;
+    cursor: pointer;
+    flex: 0 0 auto;
+    i {
+      margin-left: 0.5rem;
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+    p {
+      line-height: 1.15rem;
+    }
+    &:hover {
+      background-color: $background-gray;
+    }
+  }
+}

@@ -1,0 +1,59 @@
+.pos {
+  &-header {
+    display: flex;
+    padding: 1.25rem;
+    align-items: center;
+    & > div:first-child {
+      display: flex;
+      align-items: center;
+      flex: 0 0 auto;
+      display: flex;
+    }
+    .logo {
+      padding: 0.25rem 0.75rem;
+      line-height: 1;
+      img {
+        height: 2.5rem;
+        width: auto;
+        object-fit: cover;
+        margin-bottom: 0;
+      }
+    }
+    border-bottom: $border;
+    .gray-border {
+      border-radius: 0.5rem;
+      background: $background-gray;
+      padding: 0.25rem;
+      margin-right: 2rem;
+      & > * {
+        border-radius: 0.25rem;
+        background: #fff;
+      }
+      &:first-child {
+        margin-right: 1rem;
+      }
+    }
+    .menu {
+      font-size: 1.5rem;
+      padding: 0.75rem;
+      line-height: 1em;
+    }
+  }
+  &-container {
+    display: flex;
+    min-width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    flex-flow: row nowrap;
+    height: calc(100vh - 7.5rem);
+    padding-bottom: 0.75rem;
+  }
+  &-content {
+    max-width: ($one-third * 2);
+    flex: 1 1 ($one-third * 2);
+    height: 100%;
+    padding: 0 1.25rem;
+    display: flex;
+    flex-direction: column;
+  }
+}
