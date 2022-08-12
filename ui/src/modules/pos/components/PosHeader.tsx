@@ -14,19 +14,20 @@ interface PosHeaderProps {}
 
 const PosHeader: FC<PosHeaderProps> = ({}) => {
   return (
-    <header className="pos-header">
-      <div>
+    <header className="pos-header flex-v-center">
+      <div className="flex-v-center flex-0">
         <PosHeaderMenu />
         <div className="gray-border">
           <div className="logo">
-            <Image
-              src="https://www.erxes.org/img/logo_dark.svg"
-              width={80}
-              height={40}
-              objectFit="contain"
-              priority
-              alt="Erxes"
-            />
+            <div className="img-wrap">
+              <Image
+                src="https://www.erxes.org/img/logo_dark.svg"
+                layout="fill"
+                objectFit="contain"
+                priority
+                alt="Erxes"
+              />
+            </div>
           </div>
         </div>
       </div>

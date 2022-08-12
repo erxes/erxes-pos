@@ -13,7 +13,7 @@ export default function Product() {
           />
         </div>
         <div className="product-name">Үхрийн махтай боул</div>
-        <div className="product-price">17,500₮</div>
+        <div className="product-price">17 500₮</div>
       </div>
     </div>
   );

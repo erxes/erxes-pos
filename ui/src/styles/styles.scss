@@ -2,6 +2,7 @@
 
 @import 'base/sanitize';
 @import 'base/base';
+@import 'base/utils';
 
 @import 'components/common/btn';
 @import 'components/common/scrolling-menu';
@@ -9,3 +10,5 @@
 @import 'modules/pos';
 @import 'modules/slot';
 @import 'modules/products';
+@import 'modules/customer';
+@import 'modules/order';

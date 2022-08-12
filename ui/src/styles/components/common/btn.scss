@@ -31,5 +31,8 @@
     border: $border;
     background-color: transparent;
     box-shadow: none;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
   }
 }

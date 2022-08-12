@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --port 7000",
+    "dev": "next dev --port 7001",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -11,9 +11,11 @@
   "dependencies": {
     "classnames": "^2.3.1",
     "next": "12.2.4",
+    "rc-animate": "^3.1.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-horizontal-scrolling-menu": "^3.2.0",
+    "react-ink": "^6.5.1",
     "react-merge-refs": "^2.0.1",
     "sharp": "^0.30.7"
   },

@@ -1,0 +1,16 @@
+.order {
+  &-total {
+    padding: 0 1.25rem 1rem;
+    border-bottom: $border;
+    justify-content: space-between;
+    .checkall {
+      font: 600 0.875rem/1rem 'Inter';
+    }
+    &-price {
+      color: rgba($color: #000000, $alpha: 0.68);
+    }
+  }
+  &-item {
+    border-bottom: $border;
+  }
+}

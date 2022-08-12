@@ -6,11 +6,11 @@ import CaretDown from 'icons/CaretDown';
 function SlotsHeader() {
   return (
     <>
-      <div className="slot-dropdown">
+      <div className="slot-dropdown flex-v-center flex-0">
         <p>Level 1 </p>
         <CaretDown width={18} />
       </div>
-      <div className="slot-header">
+      <div className="slot-header flex-v-center flex-1">
         <HorizontalScroll
           items={[
             { id: 1 },

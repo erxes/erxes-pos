@@ -1,18 +1,32 @@
 .products {
   &-category {
     color: rgba(0, 0, 0, 0.68);
-    margin: 1.5rem 0;
     padding: 0.75rem 1.5rem;
     font-size: 0.825rem;
     font-weight: 600;
-    flex: 0 0 auto;
-    &:hover {
-      background-color: #f5f5f5;
+    &.slim {
+      &:hover {
+        background-color: #f5f5f5;
+      }
+      &:active {
+        background-color: $primary;
+        color: #fff;
+      }
     }
-    &:active {
-      background-color: $primary;
-      color: #fff;
-    }
+  }
+  &-header {
+    background-color: #fff;
+    position: relative;
+    z-index: 1;
+    padding: 1.25rem 0;
+  }
+  &-search {
+    height: 2.75rem;
+    width: 2.75rem;
+    background: $background-gray;
+    font-size: 1.25rem;
+    border-radius: 50%;
+    border: $border;
   }
 }
 .row {
@@ -20,7 +34,6 @@
   flex-flow: row wrap;
   margin: -0.625rem;
   overflow-y: auto;
-  flex: 1 1 auto;
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
   &::-webkit-scrollbar {

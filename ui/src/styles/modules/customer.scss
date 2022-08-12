@@ -1,0 +1,19 @@
+.customer {
+  &-search {
+    &.-pos {
+      padding: 1rem 1.25rem 2rem;
+      border-bottom: $border;
+      .btn {
+        height: 3.75rem;
+        width: 100%;
+        justify-content: space-between;
+        span {
+          svg {
+            font-size: 1.25rem;
+            margin-right: 0.75rem;
+          }
+        }
+      }
+    }
+  }
+}
