@@ -1,10 +1,25 @@
 import OrderTotal from './Total';
+import OrderItem from './Item';
+import OrderControls from './Controls';
 
 const OrderPos = () => {
   return (
-    <div className="order-pos">
+    <>
       <OrderTotal />
-    </div>
+      <div className="order-pos">
+        <OrderItem />
+        <OrderItem />
+        <OrderItem />
+        <OrderItem />
+        <OrderItem />
+        <OrderItem />
+        <OrderItem />
+        <OrderItem />
+        <OrderItem />
+        <OrderItem />
+      </div>
+      <OrderControls />
+    </>
   );
 };
 

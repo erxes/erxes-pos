@@ -2,14 +2,15 @@ import React from 'react';
 import HorizontalScroll from 'ui/scrollMenu';
 import SlotNumber from './SlotNumber';
 import CaretDown from 'icons/CaretDown';
+import Button from 'modules/common/ui/Button';
 
 function SlotsHeader() {
   return (
     <>
-      <div className="slot-dropdown flex-v-center flex-0">
-        <p>Level 1 </p>
+      <Button variant="naked" className="slot-dropdown">
+        Level 1
         <CaretDown width={18} />
-      </div>
+      </Button>
       <div className="slot-header flex-v-center flex-1">
         <HorizontalScroll
           items={[
