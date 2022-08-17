@@ -10,6 +10,7 @@ export interface IOrderItem {
   unitPrice: number;
   discountAmount?: number;
   discountPercent?: number;
+  bonusCount?: number;
   orderId: string;
   productName: string;
   isPackage?: boolean;
@@ -103,15 +104,19 @@ export interface IOrderItemInput {
   isPackage?: boolean;
   isTake?: boolean;
   slotCode?: string;
+
+  discountPercent?: number;
+  discountAmount?: number;
+  bonusCount?: number;
 }
 
-export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;
+export type OrdersAddMutationResponse = ({ variables }: any) => Promise<any>;
 
-export type OrdersEditMutationResponse = ({ variables: any }) => Promise<any>;
+export type OrdersEditMutationResponse = ({ variables }: any) => Promise<any>;
 
 export type OrderChangeStatusMutationResponse = ({
-  variables: any
-}) => Promise<any>;
+  variables
+}: any) => Promise<any>;
 
 export type OrderDetailQueryResponse = {
   orderDetail: IOrder;

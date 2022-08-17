@@ -40,6 +40,9 @@ export const orderItemsFields = `
     isPackage
     isTake
     productImgUrl
+    discountAmount
+    discountPercent
+    bonusCount
   }
 `;
 
