@@ -362,7 +362,7 @@ export default class Calculation extends React.Component<Props, State> {
             }
           })
           .catch(error => props.closeModal());
-      }, 500);
+      }, 1000);
     };
 
     const onClearChosenCustomer = () => {

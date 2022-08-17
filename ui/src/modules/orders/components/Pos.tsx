@@ -94,11 +94,17 @@ type State = {
   slotCode: string;
 };
 
-const getTotalAmount = (items: IOrderItemInput[]) => {
+const getTotalAmount = (items: IOrderItemInput[], onlyUi = false) => {
   let total = 0;
 
   for (const i of items || []) {
-    total += (i.unitPrice || 0) * i.count;
+    if (onlyUi && i.bonusCount) {
+      if (i.count > i.bonusCount) {
+        total += (i.count * (i.discountAmount || 0) / i.bonusCount) - (i.discountAmount || 0)
+      }
+    } else {
+      total += (i.unitPrice || 0) * i.count;
+    }
   }
 
   return total;
@@ -131,7 +137,7 @@ export default class Pos extends React.Component<Props, State> {
   };
 
   setItems = (items: IOrderItemInput[]) => {
-    this.setState({ items, totalAmount: getTotalAmount(items) });
+    this.setState({ items, totalAmount: getTotalAmount(items, true) });
   };
 
   changeItemCount = (item: IOrderItemInput) => {
@@ -145,7 +151,7 @@ export default class Pos extends React.Component<Props, State> {
 
     items = items.filter(i => i.count > 0);
 
-    const totalAmount = getTotalAmount(items);
+    const totalAmount = getTotalAmount(items, true);
 
     this.setState({ items, totalAmount });
   };
