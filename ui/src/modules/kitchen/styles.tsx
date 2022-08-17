@@ -18,7 +18,7 @@ export const TableRow = styledTS<{ color?: string; background?: string }>(
 export const Detail = styled.div`
   display: flex;
   align-items: center;
-  line-height: 15px;
+  line-height: 25px;
 
   p {
     margin: 0;

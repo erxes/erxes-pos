@@ -48,7 +48,10 @@ export default class Screen extends React.Component<Props> {
 
   renderContent() {
     const { orders } = this.props;
-    const contentUrl = this.props.currentConfig.waitingScreen.contentUrl || '';
+    let contentUrl = '';
+    if (this.props.currentConfig.waitingScreen !== null) {
+      contentUrl = this.props.currentConfig.waitingScreen.contentUrl; 
+    } 
 
     if (!contentUrl) {
       return <></>;

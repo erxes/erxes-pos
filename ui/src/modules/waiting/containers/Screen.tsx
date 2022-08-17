@@ -26,7 +26,7 @@ function WaitingScreenContainer(props: Props) {
   useEffect(() => {
     return orderQuery.subscribeToMore({
       document: gql(subscriptions.ordersOrdered),
-      variables: { statuses: ["paid", "new", "doing", "done", "complete"] },
+      variables: { statuses: ["paid", "new", "doing", "confirm", "done", "complete"] },
       updateQuery: () => {
         orderQuery.refetch();
       },

@@ -13,6 +13,7 @@ import OrderDetail from "./OrderDetail";
 
 type Props = {
   editOrder: (doc) => void;
+  changeOrderItemStatus: (doc) => void;
   posCurrentUser: IUser;
   currentConfig: IConfig;
   orders: IOrder[];

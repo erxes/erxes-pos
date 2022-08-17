@@ -14,6 +14,7 @@ export interface IOrderItem {
   productName: string;
   isPackage?: boolean;
   isTake?: boolean;
+  status?: string;
 }
 
 export interface IQPayInvoice {
@@ -110,6 +111,10 @@ export type OrdersAddMutationResponse = ({ variables: any }) => Promise<any>;
 export type OrdersEditMutationResponse = ({ variables: any }) => Promise<any>;
 
 export type OrderChangeStatusMutationResponse = ({
+  variables: any
+}) => Promise<any>;
+
+export type OrderItemChangeStatusMutationResponse = ({
   variables: any
 }) => Promise<any>;
 

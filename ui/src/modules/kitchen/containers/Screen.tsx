@@ -9,7 +9,7 @@ import { graphql } from 'react-apollo';
 import { IConfig, IRouterProps } from '../../../types';
 import { IUser } from 'modules/auth/types';
 import { mutations, queries, subscriptions } from '../../orders/graphql';
-import { FullOrderQueryResponse, OrderChangeStatusMutationResponse } from '../../orders/types';
+import { FullOrderQueryResponse, OrderChangeStatusMutationResponse, OrderItemChangeStatusMutationResponse } from '../../orders/types';
 import { withProps } from '../../utils';
 import { withRouter } from 'react-router-dom';
 
@@ -17,18 +17,19 @@ type Props = {
   orderQuery: FullOrderQueryResponse;
   orderDoneQuery: FullOrderQueryResponse;
   orderChangeStatusMutation: OrderChangeStatusMutationResponse;
+  orderItemChangeStatusMutation: OrderItemChangeStatusMutationResponse;
   posCurrentUser: IUser;
   currentConfig: IConfig;
   qp: any;
 } & IRouterProps;
 
 function KitchenScreenContainer(props: Props) {
-  const { orderQuery, orderDoneQuery, orderChangeStatusMutation } = props;
+  const { orderQuery, orderDoneQuery, orderChangeStatusMutation, orderItemChangeStatusMutation } = props;
 
   useEffect(() => {
     return orderQuery.subscribeToMore({
       document: gql(subscriptions.ordersOrdered),
-      variables: { statuses: ['paid', 'new', 'doing', 'done', 'complete'] },
+      variables: { statuses: ['paid', 'confirm', 'new', 'doing', 'done', 'complete'] },
       updateQuery: () => {
         orderQuery.refetch();
       }
@@ -38,7 +39,7 @@ function KitchenScreenContainer(props: Props) {
   useEffect(() => {
     return orderDoneQuery.subscribeToMore({
       document: gql(subscriptions.ordersOrdered),
-      variables: { statuses: ['paid', 'new', 'doing', 'done', 'complete'] },
+      variables: { statuses: ['paid', 'confirm', 'new', 'doing', 'done', 'complete'] },
       updateQuery: () => {
         orderDoneQuery.refetch();
       }
@@ -60,6 +61,14 @@ function KitchenScreenContainer(props: Props) {
     });
   };
 
+  const changeOrderItemStatus = (doc) => {
+    orderItemChangeStatusMutation({ variables: { ...doc } }).then(() => {
+      Alert.success(`${doc.productId} has been changed successfully.`);
+    }).catch(e => {
+      return Alert.error(e.message);
+    });
+  }
+
   const orders = orderQuery.fullOrders || [];
   const doneOrders = orderDoneQuery.fullOrders || [];
 
@@ -67,7 +76,8 @@ function KitchenScreenContainer(props: Props) {
     ...props,
     orders,
     doneOrders,
-    editOrder
+    editOrder,
+    changeOrderItemStatus,
   };
 
   return <Screen {...updatedProps} />;
@@ -78,7 +88,7 @@ export default withProps<Props>(
     graphql<Props, FullOrderQueryResponse>(gql(queries.fullOrders), {
       name: 'orderQuery',
       options: () => ({
-        variables: { statuses: ['paid', 'doing'] },
+        variables: { statuses: ['paid', 'doing', 'confirm'] },
         fetchPolicy: 'network-only'
       }),
     }),
@@ -91,6 +101,9 @@ export default withProps<Props>(
     }),
     graphql<Props, OrderChangeStatusMutationResponse>(gql(mutations.orderChangeStatus), {
       name: "orderChangeStatusMutation",
+    }),
+    graphql<Props, OrderItemChangeStatusMutationResponse>(gql(mutations.orderItemChangeStatus), {
+      name: "orderItemChangeStatusMutation",
     }),
   )(withCurrentUser(withRouter<Props>(KitchenScreenContainer)))
 );

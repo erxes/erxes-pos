@@ -80,6 +80,7 @@ type Props = {
   showMenu?: boolean;
   refetchOrder: () => void;
   slots: ISlot[];
+  changeOrderStatus: (doc) => void;
 };
 
 type State = {
@@ -655,7 +656,8 @@ export default class Pos extends React.Component<Props, State> {
       productBodyType,
       cancelOrder,
       onChangeProductBodyType,
-      slots
+      slots,
+      changeOrderStatus
     } = this.props;
 
     const { items, totalAmount, type } = this.state;
@@ -713,6 +715,7 @@ export default class Pos extends React.Component<Props, State> {
                   slotCode={this.state.slotCode}
                   onChangeSlot={this.onChangeSlot}
                   slots={slots}
+                  changeOrderStatus={changeOrderStatus}
                 />
               </MainContent>
             </Col>

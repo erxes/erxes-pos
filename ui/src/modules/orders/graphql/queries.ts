@@ -40,6 +40,7 @@ export const orderItemsFields = `
     isPackage
     isTake
     productImgUrl
+    status
   }
 `;
 
@@ -166,6 +167,7 @@ const fullOrders = `
         productId
         isPackage
         isTake
+        status
       }
     }
   }

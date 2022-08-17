@@ -5,17 +5,20 @@ import Button from "modules/common/components/Button";
 import { __ } from "modules/common/utils";
 import { Detail, Status, TableRow, TimeGroup } from "../styles";
 import { IConfig } from "types";
-import { IOrder } from "../../orders/types";
+import { FullOrderQueryResponse, IOrder, IOrderItem } from "../../orders/types";
 import { IUser } from "modules/auth/types";
 import Icon from "modules/common/components/Icon";
 import { POS_MODES } from "../../../constants";
 import { colors } from "modules/common/styles";
+import FormControl from "modules/common/components/form/Control";
 
 type Props = {
   editOrder: (doc) => void;
+  changeOrderItemStatus: (doc) => void;
   posCurrentUser: IUser;
   currentConfig: IConfig;
   order: IOrder;
+  orderQuery: FullOrderQueryResponse;
 };
 
 type State = {};
@@ -57,12 +60,25 @@ export default class OrderDetail extends React.Component<Props, State> {
 
   renderDetail(order: IOrder, color: string, color2: string) {
     const { items } = order;
-
     if (!items || !items.length) {
       return null;
     }
-
-    return items.map((item) => (
+    const onItemCheck = (item) => {
+      if (item.target.checked === true) {
+        this.props.changeOrderItemStatus({
+          _id: item.target.value,
+          status: 'done'
+        });
+      }
+      if (item.target.checked === false) {
+        this.props.changeOrderItemStatus({
+          _id: item.target.value,
+          status: 'confirm'
+        });
+      }
+      this.props.orderQuery.refetch();
+    }
+    return items.map((item: IOrderItem) => (
       <Detail key={item._id}>
         <p>
           <Icon
@@ -74,6 +90,19 @@ export default class OrderDetail extends React.Component<Props, State> {
         <span>{__("Quantity")}:&nbsp;</span>
         <p>
           <b>{item.count}</b>
+        </p>
+        <p>
+          <FormControl
+            type="checkbox"
+            round={true}
+            name="itemStatus"
+            value={item._id}
+            defaultChecked={item.status === 'done'}
+            onChange={onItemCheck}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
         </p>
       </Detail>
     ));
@@ -107,6 +136,7 @@ export default class OrderDetail extends React.Component<Props, State> {
         btnStyle="success"
         icon="check-circle"
         onClick={toDone}
+        disabled={!order.items.every(item => item.status === 'done')}
       >
         ready
       </Button>

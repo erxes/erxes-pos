@@ -126,6 +126,7 @@ type Props = {
   slotCode: string;
   onChangeSlot: (value: string) => void;
   slots: ISlot[];
+  changeOrderStatus: (doc) => void;
 };
 
 type State = {
@@ -216,13 +217,22 @@ export default class Calculation extends React.Component<Props, State> {
 
     const onClick = () => {
       const callback = () => onChangeProductBodyType('payment');
-
+      console.log('callback', callback)
       if (order && order._id) {
         editOrder(callback);
       } else {
         addOrder(callback);
       }
     };
+
+    const onClickSave = () => {
+      if (order && order._id) {
+        editOrder();
+        this.props.changeOrderStatus({ _id: order._id, status: "confirm" });
+      } else {
+        addOrder();
+      };
+    }
 
     const paymentDone = () => {
       onChangeProductBodyType('done');
@@ -271,6 +281,9 @@ export default class Calculation extends React.Component<Props, State> {
             {__('Eat')}
           </Button>
         )}
+        <Button btnStyle="success" onClick={onClickSave}>
+          {__('Save')}
+        </Button>
         <Button btnStyle="success" onClick={onClick}>
           {__('Make an order')}
         </Button>

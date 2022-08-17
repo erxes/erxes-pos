@@ -14,7 +14,8 @@ import Pos from '../components/Pos';
 import {
   OrdersAddMutationResponse,
   OrdersEditMutationResponse,
-  OrderDetailQueryResponse
+  OrderDetailQueryResponse,
+  OrderChangeStatusMutationResponse
 } from '../types';
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
 import { IUser } from 'modules/auth/types';
@@ -35,6 +36,7 @@ type Props = {
   settlePaymentMutation: any;
   ordersCancelMutation: any;
   slotsQuery: SlotsQueryResponse;
+  orderChangeStatusMutation: OrderChangeStatusMutationResponse;
 } & IRouterProps;
 
 type States = {
@@ -71,6 +73,7 @@ class PosContainer extends React.Component<Props, States> {
       ordersCancelMutation,
       addPaymentMutation,
       settlePaymentMutation,
+      orderChangeStatusMutation,
       slotsQuery
     } = this.props;
     const { showMenu, modalContentType, productBodyType } = this.state;
@@ -239,6 +242,14 @@ class PosContainer extends React.Component<Props, States> {
         });
     };
 
+    const changeOrderStatus = (doc: any) => {
+      orderChangeStatusMutation({ variables: { ...doc } }).then(() => {
+        Alert.success(`${doc.number} has been saved successfully.`);
+      }).catch(e => {
+        return Alert.error(e.message);
+      });
+    };
+
     const updatedProps = {
       ...this.props,
       createOrder,
@@ -255,6 +266,7 @@ class PosContainer extends React.Component<Props, States> {
       settlePayment,
       showMenu,
       modalContentType,
+      changeOrderStatus,
       refetchOrder: () => orderDetailQuery.refetch(),
       slots: slotsQuery.poscSlots
     };
@@ -317,6 +329,9 @@ export default withProps<Props>(
     }),
     graphql<Props>(gql(mutations.ordersCancel), {
       name: 'ordersCancelMutation'
-    })
+    }),
+    graphql<Props, OrderChangeStatusMutationResponse>(gql(mutations.orderChangeStatus), {
+      name: "orderChangeStatusMutation",
+    }),
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );
