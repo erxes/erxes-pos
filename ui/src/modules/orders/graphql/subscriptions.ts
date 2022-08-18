@@ -5,7 +5,15 @@ const ordersOrdered = `
     }
   }
 `;
+const orderItemsOrdered = `
+  subscription orderItemsOrdered($statuses: [String]) {
+    orderItemsOrdered(statuses: $statuses) {
+      _id
+    }
+  }
+`
 
 export default {
-  ordersOrdered
+  ordersOrdered,
+  orderItemsOrdered
 };

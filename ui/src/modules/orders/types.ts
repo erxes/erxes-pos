@@ -135,6 +135,11 @@ export type FullOrderQueryResponse = {
   subscribeToMore: any;
 } & QueryResponse;
 
+export type FullOrderItemsQueryResponse = {
+  fullOrderItems: IOrderItem[];
+  subscribeToMore: any;
+} & QueryResponse;
+
 export interface ICustomer {
   state?: 'visitor' | 'lead' | 'customer';
 

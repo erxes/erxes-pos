@@ -217,7 +217,6 @@ export default class Calculation extends React.Component<Props, State> {
 
     const onClick = () => {
       const callback = () => onChangeProductBodyType('payment');
-      console.log('callback', callback)
       if (order && order._id) {
         editOrder(callback);
       } else {
@@ -228,7 +227,7 @@ export default class Calculation extends React.Component<Props, State> {
     const onClickSave = () => {
       if (order && order._id) {
         editOrder();
-        this.props.changeOrderStatus({ _id: order._id, status: "confirm" });
+        // this.props.changeOrderStatus({ _id: order._id, status: "confirm" });
       } else {
         addOrder();
       };

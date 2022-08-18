@@ -173,6 +173,23 @@ const fullOrders = `
   }
 `;
 
+const fullOrderItems = `
+  query fullOrderItems($searchValue: String, $statuses: [String], $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
+    fullOrderItems(searchValue: $searchValue, statuses: $statuses, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
+      _id
+      unitPrice
+      orderId
+      productName
+      count
+      productId
+      isPackage
+      isTake
+      productImgUrl
+      status
+    }
+  }
+`;
+
 const customers = `
   query poscCustomers($searchValue: String) {
     poscCustomers(searchValue: $searchValue) {
@@ -216,6 +233,7 @@ export default {
   orderDetail,
   orders,
   fullOrders,
+  fullOrderItems,
   customers,
   customerDetail,
   ordersCheckCompany,
