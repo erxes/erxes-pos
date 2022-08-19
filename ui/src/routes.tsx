@@ -2,8 +2,8 @@ import withCurrentUser from "modules/auth/containers/withCurrentUser";
 import asyncComponent from "modules/common/components/AsyncComponent";
 import queryString from "query-string";
 import React from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-// import AuthRoutes from "./modules/auth/routes";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import AuthRoutes from "./modules/auth/routes";
 import SettingsRoutes from "./modules/settings/routes";
 import KitchenRoutes from "./modules/kitchen/routes";
 import WaitingRoutes from "./modules/waiting/routes";
@@ -52,40 +52,41 @@ const renderRoutes = (posCurrentUser, currentConfig, orientation) => {
     sessionStorage.setItem('sessioncode', Math.random().toString());
   }
 
-  // if (posCurrentUser) {
-  return (
-    <>
-      <MainLayout
-        posCurrentUser={posCurrentUser}
-        orientation={orientation}
-        currentConfig={currentConfig}
-      >
-        <OrderRoutes />
-        <SettingsRoutes />
-        <KitchenRoutes />
-        <WaitingRoutes />
-        <QPayRoutes />
-        <Route
-          key='/confirmation'
-          exact={true}
-          path='/confirmation'
-          component={userConfirmation}
-        />
-      </MainLayout>
-    </>
-  );
+  if (posCurrentUser) {
+    return (
+      <>
+        <MainLayout
+          posCurrentUser={posCurrentUser}
+          orientation={orientation}
+          currentConfig={currentConfig}
+        >
+          <OrderRoutes />
+          <SettingsRoutes />
+          <KitchenRoutes />
+          <WaitingRoutes />
+          <QPayRoutes />
+          <Route
+            key='/confirmation'
+            exact={true}
+            path='/confirmation'
+            component={userConfirmation}
+          />
+        </MainLayout>
+      </>
+    );
+  }
 
-  // return (
-  //   <Switch>
-  //     <Route
-  //       key='/confirmation'
-  //       exact={true}
-  //       path='/confirmation'
-  //       component={userConfirmation}
-  //     />
-  //     <AuthRoutes />
-  //   </Switch>
-  // );
+  return (
+    <Switch>
+      <Route
+        key='/confirmation'
+        exact={true}
+        path='/confirmation'
+        component={userConfirmation}
+      />
+      <AuthRoutes />
+    </Switch>
+  );
 };
 
 const Routes = ({
