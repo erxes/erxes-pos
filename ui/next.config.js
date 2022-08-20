@@ -3,7 +3,7 @@ const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
   images: {
-    domains: ['www.erxes.org', 'yoshinoyabucket.s3.us-east-2.amazonaws.com'],
+    domains: ['erxes.org', 'yoshinoyabucket.s3.us-east-2.amazonaws.com'],
   },
 };
 

@@ -21,7 +21,7 @@ const PosHeader: FC<PosHeaderProps> = ({}) => {
           <div className="logo">
             <div className="img-wrap">
               <Image
-                src="https://www.erxes.org/img/logo_dark.svg"
+                src="https://erxes.org/docs/static/img/logo_dark.svg"
                 layout="fill"
                 objectFit="contain"
                 priority

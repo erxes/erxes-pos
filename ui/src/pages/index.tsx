@@ -5,6 +5,7 @@ import Categories from 'modules/products/components/Categories';
 import Search from 'modules/products/components/Search';
 
 const Home: NextPage = () => {
+  console.log('index');
   return (
     <div className="pos-content">
       <div className="flex-v-center flex-0 products-header">

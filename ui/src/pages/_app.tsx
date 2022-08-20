@@ -11,7 +11,7 @@ const Noop: FC<NoopProps> = ({ children }) => <>{children}</>;
 
 function MyApp({ Component, pageProps }: AppProps) {
   const Layout = (Component as any).Layout || Noop;
-
+  console.log('app');
   return (
     <>
       <AppContextProvider>
