@@ -12,25 +12,24 @@ jobs:
     # name: Node ${{ matrix.node-version }}
 
     steps:
+      - uses: actions/checkout@v2
+
       - name: Use Node.js 17.2.x
         uses: actions/setup-node@v1
         with:
           node-version: 17.2.x
 
-      - uses: actions/checkout@v2
-
-      - name: Build
+      - name: Install dependencies
         run: |
           cd ui
-          yarn install --frozen-lockfile
-          yarn build
-
+          yarn install
+      # - name: Build
+      #   run: |
+      #     yarn build
       - name: Build docker image
-        if: github.event_name == 'push' && ( github.ref == 'refs/heads/baterdene')
-        env:
-          BASE_IMAGE: erxes/erxes:base-1.18-alpine
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/baterdene' )
         run: |
           cd ui
-          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          DOCKER_BUILDKIT=1 docker build --build-arg BASE_IMAGE=$BASE_IMAGE -t erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/} -f Dockerfile .
-          docker push erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/}
+          echo ${{ secrets.REGISTRY_TOKEN }} | docker login ${{ secrets.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
+          docker build -t ${{ secrets.REGISTRY_URL }}/erxes/erxes-pos-ui:baterdene -f Dockerfile .
+          docker push ${{ secrets.REGISTRY_URL }}/erxes/erxes-pos-ui:baterdene
