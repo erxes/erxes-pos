@@ -22,12 +22,13 @@ jobs:
       - name: Install dependencies
         run: |
           cd ui
-          yarn install
-      # - name: Build
-      #   run: |
-      #     yarn build
+          yarn install --frozen-lockfile
+          yarn build
+
       - name: Build docker image
         if: github.event_name == 'push' && (github.ref == 'refs/heads/baterdene' )
+        env:
+          BASE_IMAGE: erxes/erxes:base-1.18-alpine
         run: |
           cd ui
           echo ${{ secrets.REGISTRY_TOKEN }} | docker login ${{ secrets.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
