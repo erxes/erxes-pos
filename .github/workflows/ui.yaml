@@ -12,10 +12,10 @@ jobs:
     # name: Node ${{ matrix.node-version }}
 
     steps:
-      - name: Use Node.js 18.7.x
+      - name: Use Node.js 17.2.x
         uses: actions/setup-node@v1
         with:
-          node-version: 18.7.x
+          node-version: 17.2.x
 
       - uses: actions/checkout@v2
 
