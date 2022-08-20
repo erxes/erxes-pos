@@ -6,10 +6,8 @@ on:
       - '**'
 
 jobs:
-  erxes-pos-ui:
+  client-portal:
     runs-on: ubuntu-18.04
-
-    # name: Node ${{ matrix.node-version }}
 
     steps:
       - uses: actions/checkout@v2
@@ -22,15 +20,13 @@ jobs:
       - name: Install dependencies
         run: |
           cd ui
-          yarn install --frozen-lockfile
-          yarn build
-
+          yarn install
+      # - name: Build
+      #   run: |
+      #     yarn build
       - name: Build docker image
-        if: github.event_name == 'push' && (github.ref == 'refs/heads/baterdene' )
-        env:
-          BASE_IMAGE: erxes/erxes:base-1.18-alpine
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/yoshinoya-web-xos' )
         run: |
-          cd ui
           echo ${{ secrets.REGISTRY_TOKEN }} | docker login ${{ secrets.REGISTRY_URL }} -u ${{ secrets.REGISTRY_USERNAME }} --password-stdin
-          docker build -t ${{ secrets.REGISTRY_URL }}/erxes/erxes-pos-ui:baterdene -f Dockerfile .
-          docker push ${{ secrets.REGISTRY_URL }}/erxes/erxes-pos-ui:baterdene
+          docker build -t ${{ secrets.REGISTRY_URL }}/erxes-enterprise/erxes-cp:yoshinoya-web-xos -f Dockerfile .
+          docker push ${{ secrets.REGISTRY_URL }}/erxes-enterprise/erxes-cp:yoshinoya-web-xos
