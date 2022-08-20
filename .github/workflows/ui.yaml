@@ -1,0 +1,36 @@
+name: POS UI CI
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  erxes-pos-ui:
+    runs-on: ubuntu-18.04
+
+    # name: Node ${{ matrix.node-version }}
+
+    steps:
+      - name: Use Node.js 18.7.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 18.7.x
+
+      - uses: actions/checkout@v2
+
+      - name: Build
+        run: |
+          cd ui
+          yarn install --frozen-lockfile
+          yarn build
+
+      - name: Build docker image
+        if: github.event_name == 'push' && ( github.ref == 'refs/heads/baterdene')
+        env:
+          BASE_IMAGE: erxes/erxes:base-1.18-alpine
+        run: |
+          cd ui
+          echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+          DOCKER_BUILDKIT=1 docker build --build-arg BASE_IMAGE=$BASE_IMAGE -t erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/} -f Dockerfile .
+          docker push erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/}
