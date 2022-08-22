@@ -8,7 +8,7 @@ import { IConfig } from "types";
 import { FullOrderQueryResponse, IOrder, IOrderItem } from "../../orders/types";
 import { IUser } from "modules/auth/types";
 import Icon from "modules/common/components/Icon";
-import { POS_MODES } from "../../../constants";
+import { ORDER_ITEM_STATUSES, POS_MODES } from "../../../constants";
 import { colors } from "modules/common/styles";
 import FormControl from "modules/common/components/form/Control";
 
@@ -21,7 +21,9 @@ type Props = {
   orderQuery: FullOrderQueryResponse;
 };
 
-type State = {};
+type State = {
+  previousItems: IOrderItem[];
+};
 
 function Timer({ oTime }) {
   const { seconds, minutes, hours } = useTime({});
@@ -47,6 +49,12 @@ function Timer({ oTime }) {
 }
 
 export default class OrderDetail extends React.Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {
+      previousItems: []
+    };
+  }
   renderTime(order) {
     const date = new Date(order.paidDate);
 
@@ -60,25 +68,29 @@ export default class OrderDetail extends React.Component<Props, State> {
 
   renderDetail(order: IOrder, color: string, color2: string) {
     const { items } = order;
+    const { previousItems } = this.state;
     if (!items || !items.length) {
       return null;
+    }
+    if (previousItems.length <= 0) {
+      this.setState({previousItems: {...order.items}});
     }
     const onItemCheck = (item) => {
       if (item.target.checked === true) {
         this.props.changeOrderItemStatus({
           _id: item.target.value,
-          status: 'done'
+          status: ORDER_ITEM_STATUSES.DONE
         });
       }
       if (item.target.checked === false) {
         this.props.changeOrderItemStatus({
           _id: item.target.value,
-          status: 'confirm'
+          status: ORDER_ITEM_STATUSES.CONFIRM
         });
       }
       this.props.orderQuery.refetch();
     }
-    return items.map((item: IOrderItem) => (
+    return items.map((item: IOrderItem, index) => (
       <Detail key={item._id}>
         <p>
           <Icon
@@ -89,7 +101,7 @@ export default class OrderDetail extends React.Component<Props, State> {
         </p>
         <span>{__("Quantity")}:&nbsp;</span>
         <p>
-          <b>{item.count}</b>
+          {this.renderItemCount(item.count, previousItems[index] === undefined ? 0 : previousItems[index].count)}
         </p>
         <p>
           <FormControl
@@ -97,7 +109,7 @@ export default class OrderDetail extends React.Component<Props, State> {
             round={true}
             name="itemStatus"
             value={item._id}
-            defaultChecked={item.status === 'done'}
+            checked={item.status === 'done'}
             onChange={onItemCheck}
             onClick={(e) => {
               e.stopPropagation();
@@ -107,7 +119,31 @@ export default class OrderDetail extends React.Component<Props, State> {
       </Detail>
     ));
   }
-
+  renderItemCount = (count: number, previousCount: number) => {
+    const checkCount = () => {
+      if (count - previousCount < 0) {
+        return (
+          <span style={{'color': '#f53b57'}}>
+            {' ' + (count - previousCount)}
+          </span>
+        );  
+      }
+      if (count - previousCount > 0) {
+        return (
+          <span style={{'color': '#4cd137'}}>
+            {' +' + (count - previousCount)}
+          </span>
+        );
+      }
+      return '';
+    }
+    return (
+      <>
+        <b>{count}</b>
+        {checkCount()}
+      </>
+    )
+  }
   renderActions = (order) => {
     if (order.status === "new") {
       return (
@@ -128,6 +164,12 @@ export default class OrderDetail extends React.Component<Props, State> {
         status: "done",
         number: order.number,
       });
+      order.items.forEach(item => {
+        this.props.changeOrderItemStatus({
+          _id: item._id,
+          status: ORDER_ITEM_STATUSES.DONE
+        });
+      });
     };
 
     return (
@@ -136,7 +178,6 @@ export default class OrderDetail extends React.Component<Props, State> {
         btnStyle="success"
         icon="check-circle"
         onClick={toDone}
-        disabled={!order.items.every(item => item.status === 'done')}
       >
         ready
       </Button>

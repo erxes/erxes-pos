@@ -20,6 +20,7 @@ import {
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
 import { IUser } from 'modules/auth/types';
 import { SlotsQueryResponse } from '../types';
+import { ORDER_STATUSES } from '../../../constants';
 
 type Props = {
   ordersAddMutation: OrdersAddMutationResponse;
@@ -133,7 +134,7 @@ class PosContainer extends React.Component<Props, States> {
             Alert.success(__('Order has been created successfully'));
 
             router.setParams(this.props.history, { id: order._id, home: null });
-
+            orderChangeStatusMutation({ variables: Object.assign({_id: order._id, status: ORDER_STATUSES.CONFIRM}) })
             if (callback) {
               callback();
             }
@@ -153,7 +154,7 @@ class PosContainer extends React.Component<Props, States> {
             if (callback) {
               callback();
             }
-
+            orderChangeStatusMutation({ variables: Object.assign({_id: data.ordersEdit._id, status: ORDER_STATUSES.CONFIRM}) })
             return data.ordersEdit;
           }
         })

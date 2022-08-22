@@ -26,8 +26,10 @@ export default class Screen extends React.Component<Props> {
   }
 
   renderCol() {
-    const { orderItems, ordersConfirm, currentConfig } = this.props;
+    const { orderItems, ordersConfirm, orders, currentConfig } = this.props;
     const { uiOptions } = currentConfig;
+    console.log('items', orderItems);
+    console.log('confirm', ordersConfirm)
     let partialOrders: IOrder[] = [];
     if (orderItems) {
       orderItems.forEach(item => {
@@ -35,9 +37,7 @@ export default class Screen extends React.Component<Props> {
         partialOrders.push(temp as IOrder);
       })
     }
-    const setOrders = Array.from(new Set(partialOrders));
-    // const setOrders = Array.from(new Set([...orders, ...partialOrders]))
-    // console.log(setOrders)
+    const setOrders = Array.from(new Set([...orders, ...partialOrders]))
     return (
       <>
         <Col md={12} className="fullHeight">

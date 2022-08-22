@@ -35,24 +35,32 @@ function Timer({ startTime, waitingSec, order, editOrder }) {
 }
 
 export default class OrderDetail extends React.Component<Props> {
-
   render() {
     const { currentConfig, order, editOrder } = this.props;
     const { uiOptions } = currentConfig;
     const color = uiOptions.colors.primary;
-    const waitingSec = 1 * 60;
+    const waitingSec = 5 * 60;
 
-    const date = new Date(order.modifiedAt);
+    let date = new Date();
+    if (order && order.modifiedAt) {
+      date = new Date(order.modifiedAt);
+    }
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
     const startTime = seconds + minutes * 60 + hours * 3600;
 
     return (
-      <OrderCard color={color}>
-        {order.number.split("_")[1]}
-        <p><Timer startTime={startTime} waitingSec={waitingSec} order={order} editOrder={editOrder} /></p>
-      </OrderCard>
+      <>
+      {
+        order !== undefined ? 
+        (
+          <OrderCard color={color}>
+          {order.number.split("_")[1]}
+          <p><Timer startTime={startTime} waitingSec={waitingSec} order={order} editOrder={editOrder} /></p>
+          </OrderCard>
+        ) : <></>}
+      </>
     );
-  } // end render()
-}
+  }; // end render()
+};
