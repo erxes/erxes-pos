@@ -334,46 +334,54 @@ export default class Calculation extends React.Component<Props, State> {
   renderCustomerChooser(props) {
     const { setOrderState } = this.props;
 
+    const getCustomer = (value) => {
+      props.closeModal();
+      client
+        .query({
+          query: gql(queries.customerDetail),
+          fetchPolicy: 'network-only',
+          variables: {
+            _id: value.trim()
+          }
+        })
+        .then(async response => {
+          const data = response.data.poscCustomerDetail;
+
+          if (data && data._id) {
+            this.setState({
+              customerLabel: generateLabel(data),
+              customerId: data._id
+            });
+            setOrderState('customerId', data._id);
+          } else {
+            confirm('Хэрэглэгч олдсонгүй, Хайлт зогсоох уу?')
+              .then(() => {
+                this.setState({ customerSearchValue: '' });
+              })
+              .catch(error => {
+                Alert.error(error);
+              });
+          }
+        })
+        .catch(error => (console.log(error)));
+    }
+
     const onChangeQrcode = e => {
       if (this.timer) {
         clearTimeout(this.timer);
       }
 
+      const beforeValue = `${this.state.customerSearchValue}`;
       const value = (e.currentTarget as HTMLInputElement).value || '';
       this.setState({ customerSearchValue: value });
 
-      this.timer = setTimeout(() => {
-        client
-          .query({
-            query: gql(queries.customerDetail),
-            fetchPolicy: 'network-only',
-            variables: {
-              _id: value.trim()
-            }
-          })
-          .then(async response => {
-            const data = response.data.poscCustomerDetail;
+      if (value.replace(beforeValue, '').length === 1) {
+        return;
+      }
 
-            if (data && data._id) {
-              this.setState({
-                customerLabel: generateLabel(data),
-                customerId: data._id
-              });
-              setOrderState('customerId', data._id);
-              props.closeModal();
-            } else {
-              confirm('Хэрэглэгч олдсонгүй, Хайлт зогсоох уу?')
-                .then(() => {
-                  this.setState({ customerSearchValue: '' });
-                  props.closeModal();
-                })
-                .catch(error => {
-                  Alert.error(error);
-                });
-            }
-          })
-          .catch(error => props.closeModal());
-      }, 500);
+      this.timer = setTimeout(() => {
+        getCustomer(value)
+      }, 20);
     };
 
     const onClearChosenCustomer = () => {
@@ -382,6 +390,14 @@ export default class Calculation extends React.Component<Props, State> {
     };
 
     const handleFocus = event => event.target.select();
+
+    const onKeyPress = (e: React.KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        const value = (e.currentTarget as HTMLInputElement).value || '';
+        getCustomer(value);
+      }
+    }
 
     return (
       <>
@@ -395,6 +411,7 @@ export default class Calculation extends React.Component<Props, State> {
           onChange={onChangeQrcode}
           onClick={onClearChosenCustomer}
           onFocus={handleFocus}
+          onKeyPress={onKeyPress}
         />
       </>
     );

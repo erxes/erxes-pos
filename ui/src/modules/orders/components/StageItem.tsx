@@ -21,9 +21,9 @@ const Item = styledTS<{ isTaken?: boolean; color?: string }>(styled.div)`
     props.isTaken
       ? `1px solid ${colors.borderDarker}`
       : `1px solid ${rgba(
-          props.color ? props.color : colors.colorSecondary,
-          0.4
-        )}`}; 
+        props.color ? props.color : colors.colorSecondary,
+        0.4
+      )}`};
   border-radius: 8px;
   position: relative;
   margin-bottom: 10px;
@@ -40,8 +40,8 @@ const Close = styledTS<{
         ? colors.borderPrimary
         : rgba(props.color, 0.12)
       : props.isTaken
-      ? colors.borderPrimary
-      : rgba(colors.colorSecondary, 0.12)};
+        ? colors.borderPrimary
+        : rgba(colors.colorSecondary, 0.12)};
   width: ${(props) => (props.isPortrait ? "0" : "20px")};
   cursor: pointer;
   border-top-right-radius: 8px;
@@ -62,9 +62,9 @@ const Close = styledTS<{
 
   &:hover {
     background: ${(props) =>
-      props.color
-        ? rgba(props.color, 0.18)
-        : rgba(colors.colorSecondary, 0.18)};
+    props.color
+      ? rgba(props.color, 0.18)
+      : rgba(colors.colorSecondary, 0.18)};
   }
 `;
 
@@ -188,6 +188,22 @@ export default class StageItem extends React.Component<Props, State> {
     return item.productName;
   }
 
+  renderDiscount() {
+    const { item } = this.props;
+    const { discountAmount, discountPercent, bonusCount } = item;
+
+    if (!discountAmount && !bonusCount) {
+      return '';
+    }
+
+    return (
+      <>
+        {` (${Number((discountPercent || 0).toFixed()).toLocaleString()}%) -${Number((discountAmount || 0).toFixed(1)).toLocaleString()}₮`}
+        {bonusCount ? ` #${Number((bonusCount || 0).toFixed(1))}` : ''}
+      </>
+    )
+  }
+
   render() {
     const { item, changeItemCount, color, mode } = this.props;
     const { unitPrice, count, productImgUrl, productName } = item;
@@ -229,6 +245,7 @@ export default class StageItem extends React.Component<Props, State> {
               <span>
                 <b>{count}</b> x{" "}
                 {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
+                {this.renderDiscount()}
               </span>
             </div>
             <div className="count-wrapper">
@@ -261,6 +278,7 @@ export default class StageItem extends React.Component<Props, State> {
                 <b>{this.renderName()}</b>
                 <span>
                   {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
+                  {this.renderDiscount()}
                 </span>
               </ProductName>
             </div>
