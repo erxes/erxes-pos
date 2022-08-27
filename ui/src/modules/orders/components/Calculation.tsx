@@ -280,10 +280,10 @@ export default class Calculation extends React.Component<Props, State> {
           </Button>
         )}
         <Button btnStyle="success" onClick={onClickSave}>
-          {__('Save')}
+          {__('Make an order')}
         </Button>
         <Button btnStyle="success" onClick={onClickPay}>
-          {__('Make an order')}
+          {__('Pay the bill')}
         </Button>
       </Types>
     );

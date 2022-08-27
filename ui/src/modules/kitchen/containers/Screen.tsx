@@ -63,7 +63,7 @@ function KitchenScreenContainer(props: Props) {
 
   const changeOrderItemStatus = (doc) => {
     orderItemChangeStatusMutation({ variables: { ...doc } }).then((res) => {
-      Alert.success(`${res.productName} has been changed successfully.`);
+      Alert.success(`Order has been updated successfully.`);
     }).catch(e => {
       return Alert.error(e.message);
     });

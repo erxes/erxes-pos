@@ -105,7 +105,7 @@ export interface IOrderItemInput {
   isPackage?: boolean;
   isTake?: boolean;
   slotCode?: string;
-
+  status?: string;
   discountPercent?: number;
   discountAmount?: number;
   bonusCount?: number;
