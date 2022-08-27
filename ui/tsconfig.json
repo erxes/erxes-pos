@@ -20,7 +20,8 @@
       "styles/*": ["styles/*"],
       "modules/*": ["modules/*"],
       "icons/*": ["modules/common/icons/*"],
-      "ui/*": ["modules/common/ui/*"]
+      "ui/*": ["modules/common/ui/*"],
+      "lib/*": ["lib/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"],

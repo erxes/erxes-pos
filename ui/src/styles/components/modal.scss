@@ -1,0 +1,22 @@
+.modal {
+  &-root {
+    position: fixed;
+    background: rgba($color: #000, $alpha: 0.4);
+    inset: 0;
+    z-index: 700;
+    backdrop-filter: blur(0.8px);
+  }
+  background: #fff;
+  padding: 5rem;
+  border: 1px transparent solid;
+  position: relative;
+  &:focus {
+    outline: none;
+  }
+  &-close {
+    transition: all ease-in-out 0.15s;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.75rem;
+  }
+}
