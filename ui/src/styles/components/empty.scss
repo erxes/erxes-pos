@@ -1,0 +1,26 @@
+.empty {
+  & > div {
+    position: relative;
+    display: inline-block;
+    .qs {
+      position: absolute;
+      &-1 {
+        font-size: 1.75rem;
+        right: 23%;
+        top: -2%;
+        transform: rotate(15deg);
+      }
+      &-2 {
+        font-size: 1.25rem;
+        right: 15%;
+        top: 10%;
+        transform: rotate(38deg);
+      }
+    }
+    p {
+      color: $gray;
+      padding-top: 0.75rem;
+      font-size: 0.865rem;
+    }
+  }
+}

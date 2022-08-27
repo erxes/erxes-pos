@@ -4,10 +4,12 @@
     padding: 0.75rem 1.5rem;
     font-size: 0.825rem;
     font-weight: 600;
+    white-space: nowrap;
     &.slim {
       &:hover {
         background-color: #f5f5f5;
       }
+      &.active,
       &:active {
         background-color: $primary;
         color: #fff;
@@ -28,23 +30,20 @@
     border-radius: 50%;
     border: $border;
   }
-}
-.row {
-  display: flex;
-  flex-flow: row wrap;
-  margin: -0.625rem;
-  overflow-y: auto;
-  -ms-overflow-style: none; /* IE and Edge */
-  scrollbar-width: none; /* Firefox */
-  &::-webkit-scrollbar {
-    display: none;
+  &.row {
+    margin: -0.625rem;
+    overflow-y: auto;
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  .col {
+    padding: 0.625rem;
   }
 }
-.col {
-  flex: 1 1 25%;
-  max-width: 25%;
-  padding: 0.625rem;
-}
+
 .product {
   border: $border;
   border-radius: 0.5rem;
@@ -52,6 +51,9 @@
   .img-wrap {
     margin-bottom: 0.75rem;
     aspect-ratio: 16 / 12;
+    img {
+      object-fit: contain;
+    }
   }
   &-name,
   &-price {
@@ -59,6 +61,11 @@
     line-height: 1.5;
     text-align: center;
     letter-spacing: 0.15px;
+  }
+  &-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   &-price {
     margin-top: 0.25rem;

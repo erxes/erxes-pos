@@ -1,7 +1,7 @@
 import PosHeader from './PosHeader';
 import CustomerSearch from 'modules/customer/components/Search';
 import SlotChoose from 'modules/slots/components/SlotChoose';
-import OrderPos from 'modules/order/components/pos';
+import Cart from 'modules/checkout/components/Cart';
 
 type Props = {
   children: any;
@@ -16,7 +16,7 @@ function PosLayout({ children }: Props) {
         <div className="pos-sidebar">
           <CustomerSearch />
           <SlotChoose />
-          <OrderPos />
+          <Cart />
         </div>
       </main>
     </>

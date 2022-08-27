@@ -2,7 +2,7 @@ import React from 'react';
 import HorizontalScroll from 'ui/scrollMenu';
 import SlotNumber from './SlotNumber';
 import CaretDown from 'icons/CaretDown';
-import Button from 'modules/common/ui/Button';
+import Button from 'ui/Button';
 
 function SlotsHeader() {
   return (

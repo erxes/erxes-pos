@@ -1,0 +1,32 @@
+.blck-layout {
+  background: #000;
+  min-height: 100vh;
+  min-width: 100vw;
+  position: relative;
+  color: #fff;
+  & > .btn.ghost {
+    color: #fff;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+    padding: 0.5rem;
+    border: 0;
+    svg {
+      font-size: 2rem;
+      line-height: 1;
+    }
+    &:hover {
+      background-color: rgba($color: #fff, $alpha: 0.15);
+    }
+  }
+}
+
+.white-tab {
+  background: #fff;
+  color: #000;
+  padding: 5rem 2rem 6.5rem;
+  border-radius: 8px;
+  flex-direction: column;
+  width: 100%;
+  max-width: 509px;
+}

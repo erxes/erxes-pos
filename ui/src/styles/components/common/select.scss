@@ -1,0 +1,37 @@
+select {
+  border: $border;
+  border-radius: 0.25rem;
+  display: block;
+  padding: 1rem 2rem 1rem 1rem;
+  margin: 0;
+  font-size: 0.865rem;
+  max-width: 100%;
+
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  &:focus {
+    border-color: $primary !important;
+    outline: 0;
+  }
+  option {
+    padding: 0.5rem;
+  }
+}
+.select-wrap {
+  position: relative;
+  svg {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    font-size: 0.75rem;
+    transform: translate(50%, -50%);
+  }
+  .loading {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba($color: #fff, $alpha: 0.4);
+  }
+}

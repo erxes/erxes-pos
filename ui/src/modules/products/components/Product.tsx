@@ -1,19 +1,21 @@
 import React from 'react';
-import Image from 'next/image';
+import Image from 'next/future/image';
 
-export default function Product() {
+export default function Product({ attachment, name, unitPrice }: any) {
+  const formatPrice = unitPrice.toLocaleString().replace(',', ' ');
   return (
-    <div className="col">
+    <div className="col col-3">
       <div className="product">
         <div className="img-wrap">
           <Image
-            src="https://yoshinoyabucket.s3.us-east-2.amazonaws.com/0.24390352059101983%60613-1-Copy.png"
+            src={(attachment || {}).url || '/product_placeholder.jpg'}
             alt=""
-            layout="fill"
+            fill
+            sizes="25vw"
           />
         </div>
-        <div className="product-name">Үхрийн махтай боул</div>
-        <div className="product-price">17 500₮</div>
+        <div className="product-name">{name}</div>
+        <div className="product-price">{formatPrice}₮</div>
       </div>
     </div>
   );

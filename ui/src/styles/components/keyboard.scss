@@ -1,0 +1,17 @@
+.keyboard {
+  padding-top: 2.5rem;
+  border-top: $border-white;
+  .row {
+    margin: -0.625rem;
+  }
+  .key {
+    padding: 0.625rem;
+    .btn.slim {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      border-radius: 50%;
+      color: #fff;
+      border: $border-white;
+    }
+  }
+}

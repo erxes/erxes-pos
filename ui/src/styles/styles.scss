@@ -6,9 +6,19 @@
 
 @import 'components/common/btn';
 @import 'components/common/scrolling-menu';
+@import 'components/common/select';
+@import 'components/common/input';
+@import 'components/common/form';
+@import 'components/common/loading';
+
+@import 'components/empty';
+@import 'components/layout';
+@import 'components/keyboard';
 
 @import 'modules/pos';
 @import 'modules/slot';
 @import 'modules/products';
 @import 'modules/customer';
-@import 'modules/order';
+@import 'modules/login';
+@import 'modules/settings';
+@import 'modules/checkout';

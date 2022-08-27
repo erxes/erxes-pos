@@ -39,12 +39,12 @@ const HorizontalScroll: React.FC<Props> = ({
         LeftArrow={LeftArrow}
         RightArrow={RightArrow}
       >
-        {items.map(({ id }) => (
+        {items.map((item, key) => (
           <Element
-            itemId={id} // NOTE: itemId is required for track items
-            key={id}
+            itemId={key} // NOTE: itemId is required for track items
+            key={key}
           >
-            <ItemComponent id={id} />
+            <ItemComponent {...item} />
           </Element>
         ))}
       </ScrollMenu>

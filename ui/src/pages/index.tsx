@@ -1,7 +1,7 @@
 import type { NextPage } from 'next';
 import PosLayout from 'modules/pos/components/PosLayout';
-import Products from 'modules/products/components/Products';
-import Categories from 'modules/products/components/Categories';
+import Products from 'modules/products/containers/Products';
+import Categories from 'modules/products/containers/Categories';
 import Search from 'modules/products/components/Search';
 
 const Home: NextPage = () => {

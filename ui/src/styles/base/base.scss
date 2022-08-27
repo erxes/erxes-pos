@@ -12,7 +12,7 @@ html {
   font-size: 16px;
   overflow: hidden;
   @media screen and (max-width: 1290px) {
-    font-size: 10px;
+    font-size: 12px;
   }
   // @media screen and (min-width: 1650px) {
   //   font-size: 18px;
@@ -23,6 +23,14 @@ html {
   @media screen and (min-width: 2500px) {
     font-size: 24px;
   }
+}
+
+h2 {
+  font: 800 3.5rem/4.5rem 'Inter';
+}
+
+h5 {
+  font: 800 1.5rem/2rem 'Inter';
 }
 
 h6 {
@@ -68,13 +76,13 @@ h6 {
       content: '';
       position: absolute;
       display: none;
-      left: 7px;
-      top: 2px;
-      width: 6px;
-      height: 12px;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -55%) rotate(45deg);
+      width: 0.325rem;
+      height: 0.75rem;
       border: solid white;
       border-width: 0 2px 2px 0;
-      transform: rotate(45deg);
       transition: inherit;
     }
   }

@@ -3,10 +3,10 @@ import Button from 'ui/Button';
 import Minus from 'icons/Minus';
 import Plus from 'icons/Plus';
 
-const OrderItem = () => {
+const CheckoutItem = () => {
   return (
-    <div className="flex-v-center order-item">
-      <div className="order-item-main flex-v-center">
+    <div className="flex-v-center checkout-item">
+      <div className="checkout-item-main flex-v-center">
         <Checkbox />
         <div className="flex-v-center">
           <span className="status" />
@@ -16,7 +16,7 @@ const OrderItem = () => {
           </b>
         </div>
       </div>
-      <div className="order-item-controls flex-v-center">
+      <div className="checkout-item-controls flex-v-center">
         <Button variant="naked">
           <Minus />
         </Button>
@@ -29,4 +29,4 @@ const OrderItem = () => {
   );
 };
 
-export default OrderItem;
+export default CheckoutItem;

@@ -1,0 +1,11 @@
+input {
+  border: $border;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  display: block;
+  width: 100%;
+  &:focus {
+    border-color: $primary !important;
+    outline: 0;
+  }
+}

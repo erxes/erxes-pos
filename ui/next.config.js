@@ -2,8 +2,21 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  images: {
-    domains: ['erxes.org', 'yoshinoyabucket.s3.us-east-2.amazonaws.com'],
+
+  experimental: {
+    images: {
+      allowFutureImage: true,
+      remotePatterns: [
+        {
+          protocol: '*',
+          hostname: 'plugin_core_api',
+        },
+        {
+          protocol: 'https',
+          hostname: '**.amazonaws.com',
+        },
+      ],
+    },
   },
 };
 

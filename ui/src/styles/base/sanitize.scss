@@ -41,6 +41,7 @@
   tab-size: 4; /* 4 */
   -webkit-tap-highlight-color: transparent; /* 5 */
   -webkit-text-size-adjust: 100%; /* 6 */
+  letter-spacing: 0.15px;
 }
 
 /* Sections
@@ -155,7 +156,8 @@ h6 {
    */
 
 :where(small) {
-  font-size: 80%;
+  font-size: 0.875rem;
+  line-height: 1.125rem;
 }
 
 /* Embedded content

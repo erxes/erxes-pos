@@ -1,8 +1,5 @@
-import React, { FC, useCallback, useMemo, ReactNode } from 'react';
-
-interface Props {
-  children: React.ReactNode;
-}
+import React, { useCallback, useMemo, ReactNode, useReducer } from 'react';
+import type { IComponent } from './types';
 
 const initialState = {};
 
@@ -10,19 +7,21 @@ export const AppContext = React.createContext<{} | any>(initialState);
 
 AppContext.displayName = 'AppContext';
 
-export const AppContextProvider: FC<Props> = ({ children }) => {
-  const [state, setState] = React.useState(initialState);
+const appReducer = (state: any, action: any) => {
+  switch (action.type) {
+    case 'HELLO':
+      return {
+        ...state,
+      };
+    default:
+      return state;
+  }
+};
 
-  const setter = useCallback((newState: any) => {
-    setState(newState);
-  }, []);
+export const AppContextProvider: IComponent = ({ children }) => {
+  const [state, dispatch] = useReducer(appReducer, initialState);
 
-  const value = useMemo(() => {
-    return {
-      state,
-      setter,
-    };
-  }, [state, setter]);
+  const value = useMemo(() => ({}), []);
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 };

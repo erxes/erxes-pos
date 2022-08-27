@@ -12,7 +12,7 @@
   align-items: center;
   border: 1px solid transparent;
   box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  border-radius: 0.25rem;
+  border-radius: 0.5rem;
   color: rgba(0, 0, 0, 0.95);
   background: $background-gray;
   &:hover {
@@ -34,5 +34,16 @@
     &:hover {
       background-color: rgba(0, 0, 0, 0.05);
     }
+  }
+  &.ghost {
+    box-shadow: none;
+    background: transparent;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+  big {
+    font-size: 1.125rem;
+    line-height: 1.5rem;
   }
 }

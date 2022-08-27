@@ -15,7 +15,7 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      'erxes-app-token': process.env.NEXT_PUBLIC_ERXES_APP_TOKEN,
+      // 'erxes-app-token': process.env.NEXT_PUBLIC_ERXES_APP_TOKEN,
       'Access-Control-Allow-Origin': process.env.NEXT_PUBLIC_MAIN_API_DOMAIN,
     },
   };

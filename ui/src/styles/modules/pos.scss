@@ -4,6 +4,7 @@
     .logo {
       padding: 0.25rem 0.75rem;
       line-height: 1;
+      display: block;
       .img-wrap {
         aspect-ratio: 2 / 1;
         width: 5rem;
@@ -26,18 +27,55 @@
   }
   &-dropdown {
     position: relative;
+    &:hover {
+      .pos-menu {
+        display: inline-block;
+      }
+    }
     .btn.naked {
       font-size: 1.25rem;
       border: 0;
       padding: 0.75rem;
     }
     .pos-menu {
+      display: none;
       position: absolute;
-      background-color: #fff;
+      background-color: white;
       left: 0;
       top: 100%;
-      padding: 1.5rem;
-      border-bottom: 0.5rem;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      z-index: 100;
+      box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.06),
+        0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+      font-weight: 700;
+      li {
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+        margin-bottom: 0.75rem;
+        padding: 0.5rem 1rem;
+        transition: 0.2s;
+        border-radius: 0.5rem;
+        svg {
+          font-size: 1.25rem;
+          margin-right: 0.75rem;
+        }
+        &:hover {
+          cursor: pointer;
+          background: $background-gray;
+        }
+      }
+      .btn.flat {
+        background-color: $primary;
+        padding: 0.75rem 3rem;
+
+        // font-size: ;
+        svg {
+          font-size: 1.5rem;
+          margin-right: 0.5rem;
+        }
+      }
     }
   }
   &-container {
@@ -62,7 +100,7 @@
     display: flex;
     flex-direction: column;
     border-left: $border;
-    & > *:not(.order-pos) {
+    & > *:not(.checkout-cart) {
       flex: 0 0 auto;
     }
   }

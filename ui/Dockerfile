@@ -1,4 +1,4 @@
-FROM node:12.19-alpine
+FROM node:16-alpine AS deps
 WORKDIR /baterdene/
 RUN chown -R node:node /baterdene
 COPY --chown=node:node . /baterdene

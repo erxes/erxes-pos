@@ -6,7 +6,7 @@ import React, {
 } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 import cn from 'classnames';
-import LoadingDots from '../LoadingDots';
+import { LoadingDots } from 'ui/Loading';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;

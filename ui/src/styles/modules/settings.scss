@@ -1,0 +1,63 @@
+.settings {
+  .img-wrap {
+    width: 6.5rem;
+    aspect-ratio: 1 / 1;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+  small {
+    padding-top: 0.25rem;
+    margin-bottom: 2rem;
+  }
+  .info {
+    background: $background-gray;
+    width: 100%;
+    text-align: center;
+    padding: 0.75rem 0;
+    border-radius: 0.5rem;
+    span {
+      display: block;
+    }
+    margin-bottom: 1.25rem;
+    display: block;
+  }
+  .select-wrap,
+  select {
+    width: 100%;
+    font-weight: bold;
+    background-color: #000;
+    color: #fff;
+    border: 0;
+    border-radius: 0.5rem;
+    font-size: 1rem;
+  }
+  .select-wrap {
+    margin-bottom: 2.5rem;
+    small {
+      position: absolute;
+      top: 0.325rem;
+      left: 1rem;
+      opacity: 0.7;
+      font-size: 0.75rem;
+    }
+    select {
+      padding: 2rem 4rem 0.75rem 1rem;
+    }
+    svg {
+      right: 2rem;
+      font-size: 1rem;
+    }
+  }
+  .controls.row {
+    width: calc(100% + 0.5rem);
+    margin: -0.5rem -0.25rem;
+    .col {
+      padding: 0.5rem 0.25rem;
+      .btn {
+        padding: 0.5rem 0;
+        width: 100%;
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { FC, memo } from 'react';
 import Image from 'next/image';
 import SlotsHeader from '../../slots/components/SlotHeader';
+import Link from 'next/link';
 // import dynamic from 'next/dynamic';
 // import { Header, GrayBorder } from './styles';
 import PosHeaderMenu from './PosHeaderMenu';
@@ -18,17 +19,19 @@ const PosHeader: FC<PosHeaderProps> = ({}) => {
       <div className="flex-v-center flex-0">
         <PosHeaderMenu />
         <div className="gray-border">
-          <div className="logo">
-            <div className="img-wrap">
-              <Image
-                src="https://erxes.org/docs/static/img/logo_dark.svg"
-                layout="fill"
-                objectFit="contain"
-                priority
-                alt="Erxes"
-              />
-            </div>
-          </div>
+          <Link href="/">
+            <a className="logo">
+              <div className="img-wrap">
+                <Image
+                  src="/logo-dark.png"
+                  layout="fill"
+                  objectFit="contain"
+                  priority
+                  alt="Erxes"
+                />
+              </div>
+            </a>
+          </Link>
         </div>
       </div>
       <SlotsHeader />
