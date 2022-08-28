@@ -113,11 +113,13 @@
       .white-tab {
         padding: 5rem 0;
         min-height: 100%;
+
         .description,
-        .btn {
+        & > .btn {
           max-width: 260px;
           margin: auto;
         }
+
         .description {
           padding-bottom: 5rem;
           &-item {
@@ -134,10 +136,20 @@
             }
           }
         }
-        .btn {
+
+        & > .btn {
           background: $success;
           width: 100%;
           padding: 1rem 0;
+        }
+      }
+      .modal {
+        max-width: 944px;
+        width: calc(100% - 3rem);
+        min-height: 40vh;
+        & > div {
+          max-width: 572px;
+          margin: auto;
         }
       }
     }

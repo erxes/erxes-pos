@@ -1,0 +1,103 @@
+.kiosk {
+  position: relative;
+  min-height: 100vh;
+  &-welcome {
+    position: relative;
+    min-height: 100vh;
+    color: #fff;
+    & > div {
+      width: 100%;
+      max-width: 670px;
+    }
+    .img-wrap {
+      height: 12rem;
+      img {
+        object-fit: contain;
+        display: block;
+      }
+    }
+    h5 {
+      font-weight: 400;
+      font-size: 1.75rem;
+      margin: 2.25rem 0 8rem;
+    }
+    .btn.slim {
+      font: 300 4rem/4rem 'Inter';
+      color: #fff;
+      border: $border-white;
+      padding: 2.5rem 0;
+      border-radius: 4.5rem;
+      display: block;
+      max-width: 60%;
+      margin: auto;
+      &:last-child {
+        margin-top: 3rem;
+      }
+    }
+  }
+  flex-direction: column;
+  header {
+    flex: 0 0 auto;
+    padding: 3rem;
+    position: relative;
+    overflow: hidden;
+    img {
+      inset: 0;
+      object-fit: cover;
+      object-position: left top;
+    }
+    .flex-v-center {
+      position: relative;
+      justify-content: space-between;
+    }
+    .search {
+      height: 3.5rem;
+      input {
+        font-size: 1rem;
+      }
+    }
+  }
+  &-categories {
+    padding: 1.75rem 3rem;
+    .btn.slim {
+      font: 800 1.25rem/1.75rem 'Inter';
+      padding: 1.5rem 2.5rem;
+    }
+    .react-horizontal-scrolling-menu--item:first-child {
+      margin-left: 0;
+    }
+  }
+  &-products {
+    padding: 0 1.5rem;
+    .product {
+      border: 0;
+      &-name {
+        font-size: 1rem;
+        line-height: 1.5;
+        white-space: initial;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        height: 3rem;
+        color: $gray;
+      }
+      &-price {
+        font: 800 1.25rem/1.75rem 'Inter';
+      }
+    }
+  }
+  &-cart {
+    &-btn {
+      position: absolute;
+      z-index: 100;
+      background: $primary;
+      right: 0;
+      bottom: 20%;
+      font-size: 3rem;
+      padding: 2rem 2rem 2rem 2.25rem;
+      border-radius: 50% 0 0 50%;
+      &:hover {
+        background: $primary;
+      }
+    }
+  }
+}

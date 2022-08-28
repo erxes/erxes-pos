@@ -10,11 +10,14 @@
 @import 'components/common/input';
 @import 'components/common/form';
 @import 'components/common/loading';
+@import 'components/common/radio';
 
 @import 'components/empty';
 @import 'components/layout';
 @import 'components/keyboard';
 @import 'components/modal';
+@import 'components/ebarimt';
+@import 'components/search';
 
 @import 'modules/pos';
 @import 'modules/slot';
@@ -23,3 +26,4 @@
 @import 'modules/login';
 @import 'modules/settings';
 @import 'modules/checkout';
+@import 'modules/kiosk';

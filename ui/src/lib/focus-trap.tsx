@@ -35,7 +35,7 @@ export default function FocusTrap({ children, focusFirst = false }: Props) {
     let i = 0;
     const timer = setInterval(() => {
       if (!match !== i > end) {
-        match = !!tabbable(root.current).length;
+        match = root.current && !!tabbable(root.current).length;
         if (match) {
           // Attempt to focus the first el
           tabbable(root.current)[0].focus();

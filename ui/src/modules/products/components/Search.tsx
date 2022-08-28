@@ -1,9 +1,29 @@
+import { useState } from 'react';
+import cn from 'classnames';
 import Magnify from 'icons/Magnify';
+import Input from 'ui/Input';
+import Button from 'ui/Button';
 
-const Search = () => {
+interface IProps {
+  open?: boolean;
+}
+
+const Search = ({ open }: IProps) => {
+  const [isActive, setIsActive] = useState(false);
+  const active = isActive || open;
   return (
-    <div className="products-search flex-0 flex-center">
-      <Magnify />
+    <div
+      className={cn('search flex-0 flex-center', { active })}
+      onClick={() => setIsActive(true)}
+      onFocus={() => setIsActive(true)}
+      onBlur={() => setIsActive(false)}
+    >
+      <div className={cn('smooth-h', { active })}>
+        <Input placeholder="search products" />
+      </div>
+      <Button variant="ghost">
+        <Magnify />
+      </Button>
     </div>
   );
 };

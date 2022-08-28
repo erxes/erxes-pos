@@ -1,4 +1,4 @@
-import Button from 'ui/Button';
+import Ebarimt from './Ebarimt';
 
 const PaymentReport = () => {
   return (
@@ -24,9 +24,7 @@ const PaymentReport = () => {
             <b>0%</b>
           </h6>
         </div>
-        <Button>
-          <big>Баримт хэвлэх</big>
-        </Button>
+        <Ebarimt />
       </div>
     </div>
   );

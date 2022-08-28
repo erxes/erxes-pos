@@ -22,14 +22,7 @@
     z-index: 1;
     padding: 1.25rem 0;
   }
-  &-search {
-    height: 2.75rem;
-    width: 2.75rem;
-    background: $background-gray;
-    font-size: 1.25rem;
-    border-radius: 50%;
-    border: $border;
-  }
+
   &.row {
     margin: -0.625rem;
     overflow-y: auto;

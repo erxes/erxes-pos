@@ -1,8 +1,8 @@
 import { FC, useRef, useEffect, useCallback } from 'react';
 import FocusTrap from 'lib/focus-trap';
-import Close from 'icons/CloseCircle';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import Button from '../Button';
+import Xmark from 'icons/Xmark';
 
 interface ModalProps {
   className?: string;
@@ -45,7 +45,7 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
           className="modal-close"
           variant="ghost"
         >
-          <Close />
+          <Xmark />
         </Button>
         <FocusTrap focusFirst>{children}</FocusTrap>
       </div>

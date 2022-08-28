@@ -34,6 +34,11 @@
   max-width: $one-third;
 }
 
+.col-6 {
+  flex: 1 1 50%;
+  max-width: 50%;
+}
+
 .h-100vh {
   height: 100vh;
 }
@@ -57,4 +62,36 @@
       background: #555;
     }
   }
+}
+
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.smooth {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 300ms ease, opacity 200ms ease;
+  &.active {
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 600ms ease, opacity 200ms ease;
+  }
+  &-h {
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-width 600ms ease, opacity 400ms ease;
+    &.active {
+      max-width: 1000px;
+      opacity: 1;
+      transition: max-width 600ms ease, opacity 400ms ease;
+    }
+  }
+}
+
+.error {
+  color: $error;
 }

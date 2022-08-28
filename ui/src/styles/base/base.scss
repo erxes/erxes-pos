@@ -11,7 +11,7 @@ body {
 html {
   font-size: 16px;
   overflow: hidden;
-  @media screen and (max-width: 1290px) {
+  @media screen and (max-width: 996px) {
     font-size: 12px;
   }
   // @media screen and (min-width: 1650px) {
@@ -35,6 +35,11 @@ h5 {
 
 h6 {
   font: 800 1.25rem/1.75rem 'Inter';
+}
+
+caption {
+  font: 400 0.75rem/1rem 'Inter';
+  letter-spacing: 0.4px;
 }
 
 .img-wrap {

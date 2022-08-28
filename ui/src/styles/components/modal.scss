@@ -7,9 +7,13 @@
     backdrop-filter: blur(0.8px);
   }
   background: #fff;
-  padding: 5rem;
+  padding: 4rem 1.25rem;
   border: 1px transparent solid;
   position: relative;
+  border-radius: 8px;
+  width: 100%;
+  max-width: 470px;
+
   &:focus {
     outline: none;
   }
@@ -18,5 +22,7 @@
     position: absolute;
     right: 0.75rem;
     top: 0.75rem;
+    padding: 0.25rem;
+    font-size: 1rem;
   }
 }
