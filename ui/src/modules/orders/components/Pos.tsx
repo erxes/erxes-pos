@@ -5,7 +5,7 @@ import { NavLink, Link } from 'react-router-dom';
 
 import NameCard from 'modules/common/components/nameCard/NameCard';
 import AsyncComponent from 'modules/common/components/AsyncComponent';
-import { ICustomerParams, IOrder, IOrderItemInput } from '../types';
+import { ICustomerParams, IOrder, IOrderItemInput, OrderDetailQueryResponse } from '../types';
 import { ORDER_TYPES, POS_MODES } from '../../../constants';
 import Calculation from './Calculation';
 import OrderSearch from '../containers/layout/OrderSearch';
@@ -81,6 +81,7 @@ type Props = {
   refetchOrder: () => void;
   slots: ISlot[];
   changeOrderStatus: (doc) => void;
+  orderDetailQuery: OrderDetailQueryResponse;
 };
 
 type State = {
@@ -119,7 +120,6 @@ export default class Pos extends React.Component<Props, State> {
 
     const { order, type } = props;
     const checkOrder = order || {} as IOrder;
-
     this.state = {
       items: checkOrder.items || [],
       totalAmount: getTotalAmount(checkOrder.items || []) || 0,
@@ -131,6 +131,7 @@ export default class Pos extends React.Component<Props, State> {
       isTypeChosen: false,
       slotCode: checkOrder.slotCode || ''
     };
+    console.log('construc')
   }
 
   onClickType = (type: string) => {
@@ -665,7 +666,6 @@ export default class Pos extends React.Component<Props, State> {
       slots,
       changeOrderStatus
     } = this.props;
-
     const { items, totalAmount, type } = this.state;
     const mode = localStorage.getItem('erxesPosMode');
 
@@ -681,6 +681,11 @@ export default class Pos extends React.Component<Props, State> {
     if (mode === POS_MODES.KIOSK) {
       return this.renderKioskView(categories);
     }
+    const checkOrder = order || {} as IOrder;
+    const updatedItems = items;
+    updatedItems.forEach((i, index) => {
+      updatedItems[index].status = checkOrder.items[index].status  
+    })
 
     return (
       <>

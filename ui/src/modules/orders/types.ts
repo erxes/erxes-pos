@@ -125,6 +125,7 @@ export type OrderItemChangeStatusMutationResponse = ({
 
 export type OrderDetailQueryResponse = {
   orderDetail: IOrder;
+  subscribeToMore: any;
 } & QueryResponse;
 
 export type SlotsQueryResponse = {

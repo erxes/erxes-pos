@@ -9,13 +9,13 @@ import Spinner from 'modules/common/components/Spinner';
 import { Alert, __, router, confirm } from 'modules/common/utils';
 import { IRouterProps, IConfig } from '../../../types';
 import { trimGraphqlError, withProps } from '../../utils';
-import { mutations, queries } from '../graphql/index';
+import { mutations, queries, subscriptions } from '../graphql/index';
 import Pos from '../components/Pos';
 import {
   OrdersAddMutationResponse,
   OrdersEditMutationResponse,
   OrderDetailQueryResponse,
-  OrderChangeStatusMutationResponse
+  OrderChangeStatusMutationResponse,
 } from '../types';
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
 import { IUser } from 'modules/auth/types';
@@ -61,10 +61,18 @@ class PosContainer extends React.Component<Props, States> {
     this.state = {
       productBodyType: 'product',
       showMenu: false,
-      modalContentType: ''
+      modalContentType: '',
     };
   }
-
+  componentDidUpdate() {
+    this.props.orderDetailQuery.subscribeToMore({
+      document: gql(subscriptions.orderItemsOrdered),
+      variables: { statuses: ["paid", "confirm", "done", "complete"] },
+      updateQuery: () => {
+        this.props.orderDetailQuery.refetch();
+      },
+    });
+  }
   render() {
     const {
       ordersAddMutation,
@@ -75,9 +83,10 @@ class PosContainer extends React.Component<Props, States> {
       addPaymentMutation,
       settlePaymentMutation,
       orderChangeStatusMutation,
-      slotsQuery
+      slotsQuery,
     } = this.props;
     const { showMenu, modalContentType, productBodyType } = this.state;
+
 
     if (orderDetailQuery.loading || slotsQuery.loading) {
       return <Spinner />;
@@ -250,7 +259,6 @@ class PosContainer extends React.Component<Props, States> {
         return Alert.error(e.message);
       });
     };
-
     const updatedProps = {
       ...this.props,
       createOrder,
@@ -269,7 +277,7 @@ class PosContainer extends React.Component<Props, States> {
       modalContentType,
       changeOrderStatus,
       refetchOrder: () => orderDetailQuery.refetch(),
-      slots: slotsQuery.poscSlots
+      slots: slotsQuery.poscSlots,
     };
 
     return <Pos {...updatedProps} />;
