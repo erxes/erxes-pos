@@ -567,8 +567,11 @@ export default class Pos extends React.Component<Props, State> {
     const uiOptions = currentConfig ? currentConfig.uiOptions : {};
 
     const onBack = () => {
-      this.onClickType('eat');
-      this.setItems([]);
+      if (order && order._id && !order.paidDate) {
+        cancelOrder(order._id);
+      } else {
+        this.setItems([]);
+      }
     };
 
     const products = (
@@ -608,7 +611,7 @@ export default class Pos extends React.Component<Props, State> {
                 block
                 onClick={onBack}
               >
-                Cancel
+                {__('Cancel to home')}
               </Button>
               {categories}
             </MenuContent>
