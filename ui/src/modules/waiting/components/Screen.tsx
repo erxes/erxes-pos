@@ -28,8 +28,6 @@ export default class Screen extends React.Component<Props> {
   renderCol() {
     const { orderItems, ordersConfirm, orders, currentConfig } = this.props;
     const { uiOptions } = currentConfig;
-    console.log('items', orderItems);
-    console.log('confirm', ordersConfirm)
     let partialOrders: IOrder[] = [];
     if (orderItems) {
       orderItems.forEach(item => {

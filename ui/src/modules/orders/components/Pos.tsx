@@ -131,7 +131,6 @@ export default class Pos extends React.Component<Props, State> {
       isTypeChosen: false,
       slotCode: checkOrder.slotCode || ''
     };
-    console.log('construc')
   }
 
   onClickType = (type: string) => {
@@ -683,9 +682,11 @@ export default class Pos extends React.Component<Props, State> {
     }
     const checkOrder = order || {} as IOrder;
     const updatedItems = items;
-    updatedItems.forEach((i, index) => {
-      updatedItems[index].status = checkOrder.items[index].status  
-    })
+    if (updatedItems && Object.keys(checkOrder).length > 0) {
+      updatedItems.forEach((item, index) => {
+        item.status = checkOrder.items[index].status  
+      })
+    }
 
     return (
       <>
