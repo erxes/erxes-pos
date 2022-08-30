@@ -7,7 +7,7 @@ import queries from '../graphql/queries';
 import React from 'react';
 import Select from 'react-select-plus';
 import Stage from './Stage';
-import styled, { css }  from 'styled-components';
+import styled, { css } from 'styled-components';
 import styledTS from 'styled-components-ts';
 import { __, Alert, confirm } from 'modules/common/utils';
 import { ColumnBetween } from 'modules/common/styles/main';
@@ -161,7 +161,7 @@ export default class Calculation extends React.Component<Props, State> {
       registerNumber: ''
     };
   }
-
+  
   onChange = value => {
     this.props.setOrderState('type', value);
   };
@@ -505,15 +505,6 @@ export default class Calculation extends React.Component<Props, State> {
       </>
     )
   }
-  mergeOrderItems(inputItems: IOrderItemInput[]) {
-    const mergedItems = inputItems.reduce((acc, curr) => {
-      acc[curr.productId+curr.isTake] = { 
-        ...curr,
-        count: (acc[curr.productId+curr.isTake] ? acc[curr.productId+curr.isTake].count : 0) + curr.count };
-      return acc;
-    }, {});
-    return Object.values(mergedItems) as IOrderItemInput[]; 
-  }
 
   render() {
     const {
@@ -523,11 +514,10 @@ export default class Calculation extends React.Component<Props, State> {
       changeItemIsTake,
       orientation,
       type,
-      productBodyType
+      productBodyType,
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
-
 
     return (
       <>
@@ -537,7 +527,7 @@ export default class Calculation extends React.Component<Props, State> {
           <ColumnBetween>
             <Stage
               orientation={orientation}
-              items={this.mergeOrderItems(items)}
+              items={items}
               changeItemCount={changeItemCount}
               changeItemIsTake={changeItemIsTake}
               options={config.uiOptions}

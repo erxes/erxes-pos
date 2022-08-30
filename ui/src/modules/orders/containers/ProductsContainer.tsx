@@ -3,7 +3,7 @@ import React from 'react';
 import queryString from 'query-string';
 
 import { IRouterProps, IConfig, ProductsQueryResponse } from '../../../types';
-import { IOrderItemInput } from '../types';
+import { IOrder, IOrderItemInput } from '../types';
 import Products from '../components/Products';
 import Spinner from 'modules/common/components/Spinner';
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
@@ -14,6 +14,7 @@ type Props = {
   items: IOrderItemInput[];
   currentConfig: IConfig;
   orientation: string;
+  order: IOrder | null;
 } & IRouterProps;
 
 class ProductsContainer extends React.Component<Props> {

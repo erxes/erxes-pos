@@ -164,7 +164,6 @@ export default class StageItem extends React.Component<Props, State> {
 
   onChange(e) {
     const { item, changeItemCount } = this.props;
-
     changeItemCount({ ...item, count: parseInt(e) });
   }
 

@@ -136,9 +136,18 @@ export default class Pos extends React.Component<Props, State> {
   onClickType = (type: string) => {
     this.setState({ type, isTypeChosen: !this.state.isTypeChosen });
   };
-
+  mergeOrderItems(inputItems: IOrderItemInput[]) {
+    const mergedItems = inputItems.reduce((acc, curr) => {
+      acc[curr.productId+curr.isTake] = { 
+        ...curr,
+        count: (acc[curr.productId+curr.isTake] ? acc[curr.productId+curr.isTake].count : 0) + curr.count };
+      return acc;
+    }, {});
+    return Object.values(mergedItems) as IOrderItemInput[]; 
+  }
   setItems = (items: IOrderItemInput[]) => {
-    this.setState({ items, totalAmount: getTotalAmount(items, true) });
+    const merged = this.mergeOrderItems(items);
+    this.setState({ items: merged, totalAmount: getTotalAmount(items, true) });
   };
 
   changeItemCount = (item: IOrderItemInput) => {
@@ -149,24 +158,23 @@ export default class Pos extends React.Component<Props, State> {
 
       return i;
     });
-
     items = items.filter(i => i.count > 0);
 
     const totalAmount = getTotalAmount(items, true);
-
-    this.setState({ items, totalAmount });
+    this.setItems(items);
+    this.setState({totalAmount});
   };
 
   changeItemIsTake = (item: IOrderItemInput, value: boolean) => {
-    const { type, items } = this.state;
+    const { type } = this.state;
+    let items = this.mergeOrderItems(this.state.items);
     if (type !== ORDER_TYPES.EAT) {
-      this.setState({ items: items.map(i => ({ ...i, isTake: true })) });
+      const temp = items.map(i => ({ ...i, isTake: true }));
+      this.setItems(temp);
       return;
     }
-
-    this.setState({
-      items: items.map(i => (item._id === i._id ? { ...i, isTake: value } : i))
-    });
+    const temp = items.map(i => (item._id === i._id ? { ...i, isTake: value } : i))
+    this.setItems(temp);
   };
 
   // set state field that doesn't need amount calculation
@@ -176,7 +184,8 @@ export default class Pos extends React.Component<Props, State> {
     if (name === 'type') {
       const { items } = this.state;
       const isTake = value !== ORDER_TYPES.EAT;
-      this.setState({ items: items.map(i => ({ ...i, isTake })) });
+      const temp = items.map(i => ({ ...i, isTake })) 
+      this.setItems(temp);
     }
   };
 
@@ -436,7 +445,7 @@ export default class Pos extends React.Component<Props, State> {
   }
 
   renderProduct() {
-    const { currentConfig, orientation, productsQuery } = this.props;
+    const { currentConfig, orientation, productsQuery, order } = this.props;
     const { items } = this.state;
 
     return (
@@ -453,6 +462,7 @@ export default class Pos extends React.Component<Props, State> {
           items={items}
           productsQuery={productsQuery}
           orientation={orientation}
+          order={order}
         />
       </>
     );
@@ -680,13 +690,13 @@ export default class Pos extends React.Component<Props, State> {
     if (mode === POS_MODES.KIOSK) {
       return this.renderKioskView(categories);
     }
-    const checkOrder = order || {} as IOrder;
-    const updatedItems = items;
-    if (updatedItems && Object.keys(checkOrder).length > 0) {
-      updatedItems.forEach((item, index) => {
-        item.status = checkOrder.items[index].status  
-      })
-    }
+    // const checkOrder = order || {} as IOrder;
+    // const updatedItems = items;
+    // if (updatedItems && Object.keys(checkOrder).length > 0) {
+    //   updatedItems.forEach((item, index) => {
+    //     item.status = checkOrder.items[index].status  
+    //   })
+    // }
 
     return (
       <>

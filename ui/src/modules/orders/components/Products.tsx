@@ -1,12 +1,12 @@
 import React from "react";
 
-import { IOrderItemInput, IProduct } from "../types";
+import { IOrder, IOrderItemInput, IProduct } from "../types";
 import ProductItem from "./ProductItem";
 import { EmptyContentWrapper, ProductsWrapper } from "../styles";
 import { IConfig, IRouterProps } from "types";
 import EmptyState from "modules/common/components/EmptyState";
 import { __ } from "modules/common/utils";
-import { POS_MODES } from "../../../constants";
+import { ORDER_TYPES, POS_MODES } from "../../../constants";
 
 type Props = {
   products: IProduct[];
@@ -16,6 +16,7 @@ type Props = {
   qp: any;
   productsQuery: any;
   orientation: string;
+  order: IOrder | null;
 } & IRouterProps;
 
 type State = {
@@ -38,8 +39,8 @@ export default class Products extends React.Component<Props, State> {
   }
 
   addItem(item: IProduct, count: number) {
-    const { items, setItems } = this.props;
-
+    const { items, setItems, order } = this.props;
+    const checkOrder = order || {} as IOrder;
     const currentItems = items.slice();
     const foundItem = currentItems.find(
       (i) => i.productId === item._id && !i.isTake
@@ -56,7 +57,7 @@ export default class Products extends React.Component<Props, State> {
         productImgUrl:
           item.attachment && item.attachment.url ? item.attachment.url : "",
         count,
-        isTake: false
+        isTake: checkOrder.type === ORDER_TYPES.TAKE ? true : false
       });
     }
 
