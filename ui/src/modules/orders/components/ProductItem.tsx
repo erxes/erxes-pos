@@ -35,6 +35,7 @@ export default function ProductItem(props: Props) {
       _id: Math.random().toString(),
       unitPrice: product.unitPrice,
       productImgUrl: attachmentUrl,
+      isTake: false
     });
   };
 

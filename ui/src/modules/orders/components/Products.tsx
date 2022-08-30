@@ -56,6 +56,7 @@ export default class Products extends React.Component<Props, State> {
         productImgUrl:
           item.attachment && item.attachment.url ? item.attachment.url : "",
         count,
+        isTake: false
       });
     }
 
