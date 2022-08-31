@@ -690,13 +690,6 @@ export default class Pos extends React.Component<Props, State> {
     if (mode === POS_MODES.KIOSK) {
       return this.renderKioskView(categories);
     }
-    // const checkOrder = order || {} as IOrder;
-    // const updatedItems = items;
-    // if (updatedItems && Object.keys(checkOrder).length > 0) {
-    //   updatedItems.forEach((item, index) => {
-    //     item.status = checkOrder.items[index].status  
-    //   })
-    // }
 
     return (
       <>
