@@ -519,6 +519,24 @@ export default class Calculation extends React.Component<Props, State> {
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
 
+    const checkOrder = this.props.order || {} as IOrder;
+    let newItems = items as IOrderItemInput[];
+    if (Object.keys(checkOrder).length !== 0) {
+      newItems = [];
+      const orderItems = checkOrder.items as IOrderItemInput[];
+      newItems = items.map( i => {
+        let found = orderItems.find(
+          c => c.productId === i.productId 
+          && c._id === i._id
+          && c.status !== i.status 
+        )
+        if (found) {
+          i.status = found.status
+          return i;
+        }
+        return i;
+      })
+    }
     return (
       <>
         <Wrapper color={color} showPayment={productBodyType === 'payment'}>
@@ -527,7 +545,7 @@ export default class Calculation extends React.Component<Props, State> {
           <ColumnBetween>
             <Stage
               orientation={orientation}
-              items={items}
+              items={newItems}
               changeItemCount={changeItemCount}
               changeItemIsTake={changeItemIsTake}
               options={config.uiOptions}
