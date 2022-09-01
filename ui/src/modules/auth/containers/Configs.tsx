@@ -1,7 +1,7 @@
 import { queries } from '../graphql';
 import { Query } from 'modules/utils';
 import { FC, ReactNode, createContext, useMemo, useContext } from 'react';
-import Loading from 'ui/Loading';
+import Loading from 'modules/common/ui/Loading';
 
 interface IProps {
   children: ReactNode | [ReactNode];

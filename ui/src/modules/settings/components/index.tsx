@@ -1,7 +1,7 @@
 import { IComponent } from 'modules/types';
 import Image from 'next/future/image';
-import Select from 'ui/Select';
-import Button, { ButtonProps } from 'ui/Button';
+import Select from 'modules/common/ui/Select';
+import Button, { ButtonProps } from 'modules/common/ui/Button';
 
 const SettingsButton = (props: ButtonProps) => (
   <div className="col col-4">

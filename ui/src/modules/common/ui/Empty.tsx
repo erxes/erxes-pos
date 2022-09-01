@@ -1,5 +1,5 @@
-import NoData from 'icons/NoData';
-import Question from 'icons/Question';
+import NoData from 'modules/common/icons/NoData';
+import Question from 'modules/common/icons/Question';
 
 interface IProps {
   text?: string;

@@ -11,9 +11,16 @@ body {
 html {
   font-size: 16px;
   overflow: hidden;
+  @media screen and (max-width: 1400px) {
+    font-size: 14px;
+  }
   @media screen and (max-width: 996px) {
     font-size: 12px;
   }
+  @media screen and (max-width: 500px) {
+    font-size: 8px;
+  }
+
   // @media screen and (min-width: 1650px) {
   //   font-size: 18px;
   // }
@@ -27,6 +34,14 @@ html {
 
 h2 {
   font: 800 3.5rem/4.5rem 'Inter';
+}
+
+h3 {
+  font: 900 2.5rem/3.5rem 'Inter';
+}
+
+h4 {
+  font: 900 2rem/3rem 'Inter';
 }
 
 h5 {

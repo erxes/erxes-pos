@@ -1,5 +1,12 @@
 .ebarimt {
-  text-align: left;
+  &-root {
+    max-width: 944px;
+    width: calc(100vw - 3rem);
+    min-height: 40vh;
+    padding: 4rem 1.25rem;
+  }
+  max-width: 572px;
+  margin: auto;
   & > b {
     display: block;
     padding-bottom: 0.875rem;
@@ -71,6 +78,15 @@
       top: calc(100% + 0.5rem);
       left: 2.5rem;
       z-index: 1;
+    }
+  }
+  &-kiosk {
+    width: calc(100vw - 3rem);
+    max-width: 918px;
+    padding: 3.75rem;
+    text-align: center;
+    h4:first-of-type {
+      margin: 2.5rem 0 1.5rem;
     }
   }
 }

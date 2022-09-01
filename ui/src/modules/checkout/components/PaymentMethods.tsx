@@ -1,6 +1,6 @@
 import PaymentMethod from './PaymentMethod';
-import Cash from 'icons/🤑';
-import Visa from 'icons/Visa';
+import Cash from 'modules/common/icons/🤑';
+import Visa from 'modules/common/icons/Visa';
 import Image from 'next/future/image';
 
 const PaymentMethods = () => {

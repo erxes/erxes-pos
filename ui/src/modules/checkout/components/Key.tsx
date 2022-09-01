@@ -1,4 +1,4 @@
-import Button from 'ui/Button';
+import Button from 'modules/common/ui/Button';
 
 const Key = ({ value }: { value: number | string }) => {
   return (

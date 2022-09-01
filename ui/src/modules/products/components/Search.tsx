@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import cn from 'classnames';
-import Magnify from 'icons/Magnify';
-import Input from 'ui/Input';
-import Button from 'ui/Button';
+import Magnify from 'modules/common/icons/Magnify';
+import Input from 'modules/common/ui/Input';
+import Button from 'modules/common/ui/Button';
 
 interface IProps {
   open?: boolean;

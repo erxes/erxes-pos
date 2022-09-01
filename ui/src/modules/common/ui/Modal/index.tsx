@@ -2,7 +2,9 @@ import { FC, useRef, useEffect, useCallback } from 'react';
 import FocusTrap from 'lib/focus-trap';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import Button from '../Button';
-import Xmark from 'icons/Xmark';
+import Xmark from 'modules/common/icons/Xmark';
+import { useApp } from 'modules/AppContext';
+import cn from 'classnames';
 
 interface ModalProps {
   className?: string;
@@ -13,6 +15,7 @@ interface ModalProps {
 
 const Modal: FC<ModalProps> = ({ children, onClose }) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
+  const { mode } = useApp();
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
@@ -36,8 +39,10 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
     };
   }, [handleKey]);
 
+  const rootCn = cn('modal-root flex-center', { '-dark': mode === 'kiosk' });
+
   return (
-    <div className="modal-root flex-center">
+    <div className={rootCn}>
       <div className="modal" role="dialog" ref={ref}>
         <Button
           onClick={() => onClose()}

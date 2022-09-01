@@ -1,7 +1,7 @@
 import React from 'react';
-import Button from 'ui/Button';
-import ArrowLeft from 'icons/ArrowLeft';
-import ArrowRight from 'icons/ArrowRight';
+import Button from 'modules/common/ui/Button';
+import ArrowLeft from 'modules/common/icons/ArrowLeft';
+import ArrowRight from 'modules/common/icons/ArrowRight';
 import { VisibilityContext } from 'react-horizontal-scrolling-menu';
 
 function Arrow({

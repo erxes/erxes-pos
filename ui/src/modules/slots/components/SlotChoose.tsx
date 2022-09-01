@@ -1,5 +1,5 @@
-import Button from 'ui/Button';
-import CaretDown from 'icons/CaretDown';
+import Button from 'modules/common/ui/Button';
+import CaretDown from 'modules/common/icons/CaretDown';
 
 const SlotChoose = () => {
   return (

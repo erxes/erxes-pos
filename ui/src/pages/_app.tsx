@@ -1,9 +1,12 @@
+import 'simplebar/dist/simplebar.min.css';
 import 'styles/styles.min.css';
 import { IComponent } from 'modules/types';
 import type { AppProps } from 'next/app';
 import { ApolloProvider } from '@apollo/client';
 import apolloClient from 'modules/apolloClient';
+import React from 'react';
 import { AppContextProvider } from '../modules/AppContext';
+import UIProvider from 'ui/context';
 import ConfigsProvider from 'modules/auth/containers/Configs';
 import CheckAuth from 'modules/auth/CheckAuth';
 
@@ -14,13 +17,17 @@ function App({ Component, pageProps }: AppProps) {
   return (
     <ApolloProvider client={apolloClient}>
       <AppContextProvider>
-        <ConfigsProvider>
-          <CheckAuth>
-            <Layout pageProps={pageProps}>
-              <Component {...pageProps} />
-            </Layout>
-          </CheckAuth>
-        </ConfigsProvider>
+        <UIProvider>
+          <ConfigsProvider>
+            <React.StrictMode>
+              <CheckAuth>
+                <Layout pageProps={pageProps}>
+                  <Component {...pageProps} />
+                </Layout>
+              </CheckAuth>
+            </React.StrictMode>
+          </ConfigsProvider>
+        </UIProvider>
       </AppContextProvider>
     </ApolloProvider>
   );

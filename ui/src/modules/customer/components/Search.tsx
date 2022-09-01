@@ -1,6 +1,6 @@
-import Button from 'ui/Button';
-import UserInCircle from 'icons/UserInCircle';
-import ArrowRight from 'icons/ArrowRight';
+import Button from 'modules/common/ui/Button';
+import UserInCircle from 'modules/common/icons/UserInCircle';
+import ArrowRight from 'modules/common/icons/ArrowRight';
 
 const CustomerSearch = () => {
   return (

@@ -6,7 +6,8 @@ import React, {
 } from 'react';
 import { mergeRefs } from 'react-merge-refs';
 import cn from 'classnames';
-import { LoadingDots } from 'ui/Loading';
+import { LoadingDots } from 'modules/common/ui/Loading';
+import Ink from 'react-ink';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   href?: string;
@@ -18,6 +19,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   width?: string | number;
   loading?: boolean;
   disabled?: boolean;
+  riffle?: boolean;
 }
 // eslint-disable-next-line react/display-name
 const Button: React.FC<ButtonProps> = forwardRef((props, buttonRef) => {
@@ -30,6 +32,7 @@ const Button: React.FC<ButtonProps> = forwardRef((props, buttonRef) => {
     loading = false,
     disabled = false,
     style = {},
+    riffle = true,
     Component = 'button',
     ...rest
   } = props;
@@ -60,6 +63,7 @@ const Button: React.FC<ButtonProps> = forwardRef((props, buttonRef) => {
           <LoadingDots />
         </i>
       )}
+      {riffle && <Ink duration={700} />}
     </Component>
   );
 });

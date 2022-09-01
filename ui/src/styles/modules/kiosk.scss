@@ -1,6 +1,9 @@
 .kiosk {
   position: relative;
-  min-height: 100vh;
+  height: 100vh;
+  flex-direction: column;
+  display: flex;
+
   &-welcome {
     position: relative;
     min-height: 100vh;
@@ -35,12 +38,16 @@
       }
     }
   }
-  flex-direction: column;
+
   header {
     flex: 0 0 auto;
     padding: 3rem;
     position: relative;
     overflow: hidden;
+    .img-wrap {
+      width: 12.5rem;
+      aspect-ratio: 2 / 1;
+    }
     img {
       inset: 0;
       object-fit: cover;
@@ -59,6 +66,7 @@
   }
   &-categories {
     padding: 1.75rem 3rem;
+    flex: 0 0 auto;
     .btn.slim {
       font: 800 1.25rem/1.75rem 'Inter';
       padding: 1.5rem 2.5rem;
@@ -66,37 +74,235 @@
     .react-horizontal-scrolling-menu--item:first-child {
       margin-left: 0;
     }
-  }
-  &-products {
-    padding: 0 1.5rem;
-    .product {
-      border: 0;
-      &-name {
-        font-size: 1rem;
-        line-height: 1.5;
-        white-space: initial;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        height: 3rem;
-        color: $gray;
-      }
-      &-price {
-        font: 800 1.25rem/1.75rem 'Inter';
+    .react-horizontal-scrolling-menu--arrow-left,
+    .react-horizontal-scrolling-menu--arrow-right {
+      svg {
+        font-size: 1.5rem;
       }
     }
   }
+  .kiosk-products {
+    flex: 1 1 auto;
+    width: 100%;
+    overflow: hidden;
+    & > div {
+      max-height: 100%;
+    }
+    .simplebar-vertical {
+      right: initial;
+      left: 0;
+      width: 2.25rem;
+      &:hover {
+        .simplebar-scrollbar {
+          // background-color: rgba(0, 0, 0, 0.12);
+        }
+      }
+      .simplebar-scrollbar {
+        background-color: transparent;
+        overflow: visible;
+
+        &::before {
+          opacity: 1;
+          height: 4.5rem;
+          width: 1.75rem;
+          border-radius: 1.5rem;
+          top: 50%;
+          transform: translateY(-50%);
+          bottom: initial;
+          right: initial;
+          left: 0.5rem;
+          z-index: 100;
+          background-color: $primary;
+        }
+      }
+    }
+  }
+  .product {
+    border: 0;
+    &-name {
+      font-size: 1rem;
+      line-height: 1.5;
+      white-space: initial;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      height: 3rem;
+      color: $gray;
+    }
+    &-price {
+      font: 800 1.25rem/1.75rem 'Inter';
+    }
+    &s {
+      padding: 0 1.5rem;
+      max-width: 100%;
+    }
+  }
+
   &-cart {
     &-btn {
       position: absolute;
       z-index: 100;
-      background: $primary;
       right: 0;
       bottom: 20%;
-      font-size: 3rem;
-      padding: 2rem 2rem 2rem 2.25rem;
-      border-radius: 50% 0 0 50%;
-      &:hover {
+      .btn.flat {
         background: $primary;
+        font-size: 3rem;
+        padding: 2rem 2rem 2rem 2.25rem;
+        border-radius: 50% 0 0 50%;
+        position: relative;
+        &:hover {
+          background: $primary;
+        }
+        .badge {
+          position: absolute;
+          top: 2rem;
+          right: 2rem;
+          height: 2.5rem;
+          width: 2.5rem;
+          transform: translate(50%, -50%);
+          border-radius: 50%;
+          background: $error;
+        }
+      }
+    }
+    padding: 2rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    & > h3 {
+      padding: 2rem 1rem 1.5rem;
+      border-bottom: $border;
+    }
+    &-footer,
+    & > h3 {
+      flex: 0 0 auto;
+    }
+    &-item {
+      width: 100%;
+      padding-bottom: 2.5rem;
+      border-bottom: $border;
+      .product {
+        max-width: 15rem;
+        margin: auto;
+      }
+      .product-price {
+        font: 800 2rem/2.5rem 'Inter';
+      }
+      .counter {
+        justify-content: center;
+        .btn {
+          padding: 1rem;
+          font-size: 1.5rem;
+        }
+        .minus {
+          background-color: transparent;
+          border: $border;
+          color: #000;
+          box-shadow: none;
+        }
+        .count {
+          font: 800 1.5rem/2rem 'Inter';
+          padding: 0 1.75rem;
+        }
+        .plus {
+          background: $primary;
+        }
+      }
+      &s {
+        flex: 1 1 auto;
+
+        overflow-y: hidden;
+        .simplebar-content {
+          padding: 2rem !important;
+        }
+        & > div {
+          max-height: 100%;
+          outline: none;
+        }
+      }
+    }
+    &-footer {
+      padding-top: 2rem;
+      h6 {
+        font-weight: 400;
+      }
+      h3 {
+        margin-bottom: 2.5rem;
+      }
+      .btn.flat {
+        background: $primary;
+        &:hover {
+          background: $primary;
+        }
+      }
+    }
+  }
+
+  &-review {
+    &-root {
+      padding: 1.5rem 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      .back {
+        padding: 1.5rem 0;
+        border-radius: 2rem;
+        display: inline-block;
+        max-width: 12rem;
+        svg {
+          font-size: 2rem;
+          margin-right: 0.5rem;
+        }
+      }
+      & > h2 {
+        padding: 3.75rem 0;
+        border-bottom: $border;
+        margin-bottom: 1.25rem;
+      }
+      & > * {
+        &:not(.kiosk-review) {
+          flex: 0 0 auto;
+          margin: 0 1.5rem;
+        }
+      }
+      footer {
+        border-top: $border;
+        padding: 2.25rem 0 8rem;
+        .flex-v-center {
+          margin-bottom: 5rem;
+          justify-content: space-between;
+        }
+        .row {
+          margin: 0 -2.5rem;
+          .col-6 {
+            padding: 0 2.5rem;
+          }
+        }
+        .btn.flat {
+          background: $primary;
+        }
+      }
+    }
+    flex: 1 1 auto;
+    overflow: hidden;
+    & > * {
+      max-height: 100%;
+    }
+    &-item {
+      justify-content: space-between;
+      padding: 2rem;
+      .img-wrap {
+        width: 15rem;
+        aspect-ratio: 16 / 12;
+        margin-right: 1.25rem;
+        img {
+          object-fit: contain;
+        }
+      }
+      h4 {
+        max-width: 23rem;
+        span {
+          padding: 0 1rem;
+        }
       }
     }
   }

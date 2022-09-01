@@ -23,6 +23,7 @@
     "react-ink": "^6.5.1",
     "react-merge-refs": "^2.0.1",
     "sharp": "^0.30.7",
+    "simplebar-react": "^2.4.1",
     "tabbable": "5.2.1"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 import { useRouter } from 'next/router';
-import HorizontalScroll from 'ui/scrollMenu';
-import Button from 'ui/Button';
+import HorizontalScroll from 'modules/common/ui/scrollMenu';
+import Button from 'modules/common/ui/Button';
 import cn from 'classnames';
 
 export default function Categories({ categories }: any) {

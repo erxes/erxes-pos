@@ -2,7 +2,7 @@ import { IComponent } from 'modules/types';
 import { useEffect } from 'react';
 import { useConfigsContext } from './containers/Configs';
 import { useRouter } from 'next/router';
-import Loading from 'ui/Loading/index';
+import Loading from 'modules/common/ui/Loading/index';
 
 const CheckAuth: IComponent = ({ children }) => {
   const { currentUser } = useConfigsContext();

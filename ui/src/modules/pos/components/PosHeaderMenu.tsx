@@ -1,11 +1,11 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import Menu from 'icons/Menu';
-import Swap from 'icons/Swap';
-import PieChart from 'icons/PieChart';
-import Setting from 'icons/Settings';
-import Logout from 'icons/Logout';
-import Button from 'ui/Button';
+import Menu from 'modules/common/icons/Menu';
+import Swap from 'modules/common/icons/Swap';
+import PieChart from 'modules/common/icons/PieChart';
+import Setting from 'modules/common/icons/Settings';
+import Logout from 'modules/common/icons/Logout';
+import Button from 'modules/common/ui/Button';
 
 interface PosHeaderMenuProps {}
 

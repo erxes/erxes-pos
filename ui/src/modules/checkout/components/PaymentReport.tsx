@@ -1,6 +1,8 @@
-import Ebarimt from './Ebarimt';
+import { useUI } from 'ui/context';
+import Button from 'ui/Button';
 
 const PaymentReport = () => {
+  const { openModal } = useUI();
   return (
     <div className="col flex-center payment-report">
       <div className="white-tab text-center">
@@ -24,7 +26,9 @@ const PaymentReport = () => {
             <b>0%</b>
           </h6>
         </div>
-        <Ebarimt />
+        <Button onClick={openModal}>
+          <big>Баримт хэвлэх</big>
+        </Button>
       </div>
     </div>
   );

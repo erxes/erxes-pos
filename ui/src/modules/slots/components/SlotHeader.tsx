@@ -1,8 +1,8 @@
 import React from 'react';
-import HorizontalScroll from 'ui/scrollMenu';
+import HorizontalScroll from 'modules/common/ui/scrollMenu';
 import SlotNumber from './SlotNumber';
-import CaretDown from 'icons/CaretDown';
-import Button from 'ui/Button';
+import CaretDown from 'modules/common/icons/CaretDown';
+import Button from 'modules/common/ui/Button';
 
 function SlotsHeader() {
   return (

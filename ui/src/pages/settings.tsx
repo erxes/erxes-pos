@@ -1,12 +1,10 @@
-import BlackLayout from 'ui/BlackLayout';
+import BlackLayout from 'modules/common/ui/BlackLayout';
 import Container from 'modules/settings/components';
 
 const Settings = () => {
-  return (
-    <BlackLayout>
-      <Container />
-    </BlackLayout>
-  );
+  return <Container />;
 };
+
+Settings.Layout = BlackLayout;
 
 export default Settings;

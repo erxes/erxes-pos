@@ -4,8 +4,8 @@ import { Suspense, FC } from 'react';
 import { useConfigsContext } from '../containers/Configs';
 import { useState } from 'react';
 import type { IHandleLogin } from '../containers/Login';
-import Button from 'ui/Button';
-import Input from 'ui/Input';
+import Button from 'modules/common/ui/Button';
+import Input from 'modules/common/ui/Input';
 
 type ILogin = IProps & {
   login: IHandleLogin;

@@ -50,6 +50,9 @@
 .text-center {
   text-align: center;
 }
+.text-primary {
+  color: $primary;
+}
 
 .custom-scrollbar::-webkit-scrollbar {
   width: 0.25rem;

@@ -1,5 +1,4 @@
-import React from 'react';
-import Product from './Product';
+import ProductContainer from '../containers/Product';
 
 export default function Products({ products, onLoadMore }: any) {
   const handleScroll = ({ currentTarget }: any, onLoadMore: any) => {
@@ -15,7 +14,7 @@ export default function Products({ products, onLoadMore }: any) {
       onScroll={(e) => handleScroll(e, onLoadMore)}
     >
       {products.map((product: any, key: number) => (
-        <Product key={key} {...product} />
+        <ProductContainer {...product} key={key} />
       ))}
     </div>
   );

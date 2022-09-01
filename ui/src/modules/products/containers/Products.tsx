@@ -1,9 +1,10 @@
 import { useRouter } from 'next/router';
 import { useQuery, gql } from '@apollo/client';
 import { queries } from '../graphql';
-import Loading from 'ui/Loading';
+import Loading from 'modules/common/ui/Loading';
 import Products from '../components/Products';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import Empty from 'modules/common/ui/Empty';
 
 const ProductsContainer = () => {
   const router = useRouter();
@@ -35,6 +36,8 @@ const ProductsContainer = () => {
 
   const products = data.poscProducts || [];
   const productsCount = productsCountQuery.data.poscProductsTotalCount || 0;
+
+  if (!products.length || !productsCount) return <Empty />;
 
   const handleLoadMore = () => {
     if (productsCount > products.length) {

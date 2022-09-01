@@ -1,5 +1,5 @@
 import Image from 'next/future/image';
-import Button from 'ui/Button';
+import Button from 'modules/common/ui/Button';
 import Link from 'next/link';
 
 const welcome = () => {

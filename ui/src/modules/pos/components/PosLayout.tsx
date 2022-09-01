@@ -7,6 +7,8 @@ type Props = {
   children: any;
 };
 
+// const;
+
 function PosLayout({ children }: Props) {
   return (
     <>

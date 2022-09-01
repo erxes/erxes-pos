@@ -2,7 +2,7 @@ import { IComponent } from 'modules/types';
 import { useConfigsContext } from './Configs';
 import { useMutation, gql } from '@apollo/client';
 import { mutations, queries } from '../graphql';
-import Select from 'ui/Select';
+import Select from 'modules/common/ui/Select';
 
 const ChooseConfig: IComponent = () => {
   const { currentConfig, configs } = useConfigsContext();

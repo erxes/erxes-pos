@@ -1,4 +1,4 @@
-import Check from 'icons/Check';
+import Check from 'modules/common/icons/Check';
 
 const Radio = () => (
   <span className="radio">

@@ -6,7 +6,9 @@ const Header = () => {
     <header>
       <Image src="/background.png" fill alt="" sizes="100vw" />
       <div className="flex-v-center">
-        <Image alt="" src="/logo-white.png" height={100} width={200} />
+        <div className="img-wrap">
+          <Image alt="" src="/logo-white.png" fill />
+        </div>
         <Search open />
       </div>
     </header>

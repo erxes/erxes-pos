@@ -1,11 +1,17 @@
+button {
+  &.btn {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+  }
+}
+
 .btn {
   cursor: pointer;
   display: inline-flex;
   padding: 0.5rem 1.5rem;
   transition: all 0.15s ease-in-out;
-  font-size: 0.875rem;
-  line-height: 1.25rem;
-  font-weight: 600;
+  position: relative;
   letter-spacing: 0.025em;
   text-align: center;
   justify-content: center;
@@ -15,6 +21,7 @@
   border-radius: 0.5rem;
   color: rgba(0, 0, 0, 0.95);
   background: $background-gray;
+
   &:hover {
     background: #dcdcdc;
   }
@@ -46,4 +53,9 @@
     font-size: 1.125rem;
     line-height: 1.5rem;
   }
+}
+h4.btn {
+  padding: 2.25rem 0;
+  width: 100%;
+  border-radius: 2rem;
 }
