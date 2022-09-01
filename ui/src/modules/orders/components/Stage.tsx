@@ -7,6 +7,7 @@ import EmptyState from "modules/common/components/EmptyState";
 import { KioskStageContent } from "./kiosk/style";
 
 type Props = {
+  isPaid: boolean;
   orientation: string;
   items: IOrderItemInput[];
   changeItemCount: (item: IOrderItemInput) => void;
@@ -28,6 +29,7 @@ export default class Stage extends React.Component<Props> {
       stageHeight,
       type,
       mode,
+      isPaid
     } = this.props;
 
     if (!items || items.length === 0) {
@@ -50,6 +52,7 @@ export default class Stage extends React.Component<Props> {
         >
           {items.map((i) => (
             <StageItem
+              isPaid={isPaid}
               orientation={orientation}
               item={i}
               key={`${i._id}`}
@@ -73,6 +76,7 @@ export default class Stage extends React.Component<Props> {
         >
           {items.map((i) => (
             <StageItem
+              isPaid={isPaid}
               orientation={orientation}
               item={i}
               key={`${i._id}`}

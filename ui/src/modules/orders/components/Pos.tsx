@@ -6,7 +6,7 @@ import { NavLink, Link } from 'react-router-dom';
 import NameCard from 'modules/common/components/nameCard/NameCard';
 import AsyncComponent from 'modules/common/components/AsyncComponent';
 import { ICustomerParams, IOrder, IOrderItemInput, OrderDetailQueryResponse } from '../types';
-import { ORDER_TYPES, POS_MODES } from '../../../constants';
+import { ORDER_STATUSES, ORDER_TYPES, POS_MODES } from '../../../constants';
 import Calculation from './Calculation';
 import OrderSearch from '../containers/layout/OrderSearch';
 import { IUser } from 'modules/auth/types';
@@ -136,16 +136,23 @@ export default class Pos extends React.Component<Props, State> {
   onClickType = (type: string) => {
     this.setState({ type, isTypeChosen: !this.state.isTypeChosen });
   };
+
   mergeOrderItems(inputItems: IOrderItemInput[]) {
     const mergedItems = inputItems.reduce((acc, curr) => {
-      acc[curr.productId+curr.isTake] = { 
+      acc[curr.productId + curr.isTake] = {
         ...curr,
-        count: (acc[curr.productId+curr.isTake] ? acc[curr.productId+curr.isTake].count : 0) + curr.count };
+        count: (acc[curr.productId + curr.isTake] ? acc[curr.productId + curr.isTake].count : 0) + curr.count
+      };
       return acc;
     }, {});
-    return Object.values(mergedItems) as IOrderItemInput[]; 
+    return Object.values(mergedItems) as IOrderItemInput[];
   }
+
   setItems = (items: IOrderItemInput[]) => {
+    const { order } = this.props;
+    if (order && order._id && (order.status === ORDER_STATUSES.PAID || order.paidDate)) {
+      return;
+    }
     const merged = this.mergeOrderItems(items);
     this.setState({ items: merged, totalAmount: getTotalAmount(items, true) });
   };
@@ -162,7 +169,7 @@ export default class Pos extends React.Component<Props, State> {
 
     const totalAmount = getTotalAmount(items, true);
     this.setItems(items);
-    this.setState({totalAmount});
+    this.setState({ totalAmount });
   };
 
   changeItemIsTake = (item: IOrderItemInput, value: boolean) => {
@@ -184,7 +191,7 @@ export default class Pos extends React.Component<Props, State> {
     if (name === 'type') {
       const { items } = this.state;
       const isTake = value !== ORDER_TYPES.EAT;
-      const temp = items.map(i => ({ ...i, isTake })) 
+      const temp = items.map(i => ({ ...i, isTake }))
       this.setItems(temp);
     }
   };

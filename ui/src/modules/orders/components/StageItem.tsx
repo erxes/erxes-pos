@@ -109,13 +109,13 @@ const ProductName = styledTS<{ isTaken?: boolean; color?: string }>(styled.div)`
   }
 `;
 
-const AlignedFlexRow = styledTS<{ isDoing?: boolean }> (styled.div)`
+const AlignedFlexRow = styledTS<{ isDoing?: boolean }>(styled.div)`
   display: flex;
   flex-direction: row;
   gap: 5px;
   align-items: center;
 `;
-const IndicatorCircle = styledTS<{ isDoing?: string }> (styled.div)`
+const IndicatorCircle = styledTS<{ isDoing?: string }>(styled.div)`
   width: 8px;
   height: 8px;
   background: ${(props) =>
@@ -134,6 +134,7 @@ export const COUNT_TYPES = {
 };
 
 type Props = {
+  isPaid: boolean;
   item: IOrderItemInput;
   color: string;
   orientation?: string;
@@ -223,11 +224,14 @@ export default class StageItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { item, changeItemCount, color, mode } = this.props;
+    const { item, changeItemCount, color, mode, isPaid } = this.props;
     const { unitPrice, count, productImgUrl, productName } = item;
     const { countType } = this.state;
 
     const onRemoveItem = () => {
+      if (isPaid) {
+        return;
+      }
       changeItemCount({ ...item, count: 0 });
     };
 
@@ -294,7 +298,7 @@ export default class StageItem extends React.Component<Props, State> {
               {this.renderCheckbox()}
               <ProductName color={color} isTaken={item.isTake}>
                 <AlignedFlexRow>
-                  <IndicatorCircle isDoing={item.status}/>
+                  <IndicatorCircle isDoing={item.status} />
                   <b>{this.renderName()}</b>
                 </AlignedFlexRow>
                 <span>
@@ -309,6 +313,7 @@ export default class StageItem extends React.Component<Props, State> {
               value={count || 0}
               onChange={this.onChange}
               color={color}
+              isPaid={isPaid}
             />
           </ItemInfo>
           <Close onClick={onRemoveItem} color={color} isTaken={item.isTake}>

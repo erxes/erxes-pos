@@ -161,7 +161,7 @@ export default class Calculation extends React.Component<Props, State> {
       registerNumber: ''
     };
   }
-  
+
   onChange = value => {
     this.props.setOrderState('type', value);
   };
@@ -204,7 +204,7 @@ export default class Calculation extends React.Component<Props, State> {
       type,
       cancelOrder
     } = this.props;
-    if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
+    if (order && (order.status === ORDER_STATUSES.PAID || order.paidDate)) {
       return this.renderReceiptButton();
     }
 
@@ -515,6 +515,7 @@ export default class Calculation extends React.Component<Props, State> {
       orientation,
       type,
       productBodyType,
+      order
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
@@ -524,11 +525,11 @@ export default class Calculation extends React.Component<Props, State> {
     if (Object.keys(checkOrder).length !== 0) {
       newItems = [];
       const orderItems = checkOrder.items as IOrderItemInput[];
-      newItems = items.map( i => {
+      newItems = items.map(i => {
         let found = orderItems.find(
-          c => c.productId === i.productId 
-          && c._id === i._id
-          && c.status !== i.status 
+          c => c.productId === i.productId
+            && c._id === i._id
+            && c.status !== i.status
         )
         if (found) {
           i.status = found.status
@@ -544,6 +545,7 @@ export default class Calculation extends React.Component<Props, State> {
           {this.renderSlots()}
           <ColumnBetween>
             <Stage
+              isPaid={order ? (order.status === ORDER_STATUSES.PAID || Boolean(order.paidDate)) : false}
               orientation={orientation}
               items={newItems}
               changeItemCount={changeItemCount}

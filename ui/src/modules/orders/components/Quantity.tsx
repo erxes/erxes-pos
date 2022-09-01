@@ -58,6 +58,7 @@ type Props = {
   color: string;
   onChange: (value: number) => void;
   isPortrait?: boolean;
+  isPaid: boolean;
 };
 
 const formatNumber = (num: number) => {
@@ -67,7 +68,7 @@ const formatNumber = (num: number) => {
 };
 
 const Quantity = (props: Props) => {
-  const { value, step = 1, onChange, max, color, isPortrait } = props;
+  const { value, step = 1, onChange, max, color, isPortrait, isPaid } = props;
   const [inputValue, setInputValue] = useState(formatNumber(value));
   const widthValue = isPortrait ? 54 : 24;
 
@@ -88,6 +89,9 @@ const Quantity = (props: Props) => {
   };
 
   const changeValue = (val: number) => {
+    if (isPaid) {
+      return;
+    }
     setInputValue(formatNumber(val));
     onChange(val);
   };

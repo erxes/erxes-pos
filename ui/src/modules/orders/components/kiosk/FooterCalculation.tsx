@@ -9,6 +9,7 @@ import { IConfig, IOption } from "types";
 import { ICustomer, IOrder, IOrderItemInput } from "modules/orders/types";
 import Stage from "../Stage";
 import { FlexColumn } from "./style";
+import { ORDER_STATUSES } from '../../../../constants';
 
 const Wrapper = styledTS<{ color?: string }>(styled.div)`
   position: absolute;
@@ -180,6 +181,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
       orientation,
       type,
       changeItemIsTake,
+      order
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
@@ -189,6 +191,7 @@ export default class FooterCalculation extends React.Component<Props, State> {
         <Wrapper color={color}>
           <FlexColumn color={color} orientation={orientation}>
             <Stage
+              isPaid={order ? (order.status === ORDER_STATUSES.PAID || Boolean(order.paidDate)) : false}
               orientation={orientation}
               items={items}
               changeItemCount={changeItemCount}
