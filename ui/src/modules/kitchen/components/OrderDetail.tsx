@@ -21,10 +21,6 @@ type Props = {
   orderQuery: FullOrderQueryResponse;
 };
 
-type State = {
-  previousItems: IOrderItem[];
-};
-
 function Timer({ oTime }) {
   const { seconds, minutes, hours } = useTime({});
 
@@ -48,12 +44,11 @@ function Timer({ oTime }) {
   );
 }
 
-export default class OrderDetail extends React.Component<Props, State> {
+export default class OrderDetail extends React.Component<Props> {
+  private myRef: React.MutableRefObject<{} | null>;
   constructor(props: Props) {
     super(props);
-    this.state = {
-      previousItems: []
-    };
+    this.myRef = React.createRef();
   }
   renderTime(order) {
     const date = new Date(order.paidDate);
@@ -68,6 +63,8 @@ export default class OrderDetail extends React.Component<Props, State> {
   componentDidUpdate() {
     const checkOrder = this.props.order || {} as IOrder;
     if (checkOrder) {
+      this.myRef.current = checkOrder.items;
+
       if (checkOrder.items.every(item => item.status === ORDER_ITEM_STATUSES.DONE)) {
         this.props.editOrder({
           _id: checkOrder._id,
@@ -80,13 +77,10 @@ export default class OrderDetail extends React.Component<Props, State> {
 
   renderDetail(order: IOrder, color: string, color2: string) {
     const { items } = order;
-    const { previousItems } = this.state;
     if (!items || !items.length) {
       return null;
     }
-    if (previousItems.length <= 0) {
-      this.setState({previousItems: {...order.items}});
-    }
+
     const onItemCheck = (item) => {
       if (item.target.checked === true) {
         this.props.changeOrderItemStatus({
@@ -113,7 +107,15 @@ export default class OrderDetail extends React.Component<Props, State> {
         </p>
         <span>{__("Quantity")}:&nbsp;</span>
         <p>
-          {this.renderItemCount(item.count, previousItems[index] === undefined ? 0 : previousItems[index].count)}
+          {
+          this.renderItemCount(
+            item.count,
+            this.myRef.current ? 
+              this.myRef.current[index] === undefined ? 
+                0 
+              : this.myRef.current[index].count 
+            : 0
+          )}
         </p>
         <p>
           <FormControl
