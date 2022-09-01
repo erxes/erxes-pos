@@ -60,11 +60,20 @@ export default class OrderDetail extends React.Component<Props> {
 
     return <Timer oTime={oTime} />;
   }
+  componentWillMount() {
+    const checkOrder = this.props.order || {} as IOrder;
+    if (checkOrder) {
+      // save previous counts
+      this.myRef.current = checkOrder.items;
+    }
+  }
   componentDidUpdate() {
     const checkOrder = this.props.order || {} as IOrder;
     if (checkOrder) {
+      // save previous counts
       this.myRef.current = checkOrder.items;
 
+      // when all order items checked, check order as done
       if (checkOrder.items.every(item => item.status === ORDER_ITEM_STATUSES.DONE)) {
         this.props.editOrder({
           _id: checkOrder._id,
@@ -114,7 +123,7 @@ export default class OrderDetail extends React.Component<Props> {
               this.myRef.current[index] === undefined ? 
                 0 
               : this.myRef.current[index].count 
-            : 0
+            : item.count
           )}
         </p>
         <p>
