@@ -65,6 +65,18 @@ export default class OrderDetail extends React.Component<Props, State> {
 
     return <Timer oTime={oTime} />;
   }
+  componentDidUpdate() {
+    const checkOrder = this.props.order || {} as IOrder;
+    if (checkOrder) {
+      if (checkOrder.items.every(item => item.status === ORDER_ITEM_STATUSES.DONE)) {
+        this.props.editOrder({
+          _id: checkOrder._id,
+          status: "done",
+          number: checkOrder.number,
+        });
+      }
+    }
+  }
 
   renderDetail(order: IOrder, color: string, color2: string) {
     const { items } = order;
