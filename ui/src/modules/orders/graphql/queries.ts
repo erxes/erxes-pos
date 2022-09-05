@@ -58,6 +58,17 @@ const productCategories = `
   query poscProductCategories($excludeEmpty: Boolean) {
     poscProductCategories(excludeEmpty: $excludeEmpty) {
       ${commonFields}
+      attachment {
+        duration
+        name
+        size
+        type
+        url
+      }
+      description
+      parentId
+      order
+
     }
   }
 `;

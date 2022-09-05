@@ -352,7 +352,12 @@ export default class Calculation extends React.Component<Props, State> {
               });
           }
         })
-        .catch(error => (console.log(error)));
+        .catch(error => {
+          console.log(error)
+          if (error.message.includes('assertQueue')) {
+            Alert.error('Интернэтийн холболтоо шалгана уу')
+          }
+        });
     }
 
     const onChangeQrcode = e => {

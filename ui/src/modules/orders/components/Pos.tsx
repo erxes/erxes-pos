@@ -1,7 +1,7 @@
 import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 import NameCard from 'modules/common/components/nameCard/NameCard';
 import AsyncComponent from 'modules/common/components/AsyncComponent';
@@ -567,8 +567,12 @@ export default class Pos extends React.Component<Props, State> {
     const uiOptions = currentConfig ? currentConfig.uiOptions : {};
 
     const onBack = () => {
-      this.onClickType('eat');
-      this.setItems([]);
+      if (order && order._id && !order.paidDate) {
+        cancelOrder(order._id);
+      } else {
+        this.setItems([]);
+        window.location.href = '/';
+      }
     };
 
     const products = (
@@ -592,12 +596,12 @@ export default class Pos extends React.Component<Props, State> {
     return (
       <>
         <div className="headerKiosk">
-          <Link to="/">
-            <img
-              src={uiOptions.kioskHeaderImage || '/images/headerKiosk.png'}
-              alt="Kiosk header"
-            />
-          </Link>
+          <img
+            src={uiOptions.kioskHeaderImage || '/images/headerKiosk.png'}
+            max-height="205px"
+            alt="Kiosk header"
+            onClick={onBack}
+          />
         </div>
         <KioskMainContent>
           <KioskMenuContent>
@@ -608,7 +612,7 @@ export default class Pos extends React.Component<Props, State> {
                 block
                 onClick={onBack}
               >
-                Cancel
+                {__('Cancel to home')}
               </Button>
               {categories}
             </MenuContent>
