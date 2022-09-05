@@ -1,15 +1,15 @@
-import Button from 'modules/common/ui/Button';
-import Link from 'next/link';
+import Button from 'ui/Button';
+import { useApp } from 'modules/AppContext';
+import GoToPaymentContainer from '../containers/GoToPayment';
 
 const CheckoutControls = () => {
+  const { delivery } = useApp();
   return (
     <div className="checkout-controls">
-      <Button className="take">Авч явах</Button>
-      <Link href="/checkout" passHref>
-        <Button className="pay" Component="a">
-          Төлбөр төлөх 42 500₮
-        </Button>
-      </Link>
+      <Button className="take" onClick={delivery}>
+        Авч явах
+      </Button>
+      <GoToPaymentContainer />
     </div>
   );
 };

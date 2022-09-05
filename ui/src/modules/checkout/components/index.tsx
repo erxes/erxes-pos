@@ -1,11 +1,14 @@
 import PaymentControls from './PaymentControls';
 import PaymentReport from './PaymentReport';
+import { CheckoutContextProvider } from '../context';
 
 const Payment = () => {
   return (
     <div className="checkout row">
-      <PaymentControls />
-      <PaymentReport />
+      <CheckoutContextProvider>
+        <PaymentControls />
+        <PaymentReport />
+      </CheckoutContextProvider>
     </div>
   );
 };

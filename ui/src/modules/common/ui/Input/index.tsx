@@ -1,11 +1,11 @@
-import React, { InputHTMLAttributes } from 'react';
+import type { FC, InputHTMLAttributes } from 'react';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   onChange?: (...args: any[]) => any;
 }
 
-const Input: React.FC<InputProps> = (props) => {
+const Input: FC<InputProps> = (props) => {
   const { className, children, onChange, ...rest } = props;
 
   const handleOnChange = (e: any) => {

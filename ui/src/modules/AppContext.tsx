@@ -1,18 +1,22 @@
-import { count } from 'console';
-import React, { useCallback, useMemo, ReactNode, useReducer } from 'react';
+import React, { useCallback, useMemo, useReducer } from 'react';
 import type { IComponent, ICartItem, IProductBase } from './types';
 
 export interface State {
   cart: ICartItem[];
+  isCartSelected: boolean;
 }
 
 const initialState = {
+  isCartSelected: false,
   cart: [],
 };
 
 type Action =
   | { type: 'ADD_ITEM_TO_CART'; product: IProductBase }
-  | { type: 'CHANGE_COUNT'; _id: string; count: number };
+  | { type: 'CHANGE_COUNT'; _id: string; count: number }
+  | { type: 'SELECT'; _id: string }
+  | { type: 'SELECT_ALL' }
+  | { type: 'DELIVERY' };
 
 export const AppContext = React.createContext<{} | any>(initialState);
 
@@ -39,6 +43,7 @@ const appReducer = (state: State, action: Action) => {
           productId: product._id,
           isTake: false,
           count: 1,
+          isSelected: false,
         };
         currentCart.push(cartItem);
       }
@@ -48,7 +53,7 @@ const appReducer = (state: State, action: Action) => {
       };
     }
     case 'CHANGE_COUNT': {
-      const { cart } = state;
+      const { cart, isCartSelected } = state;
       const { _id, count } = action;
       const currentCart = cart.slice();
 
@@ -61,9 +66,45 @@ const appReducer = (state: State, action: Action) => {
         const index = currentCart.indexOf(foundItem);
         if (index > -1) {
           currentCart.splice(index, 1);
-          return { ...state, cart: currentCart };
+          return {
+            ...state,
+            cart: currentCart,
+            isCartSelected: currentCart.length === 0 ? false : isCartSelected,
+          };
         }
       }
+    }
+    case 'SELECT': {
+      const { cart } = state;
+      const { _id } = action;
+      const currentCart = cart.slice();
+      const foundItem = currentCart.find((item) => item._id === _id);
+      if (foundItem) {
+        foundItem.isSelected = !foundItem.isSelected;
+        return { ...state, cart: currentCart };
+      }
+    }
+    case 'SELECT_ALL': {
+      const { cart, isCartSelected } = state;
+
+      if (cart.length === 0) return { ...state, isCartSelected: false };
+
+      const newCart = cart.map((item) => ({
+        ...item,
+        isSelected: !isCartSelected,
+      }));
+      return { ...state, cart: newCart, isCartSelected: !isCartSelected };
+    }
+    case 'DELIVERY': {
+      const { cart } = state;
+      const newCart = cart.map((item) => ({
+        ...item,
+        isTake: item.isSelected,
+      }));
+      return {
+        ...state,
+        cart: newCart,
+      };
     }
     default:
       return state;
@@ -72,7 +113,7 @@ const appReducer = (state: State, action: Action) => {
 
 export const AppContextProvider: IComponent = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
-  const mode = 'kiosk';
+  const mode = 'pos';
 
   const addItemToCart = useCallback(
     (product: IProductBase) => dispatch({ type: 'ADD_ITEM_TO_CART', product }),
@@ -85,12 +126,30 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const selectItem = useCallback(
+    (_id: string) => dispatch({ type: 'SELECT', _id }),
+    [dispatch]
+  );
+
+  const selectAll = useCallback(
+    () => dispatch({ type: 'SELECT_ALL' }),
+    [dispatch]
+  );
+
+  const delivery = useCallback(
+    () => dispatch({ type: 'DELIVERY' }),
+    [dispatch]
+  );
+
   const value = useMemo(
     () => ({
       ...state,
       mode,
       addItemToCart,
       changeItemCount,
+      selectItem,
+      selectAll,
+      delivery,
     }),
     [state]
   );

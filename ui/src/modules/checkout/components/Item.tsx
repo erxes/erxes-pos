@@ -1,18 +1,31 @@
 import type { FC } from 'react';
 import type { ICartItem } from 'modules/types';
-import Checkbox from 'modules/common/ui/Checkbox';
-import Counter from 'modules/common/ui/Counter';
+import { useApp } from 'modules/AppContext';
+import Checkbox from 'ui/Checkbox';
+import Counter from 'ui/Counter';
+import Motocycle from 'icons/Motocycle';
 import { formatNum } from 'modules/utils';
 
-const CheckoutItem: FC<ICartItem> = ({ name, count, unitPrice, _id }) => {
+const CheckoutItem: FC<ICartItem> = ({
+  name,
+  count,
+  unitPrice,
+  _id,
+  isTake,
+  isSelected,
+}) => {
+  const { selectItem } = useApp();
   return (
     <div className="flex-v-center checkout-item">
       <div className="checkout-item-main flex-v-center">
-        <Checkbox />
+        <Checkbox checked={isSelected} onChange={() => selectItem(_id)} />
         <div className="flex-v-center">
           <span className="status" />
           <b>
-            <span className="name">{name}</span>
+            <span className="name flex-v-center">
+              <span>{name}</span>
+              {isTake && <Motocycle />}
+            </span>
             <span className="price">{formatNum(unitPrice)}</span>
           </b>
         </div>

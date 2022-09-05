@@ -59,6 +59,9 @@ caption {
 
 .img-wrap {
   position: relative;
+  img {
+    inset: 0;
+  }
 }
 
 .checkbox {

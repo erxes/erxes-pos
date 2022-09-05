@@ -63,7 +63,7 @@ const Button: React.FC<ButtonProps> = forwardRef((props, buttonRef) => {
           <LoadingDots />
         </i>
       )}
-      {riffle && <Ink duration={700} />}
+      {riffle && !disabled && <Ink duration={700} />}
     </Component>
   );
 });
