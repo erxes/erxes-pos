@@ -25,7 +25,7 @@ class SignIn extends React.Component<Props> {
           <FormControl
             {...formProps}
             name="email"
-            placeholder={__("registered@email.com")}
+            placeholder={__('registered@email.com')}
             required={true}
           />
         </FormGroup>
@@ -35,7 +35,7 @@ class SignIn extends React.Component<Props> {
             {...formProps}
             name="password"
             type="password"
-            placeholder={__("password")}
+            placeholder={__('password')}
             required={true}
           />
         </FormGroup>
@@ -50,18 +50,18 @@ class SignIn extends React.Component<Props> {
 
   render() {
     const { currentConfig, configs } = this.props;
-    const { colors = {} } = currentConfig.uiOptions || {};
+    const { colors = {} } = (currentConfig || {}).uiOptions || {};
 
     return (
       <AuthBox mainColor={colors.primary}>
         {configs && configs.length > 1 && (
           <ChooseConfig mainColor={colors.primary}>
-            <h1>{__("Choose POS")}</h1>
+            <h1>{__('Choose POS')}</h1>
             <Select
-              options={(configs || []).map(c => {
+              options={(configs || []).map((c) => {
                 return {
                   label: `${c.name} - ${c.token}`,
-                  value: c.token
+                  value: c.token,
                 };
               })}
               clearable={true}
@@ -70,10 +70,10 @@ class SignIn extends React.Component<Props> {
             />
           </ChooseConfig>
         )}
-        <h2>{__("Sign in")}</h2>
+        <h2>{__('Sign in')}</h2>
         <Form renderContent={this.renderContent} />
         <Links>
-          <Link to="/forgot-password">{__("Forgot password?")}</Link>
+          <Link to="/forgot-password">{__('Forgot password?')}</Link>
         </Links>
       </AuthBox>
     );

@@ -320,7 +320,9 @@ export default withProps<Props>(
       options: ({ qp }) => ({
         variables: {
           searchValue: qp && qp.searchValue ? qp.searchValue : '',
-          categoryId: qp && qp.categoryId ? qp.categoryId : ''
+          categoryId: qp && qp.categoryId ? qp.categoryId : '',
+          page: 1,
+          perPage: 30
         }
       })
     }),
