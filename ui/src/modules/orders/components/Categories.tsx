@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
-import { router } from "modules/common/utils";
-import { IProduct, IProductCategory } from "../types";
-import CategoryItem from "./CategoryItem";
-import { IConfig, IRouterProps } from "types";
-import { CategoriesColumn } from "../styles";
+import { router } from 'modules/common/utils';
+import { IProduct, IProductCategory } from '../types';
+import CategoryItem from './CategoryItem';
+import { IConfig, IRouterProps } from 'types';
+import { CategoriesColumn } from '../styles';
 
 type Props = {
   productCategories: IProductCategory[];
@@ -30,7 +30,7 @@ export default class Categories extends React.Component<Props, State> {
   }
 
   componentDidMount() {
-    const height = document.getElementById("product-categories");
+    const height = document.getElementById('product-categories');
 
     this.setState({ categoriesHeight: height ? height.clientHeight : 0 });
   }
@@ -45,7 +45,7 @@ export default class Categories extends React.Component<Props, State> {
 
   render() {
     const { productCategories, qp, orientation, mode } = this.props;
-    const catId = qp && qp.categoryId ? qp.categoryId : "";
+    const catId = qp && qp.categoryId ? qp.categoryId : '';
 
     const categories = productCategories.map((cat) => (
       <CategoryItem

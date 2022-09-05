@@ -1,8 +1,8 @@
-import styled, { css } from "styled-components";
-import styledTS from "styled-components-ts";
-import { dimensions, colors } from "modules/common/styles";
-import { darken, rgba } from "modules/common/styles/ecolor";
-import { FlexBetween, SimpleButton } from "modules/common/styles/main";
+import styled, { css } from 'styled-components';
+import styledTS from 'styled-components-ts';
+import { dimensions, colors } from 'modules/common/styles';
+import { darken, rgba } from 'modules/common/styles/ecolor';
+import { FlexBetween, SimpleButton } from 'modules/common/styles/main';
 
 export const PosWrapper = styled.div`
   position: relative;
@@ -63,7 +63,7 @@ export const StageItems = styledTS<{
   /* width */
   ::-webkit-scrollbar {
     width: ${(props) =>
-      props.innerWidth ? `${props.innerWidth * 0.01}px` : "6px"}
+      props.innerWidth ? `${props.innerWidth * 0.01}px` : '6px'}
   }
 
   /* Track */
@@ -91,14 +91,14 @@ export const MainContent = styledTS<{
   hasShadow?: boolean;
   isHalf?: boolean;
 }>(styled.div)`
-  padding: ${(props) => (props.numPadding ? "20px 0px 20px 0" : "20px")};
+  padding: ${(props) => (props.numPadding ? '20px 0px 20px 0' : '20px')};
   background: ${(props) => props.hasBackground && colors.colorWhite};
   box-shadow: ${(props) =>
-    props.hasShadow && "rgb(217, 226, 236) 0px 0px 24px 0px;"};
-  height: ${(props) => (props.isHalf ? "" : "100vh;")};
+    props.hasShadow && 'rgb(217, 226, 236) 0px 0px 24px 0px;'};
+  height: ${(props) => (props.isHalf ? '' : '100vh;')};
 
   @media (max-width: 1170px) and (orientation:landscape) {
-    padding: ${(props) => (props.numPadding ? "15px 0;" : "15px 10px")};
+    padding: ${(props) => (props.numPadding ? '15px 0;' : '15px 10px')};
   }
 `;
 
@@ -107,7 +107,7 @@ export const MenuContent = styledTS<{ hasItems?: boolean }>(styled.div)`
   overflow: auto;
   padding: 20px;
   justify-content: center;
-  max-height: ${(props) => props.hasItems && "calc(100% - 300px)"};
+  max-height: ${(props) => props.hasItems && 'calc(100% - 300px)'};
 
   button {
     font-size: 22px;
@@ -117,7 +117,8 @@ export const MenuContent = styledTS<{ hasItems?: boolean }>(styled.div)`
 
 export const PosMenuContent = styled.div`
   height: 100%;
-  justify-content: center;
+  display: flex;
+  flex-direction: column;
 
   img {
     width: 50px;
@@ -144,9 +145,9 @@ export const ScreenContent = styledTS<{
 `;
 
 export const ProductCategories = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  margin: ${(props) => (props.isPortrait ? "" : "30px 0")};
-  width: ${(props) => (props.isPortrait ? "" : "50%")};
-  display: ${(props) => (props.isPortrait ? "grid" : "")};
+  margin: ${(props) => (props.isPortrait ? '' : '30px 0')};
+  width: ${(props) => (props.isPortrait ? '' : '50%')};
+  display: ${(props) => (props.isPortrait ? 'grid' : '')};
   justify-content: center;
 
   @media (max-width: 1170px) and (orientation: landscape) {
@@ -212,11 +213,15 @@ export const ProductsWrapper = styledTS<{
   }
 
   @media (orientation: portrait) {
-    max-height: ${(props) => (props.hasItems ? "calc(100% - 300px)" : "100%")};
+    max-height: ${(props) => (props.hasItems ? 'calc(100% - 300px)' : '100%')};
   }
 `;
 
 export const CategoriesColumn = styled.div`
+  overflow-y: auto;
+  /* max-height: 450px; */
+  overflow-x: hidden;
+  flex: 1 1 auto;
   @media (max-width: 1170px) and (orientation: landscape) {
     max-height: 450px;
   }
@@ -230,17 +235,17 @@ export const ProductCategory = styledTS<{
 }>(styled.div)`
   border-radius: 16px;
   box-shadow: ${(props) =>
-    props.isPortrait ? "2px 2px 4px rgba(0, 0, 0, 0.25)" : ""};
-  margin: ${(props) => (props.isPortrait ? "0 0px 15px 0" : "10px 0 0 0")};
-  padding: ${(props) => (props.isPortrait ? "" : `5px`)};
-  background: ${(props) => (props.isActive ? "#fff" : "")};
+    props.isPortrait ? '2px 2px 4px rgba(0, 0, 0, 0.25)' : ''};
+  margin: ${(props) => (props.isPortrait ? '0 0px 15px 0' : '10px 0 0 0')};
+  padding: ${(props) => (props.isPortrait ? '' : `5px`)};
+  background: ${(props) => (props.isActive ? '#fff' : '')};
   cursor: pointer;
   border: ${(props) =>
     props.isActive
       ? props.isPortrait
-        ? ""
+        ? ''
         : `1px solid ${props.color ? props.color : colors.colorSecondary}`
-      : ""};
+      : ''};
   color: ${(props) => props.isActive && props.color};
   transition: all ease .3s;
   overflow: hidden;
@@ -258,7 +263,7 @@ export const ProductCategory = styledTS<{
           ? props.color
           : colors.colorSecondary
         : colors.textPrimary};
-    font-weight: ${(props) => (props.isActive ? "600" : "500")};
+    font-weight: ${(props) => (props.isActive ? '600' : '500')};
     font-size: 12px;
   }
 
@@ -358,7 +363,7 @@ export const Lines = styledTS<{ isActive?: boolean; color?: string }>(
         ? props.color
           ? props.color
           : colors.colorSecondary
-        : ""};
+        : ''};
   }
 `;
 
@@ -378,7 +383,7 @@ export const LeftCircle = styledTS<{ isActive?: boolean; color?: string }>(
     border: ${(props) =>
       props.isActive
         ? `1px solid ${props.color ? props.color : colors.colorSecondary}`
-        : ""};
+        : ''};
   }
 `;
 
@@ -389,10 +394,10 @@ export const Item = styledTS<{
   color?: string;
 }>(styled.div)`
   box-shadow: ${(props) =>
-    props.isPortrait ? "" : "0px 2px 4px rgba(0, 0, 0, 0.1)"};
+    props.isPortrait ? '' : '0px 2px 4px rgba(0, 0, 0, 0.1)'};
   border-radius: 24px;
-  background: ${(props) => (props.isPortrait ? "" : `${colors.colorWhite}`)};
-  display: ${(props) => (props.isPortrait ? "" : "flex")};
+  background: ${(props) => (props.isPortrait ? '' : `${colors.colorWhite}`)};
+  display: ${(props) => (props.isPortrait ? '' : 'flex')};
   align-items: center;
   cursor: pointer;
   margin: 0 20px 20px 0;
@@ -404,7 +409,7 @@ export const Item = styledTS<{
 
   .image-wrapper {
     width: 35%;
-    max-height: ${(props) => (props.isPortrait ? "170px" : "120px")};
+    max-height: ${(props) => (props.isPortrait ? '170px' : '120px')};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -483,7 +488,7 @@ export const Item = styledTS<{
       align-items: center;
       justify-content: center;
       color: ${(props) =>
-        props.isPortrait && props.isActive ? "#1F2933" : "#616E7C;"};
+        props.isPortrait && props.isActive ? '#1F2933' : '#616E7C;'};
     }
 
     span {
@@ -506,7 +511,7 @@ export const Item = styledTS<{
 
   &:hover {
     box-shadow: ${(props) =>
-      props.isPortrait ? "" : "0px 3px 4px rgba(0, 0, 0, 0.12);"};
+      props.isPortrait ? '' : '0px 3px 4px rgba(0, 0, 0, 0.12);'};
   }
 `;
 
@@ -535,7 +540,7 @@ export const ProductLabel = styledTS<{ color?: string; isPortrait?: boolean }>(
   padding: 10px;
   margin-top: 10px;
   border-radius: 8px;
-  font-size: ${(props) => (props.isPortrait ? "24px" : "12px")};
+  font-size: ${(props) => (props.isPortrait ? '24px' : '12px')};
   text-align: center;
   font-weight: 500;
   cursor: pointer;
@@ -570,8 +575,8 @@ export const ToggleButton = styled(SimpleButton)`
 `;
 
 export const Type = styledTS<{ checked?: boolean; color?: string }>(styled.div)`
- border: 1px solid ${(props) => (props.checked ? props.color : "#cbd2d9")};
- font-weight: ${(props) => (props.checked ? "bold" : "")};
+ border: 1px solid ${(props) => (props.checked ? props.color : '#cbd2d9')};
+ font-weight: ${(props) => (props.checked ? 'bold' : '')};
  cursor: pointer;
  padding: 10px;
  width: 49%;
@@ -587,7 +592,7 @@ export const Type = styledTS<{ checked?: boolean; color?: string }>(styled.div)`
 `;
 
 export const StageContent = styledTS<{ odd?: boolean }>(styled.div)`
-  height: ${(props) => props.odd && "100%"};
+  height: ${(props) => props.odd && '100%'};
 
   @media (max-heigth: 768px) {
     overflow: auto
@@ -609,7 +614,7 @@ export const Drawer = styledTS<{ show: boolean }>(styled.div)`
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
   transition: all ease .3s;
-  display: ${(props) => !props.show && "none"};
+  display: ${(props) => !props.show && 'none'};
 
   > div {
     height: 100%;
@@ -644,7 +649,7 @@ export const DrawerContent = styledTS<{
   /* width */
   ::-webkit-scrollbar {
     width: ${(props) =>
-      props.innerWidth ? `${props.innerWidth * 0.02}px` : ""}
+      props.innerWidth ? `${props.innerWidth * 0.02}px` : ''}
   }
 
   /* Track */
@@ -699,7 +704,7 @@ export const OrderBox = styledTS<{
   flex-direction: column;
   justify-content: center;
   cursor: pointer;
-  border-color: ${(props) => (props.color ? props.color : "#ddd")};
+  border-color: ${(props) => (props.color ? props.color : '#ddd')};
 
   div {
     margin-top: 10px;
@@ -719,7 +724,7 @@ export const OrderBox = styledTS<{
       color: #616E7C;
       word-break: break-word;
       line-height: 15px;
-      font-size: ${(props) => (props.isPortrait ? "11px" : "16px")};
+      font-size: ${(props) => (props.isPortrait ? '11px' : '16px')};
 
       @media (max-width: 1200px) and (orientation: landscape) {
         font-size: 11px;
@@ -733,20 +738,20 @@ export const OrderBox = styledTS<{
 
   label {
     color: ${(props) =>
-      props.type === "Take"
+      props.type === 'Take'
         ? props.color
           ? props.color
           : colors.colorSecondary
-        : "#00124E"};
+        : '#00124E'};
     padding: 2px 6px;
     font-size: 11px;
     border-radius: 20px;
     border: 1px solid ${(props) =>
-      props.type === "Take"
+      props.type === 'Take'
         ? props.color
           ? props.color
           : colors.colorSecondary
-        : "#00124E"};
+        : '#00124E'};
   }
 
   &:nth-child(3n) {
@@ -776,11 +781,11 @@ export const SearchInputWrapper = styledTS<{
   width: ${(props) =>
     props.active
       ? props.full
-        ? "100%"
-        : "280px"
+        ? '100%'
+        : '280px'
       : props.full
-      ? "100%"
-      : "120px"};
+      ? '100%'
+      : '120px'};
   display: flex;
   padding: 0 ${dimensions.unitSpacing}px;
   align-items: center;
@@ -825,46 +830,46 @@ export const CardInputColumn = styled(FlexColumn)`
 `;
 
 export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
-  font-size: ${(props) => props.isPortrait && "30px"};
+  font-size: ${(props) => props.isPortrait && '30px'};
 
   label {
-    font-size: ${(props) => props.isPortrait && "24px"};
+    font-size: ${(props) => props.isPortrait && '24px'};
 
     > span {
-      font-size: ${(props) => props.isPortrait && "30px"};
+      font-size: ${(props) => props.isPortrait && '30px'};
 
       &:before {
-        height: ${(props) => props.isPortrait && "30px"};
-    width: ${(props) => props.isPortrait && "30px"};
+        height: ${(props) => props.isPortrait && '30px'};
+    width: ${(props) => props.isPortrait && '30px'};
       }
     }
   }
 
   input {
-    height: ${(props) => props.isPortrait && "60px"} !important;
-    font-size: ${(props) => props.isPortrait && "27px"} !important;
+    height: ${(props) => props.isPortrait && '60px'} !important;
+    font-size: ${(props) => props.isPortrait && '27px'} !important;
   }
 
   .icon-cancel {
-    font-size: ${(props) => props.isPortrait && "20px"};
+    font-size: ${(props) => props.isPortrait && '20px'};
   }
 
   button {
-    font-size: ${(props) => props.isPortrait && "28px"};
+    font-size: ${(props) => props.isPortrait && '28px'};
   }
 
   .react-toggle-track {
-    height: ${(props) => props.isPortrait && "40px"};
-    width: ${(props) => props.isPortrait && "90px"};
+    height: ${(props) => props.isPortrait && '40px'};
+    width: ${(props) => props.isPortrait && '90px'};
   }
 
   .react-toggle--checked .react-toggle-thumb {
-    left: ${(props) => props.isPortrait && "50px"};
+    left: ${(props) => props.isPortrait && '50px'};
   }
 
   .react-toggle-thumb {
-    height: ${(props) => props.isPortrait && "40px"};
-    width: ${(props) => props.isPortrait && "40px"};
+    height: ${(props) => props.isPortrait && '40px'};
+    width: ${(props) => props.isPortrait && '40px'};
   }
 
   .jbyscQ {
@@ -875,10 +880,10 @@ export const FormHead = styledTS<{ isPortrait?: boolean }>(styled.div)`
 export const Input = styledTS<{ color?: string; setBill?: string }>(styled.div)`
   display: flex;
   align-items: center;
-  width: ${(props) => (props.setBill ? "500px" : "150px")};
+  width: ${(props) => (props.setBill ? '500px' : '150px')};
 
   border: ${(props) =>
-    props.setBill ? "1px solid #ff7800" : "1px solid #ddd"};
+    props.setBill ? '1px solid #ff7800' : '1px solid #ddd'};
   border-radius: 8px;
   padding: 3px 10px;
   flex: 1;
@@ -902,7 +907,7 @@ export const Input = styledTS<{ color?: string; setBill?: string }>(styled.div)`
   }
 
   @media (max-width: 1250px) and (orientation: landscape){
-    width: ${(props) => (props.setBill ? "320px" : "")};
+    width: ${(props) => (props.setBill ? '320px' : '')};
   }
 
   > div {
@@ -927,6 +932,7 @@ export const LogoSection = styledTS<{ color?: string }>(styled.div)`
     display: flex;
     align-items: center;
     margin: ${dimensions.unitSpacing}px 0 30px;
+    flex: 0 0 auto;
 
     > a {
       margin-right: 5px;
@@ -1008,11 +1014,11 @@ export const Amount = styledTS<{ isPortrait?: boolean; color?: string }>(
   border-radius: 8px;
   padding: 10px;
   margin-bottom: 10px;
-  font-weight: ${(props) => (props.isPortrait ? "300" : "600")}
+  font-weight: ${(props) => (props.isPortrait ? '300' : '600')}
   color: ${(props) => (props.color ? props.color : colors.colorSecondary)};
-  height: ${(props) => (props.isPortrait ? " 115px" : "")}
-  display: ${(props) => (props.isPortrait ? " block" : "")};
-  margin-top: ${(props) => (props.isPortrait ? " 20px" : "")};
+  height: ${(props) => (props.isPortrait ? ' 115px' : '')}
+  display: ${(props) => (props.isPortrait ? ' block' : '')};
+  margin-top: ${(props) => (props.isPortrait ? ' 20px' : '')};
 
   .payment-wrapper {
     display: flex;
