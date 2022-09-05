@@ -109,12 +109,32 @@ const ProductName = styledTS<{ isTaken?: boolean; color?: string }>(styled.div)`
   }
 `;
 
+const AlignedFlexRow = styledTS<{ isDoing?: boolean }>(styled.div)`
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+  align-items: center;
+`;
+const IndicatorCircle = styledTS<{ isDoing?: string }>(styled.div)`
+  width: 8px;
+  height: 8px;
+  background: ${(props) =>
+    props.isDoing === 'doing' || props.isDoing === 'confirm'
+      ? "#fbc531"
+      : props.isDoing === 'done' || props.isDoing === 'complete' ? "#4cd137" : '#dcdde1'
+  };
+  border-radius: 50%;
+  -moz-border-radius: 50%;
+  -webkit-border-radius: 50%;
+`;
+
 export const COUNT_TYPES = {
   MINUS: "minus",
   PLUS: "plus",
 };
 
 type Props = {
+  isPaid: boolean;
   item: IOrderItemInput;
   color: string;
   orientation?: string;
@@ -145,7 +165,6 @@ export default class StageItem extends React.Component<Props, State> {
 
   onChange(e) {
     const { item, changeItemCount } = this.props;
-
     changeItemCount({ ...item, count: parseInt(e) });
   }
 
@@ -205,11 +224,14 @@ export default class StageItem extends React.Component<Props, State> {
   }
 
   render() {
-    const { item, changeItemCount, color, mode } = this.props;
+    const { item, changeItemCount, color, mode, isPaid } = this.props;
     const { unitPrice, count, productImgUrl, productName } = item;
     const { countType } = this.state;
 
     const onRemoveItem = () => {
+      if (isPaid) {
+        return;
+      }
       changeItemCount({ ...item, count: 0 });
     };
 
@@ -275,7 +297,10 @@ export default class StageItem extends React.Component<Props, State> {
             <div>
               {this.renderCheckbox()}
               <ProductName color={color} isTaken={item.isTake}>
-                <b>{this.renderName()}</b>
+                <AlignedFlexRow>
+                  <IndicatorCircle isDoing={item.status} />
+                  <b>{this.renderName()}</b>
+                </AlignedFlexRow>
                 <span>
                   {Number((unitPrice || 0).toFixed(1)).toLocaleString()}₮
                   {this.renderDiscount()}
@@ -288,6 +313,7 @@ export default class StageItem extends React.Component<Props, State> {
               value={count || 0}
               onChange={this.onChange}
               color={color}
+              isPaid={isPaid}
             />
           </ItemInfo>
           <Close onClick={onRemoveItem} color={color} isTaken={item.isTake}>

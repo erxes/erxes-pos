@@ -9,16 +9,18 @@ import Spinner from 'modules/common/components/Spinner';
 import { Alert, __, router, confirm } from 'modules/common/utils';
 import { IRouterProps, IConfig } from '../../../types';
 import { trimGraphqlError, withProps } from '../../utils';
-import { mutations, queries } from '../graphql/index';
+import { mutations, queries, subscriptions } from '../graphql/index';
 import Pos from '../components/Pos';
 import {
   OrdersAddMutationResponse,
   OrdersEditMutationResponse,
-  OrderDetailQueryResponse
+  OrderDetailQueryResponse,
+  OrderChangeStatusMutationResponse,
 } from '../types';
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
 import { IUser } from 'modules/auth/types';
 import { SlotsQueryResponse } from '../types';
+import { ORDER_STATUSES } from '../../../constants';
 
 type Props = {
   ordersAddMutation: OrdersAddMutationResponse;
@@ -35,6 +37,7 @@ type Props = {
   settlePaymentMutation: any;
   ordersCancelMutation: any;
   slotsQuery: SlotsQueryResponse;
+  orderChangeStatusMutation: OrderChangeStatusMutationResponse;
 } & IRouterProps;
 
 type States = {
@@ -58,10 +61,18 @@ class PosContainer extends React.Component<Props, States> {
     this.state = {
       productBodyType: 'product',
       showMenu: false,
-      modalContentType: ''
+      modalContentType: '',
     };
   }
-
+  componentDidUpdate() {
+    this.props.orderDetailQuery.subscribeToMore({
+      document: gql(subscriptions.orderItemsOrdered),
+      variables: { statuses: ["paid", "confirm", "done", "complete"] },
+      updateQuery: () => {
+        this.props.orderDetailQuery.refetch();
+      },
+    });
+  }
   render() {
     const {
       ordersAddMutation,
@@ -71,9 +82,11 @@ class PosContainer extends React.Component<Props, States> {
       ordersCancelMutation,
       addPaymentMutation,
       settlePaymentMutation,
-      slotsQuery
+      orderChangeStatusMutation,
+      slotsQuery,
     } = this.props;
     const { showMenu, modalContentType, productBodyType } = this.state;
+
 
     if (orderDetailQuery.loading || slotsQuery.loading) {
       return <Spinner />;
@@ -130,7 +143,7 @@ class PosContainer extends React.Component<Props, States> {
             Alert.success(__('Order has been created successfully'));
 
             router.setParams(this.props.history, { id: order._id, home: null });
-
+            orderChangeStatusMutation({ variables: Object.assign({_id: order._id, status: ORDER_STATUSES.CONFIRM}) })
             if (callback) {
               callback();
             }
@@ -150,7 +163,7 @@ class PosContainer extends React.Component<Props, States> {
             if (callback) {
               callback();
             }
-
+            orderChangeStatusMutation({ variables: Object.assign({_id: data.ordersEdit._id, status: ORDER_STATUSES.CONFIRM}) })
             return data.ordersEdit;
           }
         })
@@ -239,6 +252,13 @@ class PosContainer extends React.Component<Props, States> {
         });
     };
 
+    const changeOrderStatus = (doc: any) => {
+      orderChangeStatusMutation({ variables: { ...doc } }).then(() => {
+        Alert.success(`${doc.number} has been saved successfully.`);
+      }).catch(e => {
+        return Alert.error(e.message);
+      });
+    };
     const updatedProps = {
       ...this.props,
       createOrder,
@@ -255,8 +275,9 @@ class PosContainer extends React.Component<Props, States> {
       settlePayment,
       showMenu,
       modalContentType,
+      changeOrderStatus,
       refetchOrder: () => orderDetailQuery.refetch(),
-      slots: slotsQuery.poscSlots
+      slots: slotsQuery.poscSlots,
     };
 
     return <Pos {...updatedProps} />;
@@ -319,6 +340,9 @@ export default withProps<Props>(
     }),
     graphql<Props>(gql(mutations.ordersCancel), {
       name: 'ordersCancelMutation'
-    })
+    }),
+    graphql<Props, OrderChangeStatusMutationResponse>(gql(mutations.orderChangeStatus), {
+      name: "orderChangeStatusMutation",
+    }),
   )(withCurrentUser(withRouter<Props>(PosContainer)))
 );

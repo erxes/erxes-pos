@@ -29,6 +29,14 @@ const orderChangeStatus = `
   }
 `;
 
+const orderItemChangeStatus = `
+  mutation orderItemChangeStatus($_id: String!, $status: String) {
+    orderItemChangeStatus(_id: $_id, status: $status) {
+      _id
+    }
+  }
+`;
+
 const invoiceFields = `
   _id
   amount
@@ -101,6 +109,7 @@ export default {
   ordersAdd,
   ordersEdit,
   orderChangeStatus,
+  orderItemChangeStatus,
   createQpaySimpleInvoice,
   qpayCheckPayment,
   customersAdd,

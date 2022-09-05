@@ -5,8 +5,8 @@ import { NavLink } from 'react-router-dom';
 
 import NameCard from 'modules/common/components/nameCard/NameCard';
 import AsyncComponent from 'modules/common/components/AsyncComponent';
-import { ICustomerParams, IOrder, IOrderItemInput } from '../types';
-import { ORDER_TYPES, POS_MODES } from '../../../constants';
+import { ICustomerParams, IOrder, IOrderItemInput, OrderDetailQueryResponse } from '../types';
+import { ORDER_STATUSES, ORDER_TYPES, POS_MODES } from '../../../constants';
 import Calculation from './Calculation';
 import OrderSearch from '../containers/layout/OrderSearch';
 import { IUser } from 'modules/auth/types';
@@ -80,6 +80,8 @@ type Props = {
   showMenu?: boolean;
   refetchOrder: () => void;
   slots: ISlot[];
+  changeOrderStatus: (doc) => void;
+  orderDetailQuery: OrderDetailQueryResponse;
 };
 
 type State = {
@@ -118,7 +120,6 @@ export default class Pos extends React.Component<Props, State> {
 
     const { order, type } = props;
     const checkOrder = order || {} as IOrder;
-
     this.state = {
       items: checkOrder.items || [],
       totalAmount: getTotalAmount(checkOrder.items || []) || 0,
@@ -136,8 +137,24 @@ export default class Pos extends React.Component<Props, State> {
     this.setState({ type, isTypeChosen: !this.state.isTypeChosen });
   };
 
+  mergeOrderItems(inputItems: IOrderItemInput[]) {
+    const mergedItems = inputItems.reduce((acc, curr) => {
+      acc[curr.productId + curr.isTake] = {
+        ...curr,
+        count: (acc[curr.productId + curr.isTake] ? acc[curr.productId + curr.isTake].count : 0) + curr.count
+      };
+      return acc;
+    }, {});
+    return Object.values(mergedItems) as IOrderItemInput[];
+  }
+
   setItems = (items: IOrderItemInput[]) => {
-    this.setState({ items, totalAmount: getTotalAmount(items, true) });
+    const { order } = this.props;
+    if (order && order._id && (order.status === ORDER_STATUSES.PAID || order.paidDate)) {
+      return;
+    }
+    const merged = this.mergeOrderItems(items);
+    this.setState({ items: merged, totalAmount: getTotalAmount(items, true) });
   };
 
   changeItemCount = (item: IOrderItemInput) => {
@@ -148,24 +165,23 @@ export default class Pos extends React.Component<Props, State> {
 
       return i;
     });
-
     items = items.filter(i => i.count > 0);
 
     const totalAmount = getTotalAmount(items, true);
-
-    this.setState({ items, totalAmount });
+    this.setItems(items);
+    this.setState({ totalAmount });
   };
 
   changeItemIsTake = (item: IOrderItemInput, value: boolean) => {
-    const { type, items } = this.state;
+    const { type } = this.state;
+    let items = this.mergeOrderItems(this.state.items);
     if (type !== ORDER_TYPES.EAT) {
-      this.setState({ items: items.map(i => ({ ...i, isTake: true })) });
+      const temp = items.map(i => ({ ...i, isTake: true }));
+      this.setItems(temp);
       return;
     }
-
-    this.setState({
-      items: items.map(i => (item._id === i._id ? { ...i, isTake: value } : i))
-    });
+    const temp = items.map(i => (item._id === i._id ? { ...i, isTake: value } : i))
+    this.setItems(temp);
   };
 
   // set state field that doesn't need amount calculation
@@ -175,7 +191,8 @@ export default class Pos extends React.Component<Props, State> {
     if (name === 'type') {
       const { items } = this.state;
       const isTake = value !== ORDER_TYPES.EAT;
-      this.setState({ items: items.map(i => ({ ...i, isTake })) });
+      const temp = items.map(i => ({ ...i, isTake }))
+      this.setItems(temp);
     }
   };
 
@@ -435,7 +452,7 @@ export default class Pos extends React.Component<Props, State> {
   }
 
   renderProduct() {
-    const { currentConfig, orientation, productsQuery } = this.props;
+    const { currentConfig, orientation, productsQuery, order } = this.props;
     const { items } = this.state;
 
     return (
@@ -452,6 +469,7 @@ export default class Pos extends React.Component<Props, State> {
           items={items}
           productsQuery={productsQuery}
           orientation={orientation}
+          order={order}
         />
       </>
     );
@@ -665,9 +683,9 @@ export default class Pos extends React.Component<Props, State> {
       productBodyType,
       cancelOrder,
       onChangeProductBodyType,
-      slots
+      slots,
+      changeOrderStatus
     } = this.props;
-
     const { items, totalAmount, type } = this.state;
     const mode = localStorage.getItem('erxesPosMode');
 
@@ -723,6 +741,7 @@ export default class Pos extends React.Component<Props, State> {
                   slotCode={this.state.slotCode}
                   onChangeSlot={this.onChangeSlot}
                   slots={slots}
+                  changeOrderStatus={changeOrderStatus}
                 />
               </MainContent>
             </Col>

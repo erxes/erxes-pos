@@ -39,7 +39,6 @@ export default class Products extends React.Component<Props, State> {
 
   addItem(item: IProduct, count: number) {
     const { items, setItems } = this.props;
-
     const currentItems = items.slice();
     const foundItem = currentItems.find(
       (i) => i.productId === item._id && !i.isTake
@@ -56,6 +55,7 @@ export default class Products extends React.Component<Props, State> {
         productImgUrl:
           item.attachment && item.attachment.url ? item.attachment.url : "",
         count,
+        isTake: false
       });
     }
 

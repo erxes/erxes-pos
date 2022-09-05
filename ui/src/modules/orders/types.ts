@@ -15,6 +15,7 @@ export interface IOrderItem {
   productName: string;
   isPackage?: boolean;
   isTake?: boolean;
+  status?: string;
 }
 
 export interface IQPayInvoice {
@@ -104,7 +105,7 @@ export interface IOrderItemInput {
   isPackage?: boolean;
   isTake?: boolean;
   slotCode?: string;
-
+  status?: string;
   discountPercent?: number;
   discountAmount?: number;
   bonusCount?: number;
@@ -118,8 +119,13 @@ export type OrderChangeStatusMutationResponse = ({
   variables
 }: any) => Promise<any>;
 
+export type OrderItemChangeStatusMutationResponse = ({
+  variables: any
+}) => Promise<any>;
+
 export type OrderDetailQueryResponse = {
   orderDetail: IOrder;
+  subscribeToMore: any;
 } & QueryResponse;
 
 export type SlotsQueryResponse = {
@@ -132,6 +138,11 @@ export type OrderQueryResponse = {
 
 export type FullOrderQueryResponse = {
   fullOrders: IOrder[];
+  subscribeToMore: any;
+} & QueryResponse;
+
+export type FullOrderItemsQueryResponse = {
+  fullOrderItems: IOrderItem[];
   subscribeToMore: any;
 } & QueryResponse;
 

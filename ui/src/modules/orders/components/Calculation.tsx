@@ -126,6 +126,7 @@ type Props = {
   slotCode: string;
   onChangeSlot: (value: string) => void;
   slots: ISlot[];
+  changeOrderStatus: (doc) => void;
 };
 
 type State = {
@@ -203,8 +204,7 @@ export default class Calculation extends React.Component<Props, State> {
       type,
       cancelOrder
     } = this.props;
-
-    if (order && order.paidDate && order.status === ORDER_STATUSES.PAID) {
+    if (order && (order.status === ORDER_STATUSES.PAID || order.paidDate)) {
       return this.renderReceiptButton();
     }
 
@@ -214,15 +214,22 @@ export default class Calculation extends React.Component<Props, State> {
         : false
       : false;
 
-    const onClick = () => {
+    const onClickPay = () => {
       const callback = () => onChangeProductBodyType('payment');
-
       if (order && order._id) {
         editOrder(callback);
       } else {
         addOrder(callback);
       }
     };
+
+    const onClickSave = () => {
+      if (order && order._id) {
+        editOrder();
+      } else {
+        addOrder();
+      };
+    }
 
     const paymentDone = () => {
       onChangeProductBodyType('done');
@@ -271,8 +278,11 @@ export default class Calculation extends React.Component<Props, State> {
             {__('Eat')}
           </Button>
         )}
-        <Button btnStyle="success" onClick={onClick}>
+        <Button btnStyle="success" onClick={onClickSave}>
           {__('Make an order')}
+        </Button>
+        <Button btnStyle="success" onClick={onClickPay}>
+          {__('Pay the bill')}
         </Button>
       </Types>
     );
@@ -509,11 +519,30 @@ export default class Calculation extends React.Component<Props, State> {
       changeItemIsTake,
       orientation,
       type,
-      productBodyType
+      productBodyType,
+      order
     } = this.props;
     const { mode } = this.state;
     const color = config.uiOptions && config.uiOptions.colors.primary;
 
+    const checkOrder = this.props.order || {} as IOrder;
+    let newItems = items as IOrderItemInput[];
+    if (Object.keys(checkOrder).length !== 0) {
+      newItems = [];
+      const orderItems = checkOrder.items as IOrderItemInput[];
+      newItems = items.map(i => {
+        let found = orderItems.find(
+          c => c.productId === i.productId
+            && c._id === i._id
+            && c.status !== i.status
+        )
+        if (found) {
+          i.status = found.status
+          return i;
+        }
+        return i;
+      })
+    }
     return (
       <>
         <Wrapper color={color} showPayment={productBodyType === 'payment'}>
@@ -521,8 +550,9 @@ export default class Calculation extends React.Component<Props, State> {
           {this.renderSlots()}
           <ColumnBetween>
             <Stage
+              isPaid={order ? (order.status === ORDER_STATUSES.PAID || Boolean(order.paidDate)) : false}
               orientation={orientation}
-              items={items}
+              items={newItems}
               changeItemCount={changeItemCount}
               changeItemIsTake={changeItemIsTake}
               options={config.uiOptions}

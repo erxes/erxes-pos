@@ -5,20 +5,21 @@ import Button from "modules/common/components/Button";
 import { __ } from "modules/common/utils";
 import { Detail, Status, TableRow, TimeGroup } from "../styles";
 import { IConfig } from "types";
-import { IOrder } from "../../orders/types";
+import { FullOrderQueryResponse, IOrder, IOrderItem } from "../../orders/types";
 import { IUser } from "modules/auth/types";
 import Icon from "modules/common/components/Icon";
-import { POS_MODES } from "../../../constants";
+import { ORDER_ITEM_STATUSES, POS_MODES } from "../../../constants";
 import { colors } from "modules/common/styles";
+import FormControl from "modules/common/components/form/Control";
 
 type Props = {
   editOrder: (doc) => void;
+  changeOrderItemStatus: (doc) => void;
   posCurrentUser: IUser;
   currentConfig: IConfig;
   order: IOrder;
+  orderQuery: FullOrderQueryResponse;
 };
-
-type State = {};
 
 function Timer({ oTime }) {
   const { seconds, minutes, hours } = useTime({});
@@ -43,7 +44,12 @@ function Timer({ oTime }) {
   );
 }
 
-export default class OrderDetail extends React.Component<Props, State> {
+export default class OrderDetail extends React.Component<Props> {
+  private myRef: React.MutableRefObject<{} | null>;
+  constructor(props: Props) {
+    super(props);
+    this.myRef = React.createRef();
+  }
   renderTime(order) {
     const date = new Date(order.paidDate);
 
@@ -54,15 +60,52 @@ export default class OrderDetail extends React.Component<Props, State> {
 
     return <Timer oTime={oTime} />;
   }
+  componentWillMount() {
+    const checkOrder = this.props.order || {} as IOrder;
+    if (checkOrder) {
+      // save previous counts
+      this.myRef.current = checkOrder.items;
+    }
+  }
+  componentDidUpdate() {
+    const checkOrder = this.props.order || {} as IOrder;
+    if (checkOrder) {
+      // save previous counts
+      this.myRef.current = checkOrder.items;
+
+      // when all order items checked, check order as done
+      if (checkOrder.items.every(item => item.status === ORDER_ITEM_STATUSES.DONE)) {
+        this.props.editOrder({
+          _id: checkOrder._id,
+          status: "done",
+          number: checkOrder.number,
+        });
+      }
+    }
+  }
 
   renderDetail(order: IOrder, color: string, color2: string) {
     const { items } = order;
-
     if (!items || !items.length) {
       return null;
     }
 
-    return items.map((item) => (
+    const onItemCheck = (item) => {
+      if (item.target.checked === true) {
+        this.props.changeOrderItemStatus({
+          _id: item.target.value,
+          status: ORDER_ITEM_STATUSES.DONE
+        });
+      }
+      if (item.target.checked === false) {
+        this.props.changeOrderItemStatus({
+          _id: item.target.value,
+          status: ORDER_ITEM_STATUSES.CONFIRM
+        });
+      }
+      this.props.orderQuery.refetch();
+    }
+    return items.map((item: IOrderItem, index) => (
       <Detail key={item._id}>
         <p>
           <Icon
@@ -73,12 +116,57 @@ export default class OrderDetail extends React.Component<Props, State> {
         </p>
         <span>{__("Quantity")}:&nbsp;</span>
         <p>
-          <b>{item.count}</b>
+          {
+          this.renderItemCount(
+            item.count,
+            this.myRef.current ? 
+              this.myRef.current[index] === undefined ? 
+                0 
+              : this.myRef.current[index].count 
+            : item.count
+          )}
+        </p>
+        <p>
+          <FormControl
+            type="checkbox"
+            round={true}
+            name="itemStatus"
+            value={item._id}
+            checked={item.status === 'done'}
+            onChange={onItemCheck}
+            onClick={(e) => {
+              e.stopPropagation();
+            }}
+          />
         </p>
       </Detail>
     ));
   }
-
+  renderItemCount = (count: number, previousCount: number) => {
+    const checkCount = () => {
+      if (count - previousCount < 0) {
+        return (
+          <span style={{'color': '#f53b57'}}>
+            {' ' + (count - previousCount)}
+          </span>
+        );  
+      }
+      if (count - previousCount > 0) {
+        return (
+          <span style={{'color': '#4cd137'}}>
+            {' +' + (count - previousCount)}
+          </span>
+        );
+      }
+      return '';
+    }
+    return (
+      <>
+        <b>{count}</b>
+        {checkCount()}
+      </>
+    )
+  }
   renderActions = (order) => {
     if (order.status === "new") {
       return (
@@ -98,6 +186,12 @@ export default class OrderDetail extends React.Component<Props, State> {
         _id: order._id,
         status: "done",
         number: order.number,
+      });
+      order.items.forEach(item => {
+        this.props.changeOrderItemStatus({
+          _id: item._id,
+          status: ORDER_ITEM_STATUSES.DONE
+        });
       });
     };
 

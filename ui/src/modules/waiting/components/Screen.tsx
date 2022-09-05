@@ -4,7 +4,7 @@ import React from 'react';
 import Row from 'react-bootstrap/Row';
 import { __ } from 'modules/common/utils';
 import { IConfig } from 'types';
-import { IOrder } from '../../orders/types';
+import { IOrder, IOrderItem } from '../../orders/types';
 import { IUser } from 'modules/auth/types';
 import { Label, Orders } from '../styles';
 import { ScreenContent } from '../../orders/styles';
@@ -14,6 +14,8 @@ type Props = {
   posCurrentUser: IUser;
   currentConfig: IConfig;
   orders: IOrder[];
+  ordersConfirm: IOrder[];
+  orderItems: IOrderItem[];
 };
 
 export default class Screen extends React.Component<Props> {
@@ -24,9 +26,16 @@ export default class Screen extends React.Component<Props> {
   }
 
   renderCol() {
-    const { orders, currentConfig } = this.props;
+    const { orderItems, ordersConfirm, orders, currentConfig } = this.props;
     const { uiOptions } = currentConfig;
-
+    let partialOrders: IOrder[] = [];
+    if (orderItems) {
+      orderItems.forEach(item => {
+        const temp = ordersConfirm.find(order => order._id === item.orderId);
+        partialOrders.push(temp as IOrder);
+      })
+    }
+    const setOrders = Array.from(new Set([...orders, ...partialOrders]))
     return (
       <>
         <Col md={12} className="fullHeight">
@@ -35,7 +44,7 @@ export default class Screen extends React.Component<Props> {
             <span>{__(`Дугаар бүхий хэрэглэгчид хоолоо авна уу.`)}</span>
           </Label>
           <Orders>
-            {orders.map((order, index) => (
+            {setOrders.map((order, index) => (
               <React.Fragment key={index}>
                 {this.renderOrders(order)}
               </React.Fragment>
@@ -48,7 +57,10 @@ export default class Screen extends React.Component<Props> {
 
   renderContent() {
     const { orders } = this.props;
-    const contentUrl = this.props.currentConfig.waitingScreen.contentUrl || '';
+    let contentUrl = '';
+    if (this.props.currentConfig.waitingScreen !== null) {
+      contentUrl = this.props.currentConfig.waitingScreen.contentUrl; 
+    } 
 
     if (!contentUrl) {
       return <></>;
