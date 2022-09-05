@@ -10,6 +10,7 @@ import Table from "modules/common/components/table";
 import { FlexEnd, ScreenWrapper } from "../styles";
 import Button from "modules/common/components/Button";
 import OrderDetail from "./OrderDetail";
+import { ORDER_ITEM_STATUSES } from "../../../constants";
 
 type Props = {
   editOrder: (doc) => void;
@@ -29,6 +30,13 @@ export default class Screen extends React.Component<Props> {
   renderDoneOrders(order: IOrder) {
     const onClickUndo = (e) => {
       this.props.editOrder({ _id: order._id, status: "doing" });
+
+      order.items.forEach(item => {
+        this.props.changeOrderItemStatus({
+          _id: item._id,
+          status: ORDER_ITEM_STATUSES.CONFIRM
+        });
+      });
     };
 
     return (
