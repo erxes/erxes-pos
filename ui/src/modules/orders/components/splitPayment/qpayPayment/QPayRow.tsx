@@ -89,11 +89,11 @@ export default class QPayRow extends React.Component<Props> {
       });
   }
 
-  // setupTimer() {
-  //   this.timeoutId = setTimeout(() => {
-  //     this.checkPayment(true);
-  //   }, 3000);
-  // }
+  setupTimer() {
+    this.timeoutId = setTimeout(() => {
+      this.checkPayment(true);
+    }, 3000);
+  }
 
   render() {
     const { item, checkQPayInvoice, orderId, cancelQPayInvoice, toggleModal } =
@@ -157,13 +157,13 @@ export default class QPayRow extends React.Component<Props> {
   componentDidMount() {
     this.drawQR();
 
-    // this.setupTimer();
+    this.setupTimer();
   }
 
   componentDidUpdate() {
     this.drawQR();
 
-    // this.setupTimer();
+    this.setupTimer();
   }
 
   componentWillUnmount() {

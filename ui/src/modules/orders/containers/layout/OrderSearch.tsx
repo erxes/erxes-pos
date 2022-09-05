@@ -82,6 +82,7 @@ const WithSearchContainer = withProps<WithProps>(
     graphql<WithProps, OrderQueryResponse>(gql(queries.orders), {
       name: "ordersQuery",
       options: ({ queryParams }: { queryParams: any }) => ({
+        fetchPolicy: 'network-only',
         variables: { searchValue: queryParams.orderSearch },
       }),
     })
