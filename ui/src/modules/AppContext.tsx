@@ -16,7 +16,8 @@ type Action =
   | { type: 'CHANGE_COUNT'; _id: string; count: number }
   | { type: 'SELECT'; _id: string }
   | { type: 'SELECT_ALL' }
-  | { type: 'DELIVERY' };
+  | { type: 'DELIVERY' }
+  | { type: 'CLEAN_CART' };
 
 export const AppContext = React.createContext<{} | any>(initialState);
 
@@ -100,10 +101,17 @@ const appReducer = (state: State, action: Action) => {
       const newCart = cart.map((item) => ({
         ...item,
         isTake: item.isSelected,
+        isSelected: false,
       }));
       return {
         ...state,
         cart: newCart,
+      };
+    }
+    case 'CLEAN_CART': {
+      return {
+        ...state,
+        cart: [],
       };
     }
     default:
@@ -140,6 +148,10 @@ export const AppContextProvider: IComponent = ({ children }) => {
     () => dispatch({ type: 'DELIVERY' }),
     [dispatch]
   );
+  const cleanCart = useCallback(
+    () => dispatch({ type: 'CLEAN_CART' }),
+    [dispatch]
+  );
 
   const value = useMemo(
     () => ({
@@ -150,6 +162,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
       selectItem,
       selectAll,
       delivery,
+      cleanCart,
     }),
     [state]
   );

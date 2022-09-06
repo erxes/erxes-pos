@@ -3,10 +3,14 @@ import { useApp } from 'modules/AppContext';
 import GoToPaymentContainer from '../containers/GoToPayment';
 
 const CheckoutControls = () => {
-  const { delivery } = useApp();
+  const { delivery, cart } = useApp();
   return (
     <div className="checkout-controls">
-      <Button className="take" onClick={delivery}>
+      <Button
+        className="take"
+        onClick={delivery}
+        disabled={!cart || !cart.length}
+      >
         Авч явах
       </Button>
       <GoToPaymentContainer />

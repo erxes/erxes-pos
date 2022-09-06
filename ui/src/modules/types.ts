@@ -9,6 +9,7 @@ export type IProductBase = {
   name: string;
   unitPrice: number;
   attachment?: { url?: string } | null;
+  isPackage?: boolean;
 };
 
 export type ICartItem = IProductBase & {
