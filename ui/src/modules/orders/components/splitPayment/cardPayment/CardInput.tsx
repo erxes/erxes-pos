@@ -95,7 +95,6 @@ export default class CardInput extends React.Component<Props, State> {
             })
               .then((res) => res.json())
               .then((r) => {
-                r = { status: true, response: { response_code: '000' } };
                 if (r && r.status === true && r.response) {
                   if (r.response.response_code === '000') {
                     Alert.success(
