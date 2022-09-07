@@ -11,7 +11,7 @@ const ProductContainer = (props: IProduct) => {
     const cartItem = {
       name,
       unitPrice,
-      attachment,
+      producImgUrl: (attachment || {}).url,
       _id,
     };
     return addItemToCart(cartItem);

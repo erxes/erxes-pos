@@ -1,17 +1,31 @@
 .slot {
   &-header {
     .slot-number {
-      background-color: $success;
       font-size: 1.25rem;
       line-height: 1.75rem;
       font-weight: 800;
       padding: 0.5rem 1rem;
-
-      &:hover {
-        background-color: $success-hover;
+      margin: 0.75rem 0;
+      svg {
+        opacity: 0;
+        transition: 0.2s;
+        position: absolute;
+        right: 0;
+        top: 0;
+        font-size: 1.5rem;
+        transform: translate(35%, -35%);
       }
+      &.active {
+        svg {
+          opacity: 1;
+        }
+      }
+
       &::after {
         content: '';
+      }
+      &.new {
+        background-color: $gray;
       }
     }
     .react-horizontal-scrolling-menu--separator {

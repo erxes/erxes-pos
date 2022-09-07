@@ -9,14 +9,13 @@ const CheckAuth: IComponent = ({ children }) => {
   const router = useRouter();
   const LOGIN = '/login';
 
-  // useEffect(() => {
-  //   if (!currentUser && router.pathname !== LOGIN) {
-  //     router.push(LOGIN);
-  //   }
-  // }, [currentUser, router]);
+  useEffect(() => {
+    if (!currentUser && router.pathname !== LOGIN) {
+      router.push(LOGIN);
+    }
+  }, [currentUser, router]);
 
-  // if (currentUser || router.pathname === LOGIN)
-  return <>{children}</>;
+  if (currentUser || router.pathname === LOGIN) return <>{children}</>;
 
   return <Loading className="h-100vh primary" />;
 };

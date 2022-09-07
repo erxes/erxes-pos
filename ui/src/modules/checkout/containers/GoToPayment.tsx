@@ -5,12 +5,12 @@ import { useApp } from 'modules/AppContext';
 import { formatNum } from 'modules/utils';
 import useTotalValue from 'lib/useTotalValue';
 import Button from 'ui/Button';
-import { useMemo } from 'react';
 import type { ICartItem } from 'modules/types';
+import Deliver from '../components/Deliver';
 
 const GoToPaymentContainer = () => {
   const router = useRouter();
-  const { cart, cleanCart } = useApp();
+  const { cart, setCart } = useApp();
   const total = useTotalValue(cart);
 
   const orderItems = cart.map((item: ICartItem) => ({
@@ -31,7 +31,7 @@ const GoToPaymentContainer = () => {
         type: 'eat',
       },
       onCompleted(data) {
-        cleanCart();
+        setCart([]);
         const { _id } = (data || {}).ordersAdd || {};
         router.push(`/checkout/${_id}`);
       },
@@ -43,14 +43,24 @@ const GoToPaymentContainer = () => {
   };
 
   return (
-    <Button
-      className="pay"
-      disabled={!total}
-      onClick={handleClick}
-      loading={loading}
-    >
-      Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
-    </Button>
+    <div className="checkout-controls">
+      <div className="row">
+        <div className="col-6">
+          <Deliver />
+        </div>
+        <div className="col-6">
+          <Button className="order">Захиалах</Button>
+        </div>
+      </div>
+      <Button
+        className="pay"
+        disabled={!total}
+        onClick={handleClick}
+        loading={loading}
+      >
+        Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
+      </Button>
+    </div>
   );
 };
 

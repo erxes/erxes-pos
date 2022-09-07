@@ -12,12 +12,15 @@ const initialState = {
 };
 
 type Action =
-  | { type: 'ADD_ITEM_TO_CART'; product: IProductBase }
+  | {
+      type: 'ADD_ITEM_TO_CART';
+      product: IProductBase & { productImgUrl: string };
+    }
   | { type: 'CHANGE_COUNT'; _id: string; count: number }
   | { type: 'SELECT'; _id: string }
   | { type: 'SELECT_ALL' }
   | { type: 'DELIVERY' }
-  | { type: 'CLEAN_CART' };
+  | { type: 'SET_CART'; cart: ICartItem[] };
 
 export const AppContext = React.createContext<{} | any>(initialState);
 
@@ -32,7 +35,7 @@ const appReducer = (state: State, action: Action) => {
       const currentCart = cart.slice();
 
       const foundItem = currentCart.find(
-        (i) => i.productId === product._id && !i.isTake
+        (i) => i.productId === product._id && !i.isTake && i.status === 'new'
       );
 
       if (foundItem) {
@@ -45,6 +48,7 @@ const appReducer = (state: State, action: Action) => {
           isTake: false,
           count: 1,
           isSelected: false,
+          status: 'new',
         };
         currentCart.push(cartItem);
       }
@@ -108,10 +112,10 @@ const appReducer = (state: State, action: Action) => {
         cart: newCart,
       };
     }
-    case 'CLEAN_CART': {
+    case 'SET_CART': {
       return {
         ...state,
-        cart: [],
+        cart: action.cart,
       };
     }
     default:
@@ -124,7 +128,8 @@ export const AppContextProvider: IComponent = ({ children }) => {
   const mode = 'pos';
 
   const addItemToCart = useCallback(
-    (product: IProductBase) => dispatch({ type: 'ADD_ITEM_TO_CART', product }),
+    (product: IProductBase & { productImgUrl: string }) =>
+      dispatch({ type: 'ADD_ITEM_TO_CART', product }),
     [dispatch]
   );
 
@@ -148,8 +153,8 @@ export const AppContextProvider: IComponent = ({ children }) => {
     () => dispatch({ type: 'DELIVERY' }),
     [dispatch]
   );
-  const cleanCart = useCallback(
-    () => dispatch({ type: 'CLEAN_CART' }),
+  const setCart = useCallback(
+    (cart: ICartItem[]) => dispatch({ type: 'SET_CART', cart }),
     [dispatch]
   );
 
@@ -162,7 +167,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
       selectItem,
       selectAll,
       delivery,
-      cleanCart,
+      setCart,
     }),
     [state]
   );

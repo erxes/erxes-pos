@@ -13,6 +13,7 @@ const CheckoutItem: FC<ICartItem> = ({
   _id,
   isTake,
   isSelected,
+  status,
 }) => {
   const { selectItem } = useApp();
   return (
@@ -20,7 +21,7 @@ const CheckoutItem: FC<ICartItem> = ({
       <div className="checkout-item-main flex-v-center">
         <Checkbox checked={isSelected} onChange={() => selectItem(_id)} />
         <div className="flex-v-center">
-          <span className="status" />
+          <span className={'status ' + status} />
           <b>
             <span className="name flex-v-center">
               <span>{name}</span>

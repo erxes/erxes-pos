@@ -1,15 +1,8 @@
 import { FC, memo } from 'react';
 import Image from 'next/image';
-import SlotsHeader from '../../slots/components/SlotHeader';
 import Link from 'next/link';
-// import dynamic from 'next/dynamic';
-// import { Header, GrayBorder } from './styles';
+import ActiveOrders from 'modules/slots/containers/ActiveOrders';
 import PosHeaderMenu from './PosHeaderMenu';
-// import SlotsHeader from '../../slots/components/SlotsHeader';
-
-// const DynamicHeader = dynamic(() => import('../components/header'), {
-//   suspense: true,
-// })
 
 interface PosHeaderProps {}
 
@@ -34,7 +27,7 @@ const PosHeader: FC<PosHeaderProps> = ({}) => {
           </Link>
         </div>
       </div>
-      <SlotsHeader />
+      <ActiveOrders />
     </header>
   );
 };

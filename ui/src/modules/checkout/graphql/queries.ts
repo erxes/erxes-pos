@@ -46,10 +46,85 @@ export const orderItemsFields = `
   }
 `;
 
+const customerFields = `
+  _id
+  primaryPhone
+  firstName
+  primaryEmail
+  lastName
+`;
+
+const putResponseFields = `
+  date
+  vat
+  cityTax
+  registerNo
+  billId
+  lottery
+  qrData
+  success
+  lotteryWarningMsg
+  errorCode
+  message
+  getInformation
+  returnBillId
+  billType
+`;
+
+const qpayInvoiceFields = `
+  _id
+  qrText
+  senderInvoiceNo
+  amount
+  qpayInvoiceId
+  qpayPaymentId
+  status
+  paymentDate
+  createdAt
+`;
+
+const orderDetail = `
+  query orderDetail($_id: String) {
+    orderDetail(_id: $_id) {
+      ${orderFields}
+
+      ${orderItemsFields}
+
+      customer {
+        firstName
+        lastName
+        middleName
+        primaryEmail
+        primaryPhone
+        code
+      }
+
+      user {
+        ${customerFields}
+      }
+
+      putResponses {
+        ${putResponseFields}
+      }
+
+      qpayInvoices {
+        ${qpayInvoiceFields}
+      }
+
+      cardPayments {
+        _id
+        amount
+        cardInfo
+      }
+    }
+  }
+`;
+
 const queries = {
   commonFields,
   orderFields,
   orderItemsFields,
+  orderDetail,
 };
 
 export default queries;

@@ -39,8 +39,16 @@
       height: 0.675rem;
       width: 0.675rem;
       border-radius: 50%;
-      background-color: $success;
       margin-right: 0.5rem;
+      &.new {
+        background-color: $gray;
+      }
+      &.confirm {
+        background-color: $warning;
+      }
+      &.done {
+        background-color: $success;
+      }
     }
   }
   &-controls {
@@ -50,9 +58,18 @@
       font: 700 1.125rem/1.5rem 'Inter';
       padding: 1rem 0;
     }
+    .row {
+      margin: 0 -0.625rem;
+      margin-bottom: 1.25rem;
+      .col-6 {
+        padding: 0 0.625rem;
+      }
+    }
+    .order {
+      background: $primary;
+    }
     .take {
       background: rgba($color: #000000, $alpha: 0.95);
-      margin-bottom: 1.25rem;
     }
     .pay {
       background: $success;
