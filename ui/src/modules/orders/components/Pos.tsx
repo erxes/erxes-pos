@@ -80,7 +80,7 @@ type Props = {
   showMenu?: boolean;
   refetchOrder: () => void;
   slots: ISlot[];
-  changeOrderStatus: (doc) => void;
+  changeOrderStatus: (doc: any, callback?: any) => void;
   orderDetailQuery: OrderDetailQueryResponse;
 };
 

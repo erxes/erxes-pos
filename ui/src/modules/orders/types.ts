@@ -59,7 +59,6 @@ export interface IOrder {
   type: string;
   cardPayments?: any[];
   origin?: string;
-
   items: IOrderItem[];
   customer?: ICustomer;
   user: IUser;

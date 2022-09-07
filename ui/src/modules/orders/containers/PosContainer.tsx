@@ -163,7 +163,10 @@ class PosContainer extends React.Component<Props, States> {
             if (callback) {
               callback();
             }
-            orderChangeStatusMutation({ variables: Object.assign({_id: data.ordersEdit._id, status: ORDER_STATUSES.CONFIRM}) })
+            if (data.ordersEdit.status === ORDER_STATUSES.COMPLETE) {
+              Alert.success('test');
+            } else
+              orderChangeStatusMutation({ variables: Object.assign({_id: data.ordersEdit._id, status: ORDER_STATUSES.CONFIRM}) })
             return data.ordersEdit;
           }
         })
@@ -252,9 +255,13 @@ class PosContainer extends React.Component<Props, States> {
         });
     };
 
-    const changeOrderStatus = (doc: any) => {
+    const changeOrderStatus = (doc: any, callback?: any) => {
       orderChangeStatusMutation({ variables: { ...doc } }).then(() => {
         Alert.success(`${doc.number} has been saved successfully.`);
+
+        if (callback) {
+          callback();
+        }
       }).catch(e => {
         return Alert.error(e.message);
       });

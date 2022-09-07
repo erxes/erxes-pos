@@ -126,7 +126,7 @@ type Props = {
   slotCode: string;
   onChangeSlot: (value: string) => void;
   slots: ISlot[];
-  changeOrderStatus: (doc) => void;
+  changeOrderStatus: (doc: any, callback?: any) => void;
 };
 
 type State = {

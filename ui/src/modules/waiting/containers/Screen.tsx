@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import Screen from '../components/Screen';
 import Spinner from 'modules/common/components/Spinner';
 import withCurrentUser from 'modules/auth/containers/withCurrentUser';
-import { FullOrderItemsQueryResponse, FullOrderQueryResponse, OrderChangeStatusMutationResponse } from '../../orders/types';
+import { FullOrderQueryResponse, OrderChangeStatusMutationResponse } from '../../orders/types';
 import { graphql } from 'react-apollo';
 import { IConfig, IRouterProps } from '../../../types';
 import { IUser } from 'modules/auth/types';
@@ -14,20 +14,18 @@ import { withRouter } from 'react-router-dom';
 
 type Props = {
   orderQuery: FullOrderQueryResponse;
-  orderConfirmQuery: FullOrderQueryResponse;
-  orderItemQuery: FullOrderItemsQueryResponse;
   posCurrentUser: IUser;
   currentConfig: IConfig;
   orderChangeStatusMutation: OrderChangeStatusMutationResponse;
 } & IRouterProps;
 
 function WaitingScreenContainer(props: Props) {
-  const { orderQuery, orderConfirmQuery, orderItemQuery, orderChangeStatusMutation } = props;
+  const { orderQuery, orderChangeStatusMutation } = props;
 
   useEffect(() => {
     return orderQuery.subscribeToMore({
       document: gql(subscriptions.ordersOrdered),
-      variables: { statuses: ["paid", "new", "doing", "confirm", "done", "complete"] },
+      variables: { statuses: ["doing", "done", "complete"] },
       updateQuery: () => {
         orderQuery.refetch();
       },
@@ -35,16 +33,16 @@ function WaitingScreenContainer(props: Props) {
   });
 
   useEffect(() => {
-    return orderItemQuery.subscribeToMore({
+    return orderQuery.subscribeToMore({
       document: gql(subscriptions.orderItemsOrdered),
-      variables: { statuses: ["paid", "confirm", "done", "complete"] },
+      variables: { statuses: ['done', 'confirm'] },
       updateQuery: () => {
-        orderItemQuery.refetch();
+        orderQuery.refetch();
       },
     });
   });
 
-  if (orderQuery.loading || orderItemQuery.loading || orderConfirmQuery.loading ) {
+  if (orderQuery.loading) {
     return <Spinner />;
   }
 
@@ -53,13 +51,9 @@ function WaitingScreenContainer(props: Props) {
   };
 
   const orders = orderQuery.fullOrders || [];
-  const orderItems = orderItemQuery.fullOrderItems || [];
-  const ordersConfirm = orderConfirmQuery.fullOrders || [];
   const updatedProps = {
     ...props,
     orders,
-    orderItems,
-    ordersConfirm,
     editOrder,
   };
 
@@ -71,21 +65,7 @@ export default withProps<Props>(
     graphql<Props, FullOrderQueryResponse>(gql(queries.fullOrders), {
       name: "orderQuery",
       options: () => ({
-        variables: { statuses: ["done"] },
-        fetchPolicy: "network-only",
-      }),
-    }),
-    graphql<Props, FullOrderQueryResponse>(gql(queries.fullOrders), {
-      name: 'orderConfirmQuery',
-      options: () => ({
         variables: { statuses: ['done', 'confirm', 'doing'] },
-        fetchPolicy: 'network-only'
-      }),
-    }),
-    graphql<Props, FullOrderItemsQueryResponse>(gql(queries.fullOrderItems), {
-      name: "orderItemQuery",
-      options: () => ({
-        variables: { statuses: ["done"] },
         fetchPolicy: "network-only",
       }),
     }),

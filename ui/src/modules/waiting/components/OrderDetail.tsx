@@ -28,8 +28,11 @@ function Timer({ startTime, waitingSec, order, editOrder }) {
   }
 
   if (diffSec > waitingSec) {
-    editOrder({ _id: order._id, status: 'complete', number: order.number });
-    return <></>
+    // check order as a whole is done
+    if (order.status === 'done') {
+      editOrder({ _id: order._id, status: 'complete', number: order.number });
+      return <></>
+    }
   }
   return <span>{diffSec || 60}</span>
 }
@@ -39,7 +42,7 @@ export default class OrderDetail extends React.Component<Props> {
     const { currentConfig, order, editOrder } = this.props;
     const { uiOptions } = currentConfig;
     const color = uiOptions.colors.primary;
-    const waitingSec = 5 * 60;
+    const waitingSec = 1 * 20;
 
     let date = new Date();
     if (order && order.modifiedAt) {
