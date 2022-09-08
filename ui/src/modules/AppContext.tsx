@@ -169,6 +169,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
       delivery,
       setCart,
     }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]
   );
 

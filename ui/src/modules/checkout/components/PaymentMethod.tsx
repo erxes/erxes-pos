@@ -1,12 +1,14 @@
-import type { IComponent } from 'modules/types';
-import Button from 'ui/Button';
+import { FC } from 'react';
+import Button, { ButtonProps } from 'ui/Button';
 
-const PaymentMethod: IComponent = ({ children }) => {
+const PaymentMethod: FC<ButtonProps> = (props) => {
   return (
     <div className="col col-4">
-      <Button variant="slim" className="payment-method flex-center">
-        {children}
-      </Button>
+      <Button
+        variant="slim"
+        className="payment-method flex-center"
+        {...props}
+      />
     </div>
   );
 };

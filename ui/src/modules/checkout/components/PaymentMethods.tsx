@@ -1,25 +1,23 @@
 import PaymentMethod from './PaymentMethod';
-import Cash from 'modules/common/icons/🤑';
-import Visa from 'modules/common/icons/Visa';
+import Card from '../containers/card';
+import Cash from 'icons/🤑';
 import Image from 'next/future/image';
 
 const PaymentMethods = () => {
   return (
     <div className="row payment-methods">
-      <PaymentMethod>
+      {/* <PaymentMethod>
         <h6>
           <Cash />
           Бэлнээр
         </h6>
-      </PaymentMethod>
-      <PaymentMethod>
-        <Visa />
-      </PaymentMethod>
-      <PaymentMethod>
+      </PaymentMethod> */}
+      <Card />
+      {/* <PaymentMethod>
         <div className="img-wrap">
           <Image src="/qpay.png" alt="" fill quality={100} />
         </div>
-      </PaymentMethod>
+      </PaymentMethod> */}
     </div>
   );
 };

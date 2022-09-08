@@ -13,7 +13,7 @@ const CartContainer = () => {
   const convertCartItem = (item: any) => ({
     ...item,
     isSelected: false,
-    status: 'new',
+    status: 'confirmed',
     name: item.productName,
   });
 
@@ -30,11 +30,13 @@ const CartContainer = () => {
   );
 
   useEffect(() => {
-    selectedOrder && getSelectedOrder({ variables: { _id: selectedOrder } });
+    selectedOrder
+      ? getSelectedOrder({ variables: { _id: selectedOrder } })
+      : setCart([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedOrder]);
 
-  if (loading) return null;
+  if (loading) return <div className="checkout-cart"></div>;
 
   return <CheckoutCart />;
 };

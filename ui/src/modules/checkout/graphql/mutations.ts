@@ -12,8 +12,18 @@ const ordersAdd = `
   }
 `;
 
+const ordersEdit = `
+  mutation ordersEdit($_id: String!, ${addEditParamDefs}) {
+    ordersEdit(_id: $_id, ${addEditParams}) {
+      ${orderFields}
+      ${orderItemsFields}
+    }
+  }
+`;
+
 const mutations = {
   ordersAdd,
+  ordersEdit,
 };
 
 export default mutations;

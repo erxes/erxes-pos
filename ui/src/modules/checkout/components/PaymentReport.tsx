@@ -1,12 +1,16 @@
 import { useUI } from 'ui/context';
+import { useCheckoutContext } from '../context';
 import Button from 'ui/Button';
+import { formatNum } from 'modules/utils';
 
 const PaymentReport = () => {
   const { openModal } = useUI();
+  const { orderDetail } = useCheckoutContext();
+  const { totalAmount } = orderDetail || {};
   return (
     <div className="col flex-center payment-report">
       <div className="white-tab text-center">
-        <h2>13500₮</h2>
+        <h2>{formatNum(totalAmount)}₮</h2>
         <h5>Нийт төлөх</h5>
         <div className="description">
           <h6 className="flex-v-center description-item">

@@ -13,6 +13,9 @@ const CheckAuth: IComponent = ({ children }) => {
     if (!currentUser && router.pathname !== LOGIN) {
       router.push(LOGIN);
     }
+    if (currentUser && router.pathname === LOGIN) {
+      router.push('/');
+    }
   }, [currentUser, router]);
 
   if (currentUser || router.pathname === LOGIN) return <>{children}</>;

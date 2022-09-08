@@ -1,7 +1,6 @@
 import { useApp } from 'modules/AppContext';
 import CheckoutTotal from './Total';
 import CheckoutItem from './Item';
-import GoToPaymentContainer from '../containers/GoToPayment';
 import Empty from 'modules/common/ui/Empty';
 import { ICartItem } from 'modules/types';
 
@@ -19,7 +18,6 @@ const CheckoutCart = () => {
           <Empty />
         )}
       </div>
-      <GoToPaymentContainer />
     </>
   );
 };

@@ -1,8 +1,13 @@
 import BlackLayout from 'ui/BlackLayout';
-import Container from 'modules/checkout/components';
+import { CheckoutContextProvider } from 'modules/checkout/context';
+import PaymentContainer from 'modules/checkout/containers/PaymentContainer';
 
 const Payment = () => {
-  return <Container />;
+  return (
+    <CheckoutContextProvider>
+      <PaymentContainer />
+    </CheckoutContextProvider>
+  );
 };
 
 Payment.Layout = BlackLayout;

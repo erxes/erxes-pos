@@ -39,6 +39,7 @@ export const orderItemsFields = `
     productId
     isPackage
     isTake
+    status
     productImgUrl
     discountAmount
     discountPercent

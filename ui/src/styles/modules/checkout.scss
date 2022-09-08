@@ -43,7 +43,7 @@
       &.new {
         background-color: $gray;
       }
-      &.confirm {
+      &.confirmed {
         background-color: $warning;
       }
       &.done {
@@ -113,6 +113,26 @@
       .img-wrap {
         aspect-ratio: 2 / 1;
         width: 5.375rem;
+      }
+    }
+    &-input {
+      & > div {
+        flex: 1 1 auto;
+      }
+      .flex-v-center,
+      input {
+        font: 900 2.25rem/3rem 'Inter';
+        color: #fff;
+      }
+      input {
+        background-color: #000;
+        border: 0 !important;
+        padding: 0;
+        margin-left: 0.25rem;
+      }
+      caption {
+        white-space: nowrap;
+        opacity: 0.7;
       }
     }
     &-report {

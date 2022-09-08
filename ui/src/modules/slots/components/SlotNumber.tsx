@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import Button from 'ui/Button';
 import cn from 'classnames';
 import CheckCircle from 'icons/CheckCircle';
+import { removeSelectedOrder } from 'modules/utils';
 
 function SlotNumber({
   number,
@@ -15,6 +16,8 @@ function SlotNumber({
 }) {
   const router = useRouter();
 
+  const { selectedOrder } = router.query;
+
   const colors = {
     new: 'rgba(0, 0, 0, 0.65)',
   };
@@ -22,13 +25,15 @@ function SlotNumber({
   return (
     <Button
       className={cn('slot-number', status, {
-        active: router.query.selectedOrder === _id,
+        active: selectedOrder === _id,
       })}
       onClick={() =>
-        router.push({
-          pathname: router.pathname,
-          query: { ...router.query, selectedOrder: _id },
-        })
+        selectedOrder === _id
+          ? removeSelectedOrder(router)
+          : router.push({
+              pathname: router.pathname,
+              query: { ...router.query, selectedOrder: _id },
+            })
       }
     >
       {number.split('_')[1]}
