@@ -116,6 +116,8 @@
       }
     }
     &-input {
+      justify-content: space-between;
+      padding: 0.3rem 0.5rem;
       & > div {
         flex: 1 1 auto;
       }
@@ -130,9 +132,22 @@
         padding: 0;
         margin-left: 0.25rem;
       }
+      .btn.flat,
+      caption {
+        white-space: nowrap;
+      }
       caption {
         white-space: nowrap;
         opacity: 0.7;
+      }
+      .btn.flat {
+        background: $success;
+        padding: 1rem 2.25rem;
+      }
+      .btn.ghost {
+        color: #fff;
+        padding: 0.5rem;
+        margin-left: 0.5rem;
       }
     }
     &-report {

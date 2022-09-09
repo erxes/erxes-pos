@@ -9,14 +9,16 @@ import Loading from 'ui/Loading';
 const PaymentContainer = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { setOrderDetail, orderDetail } = useCheckoutContext();
+  const { setOrderDetail, orderDetail, setRemainder } = useCheckoutContext();
 
   const { loading } = useQuery(gql(queries.orderDetail), {
     variables: {
       _id: id,
     },
     onCompleted(data) {
-      setOrderDetail(data.orderDetail);
+      const { orderDetail } = data;
+      setOrderDetail(orderDetail);
+      setRemainder(orderDetail.totalAmount);
     },
   });
 

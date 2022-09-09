@@ -5,7 +5,7 @@ import { formatNum } from 'modules/utils';
 
 const PaymentReport = () => {
   const { openModal } = useUI();
-  const { orderDetail } = useCheckoutContext();
+  const { orderDetail, card } = useCheckoutContext();
   const { totalAmount } = orderDetail || {};
   return (
     <div className="col flex-center payment-report">
@@ -19,11 +19,11 @@ const PaymentReport = () => {
           </h6>
           <h6 className="flex-v-center description-item">
             <span>Картаар</span>
-            <b>50 000₮</b>
+            <b>{formatNum(card)}₮</b>
           </h6>
           <h6 className="flex-v-center description-item">
             <span>Qpay</span>
-            <b>30 000₮</b>
+            <b>₮</b>
           </h6>
           <h6 className="flex-v-center description-item">
             <span>Хөнгөлөлт</span>

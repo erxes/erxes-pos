@@ -1,14 +1,16 @@
-import React, { useCallback, useMemo, useReducer } from 'react';
+import React, { useCallback, useMemo, useReducer, useEffect } from 'react';
 import type { IComponent, ICartItem, IProductBase } from './types';
 
 export interface State {
   cart: ICartItem[];
   isCartSelected: boolean;
+  mode: string;
 }
 
 const initialState = {
   isCartSelected: false,
   cart: [],
+  mode: 'pos',
 };
 
 type Action =
@@ -20,7 +22,8 @@ type Action =
   | { type: 'SELECT'; _id: string }
   | { type: 'SELECT_ALL' }
   | { type: 'DELIVERY' }
-  | { type: 'SET_CART'; cart: ICartItem[] };
+  | { type: 'SET_CART'; cart: ICartItem[] }
+  | { type: 'SET_MODE'; value: string };
 
 export const AppContext = React.createContext<{} | any>(initialState);
 
@@ -118,6 +121,12 @@ const appReducer = (state: State, action: Action) => {
         cart: action.cart,
       };
     }
+    case 'SET_MODE': {
+      return {
+        ...state,
+        mode: action.value,
+      };
+    }
     default:
       return state;
   }
@@ -125,7 +134,8 @@ const appReducer = (state: State, action: Action) => {
 
 export const AppContextProvider: IComponent = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
-  const mode = 'pos';
+
+  useEffect(() => {}, []);
 
   const addItemToCart = useCallback(
     (product: IProductBase & { productImgUrl: string }) =>
@@ -158,10 +168,11 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const setMode = useCallback((value) => {}, [dispatch]);
+
   const value = useMemo(
     () => ({
       ...state,
-      mode,
       addItemToCart,
       changeItemCount,
       selectItem,
