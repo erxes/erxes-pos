@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IComponent } from 'modules/types';
 import Image from 'next/future/image';
-import Select from 'ui/Select';
+import SelectMode from './SelectMode';
 import Button, { ButtonProps } from 'ui/Button';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 
@@ -32,10 +32,7 @@ const Settings: IComponent = () => {
         <span>{currentConfig.name}: </span>
         <b>{createdAt}</b>
       </small>
-      <Select value="pos" label="Select mode">
-        <option value="pos">POS and fullmode</option>
-        <option value="Kiosk">Kiosk</option>
-      </Select>
+      <SelectMode />
       <div className="controls row">
         <SettingsButton>Resync config</SettingsButton>
         <SettingsButton>Resync customer</SettingsButton>

@@ -19,13 +19,11 @@ function App({ Component, pageProps }: AppProps) {
       <AppContextProvider>
         <UIProvider>
           <ConfigsProvider>
-            <React.StrictMode>
-              <CheckAuth>
-                <Layout pageProps={pageProps}>
-                  <Component {...pageProps} />
-                </Layout>
-              </CheckAuth>
-            </React.StrictMode>
+            <CheckAuth>
+              <Layout pageProps={pageProps}>
+                <Component {...pageProps} />
+              </Layout>
+            </CheckAuth>
           </ConfigsProvider>
         </UIProvider>
       </AppContextProvider>

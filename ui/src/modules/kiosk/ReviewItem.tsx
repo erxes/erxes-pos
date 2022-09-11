@@ -1,17 +1,26 @@
 import Image from 'next/future/image';
+import { formatNum } from 'modules/utils';
+import type { ICartItem } from 'modules/types';
+import { FC } from 'react';
 
-const ReviewItem = ({ attachment, name, unitPrice }: any) => {
+const ReviewItem: FC<ICartItem> = ({
+  productImgUrl,
+  name,
+  unitPrice,
+  count,
+}) => {
   return (
     <div className="kiosk-review-item flex-v-center">
       <div className="flex-v-center">
         <div className="img-wrap">
-          <Image fill src={attachment.url} alt="" />
+          <Image fill src={productImgUrl} alt="" />
         </div>
         <h4>{name}</h4>
       </div>
       <h4 className="text-primary">
-        2<span>x</span>
-        {unitPrice}
+        {count}
+        <span>x</span>
+        {formatNum(unitPrice)}₮
       </h4>
     </div>
   );

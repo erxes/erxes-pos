@@ -22,8 +22,7 @@ type Action =
   | { type: 'SELECT'; _id: string }
   | { type: 'SELECT_ALL' }
   | { type: 'DELIVERY' }
-  | { type: 'SET_CART'; cart: ICartItem[] }
-  | { type: 'SET_MODE'; value: string };
+  | { type: 'SET_CART'; cart: ICartItem[] };
 
 export const AppContext = React.createContext<{} | any>(initialState);
 
@@ -121,12 +120,6 @@ const appReducer = (state: State, action: Action) => {
         cart: action.cart,
       };
     }
-    case 'SET_MODE': {
-      return {
-        ...state,
-        mode: action.value,
-      };
-    }
     default:
       return state;
   }
@@ -167,8 +160,6 @@ export const AppContextProvider: IComponent = ({ children }) => {
     (cart: ICartItem[]) => dispatch({ type: 'SET_CART', cart }),
     [dispatch]
   );
-
-  const setMode = useCallback((value) => {}, [dispatch]);
 
   const value = useMemo(
     () => ({

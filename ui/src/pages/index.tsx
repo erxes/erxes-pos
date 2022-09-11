@@ -1,23 +1,28 @@
 import type { NextPage } from 'next';
-import PosLayout from 'modules/pos/components/PosLayout';
-import Products from 'modules/products/containers/Products';
-import Categories from 'modules/products/containers/Categories';
-import Search from 'modules/products/components/Search';
+import dynamic from 'next/dynamic';
+import CheckMode, { checkLayoutMode } from 'modules/CheckMode';
 
-const Home: NextPage = () => {
-  return (
-    <div className="pos-content">
-      <div className="flex-v-center flex-0 products-header">
-        <Search />
-        <div className="flex-1">
-          <Categories />
-        </div>
-      </div>
-      <Products />
-    </div>
-  );
+const dynamicProps = {
+  ssr: false,
+  suspense: true,
 };
 
-(Home as any).Layout = PosLayout;
+const Pos = dynamic(() => import('modules/pos'), { ...dynamicProps });
+
+const Kiosk = dynamic(() => import('modules/kiosk'), { ...dynamicProps });
+
+const Home: NextPage = () => {
+  return <CheckMode pos={<Pos />} kiosk={<Kiosk />} />;
+};
+
+const PosLayout = dynamic(() => import('modules/pos/components/PosLayout'), {
+  ssr: false,
+});
+
+const MainLayout = dynamic(() => import('modules/common/Layout'), {
+  ssr: false,
+});
+
+(Home as any).Layout = checkLayoutMode(PosLayout, MainLayout);
 
 export default Home;

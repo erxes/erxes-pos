@@ -9,7 +9,7 @@ const BlackLayout: IComponent = ({ children }) => {
   return (
     <MainLayout>
       <div className="flex-center blck-layout">
-        <Button variant="ghost" onClick={() => router.back()}>
+        <Button variant="ghost" onClick={() => (window.location.href = '/')}>
           <CloseCircle />
         </Button>
         {children}

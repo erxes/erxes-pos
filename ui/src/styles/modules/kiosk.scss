@@ -201,8 +201,14 @@
         }
         .count {
           font: 800 1.5rem/2rem 'Inter';
-          padding: 0 1.75rem;
+          background-color: transparent;
+          color: #000;
+          display: block;
+          &-wrap {
+            width: 4rem;
+          }
         }
+
         .plus {
           background: $primary;
         }

@@ -1,7 +1,7 @@
 import { useApp } from 'modules/AppContext';
 import CheckoutTotal from './Total';
 import CheckoutItem from './Item';
-import Empty from 'modules/common/ui/Empty';
+import Empty from 'ui/Empty';
 import { ICartItem } from 'modules/types';
 
 const CheckoutCart = () => {

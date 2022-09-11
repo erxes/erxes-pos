@@ -1,19 +1,14 @@
+import type { FC } from 'react';
 import Product from 'modules/products/components/Product';
 import Counter from 'modules/common/ui/Counter';
+import type { ICartItem } from 'modules/types';
 
-const data = {
-  attachment: {
-    url: 'https://yoshinoyabucket.s3.us-east-2.amazonaws.com/0.24390352059101983%60613-1-Copy.png',
-  },
-  name: 'Хонины махтай боул M size',
-  unitPrice: 14500,
-};
-
-const CartItem = () => {
+const CartItem: FC<ICartItem> = (props) => {
+  const { count, _id, ...data } = props;
   return (
     <div className="kiosk-cart-item">
-      <Product {...data} riffle={false} />
-      <Counter btnVariant="flat" />
+      <Product riffle={false} {...data} />
+      <Counter btnVariant="flat" count={count} _id={_id} />
     </div>
   );
 };
