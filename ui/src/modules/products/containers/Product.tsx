@@ -8,7 +8,6 @@ const ProductContainer = (props: IProduct) => {
   const { _id, name, unitPrice, attachment } = props;
 
   const handleClick = () => {
-    console.log(props);
     const cartItem = {
       name,
       unitPrice,

@@ -1,8 +1,8 @@
 import type { FC } from 'react';
-import type { IEbarimt } from './types';
+import type { IEbarimt } from '../../types';
 import Button from 'ui/Button';
 
-const Ebarimt: FC<IEbarimt> = ({ isOrganization, setIsOrganization }) => {
+const Ebarimt: FC<IEbarimt> = ({ type, setType }) => {
   return (
     <div className="ebarimt-kiosk">
       <h2>
@@ -11,14 +11,14 @@ const Ebarimt: FC<IEbarimt> = ({ isOrganization, setIsOrganization }) => {
       <Button
         variant="slim"
         Component="h4"
-        onClick={() => setIsOrganization(false)}
+        onClick={() => setType('individual')}
       >
         Хувь хүнээр
       </Button>
       <Button
         variant="slim"
         Component="h4"
-        onClick={() => setIsOrganization(true)}
+        onClick={() => setType('organization')}
       >
         Байгууллагаар
       </Button>

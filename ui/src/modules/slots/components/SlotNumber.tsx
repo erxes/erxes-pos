@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Button from 'ui/Button';
 import cn from 'classnames';
 import CheckCircle from 'icons/CheckCircle';
-import { removeSelectedOrder } from 'modules/utils';
+import { removeQuery } from 'modules/utils';
 
 function SlotNumber({
   number,
@@ -29,7 +29,7 @@ function SlotNumber({
       })}
       onClick={() =>
         selectedOrder === _id
-          ? removeSelectedOrder(router)
+          ? removeQuery(router, 'selectedOrder')
           : router.push({
               pathname: router.pathname,
               query: { ...router.query, selectedOrder: _id },

@@ -4,7 +4,7 @@ import { IComponent } from 'modules/types';
 import type { AppProps } from 'next/app';
 import { ApolloProvider } from '@apollo/client';
 import apolloClient from 'modules/apolloClient';
-import React from 'react';
+import { Suspense } from 'react';
 import { AppContextProvider } from '../modules/AppContext';
 import UIProvider from 'ui/context';
 import ConfigsProvider from 'modules/auth/containers/Configs';
@@ -20,9 +20,11 @@ function App({ Component, pageProps }: AppProps) {
         <UIProvider>
           <ConfigsProvider>
             <CheckAuth>
-              <Layout pageProps={pageProps}>
-                <Component {...pageProps} />
-              </Layout>
+              <Suspense>
+                <Layout pageProps={pageProps}>
+                  <Component {...pageProps} />
+                </Layout>
+              </Suspense>
             </CheckAuth>
           </ConfigsProvider>
         </UIProvider>

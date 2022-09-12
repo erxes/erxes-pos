@@ -1,10 +1,10 @@
 import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Button from 'modules/common/ui/Button';
 import Icon from 'modules/common/icons/Cart';
 import Sidebar from 'modules/common/ui/SideBar';
 import CartItem from './CartItem';
 import Scroll from './Scroll';
-import Link from 'next/link';
 import { useApp } from 'modules/AppContext';
 import Empty from 'ui/Empty';
 import type { ICartItem } from 'modules/types';
@@ -12,9 +12,11 @@ import useTotalValue from 'lib/useTotalValue';
 import { formatNum } from '../utils';
 
 const Cart = () => {
+  const router = useRouter();
   const [showSidebar, setShowSidebar] = useState(false);
   const { cart } = useApp();
-  const totalValue = useTotalValue(cart);
+  const totalValue = useTotalValue();
+  console.log(totalValue);
   return (
     <>
       <div className="kiosk-cart-btn">
@@ -44,9 +46,13 @@ const Cart = () => {
             <div className="kiosk-cart-footer text-center">
               <h6>Нийт дүн</h6>
               <h3>{formatNum(totalValue)}₮</h3>
-              <Link href="/review">
-                <Button Component="h4">Төлөх</Button>
-              </Link>
+              <Button
+                Component="h4"
+                onClick={() => (totalValue > 0 ? router.push('/review') : null)}
+                disabled={totalValue === 0}
+              >
+                Төлөх
+              </Button>
             </div>
           </div>
         </Sidebar>

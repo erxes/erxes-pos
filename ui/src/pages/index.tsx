@@ -3,7 +3,6 @@ import dynamic from 'next/dynamic';
 import CheckMode, { checkLayoutMode } from 'modules/CheckMode';
 
 const dynamicProps = {
-  ssr: false,
   suspense: true,
 };
 
@@ -16,11 +15,11 @@ const Home: NextPage = () => {
 };
 
 const PosLayout = dynamic(() => import('modules/pos/components/PosLayout'), {
-  ssr: false,
+  suspense: true,
 });
 
 const MainLayout = dynamic(() => import('modules/common/Layout'), {
-  ssr: false,
+  suspense: true,
 });
 
 (Home as any).Layout = checkLayoutMode(PosLayout, MainLayout);

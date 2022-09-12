@@ -3,8 +3,8 @@ import useTotalValue from 'lib/useTotalValue';
 import { formatNum } from 'modules/utils';
 
 const CheckoutTotal = () => {
-  const { cart, isCartSelected, selectAll } = useApp();
-  const total = useTotalValue(cart);
+  const { isCartSelected, selectAll } = useApp();
+  const total = useTotalValue();
   return (
     <div className="flex-v-center checkout-total">
       <div className="checkall" onClick={selectAll}>

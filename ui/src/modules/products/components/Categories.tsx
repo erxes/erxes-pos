@@ -3,24 +3,38 @@ import HorizontalScroll from 'modules/common/ui/scrollMenu';
 import Button from 'modules/common/ui/Button';
 import cn from 'classnames';
 
-export default function Categories({ categories }: any) {
+export default function Categories({
+  categories,
+}: {
+  categories: { name: string; _id?: string }[];
+}) {
   const router = useRouter();
 
   const { categoryId } = router.query;
+  console.log(categoryId);
 
   const btnClassName = (_id: string) =>
-    cn('products-category', { active: categoryId === _id });
+    cn('products-category', { active: categoryId == _id });
 
-  const handleChoose = (_id: string) =>
-    router.push({
-      pathname: router.pathname,
-      query: { categoryId: _id },
-    });
+  const handleChoose = (_id: string) => {
+    if (!_id) {
+      delete router.query.categoryId;
+      return router.push(router.query);
+    }
 
+    return router.push(
+      {
+        pathname: router.pathname,
+        query: { ...router.query, categoryId: _id },
+      },
+      undefined,
+      { shallow: true }
+    );
+  };
   return (
     <HorizontalScroll
       className="categories"
-      items={categories}
+      items={[{ _id: null, name: 'Бүгд' }, ...categories]}
       ItemComponent={({ _id, name }) => {
         return (
           <Button

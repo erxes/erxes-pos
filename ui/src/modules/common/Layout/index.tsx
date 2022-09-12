@@ -11,7 +11,6 @@ const EbarimtView = dynamic(
 
 const Modal = dynamic(() => import('modules/common/ui/Modal'), {
   suspense: true,
-  ssr: false,
 });
 
 const ModalView: React.FC<{ modalView: string; closeModal(): any }> = ({

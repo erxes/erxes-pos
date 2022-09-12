@@ -37,7 +37,7 @@ type Action =
       view: SIDEBAR_VIEWS;
     };
 
-type MODAL_VIEWS = 'EBARIMT_VIEW' | 'HI';
+type MODAL_VIEWS = 'EBARIMT_VIEW' | 'MOTRE';
 
 type SIDEBAR_VIEWS = 'CART_VIEW';
 

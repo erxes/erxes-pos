@@ -1,5 +1,5 @@
 import type { ReactNode, FC } from 'react';
-import { IEbarimt } from './types';
+import { IEbarimt } from '../../types';
 import Button from 'ui/Button';
 import Radio from 'ui/Radio';
 import cn from 'classnames';
@@ -20,20 +20,21 @@ const ChooseType = ({ children, onClick, className }: IChooseType) => (
   </div>
 );
 
-const Ebarimt: FC<IEbarimt> = ({ isOrganization, setIsOrganization }) => {
+const Ebarimt: FC<IEbarimt> = ({ type, setType }) => {
+  const isOrganization = type === 'organization';
   return (
     <div className="ebarimt-root">
       <div className="ebarimt">
         <b>Төлбөрийн баримт авах</b>
         <div className="row">
           <ChooseType
-            onClick={() => setIsOrganization(false)}
-            className={!isOrganization && 'active'}
+            onClick={() => setType('individual')}
+            className={type === 'individual' && 'active'}
           >
             Хувь хүн
           </ChooseType>
           <ChooseType
-            onClick={() => setIsOrganization(true)}
+            onClick={() => setType('organization')}
             className={isOrganization && 'active'}
           >
             Байгуулга

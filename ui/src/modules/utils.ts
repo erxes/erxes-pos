@@ -6,9 +6,9 @@ export const Query = (queries: object, name: string) =>
 export const formatNum = (num: number): string =>
   num.toLocaleString().replaceAll(',', ' ');
 
-export const removeSelectedOrder = (router: any) => {
-  const { selectedOrder, ...rest } = router.query;
-  router.push({ pathname: router.pathname, query: rest });
+export const removeQuery = (router: any, name: string) => {
+  delete router.query[name];
+  router.push({ pathname: router.pathname, query: router.query });
 };
 
 export const getMode = (): string => {

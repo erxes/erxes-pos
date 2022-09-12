@@ -128,8 +128,6 @@ const appReducer = (state: State, action: Action) => {
 export const AppContextProvider: IComponent = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
-  useEffect(() => {}, []);
-
   const addItemToCart = useCallback(
     (product: IProductBase & { productImgUrl: string }) =>
       dispatch({ type: 'ADD_ITEM_TO_CART', product }),

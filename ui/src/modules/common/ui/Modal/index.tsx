@@ -5,6 +5,7 @@ import Button from '../Button';
 import Xmark from 'modules/common/icons/Xmark';
 import { useApp } from 'modules/AppContext';
 import cn from 'classnames';
+import { getMode } from 'modules/utils';
 
 interface ModalProps {
   className?: string;
@@ -15,7 +16,7 @@ interface ModalProps {
 
 const Modal: FC<ModalProps> = ({ children, onClose }) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
-  const { mode } = useApp();
+  const mode = getMode();
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {

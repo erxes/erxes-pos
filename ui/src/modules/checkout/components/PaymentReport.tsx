@@ -1,5 +1,6 @@
 import { useUI } from 'ui/context';
 import { useCheckoutContext } from '../context';
+import useTotalValue from 'lib/useTotalValue';
 import Button from 'ui/Button';
 import { formatNum } from 'modules/utils';
 
