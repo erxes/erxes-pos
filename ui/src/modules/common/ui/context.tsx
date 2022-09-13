@@ -70,6 +70,11 @@ function uiReducer(state: State, action: Action) {
         ...state,
         displayModal: false,
       };
+    case 'SET_MODAL_VIEW':
+      return {
+        ...state,
+        modalView: action.view,
+      };
     default:
       throw new Error();
   }

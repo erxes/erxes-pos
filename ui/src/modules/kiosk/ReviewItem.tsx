@@ -1,11 +1,10 @@
-import Image from 'next/future/image';
+import Image from 'ui/Image';
 import { formatNum } from 'modules/utils';
-import type { ICartItem } from 'modules/types';
 import { FC } from 'react';
 
-const ReviewItem: FC<ICartItem> = ({
+const ReviewItem: FC<any> = ({
   productImgUrl,
-  name,
+  productName,
   unitPrice,
   count,
 }) => {
@@ -13,9 +12,9 @@ const ReviewItem: FC<ICartItem> = ({
     <div className="kiosk-review-item flex-v-center">
       <div className="flex-v-center">
         <div className="img-wrap">
-          <Image fill src={productImgUrl} alt="" />
+          <Image src={productImgUrl} alt="" />
         </div>
-        <h4>{name}</h4>
+        <h4>{productName}</h4>
       </div>
       <h4 className="text-primary">
         {count}

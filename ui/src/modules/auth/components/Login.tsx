@@ -10,11 +10,12 @@ import Input from 'modules/common/ui/Input';
 type ILogin = IProps & {
   login: IHandleLogin;
   loading: boolean;
+  error: any;
 };
 
 const ChooseConfig = dynamic(() => import('../containers/ChooseConfig'));
 
-const Login: FC<ILogin> = ({ login, loading }) => {
+const Login: FC<ILogin> = ({ login, loading, error }) => {
   const { configs } = useConfigsContext();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -26,6 +27,7 @@ const Login: FC<ILogin> = ({ login, loading }) => {
 
   return (
     <form onSubmit={handleLogin}>
+      <div>{(error || {}).message}</div>
       {configs && configs.length > 1 && (
         <Suspense fallback={<div />}>
           <ChooseConfig />

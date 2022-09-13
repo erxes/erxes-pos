@@ -18,6 +18,7 @@ const CheckAuth: IComponent = ({ children }) => {
     }
   }, [currentUser, router]);
 
+  if (currentUser && router.pathname === LOGIN) return null;
   if (currentUser || router.pathname === LOGIN) return <>{children}</>;
 
   return <Loading className="h-100vh primary" />;

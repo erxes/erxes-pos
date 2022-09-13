@@ -1,5 +1,3 @@
-import dynamic from 'next/dynamic';
-import { useState, Suspense } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { mutations } from '../graphql';
@@ -7,13 +5,22 @@ import { queries } from 'modules/slots/graphql';
 import { useApp } from 'modules/AppContext';
 import useTotalValue from 'lib/useTotalValue';
 import type { ICartItem } from 'modules/types';
-import { removeQuery, getMode } from 'modules/utils';
+import { getMode } from 'modules/utils';
 
-const OrderCUContainer = ({ OrderCU }: { OrderCU: any }) => {
-  const [type, setType] = useState('pay');
+const OrderCUContainer = ({
+  OrderCU,
+  onCompleted,
+  type,
+  setType,
+}: {
+  OrderCU: any;
+  onCompleted: any;
+  type?: string;
+  setType?: any;
+}) => {
   const router = useRouter();
-  const { selectedOrder } = router.query;
-  const { cart, setCart } = useApp();
+  const { selectedOrder, currentOrder } = router.query;
+  const { isTake, cart, setCart } = useApp();
   const total = useTotalValue();
 
   const orderItems = cart.map((item: ICartItem) => ({
@@ -25,32 +32,35 @@ const OrderCUContainer = ({ OrderCU }: { OrderCU: any }) => {
     isTake: item.isTake,
   }));
 
-  const onCompleted = (data: any) => {
-    setCart([]);
-    if (type === 'pay') {
-      const { _id } = (data || {}).ordersAdd || (data || {}).ordersEdit;
-      return router.push(`/checkout/${_id}`);
-    }
-    if (type === 'order') {
-      return removeQuery(router, 'selectedOrder');
-    }
-  };
   const addVariables = {
     items: orderItems,
     totalAmount: total,
-    type: 'eat',
+    type: getMode() === 'kiosk' ? isTake : 'eat',
+  };
+
+  const getId = (data: any) => {
+    if (data.ordersAdd) {
+      return data.ordersAdd._id;
+    }
+    if (data.ordersEdit) {
+      return data.ordersEdit._id;
+    }
   };
 
   const [ordersAdd, { loading }] = useMutation(gql(mutations.ordersAdd), {
     variables: addVariables,
-    onCompleted,
+    onCompleted(data) {
+      return onCompleted(getId(data));
+    },
     refetchQueries: [{ query: gql(queries.fullOrders) }, 'FullOrders'],
   });
   const [ordersEdit, { loading: loadingEdit }] = useMutation(
     gql(mutations.ordersEdit),
     {
-      variables: { ...addVariables, _id: selectedOrder },
-      onCompleted,
+      variables: { ...addVariables, _id: selectedOrder || currentOrder },
+      onCompleted(data) {
+        return onCompleted(getId(data));
+      },
     }
   );
 
@@ -59,8 +69,8 @@ const OrderCUContainer = ({ OrderCU }: { OrderCU: any }) => {
     ordersEdit,
     loading,
     loadingEdit,
-    setType,
     type,
+    setType,
   };
 
   return <OrderCU {...updatedProps} />;

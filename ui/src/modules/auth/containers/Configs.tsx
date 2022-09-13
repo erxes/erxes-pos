@@ -21,20 +21,14 @@ ConfigsContext.displayName = 'ConfigsContext';
 const ConfigsProvider: FC<IProps> = ({ children }) => {
   const currentUserQuery = withQuery('posCurrentUser');
   const currentConfigQuery = withQuery('currentConfig');
-  const configsQuery = withQuery('configs');
 
-  if (
-    currentUserQuery.loading ||
-    currentConfigQuery.loading ||
-    configsQuery.loading
-  )
+  if (currentUserQuery.loading || currentConfigQuery.loading)
     return <Loading className="h-100vh" />;
 
   const currentUser = currentUserQuery.data.posCurrentUser;
   const currentConfig = currentConfigQuery.data.currentConfig;
-  const configs = configsQuery.data.posclientConfigs;
 
-  const value = { currentUser, currentConfig, configs };
+  const value = { currentUser, currentConfig };
 
   return (
     <ConfigsContext.Provider value={value}>{children}</ConfigsContext.Provider>

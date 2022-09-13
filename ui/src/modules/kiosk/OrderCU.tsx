@@ -1,15 +1,49 @@
-import { useApp } from 'modules/AppContext';
-import { useUI } from 'ui/context';
+import { useRouter } from 'next/router';
+import useTotalValue from 'lib/useTotalValue';
+import OrderCUContainer from 'modules/checkout/containers/OrderCUContainer';
 import Button from 'ui/Button';
+import { formatNum } from '../utils';
 
-const OrderCU = ({ loading, orderAdd }: any) => {
-  const { openModal } = useUI();
-  const { cart } = useApp();
+const OrderAddButton = ({
+  loading,
+  loadingEdit,
+  ordersAdd,
+  ordersEdit,
+}: any) => {
+  const router = useRouter();
+  const { orderId } = router.query;
+  const totalValue = useTotalValue();
+
+  const handleClick = () => (orderId ? ordersEdit() : ordersAdd());
 
   return (
-    <Button Component="h4" onClick={openModal}>
-      Зөв байна
-    </Button>
+    <div className="kiosk-cart-footer text-center">
+      <h6>Нийт дүн</h6>
+      <h3>{formatNum(totalValue)}₮</h3>
+
+      <Button
+        Component="h4"
+        onClick={handleClick}
+        disabled={!totalValue}
+        loading={loading || loadingEdit}
+      >
+        Төлөх
+      </Button>
+    </div>
+  );
+};
+
+const OrderCU = () => {
+  const router = useRouter();
+
+  const onCompleted = (_id: string) => {
+    router.push({
+      pathname: '/checkout/[orderId]',
+      query: { orderId: _id },
+    });
+  };
+  return (
+    <OrderCUContainer OrderCU={OrderAddButton} onCompleted={onCompleted} />
   );
 };
 

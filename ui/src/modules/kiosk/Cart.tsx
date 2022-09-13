@@ -8,15 +8,12 @@ import Scroll from './Scroll';
 import { useApp } from 'modules/AppContext';
 import Empty from 'ui/Empty';
 import type { ICartItem } from 'modules/types';
-import useTotalValue from 'lib/useTotalValue';
-import { formatNum } from '../utils';
+import OrderCU from './OrderCU';
 
 const Cart = () => {
-  const router = useRouter();
   const [showSidebar, setShowSidebar] = useState(false);
   const { cart } = useApp();
-  const totalValue = useTotalValue();
-  console.log(totalValue);
+
   return (
     <>
       <div className="kiosk-cart-btn">
@@ -43,17 +40,7 @@ const Cart = () => {
                 <Empty />
               )}
             </div>
-            <div className="kiosk-cart-footer text-center">
-              <h6>Нийт дүн</h6>
-              <h3>{formatNum(totalValue)}₮</h3>
-              <Button
-                Component="h4"
-                onClick={() => (totalValue > 0 ? router.push('/review') : null)}
-                disabled={totalValue === 0}
-              >
-                Төлөх
-              </Button>
-            </div>
+            <OrderCU />
           </div>
         </Sidebar>
       )}

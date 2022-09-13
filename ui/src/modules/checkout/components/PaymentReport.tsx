@@ -1,12 +1,13 @@
 import { useUI } from 'ui/context';
+import { useApp } from 'modules/AppContext';
 import { useCheckoutContext } from '../context';
-import useTotalValue from 'lib/useTotalValue';
 import Button from 'ui/Button';
 import { formatNum } from 'modules/utils';
 
 const PaymentReport = () => {
   const { openModal } = useUI();
-  const { orderDetail, card } = useCheckoutContext();
+  const { card } = useCheckoutContext();
+  const { orderDetail } = useApp();
   const { totalAmount } = orderDetail || {};
   return (
     <div className="col flex-center payment-report">

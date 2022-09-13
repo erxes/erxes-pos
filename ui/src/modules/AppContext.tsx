@@ -1,16 +1,24 @@
-import React, { useCallback, useMemo, useReducer, useEffect } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useReducer,
+  useContext,
+  createContext,
+} from 'react';
 import type { IComponent, ICartItem, IProductBase } from './types';
 
 export interface State {
   cart: ICartItem[];
   isCartSelected: boolean;
-  mode: string;
+  isTake: '' | 'eat' | 'take' | string;
+  orderDetail: object | null;
 }
 
 const initialState = {
   isCartSelected: false,
   cart: [],
-  mode: 'pos',
+  isTake: '',
+  orderDetail: null,
 };
 
 type Action =
@@ -22,9 +30,14 @@ type Action =
   | { type: 'SELECT'; _id: string }
   | { type: 'SELECT_ALL' }
   | { type: 'DELIVERY' }
-  | { type: 'SET_CART'; cart: ICartItem[] };
+  | { type: 'SET_CART'; cart: ICartItem[] }
+  | {
+      type: 'SET_IS_TAKE';
+      value: State['isTake'];
+    }
+  | { type: 'SET_ORDER_DETAIL'; data: object | null };
 
-export const AppContext = React.createContext<{} | any>(initialState);
+export const AppContext = createContext<{} | any>(initialState);
 
 AppContext.displayName = 'AppContext';
 
@@ -47,7 +60,7 @@ const appReducer = (state: State, action: Action) => {
           ...product,
           _id: Math.random().toString(),
           productId: product._id,
-          isTake: false,
+          isTake: state.isTake === 'take',
           count: 1,
           isSelected: false,
           status: 'new',
@@ -120,6 +133,18 @@ const appReducer = (state: State, action: Action) => {
         cart: action.cart,
       };
     }
+    case 'SET_IS_TAKE': {
+      return {
+        ...state,
+        isTake: action.value,
+      };
+    }
+    case 'SET_ORDER_DETAIL': {
+      return {
+        ...state,
+        orderDetail: action.data,
+      };
+    }
     default:
       return state;
   }
@@ -159,6 +184,15 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const setIsTake = useCallback(
+    (value: State['isTake']) => dispatch({ type: 'SET_IS_TAKE', value }),
+    [dispatch]
+  );
+  const setOrderDetail = useCallback(
+    (data: object | null) => dispatch({ type: 'SET_ORDER_DETAIL', data }),
+    [dispatch]
+  );
+
   const value = useMemo(
     () => ({
       ...state,
@@ -168,6 +202,8 @@ export const AppContextProvider: IComponent = ({ children }) => {
       selectAll,
       delivery,
       setCart,
+      setIsTake,
+      setOrderDetail,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]
@@ -177,7 +213,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
 };
 
 export const useApp = () => {
-  const context = React.useContext(AppContext);
+  const context = useContext(AppContext);
 
   if (context === undefined) {
     throw new Error('useAppContext must be used within a AppContextProvider');

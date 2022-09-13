@@ -1,5 +1,4 @@
-import { IComponent } from 'modules/types';
-import { useRouter } from 'next/router';
+import type { IComponent } from 'modules/types';
 import { useMutation, gql } from '@apollo/client';
 import { mutations } from '../graphql';
 import Login from '../components/Login';
@@ -7,10 +6,12 @@ import Login from '../components/Login';
 export type IHandleLogin = (email: string, password: string) => void;
 
 const LoginContainer: IComponent = () => {
-  const router = useRouter();
-  const [login, { loading }] = useMutation(gql(mutations.login), {
+  const [login, { loading, error }] = useMutation(gql(mutations.login), {
     onCompleted(data) {
-      if (data.posLogin === 'loggedIn') return router.push('/');
+      if (data.posLogin === 'loggedIn') return (window.location.href = '/');
+    },
+    onError(error) {
+      console.error(error);
     },
   });
 
@@ -18,7 +19,7 @@ const LoginContainer: IComponent = () => {
     login({ variables: { email, password } });
   };
 
-  return <Login login={handleLogin} loading={loading} />;
+  return <Login login={handleLogin} loading={loading} error={error} />;
 };
 
 export default LoginContainer;
