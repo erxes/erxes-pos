@@ -87,6 +87,7 @@ const UIProvider: IComponent = (props) => {
     () => dispatch({ type: 'OPEN_SIDEBAR' }),
     [dispatch]
   );
+
   const closeSidebar = useCallback(
     () => dispatch({ type: 'CLOSE_SIDEBAR' }),
     [dispatch]
@@ -99,6 +100,10 @@ const UIProvider: IComponent = (props) => {
     () => dispatch({ type: 'CLOSE_MODAL' }),
     [dispatch]
   );
+  const setModalView = useCallback(
+    (view: MODAL_VIEWS) => dispatch({ type: 'SET_MODAL_VIEW', view }),
+    [dispatch]
+  );
 
   const value = useMemo(
     () => ({
@@ -107,6 +112,7 @@ const UIProvider: IComponent = (props) => {
       closeSidebar,
       openModal,
       closeModal,
+      setModalView,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]

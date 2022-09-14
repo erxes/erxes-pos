@@ -33,7 +33,7 @@
     font-size: 1rem;
   }
   .select-wrap {
-    margin-bottom: 2.5rem;
+    margin-bottom: 1.75rem;
     small {
       position: absolute;
       top: 0.325rem;
@@ -52,6 +52,7 @@
   .controls.row {
     width: calc(100% + 0.5rem);
     margin: -0.5rem -0.25rem;
+    margin-top: 0.75rem;
     .col {
       padding: 0.5rem 0.25rem;
       .btn {

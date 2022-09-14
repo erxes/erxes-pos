@@ -2,7 +2,7 @@ import { useRouter } from 'next/router';
 import useTotalValue from 'lib/useTotalValue';
 import OrderCUContainer from 'modules/checkout/containers/OrderCUContainer';
 import Button from 'ui/Button';
-import { formatNum } from '../utils';
+import { formatNum } from '../../utils';
 
 const OrderAddButton = ({
   loading,

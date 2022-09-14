@@ -7,9 +7,12 @@ const Checkout = dynamic(() => import('modules/checkout/components'), {
   suspense: true,
 });
 
-const KioskCheckout = dynamic(() => import('modules/kiosk/Review'), {
-  suspense: true,
-});
+const KioskCheckout = dynamic(
+  () => import('modules/kiosk/components/Checkout'),
+  {
+    suspense: true,
+  }
+);
 
 const Payment = () => {
   const router = useRouter();

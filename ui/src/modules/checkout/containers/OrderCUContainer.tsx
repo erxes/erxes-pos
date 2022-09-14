@@ -19,8 +19,8 @@ const OrderCUContainer = ({
   setType?: any;
 }) => {
   const router = useRouter();
-  const { selectedOrder, currentOrder } = router.query;
-  const { isTake, cart, setCart } = useApp();
+  const { orderId } = router.query;
+  const { isTake, cart } = useApp();
   const total = useTotalValue();
 
   const orderItems = cart.map((item: ICartItem) => ({
@@ -57,7 +57,7 @@ const OrderCUContainer = ({
   const [ordersEdit, { loading: loadingEdit }] = useMutation(
     gql(mutations.ordersEdit),
     {
-      variables: { ...addVariables, _id: selectedOrder || currentOrder },
+      variables: { ...addVariables, _id: orderId },
       onCompleted(data) {
         return onCompleted(getId(data));
       },

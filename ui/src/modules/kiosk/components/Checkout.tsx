@@ -4,14 +4,14 @@ import { useUI } from 'ui/context';
 import Button from 'ui/Button';
 import ArrowLeft from 'icons/ArrowLeft';
 import Scroll from './Scroll';
-import ReviewItem from './ReviewItem';
+import ReviewItem from './CheckoutItem';
 import type { ICartItem } from 'modules/types';
 import { formatNum } from 'modules/utils';
 
-const Review = () => {
+const Checkout = () => {
   const router = useRouter();
   const { orderId } = router.query;
-  const { openModal } = useUI();
+  const { openModal, setModalView } = useUI();
   const { orderDetail } = useApp();
   const { items, totalAmount } = orderDetail;
 
@@ -19,7 +19,10 @@ const Review = () => {
 
   const handleBack = () => router.push({ pathname: '/', query: { orderId } });
 
-  const handleCorrect = () => {};
+  const handleCorrect = () => {
+    setModalView('EBARIMT_VIEW');
+    openModal();
+  };
 
   return (
     <div className="kiosk-review-root">
@@ -64,4 +67,4 @@ const Review = () => {
   );
 };
 
-export default Review;
+export default Checkout;
