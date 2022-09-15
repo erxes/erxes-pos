@@ -3,17 +3,28 @@ import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import Loading from 'ui/Loading';
 import { useUI } from '../ui/context';
+import { getMode } from 'modules/utils';
 
 const EbarimtView = dynamic(
   () => import('modules/checkout/containers/Ebarimt'),
   { suspense: true }
 );
 
-const Modal = dynamic(() => import('modules/common/ui/Modal'), {
+const CartView = dynamic(() => import('modules/kiosk/components/Cart'), {
   suspense: true,
 });
 
-const ModalView: React.FC<{ modalView: string; closeModal(): any }> = ({
+const KeyboardView = dynamic(
+  () => import('modules/checkout/components/KeyBoard')
+);
+
+const Modal = dynamic(() => import('ui/Modal'), {
+  suspense: true,
+});
+
+const Sidebar = dynamic(() => import('ui/SideBar'), { suspense: true });
+
+const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
   modalView,
   closeModal,
 }) => {
@@ -28,10 +39,39 @@ const ModalView: React.FC<{ modalView: string; closeModal(): any }> = ({
   );
 };
 
+const SidebarView: React.FC<{ sidebarView: string; closeSidebar: any }> = ({
+  sidebarView,
+  closeSidebar,
+}) => {
+  return (
+    <Suspense fallback={<Loading />}>
+      <Sidebar onClose={closeSidebar}>
+        <Suspense fallback={<Loading />}>
+          {sidebarView === 'CART_VIEW' && <CartView />}
+          {sidebarView === 'KEYBOARD_VIEW' && <KeyboardView touch />}
+        </Suspense>
+      </Sidebar>
+    </Suspense>
+  );
+};
+
 const ModalUI: React.FC = () => {
   const { displayModal, modalView, closeModal } = useUI();
   return displayModal ? (
-    <ModalView modalView={modalView} closeModal={closeModal} />
+    <ModalView
+      modalView={modalView}
+      closeModal={getMode() === 'kiosk' ? () => null : closeModal}
+    />
+  ) : null;
+};
+
+const SidebarUI: React.FC = () => {
+  const { displaySidebar, sidebarView, closeSidebar } = useUI();
+  return displaySidebar ? (
+    <SidebarView
+      sidebarView={sidebarView}
+      closeSidebar={getMode() === 'kiosk' ? () => null : closeSidebar}
+    />
   ) : null;
 };
 
@@ -40,6 +80,7 @@ const MainLayout: IComponent = ({ children }) => {
     <>
       {children}
       <ModalUI />
+      <SidebarUI />
     </>
   );
 };

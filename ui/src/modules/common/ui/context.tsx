@@ -6,6 +6,7 @@ export interface State {
   displayModal: boolean;
   modalView: string;
   sidebarView: string;
+  latestClickedKey: string;
 }
 
 const initialState = {
@@ -13,6 +14,8 @@ const initialState = {
   displayModal: false,
   modalView: 'EBARIMT_VIEW',
   sidebarView: 'CART_VIEW',
+  sidebarPlacement: 'RIGHT',
+  latestClickedKey: '',
 };
 
 type Action =
@@ -35,11 +38,21 @@ type Action =
   | {
       type: 'SET_SIDEBAR_VIEW';
       view: SIDEBAR_VIEWS;
+    }
+  | {
+      type: 'SET_SIDEBAR_PLACEMENT';
+      placement: SIDEBAR_PLACEMENT;
+    }
+  | {
+      type: 'CHANGE_KEY';
+      value: string;
     };
 
-type MODAL_VIEWS = 'EBARIMT_VIEW' | 'MOTRE';
+type MODAL_VIEWS = 'EBARIMT_VIEW';
 
-type SIDEBAR_VIEWS = 'CART_VIEW';
+type SIDEBAR_VIEWS = 'CART_VIEW' | 'KEYBOARD_VIEW';
+
+type SIDEBAR_PLACEMENT = 'RIGHT' | 'BOTTOM';
 
 export const UIContext = React.createContext<State | any>(initialState);
 
@@ -59,6 +72,20 @@ function uiReducer(state: State, action: Action) {
         displaySidebar: false,
       };
 
+    case 'SET_SIDEBAR_VIEW': {
+      return {
+        ...state,
+        sidebarView: action.view,
+      };
+    }
+
+    case 'SET_SIDEBAR_PLACEMENT': {
+      return {
+        ...state,
+        sidebarPlacement: action.placement,
+      };
+    }
+
     case 'OPEN_MODAL':
       return {
         ...state,
@@ -70,11 +97,19 @@ function uiReducer(state: State, action: Action) {
         ...state,
         displayModal: false,
       };
+
     case 'SET_MODAL_VIEW':
       return {
         ...state,
         modalView: action.view,
       };
+
+    case 'CHANGE_KEY':
+      return {
+        ...state,
+        latestClickedKey: action.value,
+      };
+
     default:
       throw new Error();
   }
@@ -92,6 +127,18 @@ const UIProvider: IComponent = (props) => {
     () => dispatch({ type: 'CLOSE_SIDEBAR' }),
     [dispatch]
   );
+
+  const setSidebarView = useCallback(
+    (view: SIDEBAR_VIEWS) => dispatch({ type: 'SET_SIDEBAR_VIEW', view }),
+    [dispatch]
+  );
+
+  const setSidebarPlacement = useCallback(
+    (placement: SIDEBAR_PLACEMENT) =>
+      dispatch({ type: 'SET_SIDEBAR_PLACEMENT', placement }),
+    [dispatch]
+  );
+
   const openModal = useCallback(
     () => dispatch({ type: 'OPEN_MODAL' }),
     [dispatch]
@@ -105,14 +152,22 @@ const UIProvider: IComponent = (props) => {
     [dispatch]
   );
 
+  const changeKey = useCallback(
+    (value: string) => dispatch({ type: 'CHANGE_KEY', value }),
+    []
+  );
+
   const value = useMemo(
     () => ({
       ...state,
       openSidebar,
       closeSidebar,
+      setSidebarView,
+      setSidebarPlacement,
       openModal,
       closeModal,
       setModalView,
+      changeKey,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]

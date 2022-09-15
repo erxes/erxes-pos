@@ -11,7 +11,6 @@ export default function Categories({
   const router = useRouter();
 
   const { categoryId } = router.query;
-  console.log(categoryId);
 
   const btnClassName = (_id: string) =>
     cn('products-category', { active: categoryId == _id });

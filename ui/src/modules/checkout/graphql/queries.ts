@@ -120,12 +120,18 @@ const orderDetail = `
     }
   }
 `;
+export const ordersCheckCompany = `
+  query ordersCheckCompany($registerNumber: String!) {
+    ordersCheckCompany(registerNumber: $registerNumber)
+  }
+`;
 
 const queries = {
   commonFields,
   orderFields,
   orderItemsFields,
   orderDetail,
+  ordersCheckCompany,
 };
 
 export default queries;

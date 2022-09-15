@@ -1,6 +1,5 @@
 import { useApp } from 'modules/AppContext';
 import type { IProduct } from 'modules/types';
-import { getMode } from 'modules/utils';
 import Product from '../components/Product';
 
 const ProductContainer = (props: IProduct) => {

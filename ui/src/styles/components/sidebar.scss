@@ -1,7 +1,7 @@
 .sidebar {
   &-root {
     position: fixed;
-    inset: 0;
+    inset: 0 0 0 0;
     height: 100vh;
     z-index: 110;
     outline: none;
@@ -26,6 +26,26 @@
           width: 28rem;
           background-color: $background-gray;
         }
+      }
+    }
+    &.bottom {
+      z-index: 700;
+      inset: auto 0 0 0;
+      height: auto;
+      bottom: 0;
+      & > div {
+        position: initial;
+        & > section {
+          position: initial;
+          & > div {
+            width: 100%;
+            max-width: 100%;
+            background-color: #000;
+          }
+        }
+      }
+      .sidebar {
+        padding-bottom: 2.5rem;
       }
     }
   }

@@ -1,6 +1,8 @@
 .keyboard {
   padding-top: 2.5rem;
   border-top: $border-white;
+  max-width: 58rem;
+  margin: auto;
   .row {
     margin: -0.625rem;
   }

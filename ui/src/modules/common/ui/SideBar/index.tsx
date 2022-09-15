@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
+import { useUI } from '../context';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+import cn from 'classnames';
 import Button from 'modules/common/ui/Button';
 import CloseFilledCircle from 'modules/common/icons/CloseFilledCircle';
 
@@ -11,6 +13,8 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ children, onClose }) => {
   const sidebarRef = useRef() as React.MutableRefObject<HTMLDivElement>;
   const contentRef = useRef() as React.MutableRefObject<HTMLDivElement>;
+
+  const { sidebarPlacement } = useUI();
 
   const onKeyDownSidebar = (event: React.KeyboardEvent<HTMLDivElement>) => {
     if (event.code === 'Escape') {
@@ -36,7 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ children, onClose }) => {
 
   return (
     <div
-      className="sidebar-root"
+      className={cn('sidebar-root', sidebarPlacement.toLowerCase())}
       ref={sidebarRef}
       onKeyDown={onKeyDownSidebar}
       tabIndex={1}

@@ -1,5 +1,6 @@
 import 'simplebar/dist/simplebar.min.css';
 import 'styles/styles.min.css';
+import { StrictMode } from 'react';
 import { IComponent } from 'modules/types';
 import type { AppProps } from 'next/app';
 import { ApolloProvider } from '@apollo/client';
@@ -15,21 +16,23 @@ const Noop: IComponent = ({ children }) => <>{children}</>;
 function App({ Component, pageProps }: AppProps) {
   const Layout = (Component as any).Layout || Noop;
   return (
-    <ApolloProvider client={apolloClient}>
-      <AppContextProvider>
-        <UIProvider>
-          <ConfigsProvider>
-            <CheckAuth>
-              <Suspense>
-                <Layout pageProps={pageProps}>
-                  <Component {...pageProps} />
-                </Layout>
-              </Suspense>
-            </CheckAuth>
-          </ConfigsProvider>
-        </UIProvider>
-      </AppContextProvider>
-    </ApolloProvider>
+    <StrictMode>
+      <ApolloProvider client={apolloClient}>
+        <AppContextProvider>
+          <UIProvider>
+            <ConfigsProvider>
+              <CheckAuth>
+                <Suspense>
+                  <Layout pageProps={pageProps}>
+                    <Component {...pageProps} />
+                  </Layout>
+                </Suspense>
+              </CheckAuth>
+            </ConfigsProvider>
+          </UIProvider>
+        </AppContextProvider>
+      </ApolloProvider>
+    </StrictMode>
   );
 }
 

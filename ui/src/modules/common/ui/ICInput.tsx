@@ -1,22 +1,14 @@
-import { useState, useEffect, memo, useRef, useMemo, forwardRef } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import {
+  useState,
+  useEffect,
+  memo,
+  useRef,
+  createRef,
+  useImperativeHandle,
+} from 'react';
 import Input from './Input';
-
-const InputBox = (props: any) => {
-  const { handleChange, handleKeyDown, handleFocus, idx, value } = props;
-
-  const onChange = (e: any) => handleChange(e, idx);
-
-  return (
-    <Input
-      placeholder="*"
-      icChild
-      onChange={onChange}
-      value={value}
-      onKeyDown={handleKeyDown}
-      onFocus={handleFocus}
-    />
-  );
-};
+import { useUI } from './context';
 
 const ICInput = ({
   inputRegExp = /^[0-9]$/,
@@ -24,8 +16,12 @@ const ICInput = ({
   handleOutputString,
 }: any) => {
   const [characterArray, setCharacterArray] = useState<any[]>(
-    Array(amount).fill(null)
+    Array(amount).fill('')
   );
+  const [elRefs, setElRefs] = useState<any[]>([]);
+  const [selectedInput, setSelectedInput] = useState<any>(0);
+  const didMount = useRef(false);
+  const { latestClickedKey, changeKey } = useUI();
 
   const focusNextChar = (target: any) => {
     if (target.nextElementSibling !== null) {
@@ -39,21 +35,23 @@ const ICInput = ({
     }
   };
 
-  const handleChange = ({ target }: any, idx: number) => {
-    if (target.value.match(inputRegExp)) {
-      focusNextChar(target);
-      setModuleOutput(target.value, idx);
-    } else {
-      setModuleOutput('', idx);
-    }
-  };
-
-  const setModuleOutput = (value: any, idx: any) => {
+  const setModuleOutput = () => {
     setCharacterArray((arr: any[]) => {
-      const updatedCharacters = arr.slice();
-      updatedCharacters[idx] = value;
+      const updatedCharacters = arr.map((character, number) => {
+        return elRefs[number].current.value;
+      });
       return updatedCharacters;
     });
+  };
+
+  const handleChange = ({ target }: any) => {
+    if (target.value.match(inputRegExp)) {
+      focusNextChar(target);
+      setModuleOutput();
+    } else {
+      target.value =
+        characterArray[Number(target.name.replace('input', ''))] || '';
+    }
   };
 
   const handleKeyDown = ({ target, key }: any) => {
@@ -77,23 +75,76 @@ const ICInput = ({
     // In most browsers .select() does not work without the added timeout.
     setTimeout(function () {
       el.select();
+      setSelectedInput(Number(el.name.replace('input', '')));
     }, 0);
   };
 
   useEffect(() => {
+    if ((selectedInput + '').match(inputRegExp)) {
+      setTimeout(function () {
+        elRefs[selectedInput] && elRefs[selectedInput].current.select();
+      }, 0);
+    }
+  }, [selectedInput]);
+
+  useEffect(() => {
+    // add or remove refs
+    setElRefs((elRefs) =>
+      Array(amount)
+        .fill(null)
+        .map((_, i) => elRefs[i] || createRef())
+    );
+  }, [amount]);
+
+  useEffect(() => {
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+    setSelectedInput((prev: number) => {
+      if (latestClickedKey) {
+        if (latestClickedKey === 'C') {
+          return prev === 0 ? 0 : prev - 1;
+        }
+        return prev === amount - 1 ? prev : prev + 1;
+      }
+    });
+    changeKey('');
+
     const str = characterArray.join('');
+    console.log(str);
     str && handleOutputString(str);
   }, [characterArray]);
 
+  useEffect(() => {
+    if (latestClickedKey) {
+      if (latestClickedKey === 'C') {
+        setCharacterArray((prev: any[]) => {
+          let updated = prev.slice();
+          updated[selectedInput] = '';
+          return updated;
+        });
+        return;
+      }
+      setCharacterArray((prev: any[]) => {
+        let updated = prev.slice();
+        updated[selectedInput] = latestClickedKey;
+        return updated;
+      });
+    }
+  }, [latestClickedKey]);
   return (
     <div className="input-ic flex-v-center">
       {Array.from({ length: amount }).map((_, idx) => (
-        <InputBox
+        <Input
           key={idx}
-          handleChange={handleChange}
-          handleKeyDown={handleKeyDown}
-          handleFocus={handleFocus}
-          idx={idx}
+          placeholder="*"
+          icChild
+          onChange={handleChange}
+          onKeyDown={handleKeyDown}
+          onFocus={handleFocus}
+          name={'input' + idx}
+          ref={elRefs[idx]}
           value={characterArray[idx]}
         />
       ))}

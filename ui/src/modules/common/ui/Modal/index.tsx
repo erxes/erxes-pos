@@ -3,7 +3,7 @@ import FocusTrap from 'lib/focus-trap';
 import { disableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
 import Button from '../Button';
 import Xmark from 'modules/common/icons/Xmark';
-import { useApp } from 'modules/AppContext';
+import { useUI } from 'ui/context';
 import cn from 'classnames';
 import { getMode } from 'modules/utils';
 
@@ -17,6 +17,7 @@ interface ModalProps {
 const Modal: FC<ModalProps> = ({ children, onClose }) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const mode = getMode();
+  const { displaySidebar, sidebarPlacement } = useUI();
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
@@ -40,7 +41,10 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
     };
   }, [handleKey]);
 
-  const rootCn = cn('modal-root flex-center', { '-dark': mode === 'kiosk' });
+  const rootCn = cn('modal-root flex-center', {
+    '-dark': mode === 'kiosk',
+    wsbar: displaySidebar && sidebarPlacement === 'BOTTOM',
+  });
 
   return (
     <div className={rootCn}>

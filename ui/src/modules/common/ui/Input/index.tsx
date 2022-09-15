@@ -1,14 +1,15 @@
-import { FC, InputHTMLAttributes, useRef } from 'react';
+import { FC, InputHTMLAttributes, useRef, forwardRef } from 'react';
+import { mergeRefs } from 'react-merge-refs';
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  className?: string;
   onChange?: (...args: any[]) => any;
   icChild?: boolean;
   ref?: any;
 }
-
-const Input: FC<InputProps> = (props) => {
-  const { className, children, onChange, icChild, ref, ...rest } = props;
+// eslint-disable-next-line react/display-name
+const Input: FC<InputProps> = forwardRef((props, inputRef) => {
+  const ref = useRef(null);
+  const { className, children, onChange, icChild, ...rest } = props;
 
   const handleOnChange = (e: any) => {
     if (onChange) {
@@ -25,10 +26,10 @@ const Input: FC<InputProps> = (props) => {
       autoCorrect="off"
       autoCapitalize="off"
       spellCheck="false"
-      ref={ref}
+      ref={mergeRefs([ref, inputRef])}
       {...rest}
     />
   );
-};
+});
 
 export default Input;

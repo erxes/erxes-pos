@@ -1,20 +1,33 @@
-import { useCheckoutContext } from '../context';
+import { useUI } from 'modules/common/ui/context';
+import { getMode } from 'modules/utils';
 import Button from 'modules/common/ui/Button';
+import { IComponent } from 'modules/types';
 
-const Key = ({ value }: { value: number | string }) => {
-  const { card, setCardValue } = useCheckoutContext();
+import DeleteLeft from 'icons/DeleteLeft';
+
+const Key = ({ value, touch }: { value: number | string; touch?: boolean }) => {
+  const { changeKey } = useUI();
 
   const handleClick = () => {
-    if (value === 'C') {
-      return setCardValue(card.toString().slice(0, -1));
+    if (getMode() === 'kiosk') {
+      changeKey(value);
     }
-    return setCardValue(card + '' + value);
+
+    // if (value === 'C') {
+    //   return setCardValue(card.toString().slice(0, -1));
+    // }
+    // return setCardValue(card + '' + value);
   };
+
+  const HeadingTag: IComponent = ({ children }) =>
+    touch ? <h2>{children}</h2> : <h6>{children}</h6>;
 
   return (
     <div className="col-3 key">
       <Button variant="slim" onClick={handleClick}>
-        <h6>{value}</h6>
+        <HeadingTag>
+          {touch && value === 'C' ? <DeleteLeft /> : value}
+        </HeadingTag>
       </Button>
     </div>
   );

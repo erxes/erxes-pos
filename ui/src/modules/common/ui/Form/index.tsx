@@ -7,7 +7,6 @@ interface IForm {
 
 const Form = ({ onSubmit, children }: IForm) => {
   const handleSubmit = (e: any) => {
-    console.log(e.target.value);
     return onSubmit && onSubmit(e.target.value);
   };
 

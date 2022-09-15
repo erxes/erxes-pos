@@ -21,6 +21,7 @@ const ChooseType = ({ children, onClick, className }: IChooseType) => (
 );
 
 const Ebarimt: FC<IEbarimt> = ({ type, setType }) => {
+  console.log('check22');
   const isOrganization = type === 'organization';
   return (
     <div className="ebarimt-root">
