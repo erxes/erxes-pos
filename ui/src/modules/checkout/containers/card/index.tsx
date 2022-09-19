@@ -4,7 +4,7 @@ import Visa from 'icons/Visa';
 import PaymentInput from 'modules/checkout/components/PaymentInput';
 import Button from 'ui/Button';
 
-const Card = () => {
+const Card = ({ setType }: any) => {
   const { activePayment, changeActivePayment, remainder, setCardValue, card } =
     useCheckoutContext();
 

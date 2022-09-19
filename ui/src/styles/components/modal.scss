@@ -5,7 +5,7 @@
     inset: 0;
     z-index: 700;
     backdrop-filter: blur(0.8px);
-    transition: all 0.5s ease;
+    transition: all 1s ease;
     &.-dark {
       background: rgba($color: #fff, $alpha: 0.85);
       .modal {
@@ -44,5 +44,23 @@
     top: 0.75rem;
     padding: 0.25rem;
     font-size: 1rem;
+  }
+  &-kiosk {
+    max-width: 58rem;
+    padding: 5rem;
+    text-align: center;
+    width: calc(100vw - 3rem);
+    min-width: 48rem;
+    h2 {
+      margin-bottom: 2rem;
+    }
+    .btn {
+      width: 100%;
+      border-radius: 1.5rem;
+    }
+    &.-payment {
+      max-width: initial;
+      width: auto;
+    }
   }
 }

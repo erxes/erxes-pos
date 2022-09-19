@@ -2,12 +2,26 @@ import type { IComponent } from 'modules/types';
 import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import Loading from 'ui/Loading';
-import { useUI } from '../ui/context';
+import { useUI } from 'ui/context';
 import { getMode } from 'modules/utils';
 
 const EbarimtView = dynamic(
   () => import('modules/checkout/containers/Ebarimt'),
   { suspense: true }
+);
+
+const PaymentView = dynamic(
+  () => import('modules/checkout/containers/Payment')
+);
+
+const CheckoutContextProvider = dynamic(
+  () =>
+    import('modules/checkout/context').then(
+      (mod) => mod.CheckoutContextProvider
+    ),
+  {
+    suspense: true,
+  }
 );
 
 const CartView = dynamic(() => import('modules/kiosk/components/Cart'), {
@@ -33,6 +47,11 @@ const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
       <Modal onClose={closeModal}>
         <Suspense fallback={<Loading />}>
           {modalView === 'EBARIMT_VIEW' && <EbarimtView />}
+          {modalView === 'PAYMENT_VIEW' && (
+            <CheckoutContextProvider>
+              <PaymentView />
+            </CheckoutContextProvider>
+          )}
         </Suspense>
       </Modal>
     </Suspense>

@@ -1,5 +1,5 @@
-const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String, $slotCode: String`;
-const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId, slotCode: $slotCode`;
+const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String, $slotCode: String, $registerNumber: String`;
+const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId, slotCode: $slotCode, registerNumber: $registerNumber`;
 
 const ordersAdd = `
   mutation ordersAdd(${addEditParamDefs}, $origin: String) {
@@ -17,9 +17,29 @@ const ordersEdit = `
   }
 `;
 
+const invoiceFields = `
+  _id
+  amount
+  qrText
+  senderInvoiceNo
+  status
+  paymentDate
+  qpayPaymentId
+  status
+`;
+
+const createQpaySimpleInvoice = `
+  mutation poscCreateQpaySimpleInvoice($orderId: String!, $amount: Float) {
+    poscCreateQpaySimpleInvoice(orderId: $orderId, amount: $amount) {
+      ${invoiceFields}
+    }
+  }
+`;
+
 const mutations = {
   ordersAdd,
   ordersEdit,
+  createQpaySimpleInvoice,
 };
 
 export default mutations;

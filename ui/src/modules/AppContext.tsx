@@ -19,6 +19,7 @@ const initialState = {
   cart: [],
   isTake: '',
   orderDetail: null,
+  registerNumber: '',
 };
 
 type Action =
@@ -35,7 +36,8 @@ type Action =
       type: 'SET_IS_TAKE';
       value: State['isTake'];
     }
-  | { type: 'SET_ORDER_DETAIL'; data: object | null };
+  | { type: 'SET_ORDER_DETAIL'; data: object | null }
+  | { type: 'SET_REGISTER_NUMBER'; value: string };
 
 export const AppContext = createContext<{} | any>(initialState);
 
@@ -145,6 +147,12 @@ const appReducer = (state: State, action: Action) => {
         orderDetail: action.data,
       };
     }
+    case 'SET_REGISTER_NUMBER': {
+      return {
+        ...state,
+        registerNumber: action.value,
+      };
+    }
     default:
       return state;
   }
@@ -193,6 +201,11 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const setRegisterNumber = useCallback(
+    (value: string) => dispatch({ type: 'SET_REGISTER_NUMBER', value }),
+    [dispatch]
+  );
+
   const value = useMemo(
     () => ({
       ...state,
@@ -204,6 +217,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
       setCart,
       setIsTake,
       setOrderDetail,
+      setRegisterNumber,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]

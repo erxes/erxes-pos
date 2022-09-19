@@ -1,0 +1,135 @@
+.payment {
+  &-controls {
+    & > h6 {
+      padding-bottom: 2.5rem;
+    }
+  }
+  &-method {
+    &s {
+      margin: 0 -0.5rem 2.5rem;
+      .col {
+        padding: 0 0.5rem;
+        &:first-child {
+          svg {
+            margin-right: 0.5rem;
+            font-size: 2.5rem;
+          }
+        }
+        &:nth-child(2) {
+          svg {
+            font-size: 3.75rem;
+          }
+        }
+      }
+      &.-kiosk {
+        margin: 0;
+        .col {
+          padding: 0;
+          &:first-child {
+            margin-bottom: 1rem;
+          }
+          .btn {
+            padding: 0;
+          }
+          svg {
+            margin-right: 0;
+            font-size: 6rem;
+          }
+          .img-wrap {
+            margin: 1rem 0;
+            height: 3.75rem;
+            width: auto;
+            img {
+              object-fit: contain;
+            }
+          }
+        }
+      }
+    }
+    border: $border-white;
+    border-radius: 8px;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    padding: 1rem 0;
+    .img-wrap {
+      aspect-ratio: 2 / 1;
+      width: 5.375rem;
+    }
+  }
+  &-input {
+    justify-content: space-between;
+    padding: 0.3rem 0.5rem;
+    & > div {
+      flex: 1 1 auto;
+    }
+    .flex-v-center,
+    input {
+      font: 900 2.25rem/3rem 'Inter';
+      color: #fff;
+    }
+    input {
+      background-color: #000;
+      border: 0 !important;
+      padding: 0;
+      margin-left: 0.25rem;
+    }
+    .btn.flat,
+    caption {
+      white-space: nowrap;
+    }
+    caption {
+      white-space: nowrap;
+      opacity: 0.7;
+    }
+    .btn.flat {
+      background: $success;
+      padding: 1rem 2.25rem;
+    }
+    .btn.ghost {
+      color: #fff;
+      padding: 0.5rem;
+      margin-left: 0.5rem;
+    }
+  }
+  &-report {
+    h5 {
+      color: $gray;
+      padding-bottom: 5rem;
+    }
+
+    .white-tab {
+      padding: 5rem 0;
+      min-height: 100%;
+
+      .description,
+      & > .btn {
+        max-width: 260px;
+        margin: auto;
+      }
+
+      .description {
+        padding-bottom: 5rem;
+        &-item {
+          justify-content: space-between;
+          span {
+            color: $gray;
+            font-weight: 400;
+          }
+          &:not(:first-child) {
+            padding-top: 0.75rem;
+          }
+          &:last-child {
+            padding-top: 1.25rem;
+          }
+        }
+      }
+
+      & > .btn {
+        background: $success;
+        width: 100%;
+        padding: 1rem 0;
+      }
+    }
+  }
+}

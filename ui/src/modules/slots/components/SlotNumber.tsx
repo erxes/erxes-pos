@@ -16,7 +16,7 @@ function SlotNumber({
 }) {
   const router = useRouter();
 
-  const { selectedOrder } = router.query;
+  const { orderId } = router.query;
 
   const colors = {
     new: 'rgba(0, 0, 0, 0.65)',
@@ -25,14 +25,14 @@ function SlotNumber({
   return (
     <Button
       className={cn('slot-number', status, {
-        active: selectedOrder === _id,
+        active: orderId === _id,
       })}
       onClick={() =>
-        selectedOrder === _id
-          ? removeQuery(router, 'selectedOrder')
+        orderId === _id
+          ? removeQuery(router, 'orderId')
           : router.push({
               pathname: router.pathname,
-              query: { ...router.query, selectedOrder: _id },
+              query: { ...router.query, orderId: _id },
             })
       }
     >

@@ -1,12 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import {
-  useState,
-  useEffect,
-  memo,
-  useRef,
-  createRef,
-  useImperativeHandle,
-} from 'react';
+import { useState, useEffect, memo, useRef, createRef } from 'react';
 import Input from './Input';
 import { useUI } from './context';
 

@@ -1,7 +1,7 @@
-import { useRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import OrderDetailContainer from 'modules/checkout/containers/OrderDetailContainer';
 import CheckMode, { checkLayoutMode } from 'modules/CheckMode';
+import { CheckoutContextProvider } from 'modules/checkout/context';
 
 const Checkout = dynamic(() => import('modules/checkout/components'), {
   suspense: true,
@@ -15,13 +15,12 @@ const KioskCheckout = dynamic(
 );
 
 const Payment = () => {
-  const router = useRouter();
   return (
-    // <CheckoutContextProvider>
-    <OrderDetailContainer id={router.query.orderId}>
-      <CheckMode pos={<Checkout />} kiosk={<KioskCheckout />} />
-    </OrderDetailContainer>
-    // </CheckoutContextProvider>
+    <CheckoutContextProvider>
+      <OrderDetailContainer>
+        <CheckMode pos={<Checkout />} kiosk={<KioskCheckout />} />
+      </OrderDetailContainer>
+    </CheckoutContextProvider>
   );
 };
 

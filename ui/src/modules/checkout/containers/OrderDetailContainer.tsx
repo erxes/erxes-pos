@@ -1,14 +1,16 @@
+import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
 import { gql, useQuery } from '@apollo/client';
 import { queries } from '../graphql';
 import Loading from 'ui/Loading';
 
-const OrderDetailContainer = ({ handleSuccess, children, id }: any) => {
+const OrderDetailContainer = ({ handleSuccess, children }: any) => {
   const { setOrderDetail, orderDetail } = useApp();
+  const router = useRouter();
 
   const { loading, data } = useQuery(gql(queries.orderDetail), {
     variables: {
-      _id: id,
+      _id: router.query.orderId,
     },
     onCompleted(data) {
       const { orderDetail } = data;

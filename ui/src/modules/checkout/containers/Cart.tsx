@@ -8,7 +8,7 @@ import CheckoutCart from '../components/Cart';
 const CartContainer = () => {
   const router = useRouter();
   const { setCart } = useApp();
-  const { selectedOrder } = router.query;
+  const { orderId } = router.query;
 
   const convertCartItem = (item: any) => ({
     ...item,
@@ -30,11 +30,9 @@ const CartContainer = () => {
   );
 
   useEffect(() => {
-    selectedOrder
-      ? getSelectedOrder({ variables: { _id: selectedOrder } })
-      : setCart([]);
+    orderId ? getSelectedOrder({ variables: { _id: orderId } }) : setCart([]);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedOrder]);
+  }, [orderId]);
 
   if (loading) return <div className="checkout-cart"></div>;
 

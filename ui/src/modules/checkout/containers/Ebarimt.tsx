@@ -1,8 +1,7 @@
-import { useLazyQuery, gql } from '@apollo/client';
 import dynamic from 'next/dynamic';
 import { useState } from 'react';
 import type { IEbarimt } from '../types';
-import { queries } from '../graphql';
+
 import CheckMode from 'modules/CheckMode';
 
 const PosView = dynamic(() => import('../components/Ebarimt/pos'), {
@@ -14,17 +13,11 @@ const KioskView = dynamic(() => import('../components/Ebarimt/kiosk'), {
 });
 
 const EbarimtContainer = () => {
-  const [checkRegister, { loading, data }] = useLazyQuery(
-    gql(queries.ordersCheckCompany)
-  );
   const [type, setType] = useState<IEbarimt['type']>('');
 
   const props = {
     type,
     setType,
-    loading,
-    data,
-    checkRegister,
   };
 
   return (

@@ -24,6 +24,7 @@
 .row {
   display: flex;
   flex-flow: row wrap;
+  overflow: hidden;
 }
 .col-3 {
   flex: 1 1 25%;
@@ -97,4 +98,7 @@
 
 .error {
   color: $error;
+}
+.success {
+  color: $success;
 }

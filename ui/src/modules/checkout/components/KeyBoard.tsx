@@ -6,11 +6,11 @@ const KeyBoard = ({ touch }: { touch?: boolean }) => {
     <div className={cn('keyboard', { touch })}>
       <div className="row">
         {Array.from({ length: 9 }).map((_, idx) => (
-          <Key key={idx} value={idx + 1 + ''} touch />
+          <Key key={idx} value={idx + 1 + ''} touch={touch} />
         ))}
-        <Key value={'0'} touch />
+        <Key value={'0'} touch={touch} />
         {!touch && <Key value="00" />}
-        <Key value="C" touch />
+        <Key value="C" touch={touch} />
       </div>
     </div>
   );

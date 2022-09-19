@@ -21,6 +21,7 @@ button {
   border-radius: 0.5rem;
   color: rgba(0, 0, 0, 0.95);
   background: #dcdcdc;
+  overflow: hidden;
 
   &:focus {
     outline: none;
