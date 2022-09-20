@@ -6,7 +6,7 @@ const initialState = {
   type: 'success',
 };
 
-const useAlert = () => {
+const useAlert = (Component: any = 'div') => {
   const [alert, setAlert] = useState(initialState);
 
   const onAlert = (message: string, type?: string) => {
@@ -15,11 +15,11 @@ const useAlert = () => {
   };
 
   const Alert = () => (
-    <div
+    <Component
       className={cn('smooth', 'alert', alert.type, { active: alert.message })}
     >
       {alert.message}
-    </div>
+    </Component>
   );
 
   return { onAlert, Alert };

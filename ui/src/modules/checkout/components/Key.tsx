@@ -9,14 +9,7 @@ const Key = ({ value, touch }: { value: number | string; touch?: boolean }) => {
   const { changeKey } = useUI();
 
   const handleClick = () => {
-    if (getMode() === 'kiosk') {
-      changeKey(value);
-    }
-
-    // if (value === 'C') {
-    //   return setCardValue(card.toString().slice(0, -1));
-    // }
-    // return setCardValue(card + '' + value);
+    changeKey(value);
   };
 
   const HeadingTag: IComponent = ({ children }) =>

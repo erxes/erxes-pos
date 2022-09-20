@@ -1,3 +1,5 @@
+import { orderFields, orderItemsFields } from './queries';
+
 const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String, $slotCode: String, $registerNumber: String`;
 const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId, slotCode: $slotCode, registerNumber: $registerNumber`;
 
@@ -36,10 +38,20 @@ const createQpaySimpleInvoice = `
   }
 `;
 
+const ordersAddPayment = `
+  mutation ordersAddPayment($_id: String!, $cashAmount: Float, $cardAmount: Float, $cardInfo: JSON) {
+    ordersAddPayment(_id: $_id, cashAmount: $cashAmount, cardAmount: $cardAmount, cardInfo: $cardInfo) {
+      ${orderFields}
+      ${orderItemsFields}
+    }
+  }
+`;
+
 const mutations = {
   ordersAdd,
   ordersEdit,
   createQpaySimpleInvoice,
+  ordersAddPayment,
 };
 
 export default mutations;

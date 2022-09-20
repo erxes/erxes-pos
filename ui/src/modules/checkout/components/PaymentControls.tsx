@@ -1,4 +1,4 @@
-import PaymentMethods from './PaymentMethods';
+import PaymentMethods from '../containers/PaymentMethods';
 import KeyBoard from './KeyBoard';
 
 const PaymentControls = () => {

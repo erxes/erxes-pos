@@ -6,6 +6,11 @@ export const Query = (queries: object, name: string) =>
 export const formatNum = (num: number): string =>
   num.toLocaleString().replaceAll(',', ' ');
 
+export const parseNum = (val: string | number) => {
+  const str = val.toString();
+  return str.length > 0 ? parseFloat(str.replaceAll(' ', '')) : 0;
+};
+
 export const removeQuery = (router: any, name: string) => {
   delete router.query[name];
   router.push({ pathname: router.pathname, query: router.query });

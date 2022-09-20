@@ -1,5 +1,6 @@
 import React, { useCallback, useMemo, useReducer } from 'react';
 import { IComponent } from 'modules/types';
+import { parseNum } from 'modules/utils';
 
 export interface State {
   activePayment: string;
@@ -11,12 +12,16 @@ const initialState = {
   activePayment: '',
   remainder: 0,
   card: 0,
+  qpay: 0,
+  cash: 0,
 };
+
+type PAYMENT_TYPES = 'qpay' | 'cash' | 'card';
 
 type Action =
   | { type: 'SET_ACTIVE_PAYMENT'; paymentType: State['activePayment'] }
   | { type: 'SET_REMAINDER'; value: number }
-  | { type: 'SET_CARD_VALUE'; value: string | number };
+  | { type: 'SET_VALUE'; value: string | number; name: PAYMENT_TYPES };
 
 export const CheckoutContext = React.createContext<State | any>(initialState);
 
@@ -36,14 +41,13 @@ const checkoutReducer = (state: State, action: Action) => {
         remainder: action.value,
       };
     }
-    case 'SET_CARD_VALUE': {
-      const { value } = action;
+    case 'SET_VALUE': {
       const { remainder } = state;
-      const str = value.toString();
-      const num = str.length > 0 ? parseFloat(str.replaceAll(' ', '')) : 0;
+      const { name, value } = action;
+      const num = parseNum(value);
       return {
         ...state,
-        card: num >= remainder ? remainder : num,
+        [name]: num >= remainder ? remainder : num,
       };
     }
     default:
@@ -63,8 +67,9 @@ export const CheckoutContextProvider: IComponent = ({ children }) => {
     (value: number) => dispatch({ type: 'SET_REMAINDER', value }),
     [dispatch]
   );
-  const setCardValue = useCallback(
-    (value: string | number) => dispatch({ type: 'SET_CARD_VALUE', value }),
+  const setValue = useCallback(
+    (value: string | number, name: PAYMENT_TYPES) =>
+      dispatch({ type: 'SET_VALUE', value, name }),
     [dispatch]
   );
 
@@ -73,7 +78,7 @@ export const CheckoutContextProvider: IComponent = ({ children }) => {
       ...state,
       changeActivePayment,
       setRemainder,
-      setCardValue,
+      setValue,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]
