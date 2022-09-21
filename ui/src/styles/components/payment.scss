@@ -1,7 +1,15 @@
 .payment {
   &-controls {
-    & > h6 {
+    .-header {
       padding-bottom: 2.5rem;
+      .btn {
+        color: #fff;
+        padding: 1rem;
+        border-radius: 50%;
+        border: $border-white;
+        margin-left: auto;
+        font-size: 1.125rem;
+      }
     }
   }
   &-method {

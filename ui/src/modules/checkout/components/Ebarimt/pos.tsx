@@ -8,20 +8,23 @@ import CheckRegister from '../CheckRegister';
 interface IChooseType {
   children: ReactNode;
   onClick: () => void;
-  className?: string | boolean;
+  checked: boolean;
 }
 
-const ChooseType = ({ children, onClick, className }: IChooseType) => (
+const ChooseType = ({ children, onClick, checked }: IChooseType) => (
   <div className="col-6 ">
-    <Button className={cn(className)} variant="slim" onClick={onClick}>
-      <Radio />
+    <Button
+      className={cn({ active: checked })}
+      variant="slim"
+      onClick={onClick}
+    >
+      <Radio mode={checked && 'checked'} />
       <b>{children}</b>
     </Button>
   </div>
 );
 
 const Ebarimt: FC<IEbarimt> = ({ type, setType }) => {
-  console.log('check22');
   const isOrganization = type === 'organization';
   return (
     <div className="ebarimt-root">
@@ -30,13 +33,13 @@ const Ebarimt: FC<IEbarimt> = ({ type, setType }) => {
         <div className="row">
           <ChooseType
             onClick={() => setType('individual')}
-            className={type === 'individual' && 'active'}
+            checked={!isOrganization}
           >
             Хувь хүн
           </ChooseType>
           <ChooseType
             onClick={() => setType('organization')}
-            className={isOrganization && 'active'}
+            checked={isOrganization}
           >
             Байгуулга
           </ChooseType>

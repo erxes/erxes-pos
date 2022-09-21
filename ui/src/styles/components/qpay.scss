@@ -1,0 +1,38 @@
+.qpay {
+  &-list {
+    padding: 3rem;
+    table {
+      width: 800px;
+      th {
+        padding: 1rem;
+        border-bottom: $border-white;
+      }
+      td {
+        text-align: center;
+        padding: 1rem;
+      }
+      tbody tr {
+        &:not(:last-child) {
+          th,
+          td {
+            border-bottom: $border-white;
+          }
+        }
+      }
+      .status {
+        padding: 0.25rem 1rem;
+        display: inline-block;
+        border-radius: 1rem;
+        font-weight: 500;
+        &.open {
+          color: $warning;
+          background: rgba($color: $warning, $alpha: 0.2);
+          border: 1px solid rgba($color: $warning, $alpha: 0.5);
+        }
+      }
+      .btn.flat {
+        background: $success;
+      }
+    }
+  }
+}

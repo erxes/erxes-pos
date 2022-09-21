@@ -1,16 +1,15 @@
 import React, { useCallback, useMemo, useReducer } from 'react';
+import { useApp } from 'modules/AppContext';
 import { IComponent } from 'modules/types';
 import { parseNum } from 'modules/utils';
 
 export interface State {
   activePayment: string;
-  remainder: number;
   card: number;
 }
 
 const initialState = {
   activePayment: '',
-  remainder: 0,
   card: 0,
   qpay: 0,
   cash: 0,
@@ -20,8 +19,12 @@ type PAYMENT_TYPES = 'qpay' | 'cash' | 'card';
 
 type Action =
   | { type: 'SET_ACTIVE_PAYMENT'; paymentType: State['activePayment'] }
-  | { type: 'SET_REMAINDER'; value: number }
-  | { type: 'SET_VALUE'; value: string | number; name: PAYMENT_TYPES };
+  | {
+      type: 'SET_VALUE';
+      value: string | number;
+      name: PAYMENT_TYPES;
+      remainder: number;
+    };
 
 export const CheckoutContext = React.createContext<State | any>(initialState);
 
@@ -35,15 +38,8 @@ const checkoutReducer = (state: State, action: Action) => {
         activePayment: action.paymentType,
       };
     }
-    case 'SET_REMAINDER': {
-      return {
-        ...state,
-        remainder: action.value,
-      };
-    }
     case 'SET_VALUE': {
-      const { remainder } = state;
-      const { name, value } = action;
+      const { name, value, remainder } = action;
       const num = parseNum(value);
       return {
         ...state,
@@ -57,27 +53,32 @@ const checkoutReducer = (state: State, action: Action) => {
 
 export const CheckoutContextProvider: IComponent = ({ children }) => {
   const [state, dispatch] = useReducer(checkoutReducer, initialState);
+  const { orderDetail } = useApp();
+  const { totalAmount, mobileAmount, cashAmount, cardAmount } =
+    orderDetail || {};
+
+  const remainder =
+    (totalAmount || 0) -
+    (mobileAmount || 0) -
+    (cashAmount || 0) -
+    (cardAmount || 0);
 
   const changeActivePayment = useCallback(
     (paymentType: State['activePayment']) =>
       dispatch({ type: 'SET_ACTIVE_PAYMENT', paymentType }),
     [dispatch]
   );
-  const setRemainder = useCallback(
-    (value: number) => dispatch({ type: 'SET_REMAINDER', value }),
-    [dispatch]
-  );
   const setValue = useCallback(
     (value: string | number, name: PAYMENT_TYPES) =>
-      dispatch({ type: 'SET_VALUE', value, name }),
-    [dispatch]
+      dispatch({ type: 'SET_VALUE', value, name, remainder }),
+    [dispatch, remainder]
   );
 
   const value = useMemo(
     () => ({
       ...state,
+      remainder,
       changeActivePayment,
-      setRemainder,
       setValue,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

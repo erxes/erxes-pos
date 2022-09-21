@@ -17,7 +17,7 @@ interface ModalProps {
 const Modal: FC<ModalProps> = ({ children, onClose }) => {
   const ref = useRef() as React.MutableRefObject<HTMLDivElement>;
   const mode = getMode();
-  const { displaySidebar, sidebarPlacement } = useUI();
+  const { displaySidebar, sidebarPlacement, modalView } = useUI();
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
@@ -42,7 +42,7 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
   }, [handleKey]);
 
   const rootCn = cn('modal-root flex-center', {
-    '-dark': mode === 'kiosk',
+    '-dark': mode === 'kiosk' || modalView === 'QPAY_LIST_VIEW',
     wsbar: displaySidebar && sidebarPlacement === 'BOTTOM',
   });
 

@@ -59,6 +59,7 @@
       color: #fff;
       font-weight: 700;
       padding: 0;
+      max-width: 7rem;
       &::-webkit-outer-spin-button,
       &::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -78,6 +79,15 @@
       top: calc(100% + 0.5rem);
       left: 2.5rem;
       z-index: 1;
+    }
+    &.loading {
+      &::after {
+        position: absolute;
+        content: '';
+        background: rgba($color: #fff, $alpha: 0.12);
+        inset: 0;
+        z-index: 1;
+      }
     }
   }
   &-kiosk {

@@ -6,12 +6,9 @@ import Button from 'modules/common/ui/Button';
 import Xmark from 'modules/common/icons/Xmark';
 
 const PaymentInput = ({ children, setValue, value }: any) => {
-  const { changeActivePayment, remainder, cash, qpay, card, setRemainder } =
-    useCheckoutContext();
+  const { changeActivePayment, remainder } = useCheckoutContext();
 
   const handleClick = () => {
-    const newRemainder = remainder - cash - qpay - card;
-    newRemainder >= 0 && setRemainder(newRemainder);
     changeActivePayment('');
   };
 

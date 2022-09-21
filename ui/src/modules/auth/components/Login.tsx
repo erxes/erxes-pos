@@ -13,7 +13,9 @@ type ILogin = IProps & {
   error: any;
 };
 
-const ChooseConfig = dynamic(() => import('../containers/ChooseConfig'));
+const ChooseConfig = dynamic(() => import('../containers/ChooseConfig'), {
+  suspense: true,
+});
 
 const Login: FC<ILogin> = ({ login, loading, error }) => {
   const { configs } = useConfigsContext();

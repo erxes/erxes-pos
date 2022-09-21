@@ -24,6 +24,14 @@ const CheckoutContextProvider = dynamic(
   }
 );
 
+const Qpaylist = dynamic(() => import('modules/checkout/components/Qpaylist'), {
+  suspense: true,
+});
+
+const Modal = dynamic(() => import('ui/Modal'), {
+  suspense: true,
+});
+
 const CartView = dynamic(() => import('modules/kiosk/components/Cart'), {
   suspense: true,
 });
@@ -31,10 +39,6 @@ const CartView = dynamic(() => import('modules/kiosk/components/Cart'), {
 const KeyboardView = dynamic(
   () => import('modules/checkout/components/KeyBoard')
 );
-
-const Modal = dynamic(() => import('ui/Modal'), {
-  suspense: true,
-});
 
 const Sidebar = dynamic(() => import('ui/SideBar'), { suspense: true });
 
@@ -52,6 +56,7 @@ const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
               <PaymentView />
             </CheckoutContextProvider>
           )}
+          {modalView === 'QPAY_LIST_VIEW' && <Qpaylist />}
         </Suspense>
       </Modal>
     </Suspense>

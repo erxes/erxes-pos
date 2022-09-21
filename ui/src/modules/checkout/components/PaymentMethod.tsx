@@ -27,7 +27,6 @@ const PaymentMethod: FC<IProps> = ({
     changeActivePayment,
     setValue,
     remainder,
-    setRemainder,
     ...rest
   } = useCheckoutContext();
   const { latestClickedKey, changeKey } = useUI();
@@ -50,9 +49,6 @@ const PaymentMethod: FC<IProps> = ({
 
   useEffect(() => {
     changeKey('');
-    // value &&
-    //   remainder &&
-    //   setRemainder(remainder >= value ? remainder - value : 0);
   }, [value]);
 
   const handleClick = () => {

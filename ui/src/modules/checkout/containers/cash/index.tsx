@@ -20,7 +20,7 @@ const Cash = ({ addPayment }: any) => {
   };
 
   return (
-    <PaymentMethod name="cash" onClick={handleClick} btnText="Төлбөр төлөх">
+    <PaymentMethod name="cash" onClick={handleClick} btnText="Төлөх">
       <CashIcon />
       &nbsp;&nbsp;<h6>Бэлнээр</h6>
     </PaymentMethod>

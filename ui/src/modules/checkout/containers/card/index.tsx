@@ -70,7 +70,7 @@ const Card = ({ addPayment }: any) => {
   };
 
   return (
-    <PaymentMethod name="card" onClick={() => null} btnText="Төлбөр төлөх">
+    <PaymentMethod name="card" onClick={() => null} btnText="Гүйлгээ хийх">
       <Visa />
     </PaymentMethod>
   );
