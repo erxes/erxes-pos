@@ -2,13 +2,9 @@ import { FC, useState } from 'react';
 import type { ButtonProps } from 'ui/Button';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import SettingsButton from '../components/SettingsButton';
+import { toast } from 'react-toastify';
 
-const SendData: FC<
-  ButtonProps & {
-    onAlert: any;
-  }
-> = (props) => {
-  const { onAlert, ...rest } = props;
+const SendData: FC<ButtonProps> = (props) => {
   const [loading, setLoading] = useState(false);
   const { currentConfig } = useConfigsContext();
 
@@ -20,12 +16,12 @@ const SendData: FC<
       .then((res: any) => res.json())
       .then((res) => {
         if (res.success) {
-          return onAlert(`Амжилттай.`);
+          return toast.success(`Амжилттай.`);
         }
-        return onAlert(`Амжилтгүй: ${res.message}.`);
+        return toast.error(`Амжилтгүй: ${res.message}.`);
       })
       .catch((e) => {
-        onAlert(`${e.message}`, 'error');
+        toast.error(`${e.message}`);
       })
       .then(() => {
         setLoading(false);
@@ -33,7 +29,7 @@ const SendData: FC<
   };
 
   return (
-    <SettingsButton {...rest} disabled={loading} onClick={handleClick}>
+    <SettingsButton {...props} disabled={loading} onClick={handleClick}>
       Send - Data
     </SettingsButton>
   );

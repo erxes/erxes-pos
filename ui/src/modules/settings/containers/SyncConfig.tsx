@@ -3,14 +3,14 @@ import { mutations } from '../graphql';
 import type { FC } from 'react';
 import SettingsButton from '../components/SettingsButton';
 import type { ButtonProps } from 'ui/Button';
+import { toast } from 'react-toastify';
 
 const SyncConfig: FC<
   ButtonProps & {
     configType: string;
-    onAlert: any;
   }
 > = (props) => {
-  const { configType, onAlert, ...rest } = props;
+  const { configType, ...rest } = props;
   const [syncConfig, { loading, error }] = useMutation(
     gql(mutations.syncConfig),
     {
@@ -18,10 +18,10 @@ const SyncConfig: FC<
         type: configType,
       },
       onCompleted(data) {
-        return onAlert(`${configType} has been synced successfully.`);
+        return toast.success(`${configType} has been synced successfully.`);
       },
       onError(error) {
-        return onAlert(error.message, 'error');
+        return toast.error(error.message);
       },
     }
   );

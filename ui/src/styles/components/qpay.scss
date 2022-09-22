@@ -1,10 +1,29 @@
 .qpay {
+  padding: 5rem;
+
+  .qr {
+    height: auto;
+    width: auto;
+    margin: 1.5rem 0;
+    border: 1rem solid #fff;
+    border-radius: 0.5rem;
+  }
+  .flex-center {
+    gap: 1rem;
+    &:first-of-type {
+      padding-bottom: 1rem;
+    }
+  }
+  .btn.flat {
+    background: $primary;
+  }
+
   &-list {
-    padding: 3rem;
+    padding: 3rem 3rem 2rem;
     table {
       width: 800px;
       th {
-        padding: 1rem;
+        padding: 0 1rem 1rem;
         border-bottom: $border-white;
       }
       td {
@@ -19,17 +38,7 @@
           }
         }
       }
-      .status {
-        padding: 0.25rem 1rem;
-        display: inline-block;
-        border-radius: 1rem;
-        font-weight: 500;
-        &.open {
-          color: $warning;
-          background: rgba($color: $warning, $alpha: 0.2);
-          border: 1px solid rgba($color: $warning, $alpha: 0.5);
-        }
-      }
+
       .btn.flat {
         background: $success;
       }

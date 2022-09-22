@@ -40,6 +40,11 @@
   max-width: 50%;
 }
 
+.col-12 {
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
 .h-100vh {
   height: 100vh;
 }

@@ -1,7 +1,7 @@
 import PaymentMethods from '../containers/PaymentMethods';
 import KeyBoard from './KeyBoard';
 import Button from 'ui/Button';
-import Menu from 'icons/Menu';
+import Qr from 'icons/Qr';
 import { useUI } from 'ui/context';
 import { useApp } from 'modules/AppContext';
 
@@ -22,7 +22,7 @@ const PaymentControls = () => {
         <h6>Төлбөрийн нөхцөлөө сонгоно уу.</h6>
         {qpayInvoices && qpayInvoices.length ? (
           <Button variant="slim" onClick={handleClick}>
-            <Menu />
+            <Qr />
           </Button>
         ) : null}
       </div>

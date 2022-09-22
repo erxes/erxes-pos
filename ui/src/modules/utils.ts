@@ -1,10 +1,7 @@
-import { gql, useQuery } from '@apollo/client';
-
-export const Query = (queries: object, name: string) =>
-  useQuery(gql(queries[name as keyof typeof queries]));
-
-export const formatNum = (num: number): string =>
-  num.toLocaleString().replaceAll(',', ' ');
+export const formatNum = (num: number | string): string => {
+  const checked = typeof num === 'string' ? Number(num) : num;
+  return checked.toLocaleString().replaceAll(',', ' ');
+};
 
 export const parseNum = (val: string | number) => {
   const str = val.toString();

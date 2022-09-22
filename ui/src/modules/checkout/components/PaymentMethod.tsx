@@ -22,13 +22,8 @@ const PaymentMethod: FC<IProps> = ({
   ...restProps
 }) => {
   const mode = getMode();
-  const {
-    activePayment,
-    changeActivePayment,
-    setValue,
-    remainder,
-    ...rest
-  } = useCheckoutContext();
+  const { activePayment, changeActivePayment, setValue, remainder, ...rest } =
+    useCheckoutContext();
   const { latestClickedKey, changeKey } = useUI();
   const value = rest[name];
 
@@ -72,10 +67,10 @@ const PaymentMethod: FC<IProps> = ({
 
   if (activePayment === '')
     return (
-      <div className={cn('col', { 'col-4': mode === 'pos' })}>
+      <div className={cn('col', mode === 'pos' ? 'col-4' : 'col-12 ')}>
         <Button
           variant="slim"
-          className="payment-method flex-center"
+          className={cn('payment-method flex-center', '-' + mode)}
           onClick={handleClick}
           loading={loading}
           {...restProps}

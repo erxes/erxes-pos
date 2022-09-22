@@ -2,15 +2,14 @@ import { useRouter } from 'next/router';
 import { useCheckoutContext } from 'modules/checkout/context';
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
 import { useApp } from 'modules/AppContext';
-import useAlert from 'ui/Alert';
 import Visa from 'modules/common/icons/Visa';
+import { toast } from 'react-toastify';
 
 const Card = ({ addPayment }: any) => {
   const router = useRouter();
   const { orderId } = router.query;
   const { orderDetail } = useApp();
   const { number } = orderDetail;
-  const { onAlert, Alert } = useAlert('span');
 
   const { card } = useCheckoutContext();
 
@@ -41,7 +40,7 @@ const Card = ({ addPayment }: any) => {
             .then((r) => {
               if (r && r.status === true && r.response) {
                 if (r.response.response_code === '000') {
-                  onAlert('Transaction was successful');
+                  toast.success('Transaction was successful');
 
                   addPayment({
                     _id: orderId,
@@ -49,28 +48,30 @@ const Card = ({ addPayment }: any) => {
                     cardAmount: card,
                   });
                 } else {
-                  onAlert(r.response.response_msg);
+                  toast.error(r.response.response_msg);
                 }
               }
 
               if (!r.status && r.response) {
                 const { Exception = { ErrorMessage: '' } } = r.response;
 
-                onAlert(`${Exception.ErrorMessage}`);
+                toast.error(`${Exception.ErrorMessage}`);
               }
             })
             .catch((e) => {
-              onAlert(e.message);
+              toast.error(e.message);
             });
         }
       })
       .catch((e) => {
-        onAlert(`${e.message}: Databank-н төлбөрийн програмтай холбогдсонгүй`);
+        toast.error(
+          `${e.message}: Databank-н төлбөрийн програмтай холбогдсонгүй`
+        );
       });
   };
 
   return (
-    <PaymentMethod name="card" onClick={() => null} btnText="Гүйлгээ хийх">
+    <PaymentMethod name="card" onClick={sendTransaction} btnText="Гүйлгээ хийх">
       <Visa />
     </PaymentMethod>
   );

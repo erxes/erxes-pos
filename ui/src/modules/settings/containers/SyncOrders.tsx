@@ -3,19 +3,15 @@ import { mutations } from '../graphql';
 import type { FC } from 'react';
 import SettingsButton from '../components/SettingsButton';
 import type { ButtonProps } from 'ui/Button';
+import { toast } from 'react-toastify';
 
-const SyncOrders: FC<
-  ButtonProps & {
-    onAlert: any;
-  }
-> = (props) => {
-  const { onAlert, ...rest } = props;
+const SyncOrders: FC<ButtonProps> = (props) => {
   const [syncOrders, { loading }] = useMutation(gql(mutations.syncOrders), {
     onCompleted(data) {
       const { syncOrders } = data;
       if (syncOrders) {
         if (syncOrders.sumCount > syncOrders.syncedCount) {
-          return onAlert(
+          return toast.success(
             `${
               syncOrders.syncedCount
             } order has been synced successfully. But less count ${
@@ -23,20 +19,20 @@ const SyncOrders: FC<
             }`
           );
         }
-        return onAlert(
+        return toast.success(
           `${syncOrders.syncedCount} order has been synced successfully`
         );
       }
     },
     onError(error) {
-      return onAlert(error.message, 'error');
+      return toast.error(error.message);
     },
   });
 
   const handleClick = () => syncOrders();
 
   return (
-    <SettingsButton {...rest} disabled={loading} onClick={handleClick}>
+    <SettingsButton {...props} disabled={loading} onClick={handleClick}>
       Resync order
     </SettingsButton>
   );

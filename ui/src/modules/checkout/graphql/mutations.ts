@@ -38,6 +38,20 @@ const createQpaySimpleInvoice = `
   }
 `;
 
+const qpayCheckPayment = `
+mutation QpayCheckPayment($orderId: String!, $id: String) {
+  qpayCheckPayment(orderId: $orderId, _id: $id) {
+    _id
+  }
+}
+`;
+
+const qpayCancelInvoice = `
+mutation QpayCancelInvoice($id: String!) {
+  qpayCancelInvoice(_id: $id)
+}
+`;
+
 const ordersAddPayment = `
   mutation ordersAddPayment($_id: String!, $cashAmount: Float, $cardAmount: Float, $cardInfo: JSON) {
     ordersAddPayment(_id: $_id, cashAmount: $cashAmount, cardAmount: $cardAmount, cardInfo: $cardInfo) {
@@ -52,6 +66,8 @@ const mutations = {
   ordersEdit,
   createQpaySimpleInvoice,
   ordersAddPayment,
+  qpayCheckPayment,
+  qpayCancelInvoice,
 };
 
 export default mutations;

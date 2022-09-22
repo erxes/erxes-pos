@@ -4,6 +4,8 @@ import { mutations, queries } from '../graphql';
 import Cash from './cash';
 import Card from './card';
 import Qpay from './qpay';
+import { toast } from 'react-toastify';
+import { getMode } from 'modules/utils';
 
 const PaymentMethods = () => {
   const router = useRouter();
@@ -18,12 +20,15 @@ const PaymentMethods = () => {
       },
       'OrderDetail',
     ],
+    onError(error) {
+      toast.error(error.message);
+    },
   });
 
   return (
     <div className="row payment-methods">
-      <Cash addPayment={addPayment} />
-      <Card />
+      {getMode() === 'pos' && <Cash addPayment={addPayment} />}
+      <Card addPayment={addPayment} />
       <Qpay />
     </div>
   );

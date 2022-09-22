@@ -1,13 +1,24 @@
+import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
+import { useUI } from 'ui/context';
 import { formatNum } from 'modules/utils';
 import Button from 'ui/Button';
-import cn from 'classnames';
+import Tag from 'ui/Tag';
 
 const Qpaylist = () => {
+  const router = useRouter();
   const { orderDetail } = useApp();
+  const { setModalView, openModal } = useUI();
   const { qpayInvoices } = orderDetail;
 
-  const handleClick = () => {};
+  const handleClick = (_id: string) => {
+    router.push(
+      { pathname: router.pathname, query: { ...router.query, qpayId: _id } },
+      undefined,
+      { shallow: true }
+    );
+    setModalView('QPAY_VIEW');
+  };
 
   return (
     <div className="qpay-list">
@@ -24,14 +35,12 @@ const Qpaylist = () => {
           {qpayInvoices.map((invoice: any, idx: number) => (
             <tr key={idx}>
               <td>
-                <span className={cn('status', invoice.status)}>
-                  {invoice.status}
-                </span>
+                <Tag status={invoice.status}>{invoice.status}</Tag>
               </td>
               <td>{formatNum(Number(invoice.amount))}₮</td>
               <td>{invoice.paidDate || '-'}</td>
               <td>
-                <Button>Харах</Button>
+                <Button onClick={() => handleClick(invoice._id)}>Харах</Button>
               </td>
             </tr>
           ))}

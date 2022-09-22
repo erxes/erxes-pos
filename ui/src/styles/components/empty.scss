@@ -23,4 +23,9 @@
       font-size: 0.865rem;
     }
   }
+  &.dark {
+    p {
+      color: $white-gray;
+    }
+  }
 }

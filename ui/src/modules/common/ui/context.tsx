@@ -48,7 +48,11 @@ type Action =
       value: string;
     };
 
-type MODAL_VIEWS = 'EBARIMT_VIEW' | 'PAYMENT_VIEW' | 'QPAY_LIST_VIEW';
+type MODAL_VIEWS =
+  | 'EBARIMT_VIEW'
+  | 'PAYMENT_VIEW'
+  | 'QPAY_LIST_VIEW'
+  | 'QPAY_VIEW';
 
 type SIDEBAR_VIEWS = 'CART_VIEW' | 'KEYBOARD_VIEW';
 

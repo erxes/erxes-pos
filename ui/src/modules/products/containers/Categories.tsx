@@ -1,10 +1,10 @@
+import { useQuery, gql } from '@apollo/client';
 import Categories from '../components/Categories';
-import { Query } from 'modules/utils';
 import { queries } from '../graphql';
 import Loading from 'modules/common/ui/Loading';
 
 const CategoriesContainer = () => {
-  const { data, loading } = Query(queries, 'productCategories');
+  const { data, loading } = useQuery(gql(queries.productCategories));
 
   if (loading) return <Loading />;
 

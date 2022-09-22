@@ -4,6 +4,7 @@ import { Suspense } from 'react';
 import Loading from 'ui/Loading';
 import { useUI } from 'ui/context';
 import { getMode } from 'modules/utils';
+import { CheckoutContextProvider } from 'modules/checkout/context';
 
 const EbarimtView = dynamic(
   () => import('modules/checkout/containers/Ebarimt'),
@@ -11,20 +12,17 @@ const EbarimtView = dynamic(
 );
 
 const PaymentView = dynamic(
-  () => import('modules/checkout/containers/Payment')
-);
-
-const CheckoutContextProvider = dynamic(
-  () =>
-    import('modules/checkout/context').then(
-      (mod) => mod.CheckoutContextProvider
-    ),
+  () => import('modules/checkout/containers/Payment'),
   {
     suspense: true,
   }
 );
 
 const Qpaylist = dynamic(() => import('modules/checkout/components/Qpaylist'), {
+  suspense: true,
+});
+
+const QpayView = dynamic(() => import('modules/checkout/components/QpayQr'), {
   suspense: true,
 });
 
@@ -53,10 +51,13 @@ const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
           {modalView === 'EBARIMT_VIEW' && <EbarimtView />}
           {modalView === 'PAYMENT_VIEW' && (
             <CheckoutContextProvider>
-              <PaymentView />
+              <Suspense fallback={<Loading />}>
+                <PaymentView />
+              </Suspense>
             </CheckoutContextProvider>
           )}
           {modalView === 'QPAY_LIST_VIEW' && <Qpaylist />}
+          {modalView === 'QPAY_VIEW' && <QpayView />}
         </Suspense>
       </Modal>
     </Suspense>
