@@ -1,6 +1,4 @@
 import dynamic from 'next/dynamic';
-import { useState } from 'react';
-import type { IEbarimt } from '../types';
 
 import CheckMode from 'modules/CheckMode';
 
@@ -13,16 +11,7 @@ const KioskView = dynamic(() => import('../components/Ebarimt/kiosk'), {
 });
 
 const EbarimtContainer = () => {
-  const [type, setType] = useState<IEbarimt['type']>('');
-
-  const props = {
-    type,
-    setType,
-  };
-
-  return (
-    <CheckMode pos={<PosView {...props} />} kiosk={<KioskView {...props} />} />
-  );
+  return <CheckMode pos={<PosView />} kiosk={<KioskView />} />;
 };
 
 export default EbarimtContainer;

@@ -13,7 +13,6 @@ const CartContainer = () => {
   const convertCartItem = (item: any) => ({
     ...item,
     isSelected: false,
-    status: 'confirmed',
     name: item.productName,
   });
 

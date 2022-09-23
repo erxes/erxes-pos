@@ -3,10 +3,16 @@ import useCheckRegister from 'lib/useCheckRegister';
 import Radio from 'modules/common/ui/Radio';
 import Input from 'modules/common/ui/Input';
 import cn from 'classnames';
+import { useEffect } from 'react';
 
 const CheckRegister = () => {
   const { registerNumber, setRegisterNumber } = useApp();
-  const { name, loading, error } = useCheckRegister();
+  const { name, loading, error, checkRegister } = useCheckRegister();
+
+  useEffect(() => {
+    checkRegister();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [registerNumber]);
 
   const handleChange = (value: string) => {
     const num = value.replaceAll(' ', '');
@@ -34,9 +40,9 @@ const CheckRegister = () => {
             mode={loading ? 'loading' : name ? 'checked' : error ? 'error' : ''}
           />
           <div>
-            <caption>
+            <span className="caption">
               <b>Байгууллагын РД</b>
-            </caption>
+            </span>
             <div className="flex-v-center">
               <Input
                 placeholder="000 0000"

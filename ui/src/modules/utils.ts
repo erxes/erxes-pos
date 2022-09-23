@@ -22,3 +22,7 @@ export const getMode = (): string => {
   }
   return mode;
 };
+
+export const trimGraphqlError = (msg: string) => {
+  return msg.replace('GraphQL error: ', '');
+};

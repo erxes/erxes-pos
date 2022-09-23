@@ -3,10 +3,19 @@ import { useRouter } from 'next/router';
 import type { ICartItem } from 'modules/types';
 import { getMode } from 'modules/utils';
 import useTotalValue from './useTotalValue';
+import useBillType from './useBillType';
 
 const useOrderCUData = () => {
-  const { cart, isTake, registerNumber, slotId, customerId, orderDetail } =
-    useApp();
+  const {
+    cart,
+    isTake,
+    registerNumber,
+    slotId,
+    customerId,
+    orderDetail,
+    billType,
+  } = useApp();
+  const { isOrg } = useBillType();
   const router = useRouter();
   const { orderId } = router.query;
   const mode = getMode();
@@ -35,7 +44,8 @@ const useOrderCUData = () => {
     items,
     _id: orderId,
     type: mode === 'kiosk' ? isTake : 'eat',
-    registerNumber,
+    registerNumber: registerNumber && isOrg ? registerNumber : null,
+    billType: billType ? billType : null,
     slotId,
     customerId,
     totalAmount,

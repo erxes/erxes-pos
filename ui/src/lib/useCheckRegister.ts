@@ -4,36 +4,38 @@ import { useApp } from 'modules/AppContext';
 import { useState, useEffect } from 'react';
 
 const useCheckRegister = () => {
-  const [name, setName] = useState('');
-  const { registerNumber } = useApp();
-  const [checkRegister, { loading, refetch, error }] = useLazyQuery(
+  const { registerNumber, companyName, setCompanyName } = useApp();
+  const [check, { loading, refetch, error }] = useLazyQuery(
     gql(queries.ordersCheckCompany),
     {
       onCompleted(data) {
-        setName(data.ordersCheckCompany);
+        setCompanyName(data.ordersCheckCompany);
       },
       fetchPolicy: 'network-only',
     }
   );
 
   useEffect(() => {
-    if (name) {
-      setName('');
-    }
-    if (registerNumber.length === 7) {
-      checkRegister({
-        variables: { registerNumber },
-      });
+    if (companyName) {
+      setCompanyName('');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [registerNumber]);
 
+  const checkRegister = () => {
+    if (registerNumber.length === 7) {
+      check({
+        variables: { registerNumber },
+      });
+    }
+  };
+
   return {
-    name,
+    name: companyName,
     loading,
     checkRegister,
     refetch,
-    setName,
+    setCompanyName,
     error,
   };
 };

@@ -17,14 +17,15 @@ export const ConfigsContext = createContext<State | any>(null);
 ConfigsContext.displayName = 'ConfigsContext';
 
 const ConfigsProvider: FC<IProps> = ({ children }) => {
-  const currentUserQuery = useQuery(gql(queries.posCurrentUser));
-  const currentConfigQuery = useQuery(gql(queries.currentConfig));
+  const { data, loading } = useQuery(gql(queries.posCurrentUser));
+  const { data: config, loading: loadingConfig } = useQuery(
+    gql(queries.currentConfig)
+  );
 
-  if (currentUserQuery.loading || currentConfigQuery.loading)
-    return <Loading className="h-100vh" />;
+  if (loading || loadingConfig) return <Loading className="h-100vh" />;
 
-  const currentUser = currentUserQuery.data.posCurrentUser;
-  const currentConfig = currentConfigQuery.data.currentConfig;
+  const currentUser = data.posCurrentUser;
+  const currentConfig = config.currentConfig;
 
   const value = { currentUser, currentConfig };
 

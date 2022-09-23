@@ -13,6 +13,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: '**.amazonaws.com',
       },
+      {
+        protocol: 'http',
+        hostname: 'plugin_core_api',
+      },
     ],
   },
 };

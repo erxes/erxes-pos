@@ -1,9 +1,9 @@
-import { useUI } from 'ui/context';
 import { useApp } from 'modules/AppContext';
 import LottieView from 'ui/Lottie';
-import Button from 'ui/Button';
 import { formatNum } from 'modules/utils';
 import cn from 'classnames';
+import Button from 'ui/Button';
+import { useUI } from 'ui/context';
 
 const PaymentReport = () => {
   const { openModal, setModalView } = useUI();
@@ -13,6 +13,10 @@ const PaymentReport = () => {
 
   const remainder = totalAmount - (cardAmount + cashAmount + mobileAmount);
 
+  console.log(remainder);
+
+  const paid = remainder === 0;
+
   const handleClick = () => {
     setModalView('EBARIMT_VIEW');
     openModal();
@@ -21,13 +25,13 @@ const PaymentReport = () => {
   return (
     <div className="col flex-center payment-report">
       <div className="white-tab text-center">
-        {status !== 'new' && (
+        {paid && (
           <div className="payment-report-check">
             <LottieView path="/complete.json" />
           </div>
         )}
         <h2>{formatNum(totalAmount)}₮</h2>
-        <h5 className={cn({ '-pb': status === 'new' })}>Нийт төлөх</h5>
+        <h5 className={cn({ '-pb': !paid })}>Нийт төлөх</h5>
         <div className="description">
           <h6 className="flex-v-center description-item">
             <span>Бэлнээр</span>
@@ -46,7 +50,7 @@ const PaymentReport = () => {
             <b>{formatNum(remainder)}₮</b>
           </h6>
         </div>
-        <Button onClick={handleClick} disabled={status === 'new'}>
+        <Button onClick={handleClick} disabled={!paid}>
           <big>Баримт хэвлэх</big>
         </Button>
       </div>

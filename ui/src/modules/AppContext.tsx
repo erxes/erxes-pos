@@ -6,12 +6,16 @@ import {
   createContext,
 } from 'react';
 import type { IComponent, ICartItem, IProductBase } from './types';
+import { BILL_TYPES } from './constants';
 
 export interface State {
   cart: ICartItem[];
   isCartSelected: boolean;
   isTake: '' | 'eat' | 'take' | string;
   orderDetail: object | null;
+  registerNumber: string;
+  companyName: string;
+  billType: TBillType;
 }
 
 const initialState = {
@@ -20,7 +24,11 @@ const initialState = {
   isTake: '',
   orderDetail: null,
   registerNumber: '',
+  companyName: '',
+  billType: '',
 };
+
+type TBillType = '' | '1' | '3' | string;
 
 type Action =
   | {
@@ -37,7 +45,9 @@ type Action =
       value: State['isTake'];
     }
   | { type: 'SET_ORDER_DETAIL'; data: object | null }
-  | { type: 'SET_REGISTER_NUMBER'; value: string };
+  | { type: 'SET_REGISTER_NUMBER'; value: string }
+  | { type: 'SET_COMPANY_NAME'; value: string }
+  | { type: 'SET_BILL_TYPE'; value: TBillType };
 
 export const AppContext = createContext<{} | any>(initialState);
 
@@ -153,6 +163,18 @@ const appReducer = (state: State, action: Action) => {
         registerNumber: action.value,
       };
     }
+    case 'SET_COMPANY_NAME': {
+      return {
+        ...state,
+        companyName: action.value,
+      };
+    }
+    case 'SET_BILL_TYPE': {
+      return {
+        ...state,
+        billType: action.value,
+      };
+    }
     default:
       return state;
   }
@@ -206,6 +228,16 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const setCompanyName = useCallback(
+    (value: string) => dispatch({ type: 'SET_COMPANY_NAME', value }),
+    [dispatch]
+  );
+
+  const setBillType = useCallback(
+    (value: TBillType) => dispatch({ type: 'SET_BILL_TYPE', value }),
+    [dispatch]
+  );
+
   const value = useMemo(
     () => ({
       ...state,
@@ -218,6 +250,8 @@ export const AppContextProvider: IComponent = ({ children }) => {
       setIsTake,
       setOrderDetail,
       setRegisterNumber,
+      setCompanyName,
+      setBillType,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]

@@ -6,13 +6,14 @@ import { mutations, queries } from '../../graphql';
 import Image from 'modules/common/ui/Image';
 import { getMode } from 'modules/utils';
 import { useUI } from 'modules/common/ui/context';
+import { toast } from 'react-toastify';
 
 const Qpay = () => {
   const router = useRouter();
   const { orderId } = router.query;
   const mode = getMode();
   const { qpay } = useCheckoutContext();
-  const { setModalView } = useUI();
+  const { setModalView, openModal } = useUI();
 
   const [createInvoice, { loading }] = useMutation(
     gql(mutations.createQpaySimpleInvoice),
@@ -21,20 +22,23 @@ const Qpay = () => {
         amount: qpay,
         orderId,
       },
-      onError(data) {
-        console.log(data);
+      onError(error) {
+        toast.error(error.message);
       },
       onCompleted(data) {
-        if (mode === 'kiosk') {
-          router.push({
+        router.push(
+          {
             pathname: router.pathname,
             query: {
               ...router.query,
-              qpayId: data.createQpaySimpleInvoice._id,
+              qpayId: data.poscCreateQpaySimpleInvoice._id,
             },
-          });
-          setModalView('QPAY_VIEW');
-        }
+          },
+          undefined,
+          { shallow: true }
+        );
+        setModalView('QPAY_VIEW');
+        openModal();
       },
       refetchQueries: [{ query: gql(queries.orderDetail) }, 'orderDetail'],
     }

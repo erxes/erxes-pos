@@ -42,6 +42,7 @@ const qpayCheckPayment = `
 mutation QpayCheckPayment($orderId: String!, $id: String) {
   qpayCheckPayment(orderId: $orderId, _id: $id) {
     _id
+    status
   }
 }
 `;
@@ -61,6 +62,18 @@ const ordersAddPayment = `
   }
 `;
 
+const ordersSettlePayment = `
+  mutation ordersSettlePayment($_id: String!, $billType: String!, $registerNumber: String) {
+    ordersSettlePayment(_id: $_id, billType: $billType, registerNumber: $registerNumber) {
+      success
+      lotteryWarningMsg
+      errorCode
+      message
+      getInformation
+    }
+  }
+`;
+
 const mutations = {
   ordersAdd,
   ordersEdit,
@@ -68,6 +81,7 @@ const mutations = {
   ordersAddPayment,
   qpayCheckPayment,
   qpayCancelInvoice,
+  ordersSettlePayment,
 };
 
 export default mutations;

@@ -1,0 +1,95 @@
+@media print {
+  body {
+    margin: 0;
+    color: #000;
+    background-color: #fff;
+  }
+
+  .subRoot {
+    visibility: hidden;
+  }
+
+  .printDocument {
+    visibility: visible;
+    position: fixed;
+    overflow: auto;
+    top: 0px;
+    left: 0px;
+  }
+
+  .btn-print {
+    display: none;
+  }
+
+  .main-wrapper {
+    padding: 0;
+  }
+}
+
+.printDocument {
+  width: 72mm;
+  padding: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  overflow: hidden;
+  background: #fff;
+  b {
+    font-weight: 600;
+  }
+  &-layout {
+    background: #fafafa;
+    min-height: 100vh;
+  }
+
+  .block {
+    border-bottom: 1px dashed #666;
+    padding-bottom: 5px;
+    margin-bottom: 3px;
+  }
+
+  header {
+    .flex-v-center {
+      justify-content: space-between;
+
+      div {
+        margin: 0;
+        line-height: 1.1;
+        font-size: 16px;
+        font-weight: 600;
+        &:last-child {
+          padding-left: 25px;
+        }
+      }
+    }
+  }
+  img {
+    object-fit: contain;
+  }
+
+  table {
+    width: 100%;
+    text-align: left;
+
+    td {
+      max-width: 100px;
+      line-height: 12px;
+      padding-right: 4px;
+      font-size: 10px;
+    }
+
+    .totalCount {
+      padding: 0;
+      text-align: right;
+    }
+  }
+
+  footer {
+    .lottery {
+      justify-content: space-between;
+      svg {
+        width: 150px;
+        height: 150px;
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { mutations } from 'modules/checkout/graphql';
 import { queries } from 'modules/slots/graphql';
+import { queries as checkoutQueries } from 'modules/checkout/graphql';
 import useOrderCUData from './useOrderCUData';
 
 const useOrderCU = (onCompleted?: any) => {
@@ -21,6 +22,10 @@ const useOrderCU = (onCompleted?: any) => {
       onCompleted(data) {
         return onCompleted && onCompleted(orderData._id);
       },
+      refetchQueries: [
+        { query: gql(checkoutQueries.orderDetail) },
+        'orderDetail',
+      ],
     }
   );
 

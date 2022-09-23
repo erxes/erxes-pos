@@ -1,29 +1,53 @@
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
 import QRCode from 'react-qr-code';
+import { getMode } from 'modules/utils';
 import Empty from 'ui/Empty';
 import CheckPayment from '../containers/qpay/checkPayment';
 import CancelPayment from '../containers/qpay/cancelPayment';
 import Tag from 'ui/Tag';
 import { formatNum } from 'modules/utils';
+import LottieView from 'ui/Lottie';
+import cn from 'classnames';
+import Loading from 'ui/Loading';
 
 const QpayQr = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(true);
   const { orderDetail } = useApp();
+  const mode = getMode();
+  const c = cn('qpay text-center', '-' + mode);
 
-  const invoice = orderDetail.qpayInvoices.find(
-    (inv: any) => inv._id === router.query.qpayId
-  );
+  const getInvoice = () => {
+    const invoice = orderDetail.qpayInvoices.find(
+      (inv: any) => inv._id === router.query.qpayId
+    );
+    setLoading(false);
+    return invoice;
+  };
+  const invoice = getInvoice();
+
+  if (loading) return <Loading />;
 
   if (!invoice)
     return (
-      <div className="qpay">
+      <div className={c}>
         <Empty dark />
       </div>
     );
 
+  if (invoice.status === 'paid')
+    return (
+      <div className={c}>
+        <div className="payment-report-check">
+          <LottieView path="/complete.json" />
+        </div>
+      </div>
+    );
+
   return (
-    <div className="qpay text-center">
+    <div className={c}>
       <p>
         <b>
           Та гар утасны аппликейшнаар доорх
@@ -35,12 +59,16 @@ const QpayQr = () => {
 
       <div className="flex-center">
         <h6>{formatNum(invoice.amount)}₮</h6>
-        <Tag status={invoice.status}>{invoice.status}</Tag>
+        <Tag status={invoice.status}>
+          {invoice.status && mode === 'kiosk'
+            ? 'Төлбөр хүлээгдэж буй'
+            : invoice.status}
+        </Tag>
       </div>
 
       <div className="flex-center">
         <CheckPayment />
-        <CancelPayment />
+        {mode === 'pos' && <CancelPayment />}
       </div>
     </div>
   );

@@ -43,7 +43,7 @@
       &.new {
         background-color: $gray;
       }
-      &.confirmed {
+      &.confirm {
         background-color: $warning;
       }
       &.done {
@@ -78,6 +78,5 @@
   & > .col {
     flex: 1 1 50%;
     max-width: 50%;
-    padding: 0 1.5rem;
   }
 }

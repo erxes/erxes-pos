@@ -3,9 +3,11 @@ import { gql, useMutation } from '@apollo/client';
 import { mutations, queries } from '../../graphql';
 import { toast } from 'react-toastify';
 import Button from 'ui/Button';
+import { getMode } from 'modules/utils';
 
 const CheckPayment = () => {
   const router = useRouter();
+  const mode = getMode();
   const { orderId, qpayId } = router.query;
   const [check, { loading }] = useMutation(gql(mutations.qpayCheckPayment), {
     variables: {
@@ -14,7 +16,10 @@ const CheckPayment = () => {
     },
     refetchQueries: [{ query: gql(queries.orderDetail) }, 'orderDetail'],
     onCompleted(data) {
-      toast('Checked');
+      if (data.qpayCheckPayment.status === 'PAID') {
+      }
+
+      toast.success('Checked');
     },
     onError(error) {
       toast.error(error.message);
@@ -23,7 +28,7 @@ const CheckPayment = () => {
 
   return (
     <Button onClick={() => check()} loading={loading}>
-      Шалгах
+      {mode === 'kiosk' ? <h5>Шалгах</h5> : 'Шалгах'}
     </Button>
   );
 };
