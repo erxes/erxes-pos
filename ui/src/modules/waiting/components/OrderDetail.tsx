@@ -40,9 +40,9 @@ function Timer({ startTime, waitingSec, order, editOrder }) {
 export default class OrderDetail extends React.Component<Props> {
   render() {
     const { currentConfig, order, editOrder } = this.props;
-    const { uiOptions } = currentConfig;
+    const { uiOptions, waitingScreen } = currentConfig;
     const color = uiOptions.colors.primary;
-    const waitingSec = 1 * 20;
+    const waitingSec = parseInt(waitingScreen.value) * 60;
 
     let date = new Date();
     if (order && order.modifiedAt) {
