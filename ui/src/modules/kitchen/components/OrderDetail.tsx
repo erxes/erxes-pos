@@ -103,7 +103,6 @@ export default class OrderDetail extends React.Component<Props> {
           status: ORDER_ITEM_STATUSES.CONFIRM
         });
       }
-      this.props.orderQuery.refetch();
     }
     return items.map((item: IOrderItem, index) => (
       <Detail key={item._id}>
