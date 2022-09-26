@@ -1,9 +1,8 @@
 import React from 'react';
-import { useRouter } from 'next/router';
 import Button from 'ui/Button';
 import cn from 'classnames';
 import CheckCircle from 'icons/CheckCircle';
-import { removeQuery } from 'modules/utils';
+import { useRemoveQuery, useAddQuery } from 'lib/useQuery';
 
 function SlotNumber({
   number,
@@ -14,9 +13,8 @@ function SlotNumber({
   number: string;
   status: string;
 }) {
-  const router = useRouter();
-
-  const { orderId } = router.query;
+  const { removeQuery } = useRemoveQuery();
+  const { query, addQuery } = useAddQuery();
 
   const colors = {
     new: 'rgba(0, 0, 0, 0.65)',
@@ -25,15 +23,12 @@ function SlotNumber({
   return (
     <Button
       className={cn('slot-number', status, {
-        active: orderId === _id,
+        active: query.orderId === _id,
       })}
       onClick={() =>
-        orderId === _id
-          ? removeQuery(router, 'orderId')
-          : router.push({
-              pathname: router.pathname,
-              query: { ...router.query, orderId: _id },
-            })
+        query.orderId === _id
+          ? removeQuery('orderId')
+          : addQuery({ orderId: _id })
       }
     >
       {number.split('_')[1]}

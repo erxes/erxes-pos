@@ -1,6 +1,5 @@
 import PaymentControls from './PaymentControls';
 import PaymentReport from './PaymentReport';
-import { CheckoutContextProvider } from '../context';
 
 const Checkout = () => {
   return (

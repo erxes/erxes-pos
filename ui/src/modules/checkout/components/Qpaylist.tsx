@@ -1,22 +1,18 @@
-import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
 import { formatNum } from 'modules/utils';
 import Button from 'ui/Button';
 import Tag from 'ui/Tag';
+import { useAddQuery } from 'lib/useQuery';
 
 const Qpaylist = () => {
-  const router = useRouter();
   const { orderDetail } = useApp();
-  const { setModalView, openModal } = useUI();
+  const { setModalView } = useUI();
   const { qpayInvoices } = orderDetail;
+  const { addQuery } = useAddQuery();
 
   const handleClick = (_id: string) => {
-    router.push(
-      { pathname: router.pathname, query: { ...router.query, qpayId: _id } },
-      undefined,
-      { shallow: true }
-    );
+    addQuery({ qpayId: _id });
     setModalView('QPAY_VIEW');
   };
 

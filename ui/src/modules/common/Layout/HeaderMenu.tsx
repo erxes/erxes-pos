@@ -7,9 +7,9 @@ import Setting from 'modules/common/icons/Settings';
 import Logout from 'modules/common/icons/Logout';
 import Button from 'modules/common/ui/Button';
 
-interface PosHeaderMenuProps {}
+interface HeaderMenuProps {}
 
-const PosHeaderMenu: FC<PosHeaderMenuProps> = ({}) => {
+const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
   return (
     <div className="gray-border pos-dropdown">
       <Button variant="naked">
@@ -41,4 +41,4 @@ const PosHeaderMenu: FC<PosHeaderMenuProps> = ({}) => {
     </div>
   );
 };
-export default PosHeaderMenu;
+export default HeaderMenu;

@@ -1,13 +1,7 @@
-import React from 'react';
-import { VisibilityContext } from 'react-horizontal-scrolling-menu';
+import type { FC } from 'react';
+import type { IProps } from 'modules/types';
 
-export default function Element({
-  children,
-  itemId
-}: {
-  children: any;
-  itemId: string | number;
-}) {
+const Element: FC<IProps & { itemId: number }> = ({ children }) => {
   return (
     <div
       role="button"
@@ -17,4 +11,6 @@ export default function Element({
       {children}
     </div>
   );
-}
+};
+
+export default Element;

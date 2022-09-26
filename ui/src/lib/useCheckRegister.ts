@@ -1,7 +1,7 @@
 import { gql, useLazyQuery } from '@apollo/client';
 import { queries } from 'modules/checkout/graphql';
 import { useApp } from 'modules/AppContext';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 const useCheckRegister = () => {
   const { registerNumber, companyName, setCompanyName } = useApp();

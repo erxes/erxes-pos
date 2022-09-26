@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useCheckoutContext } from '../context';
 import Input from 'ui/Input';
 import { formatNum } from 'modules/utils';

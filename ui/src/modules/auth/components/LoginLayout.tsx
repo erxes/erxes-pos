@@ -1,5 +1,5 @@
 import type { IComponent } from 'modules/types';
-import Image from 'next/future/image';
+// import Image from 'next/future/image';
 import { useConfigsContext } from '../containers/Configs';
 
 const LoginLayout: IComponent = ({ children }) => {

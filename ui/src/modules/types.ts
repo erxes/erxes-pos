@@ -28,3 +28,17 @@ export type IProduct = IProductBase & {
 };
 
 export type IComponent = FC<IProps>;
+
+export interface IEbarimtConfig {
+  companyName: string;
+  ebarimtUrl: string;
+  checkCompanyUrl: string;
+  hasVat: boolean;
+  hasCitytax: boolean;
+  districtCode: number;
+  companyRD: string;
+  defaultGSCode: string;
+  vatPercent: number;
+  cityTaxPercent: number;
+  footerText: string;
+}

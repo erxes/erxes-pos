@@ -7,6 +7,7 @@ import Scroll from './components/Scroll';
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'modules/common/ui/context';
 import Welcome from './components/welcome';
+import Layout from 'modules/common/Layout';
 
 const Kiosk = () => {
   const { isTake, cart } = useApp();
@@ -21,23 +22,25 @@ const Kiosk = () => {
   };
 
   return (
-    <div className="kiosk">
-      <Header />
-      <div className="kiosk-categories">
-        <CategoriesContainer />
+    <Layout>
+      <div className="kiosk">
+        <Header />
+        <div className="kiosk-categories">
+          <CategoriesContainer />
+        </div>
+        <div className="kiosk-products">
+          <Scroll>
+            <ProductsContainer />
+          </Scroll>
+        </div>
+        <div className="kiosk-cart-btn">
+          <Button onClick={handleOpenCart}>
+            <Icon />
+            <h6 className="badge flex-center">{cart.length}</h6>
+          </Button>
+        </div>
       </div>
-      <div className="kiosk-products">
-        <Scroll>
-          <ProductsContainer />
-        </Scroll>
-      </div>
-      <div className="kiosk-cart-btn">
-        <Button onClick={handleOpenCart}>
-          <Icon />
-          <h6 className="badge flex-center">{cart.length}</h6>
-        </Button>
-      </div>
-    </div>
+    </Layout>
   );
 };
 

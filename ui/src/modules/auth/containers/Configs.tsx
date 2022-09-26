@@ -1,6 +1,6 @@
 import { queries } from '../graphql';
 import { useQuery, gql } from '@apollo/client';
-import { FC, ReactNode, createContext, useMemo, useContext } from 'react';
+import { FC, ReactNode, createContext, useContext } from 'react';
 import Loading from 'modules/common/ui/Loading';
 
 interface IProps {

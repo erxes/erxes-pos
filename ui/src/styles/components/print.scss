@@ -44,7 +44,11 @@
   .block {
     border-bottom: 1px dashed #666;
     padding-bottom: 5px;
-    margin-bottom: 3px;
+    margin-bottom: 5px;
+    &.-sm {
+      padding-bottom: 2px;
+      margin-bottom: 2px;
+    }
   }
 
   header {
@@ -86,10 +90,40 @@
   footer {
     .lottery {
       justify-content: space-between;
-      svg {
-        width: 150px;
-        height: 150px;
+      .qr-code {
+        flex: 0 0 auto;
+        min-width: 140px;
+        width: 140px;
+        height: 140px;
+        position: relative;
+        svg {
+          width: 130px;
+          height: 130px;
+          top: 50%;
+          left: 50%;
+          position: absolute;
+          transform: translate(-50%, -50%);
+        }
       }
+    }
+    .barcode {
+      position: relative;
+      margin: 1rem 0 0.5rem;
+      aspect-ratio: 5 / 1;
+      overflow: hidden;
+      svg {
+        width: 100%;
+        height: auto;
+        position: absolute;
+        left: 0;
+        bottom: 0mm;
+      }
+    }
+  }
+  .btn-print {
+    padding-top: 1rem;
+    .btn {
+      background: $primary;
     }
   }
 }

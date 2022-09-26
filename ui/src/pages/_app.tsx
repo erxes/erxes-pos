@@ -11,6 +11,7 @@ import UIProvider from 'ui/context';
 import ConfigsProvider from 'modules/auth/containers/Configs';
 import CheckAuth from 'modules/auth/CheckAuth';
 import { ToastContainer } from 'react-toastify';
+import Loading from 'ui/Loading';
 
 const Noop: IComponent = ({ children }) => <>{children}</>;
 
@@ -22,11 +23,9 @@ function App({ Component, pageProps }: AppProps) {
         <UIProvider>
           <ConfigsProvider>
             <CheckAuth>
-              <Suspense>
-                <Layout pageProps={pageProps}>
-                  <Component {...pageProps} />
-                </Layout>
-              </Suspense>
+              <Layout pageProps={pageProps}>
+                <Component {...pageProps} />
+              </Layout>
             </CheckAuth>
           </ConfigsProvider>
         </UIProvider>

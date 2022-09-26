@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useUI } from 'ui/context';
 import { useApp } from 'modules/AppContext';
 import useBillType from 'lib/useBillType';

@@ -14,7 +14,6 @@ import Loading from 'ui/Loading';
 
 const QpayQr = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState(true);
   const { orderDetail } = useApp();
   const mode = getMode();
   const c = cn('qpay text-center', '-' + mode);
@@ -23,12 +22,9 @@ const QpayQr = () => {
     const invoice = orderDetail.qpayInvoices.find(
       (inv: any) => inv._id === router.query.qpayId
     );
-    setLoading(false);
     return invoice;
   };
   const invoice = getInvoice();
-
-  if (loading) return <Loading />;
 
   if (!invoice)
     return (

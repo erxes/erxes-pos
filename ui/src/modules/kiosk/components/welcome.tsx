@@ -1,6 +1,5 @@
 import Image from 'next/future/image';
 import Button from 'modules/common/ui/Button';
-import Link from 'next/link';
 import { useApp } from 'modules/AppContext';
 
 const Welcome = () => {

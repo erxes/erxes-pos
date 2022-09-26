@@ -105,7 +105,6 @@ const ICInput = ({
     changeKey('');
 
     const str = characterArray.join('');
-    console.log(str);
     str && handleOutputString(str);
   }, [characterArray]);
 

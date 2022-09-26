@@ -6,7 +6,6 @@ import {
   createContext,
 } from 'react';
 import type { IComponent, ICartItem, IProductBase } from './types';
-import { BILL_TYPES } from './constants';
 
 export interface State {
   cart: ICartItem[];

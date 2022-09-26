@@ -14,14 +14,6 @@ const Home: NextPage = () => {
   return <CheckMode pos={<Pos />} kiosk={<Kiosk />} />;
 };
 
-const PosLayout = dynamic(() => import('modules/pos/components/PosLayout'), {
-  suspense: true,
-});
-
-const MainLayout = dynamic(() => import('modules/common/Layout'), {
-  suspense: true,
-});
-
-(Home as any).Layout = checkLayoutMode(PosLayout, MainLayout);
+// (Home as any).Layout = checkLayoutMode(PosLayout, MainLayout);
 
 export default Home;

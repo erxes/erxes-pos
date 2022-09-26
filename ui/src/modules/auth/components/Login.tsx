@@ -1,5 +1,5 @@
 import { IProps } from 'modules/types';
-import { Suspense, useState, FC } from 'react';
+import { useState, FC } from 'react';
 import type { IHandleLogin } from '../containers/Login';
 import ChooseConfig from '../containers/ChooseConfig';
 import Button from 'ui/Button';

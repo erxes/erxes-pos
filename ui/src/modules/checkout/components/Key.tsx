@@ -1,5 +1,4 @@
 import { useUI } from 'modules/common/ui/context';
-import { getMode } from 'modules/utils';
 import Button from 'modules/common/ui/Button';
 import { IComponent } from 'modules/types';
 

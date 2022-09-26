@@ -13,8 +13,6 @@ const PaymentReport = () => {
 
   const remainder = totalAmount - (cardAmount + cashAmount + mobileAmount);
 
-  console.log(remainder);
-
   const paid = remainder === 0;
 
   const handleClick = () => {

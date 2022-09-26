@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import Select from 'ui/Select';
 import { getMode } from 'modules/utils';
 

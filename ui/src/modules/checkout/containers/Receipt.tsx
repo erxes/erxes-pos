@@ -1,24 +1,68 @@
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { useApp } from 'modules/AppContext';
+import { useEffect } from 'react';
 import Image from 'ui/Image';
 import dayjs from 'dayjs';
 import { IOrderItem } from '../types';
 import { formatNum } from 'modules/utils';
 import QRCode from 'react-qr-code';
+import BarCode from './barcode';
+import Button from 'ui/Button';
+import Amount from '../components/Amount';
+import { getMode } from 'modules/utils';
 
 const Receipt = () => {
   const { currentConfig } = useConfigsContext();
-  const { uiOptions, name } = currentConfig;
+  const { uiOptions, name, ebarimtConfig } = currentConfig;
   const { receiptIcon: logo } = uiOptions;
+  const { footerText } = ebarimtConfig || {};
 
   const { orderDetail } = useApp();
 
-  const { paidDate, worker, customer, items, putResponses } = orderDetail;
+  const {
+    paidDate,
+    worker,
+    customer,
+    items,
+    putResponses,
+    registerNumber,
+    _id,
+  } = orderDetail;
   const putResponse = putResponses[0];
 
   const number = (orderDetail.number || []).split('_')[1];
 
   const date = paidDate && dayjs(paidDate).format('YYYY.MM.DD HH:mm');
+
+  useEffect(() => {
+    if (putResponse) {
+      const mode = getMode();
+      window.addEventListener('afterprint', () => {
+        if (mode !== 'kiosk') {
+          setTimeout(() => {
+            const popup = window.open(
+              `/order-receipt/${_id}?inner=true`,
+              '__blank'
+            );
+            if (!popup) {
+              prompt(
+                `Popup зөвшөөрөгдөөгүй байна. Дараах тохиргоог хийнэ үү. \n 1. Доорх холбоосыг copy-дох  \n 2. шинэ tab нээж, paste хийн копидсон холбоосоор орох \n 3. "Pop-ups and redirects" гэсэн хэсгийг олоод \n 4. "Allow" гэснийг сонгоно. \n 5. Үндсэн хуудасаа рефреш`,
+                `chrome://settings/content/siteDetails?site=${window.location.origin}`
+              );
+            }
+          }, 10);
+        }
+        setTimeout(() => {
+          window.close();
+        }, 50);
+      });
+      setTimeout(() => {
+        window.print();
+      }, 20);
+    }
+
+    return () => window.removeEventListener('afterprint', () => {});
+  }, []);
 
   const renderWorker = () => {
     if (!worker) return;
@@ -80,7 +124,42 @@ const Receipt = () => {
 
     const { qrData } = putResponse;
 
-    return qrData && <QRCode value={qrData} />;
+    return (
+      qrData && (
+        <div className="qr-code">
+          <QRCode value={qrData} size={256} viewBox={`0 0 256 256`} level="L" />
+        </div>
+      )
+    );
+  };
+
+  const renderLotteryCode = () => {
+    if (!putResponse) return null;
+
+    if (putResponse.billType === '3') {
+      const { customerName = '' } = putResponse;
+
+      return (
+        <div className="lottery">
+          <span>Компанийн РД:</span>
+          <br />
+          <b>{registerNumber}</b>
+          {customerName && (
+            <p>
+              Hэр: <b>{customerName}</b>
+            </p>
+          )}
+        </div>
+      );
+    }
+
+    return putResponse.lottery ? (
+      <div className="text-center">
+        Сугалаа:
+        <br />
+        <b>{putResponse.lottery}</b>
+      </div>
+    ) : null;
   };
 
   return (
@@ -118,7 +197,28 @@ const Receipt = () => {
       </div>
       <footer>
         {renderError()}
-        <div className="lottery flex-v-center block">{renderQr()}</div>
+        <div className="lottery flex-v-center block">
+          {renderQr()}
+          <div>
+            <Amount />
+            {renderLotteryCode()}
+          </div>
+        </div>
+        <BarCode putResponse={putResponse} />
+        {footerText ? (
+          <div className="text-center signature">
+            <label>{footerText}</label>
+          </div>
+        ) : (
+          <p className="signature">
+            <label>Гарын үсэг:</label>
+            <span> _____________________</span>
+          </p>
+        )}
+
+        <div className="text-center btn-print">
+          <Button onClick={() => window.print()}>Хэвлэх</Button>
+        </div>
       </footer>
     </div>
   );

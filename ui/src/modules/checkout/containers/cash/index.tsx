@@ -1,14 +1,8 @@
-import { useRouter } from 'next/router';
-import { useMutation, gql } from '@apollo/client';
 import { useCheckoutContext } from 'modules/checkout/context';
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
-import { mutations } from '../../graphql';
 import CashIcon from 'modules/common/icons/🤑';
 
 const Cash = ({ addPayment }: any) => {
-  const router = useRouter();
-  const { orderId } = router.query;
-
   const { cash } = useCheckoutContext();
 
   const handleClick = () => {
