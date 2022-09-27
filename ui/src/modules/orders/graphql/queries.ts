@@ -155,6 +155,7 @@ const orderDetail = `
         amount
         cardInfo
       }
+      deliveryInfo
     }
   }
 `;
@@ -183,23 +184,6 @@ const fullOrders = `
         isTake
         status
       }
-    }
-  }
-`;
-
-const fullOrderItems = `
-  query fullOrderItems($searchValue: String, $statuses: [String], $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
-    fullOrderItems(searchValue: $searchValue, statuses: $statuses, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
-      _id
-      unitPrice
-      orderId
-      productName
-      count
-      productId
-      isPackage
-      isTake
-      productImgUrl
-      status
     }
   }
 `;
@@ -247,7 +231,6 @@ export default {
   orderDetail,
   orders,
   fullOrders,
-  fullOrderItems,
   customers,
   customerDetail,
   ordersCheckCompany,

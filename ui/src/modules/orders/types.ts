@@ -57,6 +57,7 @@ export interface IOrder {
   registerNumber: string;
   oldBillId: string;
   type: string;
+  deliveryInfo?: any;
   cardPayments?: any[];
   origin?: string;
   items: IOrderItem[];
@@ -137,11 +138,6 @@ export type OrderQueryResponse = {
 
 export type FullOrderQueryResponse = {
   fullOrders: IOrder[];
-  subscribeToMore: any;
-} & QueryResponse;
-
-export type FullOrderItemsQueryResponse = {
-  fullOrderItems: IOrderItem[];
   subscribeToMore: any;
 } & QueryResponse;
 

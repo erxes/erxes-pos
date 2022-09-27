@@ -27,6 +27,11 @@ export default class KitchenReceiptBody extends React.Component<Props> {
             <span>{dayjs(order.paidDate).format("YYYY.MM.DD HH:mm")}</span>
           ) : null}
         </p>
+        {
+          order.type === 'delivery' && order.deliveryInfo && order.deliveryInfo.description && (
+            <><b>{__("Нэмэлт")}:</b> <span>{order.deliveryInfo.description}</span></>
+          )
+        }
         <table>
           <thead>
             <tr>

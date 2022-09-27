@@ -166,6 +166,10 @@ export default class Calculation extends React.Component<Props, State> {
     this.props.setOrderState('type', value);
   };
 
+  onChangeDesc = e => {
+    this.props.setOrderState('description', e.target.value);
+  };
+
   renderReceiptButton() {
     const { order } = this.props;
     const { mode } = this.state;
@@ -268,16 +272,24 @@ export default class Calculation extends React.Component<Props, State> {
             style={{ background: '#9ba3ab' }}
             onClick={() => this.onChange(ORDER_TYPES.TAKE)}
           >
+            {__('Eat')}
+          </Button>
+        ) : type === 'take' ? (
+          <Button
+            style={{ background: '#616E7C' }}
+            onClick={() => this.onChange(ORDER_TYPES.DELIVERY)}
+          >
             {__('Take')}
           </Button>
         ) : (
           <Button
-            style={{ background: '#616E7C' }}
+            style={{ background: '#611D8C' }}
             onClick={() => this.onChange(ORDER_TYPES.EAT)}
           >
-            {__('Eat')}
+            {__('Delivery')}
           </Button>
-        )}
+        )
+        }
         <Button btnStyle="success" onClick={onClickSave}>
           {__('Make an order')}
         </Button>
@@ -560,6 +572,16 @@ export default class Calculation extends React.Component<Props, State> {
               mode={mode}
             />
             {this.renderTotal(color)}
+            {type === ORDER_TYPES.DELIVERY && (
+              <FormControl
+                autoFocus={true}
+                id="description"
+                name="description"
+                defaultValue={order && order.deliveryInfo ? order.deliveryInfo.description : '' || ''}
+                onChange={this.onChangeDesc}
+              />
+            )
+            }
           </ColumnBetween>
         </Wrapper>
       </>

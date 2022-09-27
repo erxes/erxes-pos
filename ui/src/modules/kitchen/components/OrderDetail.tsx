@@ -118,10 +118,10 @@ export default class OrderDetail extends React.Component<Props> {
           {
           this.renderItemCount(
             item.count,
-            this.myRef.current ? 
-              this.myRef.current[index] === undefined ? 
-                0 
-              : this.myRef.current[index].count 
+            this.myRef.current ?
+              this.myRef.current[index] === undefined ?
+                0
+              : this.myRef.current[index].count
             : item.count
           )}
         </p>
@@ -148,7 +148,7 @@ export default class OrderDetail extends React.Component<Props> {
           <span style={{'color': '#f53b57'}}>
             {' ' + (count - previousCount)}
           </span>
-        );  
+        );
       }
       if (count - previousCount > 0) {
         return (
