@@ -1,0 +1,34 @@
+.report {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  &-inner {
+    padding: 1.5rem;
+  }
+  .row {
+    align-items: stretch;
+    flex: 1 1 auto;
+  }
+  h6 {
+    margin-bottom: 1.5rem;
+  }
+  input,
+  .react-select {
+    margin-bottom: 1.5rem;
+  }
+  .btn.flat {
+    background: $primary;
+    width: 100%;
+    padding: 0.75rem 0;
+  }
+}
+@media print {
+  .report {
+    .pos-header {
+      display: none;
+    }
+    &-inner {
+      display: none;
+    }
+  }
+}

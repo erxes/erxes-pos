@@ -126,12 +126,51 @@ export const ordersCheckCompany = `
   }
 `;
 
+const fullOrderItems = `
+  query fullOrderItems($searchValue: String, $statuses: [String], $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
+    fullOrderItems(searchValue: $searchValue, statuses: $statuses, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
+      _id
+      unitPrice
+      orderId
+      productName
+      count
+      productId
+      isPackage
+      isTake
+      productImgUrl
+      status
+    }
+  }
+`;
+
+const fullOrders = `
+  query fullOrders($searchValue: String, $statuses: [String], $customerId: String, $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
+    fullOrders(searchValue: $searchValue, statuses: $statuses, customerId: $customerId, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
+      ${orderFields}
+
+      items {
+        _id
+        unitPrice
+        orderId
+        productName
+        count
+        productId
+        isPackage
+        isTake
+        status
+      }
+    }
+  }
+`;
+
 const queries = {
   commonFields,
   orderFields,
   orderItemsFields,
   orderDetail,
   ordersCheckCompany,
+  fullOrderItems,
+  fullOrders,
 };
 
 export default queries;

@@ -1,17 +1,13 @@
-import HistoryHeader from 'modules/history/Header';
-import HistoryItem from 'modules/history/item';
+import CheckMode from 'modules/CheckMode';
+import dynamic from 'next/dynamic';
+import Layout from 'modules/common/Layout';
+
+const Pos = dynamic(() => import('modules/pos/history'), { suspense: true });
 
 const History = () => {
-  return (
-    <div className="history">
-      <HistoryHeader />
-      <div className="row">
-        <div className="col-3">
-          <HistoryItem />
-        </div>
-      </div>
-    </div>
-  );
+  return <CheckMode pos={<Pos />} />;
 };
+
+History.Layout = Layout;
 
 export default History;

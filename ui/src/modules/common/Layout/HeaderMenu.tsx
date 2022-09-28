@@ -4,7 +4,7 @@ import Menu from 'modules/common/icons/Menu';
 import Swap from 'modules/common/icons/Swap';
 import PieChart from 'modules/common/icons/PieChart';
 import Setting from 'modules/common/icons/Settings';
-import Logout from 'modules/common/icons/Logout';
+import Logout from 'modules/auth/containers/Logout';
 import Button from 'modules/common/ui/Button';
 
 interface HeaderMenuProps {}
@@ -33,10 +33,7 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
             Тохиргоо
           </li>
         </Link>
-        <Button>
-          <Logout />
-          Гарах
-        </Button>
+        <Logout />
       </ul>
     </div>
   );

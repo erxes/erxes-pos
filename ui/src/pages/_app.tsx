@@ -5,13 +5,11 @@ import { IComponent } from 'modules/types';
 import type { AppProps } from 'next/app';
 import { ApolloProvider } from '@apollo/client';
 import apolloClient from 'modules/apolloClient';
-import { Suspense } from 'react';
 import { AppContextProvider } from '../modules/AppContext';
 import UIProvider from 'ui/context';
 import ConfigsProvider from 'modules/auth/containers/Configs';
 import CheckAuth from 'modules/auth/CheckAuth';
 import { ToastContainer } from 'react-toastify';
-import Loading from 'ui/Loading';
 
 const Noop: IComponent = ({ children }) => <>{children}</>;
 

@@ -20,7 +20,7 @@ const ChooseConfig: IComponent = () => {
 
   if (loadingConfigs) return <Loading />;
 
-  const { configs } = data;
+  const { configs } = data || {};
 
   if (!configs || configs.length < 2) return null;
 

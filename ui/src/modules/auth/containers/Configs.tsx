@@ -24,8 +24,8 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
 
   if (loading || loadingConfig) return <Loading className="h-100vh" />;
 
-  const currentUser = data.posCurrentUser;
-  const currentConfig = config.currentConfig;
+  const currentUser = (data || {}).posCurrentUser;
+  const currentConfig = (config || {}).currentConfig;
 
   const value = { currentUser, currentConfig };
 

@@ -3,6 +3,7 @@ import { useApp } from 'modules/AppContext';
 import { gql, useQuery } from '@apollo/client';
 import { queries } from '../graphql';
 import Loading from 'ui/Loading';
+import NotFound from 'modules/common/Layout/NotFound';
 
 const OrderDetailContainer = ({ handleSuccess, children }: any) => {
   const { setOrderDetail, orderDetail } = useApp();
@@ -21,7 +22,7 @@ const OrderDetailContainer = ({ handleSuccess, children }: any) => {
 
   if (loading || !orderDetail) return <Loading />;
 
-  if (!data.orderDetail) return <h1>404</h1>;
+  if (!data.orderDetail) return <NotFound />;
 
   return children;
 };

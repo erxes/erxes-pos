@@ -11,6 +11,8 @@
 ::after {
   box-sizing: border-box; /* 1 */
   background-repeat: no-repeat; /* 2 */
+  margin: 0;
+  padding: 0;
 }
 
 /**
@@ -369,4 +371,8 @@ h6 {
 :where([aria-hidden='false' i][hidden]:not(:focus)) {
   clip: rect(0, 0, 0, 0);
   position: absolute;
+}
+
+a {
+  text-decoration: none !important;
 }

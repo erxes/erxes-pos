@@ -37,13 +37,15 @@
     }
   }
   .row {
-    padding: 0.5rem;
+    padding: 1rem;
   }
   &-item {
     border: $border;
     border-radius: 0.25rem;
     padding: 0.75rem;
-    margin: 1rem;
+    margin: 0.5rem;
+    cursor: pointer;
+    position: relative;
     & > .flex-v-center {
       justify-content: space-between;
       &:first-child {
@@ -59,6 +61,36 @@
     }
     .caption {
       color: $gray;
+    }
+  }
+  &-detail {
+    width: 100vw;
+    max-width: 30rem;
+    padding: 1.5rem;
+    .history-item {
+      border: 0;
+    }
+    .-item {
+      padding: 1.25rem;
+      justify-content: space-between;
+      border-bottom: $border;
+      b {
+        display: block;
+      }
+      h6 {
+        font-weight: 400;
+      }
+      .-name {
+        padding-bottom: 0.25rem;
+        color: $gray;
+      }
+    }
+    .btn.slim {
+      padding: 1rem 3rem;
+      color: $primary;
+      border-color: $primary;
+      margin-top: 1.5rem;
+      font-weight: 700;
     }
   }
 }

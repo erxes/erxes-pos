@@ -19,6 +19,9 @@
     flex: 1 1 auto;
     overflow: hidden;
   }
+  &-col {
+    flex-direction: column;
+  }
 }
 
 .row {
@@ -58,6 +61,9 @@
 }
 .text-primary {
   color: $primary;
+}
+.bg-primary {
+  background: $primary !important;
 }
 
 .custom-scrollbar::-webkit-scrollbar {

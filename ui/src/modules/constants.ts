@@ -2,7 +2,7 @@ export const ORDER_TYPES = {
   TAKE: 'take',
   EAT: 'eat',
   SAVE: 'save',
-  ALL: ['take', 'eat', 'save']
+  ALL: ['take', 'eat', 'save'],
 };
 
 export const ORDER_STATUSES = {
@@ -15,7 +15,7 @@ export const ORDER_STATUSES = {
   COMPLETE: 'complete',
 
   ALL: ['new', 'paid', 'doing', 'done', 'road', 'complete', 'confirm'],
-  FULL: ['paid', 'done', 'complete']
+  FULL: ['paid', 'done', 'complete'],
 };
 
 export const ORDER_ITEM_STATUSES = {
@@ -28,7 +28,7 @@ export const ORDER_ITEM_STATUSES = {
   COMPLETE: 'complete',
 
   ALL: ['new', 'paid', 'doing', 'done', 'road', 'complete', 'confirm'],
-  FULL: ['paid', 'done', 'complete']
+  FULL: ['paid', 'done', 'complete'],
 };
 
 export const POS_MODES = {
@@ -36,17 +36,17 @@ export const POS_MODES = {
   KIOSK: 'kiosk',
   KITCHEN: 'kitchen',
   WAITING: 'waiting',
-  ALL: ['', 'kiosk', 'kitchen', 'waiting']
+  ALL: ['', 'kiosk', 'kitchen', 'waiting'],
 };
 
 // НӨАТ-н баримтын төрөл
 export const BILL_TYPES = {
-  CITIZEN: "1", // иргэнд өгөх баримт
-  ENTITY: "3", // байгууллагад өгөх баримт
+  CITIZEN: '1', // иргэнд өгөх баримт
+  ENTITY: '3', // байгууллагад өгөх баримт
 };
 
 export const PAYMENT_TYPES = {
   CARD: 'cardAmount',
   CASH: 'cashAmount',
-  REGISTER: 'registerNumber'
+  REGISTER: 'registerNumber',
 };

@@ -120,6 +120,29 @@
       }
     }
   }
+  &-user {
+    & > .flex-v-center {
+      border-bottom: 1px solid #000;
+    }
+  }
+  .amounts {
+    p {
+      padding-left: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+  }
+  .category {
+    border-bottom: 1px dashed #000;
+    margin-top: 3px;
+    padding-left: 50px;
+  }
+  &-product {
+    display: flex;
+    justify-content: space-between;
+  }
+
   .btn-print {
     padding-top: 1rem;
     .btn {

@@ -26,6 +26,10 @@ const QpayView = dynamic(() => import('modules/checkout/components/QpayQr'), {
   suspense: true,
 });
 
+const HistoryView = dynamic(() => import('modules/history/components/Detail'), {
+  suspense: true,
+});
+
 const Modal = dynamic(() => import('ui/Modal'), {
   suspense: true,
 });
@@ -58,6 +62,7 @@ const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
           )}
           {modalView === 'QPAY_LIST_VIEW' && <Qpaylist />}
           {modalView === 'QPAY_VIEW' && <QpayView />}
+          {modalView === 'HISTORY_VIEW' && <HistoryView />}
         </Suspense>
       </Modal>
     </Suspense>

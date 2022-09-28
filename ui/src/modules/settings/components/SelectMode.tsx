@@ -14,6 +14,12 @@ const SelectMode = () => {
       <option value="kiosk" selected={getMode() === 'kiosk'}>
         Kiosk
       </option>
+      <option value="waiting" selected={getMode() === 'waiting'}>
+        Waiting Screen
+      </option>
+      <option value="kitchen" selected={getMode() === 'kitchen'}>
+        Kitchen Screen
+      </option>
     </Select>
   );
 };

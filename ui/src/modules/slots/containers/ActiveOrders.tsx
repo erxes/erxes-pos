@@ -1,6 +1,6 @@
 import SlotsHeader from '../components/SlotHeader';
 import { gql, useQuery } from '@apollo/client';
-import { queries } from '../graphql';
+import { queries } from 'modules/checkout/graphql';
 import Loading from 'ui/Loading';
 
 const ActiveOrders = () => {

@@ -2,15 +2,18 @@ import type { IEbarimtConfig } from './types';
 
 export const formatNum = (num: number | string, splitter?: any): string => {
   const checked = typeof num === 'string' ? Number(num) : num;
+
   return checked
-    .toLocaleString(
-      undefined,
-      splitter && {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2,
-      }
-    )
-    .replaceAll(',', splitter ? splitter : ' ');
+    ? checked
+        .toLocaleString(
+          undefined,
+          splitter && {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }
+        )
+        .replaceAll(',', splitter ? splitter : ' ')
+    : '0';
 };
 
 export const parseNum = (val: string | number) => {

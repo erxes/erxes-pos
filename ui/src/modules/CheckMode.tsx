@@ -1,18 +1,30 @@
 import { FC, ReactNode, Suspense } from 'react';
 import { getMode } from './utils';
 import Loading from 'ui/Loading';
+import NotFound from './common/Layout/NotFound';
 
 interface IProps {
-  kiosk: ReactNode;
-  pos: ReactNode;
+  kiosk?: ReactNode;
+  pos?: ReactNode;
+  waiting?: ReactNode;
+  kitchen?: ReactNode;
 }
 
-const CheckMode: FC<IProps> = ({ pos, kiosk }) => {
+const CheckMode: FC<IProps> = (props) => {
   const mode = getMode();
+
+  const renderMode = (currentMode: 'kiosk' | 'pos' | 'waiting' | 'kitchen') => {
+    if (mode === currentMode) {
+      return props[currentMode] ? props[currentMode] : <NotFound />;
+    }
+  };
+
   return (
     <Suspense fallback={<Loading />}>
-      {mode === 'pos' && pos}
-      {mode === 'kiosk' && kiosk}
+      {renderMode('kiosk')}
+      {renderMode('pos')}
+      {renderMode('waiting')}
+      {renderMode('kitchen')}
     </Suspense>
   );
 };

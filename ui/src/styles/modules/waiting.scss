@@ -1,0 +1,20 @@
+.waiting {
+  header {
+    background-color: $success;
+    .img-wrap {
+      width: 100px;
+      aspect-ratio: 3/2;
+      img {
+        object-fit: contain;
+      }
+    }
+    h1 {
+      padding-right: 100px;
+    }
+  }
+  .row {
+    h1 {
+      padding: 1.25rem;
+    }
+  }
+}

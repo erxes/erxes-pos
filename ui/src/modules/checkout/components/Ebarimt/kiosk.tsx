@@ -38,6 +38,11 @@ const Ebarimt = () => {
 
   const handleGoToPayment = () => orderCU();
 
+  const handleChoosePerson = () => {
+    choosePrsn();
+    handleGoToPayment();
+  };
+
   const renderStatus = () => {
     if (error) return <h3 className="status error">{error.message}</h3>;
 
@@ -76,7 +81,7 @@ const Ebarimt = () => {
       <h2>
         Та баримтын төрлөө <br /> сонгоно уу!
       </h2>
-      <Button variant="slim" Component="h4" onClick={choosePrsn}>
+      <Button variant="slim" Component="h4" onClick={handleChoosePerson}>
         Хувь хүнээр
       </Button>
       <Button variant="slim" Component="h4" onClick={chooseOrg}>

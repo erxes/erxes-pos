@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import { mutations } from 'modules/checkout/graphql';
-import { queries } from 'modules/slots/graphql';
+import { queries } from 'modules/checkout/graphql';
 import { queries as checkoutQueries } from 'modules/checkout/graphql';
 import useOrderCUData from './useOrderCUData';
 

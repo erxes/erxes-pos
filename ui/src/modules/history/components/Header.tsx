@@ -17,7 +17,9 @@ const HistoryHeader = () => {
         <b>Захиалгын түүх:</b>
       </small>
       <Search onSearch={onSearch} placeHolder="Хайлт хийх" />
-      <Button className="filter-btn">Өнөөдөр</Button>
+      <Button className="filter-btn" variant="slim">
+        Өнөөдөр
+      </Button>
       <Button className="filter-btn" variant="slim">
         Өчигдөр
       </Button>
