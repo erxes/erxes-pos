@@ -52,9 +52,7 @@
   }
 
   header {
-    .flex-v-center {
-      justify-content: space-between;
-
+    .flex-h-between {
       div {
         margin: 0;
         line-height: 1.1;
@@ -89,7 +87,6 @@
 
   footer {
     .lottery {
-      justify-content: space-between;
       .qr-code {
         flex: 0 0 auto;
         min-width: 140px;
@@ -128,9 +125,6 @@
   .amounts {
     p {
       padding-left: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
     }
   }
   .category {
@@ -140,7 +134,6 @@
   }
   &-product {
     display: flex;
-    justify-content: space-between;
   }
 
   .btn-print {

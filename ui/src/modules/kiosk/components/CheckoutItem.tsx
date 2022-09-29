@@ -9,7 +9,7 @@ const ReviewItem: FC<any> = ({
   count,
 }) => {
   return (
-    <div className="kiosk-review-item flex-v-center">
+    <div className="kiosk-review-item flex-h-between">
       <div className="flex-v-center">
         <div className="img-wrap">
           <Image src={productImgUrl} alt="" />

@@ -15,20 +15,20 @@ const Receipt = ({ date, report }: any) => {
   const renderAmounts = (amounts: any) => {
     return (
       <div className="amounts">
-        <p>
+        <p className="flex-h-between">
           {`Бэлнээр: `}
           <span>{formatNum(amounts.cashAmount, ',')}₮</span>
         </p>
-        <p>
+        <p className="flex-h-between">
           {`Картаар: `} <span>{formatNum(amounts.cardAmount, ',')}₮</span>
         </p>
-        <p>
+        <p className="flex-h-between">
           {`QPay: `} <span>{formatNum(amounts.mobileAmount, ',')}₮</span>
         </p>
-        <p>
+        <p className="flex-h-between">
           {`Нийт: `} <span>{formatNum(amounts.totalAmount, ',')}₮</span>
         </p>
-        <p>
+        <p className="flex-h-between">
           {`Б.тоо: `} <span>{formatNum(amounts.count)}</span>
         </p>
       </div>
@@ -37,7 +37,7 @@ const Receipt = ({ date, report }: any) => {
 
   const renderProduct = (product: any) => {
     return (
-      <p className="printDocument-product" key={Math.random()}>
+      <p className="printDocument-product flex-h-between" key={Math.random()}>
         {`${product.name}: `} <span>{formatNum(product.count)}</span>
       </p>
     );

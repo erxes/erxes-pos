@@ -5,7 +5,7 @@ const Header = () => {
   return (
     <header>
       <Image src="/background.png" fill alt="" sizes="100vw" />
-      <div className="flex-v-center">
+      <div className="flex-h-between">
         <div className="img-wrap">
           <Image alt="" src="/logo-white.png" fill />
         </div>

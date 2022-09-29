@@ -15,7 +15,8 @@ export const ORDER_STATUSES = {
   COMPLETE: 'complete',
 
   ALL: ['new', 'paid', 'doing', 'done', 'road', 'complete', 'confirm'],
-  FULL: ['paid', 'done', 'complete'],
+  FULL: ['paid', 'done', 'complete', 'confirm'],
+  ACTIVE: ['confirm', 'doing'],
 };
 
 export const ORDER_ITEM_STATUSES = {

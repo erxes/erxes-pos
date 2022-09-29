@@ -1,20 +1,16 @@
+import useFullOrders from 'lib/useFullOrder';
 import SlotsHeader from '../components/SlotHeader';
-import { gql, useQuery } from '@apollo/client';
-import { queries } from 'modules/checkout/graphql';
 import Loading from 'ui/Loading';
+import { ORDER_STATUSES } from 'modules/constants';
 
 const ActiveOrders = () => {
-  const { data, loading } = useQuery(gql(queries.fullOrders), {
-    variables: {
-      statuses: ['new'],
-    },
+  const { fullOrders, loading } = useFullOrders({
+    statuses: [ORDER_STATUSES.NEW, ORDER_STATUSES.CONFIRM],
   });
 
   if (loading) return <Loading />;
 
-  const activeOrders = data.fullOrders;
-
-  return <SlotsHeader items={activeOrders} />;
+  return <SlotsHeader items={fullOrders} />;
 };
 
 export default ActiveOrders;

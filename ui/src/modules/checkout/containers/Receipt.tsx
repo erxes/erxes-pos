@@ -165,7 +165,7 @@ const Receipt = () => {
   return (
     <div className="printDocument">
       <header className="block">
-        <div className="flex-v-center">
+        <div className="flex-h-between">
           <Image src={logo} fill={false} height={32} width={32} alt={name} />
           <div>{name}</div>
           <div>
@@ -197,7 +197,7 @@ const Receipt = () => {
       </div>
       <footer>
         {renderError()}
-        <div className="lottery flex-v-center block">
+        <div className="lottery flex-h-between block">
           {renderQr()}
           <div>
             <Amount />

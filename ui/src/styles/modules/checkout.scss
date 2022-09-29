@@ -4,7 +4,6 @@
   &-total {
     padding: 1rem 1.25rem;
     border-bottom: $border;
-    justify-content: space-between;
     .checkall {
       font: 600 0.875rem/1rem 'Inter';
     }
@@ -23,7 +22,6 @@
     padding: 1rem 0;
     margin: 0 1.25rem;
     border-bottom: $border;
-    justify-content: space-between;
     &-main {
       .checkbox {
         margin-right: 1rem;

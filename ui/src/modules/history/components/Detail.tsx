@@ -10,7 +10,7 @@ const Detail = () => {
     <div className="history-detail">
       <HistoryItem order={orderDetail} />
       {items.map((item: any) => (
-        <div className="flex-v-center -item" key={item._id}>
+        <div className="flex-h-between -item" key={item._id}>
           <div>
             <b className="-name">{item.productName}</b>
             <b>{formatNum(item.unitPrice)}₮</b>

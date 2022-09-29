@@ -31,19 +31,19 @@ const PaymentReport = () => {
         <h2>{formatNum(totalAmount)}₮</h2>
         <h5 className={cn({ '-pb': !paid })}>Нийт төлөх</h5>
         <div className="description">
-          <h6 className="flex-v-center description-item">
+          <h6 className="flex-h-between description-item">
             <span>Бэлнээр</span>
             <b>{formatNum(cashAmount)}₮</b>
           </h6>
-          <h6 className="flex-v-center description-item">
+          <h6 className="flex-h-between description-item">
             <span>Картаар</span>
             <b>{formatNum(cardAmount)}₮</b>
           </h6>
-          <h6 className="flex-v-center description-item">
+          <h6 className="flex-h-between description-item">
             <span>Qpay</span>
             <b>{formatNum(mobileAmount)}₮</b>
           </h6>
-          <h6 className="flex-v-center description-item">
+          <h6 className="flex-h-between description-item">
             <span>Үлдэгдэл дүн</span>
             <b>{formatNum(remainder)}₮</b>
           </h6>

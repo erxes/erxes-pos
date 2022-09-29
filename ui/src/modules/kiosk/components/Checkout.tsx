@@ -46,7 +46,7 @@ const Checkout = () => {
         </Scroll>
       </div>
       <footer>
-        <div className="flex-v-center">
+        <div className="flex-h-between">
           <h3>Нийт</h3>
           <h2 className="text-primary">{formatNum(totalAmount)}₮</h2>
         </div>

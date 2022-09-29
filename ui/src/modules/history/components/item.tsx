@@ -25,13 +25,13 @@ const HistoryItem = ({ order }: any) => {
 
   return (
     <div className="history-item" onClick={handleClick}>
-      <div className="flex-v-center">
+      <div className="flex-h-between">
         <b>{formatNum(totalAmount)}₮</b>
         <b>#{number.split('_')[1]}</b>
       </div>
-      <div className="flex-v-center">
+      <div className="flex-h-between">
         <Button riffle={false}>{renderType()}</Button>
-        <span className="caption">{date}</span>
+        <span className="caption">{paidDate && date}</span>
       </div>
       <Ink />
     </div>

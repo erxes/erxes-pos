@@ -17,7 +17,7 @@ const CheckoutItem: FC<ICartItem> = ({
 }) => {
   const { selectItem } = useApp();
   return (
-    <div className="flex-v-center checkout-item">
+    <div className="flex-h-between checkout-item">
       <div className="checkout-item-main flex-v-center">
         <Checkbox checked={isSelected} onChange={() => selectItem(_id)} />
         <div className="flex-v-center">

@@ -6,7 +6,7 @@ const CheckoutTotal = () => {
   const { isCartSelected, selectAll } = useApp();
   const total = useTotalValue();
   return (
-    <div className="flex-v-center checkout-total">
+    <div className="flex-h-between checkout-total">
       <div className="checkall" onClick={selectAll}>
         {isCartSelected ? 'Uncheck all' : 'Check all'}
       </div>

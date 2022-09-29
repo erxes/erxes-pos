@@ -33,7 +33,10 @@ const CheckRegister = () => {
   return (
     <>
       <div
-        className={cn('register flex-v-center', { verified: !!name, loading })}
+        className={cn('register flex-h-between', {
+          verified: !!name,
+          loading,
+        })}
       >
         <div className="flex-center">
           <Radio

@@ -33,6 +33,18 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
             Тохиргоо
           </li>
         </Link>
+        <Link href="/waiting" prefetch={false}>
+          <li>
+            <Setting />
+            Хүлээлгэ
+          </li>
+        </Link>
+        <Link href="/kitchen" prefetch={false}>
+          <li>
+            <Setting />
+            Гал тогоо
+          </li>
+        </Link>
         <Logout />
       </ul>
     </div>

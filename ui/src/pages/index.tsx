@@ -12,8 +12,17 @@ const Kiosk = dynamic(() => import('modules/kiosk'), { ...dynamicProps });
 
 const Waiting = dynamic(() => import('modules/waiting'), { ...dynamicProps });
 
+const Kitchen = dynamic(() => import('modules/kitchen'), { ...dynamicProps });
+
 const Home: NextPage = () => {
-  return <CheckMode pos={<Pos />} kiosk={<Kiosk />} waiting={<Waiting />} />;
+  return (
+    <CheckMode
+      pos={<Pos />}
+      kiosk={<Kiosk />}
+      waiting={<Waiting />}
+      kitchen={<Kitchen />}
+    />
+  );
 };
 
 export default Home;

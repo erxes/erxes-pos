@@ -46,8 +46,7 @@
     margin: 0.5rem;
     cursor: pointer;
     position: relative;
-    & > .flex-v-center {
-      justify-content: space-between;
+    & > .flex-h-between {
       &:first-child {
         margin-bottom: 0.25rem;
       }
@@ -72,7 +71,6 @@
     }
     .-item {
       padding: 1.25rem;
-      justify-content: space-between;
       border-bottom: $border;
       b {
         display: block;

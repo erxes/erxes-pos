@@ -1,0 +1,61 @@
+.kitchen {
+  max-height: 100vh;
+  &-order {
+    border: $border;
+    margin: 1.5rem 0.75rem;
+    padding: 1.5rem 1rem;
+    border-radius: 0.5rem;
+
+    .-header {
+      padding: 0 1rem;
+      color: #000;
+      .flex-h-between {
+        padding-bottom: 0.25rem;
+      }
+    }
+
+    .-tag.btn.flat {
+      font-weight: 400;
+      padding: 0.125rem 0.5rem;
+      font-size: 0.865rem;
+      border-radius: 0.25rem;
+      background: $primary;
+      cursor: default;
+    }
+
+    .-item {
+      padding: 1rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+
+      .-name {
+        color: $gray;
+        & > svg {
+          margin-right: 0.25rem;
+          font-size: 1.25em;
+        }
+      }
+      border-bottom: $border;
+      .radio {
+        height: 1.625rem;
+        width: 1.625rem;
+      }
+    }
+    .btn.slim {
+      padding: 0.75rem 2rem;
+      color: $primary;
+      border-color: $primary;
+      margin-top: 1.5rem;
+      font-weight: 700;
+    }
+  }
+  .-origin {
+    text-transform: capitalize;
+  }
+  .row {
+    max-height: 100%;
+    overflow-y: scroll;
+    padding: 0 0.75rem;
+  }
+}
