@@ -56,7 +56,7 @@ export default function ProductItem(props: Props) {
         </div>
         <div className={mode === "kiosk" ? "text-kiosk" : "text-wrapper"}>
           <h4>{name}</h4>
-          <>{remainder && (formatNumber(remainder || 0)) || ''}</>
+          <>{remainder ? (formatNumber(remainder || 0)) : ''}</>
           <span>
             {formatNumber(unitPrice || 0)}₮
           </span>
