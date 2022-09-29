@@ -57,9 +57,9 @@ export interface IOrder {
   registerNumber: string;
   oldBillId: string;
   type: string;
+  deliveryInfo?: any;
   cardPayments?: any[];
   origin?: string;
-
   items: IOrderItem[];
   customer?: ICustomer;
   user: IUser;
@@ -81,6 +81,7 @@ export interface IProduct extends IProductCommonFields {
   type?: string;
   unitPrice?: number;
   status?: string;
+  remainder?: number;
 
   sku?: string;
   customFieldsData?: ICustomField[];
@@ -138,11 +139,6 @@ export type OrderQueryResponse = {
 
 export type FullOrderQueryResponse = {
   fullOrders: IOrder[];
-  subscribeToMore: any;
-} & QueryResponse;
-
-export type FullOrderItemsQueryResponse = {
-  fullOrderItems: IOrderItem[];
   subscribeToMore: any;
 } & QueryResponse;
 

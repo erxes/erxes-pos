@@ -80,7 +80,7 @@ type Props = {
   showMenu?: boolean;
   refetchOrder: () => void;
   slots: ISlot[];
-  changeOrderStatus: (doc) => void;
+  changeOrderStatus: (doc: any, callback?: any) => void;
   orderDetailQuery: OrderDetailQueryResponse;
 };
 
@@ -94,6 +94,7 @@ type State = {
   orderProps: any;
   paymentType: string;
   slotCode: string;
+  description: string;
 };
 
 const getTotalAmount = (items: IOrderItemInput[], onlyUi = false) => {
@@ -129,7 +130,8 @@ export default class Pos extends React.Component<Props, State> {
       paymentType: 'card',
       orderProps: {},
       isTypeChosen: false,
-      slotCode: checkOrder.slotCode || ''
+      slotCode: checkOrder.slotCode || '',
+      description: checkOrder.deliveryInfo ? checkOrder.deliveryInfo.description : '' || ''
     };
   }
 
@@ -198,7 +200,7 @@ export default class Pos extends React.Component<Props, State> {
 
   addOrder = (callback?: () => void) => {
     const { createOrder } = this.props;
-    const { totalAmount, type, items, customerId, slotCode } = this.state;
+    const { totalAmount, type, items, customerId, slotCode, description } = this.state;
 
     const currentItems = items.map(item => ({
       _id: item._id,
@@ -218,7 +220,8 @@ export default class Pos extends React.Component<Props, State> {
         type,
         customerId,
         origin: mode,
-        slotCode
+        slotCode,
+        deliveryInfo: type === ORDER_TYPES.DELIVERY && { description }
       },
       callback
     );
@@ -226,7 +229,7 @@ export default class Pos extends React.Component<Props, State> {
 
   editOrder = (callback?: () => void) => {
     const { updateOrder, order } = this.props;
-    const { totalAmount, type, items, customerId, slotCode } = this.state;
+    const { totalAmount, type, items, customerId, slotCode, description } = this.state;
 
     if (order && order._id) {
       const currentItems = items.map(item => ({
@@ -245,7 +248,8 @@ export default class Pos extends React.Component<Props, State> {
           totalAmount,
           type,
           customerId,
-          slotCode
+          slotCode,
+          deliveryInfo: type === ORDER_TYPES.DELIVERY && { description }
         },
         callback
       ).then((updatedOrder: any) => {
