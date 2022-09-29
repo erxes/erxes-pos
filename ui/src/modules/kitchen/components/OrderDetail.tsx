@@ -38,7 +38,8 @@ function Timer({ oTime }) {
 
   return (
     <TimeGroup>
-      <span>{diffHours}</span>:<span>{diffMinutes}</span>:
+      <span>{diffHours}</span>:
+      <span>{diffMinutes}</span>:
       <span>{diffSeconds || 60}</span>
     </TimeGroup>
   );
@@ -50,8 +51,9 @@ export default class OrderDetail extends React.Component<Props> {
     super(props);
     this.myRef = React.createRef();
   }
-  renderTime(order) {
-    const date = new Date(order.paidDate);
+
+  renderTime(order: IOrder) {
+    const date = new Date(order.paidDate || order.modifiedAt);
 
     const hours = date.getHours();
     const minutes = date.getMinutes();
@@ -116,14 +118,14 @@ export default class OrderDetail extends React.Component<Props> {
         <span>{__("Quantity")}:&nbsp;</span>
         <p>
           {
-          this.renderItemCount(
-            item.count,
-            this.myRef.current ?
-              this.myRef.current[index] === undefined ?
-                0
-              : this.myRef.current[index].count
-            : item.count
-          )}
+            this.renderItemCount(
+              item.count,
+              this.myRef.current ?
+                this.myRef.current[index] === undefined ?
+                  0
+                  : this.myRef.current[index].count
+                : item.count
+            )}
         </p>
         <p>
           <FormControl
@@ -145,14 +147,14 @@ export default class OrderDetail extends React.Component<Props> {
     const checkCount = () => {
       if (count - previousCount < 0) {
         return (
-          <span style={{'color': '#f53b57'}}>
+          <span style={{ 'color': '#f53b57' }}>
             {' ' + (count - previousCount)}
           </span>
         );
       }
       if (count - previousCount > 0) {
         return (
-          <span style={{'color': '#4cd137'}}>
+          <span style={{ 'color': '#4cd137' }}>
             {' +' + (count - previousCount)}
           </span>
         );

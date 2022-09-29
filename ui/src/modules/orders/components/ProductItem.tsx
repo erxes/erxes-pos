@@ -16,7 +16,7 @@ type Props = {
 export default function ProductItem(props: Props) {
   const { currentConfig } = React.useContext(AppContext);
   const { product, addItem, orientation, isActive } = props;
-  const { attachment, name, unitPrice } = product;
+  const { attachment, name, unitPrice, remainder } = product;
 
   const attachmentUrl = attachment && attachment.url ? attachment.url : "";
   const mode = localStorage.getItem("erxesPosMode");
@@ -56,7 +56,10 @@ export default function ProductItem(props: Props) {
         </div>
         <div className={mode === "kiosk" ? "text-kiosk" : "text-wrapper"}>
           <h4>{name}</h4>
-          <span>{formatNumber(unitPrice || 0)}₮</span>
+          <>{remainder && (formatNumber(remainder || 0)) || ''}</>
+          <span>
+            {formatNumber(unitPrice || 0)}₮
+          </span>
         </div>
       </Item>
     </ItemWrapper>
