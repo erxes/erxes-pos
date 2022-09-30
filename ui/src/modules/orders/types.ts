@@ -81,7 +81,7 @@ export interface IProduct extends IProductCommonFields {
   type?: string;
   unitPrice?: number;
   status?: string;
-  remainder?: number;
+  count?: number;
 
   sku?: string;
   customFieldsData?: ICustomField[];

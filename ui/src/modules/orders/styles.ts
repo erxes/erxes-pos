@@ -441,9 +441,17 @@ export const Item = styledTS<{
 
     h4 {
       font-size: 14px;
-      margin: 0 0 ${dimensions.coreSpacing}px;
+      margin: 0 0 ${dimensions.unitSpacing}px;
       line-height: 18px;
       font-weight: bold;
+      word-break: break-word;
+    }
+
+    p {
+      color:${(props) => (props.color ? props.color : colors.colorSecondary)}
+      font-size: 12px;
+      font-weight: bold;
+      margin: 0 0 ${dimensions.unitSpacing}px;
       word-break: break-word;
     }
 

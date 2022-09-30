@@ -82,7 +82,7 @@ const products = `
       unitPrice
       type
       description
-      remainder
+      count
       attachment {
         duration
         name
