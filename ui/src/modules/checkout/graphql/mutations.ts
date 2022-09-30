@@ -74,6 +74,23 @@ const ordersSettlePayment = `
   }
 `;
 
+const orderChangeStatus = `
+  mutation orderChangeStatus($_id: String!, $status: String) {
+    orderChangeStatus(_id: $_id, status: $status) {
+      _id
+    }
+  }
+`;
+
+const orderItemChangeStatus = `
+  mutation orderItemChangeStatus($_id: String!, $status: String) {
+    orderItemChangeStatus(_id: $_id, status: $status) {
+      _id
+      status
+    }
+  }
+`;
+
 const mutations = {
   ordersAdd,
   ordersEdit,
@@ -82,6 +99,8 @@ const mutations = {
   qpayCheckPayment,
   qpayCancelInvoice,
   ordersSettlePayment,
+  orderChangeStatus,
+  orderItemChangeStatus,
 };
 
 export default mutations;

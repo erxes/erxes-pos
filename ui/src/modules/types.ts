@@ -42,3 +42,5 @@ export interface IEbarimtConfig {
   cityTaxPercent: number;
   footerText: string;
 }
+
+export type IRadio = 'checked' | 'error' | 'loading' | '' | false;

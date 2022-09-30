@@ -28,6 +28,12 @@
       &.new {
         background-color: $gray;
       }
+      &.confirm {
+        background: $success;
+        svg {
+          color: $success;
+        }
+      }
     }
     .react-horizontal-scrolling-menu--separator {
       padding: 0 0.5rem;

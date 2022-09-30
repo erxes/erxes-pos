@@ -1,35 +1,23 @@
 import { useEffect } from 'react';
+import { ORDER_STATUSES } from 'modules/constants';
+import OrderItem from './OrderItem';
 
-const Waiting = ({
-  subToOrderStatuses,
-  orders,
-  subToItems,
-  ordersConfirm,
-  orderItems,
-}: any) => {
+const Waiting = ({ subToOrderStatuses, orders, subToItems }: any) => {
+  const { DONE, DOING, CONFIRM, COMPLETE } = ORDER_STATUSES;
   useEffect(() => {
-    subToOrderStatuses();
-    subToItems();
+    subToOrderStatuses([DOING, DONE, COMPLETE]);
+    subToItems([CONFIRM, DONE]);
   }, []);
 
-  let partialOrders: any = [];
-
-  orderItems.forEach((item: any) => {
-    const temp = ordersConfirm.find((order: any) => order._id === item.orderId);
-    temp && partialOrders.push(temp);
-  });
-
-  const all = [...orders, ...partialOrders];
-  console.log(all);
-
-  const setOrders = [...new Map(all.map((m) => [(m || {})._id, m])).values()];
+  const updatedOrders = orders.filter(
+    (order: any) =>
+      order.items.every((item: any) => item.status === 'confirm') === false
+  );
 
   return (
     <div className="row">
-      {setOrders.map((order: any) => (
-        <h1 key={(order || {})._id}>
-          {((order || {}).number || '_0').split('_')[1]}
-        </h1>
+      {updatedOrders.map((order: any = {}) => (
+        <OrderItem {...order} key={order._id} />
       ))}
     </div>
   );

@@ -13,8 +13,13 @@
     }
   }
   .row {
-    h1 {
+    .-item {
       padding: 1.25rem;
+      h1 {
+      }
+      small {
+        font-size: 0.5rem;
+      }
     }
   }
 }

@@ -1,18 +1,29 @@
 import { gql, useMutation } from '@apollo/client';
-import { mutations } from 'modules/checkout/graphql';
-import { queries } from 'modules/checkout/graphql';
+import { mutations, queries } from 'modules/checkout/graphql';
 import { queries as checkoutQueries } from 'modules/checkout/graphql';
 import useOrderCUData from './useOrderCUData';
+import { ORDER_STATUSES } from '../modules/constants';
 
 const useOrderCU = (onCompleted?: any) => {
   const orderData = useOrderCUData();
 
+  const [orderChangeStatus, { loading: loadingChangeStatus }] = useMutation(
+    gql(mutations.orderChangeStatus),
+    {
+      refetchQueries: [{ query: gql(queries.fullOrders) }, 'fullOrders'],
+    }
+  );
+
   const [ordersAdd, { loading }] = useMutation(gql(mutations.ordersAdd), {
     variables: orderData,
     onCompleted(data) {
-      return onCompleted && onCompleted(data.ordersAdd._id);
+      return orderChangeStatus({
+        variables: { _id: data.ordersAdd._id, status: ORDER_STATUSES.CONFIRM },
+        onCompleted(data) {
+          return onCompleted && onCompleted(data.orderChangeStatus._id);
+        },
+      });
     },
-    refetchQueries: [{ query: gql(queries.fullOrders) }, 'FullOrders'],
   });
 
   const [ordersEdit, { loading: loadingEdit }] = useMutation(
@@ -33,7 +44,7 @@ const useOrderCU = (onCompleted?: any) => {
     return { orderCU: ordersEdit, loading: loadingEdit };
   }
 
-  return { orderCU: ordersAdd, loading };
+  return { orderCU: ordersAdd, loading: loading || loadingChangeStatus };
 };
 
 export default useOrderCU;

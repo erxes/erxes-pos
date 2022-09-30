@@ -1,6 +1,13 @@
 import { useTime } from 'react-timer-hook';
 
-const Timer = ({ oTime }: any) => {
+const Timer = ({ paidDate }: any) => {
+  const date = new Date(paidDate);
+
+  const pHours = date.getHours();
+  const pMinutes = date.getMinutes();
+  const pSeconds = date.getSeconds();
+  const oTime = pSeconds + pMinutes * 60 + pHours * 3600;
+
   const { seconds, minutes, hours } = useTime({});
   const time = seconds + minutes * 60 + (hours || 24) * 3600;
   let diffSeconds = time - oTime;

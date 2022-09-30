@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useApp } from 'modules/AppContext';
 import { useRouter } from 'next/router';
-import { formatNum, removeQuery } from 'modules/utils';
+import { formatNum } from 'modules/utils';
+import { useRemoveQuery } from 'lib/useQuery';
 import useOrderCU from 'lib/useOrderCU';
 import useTotalValue from 'lib/useTotalValue';
 import Button from 'ui/Button';
@@ -9,6 +10,7 @@ import Deliver from '../../checkout/components/Deliver';
 
 const OrderCU = () => {
   const [type, setType] = useState('pay');
+  const { removeQuery } = useRemoveQuery();
 
   const { setCart } = useApp();
   const router = useRouter();
@@ -19,7 +21,7 @@ const OrderCU = () => {
       return router.push(`/checkout/${_id}`);
     }
     if (type === 'order') {
-      return removeQuery(router, 'selectedOrder');
+      return removeQuery('selectedOrder');
     }
   };
 

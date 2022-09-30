@@ -16,35 +16,50 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
         <Menu />
       </Button>
       <ul className="pos-menu">
-        <Link href="/history" prefetch={false}>
-          <li>
-            <Swap /> Захиалгын түүх
-          </li>
-        </Link>
-        <Link href="/report" prefetch={false}>
-          <li>
-            <PieChart />
-            Тайлан
-          </li>
-        </Link>
-        <Link href="/settings" prefetch={false}>
-          <li>
-            <Setting />
-            Тохиргоо
-          </li>
-        </Link>
-        <Link href="/waiting" prefetch={false}>
-          <li>
-            <Setting />
-            Хүлээлгэ
-          </li>
-        </Link>
-        <Link href="/kitchen" prefetch={false}>
-          <li>
-            <Setting />
-            Гал тогоо
-          </li>
-        </Link>
+        <li>
+          <Link href="/history" prefetch={false}>
+            <a>
+              <Swap /> Захиалгын түүх
+            </a>
+          </Link>
+        </li>
+
+        <li>
+          <Link href="/report" prefetch={false}>
+            <a>
+              <PieChart />
+              Тайлан
+            </a>
+          </Link>
+        </li>
+
+        <li>
+          <Link href="/settings" prefetch={false}>
+            <a>
+              <Setting />
+              Тохиргоо
+            </a>
+          </Link>
+        </li>
+
+        <li>
+          <Link href="/waiting" prefetch={false}>
+            <a>
+              <Setting />
+              Хүлээлгэ
+            </a>
+          </Link>
+        </li>
+
+        <li>
+          <Link href="/kitchen" prefetch={false}>
+            <a>
+              <Setting />
+              Гал тогоо
+            </a>
+          </Link>
+        </li>
+
         <Logout />
       </ul>
     </div>

@@ -7,7 +7,7 @@ const Grid = ({ data, Component }: any) => {
         {data
           .filter((_: any, i: number) => i % constant === idx)
           .map((item: any) => (
-            <Component data={item} key={item._id} />
+            <Component {...item} key={item._id} />
           ))}
       </>
     );
