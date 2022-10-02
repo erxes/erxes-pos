@@ -27,6 +27,7 @@ export default function Amount({ order }: Props) {
         <div className="sep" />
         {order.status === "paid" ? <div className="sep" /> : null}
         <LocaleField text="Бэлнээр" data={order.cashAmount} />
+        <LocaleField text="Дараах" data={order.receivableAmount} />
         <LocaleField text="Картаар" data={order.cardAmount} />
         <LocaleField text="Мобайл" data={order.mobileAmount} />
       </div>

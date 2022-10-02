@@ -79,8 +79,8 @@ const qpayCancelInvoice = `
 `;
 
 const ordersAddPayment = `
-  mutation ordersAddPayment($_id: String!, $cashAmount: Float, $cardAmount: Float, $cardInfo: JSON) {
-    ordersAddPayment(_id: $_id, cashAmount: $cashAmount, cardAmount: $cardAmount, cardInfo: $cardInfo) {
+  mutation ordersAddPayment($_id: String!, $cashAmount: Float, $receivableAmount: Float, $cardAmount: Float, $cardInfo: JSON) {
+    ordersAddPayment(_id: $_id, cashAmount: $cashAmount, receivableAmount: $receivableAmount, cardAmount: $cardAmount, cardInfo: $cardInfo) {
       ${orderFields}
       ${orderItemsFields}
     }

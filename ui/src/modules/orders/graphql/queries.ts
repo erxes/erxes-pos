@@ -15,6 +15,7 @@ export const orderFields = `
   cardAmount
   mobileAmount
   cashAmount
+  receivableAmount
   totalAmount
 
   slotCode

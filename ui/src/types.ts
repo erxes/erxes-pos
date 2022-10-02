@@ -100,6 +100,7 @@ export interface IConfig {
   initialCategoryIds: string[];
   kioskExcludeProductIds: string[];
   slots: any[];
+  permissionConfig?: any;
 }
 
 export type CurrentConfigQueryResponse = {

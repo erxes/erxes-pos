@@ -33,6 +33,7 @@ export interface IQPayInvoice {
 export interface IPaymentInput {
   _id: string;
   cashAmount?: number;
+  receivableAmount?: number;
   cardAmount?: number;
   cardInfo?: any;
 }
@@ -47,6 +48,7 @@ export interface IOrder {
   customerId?: string;
   cardAmount: number;
   cashAmount: number;
+  receivableAmount: number;
   mobileAmount: number;
   totalAmount: number;
   finalAmount: number;

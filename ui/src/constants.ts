@@ -43,10 +43,12 @@ export const POS_MODES = {
 export const BILL_TYPES = {
   CITIZEN: "1", // иргэнд өгөх баримт
   ENTITY: "3", // байгууллагад өгөх баримт
+  INNER: "9", // дотоод буюу түр баримт
 };
 
 export const PAYMENT_TYPES = {
   CARD: 'cardAmount',
   CASH: 'cashAmount',
+  RECEIVABLE: 'receivableAmount',
   REGISTER: 'registerNumber'
 };

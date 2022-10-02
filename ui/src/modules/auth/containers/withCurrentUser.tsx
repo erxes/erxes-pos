@@ -34,12 +34,40 @@ const withCurrentUser = (Component) => {
     }
 
     const posCurrentUser = currentUserQuery.posCurrentUser;
+    const currentConfig = currentConfigQuery.currentConfig;
+
+    let allowReceivable = false;
+    let allowInnerBill = false;
+
+    if (currentConfig.adminIds.includes(posCurrentUser._id)) {
+      if (currentConfig.permissionConfig && currentConfig.permissionConfig.admins) {
+        if (currentConfig.permissionConfig.admins.allowReceivable) {
+          allowReceivable = true;
+        }
+        if (currentConfig.permissionConfig.admins.isTempBill) {
+          allowInnerBill = true;
+        }
+
+      }
+    } else {
+      if (currentConfig.permissionConfig && currentConfig.permissionConfig.cashiers) {
+        if (currentConfig.permissionConfig.cashiers.allowReceivable) {
+          allowReceivable = true;
+        }
+
+        if (currentConfig.permissionConfig.cashiers.isTempBill) {
+          allowInnerBill = true;
+        }
+      }
+    }
 
     const updatedProps = {
       ...props,
       posCurrentUser,
       orientation,
-      currentConfig: currentConfigQuery.currentConfig,
+      currentConfig,
+      allowReceivable,
+      allowInnerBill,
       configs: configsQuery.posclientConfigs || [],
     };
 

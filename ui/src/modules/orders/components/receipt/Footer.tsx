@@ -7,7 +7,7 @@ import Amount from "./Amount";
 import Button from "modules/common/components/Button";
 import { IOrder } from "modules/orders/types";
 import { __ } from 'modules/common/utils';
-import { POS_MODES } from "../../../../constants";
+import { BILL_TYPES, POS_MODES } from "../../../../constants";
 
 type Props = {
   color: string;
@@ -141,8 +141,8 @@ export default class Footer extends React.Component<Props> {
   }
 
   componentDidMount() {
+    const { order } = this.props;
     if (this.putResponse) {
-      const { order } = this.props;
       const mode = localStorage.getItem('erxesPosMode') || '';
 
       window.addEventListener('afterprint', () => {
@@ -190,11 +190,29 @@ export default class Footer extends React.Component<Props> {
             marginBottom: 30
           });
         }
-
-        setTimeout(() => {
-          window.print();
-        }, 20)
       } // end qrcode
+
+      setTimeout(() => {
+        window.print();
+      }, 20)
+    }
+
+    if (order.billType === BILL_TYPES.INNER) {
+      window.addEventListener('afterprint', () => {
+        setTimeout(() => {
+          window.close();
+        }, 50);
+      });
+
+      const errorMessage = document.getElementById('error-message');
+
+      if (errorMessage) {
+        errorMessage.innerHTML = 'Түр/Дотоод баримт'
+      }
+
+      setTimeout(() => {
+        window.print();
+      }, 20)
     }
   } // end componentDidMount
 

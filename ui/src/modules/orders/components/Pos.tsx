@@ -82,6 +82,8 @@ type Props = {
   slots: ISlot[];
   changeOrderStatus: (doc: any, callback?: any) => void;
   orderDetailQuery: OrderDetailQueryResponse;
+  allowReceivable: boolean;
+  allowInnerBill: boolean;
 };
 
 type State = {
@@ -479,14 +481,16 @@ export default class Pos extends React.Component<Props, State> {
     );
   }
 
-  renderMainContent() {
+  renderMainContent(mode) {
     const {
       addCustomer,
       order,
       orientation,
       productBodyType,
       onChangeProductBodyType,
-      refetchOrder
+      refetchOrder,
+      allowReceivable,
+      allowInnerBill
     } = this.props;
 
     switch (productBodyType) {
@@ -501,6 +505,9 @@ export default class Pos extends React.Component<Props, State> {
               onOrdersChange={this.onOrdersChange}
               onChangeProductBodyType={onChangeProductBodyType}
               refetchOrder={refetchOrder}
+              allowReceivable={allowReceivable}
+              allowInnerBill={allowInnerBill}
+              mode={mode}
             />
           );
         }
@@ -720,7 +727,7 @@ export default class Pos extends React.Component<Props, State> {
             </Col>
             <Col md={8}>
               <MainContent numPadding={true}>
-                <ProductsContent>{this.renderMainContent()}</ProductsContent>
+                <ProductsContent>{this.renderMainContent(mode)}</ProductsContent>
               </MainContent>
             </Col>
             <Col md={3}>

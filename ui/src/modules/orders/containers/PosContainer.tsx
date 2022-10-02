@@ -38,6 +38,8 @@ type Props = {
   ordersCancelMutation: any;
   slotsQuery: SlotsQueryResponse;
   orderChangeStatusMutation: OrderChangeStatusMutationResponse;
+  allowReceivable: boolean;
+  allowInnerBill: boolean;
 } & IRouterProps;
 
 type States = {
@@ -49,6 +51,7 @@ type States = {
 export interface IPaymentParams {
   cardAmount?: number;
   cashAmount?: number;
+  receivableAmount?: number;
   mobileAmount?: number;
   billType: string;
   registerNumber?: string;
@@ -64,6 +67,7 @@ class PosContainer extends React.Component<Props, States> {
       modalContentType: '',
     };
   }
+
   componentDidUpdate() {
     this.props.orderDetailQuery.subscribeToMore({
       document: gql(subscriptions.orderItemsOrdered),

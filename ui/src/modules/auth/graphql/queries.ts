@@ -78,6 +78,7 @@ const configFields = `
   }
   initialCategoryIds
   kioskExcludeProductIds
+  permissionConfig
 `
 
 const currentConfig = `
