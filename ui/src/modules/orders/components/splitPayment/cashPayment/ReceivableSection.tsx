@@ -10,24 +10,22 @@ import { FlexCenter } from "modules/common/styles/main";
 type Props = {
   order: IOrder;
   remainder: number;
-  cashAmount: number;
+  receivableAmount: number;
   setAmount: (num: number | string) => void;
   addPayment: (params: IPaymentInput, callback?: () => void) => void;
 };
 
-export default class CashSection extends React.Component<Props> {
+export default class ReceivableSection extends React.Component<Props> {
   render() {
-    const { order, cashAmount, setAmount, addPayment, remainder } = this.props;
+    const { order, receivableAmount, setAmount, addPayment, remainder } = this.props;
 
     const onClick = () => {
-      const amount = cashAmount > remainder ? remainder : cashAmount;
+      const amount = receivableAmount > remainder ? remainder : receivableAmount;
 
-      addPayment({ _id: order._id, cashAmount: amount }, () => {
+      addPayment({ _id: order._id, receivableAmount: amount }, () => {
         setAmount(0);
       });
     };
-
-    const remainderAmount = Math.abs(cashAmount - remainder).toLocaleString();
 
     return (
       <FlexCenter>
@@ -35,11 +33,12 @@ export default class CashSection extends React.Component<Props> {
           <CashInput
             order={order}
             setAmount={setAmount}
-            amount={cashAmount}
-            inputLabel={__("In Cash")}
+            amount={receivableAmount}
+            inputLabel={__("In Receivable")}
+            max={remainder}
           />
 
-          {cashAmount ? (
+          {receivableAmount ? (
             <React.Fragment>
               <Button
                 size="small"
@@ -49,7 +48,6 @@ export default class CashSection extends React.Component<Props> {
               >
                 {__("Pay bill")}
               </Button>
-              <span>{__(cashAmount <= remainder ? 'Remainder amount' : 'Change amount')}: {remainderAmount}</span>
             </React.Fragment>
           ) : null}
         </CardInputColumn>

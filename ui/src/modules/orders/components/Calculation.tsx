@@ -135,6 +135,7 @@ type State = {
   customerLabel: string;
   mode: string;
   cashAmount: number;
+  receivableAmount: number;
   companyName: string;
   registerNumber: string;
 };
@@ -157,6 +158,7 @@ export default class Calculation extends React.Component<Props, State> {
       customerLabel,
       mode,
       cashAmount: 0,
+      receivableAmount: 0,
       companyName: '',
       registerNumber: ''
     };
@@ -440,6 +442,7 @@ export default class Calculation extends React.Component<Props, State> {
       ? order.totalAmount -
       ((order.cardAmount || 0) +
         (order.cashAmount || 0) +
+        (order.receivableAmount || 0) +
         (order.mobileAmount || 0))
       : 0;
   }

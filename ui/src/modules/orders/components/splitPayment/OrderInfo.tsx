@@ -62,18 +62,24 @@ export default function OrderInfo({
             <b>{formatNumber(order.cardAmount || 0)}₮</b>
           </div>
         ) : null}
-        {order.mobileAmount && (
+        {order.mobileAmount ? (
           <div>
             <span>{__("Paid mobile amount")}</span>
             <b>{formatNumber(order.mobileAmount || 0)}₮</b>
           </div>
-        )}
-        {order.cashAmount && (
+        ) : null}
+        {order.cashAmount ? (
           <div>
             <span>{__("Paid cash amount")}</span>
             <b>{formatNumber(order.cashAmount || 0)}₮</b>
           </div>
-        )}
+        ) : null}
+        {order.receivableAmount ? (
+          <div>
+            <span>{__("Receivable amount")}</span>
+            <b>{formatNumber(order.receivableAmount || 0)}₮</b>
+          </div>
+        ) : null}
         {remainderAmount > 0 && (
           <div>
             <span>{__("Remainder amount")}</span>

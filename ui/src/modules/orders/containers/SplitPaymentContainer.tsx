@@ -23,6 +23,9 @@ type Props = {
   onOrdersChange: (orderProps) => void;
   onChangeProductBodyType: (type: string) => void;
   refetchOrder: () => void;
+  allowReceivable: boolean;
+  allowInnerBill: boolean;
+  mode: string;
 };
 
 type FinalProps = {
@@ -46,6 +49,9 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
       onChangeProductBodyType,
       onOrdersChange,
       refetchOrder,
+      allowReceivable,
+      mode,
+      allowInnerBill
     } = this.props;
 
     const addPayment = (params: IPaymentInput, callback) => {
@@ -62,7 +68,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
 
     const createQPayInvoice = (params: IInvoiceParams) => {
       createInvoiceMutation({ variables: params })
-        .then(() => {})
+        .then(() => { })
         .catch((e) => {
           Alert.error(__(trimGraphqlError(e.message)));
         });
@@ -70,7 +76,7 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
 
     const checkQPayInvoice = (params: IInvoiceCheckParams) => {
       checkInvoiceMutation({ variables: params })
-        .then(() => {})
+        .then(() => { })
         .catch((e) => {
           Alert.error(__(trimGraphqlError(e.message)));
         });
@@ -127,6 +133,9 @@ class SplitPaymentContainer extends React.Component<FinalProps> {
         settlePayment={settlePayment}
         onChangeProductBodyType={onChangeProductBodyType}
         refetchOrder={refetchOrder}
+        allowReceivable={allowReceivable}
+        mode={mode}
+        allowInnerBill={allowInnerBill}
       />
     );
   }

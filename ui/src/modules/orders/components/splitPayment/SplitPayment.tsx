@@ -4,7 +4,7 @@ import gql from "graphql-tag";
 
 import apolloClient from "apolloClient";
 import { queries } from "../../graphql/index";
-import { BILL_TYPES, POS_MODES } from "../../../../constants";
+import { BILL_TYPES, ORDER_TYPES, POS_MODES } from "../../../../constants";
 import { FlexCenter } from "modules/common/styles/main";
 import { __, Alert } from "modules/common/utils";
 import {
@@ -26,6 +26,7 @@ import { BackButton } from "modules/orders/styles";
 import Icon from "modules/common/components/Icon";
 import InvoiceModal from "./qpayPayment/InvoiceModal";
 import QPayModalContent from "./qpayPayment/QPayModalContent";
+import ReceivabeSection from './cashPayment/ReceivableSection';
 
 const DASHED_BORDER = "1px dashed #ddd";
 
@@ -52,10 +53,14 @@ type Props = {
   onChangeProductBodyType: (type: string) => void;
   isPortrait?: boolean;
   refetchOrder: () => void;
+  allowReceivable: boolean;
+  mode: string;
+  allowInnerBill: boolean;
 };
 
 const INPUT_TYPES = {
   CASH: "cashAmount",
+  RECEIVABLE: "receivableAmount",
   CARD: "cardAmount",
   QPAY: "mobileAmount",
   REGISTER: "registerNumber",
@@ -66,6 +71,7 @@ type State = {
   activeInput: string;
   order: IOrder;
   cashAmount: number;
+  receivableAmount: number;
   cardAmount: number;
   mobileAmount: number;
   registerNumber: string;
@@ -90,6 +96,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       activeInput: "empty",
       order: props.order,
       cashAmount: 0,
+      receivableAmount: 0,
       cardAmount: remainder,
       mobileAmount: 0,
       registerNumber: "",
@@ -112,12 +119,13 @@ export default class SplitPayment extends React.Component<Props, State> {
 
   getRemainderAmount(order: IOrder) {
     const sumCashAmount = order.cashAmount || 0;
+    const sumReceivableAmount = order.receivableAmount || 0;
     const sumCardAmount = order.cardAmount || 0;
     const sumMobileAmount = (
       (order.qpayInvoices || []).filter((q) => q.status === "PAID") || []
     ).reduce((am, q) => am + Number(q.amount), 0);
 
-    return order.totalAmount - sumCashAmount - sumCardAmount - sumMobileAmount;
+    return order.totalAmount - sumCashAmount - sumReceivableAmount - sumCardAmount - sumMobileAmount;
   }
 
   onChangeKeyPad = (num) => {
@@ -128,6 +136,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       INPUT_TYPES.CARD,
       INPUT_TYPES.CASH,
       INPUT_TYPES.QPAY,
+      INPUT_TYPES.RECEIVABLE
     ].includes(activeInput);
 
     // clear input
@@ -204,7 +213,7 @@ export default class SplitPayment extends React.Component<Props, State> {
   };
 
   renderEbarimt() {
-    const { order } = this.props;
+    const { order, mode, allowInnerBill } = this.props;
     const { showE, billType, registerNumber, activeInput } = this.state;
 
     const onBillTypeChange = (value: string) => {
@@ -254,6 +263,8 @@ export default class SplitPayment extends React.Component<Props, State> {
             onBillTypeChange={onBillTypeChange}
             onStateChange={onStateChange}
             settlePayment={this.handlePayment}
+            mode={mode}
+            allowInnerBill={allowInnerBill}
           />
         </>
       );
@@ -290,6 +301,7 @@ export default class SplitPayment extends React.Component<Props, State> {
       cardAmount,
       remainder,
       cashAmount,
+      receivableAmount,
       mobileAmount,
       invoice,
       showQpayListModal,
@@ -343,6 +355,18 @@ export default class SplitPayment extends React.Component<Props, State> {
       );
     }
 
+    if (activeInput === INPUT_TYPES.RECEIVABLE) {
+      return (
+        <ReceivabeSection
+          order={order}
+          receivableAmount={receivableAmount}
+          remainder={remainder || 0}
+          setAmount={setAmount}
+          addPayment={addPayment}
+        />
+      );
+    }
+
     return null;
   }
 
@@ -369,7 +393,7 @@ export default class SplitPayment extends React.Component<Props, State> {
   }
 
   render() {
-    const { isPortrait, order } = this.props;
+    const { isPortrait, order, allowReceivable } = this.props;
     const { billType, remainder } = this.state;
 
     const mode = localStorage.getItem("erxesPosMode") || "";
@@ -399,6 +423,8 @@ export default class SplitPayment extends React.Component<Props, State> {
                   this.renderPaymentType(INPUT_TYPES.CASH, "payment2.png")}
                 {this.renderPaymentType(INPUT_TYPES.CARD, "payment4.png")}
                 {this.renderPaymentType(INPUT_TYPES.QPAY, "payment1.png")}
+                {mode !== POS_MODES.KIOSK && (order.type === ORDER_TYPES.DELIVERY || allowReceivable) &&
+                  this.renderPaymentType(INPUT_TYPES.RECEIVABLE, "payment3.png")}
               </Cards>
             </React.Fragment>
           ) : null}

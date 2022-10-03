@@ -51,6 +51,7 @@ export default function DailyReportReceipt({ dailyReport, reportNumber }: Props)
     return (
       <Amounts>
         <p>{`Бэлнээр: `} {formatAmount(amounts.cashAmount)}</p>
+        <p>{`Дараах: `} {formatAmount(amounts.receivableAmount)}</p>
         <p>{`Картаар: `} {formatAmount(amounts.cardAmount)}</p>
         <p>{`QPay: `} {formatAmount(amounts.mobileAmount)}</p>
         <p>{`Нийт: `} {formatAmount(amounts.totalAmount)}</p>

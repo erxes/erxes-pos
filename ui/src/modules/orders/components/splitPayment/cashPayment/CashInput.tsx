@@ -17,6 +17,7 @@ type Props = {
   usePrefix?: boolean;
   getStringValue?: boolean;
   setBill?: string;
+  max?: number;
 };
 
 export default class CardInput extends React.Component<Props> {
