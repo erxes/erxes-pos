@@ -39,24 +39,26 @@ const withCurrentUser = (Component) => {
     let allowReceivable = false;
     let allowInnerBill = false;
 
-    if (currentConfig.adminIds.includes(posCurrentUser._id)) {
-      if (currentConfig.permissionConfig && currentConfig.permissionConfig.admins) {
-        if (currentConfig.permissionConfig.admins.allowReceivable) {
-          allowReceivable = true;
-        }
-        if (currentConfig.permissionConfig.admins.isTempBill) {
-          allowInnerBill = true;
-        }
+    if (currentConfig && currentConfig.permissionConfig && posCurrentUser) {
+      if ((currentConfig.adminIds || []).includes(posCurrentUser._id)) {
+        if (currentConfig.permissionConfig.admins) {
+          if (currentConfig.permissionConfig.admins.allowReceivable) {
+            allowReceivable = true;
+          }
+          if (currentConfig.permissionConfig.admins.isTempBill) {
+            allowInnerBill = true;
+          }
 
-      }
-    } else {
-      if (currentConfig.permissionConfig && currentConfig.permissionConfig.cashiers) {
-        if (currentConfig.permissionConfig.cashiers.allowReceivable) {
-          allowReceivable = true;
         }
+      } else {
+        if (currentConfig.permissionConfig.cashiers) {
+          if (currentConfig.permissionConfig.cashiers.allowReceivable) {
+            allowReceivable = true;
+          }
 
-        if (currentConfig.permissionConfig.cashiers.isTempBill) {
-          allowInnerBill = true;
+          if (currentConfig.permissionConfig.cashiers.isTempBill) {
+            allowInnerBill = true;
+          }
         }
       }
     }
