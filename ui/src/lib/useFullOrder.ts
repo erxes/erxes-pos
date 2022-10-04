@@ -38,7 +38,7 @@ const useFullOrders = ({
       },
     });
 
-  const subToItems = (subStatuses: IStatuses, callBack: any) =>
+  const subToItems = (subStatuses: IStatuses, callBack?: any) =>
     subscribeToMore({
       document: gql(subscriptions.orderItemsOrdered),
       variables: { statuses: checkIsArray(subStatuses) },

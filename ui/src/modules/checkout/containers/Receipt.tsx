@@ -10,6 +10,7 @@ import BarCode from './barcode';
 import Button from 'ui/Button';
 import Amount from '../components/Amount';
 import { getMode } from 'modules/utils';
+import { BILL_TYPES } from 'modules/constants';
 
 const Receipt = () => {
   const { currentConfig } = useConfigsContext();
@@ -27,6 +28,7 @@ const Receipt = () => {
     putResponses,
     registerNumber,
     _id,
+    billType,
   } = orderDetail;
   const putResponse = putResponses[0];
 
@@ -35,31 +37,31 @@ const Receipt = () => {
   const date = paidDate && dayjs(paidDate).format('YYYY.MM.DD HH:mm');
 
   useEffect(() => {
-    if (putResponse) {
-      const mode = getMode();
-      window.addEventListener('afterprint', () => {
-        if (mode !== 'kiosk') {
-          setTimeout(() => {
-            const popup = window.open(
-              `/order-receipt/${_id}?inner=true`,
-              '__blank'
-            );
-            if (!popup) {
-              prompt(
-                `Popup зөвшөөрөгдөөгүй байна. Дараах тохиргоог хийнэ үү. \n 1. Доорх холбоосыг copy-дох  \n 2. шинэ tab нээж, paste хийн копидсон холбоосоор орох \n 3. "Pop-ups and redirects" гэсэн хэсгийг олоод \n 4. "Allow" гэснийг сонгоно. \n 5. Үндсэн хуудасаа рефреш`,
-                `chrome://settings/content/siteDetails?site=${window.location.origin}`
-              );
-            }
-          }, 10);
-        }
+    // if (putResponse) {
+    const mode = getMode();
+    window.addEventListener('afterprint', () => {
+      if (mode !== 'kiosk' && putResponse) {
         setTimeout(() => {
-          window.close();
-        }, 50);
-      });
+          const popup = window.open(
+            `/order-receipt/${_id}?inner=true`,
+            '__blank'
+          );
+          if (!popup) {
+            prompt(
+              `Popup зөвшөөрөгдөөгүй байна. Дараах тохиргоог хийнэ үү. \n 1. Доорх холбоосыг copy-дох  \n 2. шинэ tab нээж, paste хийн копидсон холбоосоор орох \n 3. "Pop-ups and redirects" гэсэн хэсгийг олоод \n 4. "Allow" гэснийг сонгоно. \n 5. Үндсэн хуудасаа рефреш`,
+              `chrome://settings/content/siteDetails?site=${window.location.origin}`
+            );
+          }
+        }, 10);
+      }
       setTimeout(() => {
-        window.print();
-      }, 20);
-    }
+        window.close();
+      }, 50);
+    });
+    setTimeout(() => {
+      window.print();
+    }, 20);
+    // }
 
     return () => window.removeEventListener('afterprint', () => {});
   }, []);

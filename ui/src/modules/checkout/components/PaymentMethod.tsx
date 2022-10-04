@@ -52,6 +52,7 @@ const PaymentMethod: FC<IProps> = ({
     }
     return onClick();
   };
+
   if (activePayment === name)
     return (
       <PaymentInput

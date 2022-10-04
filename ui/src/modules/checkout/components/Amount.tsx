@@ -5,7 +5,13 @@ import { useConfigsContext } from 'modules/auth/containers/Configs';
 const Amount = () => {
   const { currentConfig } = useConfigsContext();
   const { orderDetail } = useApp();
-  const { totalAmount, cashAmount, cardAmount, mobileAmount } = orderDetail;
+  const {
+    totalAmount,
+    cashAmount,
+    cardAmount,
+    mobileAmount,
+    receivableAmount,
+  } = orderDetail;
 
   const taxAmount = calcTaxAmount(
     totalAmount,
@@ -32,6 +38,7 @@ const Amount = () => {
         <Field text="Бэлнээр" val={cashAmount} />
         <Field text="Картаар" val={cardAmount} />
         <Field text="Мобайл" val={mobileAmount} />
+        <Field text="Дараах" val={receivableAmount} />
       </div>
     </div>
   );

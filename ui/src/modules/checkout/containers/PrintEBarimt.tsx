@@ -1,5 +1,6 @@
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
+import { useRouter } from 'next/router';
 import { gql, useMutation } from '@apollo/client';
 import { mutations } from '../graphql';
 import Button from 'ui/Button';
@@ -10,19 +11,16 @@ const PrintEBarimt = () => {
   const { closeModal } = useUI();
   const { billType, orderDetail, registerNumber } = useApp();
   const { _id } = orderDetail;
+  const router = useRouter();
 
   const showReciept = () => {
     window.open(`/order-receipt/${_id}`, '_blank');
     closeModal();
+    router.push('/');
   };
 
-  const onCompleted = ({ success, message, getInformation }: any) => {
-    if (success === 'true') {
-      toast.success('Амжилттай');
-      return showReciept();
-    }
-    if (message) return toast.info(message);
-    if (getInformation) return toast.info(getInformation);
+  const onCompleted = () => {
+    return showReciept();
   };
 
   const [settlePayment, { loading }] = useMutation(
@@ -33,11 +31,8 @@ const PrintEBarimt = () => {
         registerNumber,
         _id,
       },
-      onCompleted(data) {
-        const { ordersSettlePayment } = data;
-        if (ordersSettlePayment) {
-          onCompleted(ordersSettlePayment);
-        }
+      onCompleted() {
+        onCompleted();
       },
       onError(error) {
         toast.error(trimGraphqlError(error.message));

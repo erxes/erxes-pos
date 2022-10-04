@@ -1,11 +1,13 @@
 import React, { FC } from 'react';
 import Link from 'next/link';
-import Menu from 'modules/common/icons/Menu';
-import Swap from 'modules/common/icons/Swap';
-import PieChart from 'modules/common/icons/PieChart';
-import Setting from 'modules/common/icons/Settings';
+import Menu from 'icons/Menu';
+import Swap from 'icons/Swap';
+import PieChart from 'icons/PieChart';
+import Setting from 'icons/Settings';
 import Logout from 'modules/auth/containers/Logout';
-import Button from 'modules/common/ui/Button';
+import Clock from 'icons/Clock';
+import Chef from 'icons/Chef';
+import Button from 'ui/Button';
 
 interface HeaderMenuProps {}
 
@@ -45,7 +47,7 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
         <li>
           <Link href="/waiting" prefetch={false}>
             <a>
-              <Setting />
+              <Clock />
               Хүлээлгэ
             </a>
           </Link>
@@ -54,7 +56,7 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
         <li>
           <Link href="/kitchen" prefetch={false}>
             <a>
-              <Setting />
+              <Chef />
               Гал тогоо
             </a>
           </Link>

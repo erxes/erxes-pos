@@ -22,12 +22,16 @@ const Login: FC<ILogin> = ({ login, loading, error }) => {
 
   return (
     <form onSubmit={handleLogin}>
-      <div>{(error || {}).message}</div>
       <ChooseConfig />
       <label htmlFor="email">Email</label>
-      <Input type="email" placeholder="Email" onChange={setEmail} />
+      <Input type="email" placeholder="Email" onChange={setEmail} required />
       <label htmlFor="password">Password</label>
-      <Input type="password" placeholder="Password" onChange={setPassword} />
+      <Input
+        type="password"
+        placeholder="Password"
+        onChange={setPassword}
+        required
+      />
       <Button type="submit" className="primary" disabled={loading}>
         Login
       </Button>

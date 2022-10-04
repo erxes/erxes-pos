@@ -4,6 +4,7 @@ import type { ICartItem } from 'modules/types';
 
 function useTotalValue() {
   const { cart } = useApp();
+
   return useCallback(
     () =>
       cart.reduce(

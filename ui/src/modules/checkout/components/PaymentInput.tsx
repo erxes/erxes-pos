@@ -12,7 +12,7 @@ const PaymentInput = ({ children, setValue, value }: any) => {
   };
 
   return (
-    <div className="flex-h-between">
+    <div className="flex-h-between payment-input">
       <div>
         <div className="flex-v-center">
           ₮ <Input value={formatNum(value)} onChange={setValue} />

@@ -13,9 +13,10 @@ const initialState = {
   card: 0,
   qpay: 0,
   cash: 0,
+  receivable: 0,
 };
 
-type PAYMENT_TYPES = 'qpay' | 'cash' | 'card';
+type PAYMENT_TYPES = 'qpay' | 'cash' | 'card' | 'receivable';
 
 type Action =
   | { type: 'SET_ACTIVE_PAYMENT'; paymentType: State['activePayment'] }
@@ -54,14 +55,20 @@ const checkoutReducer = (state: State, action: Action) => {
 export const CheckoutContextProvider: IComponent = ({ children }) => {
   const [state, dispatch] = useReducer(checkoutReducer, initialState);
   const { orderDetail } = useApp();
-  const { totalAmount, mobileAmount, cashAmount, cardAmount } =
-    orderDetail || {};
+  const {
+    totalAmount,
+    mobileAmount,
+    cashAmount,
+    cardAmount,
+    receivableAmount,
+  } = orderDetail || {};
 
   const remainder =
     (totalAmount || 0) -
     (mobileAmount || 0) -
     (cashAmount || 0) -
-    (cardAmount || 0);
+    (cardAmount || 0) -
+    (receivableAmount || 0);
 
   const changeActivePayment = useCallback(
     (paymentType: State['activePayment']) =>

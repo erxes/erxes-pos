@@ -12,14 +12,15 @@ const OrderCU = () => {
   const [type, setType] = useState('pay');
   const { removeQuery } = useRemoveQuery();
 
-  const { setCart } = useApp();
+  const { setCart, orderDetail } = useApp();
   const router = useRouter();
   const total = useTotalValue();
+
   const onCompleted = (_id: string) => {
-    setCart([]);
     if (type === 'pay') {
       return router.push(`/checkout/${_id}`);
     }
+    setCart([]);
     if (type === 'order') {
       return removeQuery('selectedOrder');
     }
@@ -28,6 +29,14 @@ const OrderCU = () => {
   const { loading, orderCU } = useOrderCU(onCompleted);
 
   const handleClick = (val: string) => {
+    if (
+      val === 'pay' &&
+      total === orderDetail.totalAmount &&
+      router.query.orderId
+    ) {
+      return router.push(`/checkout/${router.query.orderId}`);
+    }
+
     setType(val);
     orderCU();
   };

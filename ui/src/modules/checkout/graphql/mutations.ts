@@ -14,7 +14,8 @@ const ordersAdd = `
 const ordersEdit = `
   mutation ordersEdit($_id: String!, ${addEditParamDefs}) {
     ordersEdit(_id: $_id, ${addEditParams}) {
-      _id
+      _id,
+      status
     }
   }
 `;
@@ -54,8 +55,8 @@ mutation QpayCancelInvoice($id: String!) {
 `;
 
 const ordersAddPayment = `
-  mutation ordersAddPayment($_id: String!, $cashAmount: Float, $cardAmount: Float, $cardInfo: JSON) {
-    ordersAddPayment(_id: $_id, cashAmount: $cashAmount, cardAmount: $cardAmount, cardInfo: $cardInfo) {
+  mutation ordersAddPayment($_id: String!, $cashAmount: Float, $cardAmount: Float, $cardInfo: JSON, $receivableAmount: Float) {
+    ordersAddPayment(_id: $_id, cashAmount: $cashAmount, cardAmount: $cardAmount, cardInfo: $cardInfo, receivableAmount: $receivableAmount) {
       ${orderFields}
       ${orderItemsFields}
     }

@@ -6,6 +6,7 @@ import Radio from 'ui/Radio';
 import cn from 'classnames';
 import CheckRegister from '../CheckRegister';
 import PrintEBarimt from '../../containers/PrintEBarimt';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 
 interface IChooseType {
   children: ReactNode;
@@ -14,7 +15,7 @@ interface IChooseType {
 }
 
 const ChooseType = ({ children, onClick, checked }: IChooseType) => (
-  <div className="col-6 ">
+  <div className="col-4 ">
     <Button
       className={cn({ active: checked })}
       variant="slim"
@@ -28,7 +29,9 @@ const ChooseType = ({ children, onClick, checked }: IChooseType) => (
 
 const Ebarimt = () => {
   const { companyName } = useApp();
-  const { isOrg, isPrsn, chooseOrg, choosePrsn } = useBillType();
+  const { allowInnerBill } = useConfigsContext();
+  const { isOrg, isPrsn, isInner, chooseOrg, choosePrsn, chooseInner } =
+    useBillType();
 
   return (
     <div className="ebarimt-root">
@@ -41,11 +44,16 @@ const Ebarimt = () => {
           <ChooseType onClick={chooseOrg} checked={isOrg}>
             Байгуулга
           </ChooseType>
+          {allowInnerBill && (
+            <ChooseType onClick={chooseInner} checked={isInner}>
+              Дотоод
+            </ChooseType>
+          )}
         </div>
         <div className={cn('smooth', { active: isOrg })}>
           {isOrg && <CheckRegister />}
         </div>
-        {(isPrsn || (isOrg && companyName)) && <PrintEBarimt />}
+        {(isPrsn || (isOrg && companyName) || isInner) && <PrintEBarimt />}
       </div>
     </div>
   );

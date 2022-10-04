@@ -3,7 +3,7 @@ import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import Loading from 'ui/Loading';
 import { useUI } from 'ui/context';
-import { getMode } from 'modules/utils';
+// import { getMode } from 'modules/utils';
 import { CheckoutContextProvider } from 'modules/checkout/context';
 
 const EbarimtView = dynamic(
@@ -75,7 +75,7 @@ const SidebarView: React.FC<{ sidebarView: string; closeSidebar: any }> = ({
 }) => {
   return (
     <Suspense fallback={<Loading />}>
-      <Sidebar onClose={closeSidebar}>
+      <Sidebar onClose={sidebarView === 'CART_VIEW' ? closeSidebar : null}>
         <Suspense fallback={<Loading />}>
           {sidebarView === 'CART_VIEW' && <CartView />}
           {sidebarView === 'KEYBOARD_VIEW' && <KeyboardView touch />}
@@ -88,20 +88,14 @@ const SidebarView: React.FC<{ sidebarView: string; closeSidebar: any }> = ({
 const ModalUI: React.FC = () => {
   const { displayModal, modalView, closeModal } = useUI();
   return displayModal ? (
-    <ModalView
-      modalView={modalView}
-      closeModal={getMode() === 'kiosk' ? () => null : closeModal}
-    />
+    <ModalView modalView={modalView} closeModal={closeModal} />
   ) : null;
 };
 
 const SidebarUI: React.FC = () => {
   const { displaySidebar, sidebarView, closeSidebar } = useUI();
   return displaySidebar ? (
-    <SidebarView
-      sidebarView={sidebarView}
-      closeSidebar={getMode() === 'kiosk' ? () => null : closeSidebar}
-    />
+    <SidebarView sidebarView={sidebarView} closeSidebar={closeSidebar} />
   ) : null;
 };
 

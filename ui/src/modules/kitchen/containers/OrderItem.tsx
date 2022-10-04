@@ -15,9 +15,10 @@ const OrderItem = ({
   productName,
   _id,
   status,
-  allDone,
+  doneItems,
+  setDoneItems,
 }: any) => {
-  const { DONE, CONFIRM, PAID, DOING } = ORDER_ITEM_STATUSES;
+  const { DONE, CONFIRM, NEW } = ORDER_ITEM_STATUSES;
   const [changeStatus, { loading }] = useMutation(
     gql(mutations.orderItemChangeStatus),
     {
@@ -28,7 +29,11 @@ const OrderItem = ({
   );
 
   useEffect(() => {
-    if (allDone) {
+    if (
+      doneItems.length &&
+      (doneItems || []).indexOf(_id) > -1 &&
+      status !== DONE
+    ) {
       changeStatus({
         variables: {
           _id,
@@ -36,7 +41,7 @@ const OrderItem = ({
         },
       });
     }
-  }, [allDone]);
+  }, [doneItems]);
 
   const isDone = status === DONE;
 
@@ -44,15 +49,16 @@ const OrderItem = ({
 
   const handleClick = () => {
     return changeStatus({
-      variables: { _id, status: status === CONFIRM ? DONE : CONFIRM },
+      variables: { _id, status: status === DONE ? CONFIRM : DONE },
       refetchQueries: [
         {
           query: gql(queries.fullOrders),
-          fetchPolicy: 'network-only',
-          variables: { CONFIRM, PAID, DOING },
         },
         'fullOrders',
       ],
+      onCompleted() {
+        setDoneItems((prev: any) => [...prev, _id]);
+      },
     });
   };
 
@@ -62,7 +68,7 @@ const OrderItem = ({
       onClick={handleClick}
     >
       <b className="col flex-v-center -name">
-        <Radio mode={loading ? 'loading' : mode} />
+        <Radio mode={mode} />
         {isTake ? <Motocycle /> : <ForkKnife />}
         <span className="-name">{productName}</span>
       </b>

@@ -1,3 +1,5 @@
+import { useConfigsContext } from 'modules/auth/containers/Configs';
+
 const NoData = ({
   color = '#4F33AF',
   size = '10rem',
@@ -7,6 +9,10 @@ const NoData = ({
   size?: string;
   dark?: boolean;
 }) => {
+  const { primaryColor } = useConfigsContext();
+
+  const clr = primaryColor || color;
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -21,7 +27,7 @@ const NoData = ({
           width="166"
           height="166"
           rx="83"
-          fill={color}
+          fill={clr}
           fillOpacity={dark ? '0.6' : '0.06'}
         />
         <path
@@ -52,7 +58,7 @@ const NoData = ({
         />
         <path
           d="M49.1121 68.6053C47.115 48.2534 63.1056 30.6167 83.5553 30.6167C103.435 30.6167 119.228 47.3249 118.109 67.1727L115.993 104.727C115.047 121.518 101.155 134.648 84.3385 134.648C68.0278 134.648 54.3784 122.273 52.7855 106.04L49.1121 68.6053Z"
-          fill={color}
+          fill={clr}
         />
         <path
           d="M49.1121 68.6053C47.115 48.2534 63.1056 30.6167 83.5553 30.6167C103.435 30.6167 119.228 47.3249 118.109 67.1727L115.993 104.727C115.047 121.518 101.155 134.648 84.3385 134.648C68.0278 134.648 54.3784 122.273 52.7855 106.04L49.1121 68.6053Z"

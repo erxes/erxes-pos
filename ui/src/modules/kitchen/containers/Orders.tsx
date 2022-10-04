@@ -1,19 +1,22 @@
 import { useEffect } from 'react';
 import useFullOrders from 'lib/useFullOrder';
-import { ORDER_STATUSES } from 'modules/constants';
+import { ORDER_STATUSES, ORDER_ITEM_STATUSES } from 'modules/constants';
 import Loading from 'modules/common/ui/Loading';
 import Order from '../components/Order';
 import Grid from 'ui/Grid';
 
 const Orders = () => {
-  const { PAID, DOING, CONFIRM, ALL } = ORDER_STATUSES;
+  const { NEW, DOING, ALL } = ORDER_STATUSES;
 
-  const { loading, fullOrders, subToOrderStatuses } = useFullOrders({
-    statuses: [PAID, DOING, CONFIRM],
-  });
+  const { loading, fullOrders, subToOrderStatuses, subToItems } = useFullOrders(
+    {
+      statuses: [NEW, DOING],
+    }
+  );
 
   useEffect(() => {
     subToOrderStatuses(ALL);
+    subToItems(ORDER_ITEM_STATUSES.ALL);
   }, []);
 
   if (loading) return <Loading />;

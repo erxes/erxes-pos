@@ -10,7 +10,7 @@ import { getMode } from 'modules/utils';
 interface ModalProps {
   className?: string;
   children?: any;
-  onClose: () => void;
+  onClose?: () => void;
   onEnter?: () => void | null;
 }
 
@@ -22,7 +22,7 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        return onClose();
+        return onClose && onClose();
       }
     },
     [onClose]
@@ -52,14 +52,16 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
   return (
     <div className={rootCn}>
       <div className="modal" role="dialog" ref={ref}>
-        <Button
-          onClick={() => onClose()}
-          aria-label="Close panel"
-          className="modal-close"
-          variant="ghost"
-        >
-          <Xmark />
-        </Button>
+        {onClose && (
+          <Button
+            onClick={() => onClose()}
+            aria-label="Close panel"
+            className="modal-close"
+            variant="ghost"
+          >
+            <Xmark />
+          </Button>
+        )}
         <FocusTrap focusFirst>{children}</FocusTrap>
       </div>
     </div>

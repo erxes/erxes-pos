@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
 import QRCode from 'react-qr-code';
@@ -10,7 +9,6 @@ import Tag from 'ui/Tag';
 import { formatNum } from 'modules/utils';
 import LottieView from 'ui/Lottie';
 import cn from 'classnames';
-import Loading from 'ui/Loading';
 
 const QpayQr = () => {
   const router = useRouter();

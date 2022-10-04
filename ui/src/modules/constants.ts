@@ -7,29 +7,19 @@ export const ORDER_TYPES = {
 
 export const ORDER_STATUSES = {
   NEW: 'new',
-  PAID: 'paid',
   DOING: 'doing',
-  CONFIRM: 'confirm',
   DONE: 'done',
-  ROAD: 'road',
   COMPLETE: 'complete',
 
-  ALL: ['new', 'paid', 'doing', 'done', 'road', 'complete', 'confirm'],
-  FULL: ['paid', 'done', 'complete', 'confirm'],
-  ACTIVE: ['confirm', 'doing'],
+  ALL: ['new', 'doing', 'done', 'complete'],
 };
 
 export const ORDER_ITEM_STATUSES = {
   NEW: 'new',
-  PAID: 'paid',
-  DOING: 'doing',
   CONFIRM: 'confirm',
   DONE: 'done',
-  ROAD: 'road',
-  COMPLETE: 'complete',
 
-  ALL: ['new', 'paid', 'doing', 'done', 'road', 'complete', 'confirm'],
-  FULL: ['paid', 'done', 'complete'],
+  ALL: ['new', 'done', 'confirm'],
 };
 
 export const POS_MODES = {
@@ -44,6 +34,7 @@ export const POS_MODES = {
 export const BILL_TYPES = {
   CITIZEN: '1', // иргэнд өгөх баримт
   ENTITY: '3', // байгууллагад өгөх баримт
+  INNER: '9', // дотоод буюу түр баримт
 };
 
 export const PAYMENT_TYPES = {

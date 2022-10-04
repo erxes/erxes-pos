@@ -6,6 +6,7 @@ import {
   createContext,
 } from 'react';
 import type { IComponent, ICartItem, IProductBase } from './types';
+import { ORDER_ITEM_STATUSES } from './constants';
 
 export interface State {
   cart: ICartItem[];
@@ -15,6 +16,7 @@ export interface State {
   registerNumber: string;
   companyName: string;
   billType: TBillType;
+  customerId: string;
 }
 
 const initialState = {
@@ -25,6 +27,7 @@ const initialState = {
   registerNumber: '',
   companyName: '',
   billType: '',
+  customerId: '',
 };
 
 type TBillType = '' | '1' | '3' | string;
@@ -46,11 +49,16 @@ type Action =
   | { type: 'SET_ORDER_DETAIL'; data: object | null }
   | { type: 'SET_REGISTER_NUMBER'; value: string }
   | { type: 'SET_COMPANY_NAME'; value: string }
-  | { type: 'SET_BILL_TYPE'; value: TBillType };
+  | { type: 'SET_BILL_TYPE'; value: TBillType }
+  | { type: 'SET_CUSTOMER_ID'; value: string };
 
 export const AppContext = createContext<{} | any>(initialState);
 
 AppContext.displayName = 'AppContext';
+
+const { NEW, CONFIRM } = ORDER_ITEM_STATUSES;
+const editAble = [];
+const removeAble = [NEW, CONFIRM];
 
 const appReducer = (state: State, action: Action) => {
   switch (action.type) {
@@ -95,14 +103,14 @@ const appReducer = (state: State, action: Action) => {
           return { ...state, cart: currentCart };
         }
         const index = currentCart.indexOf(foundItem);
-        if (index > -1) {
-          currentCart.splice(index, 1);
-          return {
-            ...state,
-            cart: currentCart,
-            isCartSelected: currentCart.length === 0 ? false : isCartSelected,
-          };
-        }
+        // if (index > -1) {
+        currentCart.splice(index, 1);
+        return {
+          ...state,
+          cart: currentCart,
+          isCartSelected: currentCart.length === 0 ? false : isCartSelected,
+        };
+        // }
       }
     }
     case 'SELECT': {
@@ -120,10 +128,12 @@ const appReducer = (state: State, action: Action) => {
 
       if (cart.length === 0) return { ...state, isCartSelected: false };
 
-      const newCart = cart.map((item) => ({
-        ...item,
-        isSelected: !isCartSelected,
-      }));
+      const newCart = cart
+        .filter((item) => item)
+        .map((item) => ({
+          ...item,
+          isSelected: !isCartSelected,
+        }));
       return { ...state, cart: newCart, isCartSelected: !isCartSelected };
     }
     case 'DELIVERY': {
@@ -172,6 +182,12 @@ const appReducer = (state: State, action: Action) => {
       return {
         ...state,
         billType: action.value,
+      };
+    }
+    case 'SET_CUSTOMER_ID': {
+      return {
+        ...state,
+        customerId: action.value,
       };
     }
     default:
@@ -237,6 +253,11 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const setCustomerId = useCallback(
+    (value: string) => dispatch({ type: 'SET_CUSTOMER_ID', value }),
+    [dispatch]
+  );
+
   const value = useMemo(
     () => ({
       ...state,
@@ -251,6 +272,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
       setRegisterNumber,
       setCompanyName,
       setBillType,
+      setCustomerId,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]

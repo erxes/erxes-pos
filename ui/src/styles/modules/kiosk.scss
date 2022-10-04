@@ -97,9 +97,10 @@
         }
       }
       .simplebar-scrollbar {
-        background-color: transparent;
-        overflow: visible;
-
+        &:hover {
+          background-color: rgba($color: #000000, $alpha: 0.15);
+          border-radius: 28px;
+        }
         &::before {
           opacity: 1;
           height: 4.5rem;
@@ -109,11 +110,19 @@
           transform: translateY(-50%);
           bottom: initial;
           right: initial;
-          left: 0.5rem;
+          left: 0.25rem;
           z-index: 100;
           background-color: $primary;
+          background-image: url('/scroll-v.svg');
+          background-repeat: no-repeat;
+          background-position: 50% 50%;
+          background-size: cover;
         }
       }
+    }
+    .products {
+      max-width: 100%;
+      margin: 0;
     }
   }
   &-product {
@@ -129,10 +138,6 @@
     }
     &-price {
       font: 800 1.25rem/1.75rem 'Inter';
-    }
-    &s {
-      padding: 0 1.5rem;
-      max-width: 100%;
     }
   }
 

@@ -4,11 +4,11 @@ import { ORDER_STATUSES } from 'modules/constants';
 import Waiting from '../components';
 
 const WaitingContainer = () => {
-  const { DONE, DOING, CONFIRM } = ORDER_STATUSES;
+  const { DONE, DOING } = ORDER_STATUSES;
 
   const { fullOrders, loading, subToOrderStatuses, subToItems } = useFullOrders(
     {
-      statuses: [DONE, DOING, CONFIRM],
+      statuses: [DONE, DOING],
     }
   );
 

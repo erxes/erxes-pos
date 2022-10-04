@@ -76,6 +76,7 @@ const configFields = `
     categoryId
     productId
   }
+  permissionConfig
   initialCategoryIds
   kioskExcludeProductIds
 `;

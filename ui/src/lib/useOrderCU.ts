@@ -1,8 +1,8 @@
 import { gql, useMutation } from '@apollo/client';
 import { mutations, queries } from 'modules/checkout/graphql';
-import { queries as checkoutQueries } from 'modules/checkout/graphql';
 import useOrderCUData from './useOrderCUData';
-import { ORDER_STATUSES } from '../modules/constants';
+import { toast } from 'react-toastify';
+import { ORDER_STATUSES } from 'modules/constants';
 
 const useOrderCU = (onCompleted?: any) => {
   const orderData = useOrderCUData();
@@ -17,12 +17,19 @@ const useOrderCU = (onCompleted?: any) => {
   const [ordersAdd, { loading }] = useMutation(gql(mutations.ordersAdd), {
     variables: orderData,
     onCompleted(data) {
-      return orderChangeStatus({
-        variables: { _id: data.ordersAdd._id, status: ORDER_STATUSES.CONFIRM },
-        onCompleted(data) {
-          return onCompleted && onCompleted(data.orderChangeStatus._id);
+      const { _id } = (data || {}).ordersAdd || {};
+      orderChangeStatus({
+        variables: {
+          _id,
+          status: ORDER_STATUSES.NEW,
+        },
+        onCompleted() {
+          onCompleted && onCompleted(_id);
         },
       });
+    },
+    onError(error) {
+      toast.error(error.message);
     },
   });
 
@@ -31,12 +38,21 @@ const useOrderCU = (onCompleted?: any) => {
     {
       variables: orderData,
       onCompleted(data) {
-        return onCompleted && onCompleted(orderData._id);
+        const { _id, status } = (data || {}).ordersEdit || {};
+        orderChangeStatus({
+          variables: {
+            _id,
+            status,
+          },
+          onCompleted() {
+            return onCompleted && onCompleted(_id);
+          },
+        });
       },
-      refetchQueries: [
-        { query: gql(checkoutQueries.orderDetail) },
-        'orderDetail',
-      ],
+      refetchQueries: [{ query: gql(queries.orderDetail) }, 'orderDetail'],
+      onError(error) {
+        toast.error(error.message);
+      },
     }
   );
 

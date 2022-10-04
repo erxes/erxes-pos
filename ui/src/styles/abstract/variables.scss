@@ -1,4 +1,8 @@
-$primary: #4f33af;
+:root {
+  --primary: #4f33af;
+}
+
+$primary: var(--primary);
 $background-gray: #f5f5f5;
 $success: #13ce66;
 $success-hover: #11b75a;

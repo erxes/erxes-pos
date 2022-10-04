@@ -18,8 +18,8 @@ const ProductContainer = (props: IProduct) => {
   };
 
   return (
-    <div className="col col-3" onClick={handleClick}>
-      <Product {...props} />
+    <div className="col col-3">
+      <Product {...props} onClick={handleClick} />
     </div>
   );
 };

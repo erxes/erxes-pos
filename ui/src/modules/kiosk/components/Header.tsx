@@ -1,5 +1,5 @@
 import Image from 'next/future/image';
-import Search from 'modules/products/components/Search';
+// import Search from 'modules/products/components/Search';
 
 const Header = () => {
   return (
@@ -9,7 +9,7 @@ const Header = () => {
         <div className="img-wrap">
           <Image alt="" src="/logo-white.png" fill />
         </div>
-        <Search open />
+        {/* <Search open /> */}
       </div>
     </header>
   );

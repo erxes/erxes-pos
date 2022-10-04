@@ -2,12 +2,15 @@ import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
 import { gql, useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
-import { queries } from '../graphql';
+import { queries, subscriptions } from '../graphql';
+import { ORDER_ITEM_STATUSES } from 'modules/constants';
 import CheckoutCart from '../components/Cart';
+import { toast } from 'react-toastify';
 
 const CartContainer = () => {
+  const { NEW, CONFIRM, DONE } = ORDER_ITEM_STATUSES;
   const router = useRouter();
-  const { setCart } = useApp();
+  const { cart, setCart, setOrderDetail } = useApp();
   const { orderId } = router.query;
 
   const convertCartItem = (item: any) => ({
@@ -16,20 +19,48 @@ const CartContainer = () => {
     name: item.productName,
   });
 
-  const [getSelectedOrder, { loading }] = useLazyQuery(
-    gql(queries.orderDetail),
-    {
+  const [getSelectedOrder, { loading, subscribeToMore, refetch }] =
+    useLazyQuery(gql(queries.orderDetail), {
       onCompleted(data) {
-        const cart = data.orderDetail.items.map((item: any) =>
-          convertCartItem(item)
-        );
-        setCart(cart);
+        const { orderDetail } = data || {};
+        if (orderDetail) {
+          const cart = orderDetail.items.map((item: any) =>
+            convertCartItem(item)
+          );
+          setCart(cart);
+          setOrderDetail(orderDetail);
+        }
       },
-    }
-  );
+      onError(error) {
+        toast.error(error.message);
+      },
+    });
+
+  const subToItems = () =>
+    subscribeToMore({
+      document: gql(subscriptions.orderItemsOrdered),
+      variables: { statuses: [NEW, CONFIRM, DONE] },
+      updateQuery: (prev, { subscriptionData }) => {
+        if (!subscriptionData.data) return prev;
+        const changedOrderItem = subscriptionData.data.orderItemsOrdered;
+        if (
+          changedOrderItem &&
+          cart.map(({ _id }: any) => _id).indexOf(changedOrderItem._id) > -1
+        ) {
+          refetch();
+        }
+      },
+    });
 
   useEffect(() => {
-    orderId ? getSelectedOrder({ variables: { _id: orderId } }) : setCart([]);
+    if (orderId) {
+      getSelectedOrder({ variables: { _id: orderId } });
+      subToItems();
+      return;
+    }
+    setCart([]);
+    setOrderDetail(null);
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
 

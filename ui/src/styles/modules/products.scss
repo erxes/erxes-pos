@@ -60,6 +60,10 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    z-index: 1;
+  }
+  abbr {
+    text-decoration: none;
   }
   &-price {
     margin-top: 0.25rem;

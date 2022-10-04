@@ -1,14 +1,17 @@
 import { useRouter } from 'next/router';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { gql, useMutation } from '@apollo/client';
 import { mutations, queries } from '../graphql';
 import Cash from './cash';
 import Card from './card';
 import Qpay from './qpay';
+import Recievable from './recievable';
 import { toast } from 'react-toastify';
 import { getMode } from 'modules/utils';
 
 const PaymentMethods = () => {
   const router = useRouter();
+  const { allowReceivable } = useConfigsContext();
 
   const [addPayment] = useMutation(gql(mutations.ordersAddPayment), {
     variables: {
@@ -18,7 +21,7 @@ const PaymentMethods = () => {
       {
         query: gql(queries.orderDetail),
       },
-      'OrderDetail',
+      'orderDetail',
     ],
     onError(error) {
       toast.error(error.message);
@@ -30,6 +33,9 @@ const PaymentMethods = () => {
       {getMode() === 'pos' && <Cash addPayment={addPayment} />}
       <Card addPayment={addPayment} />
       <Qpay />
+      {getMode() === 'pos' && allowReceivable && (
+        <Recievable addPayment={addPayment} />
+      )}
     </div>
   );
 };
