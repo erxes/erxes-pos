@@ -20,9 +20,9 @@ const ChooseConfig: IComponent = () => {
 
   if (loadingConfigs) return <Loading />;
 
-  const { configs } = data || {};
+  const { posclientConfigs } = data || {};
 
-  if (!configs || configs.length < 2) return null;
+  if (!posclientConfigs || posclientConfigs.length < 2) return null;
 
   return (
     <>
@@ -33,7 +33,7 @@ const ChooseConfig: IComponent = () => {
         loading={loading || loadingConfigs}
       >
         {data &&
-          (data.configs || []).map(({ token, name }: any) => (
+          (posclientConfigs || []).map(({ token, name }: any) => (
             <option key={token} value={token}>
               {name} - {token}
             </option>
