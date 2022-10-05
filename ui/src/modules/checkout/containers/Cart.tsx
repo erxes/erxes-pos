@@ -42,11 +42,15 @@ const CartContainer = () => {
       variables: { statuses: [NEW, CONFIRM, DONE] },
       updateQuery: (prev, { subscriptionData }) => {
         if (!subscriptionData.data) return prev;
+
         const changedOrderItem = subscriptionData.data.orderItemsOrdered;
-        if (
-          changedOrderItem &&
-          cart.map(({ _id }: any) => _id).indexOf(changedOrderItem._id) > -1
-        ) {
+
+        const check =
+          prev.orderDetail.items
+            .map(({ _id }: any) => _id)
+            .indexOf(changedOrderItem._id) > -1;
+
+        if (check) {
           refetch();
         }
       },
@@ -60,7 +64,6 @@ const CartContainer = () => {
     }
     setCart([]);
     setOrderDetail(null);
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
 

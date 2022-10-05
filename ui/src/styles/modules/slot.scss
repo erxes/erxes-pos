@@ -27,11 +27,26 @@
       }
       &.new {
         background-color: $gray;
+        svg {
+          color: $gray;
+        }
       }
-      &.confirm {
+      &.doing {
+        background: $warning;
+        svg {
+          color: $warning;
+        }
+      }
+      &.done {
         background: $success;
         svg {
           color: $success;
+        }
+      }
+      &.complete {
+        background: rgba($color: $success, $alpha: 0.7);
+        svg {
+          color: rgba($color: $success, $alpha: 0.7);
         }
       }
     }

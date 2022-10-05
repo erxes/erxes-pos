@@ -40,7 +40,7 @@ const PaymentMethod: FC<IProps> = ({
     if (activePayment === name) {
       value === 0 && remainder >= 0 && setValue(remainder, name);
     }
-  }, [activePayment]);
+  }, [activePayment, remainder]);
 
   useEffect(() => {
     changeKey('');

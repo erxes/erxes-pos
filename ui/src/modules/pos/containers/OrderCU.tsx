@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { useApp } from 'modules/AppContext';
+import useIsDisabled from 'lib/useIsDisabled';
 import { useRouter } from 'next/router';
 import { formatNum } from 'modules/utils';
-import { useRemoveQuery } from 'lib/useQuery';
 import useOrderCU from 'lib/useOrderCU';
 import useTotalValue from 'lib/useTotalValue';
 import Button from 'ui/Button';
@@ -10,33 +10,22 @@ import Deliver from '../../checkout/components/Deliver';
 
 const OrderCU = () => {
   const [type, setType] = useState('pay');
-  const { removeQuery } = useRemoveQuery();
-
-  const { setCart, orderDetail } = useApp();
+  const { orderDetail } = useApp();
   const router = useRouter();
   const total = useTotalValue();
+  const disabled = useIsDisabled();
 
   const onCompleted = (_id: string) => {
-    if (type === 'pay') {
-      return router.push(`/checkout/${_id}`);
-    }
-    setCart([]);
-    if (type === 'order') {
-      return removeQuery('selectedOrder');
-    }
+    if (type === 'pay') return router.push(`/checkout/${_id}`);
+    return router.push({ pathname: '/', query: { orderId: _id } });
   };
 
   const { loading, orderCU } = useOrderCU(onCompleted);
 
   const handleClick = (val: string) => {
-    if (
-      val === 'pay' &&
-      total === orderDetail.totalAmount &&
-      router.query.orderId
-    ) {
+    if (val === 'pay' && total === (orderDetail || {}).totalAmount) {
       return router.push(`/checkout/${router.query.orderId}`);
     }
-
     setType(val);
     orderCU();
   };
@@ -49,7 +38,7 @@ const OrderCU = () => {
         <div className="col-6">
           <Button
             className="order"
-            disabled={!total}
+            disabled={disabled}
             onClick={() => handleClick('order')}
             loading={type === 'order' && loading}
           >

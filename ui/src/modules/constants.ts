@@ -12,6 +12,7 @@ export const ORDER_STATUSES = {
   COMPLETE: 'complete',
 
   ALL: ['new', 'doing', 'done', 'complete'],
+  DISABLED: ['done', 'complete'],
 };
 
 export const ORDER_ITEM_STATUSES = {

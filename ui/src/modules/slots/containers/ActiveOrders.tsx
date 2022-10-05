@@ -1,5 +1,6 @@
 import useFullOrders from 'lib/useFullOrder';
 import SlotsHeader from '../components/SlotHeader';
+import { queries } from '../graphql';
 import Loading from 'ui/Loading';
 import { ORDER_STATUSES } from 'modules/constants';
 
@@ -7,7 +8,12 @@ const ActiveOrders = () => {
   const { ALL, COMPLETE } = ORDER_STATUSES;
 
   const { fullOrders, loading } = useFullOrders({
-    statuses: ORDER_STATUSES.ALL,
+    statuses: ALL,
+    variables: {
+      sortDirection: -1,
+      perPage: 1000,
+    },
+    query: queries.fullOrders,
   });
 
   const orders = fullOrders.filter(
@@ -16,7 +22,7 @@ const ActiveOrders = () => {
 
   if (loading) return <Loading />;
 
-  return <SlotsHeader items={orders} />;
+  return <SlotsHeader items={orders.reverse()} />;
 };
 
 export default ActiveOrders;

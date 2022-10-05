@@ -57,7 +57,8 @@ const OrderItem = ({
         'fullOrders',
       ],
       onCompleted() {
-        setDoneItems((prev: any) => [...prev, _id]);
+        if (status !== DONE) return setDoneItems((prev: any) => [...prev, _id]);
+        return setDoneItems((prev: any[]) => prev.slice(prev.indexOf(_id), 1));
       },
     });
   };

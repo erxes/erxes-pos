@@ -38,16 +38,8 @@ const useOrderCU = (onCompleted?: any) => {
     {
       variables: orderData,
       onCompleted(data) {
-        const { _id, status } = (data || {}).ordersEdit || {};
-        orderChangeStatus({
-          variables: {
-            _id,
-            status,
-          },
-          onCompleted() {
-            return onCompleted && onCompleted(_id);
-          },
-        });
+        const { _id } = (data || {}).ordersEdit || {};
+        return onCompleted && onCompleted(_id);
       },
       refetchQueries: [{ query: gql(queries.orderDetail) }, 'orderDetail'],
       onError(error) {
