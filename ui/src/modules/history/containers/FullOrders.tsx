@@ -3,7 +3,7 @@ import { queries } from '../graphql';
 import HistoryItem from '../components/item';
 import Loading from 'ui/Loading';
 import { ORDER_STATUSES } from 'modules/constants';
-import NoData from 'icons/NoData';
+import Empty from 'ui/Empty';
 
 const FullOrders = () => {
   const { fullOrders, loading } = useFullOrders({
@@ -13,7 +13,12 @@ const FullOrders = () => {
 
   if (loading) return <Loading />;
 
-  if (!fullOrders.length) return <NoData />;
+  if (!fullOrders.length)
+    return (
+      <div className="flex-v-center fill">
+        <Empty />
+      </div>
+    );
 
   return (
     <div className="row">

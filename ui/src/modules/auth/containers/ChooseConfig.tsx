@@ -1,14 +1,11 @@
 import { IComponent } from 'modules/types';
 import { useConfigsContext } from './Configs';
-import { useMutation, gql, useQuery } from '@apollo/client';
+import { useMutation, gql } from '@apollo/client';
 import { mutations, queries } from '../graphql';
 import Select from 'ui/Select';
-import Loading from 'ui/Loading';
 
 const ChooseConfig: IComponent = () => {
-  const { currentConfig } = useConfigsContext();
-
-  const { data, loading: loadingConfigs } = useQuery(gql(queries.configs));
+  const { currentConfig, configs } = useConfigsContext();
 
   const [chooseConfig, { loading }] = useMutation(gql(mutations.chooseConfig), {
     refetchQueries: [{ query: gql(queries.currentConfig) }, 'currentConfig'],
@@ -18,11 +15,7 @@ const ChooseConfig: IComponent = () => {
     return chooseConfig({ variables: { token: value } });
   };
 
-  if (loadingConfigs) return <Loading />;
-
-  const { posclientConfigs } = data || {};
-
-  if (!posclientConfigs || posclientConfigs.length < 2) return null;
+  if (!configs || configs.length < 2) return null;
 
   return (
     <>
@@ -30,14 +23,13 @@ const ChooseConfig: IComponent = () => {
       <Select
         value={currentConfig.token}
         onChange={handleChange}
-        loading={loading || loadingConfigs}
+        loading={loading}
       >
-        {data &&
-          (posclientConfigs || []).map(({ token, name }: any) => (
-            <option key={token} value={token}>
-              {name} - {token}
-            </option>
-          ))}
+        {(configs || []).map(({ token, name }: any) => (
+          <option key={token} value={token}>
+            {name} - {token}
+          </option>
+        ))}
       </Select>
     </>
   );

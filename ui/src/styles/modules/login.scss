@@ -34,3 +34,16 @@
     }
   }
 }
+
+.choose-configs {
+  form {
+    width: 100%;
+    max-width: 350px;
+    .btn.flat {
+      background: $primary;
+      width: 100%;
+      margin-top: 1.5rem;
+      padding: 1rem;
+    }
+  }
+}

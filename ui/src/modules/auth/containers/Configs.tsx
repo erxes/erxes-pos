@@ -24,9 +24,13 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
   const { data: config, loading: loadingConfig } = useQuery(
     gql(queries.currentConfig)
   );
+  const { data: configs, loading: loadingConfigs } = useQuery(
+    gql(queries.configs)
+  );
 
   const currentUser = (data || {}).posCurrentUser;
   const currentConfig = (config || {}).currentConfig;
+  const { posclientConfigs } = configs || {};
 
   const { uiOptions } = currentConfig || {};
 
@@ -68,6 +72,7 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
 
   const value = useMemo(
     () => ({
+      configs: posclientConfigs,
       currentUser,
       currentConfig,
       primaryColor: primary,
@@ -75,10 +80,11 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
       allowInnerBill,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentUser, currentConfig]
+    [currentUser, currentConfig, posclientConfigs]
   );
 
-  if (loading || loadingConfig) return <Loading className="h-100vh" />;
+  if (loading || loadingConfig || loadingConfigs)
+    return <Loading className="h-100vh" />;
 
   return (
     <ConfigsContext.Provider value={value}>{children}</ConfigsContext.Provider>
