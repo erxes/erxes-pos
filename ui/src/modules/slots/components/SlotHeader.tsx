@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import HorizontalScroll from 'modules/common/ui/scrollMenu';
 import SlotNumber from './SlotNumber';
 // import CaretDown from 'modules/common/icons/CaretDown';
@@ -6,11 +6,17 @@ import SlotNumber from './SlotNumber';
 
 function SlotsHeader({
   items,
+  subToOrderStatuses,
 }: {
   items: {
     status: string;
   }[];
+  subToOrderStatuses: any;
 }) {
+  useEffect(() => {
+    subToOrderStatuses();
+  }, []);
+
   return (
     <>
       {/* <Button variant="naked" className="slot-dropdown">

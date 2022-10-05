@@ -7,7 +7,7 @@ import { ORDER_STATUSES } from 'modules/constants';
 const ActiveOrders = () => {
   const { ALL, COMPLETE } = ORDER_STATUSES;
 
-  const { fullOrders, loading } = useFullOrders({
+  const { fullOrders, loading, subToOrderStatuses } = useFullOrders({
     statuses: ALL,
     variables: {
       sortDirection: -1,
@@ -22,7 +22,12 @@ const ActiveOrders = () => {
 
   if (loading) return <Loading />;
 
-  return <SlotsHeader items={orders.reverse()} />;
+  return (
+    <SlotsHeader
+      items={orders.reverse()}
+      subToOrderStatuses={subToOrderStatuses}
+    />
+  );
 };
 
 export default ActiveOrders;
