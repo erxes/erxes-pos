@@ -6,22 +6,27 @@ import Counter from 'ui/Counter';
 import Motocycle from 'icons/Motocycle';
 import { formatNum } from 'modules/utils';
 
-const CheckoutItem: FC<ICartItem> = ({
+const CheckoutItem: FC<ICartItem & { type: string }> = ({
   name,
   count,
   unitPrice,
   _id,
   isTake,
-  isSelected,
   status,
+  type,
 }) => {
   const { selectItem } = useApp();
   return (
     <div className="flex-h-between checkout-item">
       <div className="checkout-item-main flex-v-center">
-        <Checkbox checked={isSelected} onChange={() => selectItem(_id)} />
+        {type === 'eat' && (
+          <abbr title="Авч явах бол тусгайлан тэмдэглэх">
+            <Checkbox checked={isTake} onChange={() => selectItem(_id)} />
+          </abbr>
+        )}
         <div className="flex-v-center">
-          <span className={'status ' + status} />
+          <span className={'status ' + status}></span>
+
           <b>
             <span className="name flex-v-center">
               <span>{name}</span>

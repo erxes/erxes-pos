@@ -2,7 +2,7 @@
   max-height: 100vh;
   &-order {
     border: $border;
-    margin: 1.5rem 0.75rem;
+    margin: 1rem 0.5rem;
     padding: 1.5rem 1rem;
     border-radius: 0.5rem;
 
@@ -21,10 +21,11 @@
       border-radius: 0.25rem;
       background: $primary;
       cursor: default;
+      margin-right: 0.5rem;
     }
 
     .-item {
-      padding: 1rem;
+      padding: 0.75rem;
       cursor: pointer;
       position: relative;
       overflow: hidden;
@@ -53,10 +54,10 @@
       }
     }
     .btn.slim {
-      padding: 0.75rem 2rem;
+      padding: 0.5rem 2rem;
       color: $primary;
       border-color: $primary;
-      margin-top: 1.5rem;
+      margin-top: 1rem;
       font-weight: 700;
     }
   }
@@ -67,5 +68,13 @@
     max-height: 100%;
     overflow-y: auto;
     padding: 0 0.75rem;
+  }
+  &-number {
+    background-color: $success;
+    padding: 0.5rem 1.25rem;
+    svg {
+      margin-right: 0.25rem;
+      font-size: 1.25rem;
+    }
   }
 }

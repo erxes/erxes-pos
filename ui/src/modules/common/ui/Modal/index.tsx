@@ -52,7 +52,7 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
   return (
     <div className={rootCn}>
       <div className="modal" role="dialog" ref={ref}>
-        {onClose && (
+        {(mode === 'pos' || modalView === 'EBARIMT_VIEW') && onClose && (
           <Button
             onClick={() => onClose()}
             aria-label="Close panel"

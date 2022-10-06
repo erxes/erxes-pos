@@ -2,6 +2,7 @@
 import { useState, useEffect, memo, useRef, createRef } from 'react';
 import Input from './Input';
 import { useUI } from './context';
+import { useApp } from 'modules/AppContext';
 
 const ICInput = ({
   inputRegExp = /^[0-9]$/,
@@ -15,6 +16,7 @@ const ICInput = ({
   const [selectedInput, setSelectedInput] = useState<any>(0);
   const didMount = useRef(false);
   const { latestClickedKey, changeKey } = useUI();
+  const { registerNumber } = useApp();
 
   const focusNextChar = (target: any) => {
     if (target.nextElementSibling !== null) {
@@ -79,6 +81,10 @@ const ICInput = ({
       }, 0);
     }
   }, [selectedInput]);
+
+  useEffect(() => {
+    registerNumber && setCharacterArray(registerNumber.split(''));
+  }, []);
 
   useEffect(() => {
     // add or remove refs

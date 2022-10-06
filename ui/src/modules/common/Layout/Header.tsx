@@ -6,7 +6,7 @@ import { IComponent } from 'modules/types';
 
 const PosHeader: IComponent = ({ children }) => {
   return (
-    <header className="pos-header flex-v-center">
+    <header className="pos-header flex-v-center flex-0">
       <div className="flex-v-center flex-0">
         <HeaderMenu />
         <div className="gray-border">

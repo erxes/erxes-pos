@@ -6,28 +6,27 @@ import {
   createContext,
 } from 'react';
 import type { IComponent, ICartItem, IProductBase } from './types';
-import { ORDER_ITEM_STATUSES } from './constants';
 
 export interface State {
   cart: ICartItem[];
-  isCartSelected: boolean;
-  isTake: '' | 'eat' | 'take' | string;
+  type: 'delivery' | 'eat' | 'take' | string;
   orderDetail: object | null;
   registerNumber: string;
   companyName: string;
   billType: TBillType;
   customerId: string;
+  description: string;
 }
 
 const initialState = {
-  isCartSelected: false,
   cart: [],
-  isTake: '',
+  type: 'eat',
   orderDetail: null,
   registerNumber: '',
   companyName: '',
   billType: '',
   customerId: '',
+  description: '',
 };
 
 type TBillType = '' | '1' | '3' | string;
@@ -37,31 +36,37 @@ type Action =
       type: 'ADD_ITEM_TO_CART';
       product: IProductBase & { productImgUrl: string };
     }
-  | { type: 'CHANGE_COUNT'; _id: string; count: number }
   | { type: 'SELECT'; _id: string }
-  | { type: 'SELECT_ALL' }
-  | { type: 'DELIVERY' }
   | { type: 'SET_CART'; cart: ICartItem[] }
-  | {
-      type: 'SET_IS_TAKE';
-      value: State['isTake'];
-    }
+  | { type: 'SET_TYPE'; value: string }
   | { type: 'SET_ORDER_DETAIL'; data: object | null }
   | { type: 'SET_REGISTER_NUMBER'; value: string }
   | { type: 'SET_COMPANY_NAME'; value: string }
   | { type: 'SET_BILL_TYPE'; value: TBillType }
-  | { type: 'SET_CUSTOMER_ID'; value: string };
+  | { type: 'SET_CUSTOMER_ID'; value: string }
+  | { type: 'CHANGE_COUNT'; _id: string; count: number }
+  | { type: 'SET_DESCRIPTION'; value: string }
+  | { type: 'SET_INITIAL_STATE' };
 
 export const AppContext = createContext<{} | any>(initialState);
 
 AppContext.displayName = 'AppContext';
 
-const { NEW, CONFIRM } = ORDER_ITEM_STATUSES;
-const editAble = [];
-const removeAble = [NEW, CONFIRM];
-
 const appReducer = (state: State, action: Action) => {
   switch (action.type) {
+    case 'SET_TYPE': {
+      const { cart } = state;
+      const newCart = cart.map((item) => ({
+        ...item,
+        isTake: action.value !== 'eat',
+        isSelected: false,
+      }));
+      return {
+        ...state,
+        type: action.value,
+        cart: newCart,
+      };
+    }
     case 'ADD_ITEM_TO_CART': {
       const { cart } = state;
       const { product } = action;
@@ -79,9 +84,8 @@ const appReducer = (state: State, action: Action) => {
           ...product,
           _id: Math.random().toString(),
           productId: product._id,
-          isTake: state.isTake === 'take',
+          isTake: state.type === ('take' || 'delivery'),
           count: 1,
-          isSelected: false,
           status: 'new',
         };
         currentCart.push(cartItem);
@@ -91,75 +95,27 @@ const appReducer = (state: State, action: Action) => {
         cart: currentCart,
       };
     }
-    case 'CHANGE_COUNT': {
-      const { cart, isCartSelected } = state;
-      const { _id, count } = action;
-      const currentCart = cart.slice();
-
-      const foundItem = currentCart.find((item) => item._id === _id);
-      if (foundItem) {
-        if (count > 0) {
-          foundItem.count = count;
-          return { ...state, cart: currentCart };
-        }
-        const index = currentCart.indexOf(foundItem);
-        // if (index > -1) {
-        currentCart.splice(index, 1);
-        return {
-          ...state,
-          cart: currentCart,
-          isCartSelected: currentCart.length === 0 ? false : isCartSelected,
-        };
-        // }
-      }
-    }
-    case 'SELECT': {
-      const { cart } = state;
-      const { _id } = action;
-      const currentCart = cart.slice();
-      const foundItem = currentCart.find((item) => item._id === _id);
-      if (foundItem) {
-        foundItem.isSelected = !foundItem.isSelected;
-        return { ...state, cart: currentCart };
-      }
-    }
-    case 'SELECT_ALL': {
-      const { cart, isCartSelected } = state;
-
-      if (cart.length === 0) return { ...state, isCartSelected: false };
-
-      const newCart = cart
-        .filter((item) => item)
-        .map((item) => ({
-          ...item,
-          isSelected: !isCartSelected,
-        }));
-      return { ...state, cart: newCart, isCartSelected: !isCartSelected };
-    }
-    case 'DELIVERY': {
+    case 'SET_TYPE': {
       const { cart } = state;
       const newCart = cart.map((item) => ({
         ...item,
-        isTake: item.isSelected,
+        isTake: action.value !== 'eat',
         isSelected: false,
       }));
       return {
         ...state,
+        type: action.value,
         cart: newCart,
       };
     }
+
     case 'SET_CART': {
       return {
         ...state,
         cart: action.cart,
       };
     }
-    case 'SET_IS_TAKE': {
-      return {
-        ...state,
-        isTake: action.value,
-      };
-    }
+
     case 'SET_ORDER_DETAIL': {
       return {
         ...state,
@@ -190,6 +146,45 @@ const appReducer = (state: State, action: Action) => {
         customerId: action.value,
       };
     }
+    case 'SET_DESCRIPTION': {
+      return {
+        ...state,
+        description: action.value,
+      };
+    }
+    case 'SET_INITIAL_STATE': {
+      return initialState;
+    }
+    case 'CHANGE_COUNT': {
+      const { cart } = state;
+      const { _id, count } = action;
+      const currentCart = cart.slice();
+
+      const foundItem = currentCart.find((item) => item._id === _id);
+      if (foundItem) {
+        if (count > 0) {
+          foundItem.count = count;
+          return { ...state, cart: currentCart };
+        }
+        const index = currentCart.indexOf(foundItem);
+        currentCart.splice(index, 1);
+        return {
+          ...state,
+          cart: currentCart,
+        };
+      }
+    }
+    case 'SELECT': {
+      const { cart } = state;
+      const { _id } = action;
+      const currentCart = cart.slice();
+      const foundItem = currentCart.find((item) => item._id === _id);
+      if (foundItem) {
+        foundItem.isTake = !foundItem.isTake;
+        return { ...state, cart: currentCart };
+      }
+    }
+
     default:
       return state;
   }
@@ -215,24 +210,16 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
-  const selectAll = useCallback(
-    () => dispatch({ type: 'SELECT_ALL' }),
-    [dispatch]
-  );
-
-  const delivery = useCallback(
-    () => dispatch({ type: 'DELIVERY' }),
-    [dispatch]
-  );
   const setCart = useCallback(
     (cart: ICartItem[]) => dispatch({ type: 'SET_CART', cart }),
     [dispatch]
   );
 
-  const setIsTake = useCallback(
-    (value: State['isTake']) => dispatch({ type: 'SET_IS_TAKE', value }),
+  const setType = useCallback(
+    (value: State['type']) => dispatch({ type: 'SET_TYPE', value }),
     [dispatch]
   );
+
   const setOrderDetail = useCallback(
     (data: object | null) => dispatch({ type: 'SET_ORDER_DETAIL', data }),
     [dispatch]
@@ -258,21 +245,31 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const setDescription = useCallback(
+    (value: string) => dispatch({ type: 'SET_TYPE', value }),
+    [dispatch]
+  );
+
+  const setInitialState = useCallback(
+    () => dispatch({ type: 'SET_INITIAL_STATE' }),
+    []
+  );
+
   const value = useMemo(
     () => ({
       ...state,
       addItemToCart,
       changeItemCount,
       selectItem,
-      selectAll,
-      delivery,
       setCart,
-      setIsTake,
+      setType,
       setOrderDetail,
       setRegisterNumber,
       setCompanyName,
       setBillType,
       setCustomerId,
+      setDescription,
+      setInitialState,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]

@@ -1,16 +1,22 @@
 import { useRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { useApp } from 'modules/AppContext';
 import { gql, useLazyQuery } from '@apollo/client';
 import { useEffect } from 'react';
 import { queries, subscriptions } from '../graphql';
 import { ORDER_ITEM_STATUSES } from 'modules/constants';
-import CheckoutCart from '../components/Cart';
 import { toast } from 'react-toastify';
+import CheckMode from 'modules/CheckMode';
+
+const CheckoutCart = dynamic(() => import('../components/Cart'), {
+  suspense: true,
+});
 
 const CartContainer = () => {
   const { NEW, CONFIRM, DONE } = ORDER_ITEM_STATUSES;
   const router = useRouter();
-  const { cart, setCart, setOrderDetail } = useApp();
+  const { setInitialState, setCart, setOrderDetail, setType, setCustomerId } =
+    useApp();
   const { orderId } = router.query;
 
   const convertCartItem = (item: any) => ({
@@ -27,8 +33,10 @@ const CartContainer = () => {
           const cart = orderDetail.items.map((item: any) =>
             convertCartItem(item)
           );
-          setCart(cart);
           setOrderDetail(orderDetail);
+          setCart(cart);
+          setType(orderDetail.type);
+          setCustomerId(orderDetail.customerId || '');
         }
       },
       onError(error) {
@@ -62,14 +70,13 @@ const CartContainer = () => {
       subToItems();
       return;
     }
-    setCart([]);
-    setOrderDetail(null);
+    setInitialState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
 
   if (loading) return <div className="checkout-cart"></div>;
 
-  return <CheckoutCart />;
+  return <CheckMode pos={<CheckoutCart />} kiosk={<></>} />;
 };
 
 export default CartContainer;

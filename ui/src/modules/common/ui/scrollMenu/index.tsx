@@ -41,8 +41,8 @@ const HorizontalScroll: React.FC<Props> = ({
       >
         {items.map((item, key) => (
           <Element
-            itemId={key} // NOTE: itemId is required for track items
-            key={key}
+            itemId={(item || {})._id || key} // NOTE: itemId is required for track items
+            key={(item || {})._id || key}
           >
             <ItemComponent {...item} />
           </Element>

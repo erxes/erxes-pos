@@ -1,16 +1,15 @@
-import { useState } from 'react';
 import { useApp } from 'modules/AppContext';
 import useIsDisabled from 'lib/useIsDisabled';
 import { useRouter } from 'next/router';
 import { formatNum } from 'modules/utils';
+import Input from 'ui/Input';
 import useOrderCU from 'lib/useOrderCU';
 import useTotalValue from 'lib/useTotalValue';
 import Button from 'ui/Button';
 import Deliver from '../../checkout/components/Deliver';
 
 const OrderCU = () => {
-  const [type, setType] = useState('pay');
-  const { orderDetail } = useApp();
+  const { orderDetail, setType, type } = useApp();
   const router = useRouter();
   const total = useTotalValue();
   const disabled = useIsDisabled();
@@ -31,6 +30,7 @@ const OrderCU = () => {
   };
   return (
     <div className="checkout-controls">
+      {type === 'delivery' && <Input placeholder="Хүргэлтийн мэдээлэл" />}
       <div className="row">
         <div className="col-6">
           <Deliver />

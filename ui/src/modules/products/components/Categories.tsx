@@ -30,10 +30,11 @@ export default function Categories({
       { shallow: true }
     );
   };
+  // { _id: null, name: 'Бүгд' }
   return (
     <HorizontalScroll
       className="categories"
-      items={[{ _id: null, name: 'Бүгд' }, ...categories]}
+      items={[...categories]}
       ItemComponent={({ _id, name }) => {
         return (
           <Button

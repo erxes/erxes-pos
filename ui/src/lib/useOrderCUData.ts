@@ -8,7 +8,7 @@ import useBillType from './useBillType';
 const useOrderCUData = () => {
   const {
     cart,
-    isTake,
+    type,
     registerNumber,
     slotId,
     customerId,
@@ -43,7 +43,7 @@ const useOrderCUData = () => {
   return {
     items,
     _id: orderId,
-    type: mode === 'kiosk' ? isTake : 'eat',
+    type,
     registerNumber: registerNumber && isOrg ? registerNumber : null,
     billType: billType ? billType : null,
     slotId,

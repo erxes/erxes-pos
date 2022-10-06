@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import { useRouter } from 'next/router';
 import Header from './components/Header';
 import CategoriesContainer from '../products/containers/Categories';
 import ProductsContainer from '../products/containers/Products';
@@ -8,12 +10,16 @@ import { useApp } from 'modules/AppContext';
 import { useUI } from 'modules/common/ui/context';
 import Welcome from './components/welcome';
 import Layout from 'modules/common/Layout';
+import Cart from 'modules/checkout/containers/Cart';
 
 const Kiosk = () => {
-  const { isTake, cart } = useApp();
+  const router = useRouter();
+  const { cart } = useApp();
+  const [isTake, setIsTake] = useState(false);
   const { setSidebarView, openSidebar, setSidebarPlacement } = useUI();
 
-  if (!isTake || isTake === '') return <Welcome />;
+  if (!router.query.orderId && !isTake)
+    return <Welcome setIsTake={setIsTake} />;
 
   const handleOpenCart = () => {
     setSidebarView('CART_VIEW');
@@ -40,6 +46,7 @@ const Kiosk = () => {
           </Button>
         </div>
       </div>
+      <Cart />
     </Layout>
   );
 };

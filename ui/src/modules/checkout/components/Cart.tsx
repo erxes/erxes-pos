@@ -5,14 +5,14 @@ import Empty from 'ui/Empty';
 import { ICartItem } from 'modules/types';
 
 const CheckoutCart = () => {
-  const { cart } = useApp();
+  const { cart, type } = useApp();
   return (
     <>
       <CheckoutTotal />
       <div className="checkout-cart custom-scrollbar">
         {cart && cart.length ? (
           cart.map((item: ICartItem) => (
-            <CheckoutItem key={item._id} {...item} />
+            <CheckoutItem key={item._id} {...item} type={type} />
           ))
         ) : (
           <Empty />

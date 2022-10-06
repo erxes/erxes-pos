@@ -51,6 +51,9 @@
   }
   &-controls {
     padding: 1.25rem 1rem;
+    input {
+      margin-bottom: 1rem;
+    }
     .btn {
       width: 100%;
       font: 700 1.125rem/1.5rem 'Inter';

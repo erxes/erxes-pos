@@ -43,14 +43,13 @@ const Order = ({ number, type, items, origin, paidDate, _id, status }: any) => {
       <div className="-header">
         <div className="flex-h-between">
           <h5>#{number.split('_')[1]}</h5>
-          <Timer paidDate={paidDate} />
-        </div>
-        <div className="flex-h-between">
-          <p className="btn flat -tag">
-            {type === 'eat' && 'Зааланд'}
-            {type === 'take' && 'Авч явах'}
-          </p>
-          <p className="-origin">{origin ? origin : 'Pos'}</p>
+          <div className="flex-v-center">
+            <p className="btn flat -tag">
+              {type === 'eat' && 'Зааланд'}
+              {type === 'take' && 'Авч явах'}
+            </p>
+            <Timer paidDate={paidDate} />
+          </div>
         </div>
       </div>
       {items.map((item: any) => (

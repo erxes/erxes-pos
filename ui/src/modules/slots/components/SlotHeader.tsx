@@ -1,20 +1,20 @@
 import { useEffect } from 'react';
 import HorizontalScroll from 'modules/common/ui/scrollMenu';
-import SlotNumber from './SlotNumber';
-// import CaretDown from 'modules/common/icons/CaretDown';
-// import Button from 'modules/common/ui/Button';
+import { ORDER_STATUSES } from 'modules/constants';
 
 function SlotsHeader({
-  items,
+  items = [],
   subToOrderStatuses,
+  ItemComponent,
 }: {
-  items: {
+  items?: {
     status: string;
   }[];
-  subToOrderStatuses: any;
+  subToOrderStatuses?: any;
+  ItemComponent: any;
 }) {
   useEffect(() => {
-    subToOrderStatuses();
+    subToOrderStatuses && subToOrderStatuses(ORDER_STATUSES.ALL);
   }, []);
 
   return (
@@ -24,7 +24,7 @@ function SlotsHeader({
         <CaretDown width={18} />
       </Button> */}
       <div className="slot-header flex-v-center flex-1">
-        <HorizontalScroll items={items} ItemComponent={SlotNumber} />
+        <HorizontalScroll items={items} ItemComponent={ItemComponent} />
       </div>
     </>
   );

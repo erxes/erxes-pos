@@ -83,8 +83,9 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
     [currentUser, currentConfig, posclientConfigs]
   );
 
-  if (loading || loadingConfig || loadingConfigs)
+  if (loading || loadingConfig || loadingConfigs) {
     return <Loading className="h-100vh" />;
+  }
 
   return (
     <ConfigsContext.Provider value={value}>{children}</ConfigsContext.Provider>

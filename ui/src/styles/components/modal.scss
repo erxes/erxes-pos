@@ -63,4 +63,19 @@
       width: auto;
     }
   }
+  .back-btn {
+    position: absolute;
+    left: 1.5rem;
+    top: 1.5rem;
+    display: inline-block;
+    width: auto;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    &:hover {
+      background: rgba($color: #fff, $alpha: 0.12);
+    }
+    h6 {
+      display: inline;
+    }
+  }
 }

@@ -15,7 +15,6 @@ export type ICartItem = IProductBase & {
   productId: string;
   count: number;
   isTake: boolean;
-  isSelected: boolean;
   status: string;
   productImgUrl: string;
 };

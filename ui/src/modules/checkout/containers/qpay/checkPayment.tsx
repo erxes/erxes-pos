@@ -1,13 +1,17 @@
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { gql, useMutation } from '@apollo/client';
 import { mutations, queries } from '../../graphql';
 import { toast } from 'react-toastify';
 import Button from 'ui/Button';
 import { getMode } from 'modules/utils';
+// import useInterval from 'use-interval';
 
 const CheckPayment = () => {
   const router = useRouter();
   const mode = getMode();
+  const [cancelInterval, setCancelInterval] = useState(false);
+
   const { orderId, qpayId } = router.query;
   const [check, { loading }] = useMutation(gql(mutations.qpayCheckPayment), {
     variables: {
@@ -17,14 +21,16 @@ const CheckPayment = () => {
     refetchQueries: [{ query: gql(queries.orderDetail) }, 'orderDetail'],
     onCompleted(data) {
       if (data.qpayCheckPayment.status === 'PAID') {
+        setCancelInterval(false);
+        toast.success('Checked');
       }
-
-      toast.success('Checked');
     },
     onError(error) {
       toast.error(error.message);
     },
   });
+
+  // useInterval(check, cancelInterval ? null : 3000);
 
   return (
     <Button onClick={() => check()} loading={loading}>

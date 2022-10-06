@@ -5,6 +5,7 @@ import useBillType from 'lib/useBillType';
 import useOrderCU from 'lib/useOrderCU';
 import Button from 'ui/Button';
 import ICInput from 'ui/ICInput';
+import ArrowLeft from 'icons/ArrowLeft';
 import useCheckRegister from 'lib/useCheckRegister';
 
 const Ebarimt = () => {
@@ -52,6 +53,16 @@ const Ebarimt = () => {
   if (isOrg)
     return (
       <div className="modal-kiosk text-center ebarimt-kiosk">
+        <Button
+          variant="ghost"
+          className="back-btn"
+          riffle={false}
+          onClick={choosePrsn}
+        >
+          <h6>
+            <ArrowLeft /> Буцах
+          </h6>
+        </Button>
         <h2>
           Байгууллагын РД <br /> оруулна уу.
         </h2>

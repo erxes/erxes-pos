@@ -3,6 +3,7 @@ import SlotsHeader from '../components/SlotHeader';
 import { queries } from '../graphql';
 import Loading from 'ui/Loading';
 import { ORDER_STATUSES } from 'modules/constants';
+import SlotNumber from '../components/SlotNumber';
 
 const ActiveOrders = () => {
   const { ALL, COMPLETE } = ORDER_STATUSES;
@@ -26,6 +27,7 @@ const ActiveOrders = () => {
     <SlotsHeader
       items={orders.reverse()}
       subToOrderStatuses={subToOrderStatuses}
+      ItemComponent={SlotNumber}
     />
   );
 };

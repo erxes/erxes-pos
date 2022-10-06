@@ -11,12 +11,9 @@ const EbarimtView = dynamic(
   { suspense: true }
 );
 
-const PaymentView = dynamic(
-  () => import('modules/checkout/containers/Payment'),
-  {
-    suspense: true,
-  }
-);
+const PaymentView = dynamic(() => import('modules/kiosk/components/Payment'), {
+  suspense: true,
+});
 
 const Qpaylist = dynamic(() => import('modules/checkout/components/Qpaylist'), {
   suspense: true,

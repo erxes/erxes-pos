@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useApp } from 'modules/AppContext';
 import { gql, useLazyQuery } from '@apollo/client';
 import { queries } from '../graphql';
@@ -18,6 +18,7 @@ const CustomerSearch = () => {
         const { poscCustomerDetail: detail } = data || {};
         if (detail) {
           setCustomerId(detail._id);
+          !value && setValue(detail.primaryPhone);
         }
       },
     }
@@ -26,11 +27,11 @@ const CustomerSearch = () => {
   const { primaryPhone, firstName, primaryEmail } =
     (data || {}).poscCustomerDetail || {};
 
-  const handleSearch = (value: string) =>
-    value &&
+  const handleSearch = (val: string) =>
+    val &&
     searchCustomer({
       variables: {
-        _id: value,
+        _id: val,
       },
     });
 
@@ -40,6 +41,14 @@ const CustomerSearch = () => {
       setCustomerId('');
     }
   };
+
+  useEffect(() => {
+    if (customerId && !value) {
+      handleSearch(customerId);
+      return;
+    }
+    !customerId && setValue('');
+  }, [customerId]);
 
   const renderResult = () => {
     if (loading) return <Loading />;
