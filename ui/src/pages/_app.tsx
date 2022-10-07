@@ -11,6 +11,7 @@ import { CheckoutContextProvider } from 'modules/checkout/context';
 import ConfigsProvider from 'modules/auth/containers/Configs';
 import CheckAuth from 'modules/auth/CheckAuth';
 import { ToastContainer } from 'react-toastify';
+import RestartKiosk from 'modules/kiosk/components/Restart';
 
 const Noop: IComponent = ({ children }) => <>{children}</>;
 
@@ -26,6 +27,7 @@ function App({ Component, pageProps }: AppProps) {
                 <Layout pageProps={pageProps}>
                   <Component {...pageProps} />
                 </Layout>
+                <RestartKiosk />
               </CheckoutContextProvider>
             </CheckAuth>
           </ConfigsProvider>
