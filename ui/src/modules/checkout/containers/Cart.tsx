@@ -7,6 +7,7 @@ import { queries, subscriptions } from '../graphql';
 import { ORDER_ITEM_STATUSES } from 'modules/constants';
 import { toast } from 'react-toastify';
 import CheckMode from 'modules/CheckMode';
+import { getMode } from 'modules/utils';
 
 const CheckoutCart = dynamic(() => import('../components/Cart'), {
   suspense: true,
@@ -15,8 +16,14 @@ const CheckoutCart = dynamic(() => import('../components/Cart'), {
 const CartContainer = () => {
   const { NEW, CONFIRM, DONE } = ORDER_ITEM_STATUSES;
   const router = useRouter();
-  const { setInitialState, setCart, setOrderDetail, setType, setCustomerId } =
-    useApp();
+  const {
+    setInitialState,
+    setCart,
+    setOrderDetail,
+    setType,
+    setCustomerId,
+    setBillType,
+  } = useApp();
   const { orderId } = router.query;
 
   const convertCartItem = (item: any) => ({
@@ -30,13 +37,16 @@ const CartContainer = () => {
       onCompleted(data) {
         const { orderDetail } = data || {};
         if (orderDetail) {
-          const cart = orderDetail.items.map((item: any) =>
-            convertCartItem(item)
-          );
+          if (getMode() === 'kiosk' && orderDetail.paidDate) {
+            return (window.location.href = '/');
+          }
+          const { items, customerId, type, billType } = orderDetail;
+          const cart = items.map((item: any) => convertCartItem(item));
           setOrderDetail(orderDetail);
           setCart(cart);
-          setType(orderDetail.type);
-          setCustomerId(orderDetail.customerId || '');
+          setType(type);
+          setCustomerId(customerId || '');
+          setBillType(billType);
         }
       },
       onError(error) {
@@ -70,7 +80,7 @@ const CartContainer = () => {
       subToItems();
       return;
     }
-    setInitialState();
+    getMode() === 'pos' && setInitialState();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
 

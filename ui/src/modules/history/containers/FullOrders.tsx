@@ -7,7 +7,7 @@ import Empty from 'ui/Empty';
 
 const FullOrders = () => {
   const { fullOrders, loading } = useFullOrders({
-    statuses: ORDER_STATUSES.COMPLETE,
+    statuses: ORDER_STATUSES.ALL,
     query: queries.fullOrders,
   });
 

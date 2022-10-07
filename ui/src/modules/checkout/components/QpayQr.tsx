@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
@@ -16,7 +17,7 @@ import BackButton from './BackButton';
 const QpayQr = () => {
   const router = useRouter();
   const { orderDetail } = useApp();
-  const { setModalView } = useUI();
+  const { setModalView, closeModal } = useUI();
 
   const { cancel, loading } = useCancelQpay(() => setModalView('PAYMENT_VIEW'));
   const mode = getMode();
@@ -30,6 +31,18 @@ const QpayQr = () => {
   };
   const invoice = getInvoice();
 
+  useEffect(() => {
+    if (
+      invoice &&
+      invoice.qpayPaymentId &&
+      invoice.paymentDate &&
+      invoice.status === 'PAID'
+    ) {
+      mode === 'kiosk' && setModalView('SUCCESS_VIEW');
+      mode === 'pos' && closeModal();
+    }
+  }, [invoice]);
+
   if (!invoice)
     return (
       <div className={c}>
@@ -37,7 +50,7 @@ const QpayQr = () => {
       </div>
     );
 
-  if (invoice.status === 'paid')
+  if (invoice.status === 'PAID')
     return (
       <div className={c}>
         <div className="payment-report-check">

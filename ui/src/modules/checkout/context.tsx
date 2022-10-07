@@ -89,7 +89,7 @@ export const CheckoutContextProvider: IComponent = ({ children }) => {
       setValue,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    [state]
+    [state, remainder]
   );
 
   return (

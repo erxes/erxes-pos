@@ -7,6 +7,7 @@ import { ApolloProvider } from '@apollo/client';
 import apolloClient from 'modules/apolloClient';
 import { AppContextProvider } from '../modules/AppContext';
 import UIProvider from 'ui/context';
+import { CheckoutContextProvider } from 'modules/checkout/context';
 import ConfigsProvider from 'modules/auth/containers/Configs';
 import CheckAuth from 'modules/auth/CheckAuth';
 import { ToastContainer } from 'react-toastify';
@@ -21,14 +22,16 @@ function App({ Component, pageProps }: AppProps) {
         <UIProvider>
           <ConfigsProvider>
             <CheckAuth>
-              <Layout pageProps={pageProps}>
-                <Component {...pageProps} />
-              </Layout>
+              <CheckoutContextProvider>
+                <Layout pageProps={pageProps}>
+                  <Component {...pageProps} />
+                </Layout>
+              </CheckoutContextProvider>
             </CheckAuth>
           </ConfigsProvider>
         </UIProvider>
       </AppContextProvider>
-      <ToastContainer theme="dark" position="top-center" />
+      <ToastContainer theme="dark" position="top-center" limit={1} />
     </ApolloProvider>
   );
 }

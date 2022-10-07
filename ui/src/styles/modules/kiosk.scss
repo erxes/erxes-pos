@@ -32,6 +32,7 @@
       border-radius: 4.5rem;
       display: block;
       max-width: 60%;
+      width: 100%;
       margin: auto;
       &:last-child {
         margin-top: 3rem;
@@ -312,6 +313,25 @@
           padding: 0 1rem;
         }
       }
+    }
+  }
+  &-success {
+    padding: 6rem;
+
+    h1 {
+      font-size: 8rem;
+      padding: 3rem 0;
+    }
+    b {
+      display: block;
+    }
+    .btn.flat {
+      background-color: #000;
+      position: absolute;
+      bottom: -7rem;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 1.5rem 3rem;
     }
   }
 }

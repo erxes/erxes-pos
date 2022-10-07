@@ -22,9 +22,6 @@ const OrderCU = () => {
   const { loading, orderCU } = useOrderCU(onCompleted);
 
   const handleClick = (val: string) => {
-    if (val === 'pay' && total === (orderDetail || {}).totalAmount) {
-      return router.push(`/checkout/${router.query.orderId}`);
-    }
     setType(val);
     orderCU();
   };

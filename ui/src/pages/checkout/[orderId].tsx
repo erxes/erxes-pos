@@ -1,7 +1,6 @@
 import dynamic from 'next/dynamic';
 import OrderDetailContainer from 'modules/checkout/containers/OrderDetailContainer';
 import CheckMode, { checkLayoutMode } from 'modules/CheckMode';
-import { CheckoutContextProvider } from 'modules/checkout/context';
 
 const Checkout = dynamic(() => import('modules/checkout/components'), {
   suspense: true,
@@ -16,11 +15,9 @@ const KioskCheckout = dynamic(
 
 const Payment = () => {
   return (
-    <CheckoutContextProvider>
-      <OrderDetailContainer>
-        <CheckMode pos={<Checkout />} kiosk={<KioskCheckout />} />
-      </OrderDetailContainer>
-    </CheckoutContextProvider>
+    <OrderDetailContainer>
+      <CheckMode pos={<Checkout />} kiosk={<KioskCheckout />} />
+    </OrderDetailContainer>
   );
 };
 

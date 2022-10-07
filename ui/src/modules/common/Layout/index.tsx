@@ -3,8 +3,6 @@ import dynamic from 'next/dynamic';
 import { Suspense } from 'react';
 import Loading from 'ui/Loading';
 import { useUI } from 'ui/context';
-// import { getMode } from 'modules/utils';
-import { CheckoutContextProvider } from 'modules/checkout/context';
 
 const EbarimtView = dynamic(
   () => import('modules/checkout/containers/Ebarimt'),
@@ -24,6 +22,15 @@ const QpayView = dynamic(() => import('modules/checkout/components/QpayQr'), {
 });
 
 const HistoryView = dynamic(() => import('modules/history/components/Detail'), {
+  suspense: true,
+});
+
+const VisaView = dynamic(
+  () => import('modules/checkout/containers/card/Card'),
+  { suspense: true }
+);
+
+const SuccessView = dynamic(() => import('modules/kiosk/containers/success'), {
   suspense: true,
 });
 
@@ -50,16 +57,12 @@ const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
       <Modal onClose={closeModal}>
         <Suspense fallback={<Loading />}>
           {modalView === 'EBARIMT_VIEW' && <EbarimtView />}
-          {modalView === 'PAYMENT_VIEW' && (
-            <CheckoutContextProvider>
-              <Suspense fallback={<Loading />}>
-                <PaymentView />
-              </Suspense>
-            </CheckoutContextProvider>
-          )}
+          {modalView === 'PAYMENT_VIEW' && <PaymentView />}
           {modalView === 'QPAY_LIST_VIEW' && <Qpaylist />}
           {modalView === 'QPAY_VIEW' && <QpayView />}
           {modalView === 'HISTORY_VIEW' && <HistoryView />}
+          {modalView === 'VISA_VIEW' && <VisaView />}
+          {modalView === 'SUCCESS_VIEW' && <SuccessView />}
         </Suspense>
       </Modal>
     </Suspense>

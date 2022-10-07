@@ -6,8 +6,8 @@ const Welcome = ({ setIsTake }: any) => {
   const { setType } = useApp();
 
   const handleClick = (val: string) => {
-    setIsTake(true);
     setType(val);
+    setIsTake(true);
   };
 
   return (
@@ -20,18 +20,10 @@ const Welcome = ({ setIsTake }: any) => {
           </div>
 
           <h5>Эрхэс таны бизнесийн хурдасгуур</h5>
-          <Button
-            variant="slim"
-            onClick={() => handleClick('eat')}
-            Component="a"
-          >
+          <Button variant="slim" onClick={() => handleClick('eat')}>
             Зааланд
           </Button>
-          <Button
-            variant="slim"
-            onClick={() => handleClick('take')}
-            Component="a"
-          >
+          <Button variant="slim" onClick={() => handleClick('take')}>
             Авч явах
           </Button>
         </div>

@@ -54,19 +54,6 @@ AppContext.displayName = 'AppContext';
 
 const appReducer = (state: State, action: Action) => {
   switch (action.type) {
-    case 'SET_TYPE': {
-      const { cart } = state;
-      const newCart = cart.map((item) => ({
-        ...item,
-        isTake: action.value !== 'eat',
-        isSelected: false,
-      }));
-      return {
-        ...state,
-        type: action.value,
-        cart: newCart,
-      };
-    }
     case 'ADD_ITEM_TO_CART': {
       const { cart } = state;
       const { product } = action;
@@ -96,16 +83,16 @@ const appReducer = (state: State, action: Action) => {
       };
     }
     case 'SET_TYPE': {
+      console.log(action);
       const { cart } = state;
       const newCart = cart.map((item) => ({
         ...item,
         isTake: action.value !== 'eat',
-        isSelected: false,
       }));
       return {
         ...state,
-        type: action.value,
         cart: newCart,
+        type: action.value,
       };
     }
 
@@ -216,7 +203,10 @@ export const AppContextProvider: IComponent = ({ children }) => {
   );
 
   const setType = useCallback(
-    (value: State['type']) => dispatch({ type: 'SET_TYPE', value }),
+    (value: string) => {
+      console.log(value, 'asdfasfda');
+      dispatch({ type: 'SET_TYPE', value });
+    },
     [dispatch]
   );
 

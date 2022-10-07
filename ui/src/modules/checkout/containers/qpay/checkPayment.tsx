@@ -5,7 +5,7 @@ import { mutations, queries } from '../../graphql';
 import { toast } from 'react-toastify';
 import Button from 'ui/Button';
 import { getMode } from 'modules/utils';
-// import useInterval from 'use-interval';
+import useInterval from 'use-interval';
 
 const CheckPayment = () => {
   const router = useRouter();
@@ -20,9 +20,15 @@ const CheckPayment = () => {
     },
     refetchQueries: [{ query: gql(queries.orderDetail) }, 'orderDetail'],
     onCompleted(data) {
-      if (data.qpayCheckPayment.status === 'PAID') {
+      const invoice = data.qpayCheckPayment;
+
+      if (
+        invoice &&
+        invoice.qpayPaymentId &&
+        invoice.paymentDate &&
+        invoice.status === 'PAID'
+      ) {
         setCancelInterval(false);
-        toast.success('Checked');
       }
     },
     onError(error) {
@@ -30,7 +36,7 @@ const CheckPayment = () => {
     },
   });
 
-  // useInterval(check, cancelInterval ? null : 3000);
+  useInterval(check, cancelInterval ? null : 3000);
 
   return (
     <Button onClick={() => check()} loading={loading}>

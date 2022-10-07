@@ -81,3 +81,23 @@
     max-width: 50%;
   }
 }
+
+.card {
+  &-loading {
+    padding: 5rem;
+    .img-wrap {
+      position: relative;
+      aspect-ratio: 1/1;
+      width: 250px;
+      margin: 2rem auto 0;
+      & > div {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+}

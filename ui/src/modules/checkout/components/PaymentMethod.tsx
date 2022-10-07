@@ -60,7 +60,11 @@ const PaymentMethod: FC<IProps> = ({
         setValue={(val: any) => setValue(val, name)}
         value={value}
       >
-        <Button onClick={onClick} loading={loading} disabled={value === 0}>
+        <Button
+          onClick={onClick}
+          loading={loading}
+          disabled={value === 0 || remainder <= 0}
+        >
           {btnText}
         </Button>
       </PaymentInput>

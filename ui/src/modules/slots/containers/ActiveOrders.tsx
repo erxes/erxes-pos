@@ -12,7 +12,7 @@ const ActiveOrders = () => {
     statuses: ALL,
     variables: {
       sortDirection: -1,
-      perPage: 1000,
+      perPage: 100,
     },
     query: queries.fullOrders,
   });

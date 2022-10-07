@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { queries } from '../graphql';
 import { useQuery, gql } from '@apollo/client';
 import { FC, ReactNode, createContext, useContext } from 'react';
@@ -70,18 +70,14 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
     }
   }, [primary]);
 
-  const value = useMemo(
-    () => ({
-      configs: posclientConfigs,
-      currentUser,
-      currentConfig,
-      primaryColor: primary,
-      allowReceivable,
-      allowInnerBill,
-    }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [currentUser, currentConfig, posclientConfigs]
-  );
+  const value = {
+    configs: posclientConfigs,
+    currentUser,
+    currentConfig,
+    primaryColor: primary,
+    allowReceivable,
+    allowInnerBill,
+  };
 
   if (loading || loadingConfig || loadingConfigs) {
     return <Loading className="h-100vh" />;
