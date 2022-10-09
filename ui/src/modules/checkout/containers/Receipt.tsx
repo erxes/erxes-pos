@@ -31,9 +31,8 @@ const Receipt = () => {
     putResponses,
     registerNumber,
     _id,
-    billType,
   } = orderDetail;
-  const putResponse = putResponses[putResponses.length - 1];
+  const putResponse = putResponses[0];
 
   const number = (orderDetail.number || []).split('_')[1];
 

@@ -16,4 +16,19 @@
       border: $border-white;
     }
   }
+  &.sm {
+    max-width: 25rem;
+    padding-top: 1.5rem;
+    border-top: 0;
+    .row {
+      margin: -0.25rem;
+    }
+    .key {
+      padding: 0.25rem 0.5rem;
+    }
+
+    h2 {
+      font: 800 1.5rem/2.5rem 'Inter';
+    }
+  }
 }

@@ -36,7 +36,7 @@ const CheckoutItem: FC<ICartItem & { type: string }> = ({
           </b>
         </div>
       </div>
-      <Counter btnVariant="naked" count={count} _id={_id} />
+      <Counter btnVariant="naked" count={count} _id={_id} status={status} />
     </div>
   );
 };

@@ -8,16 +8,14 @@ interface IProps {
   btnVariant?: ButtonProps['variant'];
   count: number;
   _id: string;
+  status: string;
 }
 
-const Counter = ({ btnVariant, _id, count }: IProps) => {
+const Counter = ({ btnVariant, _id, count, status }: IProps) => {
   const { changeItemCount } = useApp();
-  // const [countFormat, setCountFormat] = useState('1');
 
   const handleChange = (value: string) => {
     changeItemCount(_id, parseInt(value));
-    // changeValue(parseInt((value || '0').replace(/\s/g, '')));
-    //   setCount(parseInt(value || '0'));
   };
 
   const handleStepChange = (plus?: boolean) =>

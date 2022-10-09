@@ -1,5 +1,6 @@
 import { useCheckoutContext } from 'modules/checkout/context';
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
+import Clock from 'icons/Clock';
 import useAddPayment from 'lib/useAddPayment';
 
 const Recievable = () => {
@@ -19,7 +20,7 @@ const Recievable = () => {
       btnText="Тооцох"
       loading={loading}
     >
-      {/* <CashIcon /> */}
+      <Clock />
       &nbsp;&nbsp;<h6>Дараах</h6>
     </PaymentMethod>
   );

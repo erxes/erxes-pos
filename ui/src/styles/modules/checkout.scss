@@ -1,6 +1,7 @@
 .checkout {
   width: 100%;
   max-width: 1248px;
+  padding: 1rem;
   &-total {
     padding: 1rem 1.25rem;
     border-bottom: $border;
@@ -79,6 +80,7 @@
   & > .col {
     flex: 1 1 50%;
     max-width: 50%;
+    padding: 1rem;
   }
 }
 

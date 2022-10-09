@@ -52,14 +52,14 @@
   &-name,
   &-price {
     font-weight: 700;
-    line-height: 1.5;
+    line-height: 1.25rem;
     text-align: center;
     letter-spacing: 0.15px;
   }
   &-name {
-    white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    height: 2.5rem;
     z-index: 1;
   }
   abbr {

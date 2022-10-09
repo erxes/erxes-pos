@@ -1,6 +1,17 @@
 import ProductContainer from '../containers/Product';
+import { getMode } from 'modules/utils';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 
 export default function Products({ products, onLoadMore }: any) {
+  const { currentConfig } = useConfigsContext();
+
+  let filteredProducts = products;
+
+  if (getMode() === 'kiosk') {
+    const excludeIds = currentConfig.kioskExcludeProductIds || [];
+    filteredProducts = products.filter((p: any) => !excludeIds.includes(p._id));
+  }
+
   const handleScroll = ({ currentTarget }: any, onLoadMore: any) => {
     const { scrollTop, clientHeight, scrollHeight } = currentTarget;
     if (scrollTop + clientHeight >= scrollHeight) {

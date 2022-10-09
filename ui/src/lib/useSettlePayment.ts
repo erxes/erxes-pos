@@ -30,7 +30,10 @@ const useSettlePayment = (onCompleted: any) => {
     }
   );
   return {
-    settlePayment: putResponse ? updatedOnCompleted : settlePayment,
+    settlePayment:
+      (putResponse || {}).success === 'true'
+        ? updatedOnCompleted
+        : settlePayment,
     loading,
   };
 };

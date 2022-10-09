@@ -1,4 +1,5 @@
 import { useApp } from 'modules/AppContext';
+import { useUI } from 'ui/context';
 import useCheckRegister from 'lib/useCheckRegister';
 import Radio from 'modules/common/ui/Radio';
 import Input from 'modules/common/ui/Input';
@@ -9,6 +10,7 @@ import { NOT_FOUND } from 'modules/constants';
 const CheckRegister = () => {
   const { registerNumber, setRegisterNumber } = useApp();
   const { name, loading, error, checkRegister } = useCheckRegister();
+  const { latestClickedKey, changeKey } = useUI();
 
   useEffect(() => {
     checkRegister();
@@ -31,6 +33,19 @@ const CheckRegister = () => {
     return [...str2, ' ', ...str1].join('');
   };
 
+  useEffect(() => {
+    changeKey('');
+  }, [registerNumber]);
+
+  useEffect(() => {
+    if (latestClickedKey) {
+      if (latestClickedKey === 'C') {
+        handleChange(registerNumber.slice(0, -1));
+        return;
+      }
+      handleChange(registerNumber + latestClickedKey);
+    }
+  }, [latestClickedKey]);
   return (
     <>
       <div

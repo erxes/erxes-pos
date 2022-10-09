@@ -41,13 +41,19 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
     };
   }, [handleKey]);
 
-  const rootCn = cn('modal-root flex-center', {
-    '-dark':
-      mode === 'kiosk' ||
-      modalView === 'QPAY_LIST_VIEW' ||
-      modalView === 'QPAY_VIEW',
-    wsbar: displaySidebar && sidebarPlacement === 'BOTTOM',
-  });
+  const rootCn = cn(
+    'modal-root flex-center',
+    {
+      '-dark':
+        mode === 'kiosk' ||
+        modalView === 'QPAY_LIST_VIEW' ||
+        modalView === 'QPAY_VIEW',
+    },
+    displaySidebar &&
+      sidebarPlacement === 'BOTTOM' &&
+      mode === 'pos' &&
+      (mode === 'pos' ? 'poswsbar' : 'wsbar')
+  );
 
   return (
     <div className={rootCn}>
