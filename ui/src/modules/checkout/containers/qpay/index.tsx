@@ -51,9 +51,7 @@ const Qpay = () => {
       loading={loading}
       btnText="Нэхэмжлэл үүсгэх"
     >
-      {/* <div className="img-wrap"> */}
       <Image src="/qpay.png" alt="" fill quality={100} />
-      {/* </div> */}
     </PaymentMethod>
   );
 };

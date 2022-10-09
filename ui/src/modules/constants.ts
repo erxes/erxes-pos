@@ -43,3 +43,5 @@ export const PAYMENT_TYPES = {
   CASH: 'cashAmount',
   REGISTER: 'registerNumber',
 };
+
+export const NOT_FOUND = '$notFound';

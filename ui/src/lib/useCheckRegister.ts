@@ -2,14 +2,17 @@ import { gql, useLazyQuery } from '@apollo/client';
 import { queries } from 'modules/checkout/graphql';
 import { useApp } from 'modules/AppContext';
 import { useEffect } from 'react';
+import { NOT_FOUND } from 'modules/constants';
 
 const useCheckRegister = () => {
   const { registerNumber, companyName, setCompanyName } = useApp();
-  const [check, { loading, refetch, error }] = useLazyQuery(
+  const [check, { loading, refetch, error, data }] = useLazyQuery(
     gql(queries.ordersCheckCompany),
     {
       onCompleted(data) {
-        setCompanyName(data.ordersCheckCompany);
+        const { name, found } = data.ordersCheckCompany || {};
+        if (found) return setCompanyName(name || 'testCompany');
+        return setCompanyName(NOT_FOUND);
       },
       fetchPolicy: 'network-only',
     }

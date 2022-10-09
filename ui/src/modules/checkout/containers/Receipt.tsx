@@ -1,6 +1,7 @@
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { useApp } from 'modules/AppContext';
 import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 import Image from 'ui/Image';
 import dayjs from 'dayjs';
 import { IOrderItem } from '../types';
@@ -10,13 +11,16 @@ import BarCode from './barcode';
 import Button from 'ui/Button';
 import Amount from '../components/Amount';
 import { getMode } from 'modules/utils';
+import cn from 'classnames';
 
 const Receipt = () => {
+  const router = useRouter();
+  const { type } = router.query;
   const { currentConfig } = useConfigsContext();
   const { uiOptions, name, ebarimtConfig } = currentConfig;
   const { receiptIcon: logo } = uiOptions;
   const { footerText } = ebarimtConfig || {};
-
+  const mode = getMode();
   const { orderDetail } = useApp();
 
   const {
@@ -29,20 +33,22 @@ const Receipt = () => {
     _id,
     billType,
   } = orderDetail;
-  const putResponse = putResponses[0];
+  const putResponse = putResponses[putResponses.length - 1];
 
   const number = (orderDetail.number || []).split('_')[1];
 
   const date = paidDate && dayjs(paidDate).format('YYYY.MM.DD HH:mm');
 
   useEffect(() => {
-    // if (putResponse) {
-    const mode = getMode();
     window.addEventListener('afterprint', () => {
       if (mode !== 'kiosk' && putResponse) {
         setTimeout(() => {
+          if (type === 'kitchen') {
+            window.close();
+            return;
+          }
           const popup = window.open(
-            `/order-receipt/${_id}?inner=true`,
+            `/order-receipt/${_id}?type=inner`,
             '__blank'
           );
           if (!popup) {
@@ -60,8 +66,6 @@ const Receipt = () => {
     setTimeout(() => {
       window.print();
     }, 20);
-    // }
-
     return () => window.removeEventListener('afterprint', () => {});
   }, []);
 
@@ -83,16 +87,47 @@ const Receipt = () => {
 
     return (
       <p className="customer">
-        <b>Харилцагч:</b>
+        <b>Харилцагч:</b> <br />
         {code && <span>Код: {code}</span>}
         <span>Нэр: {firstName}</span>
       </p>
     );
   };
 
+  const renderHeader = () => {
+    if (type === 'kitchen')
+      return (
+        <thead>
+          <tr className="detail-row">
+            <th>Бараа</th>
+            <th>Тоо</th>
+          </tr>
+        </thead>
+      );
+
+    return (
+      <thead>
+        <tr className="detail-row">
+          <th>Бараа</th>
+          <th>Үнэ/Тоо</th>
+          <th className="totalCount">Нийт дүн</th>
+        </tr>
+      </thead>
+    );
+  };
+
   const renderItem = (item: IOrderItem, idx: number) => {
     const { unitPrice, count, productName } = item;
     const total = unitPrice * (count || 0);
+
+    if (type === 'kitchen')
+      return (
+        <tr key={idx}>
+          <td>{productName}</td>
+          <td>{count}</td>
+        </tr>
+      );
+
     return (
       <tr key={idx}>
         <td>{productName}</td>
@@ -121,7 +156,7 @@ const Receipt = () => {
   };
 
   const renderQr = () => {
-    if (!putResponse) return null;
+    if (!putResponse || !!type) return null;
 
     const { qrData } = putResponse;
 
@@ -135,7 +170,7 @@ const Receipt = () => {
   };
 
   const renderLotteryCode = () => {
-    if (!putResponse) return null;
+    if (!putResponse || !!type) return null;
 
     if (putResponse.billType === '3') {
       const { customerName = '' } = putResponse;
@@ -163,6 +198,21 @@ const Receipt = () => {
     ) : null;
   };
 
+  const renderSignature = () => {
+    if (type === 'kitchen') return null;
+
+    return footerText ? (
+      <div className="text-center signature">
+        <label>{footerText}</label>
+      </div>
+    ) : (
+      <p className="signature">
+        <label>Гарын үсэг:</label>
+        <span> _____________________</span>
+      </p>
+    );
+  };
+
   return (
     <div className="printDocument">
       <header className="block">
@@ -188,13 +238,7 @@ const Receipt = () => {
       </header>
       <div className="block">
         <table>
-          <thead>
-            <tr className="detail-row">
-              <th>Бараа</th>
-              <th>Үнэ/Тоо</th>
-              <th className="totalCount">Нийт дүн</th>
-            </tr>
-          </thead>
+          {renderHeader()}
           <tbody>
             {items.map((item: IOrderItem, idx: number) =>
               renderItem(item, idx)
@@ -204,25 +248,19 @@ const Receipt = () => {
       </div>
       <footer>
         {renderError()}
-        <div className="lottery flex-h-between block">
+        <div
+          className={cn('lottery flex-h-between', {
+            block: type !== 'kitchen',
+          })}
+        >
           {renderQr()}
           <div>
-            <Amount />
+            {type !== 'kitchen' && <Amount />}
             {renderLotteryCode()}
           </div>
         </div>
-        <BarCode putResponse={putResponse} />
-        {footerText ? (
-          <div className="text-center signature">
-            <label>{footerText}</label>
-          </div>
-        ) : (
-          <p className="signature">
-            <label>Гарын үсэг:</label>
-            <span> _____________________</span>
-          </p>
-        )}
-
+        {!type && <BarCode putResponse={putResponse} />}
+        {renderSignature()}
         <div className="text-center btn-print">
           <Button onClick={() => window.print()}>Хэвлэх</Button>
         </div>

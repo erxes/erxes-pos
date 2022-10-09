@@ -6,7 +6,7 @@ import OrderItem from '../containers/OrderItem';
 import Timer from './Timer';
 import Button from 'ui/Button';
 
-const Order = ({ number, type, items, origin, paidDate, _id, status }: any) => {
+const Order = ({ number, type, items, paidDate, _id, status }: any) => {
   const { DONE, NEW, DOING } = ORDER_STATUSES;
   const [doneItems, setDoneItems] = useState([]);
   const [orderChangeStatus, { loading }] = useMutation(
@@ -17,7 +17,10 @@ const Order = ({ number, type, items, origin, paidDate, _id, status }: any) => {
     orderChangeStatus({
       variables: { _id, status },
       onCompleted() {
-        status === DONE && setDoneItems(items.map((item: any) => item._id));
+        if (status === DONE) {
+          setDoneItems(items.map((item: any) => item._id));
+          window.open(`/order-receipt/${_id}?type=kitchen`, '_blank');
+        }
       },
     });
 

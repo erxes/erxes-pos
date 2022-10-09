@@ -16,6 +16,7 @@ export interface State {
   billType: TBillType;
   customerId: string;
   description: string;
+  isChanged: boolean;
 }
 
 const initialState = {
@@ -27,6 +28,7 @@ const initialState = {
   billType: '',
   customerId: '',
   description: '',
+  isChanged: false,
 };
 
 type TBillType = '' | '1' | '3' | string;
@@ -46,7 +48,8 @@ type Action =
   | { type: 'SET_CUSTOMER_ID'; value: string }
   | { type: 'CHANGE_COUNT'; _id: string; count: number }
   | { type: 'SET_DESCRIPTION'; value: string }
-  | { type: 'SET_INITIAL_STATE' };
+  | { type: 'SET_INITIAL_STATE' }
+  | { type: 'CHANGE_IS_CHANGED'; value: boolean };
 
 export const AppContext = createContext<{} | any>(initialState);
 
@@ -80,6 +83,13 @@ const appReducer = (state: State, action: Action) => {
       return {
         ...state,
         cart: currentCart,
+      };
+    }
+    case 'CHANGE_IS_CHANGED': {
+      console.log(action);
+      return {
+        ...state,
+        isChanged: action.value,
       };
     }
     case 'SET_TYPE': {
@@ -240,7 +250,12 @@ export const AppContextProvider: IComponent = ({ children }) => {
 
   const setInitialState = useCallback(
     () => dispatch({ type: 'SET_INITIAL_STATE' }),
-    []
+    [dispatch]
+  );
+
+  const changeIsChanged = useCallback(
+    (value: boolean) => dispatch({ type: 'CHANGE_IS_CHANGED', value }),
+    [dispatch]
   );
 
   const value = useMemo(
@@ -258,6 +273,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
       setCustomerId,
       setDescription,
       setInitialState,
+      changeIsChanged,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]

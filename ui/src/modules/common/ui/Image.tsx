@@ -2,7 +2,12 @@ import { useState, FC } from 'react';
 import NextImage, { ImageProps } from 'next/future/image';
 
 const Image: FC<
-  ImageProps & { src?: string; alt?: string; fallBack?: string }
+  ImageProps & {
+    src?: string;
+    alt?: string;
+    fallBack?: string;
+    noWrap?: boolean;
+  }
 > = (props) => {
   const {
     src,
@@ -12,6 +17,7 @@ const Image: FC<
     width,
     height,
     fallBack,
+    noWrap,
     ...rest
   } = props;
   const [srcI, setSrcI] = useState(src || fallBack || '/product.png');
@@ -26,7 +32,9 @@ const Image: FC<
     onError,
   };
 
-  return (
+  return noWrap ? (
+    <NextImage {...updatedProps} />
+  ) : (
     <div className="img-wrap">
       <NextImage {...updatedProps} />
     </div>

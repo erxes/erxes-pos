@@ -12,6 +12,9 @@
       width: 100%;
       max-width: 670px;
     }
+    & > img {
+      object-fit: cover;
+    }
     .img-wrap {
       height: 12rem;
       img {
@@ -24,10 +27,10 @@
       font-size: 1.75rem;
       margin: 2.25rem 0 8rem;
     }
-    .btn.slim {
+    .btn.flat {
       font: 300 4rem/4rem 'Inter';
       color: #fff;
-      border: $border-white;
+      background: $primary;
       padding: 2.5rem 0;
       border-radius: 4.5rem;
       display: block;
@@ -45,15 +48,16 @@
     padding: 3rem;
     position: relative;
     overflow: hidden;
-    .img-wrap {
-      width: 12.5rem;
-      aspect-ratio: 2 / 1;
-    }
-    img {
+    & > img {
       inset: 0;
       object-fit: cover;
       object-position: left top;
     }
+    .img-wrap {
+      width: 12.5rem;
+      aspect-ratio: 2 / 1;
+    }
+
     .flex-h-between {
       position: relative;
     }

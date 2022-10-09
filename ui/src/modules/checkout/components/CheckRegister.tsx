@@ -4,6 +4,7 @@ import Radio from 'modules/common/ui/Radio';
 import Input from 'modules/common/ui/Input';
 import cn from 'classnames';
 import { useEffect } from 'react';
+import { NOT_FOUND } from 'modules/constants';
 
 const CheckRegister = () => {
   const { registerNumber, setRegisterNumber } = useApp();
@@ -53,11 +54,14 @@ const CheckRegister = () => {
                 value={formatRegister(registerNumber)}
                 disabled={loading}
               />
-              {name && <div className="name">{name}</div>}
+              {name && name !== NOT_FOUND && <div className="name">{name}</div>}
             </div>
           </div>
         </div>
         {error && <span className="error caption">{error.message}</span>}
+        {name === NOT_FOUND && (
+          <span className="error caption">РД буруу байна</span>
+        )}
       </div>
     </>
   );

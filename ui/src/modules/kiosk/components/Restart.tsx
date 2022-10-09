@@ -4,7 +4,7 @@ import { useApp } from 'modules/AppContext';
 import { getMode } from '../../utils';
 
 const Restart = () => {
-  const { setInitialState } = useApp();
+  const { isChanged } = useApp();
   const router = useRouter();
   let timeout: NodeJS.Timeout | null = null;
 
@@ -19,16 +19,16 @@ const Restart = () => {
     }
     timeout = setTimeout(() => {
       goBackToHome();
-    }, 1000 * 60);
+    }, 60 * 1000);
   };
 
   const onMouseMove = () => {
-    console.log('money moves');
+    console.log('hhash');
     restartAutoReset();
   };
 
   useEffect(() => {
-    if (getMode() !== 'kiosk') {
+    if (getMode() !== 'kiosk' || !isChanged) {
       return;
     }
 
@@ -45,7 +45,7 @@ const Restart = () => {
         window.removeEventListener('mousemove', onMouseMove);
       }
     };
-  }, [router.pathname]);
+  }, [router.pathname, isChanged]);
 
   return <div />;
 };

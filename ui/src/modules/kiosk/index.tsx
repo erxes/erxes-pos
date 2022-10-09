@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import Header from './components/Header';
 import CategoriesContainer from '../products/containers/Categories';
@@ -14,12 +13,10 @@ import Cart from 'modules/checkout/containers/Cart';
 
 const Kiosk = () => {
   const router = useRouter();
-  const { cart } = useApp();
-  const [isTake, setIsTake] = useState(false);
+  const { cart, isChanged } = useApp();
   const { setSidebarView, openSidebar, setSidebarPlacement } = useUI();
 
-  if (!router.query.orderId && !isTake)
-    return <Welcome setIsTake={setIsTake} />;
+  if (!router.query.orderId && !isChanged) return <Welcome />;
 
   const handleOpenCart = () => {
     setSidebarView('CART_VIEW');

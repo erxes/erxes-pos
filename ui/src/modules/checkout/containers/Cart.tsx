@@ -46,7 +46,7 @@ const CartContainer = () => {
           setCart(cart);
           setType(type);
           setCustomerId(customerId || '');
-          setBillType(billType);
+          setBillType(billType || '');
         }
       },
       onError(error) {

@@ -3,43 +3,38 @@ import Button from 'modules/common/ui/Button';
 import { useApp } from 'modules/AppContext';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 
-const Welcome = ({ setIsTake }: any) => {
-  const { setType } = useApp();
+const Welcome = () => {
+  const { setType, changeIsChanged } = useApp();
   const { bgImage, logoUrl } = useConfigsContext();
 
   const handleClick = (val: string) => {
     setType(val);
-    setIsTake(true);
+    changeIsChanged(true);
   };
 
   return (
     <>
-      <Image
-        fill
-        sizes="100vw"
-        src={bgImage || ''}
-        fallBack="/background.png"
-        alt=""
-      />
       <div className="kiosk-welcome flex-center">
+        <Image
+          fill
+          sizes="100vw"
+          src={bgImage || ''}
+          fallBack="/background.png"
+          alt=""
+          noWrap
+        />
         <div className="text-center">
-          <div className="img-wrap">
-            <Image
-              alt=""
-              fill
-              sizes="100vw"
-              fallBack="/logo-white.png"
-              src={logoUrl || ''}
-            />
-          </div>
+          <Image
+            alt=""
+            fill
+            sizes="100vw"
+            fallBack="/logo-white.png"
+            src={logoUrl || ''}
+          />
 
           <h5>Эрхэс таны бизнесийн хурдасгуур</h5>
-          <Button variant="slim" onClick={() => handleClick('eat')}>
-            Зааланд
-          </Button>
-          <Button variant="slim" onClick={() => handleClick('take')}>
-            Авч явах
-          </Button>
+          <Button onClick={() => handleClick('eat')}>Зааланд</Button>
+          <Button onClick={() => handleClick('take')}>Авч явах</Button>
         </div>
       </div>
     </>

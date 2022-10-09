@@ -7,6 +7,7 @@ import Button from 'ui/Button';
 import ICInput from 'ui/ICInput';
 import ArrowLeft from 'icons/ArrowLeft';
 import useCheckRegister from 'lib/useCheckRegister';
+import { NOT_FOUND } from 'modules/constants';
 
 const Ebarimt = () => {
   const {
@@ -46,7 +47,8 @@ const Ebarimt = () => {
 
   const renderStatus = () => {
     if (error) return <h3 className="status error">{error.message}</h3>;
-
+    if (name === NOT_FOUND)
+      return <h3 className="status error">РД буруу байна</h3>;
     if (name) return <h3 className="status success">{name}</h3>;
   };
 
@@ -70,7 +72,7 @@ const Ebarimt = () => {
 
         {renderStatus()}
 
-        {name ? (
+        {name && name !== NOT_FOUND ? (
           <Button onClick={handleGoToPayment} loading={loading}>
             <h4>Төлбөр төлөх</h4>
           </Button>

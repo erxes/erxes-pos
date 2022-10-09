@@ -1,8 +1,11 @@
 import { formatNum, calcTaxAmount } from 'modules/utils';
 import { useApp } from 'modules/AppContext';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
+import { useRouter } from 'next/router';
+import cn from 'classnames';
 
 const Amount = () => {
+  const router = useRouter();
   const { currentConfig } = useConfigsContext();
   const { orderDetail } = useApp();
   const {
@@ -31,7 +34,7 @@ const Amount = () => {
 
   return (
     <div>
-      <div className="block -sm">
+      <div className={cn('-sm', { block: !router.query.type })}>
         <Field text="Дүн" val={totalAmount} />
         <Field text="НӨАТ" val={taxAmount.vatAmount} />
         <Field text="НХАТ" val={taxAmount.cityTaxAmount} />

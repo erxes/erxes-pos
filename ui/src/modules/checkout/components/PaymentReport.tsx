@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useApp } from 'modules/AppContext';
 import LottieView from 'ui/Lottie';
 import { formatNum } from 'modules/utils';
@@ -13,7 +14,6 @@ const PaymentReport = () => {
     cashAmount,
     cardAmount,
     mobileAmount,
-    status,
     receivableAmount,
   } = orderDetail || {};
 
@@ -26,6 +26,10 @@ const PaymentReport = () => {
     setModalView('EBARIMT_VIEW');
     openModal();
   };
+
+  useEffect(() => {
+    paid && handleClick();
+  }, [remainder]);
 
   return (
     <div className="col flex-center payment-report">

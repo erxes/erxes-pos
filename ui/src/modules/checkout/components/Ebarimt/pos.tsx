@@ -1,12 +1,14 @@
-import type { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { useApp } from 'modules/AppContext';
+import { useUI } from 'ui/context';
 import useBillType from 'lib/useBillType';
 import Button from 'ui/Button';
 import Radio from 'ui/Radio';
 import cn from 'classnames';
 import CheckRegister from '../CheckRegister';
-import PrintEBarimt from '../../containers/PrintEBarimt';
+import useSettlePayment from 'lib/useSettlePayment';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
+import { NOT_FOUND } from 'modules/constants';
 
 interface IChooseType {
   children: ReactNode;
@@ -28,10 +30,22 @@ const ChooseType = ({ children, onClick, checked }: IChooseType) => (
 );
 
 const Ebarimt = () => {
-  const { companyName } = useApp();
-  const { allowInnerBill } = useConfigsContext();
+  const { closeModal } = useUI();
   const { isOrg, isPrsn, isInner, chooseOrg, choosePrsn, chooseInner } =
     useBillType();
+  const { companyName, billType } = useApp();
+  const { allowInnerBill } = useConfigsContext();
+
+  const showReciept = () => {
+    closeModal();
+    window.location.href = '/';
+  };
+
+  const onCompleted = () => {
+    return showReciept();
+  };
+
+  const { settlePayment, loading } = useSettlePayment(onCompleted);
 
   return (
     <div className="ebarimt-root">
@@ -53,7 +67,17 @@ const Ebarimt = () => {
         <div className={cn('smooth', { active: isOrg })}>
           {isOrg && <CheckRegister />}
         </div>
-        {(isPrsn || (isOrg && companyName) || isInner) && <PrintEBarimt />}
+        {((isOrg && !!companyName && companyName !== NOT_FOUND) ||
+          isInner ||
+          isPrsn) && (
+          <Button
+            loading={loading}
+            className="print"
+            onClick={() => settlePayment()}
+          >
+            Хэвлэх
+          </Button>
+        )}
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ const Header = () => {
         fill
         alt=""
         sizes="100vw"
+        noWrap
       />
       <div className="flex-h-between">
         <div className="img-wrap">

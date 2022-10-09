@@ -11,9 +11,7 @@ const ReviewItem: FC<any> = ({
   return (
     <div className="kiosk-review-item flex-h-between">
       <div className="flex-v-center">
-        <div className="img-wrap">
-          <Image src={productImgUrl} alt="" />
-        </div>
+        <Image src={productImgUrl} alt="" />
         <h4>{productName}</h4>
       </div>
       <h4 className="text-primary">

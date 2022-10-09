@@ -16,6 +16,7 @@ const Card = () => {
   const { number, totalAmount } = orderDetail;
   const { card } = useCheckoutContext();
   const { addPayment } = useAddPayment();
+
   const [loading, setLoading] = useState(true);
   const [cancelInterval, setCancelInterval] = useState(false);
   const mode = getMode();
@@ -24,6 +25,7 @@ const Card = () => {
   const PATH = 'http://localhost:27028';
 
   const handleError = (msg: string) => {
+    mode === 'kiosk' ? setModalView('PAYMENT_VIEW') : closeModal();
     toast.dismiss();
     toast.error(msg);
   };
@@ -114,7 +116,7 @@ const Card = () => {
     return (
       <div className="card-loading">
         <h2 className="text-center">
-          Та картаа <br /> уншуулана уу!
+          Та картаа <br /> уншуулна уу!
         </h2>
         <div className="img-wrap">
           <LottieView path="https://assets6.lottiefiles.com/packages/lf20_6yhhrbk6.json" />
