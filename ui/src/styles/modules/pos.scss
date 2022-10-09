@@ -8,6 +8,9 @@
       .img-wrap {
         aspect-ratio: 2 / 1;
         width: 5rem;
+        img {
+          object-fit: contain;
+        }
       }
     }
     border-bottom: $border;

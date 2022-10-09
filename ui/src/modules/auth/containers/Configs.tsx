@@ -13,6 +13,10 @@ interface State {
   configs: [any];
   allowReceivable: boolean;
   allowInnerBill: boolean;
+  logoUrl: string | null;
+  receiptIcon: string | null;
+  bgImage: string | null;
+  primaryColor: string | '';
 }
 
 export const ConfigsContext = createContext<State | any>(null);
@@ -36,7 +40,11 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
 
   const primary = ((uiOptions || {}).colors || {}).primary;
 
-  const logoUrl = ((uiOptions || {}).colors || {}).primary;
+  const logoUrl = (uiOptions || {}).logo;
+
+  const receiptIcon = (uiOptions || {}).receiptIcon;
+
+  const bgImage = (uiOptions || {}).bgImage;
 
   let allowReceivable = false;
   let allowInnerBill = false;
@@ -77,11 +85,13 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
     primaryColor: primary,
     allowReceivable,
     allowInnerBill,
+    logoUrl,
+    receiptIcon,
+    bgImage,
   };
 
-  if (loading || loadingConfig || loadingConfigs) {
+  if (loading || loadingConfig || loadingConfigs)
     return <Loading className="h-100vh" />;
-  }
 
   return (
     <ConfigsContext.Provider value={value}>{children}</ConfigsContext.Provider>

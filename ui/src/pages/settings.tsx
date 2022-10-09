@@ -1,10 +1,15 @@
+import dynamic from 'next/dynamic';
+import CheckMode from 'modules/CheckMode';
 import BlackLayout from 'modules/common/ui/BlackLayout';
-import Container from 'modules/settings';
 
-const Settings = () => {
-  return <Container />;
+const Settings = dynamic(() => import('modules/settings'), {
+  suspense: true,
+});
+
+const SettingsS = () => {
+  return <CheckMode pos={<Settings />} />;
 };
 
-Settings.Layout = BlackLayout;
+SettingsS.Layout = BlackLayout;
 
-export default Settings;
+export default SettingsS;

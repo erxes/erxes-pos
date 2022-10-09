@@ -7,8 +7,11 @@ import Empty from 'ui/Empty';
 
 const FullOrders = () => {
   const { fullOrders, loading } = useFullOrders({
-    statuses: ORDER_STATUSES.ALL,
+    statuses: [...ORDER_STATUSES.ALL, 'paid'],
     query: queries.fullOrders,
+    variables: {
+      searchValue: '20221006',
+    },
   });
 
   if (loading) return <Loading />;

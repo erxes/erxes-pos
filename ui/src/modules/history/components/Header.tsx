@@ -1,8 +1,9 @@
 import Header from 'modules/common/Layout/Header';
-import Search from 'modules/common/ui/Search';
+import Select from 'react-select';
 import Button from 'ui/Button';
 import { useAddQuery } from 'lib/useQuery';
 import Calender from 'icons/Calendar';
+import { ORDER_STATUSES } from 'modules/constants';
 
 const HistoryHeader = () => {
   const { query, addQuery } = useAddQuery();
@@ -13,10 +14,17 @@ const HistoryHeader = () => {
 
   return (
     <Header>
-      <small>
+      {/* <small>
         <b>Захиалгын түүх:</b>
-      </small>
-      <Search onSearch={onSearch} placeHolder="Хайлт хийх" />
+      </small> */}
+      {/* <Search onSearch={onSearch} placeHolder="Хайлт хийх" /> */}
+      <Select
+        isMulti
+        options={[...ORDER_STATUSES.ALL, 'paid'].map((el) => ({
+          value: el,
+          label: el,
+        }))}
+      />
       <Button className="filter-btn" variant="slim">
         Өнөөдөр
       </Button>

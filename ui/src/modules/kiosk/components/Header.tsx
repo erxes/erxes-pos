@@ -1,15 +1,22 @@
-import Image from 'next/future/image';
-// import Search from 'modules/products/components/Search';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
+import Image from 'ui/Image';
 
 const Header = () => {
+  const { bgImage, logoUrl } = useConfigsContext();
+
   return (
     <header>
-      <Image src="/background.png" fill alt="" sizes="100vw" />
+      <Image
+        fallBack="/background.png"
+        src={bgImage || ''}
+        fill
+        alt=""
+        sizes="100vw"
+      />
       <div className="flex-h-between">
         <div className="img-wrap">
-          <Image alt="" src="/logo-white.png" fill />
+          <Image alt="" fallBack="/logo-white.png" src={logoUrl || ''} fill />
         </div>
-        {/* <Search open /> */}
       </div>
     </header>
   );

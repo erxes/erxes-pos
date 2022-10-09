@@ -10,7 +10,6 @@ import BarCode from './barcode';
 import Button from 'ui/Button';
 import Amount from '../components/Amount';
 import { getMode } from 'modules/utils';
-import { BILL_TYPES } from 'modules/constants';
 
 const Receipt = () => {
   const { currentConfig } = useConfigsContext();
@@ -168,7 +167,13 @@ const Receipt = () => {
     <div className="printDocument">
       <header className="block">
         <div className="flex-h-between">
-          <Image src={logo} fill={false} height={32} width={32} alt={name} />
+          <Image
+            src={logo || ''}
+            fill={false}
+            height={32}
+            width={32}
+            alt={name}
+          />
           <div>{name}</div>
           <div>
             &#8470;{':'}

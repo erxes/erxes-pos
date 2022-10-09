@@ -83,7 +83,6 @@ const appReducer = (state: State, action: Action) => {
       };
     }
     case 'SET_TYPE': {
-      console.log(action);
       const { cart } = state;
       const newCart = cart.map((item) => ({
         ...item,
@@ -204,7 +203,6 @@ export const AppContextProvider: IComponent = ({ children }) => {
 
   const setType = useCallback(
     (value: string) => {
-      console.log(value, 'asdfasfda');
       dispatch({ type: 'SET_TYPE', value });
     },
     [dispatch]

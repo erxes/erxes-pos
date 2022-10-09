@@ -6,8 +6,7 @@ import Button from 'ui/Button';
 
 const Receipt = ({ date, report }: any) => {
   const { currentConfig } = useConfigsContext();
-  const { uiOptions, name, ebarimtConfig } = currentConfig;
-  const { receiptIcon: logo } = uiOptions;
+  const { receiptIcon: logo, name, ebarimtConfig } = currentConfig;
   const { footerText } = ebarimtConfig || {};
 
   if (!report) return null;
@@ -89,6 +88,7 @@ const Receipt = ({ date, report }: any) => {
           <label>Гарын үсэг:</label>
           <span> _____________________</span>
         </p>
+        <p className="signature">{footerText}</p>
         <div className="btn-print">
           <Button onClick={() => window.print()}>Хэвлэх</Button>
         </div>

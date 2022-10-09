@@ -1,7 +1,12 @@
-import WaitingContainer from 'modules/waiting';
+import dynamic from 'next/dynamic';
+import CheckMode from 'modules/CheckMode';
+
+const WaitingC = dynamic(() => import('modules/waiting'), {
+  suspense: true,
+});
 
 const Waiting = () => {
-  return <WaitingContainer />;
+  return <CheckMode pos={<WaitingC />} />;
 };
 
 export default Waiting;

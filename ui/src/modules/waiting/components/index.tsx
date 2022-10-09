@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import { ORDER_STATUSES } from 'modules/constants';
+import { ORDER_STATUSES, ORDER_ITEM_STATUSES } from 'modules/constants';
 import OrderItem from './OrderItem';
 
 const Waiting = ({ subToOrderStatuses, orders, subToItems }: any) => {
-  const { DONE, DOING, CONFIRM, COMPLETE } = ORDER_STATUSES;
+  const { DONE, DOING, COMPLETE } = ORDER_STATUSES;
   useEffect(() => {
     subToOrderStatuses([DOING, DONE, COMPLETE]);
-    subToItems([CONFIRM, DONE]);
+    subToItems([ORDER_ITEM_STATUSES.CONFIRM, DONE]);
   }, []);
 
   const updatedOrders = orders.filter(

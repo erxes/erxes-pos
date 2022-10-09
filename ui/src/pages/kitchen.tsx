@@ -1,7 +1,12 @@
-import Kitchen from 'modules/kitchen';
+import dynamic from 'next/dynamic';
+import CheckMode from 'modules/CheckMode';
+
+const Kitchen = dynamic(() => import('modules/kitchen'), {
+  suspense: true,
+});
 
 const KitchenS = () => {
-  return <Kitchen />;
+  return <CheckMode pos={<Kitchen />} />;
 };
 
 export default KitchenS;

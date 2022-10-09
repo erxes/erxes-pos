@@ -1,21 +1,24 @@
 import { useState, FC } from 'react';
 import NextImage, { ImageProps } from 'next/future/image';
 
-const Image: FC<ImageProps & { src?: string; alt?: string }> = (props) => {
+const Image: FC<
+  ImageProps & { src?: string; alt?: string; fallBack?: string }
+> = (props) => {
   const {
-    src = '/product.png',
+    src,
     fill = true,
     alt = '',
-    onError = () => setSrcI('/product.png'),
+    onError = () => setSrcI(props.fallBack || '/product.png'),
     width,
     height,
+    fallBack,
     ...rest
   } = props;
-  const [srcI, setSrcI] = useState(src);
+  const [srcI, setSrcI] = useState(src || fallBack || '/product.png');
 
   const updatedProps = {
     ...rest,
-    src: srcI || '/product.png',
+    src: srcI,
     alt,
     fill: !width && !height ? true : undefined,
     width,
