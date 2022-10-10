@@ -39,8 +39,29 @@ const Settings: IComponent = () => {
       </div>
 
       <div className="status-description">
-        <div className="flex-v-center">
-          <div className="-color"></div>- Done
+        <b className="text-center">Захиалгын төлөвүүд</b>
+        <div className="row">
+          <div className="col-6 flex-v-center">
+            <div className="-color -done"></div>- Done
+          </div>
+          <div className="col-6 flex-v-center">
+            <div className="-color -doing"></div>- Doing / Redoing
+          </div>
+          <div className="col-6 flex-v-center">
+            <div className="-color -new"></div>- New
+          </div>
+          <div className="col-6 flex-v-center">
+            <div className="-color -complete"></div>- Complete and notPaid
+          </div>
+          <div className="col-6 flex-v-center">
+            <div className="-color -new flex-center">*</div>- Kiosk-ooс
+          </div>
+          <div className="col-6 flex-v-center">
+            <div className="-color -paid flex-center">
+              <i>italic</i>
+            </div>
+            - Tөлбөр төлөгдсөн
+          </div>
         </div>
       </div>
     </div>

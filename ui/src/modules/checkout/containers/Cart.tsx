@@ -28,7 +28,6 @@ const CartContainer = () => {
 
   const convertCartItem = (item: any) => ({
     ...item,
-    isTake: item.isTake,
     name: item.productName,
   });
 

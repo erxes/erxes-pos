@@ -62,5 +62,30 @@
     }
   }
   .status-description {
+    padding-top: 1.5rem;
+    width: 100%;
+    b {
+      display: block;
+    }
+    .col-6 {
+      padding: 0.5rem;
+    }
+    .-color {
+      background: $gray;
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: 1rem;
+      border-radius: 0.25rem;
+      color: #fff;
+      &.-done {
+        background: $success;
+      }
+      &.-doing {
+        background: $warning;
+      }
+      &.-complete {
+        background: rgba($color: $success, $alpha: 0.7);
+      }
+    }
   }
 }

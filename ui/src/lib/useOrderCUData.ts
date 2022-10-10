@@ -29,6 +29,7 @@ const useOrderCUData = () => {
     unitPrice: item.unitPrice,
     isPackage: item.isPackage,
     isTake: item.isTake,
+    status: item.status ? item.status : 'new',
   });
 
   const getItems = () => {
