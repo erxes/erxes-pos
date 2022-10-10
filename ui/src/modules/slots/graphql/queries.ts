@@ -5,6 +5,7 @@ const fullOrders = `
       number
       status
       paidDate
+      origin
     }
   }`;
 

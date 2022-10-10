@@ -8,10 +8,14 @@ function SlotNumber({
   number,
   status,
   _id,
+  origin,
+  paidDate,
 }: {
   _id?: string;
   number: string;
   status: string;
+  origin: string;
+  paidDate: string | null;
 }) {
   const { removeQuery } = useRemoveQuery();
   const { query, addQuery } = useAddQuery();
@@ -24,6 +28,7 @@ function SlotNumber({
     <Button
       className={cn('slot-number', status, {
         active: query.orderId === _id,
+        '-paid': !!paidDate,
       })}
       onClick={() =>
         query.orderId === _id
@@ -32,6 +37,7 @@ function SlotNumber({
       }
     >
       {number.split('_')[1]}
+      {origin === 'kiosk' && '*'}
       <CheckCircle color={colors[status as keyof typeof colors]} />
     </Button>
   );
