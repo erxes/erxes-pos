@@ -43,8 +43,6 @@ const CartContainer = () => {
           const { items, customerId, type, billType, deliveryInfo } =
             orderDetail;
 
-          console.log(items);
-
           const cart = (items || []).map((item: any) => convertCartItem(item));
 
           setOrderDetail(orderDetail);

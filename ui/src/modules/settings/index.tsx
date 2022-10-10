@@ -37,6 +37,12 @@ const Settings: IComponent = () => {
         <DeleteOrders />
         <SendData />
       </div>
+
+      <div className="status-description">
+        <div className="flex-v-center">
+          <div className="-color"></div>- Done
+        </div>
+      </div>
     </div>
   );
 };
