@@ -1,7 +1,7 @@
 import ProductContainer from '../containers/Product';
 import { getMode } from 'modules/utils';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
-import Scroll from 'ui/Scroll';
+import Scroll from 'modules/kiosk/components/Scroll';
 
 export default function Products({ products, onLoadMore }: any) {
   const { currentConfig } = useConfigsContext();

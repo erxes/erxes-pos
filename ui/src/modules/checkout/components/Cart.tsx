@@ -3,7 +3,7 @@ import CheckoutTotal from './Total';
 import CheckoutItem from './Item';
 import Empty from 'ui/Empty';
 import { ICartItem } from 'modules/types';
-import Scroll from 'ui/Scroll';
+import Scroll from 'modules/kiosk/components/Scroll';
 
 const CheckoutCart = () => {
   const { cart, type } = useApp();

@@ -19,7 +19,7 @@ const Counter = ({
   productImgUrl,
   unitPrice,
   status,
-}: IProps) => {
+}: any) => {
   const { changeItemCount, addItemToCart } = useApp();
   const { paidDate, checkStatus } = useIsEditable();
 

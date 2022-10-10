@@ -1,4 +1,4 @@
-import { orderFields, orderItemsFields } from './queries';
+import { orderFields, orderItemFields } from './queries';
 
 const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String, $slotCode: String, $registerNumber: String, $billType: String, $origin: String, $deliveryInfo: JSON`;
 const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId, slotCode: $slotCode, registerNumber: $registerNumber, billType: $billType, origin: $origin, deliveryInfo: $deliveryInfo`;
@@ -58,7 +58,7 @@ const ordersAddPayment = `
   mutation ordersAddPayment($_id: String!, $cashAmount: Float, $cardAmount: Float, $cardInfo: JSON, $receivableAmount: Float) {
     ordersAddPayment(_id: $_id, cashAmount: $cashAmount, cardAmount: $cardAmount, cardInfo: $cardInfo, receivableAmount: $receivableAmount) {
       ${orderFields}
-      ${orderItemsFields}
+      ${orderItemFields}
     }
   }
 `;
