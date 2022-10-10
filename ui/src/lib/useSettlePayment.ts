@@ -1,7 +1,7 @@
 import { gql, useMutation } from '@apollo/client';
 import { mutations } from 'modules/checkout/graphql';
 import { toast } from 'react-toastify';
-import { trimGraphqlError } from 'modules/utils';
+import { trimGraphqlError, goToReceipt } from 'modules/utils';
 import { useApp } from 'modules/AppContext';
 
 const useSettlePayment = (onCompleted: any) => {
@@ -11,7 +11,7 @@ const useSettlePayment = (onCompleted: any) => {
   const putResponse = putResponses[0];
 
   const updatedOnCompleted = () => {
-    window.open(`/order-receipt/${_id}`, '_blank');
+    goToReceipt(_id);
     onCompleted && onCompleted();
   };
 

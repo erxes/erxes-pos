@@ -1,13 +1,12 @@
 .kitchen {
   max-height: 100vh;
   &-order {
-    border: $border;
+    border: 2px solid rgba($color: #000000, $alpha: 0.22);
     margin: 1rem 0.5rem;
-    padding: 1.5rem 1rem;
+    padding: 1rem;
     border-radius: 0.5rem;
 
     .-header {
-      padding: 0 1rem;
       color: #000;
       .flex-h-between {
         padding-bottom: 0.25rem;
@@ -21,7 +20,12 @@
       border-radius: 0.25rem;
       background: $primary;
       cursor: default;
-      margin-right: 0.5rem;
+      margin-bottom: 0.125rem;
+    }
+    .-timer {
+      margin-top: 0.25rem;
+      font-weight: 600;
+      color: $gray;
     }
 
     .-item {
@@ -41,7 +45,9 @@
           font-size: 1.25em;
         }
       }
-      border-bottom: $border;
+      &:not(:last-child) {
+        border-bottom: $border;
+      }
       .radio {
         height: 1.625rem;
         width: 1.625rem;
@@ -54,11 +60,11 @@
       }
     }
     .btn.slim {
-      padding: 0.5rem 2rem;
+      padding: 1rem;
       color: $primary;
       border-color: $primary;
-      margin-top: 1rem;
       font-weight: 700;
+      margin-left: 1rem;
     }
   }
   .-origin {

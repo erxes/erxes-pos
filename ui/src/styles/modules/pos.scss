@@ -95,9 +95,17 @@
     max-width: ($one-third * 2);
     flex: 1 1 ($one-third * 2);
     height: 100%;
-    padding: 0 1.25rem;
     display: flex;
     flex-direction: column;
+    & > .flex-1 {
+      div {
+        max-height: 100%;
+      }
+      .row {
+        // padding: 0 1.25rem;
+        margin: -0.625rem 0;
+      }
+    }
   }
   &-sidebar {
     flex: 1 1 $one-third;

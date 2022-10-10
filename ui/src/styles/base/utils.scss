@@ -72,19 +72,6 @@
   background: $primary !important;
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-  width: 0.25rem;
-  &-track {
-    background: #f1f1f1;
-  }
-  &-thumb {
-    background: #888;
-    &:hover {
-      background: #555;
-    }
-  }
-}
-
 .outline-none {
   outline: 2px solid transparent;
   outline-offset: 2px;

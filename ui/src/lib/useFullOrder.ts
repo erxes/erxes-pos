@@ -61,39 +61,4 @@ const useFullOrders = ({
   };
 };
 
-export const useFullOrderItems = ({
-  statuses,
-  fetchPolicy = 'network-only',
-  query,
-}: any) => {
-  const { loading, data, subscribeToMore, refetch } = useQuery(
-    gql(query ? query : queries.fullOrderItems),
-    {
-      variables: { statuses: checkIsArray(statuses) },
-      fetchPolicy,
-    }
-  );
-
-  const subToItems = (subStatuses: IStatuses, callBack: any) =>
-    subscribeToMore({
-      document: gql(subscriptions.orderItemsOrdered),
-      variables: { statuses: checkIsArray(subStatuses) },
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-        const changedOrderItem = subscriptionData.data.orderItemsOrdered;
-        if (changedOrderItem) {
-          refetch();
-          callBack();
-        }
-      },
-    });
-
-  return {
-    loading,
-    orderItems: (data || {}).fullOrderItems || [],
-    subToItems,
-    refetch,
-  };
-};
-
 export default useFullOrders;

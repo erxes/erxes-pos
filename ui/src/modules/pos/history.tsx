@@ -3,7 +3,7 @@ import FullOrders from 'modules/history/containers/FullOrders';
 
 const History = () => {
   return (
-    <div className="history">
+    <div className="history flex-col">
       <HistoryHeader />
       <FullOrders />
     </div>

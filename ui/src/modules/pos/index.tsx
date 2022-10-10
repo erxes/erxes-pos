@@ -15,7 +15,9 @@ const Pos = () => {
             <Categories />
           </div>
         </div>
-        <Products />
+        <div className="flex-1">
+          <Products />
+        </div>
       </div>
     </PosLayout>
   );

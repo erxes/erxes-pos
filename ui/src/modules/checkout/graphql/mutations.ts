@@ -1,11 +1,11 @@
 import { orderFields, orderItemsFields } from './queries';
 
-const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String, $slotCode: String, $registerNumber: String, $billType: String`;
-const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId, slotCode: $slotCode, registerNumber: $registerNumber, billType: $billType`;
+const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String, $slotCode: String, $registerNumber: String, $billType: String, $origin: String, $deliveryInfo: JSON`;
+const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId, slotCode: $slotCode, registerNumber: $registerNumber, billType: $billType, origin: $origin, deliveryInfo: $deliveryInfo`;
 
 const ordersAdd = `
-  mutation ordersAdd(${addEditParamDefs}, $origin: String) {
-    ordersAdd(${addEditParams}, origin: $origin) {
+  mutation ordersAdd(${addEditParamDefs}) {
+    ordersAdd(${addEditParams}) {
      _id
     }
   }

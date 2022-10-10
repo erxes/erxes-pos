@@ -1,7 +1,20 @@
+import { orderFields } from './queries';
+
 const ordersOrdered = `
   subscription ordersOrdered($statuses: [String], $customerId: String) {
     ordersOrdered(statuses: $statuses, customerId: $customerId) {
-      _id
+      ${orderFields}
+      items {
+        _id
+        unitPrice
+        orderId
+        productName
+        count
+        productId
+        isPackage
+        isTake
+        status
+      }
     }
   }
 `;

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Image from 'ui/Image';
 import dayjs from 'dayjs';
 import { IOrderItem } from '../types';
-import { formatNum } from 'modules/utils';
+import { formatNum, goToReceipt } from 'modules/utils';
 import QRCode from 'react-qr-code';
 import BarCode from './barcode';
 import Button from 'ui/Button';
@@ -31,6 +31,8 @@ const Receipt = () => {
     putResponses,
     registerNumber,
     _id,
+    type: orderType,
+    deliveryInfo,
   } = orderDetail;
   const putResponse = putResponses[0];
 
@@ -46,10 +48,7 @@ const Receipt = () => {
             window.close();
             return;
           }
-          const popup = window.open(
-            `/order-receipt/${_id}?type=inner`,
-            '__blank'
-          );
+          const popup = goToReceipt(_id, 'inner', '__blank');
           if (!popup) {
             prompt(
               `Popup зөвшөөрөгдөөгүй байна. Дараах тохиргоог хийнэ үү. \n 1. Доорх холбоосыг copy-дох  \n 2. шинэ tab нээж, paste хийн копидсон холбоосоор орох \n 3. "Pop-ups and redirects" гэсэн хэсгийг олоод \n 4. "Allow" гэснийг сонгоно. \n 5. Үндсэн хуудасаа рефреш`,
@@ -198,7 +197,12 @@ const Receipt = () => {
   };
 
   const renderSignature = () => {
-    if (type === 'kitchen') return null;
+    if (type === 'kitchen')
+      return orderType === 'delivery' ? (
+        <p>
+          <b>Хүргэлтийн мэдээлэл:</b> {(deliveryInfo || {}).description}
+        </p>
+      ) : null;
 
     return footerText ? (
       <div className="text-center signature">

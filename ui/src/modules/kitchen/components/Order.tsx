@@ -5,6 +5,7 @@ import { ORDER_STATUSES } from 'modules/constants';
 import OrderItem from '../containers/OrderItem';
 import Timer from './Timer';
 import Button from 'ui/Button';
+import { goToReceipt, renderType } from 'modules/utils';
 
 const Order = ({ number, type, items, paidDate, _id, status }: any) => {
   const { DONE, NEW, DOING } = ORDER_STATUSES;
@@ -19,7 +20,7 @@ const Order = ({ number, type, items, paidDate, _id, status }: any) => {
       onCompleted() {
         if (status === DONE) {
           setDoneItems(items.map((item: any) => item._id));
-          window.open(`/order-receipt/${_id}?type=kitchen`, '_blank');
+          goToReceipt(_id, 'kitchen');
         }
       },
     });
@@ -47,11 +48,17 @@ const Order = ({ number, type, items, paidDate, _id, status }: any) => {
         <div className="flex-h-between">
           <h5>#{number.split('_')[1]}</h5>
           <div className="flex-v-center">
-            <p className="btn flat -tag">
-              {type === 'eat' && 'Зааланд'}
-              {type === 'take' && 'Авч явах'}
-            </p>
-            <Timer paidDate={paidDate} />
+            <div className="flex-center flex-col">
+              <p className="btn flat -tag">{renderType(type)}</p>
+              <Timer paidDate={paidDate} />
+            </div>
+            <Button
+              variant="slim"
+              loading={loading}
+              onClick={() => handleChangeStatus(DONE)}
+            >
+              Бэлэн болсон
+            </Button>
           </div>
         </div>
       </div>
@@ -65,13 +72,6 @@ const Order = ({ number, type, items, paidDate, _id, status }: any) => {
           setDoneItems={setDoneItems}
         />
       ))}
-      <Button
-        variant="slim"
-        loading={loading}
-        onClick={() => handleChangeStatus(DONE)}
-      >
-        Бэлэн болсон
-      </Button>
     </div>
   );
 };

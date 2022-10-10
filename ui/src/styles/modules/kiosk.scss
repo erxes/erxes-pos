@@ -90,44 +90,17 @@
     width: 100%;
     overflow: hidden;
     & > div {
-      max-height: 100%;
+      height: 100%;
     }
-    .simplebar-vertical {
-      right: initial;
-      left: 0;
-      width: 2.25rem;
-      &:hover {
-        .simplebar-scrollbar {
-          // background-color: rgba(0, 0, 0, 0.12);
-        }
-      }
-      .simplebar-scrollbar {
-        &:hover {
-          background-color: rgba($color: #000000, $alpha: 0.15);
-          border-radius: 28px;
-        }
-        &::before {
-          opacity: 1;
-          height: 4.5rem;
-          width: 1.75rem;
-          border-radius: 1.5rem;
-          top: 50%;
-          transform: translateY(-50%);
-          bottom: initial;
-          right: initial;
-          left: 0.25rem;
-          z-index: 100;
-          background-color: $primary;
-          background-image: url('/scroll-v.svg');
-          background-repeat: no-repeat;
-          background-position: 50% 50%;
-          background-size: cover;
-        }
-      }
-    }
+
     .products {
       max-width: 100%;
       margin: 0;
+    }
+
+    .simplebar-track {
+      left: 0;
+      right: initial;
     }
   }
   &-product {

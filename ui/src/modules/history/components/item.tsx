@@ -4,18 +4,13 @@ import Button from 'ui/Button';
 import { formatNum } from 'modules/utils';
 import Ink from 'react-ink';
 import dayjs from 'dayjs';
-import { ORDER_TYPES } from 'modules/constants';
+import { renderType } from 'modules/utils';
 
 const HistoryItem = ({ order }: any) => {
   const { setOrderDetail } = useApp();
   const { setModalView, openModal } = useUI();
   const { totalAmount, paidDate, type, number } = order;
   const date = dayjs(paidDate).format('DD/MM/YYYY');
-
-  const renderType = () => {
-    if (type === ORDER_TYPES.EAT) return 'Зааланд';
-    if (type === ORDER_TYPES.TAKE) return 'Авч явахаар';
-  };
 
   const handleClick = () => {
     setOrderDetail(order);
@@ -30,7 +25,7 @@ const HistoryItem = ({ order }: any) => {
         <b>#{number.split('_')[1]}</b>
       </div>
       <div className="flex-h-between">
-        <Button riffle={false}>{renderType()}</Button>
+        <Button riffle={false}>{renderType(type)}</Button>
         <span className="caption">{paidDate && date}</span>
       </div>
       <Ink />

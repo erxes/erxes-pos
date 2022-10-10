@@ -3,7 +3,7 @@ import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
 import Button from 'ui/Button';
 import ArrowLeft from 'icons/ArrowLeft';
-import Scroll from './Scroll';
+import Scroll from '../../common/ui/Scroll';
 import ReviewItem from './CheckoutItem';
 import type { ICartItem } from 'modules/types';
 import { formatNum } from 'modules/utils';

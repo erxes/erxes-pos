@@ -1,4 +1,5 @@
 import type { IEbarimtConfig } from './types';
+import { ORDER_TYPES } from 'modules/constants';
 
 export const formatNum = (num: number | string, splitter?: any): string => {
   const checked = typeof num === 'string' ? Number(num) : num;
@@ -63,3 +64,18 @@ export const calcTaxAmount = (amount: number, config?: IEbarimtConfig) => {
     pureAmount: (amount / (100 + taxPercent)) * 100,
   };
 };
+
+export const goToReceipt = (
+  _id: string,
+  type: string = '',
+  blank: string = '_black'
+) => window.open(`/order-receipt/${_id}?type=${type}`, blank);
+
+export const renderType = (type: string) => {
+  if (type === ORDER_TYPES.EAT) return 'Зааланд';
+  if (type === ORDER_TYPES.TAKE) return 'Авч явахаар';
+  if (type === ORDER_TYPES.DELIVERY) return 'Хүргэлт';
+};
+
+export const convertDate = (date: any) =>
+  date.toISOString().slice(0, 19).replace('T', ' ');

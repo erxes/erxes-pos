@@ -20,7 +20,6 @@ const OrderCU = () => {
   const { orderCU, loading } = useOrderCU(onCompleted);
 
   const totalValue = useTotalValue();
-  console.log(totalValue);
 
   return (
     <div className="kiosk-cart-footer text-center">

@@ -25,10 +25,11 @@ export const orderFields = `
   billId
   origin
   type
+  deliveryInfo
 `;
 
-export const orderItemsFields = `
-  items {
+export const orderItemFields = `
+
     _id
     unitPrice
     orderId
@@ -42,7 +43,7 @@ export const orderItemsFields = `
     discountAmount
     discountPercent
     bonusCount
-  }
+  
 `;
 
 const customerFields = `
@@ -87,8 +88,10 @@ const orderDetail = `
     orderDetail(_id: $_id) {
       ${orderFields}
 
-      ${orderItemsFields}
-
+      items {
+        ${orderItemFields}
+      }
+      
       customer {
         firstName
         lastName
@@ -124,23 +127,6 @@ export const ordersCheckCompany = `
   }
 `;
 
-const fullOrderItems = `
-  query fullOrderItems($searchValue: String, $statuses: [String], $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
-    fullOrderItems(searchValue: $searchValue, statuses: $statuses, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
-      _id
-      unitPrice
-      orderId
-      productName
-      count
-      productId
-      isPackage
-      isTake
-      productImgUrl
-      status
-    }
-  }
-`;
-
 const fullOrders = `
   query fullOrders($searchValue: String, $statuses: [String], $customerId: String, $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
     fullOrders(searchValue: $searchValue, statuses: $statuses, customerId: $customerId, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
@@ -164,10 +150,9 @@ const fullOrders = `
 const queries = {
   commonFields,
   orderFields,
-  orderItemsFields,
+  orderItemFields,
   orderDetail,
   ordersCheckCompany,
-  fullOrderItems,
   fullOrders,
 };
 

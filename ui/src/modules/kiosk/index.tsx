@@ -4,7 +4,6 @@ import CategoriesContainer from '../products/containers/Categories';
 import ProductsContainer from '../products/containers/Products';
 import Icon from 'modules/common/icons/Cart';
 import Button from 'modules/common/ui/Button';
-import Scroll from './components/Scroll';
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'modules/common/ui/context';
 import Welcome from './components/welcome';
@@ -32,9 +31,7 @@ const Kiosk = () => {
           <CategoriesContainer />
         </div>
         <div className="kiosk-products">
-          <Scroll>
-            <ProductsContainer />
-          </Scroll>
+          <ProductsContainer />
         </div>
         <div className="kiosk-cart-btn">
           <Button onClick={handleOpenCart}>

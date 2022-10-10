@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { mutations, queries } from 'modules/checkout/graphql';
+import { mutations } from 'modules/checkout/graphql';
 import ForkKnife from 'icons/ForkKnife';
 import Motocycle from 'icons/Motocycle';
 import Radio from 'ui/Radio';
@@ -15,10 +14,9 @@ const OrderItem = ({
   productName,
   _id,
   status,
-  doneItems,
   setDoneItems,
 }: any) => {
-  const { DONE, CONFIRM, NEW } = ORDER_ITEM_STATUSES;
+  const { DONE, CONFIRM } = ORDER_ITEM_STATUSES;
   const [changeStatus, { loading }] = useMutation(
     gql(mutations.orderItemChangeStatus),
     {
@@ -28,21 +26,6 @@ const OrderItem = ({
     }
   );
 
-  useEffect(() => {
-    if (
-      doneItems.length &&
-      (doneItems || []).indexOf(_id) > -1 &&
-      status !== DONE
-    ) {
-      changeStatus({
-        variables: {
-          _id,
-          status: DONE,
-        },
-      });
-    }
-  }, [doneItems]);
-
   const isDone = status === DONE;
 
   const mode = loading ? 'loading' : isDone && 'checked';
@@ -50,12 +33,6 @@ const OrderItem = ({
   const handleClick = () => {
     return changeStatus({
       variables: { _id, status: status === DONE ? CONFIRM : DONE },
-      refetchQueries: [
-        {
-          query: gql(queries.fullOrders),
-        },
-        'fullOrders',
-      ],
       onCompleted() {
         if (status !== DONE) return setDoneItems((prev: any) => [...prev, _id]);
         return setDoneItems((prev: any[]) => prev.slice(prev.indexOf(_id), 1));

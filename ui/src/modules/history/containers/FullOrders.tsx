@@ -1,4 +1,5 @@
 import useFullOrders from 'lib/useFullOrder';
+import { useAddQuery } from 'lib/useQuery';
 import { queries } from '../graphql';
 import HistoryItem from '../components/item';
 import Loading from 'ui/Loading';
@@ -6,22 +7,26 @@ import { ORDER_STATUSES } from 'modules/constants';
 import Empty from 'ui/Empty';
 
 const FullOrders = () => {
+  const { query } = useAddQuery();
+  const { searchValue, startDate, endDate } = query;
+
+  const statuses = !!(query.statuses || []).length
+    ? query.statuses
+    : [...ORDER_STATUSES.ALL, 'paid'];
+
   const { fullOrders, loading } = useFullOrders({
-    statuses: [...ORDER_STATUSES.ALL, 'paid'],
+    statuses: statuses,
     query: queries.fullOrders,
     variables: {
-      searchValue: '20221006',
+      searchValue,
+      startDate,
+      endDate,
     },
   });
 
   if (loading) return <Loading />;
 
-  if (!fullOrders.length)
-    return (
-      <div className="flex-v-center fill">
-        <Empty />
-      </div>
-    );
+  if (!fullOrders.length) return <Empty />;
 
   return (
     <div className="row">

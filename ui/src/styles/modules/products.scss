@@ -20,17 +20,12 @@
     background-color: #fff;
     position: relative;
     z-index: 1;
-    padding: 1.25rem 0;
+    padding: 1.25rem 0.625rem;
   }
 
   &.row {
     margin: -0.625rem;
-    overflow-y: auto;
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    overflow-y: hidden;
   }
   .col {
     padding: 0.625rem;
@@ -60,7 +55,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     height: 2.5rem;
-    z-index: 1;
   }
   abbr {
     text-decoration: none;

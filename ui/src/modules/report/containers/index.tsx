@@ -72,7 +72,6 @@ const ReportContainer = () => {
             onChange={handleDate}
             value={date}
             max={format(today)}
-            min="2022-01-01"
             required
           />
           <b>Хэрэглэгч сонгох</b>

@@ -14,6 +14,7 @@ const useOrderCUData = () => {
     customerId,
     orderDetail,
     billType,
+    description,
   } = useApp();
   const { isOrg } = useBillType();
   const router = useRouter();
@@ -49,6 +50,10 @@ const useOrderCUData = () => {
     slotId,
     customerId,
     totalAmount,
+    origin: mode === 'kiosk' ? 'kiosk' : '',
+    deliveryInfo: {
+      description,
+    },
   };
 };
 

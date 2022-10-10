@@ -16,15 +16,23 @@
       border: $border-white;
     }
   }
-  &.sm {
-    max-width: 25rem;
-    padding-top: 1.5rem;
-    border-top: 0;
+}
+
+.ebarimt {
+  .keyboard {
+    // background: #000;
+    padding-top: 0;
+    padding-bottom: 1.5rem;
     .row {
-      margin: -0.25rem;
+      margin: auto;
+      max-width: 25rem;
     }
     .key {
       padding: 0.25rem 0.5rem;
+      .btn.slim {
+        color: #000;
+        border: $border;
+      }
     }
 
     h2 {

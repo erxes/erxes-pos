@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
 import useCheckRegister from 'lib/useCheckRegister';
@@ -6,6 +7,7 @@ import Input from 'modules/common/ui/Input';
 import cn from 'classnames';
 import { useEffect } from 'react';
 import { NOT_FOUND } from 'modules/constants';
+import KeyBoard from './KeyBoard';
 
 const CheckRegister = () => {
   const { registerNumber, setRegisterNumber } = useApp();
@@ -77,6 +79,9 @@ const CheckRegister = () => {
         {name === NOT_FOUND && (
           <span className="error caption">РД буруу байна</span>
         )}
+      </div>
+      <div className="smooth active">
+        <KeyBoard />
       </div>
     </>
   );

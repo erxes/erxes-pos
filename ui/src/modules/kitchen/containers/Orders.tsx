@@ -6,12 +6,16 @@ import Order from '../components/Order';
 import Grid from 'ui/Grid';
 
 const Orders = () => {
-  const { NEW, DOING, ALL } = ORDER_STATUSES;
+  const { NEW, DOING, ALL, REDOING } = ORDER_STATUSES;
 
   const { loading, fullOrders, subToOrderStatuses, subToItems } = useFullOrders(
     {
-      statuses: [NEW, DOING],
+      statuses: [NEW, DOING, REDOING],
     }
+  );
+
+  const orders = fullOrders.filter(
+    ({ paidDate, origin }: any) => origin !== 'kiosk' || !!paidDate
   );
 
   useEffect(() => {
@@ -23,7 +27,7 @@ const Orders = () => {
 
   return (
     <>
-      <Grid data={fullOrders} Component={Order} />
+      <Grid data={orders} Component={Order} />
     </>
   );
 };

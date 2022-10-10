@@ -11,7 +11,7 @@ interface IProps {
 
 const Empty = ({ text = 'There is no data!', dark, fill = true }: IProps) => {
   return (
-    <div className={cn('flex-center empty', { dark, fill })}>
+    <div className={cn('flex-center empty', { dark, 'fill flex-1': fill })}>
       <div>
         <Question className="qs qs-1" />
         <Question className="qs qs-2" />

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from 'modules/checkout/context';
 import { useApp } from 'modules/AppContext';
@@ -6,7 +7,6 @@ import { useState } from 'react';
 import useAddPayment from 'lib/useAddPayment';
 import { toast } from 'react-toastify';
 import LottieView from 'ui/Lottie';
-import useInterval from 'use-interval';
 import { getMode } from 'modules/utils';
 
 const Card = () => {
@@ -110,7 +110,9 @@ const Card = () => {
     // !
   };
 
-  useInterval(sendTransaction, cancelInterval ? null : 3000);
+  useEffect(() => {
+    sendTransaction();
+  }, []);
 
   if (loading)
     return (

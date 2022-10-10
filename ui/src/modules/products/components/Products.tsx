@@ -1,6 +1,7 @@
 import ProductContainer from '../containers/Product';
 import { getMode } from 'modules/utils';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
+import Scroll from 'ui/Scroll';
 
 export default function Products({ products, onLoadMore }: any) {
   const { currentConfig } = useConfigsContext();
@@ -20,13 +21,15 @@ export default function Products({ products, onLoadMore }: any) {
   };
 
   return (
-    <div
-      className="row custom-scrollbar products"
-      onScroll={(e) => handleScroll(e, onLoadMore)}
-    >
-      {products.map((product: any, key: number) => (
-        <ProductContainer {...product} key={key} />
-      ))}
-    </div>
+    <Scroll>
+      <div
+        className="row products"
+        onScroll={(e) => handleScroll(e, onLoadMore)}
+      >
+        {products.map((product: any, key: number) => (
+          <ProductContainer {...product} key={key} />
+        ))}
+      </div>
+    </Scroll>
   );
 }

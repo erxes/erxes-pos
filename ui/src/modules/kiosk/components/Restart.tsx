@@ -23,7 +23,6 @@ const Restart = () => {
   };
 
   const onMouseMove = () => {
-    console.log('hhash');
     restartAutoReset();
   };
 

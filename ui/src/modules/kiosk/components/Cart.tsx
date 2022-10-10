@@ -1,5 +1,5 @@
 import CartItem from './CartItem';
-import Scroll from './Scroll';
+import Scroll from '../../common/ui/Scroll';
 import { useApp } from 'modules/AppContext';
 import Empty from 'ui/Empty';
 import type { ICartItem } from 'modules/types';

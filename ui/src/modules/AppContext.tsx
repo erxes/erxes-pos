@@ -63,9 +63,12 @@ const appReducer = (state: State, action: Action) => {
 
       const currentCart = cart.slice();
 
-      const foundItem = currentCart.find(
-        (i) => i.productId === product._id && !i.isTake && i.status === 'new'
-      );
+      const foundItem = currentCart.find((i) => {
+        if (i.productId === product._id && i.status === 'new') {
+          if (state.type === ('take' || 'delivery')) return true;
+          if (!i.isTake) return true;
+        }
+      });
 
       if (foundItem) {
         foundItem.count += 1;
@@ -86,7 +89,6 @@ const appReducer = (state: State, action: Action) => {
       };
     }
     case 'CHANGE_IS_CHANGED': {
-      console.log(action);
       return {
         ...state,
         isChanged: action.value,
@@ -244,7 +246,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
   );
 
   const setDescription = useCallback(
-    (value: string) => dispatch({ type: 'SET_TYPE', value }),
+    (value: string) => dispatch({ type: 'SET_DESCRIPTION', value }),
     [dispatch]
   );
 

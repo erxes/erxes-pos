@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
 import { gql, useQuery } from '@apollo/client';
@@ -8,6 +9,7 @@ import NotFound from 'modules/common/Layout/NotFound';
 const OrderDetailContainer = ({ handleSuccess, children }: any) => {
   const { setOrderDetail, orderDetail, setBillType, setRegisterNumber } =
     useApp();
+
   const router = useRouter();
 
   const { loading, data } = useQuery(gql(queries.orderDetail), {
@@ -17,14 +19,14 @@ const OrderDetailContainer = ({ handleSuccess, children }: any) => {
     onCompleted(data) {
       const { orderDetail } = data;
       const { registerNumber, billType } = orderDetail || {};
-
       setOrderDetail(orderDetail ? orderDetail : {});
       billType && setBillType(billType);
       registerNumber && setRegisterNumber(registerNumber);
-
       handleSuccess && handleSuccess(orderDetail);
     },
   });
+
+  useEffect(() => {}, []);
 
   if (loading || !orderDetail) return <Loading />;
 

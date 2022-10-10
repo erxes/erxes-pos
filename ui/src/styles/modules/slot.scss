@@ -31,7 +31,8 @@
           color: $gray;
         }
       }
-      &.doing {
+      &.doing,
+      &.reDoing {
         background: $warning;
         svg {
           color: $warning;

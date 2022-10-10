@@ -1,25 +1,19 @@
 .history {
   min-height: 100vh;
-  .search {
-    flex: 1 1 auto;
-    margin: 0 1.5rem;
-    border: 0;
-    position: relative;
-    .smooth-h,
-    input {
-      min-width: 100%;
-      width: 100%;
-      max-width: 100%;
-      height: auto;
-      padding: 0 3rem 0 1rem;
-    }
-    .btn {
-      position: absolute;
-      right: 0;
-    }
+
+  input {
+    width: auto;
   }
+
+  .-select-statuses {
+    min-width: 10rem;
+    height: 100%;
+  }
+
   .filter-btn {
     padding: 0.75rem 1.25rem;
+
+    margin-left: 1rem;
     svg {
       font-size: 1.25rem;
     }
@@ -29,9 +23,7 @@
     &.slim {
       color: $gray;
     }
-    &:not(:last-child) {
-      margin-right: 1rem;
-    }
+
     &:last-child {
       padding: 0.75rem;
     }

@@ -3,9 +3,9 @@ import { ORDER_STATUSES, ORDER_ITEM_STATUSES } from 'modules/constants';
 import OrderItem from './OrderItem';
 
 const Waiting = ({ subToOrderStatuses, orders, subToItems }: any) => {
-  const { DONE, DOING, COMPLETE } = ORDER_STATUSES;
+  const { DONE, DOING, COMPLETE, REDOING } = ORDER_STATUSES;
   useEffect(() => {
-    subToOrderStatuses([DOING, DONE, COMPLETE]);
+    subToOrderStatuses([DOING, DONE, COMPLETE, REDOING]);
     subToItems([ORDER_ITEM_STATUSES.CONFIRM, DONE]);
   }, []);
 

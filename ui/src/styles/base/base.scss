@@ -14,7 +14,7 @@ html {
   @media screen and (max-width: 1400px) {
     font-size: 14px;
   }
-  @media screen and (max-width: 996px) {
+  @media screen and (max-width: 1024px) {
     font-size: 12px;
   }
   @media screen and (max-width: 500px) {
@@ -111,6 +111,48 @@ h6 {
       border: solid white;
       border-width: 0 2px 2px 0;
       transition: inherit;
+    }
+  }
+}
+
+.simplebar-track {
+  overflow: visible;
+  width: 1.75rem !important;
+
+  .simplebar-scrollbar {
+    overflow: visible;
+  }
+
+  &.simplebar-vertical {
+    &:hover,
+    &:active,
+    &:focus {
+      .simplebar-scrollbar {
+        background-color: rgba(0, 0, 0, 0.12);
+      }
+    }
+    .simplebar-scrollbar {
+      width: 1.75rem !important;
+      &:hover {
+        background-color: rgba($color: #000000, $alpha: 0.15);
+        border-radius: 28px;
+      }
+      &::before {
+        opacity: 1;
+        height: 4.5rem;
+        width: 1.7;
+        border-radius: 1.5rem;
+        top: 50%;
+        transform: translate(-4%, -50%);
+        bottom: initial;
+        right: 0;
+        z-index: 100;
+        background-color: $primary;
+        background-image: url('/scroll-v.svg');
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: cover;
+      }
     }
   }
 }

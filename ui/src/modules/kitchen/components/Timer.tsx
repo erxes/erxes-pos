@@ -22,11 +22,11 @@ const Timer = ({ paidDate }: any) => {
   diffSeconds = diffSeconds - diffMinutes * 60;
 
   return (
-    <div className="flex-v-center">
+    <small className="flex-center -timer">
       <span>{diffHours}</span>:
       <span>{diffMinutes < 10 ? '0' + diffMinutes : diffMinutes}</span>:
       <span>{diffSeconds < 10 ? '0' + diffSeconds : diffSeconds || '00'}</span>
-    </div>
+    </small>
   );
 };
 

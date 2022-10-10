@@ -1,17 +1,18 @@
 export const ORDER_TYPES = {
   TAKE: 'take',
   EAT: 'eat',
-  SAVE: 'save',
-  ALL: ['take', 'eat', 'save'],
+  DELIVERY: 'delivery',
+  ALL: ['take', 'eat', 'delivery'],
 };
 
 export const ORDER_STATUSES = {
   NEW: 'new',
   DOING: 'doing',
+  REDOING: 'reDoing',
   DONE: 'done',
   COMPLETE: 'complete',
 
-  ALL: ['new', 'doing', 'done', 'complete'],
+  ALL: ['new', 'doing', 'done', 'complete', 'reDoing'],
   DISABLED: ['done', 'complete'],
 };
 

@@ -1,4 +1,4 @@
-import { useState, FC } from 'react';
+import { useState, FC, memo } from 'react';
 import NextImage, { ImageProps } from 'next/future/image';
 
 const Image: FC<
@@ -41,4 +41,4 @@ const Image: FC<
   );
 };
 
-export default Image;
+export default memo(Image);

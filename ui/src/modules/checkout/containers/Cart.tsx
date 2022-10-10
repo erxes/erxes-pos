@@ -17,18 +17,20 @@ const CartContainer = () => {
   const { NEW, CONFIRM, DONE } = ORDER_ITEM_STATUSES;
   const router = useRouter();
   const {
+    cart,
     setInitialState,
     setCart,
     setOrderDetail,
     setType,
     setCustomerId,
     setBillType,
+    setDescription,
   } = useApp();
   const { orderId } = router.query;
 
   const convertCartItem = (item: any) => ({
     ...item,
-    isSelected: false,
+    isTake: item.isTake,
     name: item.productName,
   });
 
@@ -40,13 +42,16 @@ const CartContainer = () => {
           if (getMode() === 'kiosk' && orderDetail.paidDate) {
             return (window.location.href = '/');
           }
-          const { items, customerId, type, billType } = orderDetail;
+          const { items, customerId, type, billType, deliveryInfo } =
+            orderDetail;
+
           const cart = items.map((item: any) => convertCartItem(item));
           setOrderDetail(orderDetail);
-          setCart(cart);
           setType(type);
+          setCart(cart);
           setCustomerId(customerId || '');
           setBillType(billType || '');
+          setDescription((deliveryInfo || {}).description || '');
         }
       },
       onError(error) {

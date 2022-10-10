@@ -1,4 +1,4 @@
-import { ReactNode, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
 import useBillType from 'lib/useBillType';
@@ -30,13 +30,7 @@ const ChooseType = ({ children, onClick, checked }: IChooseType) => (
 );
 
 const Ebarimt = () => {
-  const {
-    closeModal,
-    setSidebarView,
-    setSidebarPlacement,
-    openSidebar,
-    closeSidebar,
-  } = useUI();
+  const { closeModal } = useUI();
   const { isOrg, isPrsn, isInner, chooseOrg, choosePrsn, chooseInner } =
     useBillType();
   const { companyName, billType } = useApp();
@@ -52,20 +46,6 @@ const Ebarimt = () => {
   };
 
   const { settlePayment, loading } = useSettlePayment(onCompleted);
-
-  useEffect(() => {
-    if (isOrg) {
-      setSidebarView('KEYBOARD_VIEW');
-      setSidebarPlacement('BOTTOM');
-      openSidebar();
-
-      return closeSidebar;
-    }
-
-    closeSidebar();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [billType]);
 
   return (
     <div className="ebarimt-root">
