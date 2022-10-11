@@ -30,6 +30,9 @@ const PaymentMethod: FC<IProps> = ({
   useEffect(() => {
     if (latestClickedKey && activePayment === name) {
       if (latestClickedKey === 'C') {
+        return setValue(0, name);
+      }
+      if (latestClickedKey === 'CE') {
         return setValue((value + '').slice(0, -1), name);
       }
       setValue(value + '' + latestClickedKey, name);

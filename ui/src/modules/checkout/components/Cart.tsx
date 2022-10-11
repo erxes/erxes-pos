@@ -11,15 +11,15 @@ const CheckoutCart = () => {
     <>
       <CheckoutTotal />
       <div className="checkout-cart">
-        <Scroll>
-          {cart && cart.length ? (
-            cart.map((item: ICartItem) => (
+        {cart && !!cart.length ? (
+          <Scroll>
+            {cart.map((item: ICartItem) => (
               <CheckoutItem key={item._id} {...item} type={type} />
-            ))
-          ) : (
-            <Empty />
-          )}
-        </Scroll>
+            ))}
+          </Scroll>
+        ) : (
+          <Empty />
+        )}
       </div>
     </>
   );

@@ -9,7 +9,7 @@ const KeyBoard = ({ touch }: { touch?: boolean }) => {
           <Key key={idx} value={idx + 1 + ''} touch={touch} />
         ))}
         <Key value={'0'} touch={touch} />
-        {!touch && <Key value="00" />}
+        {!touch && <Key value="CE" />}
         <Key value="C" touch={touch} />
       </div>
     </div>

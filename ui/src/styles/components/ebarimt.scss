@@ -88,6 +88,9 @@
         z-index: 1;
       }
     }
+    .btn.flat {
+      background: $success;
+    }
   }
   &-kiosk {
     .status {

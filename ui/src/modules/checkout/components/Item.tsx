@@ -27,7 +27,7 @@ const CheckoutItem: FC<ICartItem & { type: string }> = (props) => {
           </abbr>
         )}
         <div className="flex-v-center">
-          <span className={'status ' + status}></span>
+          <span className={'status flex-0 ' + status}></span>
 
           <b>
             <span className="name flex-v-center">

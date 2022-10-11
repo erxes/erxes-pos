@@ -27,7 +27,10 @@ const PosConfigsFetch = () => {
     <form onSubmit={handleSubmit}>
       <label htmlFor="token">Token</label>
       <Input value={token} onChange={(val: string) => setToken(val)} />
-      <Button loading={loading}>Submit</Button>
+      <small className="warning">
+        Erxes-ийн посын тохиргооноос токенийг хуулж тавина уу
+      </small>
+      <Button loading={loading}>INIT</Button>
     </form>
   );
 };

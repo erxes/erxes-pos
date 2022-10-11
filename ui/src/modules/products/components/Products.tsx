@@ -1,10 +1,20 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect } from 'react';
 import ProductContainer from '../containers/Product';
 import { getMode } from 'modules/utils';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Scroll from 'modules/kiosk/components/Scroll';
+import { useInView } from 'react-intersection-observer';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 export default function Products({ products, onLoadMore }: any) {
   const { currentConfig } = useConfigsContext();
+  const [animationParent] = useAutoAnimate<HTMLDivElement>();
+
+  const { ref, inView } = useInView({
+    /* Optional options */
+    threshold: 0,
+  });
 
   let filteredProducts = products;
 
@@ -13,21 +23,18 @@ export default function Products({ products, onLoadMore }: any) {
     filteredProducts = products.filter((p: any) => !excludeIds.includes(p._id));
   }
 
-  const handleScroll = ({ currentTarget }: any, onLoadMore: any) => {
-    const { scrollTop, clientHeight, scrollHeight } = currentTarget;
-    if (scrollTop + clientHeight >= scrollHeight) {
-      onLoadMore();
-    }
-  };
+  useEffect(() => {
+    inView && onLoadMore();
+  }, [products.length, inView]);
 
   return (
     <Scroll>
-      <div
-        className="row products"
-        onScroll={(e) => handleScroll(e, onLoadMore)}
-      >
+      <div className="row products" ref={animationParent}>
         {products.map((product: any, key: number) => (
-          <ProductContainer {...product} key={key} />
+          <>
+            <ProductContainer {...product} key={key} />
+            <div ref={ref} />
+          </>
         ))}
       </div>
     </Scroll>

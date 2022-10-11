@@ -15,6 +15,7 @@ const PaymentReport = () => {
     cardAmount,
     mobileAmount,
     receivableAmount,
+    number,
   } = orderDetail || {};
 
   const remainder =
@@ -28,12 +29,16 @@ const PaymentReport = () => {
   };
 
   useEffect(() => {
-    paid && handleClick();
+    if (totalAmount) {
+      paid && handleClick();
+    }
   }, [remainder]);
 
   return (
     <div className="col flex-center payment-report">
       <div className="white-tab text-center">
+        <h5>Захиалын дугаар: {(number || '').split('_')[1]}</h5>
+
         {paid && (
           <div className="payment-report-check">
             <LottieView path="/complete.json" />

@@ -3,9 +3,11 @@ import { queries } from 'modules/checkout/graphql';
 import { useApp } from 'modules/AppContext';
 import { useEffect } from 'react';
 import { NOT_FOUND } from 'modules/constants';
+import { getMode } from 'modules/utils';
 
 const useCheckRegister = () => {
   const { registerNumber, companyName, setCompanyName } = useApp();
+  const mode = getMode();
   const [check, { loading, refetch, error, data }] = useLazyQuery(
     gql(queries.ordersCheckCompany),
     {
@@ -26,7 +28,7 @@ const useCheckRegister = () => {
   }, [registerNumber]);
 
   const checkRegister = () => {
-    if (registerNumber.length === 7) {
+    if (registerNumber.length === 7 || mode === 'pos') {
       check({
         variables: { registerNumber },
       });

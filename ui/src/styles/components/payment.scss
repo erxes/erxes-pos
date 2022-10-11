@@ -102,7 +102,10 @@
   &-report {
     h5 {
       color: $gray;
-      padding-bottom: 3rem;
+      padding-bottom: 1.5rem;
+      &:last-of-type {
+        padding-bottom: 3rem;
+      }
       &.-pb {
         padding-bottom: 5rem;
       }

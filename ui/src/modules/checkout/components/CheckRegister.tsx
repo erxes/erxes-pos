@@ -2,26 +2,22 @@
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
 import useCheckRegister from 'lib/useCheckRegister';
-import Radio from 'modules/common/ui/Radio';
-import Input from 'modules/common/ui/Input';
+import Radio from 'ui/Radio';
+import Input from 'ui/Input';
 import cn from 'classnames';
 import { useEffect } from 'react';
 import { NOT_FOUND } from 'modules/constants';
 import KeyBoard from './KeyBoard';
+import Button from 'ui/Button';
 
 const CheckRegister = () => {
   const { registerNumber, setRegisterNumber } = useApp();
   const { name, loading, error, checkRegister } = useCheckRegister();
   const { latestClickedKey, changeKey } = useUI();
 
-  useEffect(() => {
-    checkRegister();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [registerNumber]);
-
   const handleChange = (value: string) => {
     const num = value.replaceAll(' ', '');
-    if ((!isNaN(parseInt(num)) || num === '') && num.length < 8) {
+    if (num.length < 11) {
       setRegisterNumber(num);
     }
   };
@@ -41,8 +37,12 @@ const CheckRegister = () => {
 
   useEffect(() => {
     if (latestClickedKey) {
-      if (latestClickedKey === 'C') {
+      if (latestClickedKey === 'CE') {
         handleChange(registerNumber.slice(0, -1));
+        return;
+      }
+      if (latestClickedKey === 'C') {
+        handleChange('');
         return;
       }
       handleChange(registerNumber + latestClickedKey);
@@ -58,7 +58,15 @@ const CheckRegister = () => {
       >
         <div className="flex-center">
           <Radio
-            mode={loading ? 'loading' : name ? 'checked' : error ? 'error' : ''}
+            mode={
+              loading
+                ? 'loading'
+                : error || name === NOT_FOUND
+                ? 'error'
+                : name
+                ? 'checked'
+                : ''
+            }
           />
           <div>
             <span className="caption">
@@ -75,6 +83,7 @@ const CheckRegister = () => {
             </div>
           </div>
         </div>
+        <Button onClick={checkRegister}>Шалгах</Button>
         {error && <span className="error caption">{error.message}</span>}
         {name === NOT_FOUND && (
           <span className="error caption">РД буруу байна</span>

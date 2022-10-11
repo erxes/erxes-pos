@@ -8,7 +8,7 @@ import Empty from 'modules/common/ui/Empty';
 
 const ProductsContainer = () => {
   const router = useRouter();
-  const { categoryId } = router.query;
+  const { categoryId, searchValue } = router.query;
   const categoryIdStr = (categoryId || '').toString();
   const FETCH_MORE_PER_PAGE = 4;
 
@@ -18,6 +18,7 @@ const ProductsContainer = () => {
       variables: {
         perPage: 16,
         categoryId: categoryIdStr,
+        searchValue,
         page: 1,
       },
     }
@@ -37,7 +38,8 @@ const ProductsContainer = () => {
   const products = data.poscProducts || [];
   const productsCount = productsCountQuery.data.poscProductsTotalCount || 0;
 
-  if (!products.length || !productsCount) return <Empty />;
+  if (!products.length || !productsCount)
+    return <Empty text="Бүтээгдэхүүн олдсонгүй" />;
 
   const handleLoadMore = () => {
     if (productsCount > products.length) {

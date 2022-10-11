@@ -1,15 +1,16 @@
 import type { IComponent } from 'modules/types';
 import { useConfigsContext } from '../containers/Configs';
+import Image from 'ui/Image';
 
 const LoginLayout: IComponent = ({ children }) => {
-  const { currentConfig } = useConfigsContext();
+  const { currentConfig, logoUrl } = useConfigsContext();
 
   const { name } = currentConfig || {};
 
   return (
     <div className="login flex-center">
       <div className="login-content">
-        <div className="img-wrap"></div>
+        <Image alt="name" fill src={logoUrl || ''} fallBack={'logo-dark.png'} />
         <h2 className="text-center">{name}</h2>
         {children}
       </div>

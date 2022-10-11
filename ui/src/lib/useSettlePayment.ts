@@ -18,22 +18,27 @@ const useSettlePayment = (onCompleted: any) => {
   const [settlePayment, { loading }] = useMutation(
     gql(mutations.ordersSettlePayment),
     {
-      variables: {
-        billType,
-        registerNumber,
-        _id,
-      },
       onCompleted: updatedOnCompleted,
       onError(error) {
         toast.error(trimGraphqlError(error.message));
       },
     }
   );
+
+  const handleSettlePayment = (val?: string) => {
+    if ((putResponse || {}).success === 'true') return updatedOnCompleted();
+
+    return settlePayment({
+      variables: {
+        billType: val ? val : billType,
+        registerNumber,
+        _id,
+      },
+    });
+  };
+
   return {
-    settlePayment:
-      (putResponse || {}).success === 'true'
-        ? updatedOnCompleted
-        : settlePayment,
+    settlePayment: handleSettlePayment,
     loading,
   };
 };

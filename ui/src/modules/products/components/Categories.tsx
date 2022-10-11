@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useAddQuery, useRemoveQuery } from 'lib/useQuery';
 import HorizontalScroll from 'modules/common/ui/scrollMenu';
 import Button from 'modules/common/ui/Button';
 import cn from 'classnames';
@@ -8,27 +8,20 @@ export default function Categories({
 }: {
   categories: { name: string; _id?: string }[];
 }) {
-  const router = useRouter();
+  const { query, addQuery } = useAddQuery();
+  const { removeQuery } = useRemoveQuery();
 
-  const { categoryId } = router.query;
+  const { categoryId } = query;
 
   const btnClassName = (_id: string) =>
     cn('products-category', { active: categoryId == _id });
 
   const handleChoose = (_id: string) => {
-    if (!_id) {
-      delete router.query.categoryId;
-      return router.push(router.query);
+    if (!_id || categoryId === _id) {
+      removeQuery('categoryId');
     }
 
-    return router.push(
-      {
-        pathname: router.pathname,
-        query: { ...router.query, categoryId: _id },
-      },
-      undefined,
-      { shallow: true }
-    );
+    return addQuery({ categoryId: _id });
   };
   // { _id: null, name: 'Бүгд' }
   return (

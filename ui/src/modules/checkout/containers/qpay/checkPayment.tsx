@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { gql, useMutation } from '@apollo/client';
 import { mutations, queries } from '../../graphql';
+import { useCheckoutContext } from 'modules/checkout/context';
 import { toast } from 'react-toastify';
 import Button from 'ui/Button';
 import { getMode } from 'modules/utils';
@@ -10,6 +11,7 @@ import useInterval from 'use-interval';
 const CheckPayment = () => {
   const router = useRouter();
   const mode = getMode();
+  const { changeActivePayment } = useCheckoutContext();
   const [cancelInterval, setCancelInterval] = useState(false);
 
   const { orderId, qpayId } = router.query;
@@ -29,6 +31,7 @@ const CheckPayment = () => {
         invoice.status === 'PAID'
       ) {
         setCancelInterval(false);
+        changeActivePayment('');
       }
     },
     onError(error) {

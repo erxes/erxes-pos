@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
-import useBillType from 'lib/useBillType';
 import Button from 'ui/Button';
 import Radio from 'ui/Radio';
 import cn from 'classnames';
@@ -9,32 +8,45 @@ import CheckRegister from '../CheckRegister';
 import useSettlePayment from 'lib/useSettlePayment';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { NOT_FOUND } from 'modules/constants';
+import { BILL_TYPES } from 'modules/constants';
 
 interface IChooseType {
   children: ReactNode;
-  onClick: () => void;
-  checked: boolean;
+  value: string;
+  settlePayment: (value: string) => void;
+  loading: boolean;
 }
 
-const ChooseType = ({ children, onClick, checked }: IChooseType) => (
-  <div className="col-4 ">
-    <Button
-      className={cn({ active: checked })}
-      variant="slim"
-      onClick={onClick}
-    >
-      <Radio mode={checked && 'checked'} />
-      <b>{children}</b>
-    </Button>
-  </div>
-);
+const ChooseType = ({ children, value, settlePayment }: IChooseType) => {
+  const { allowInnerBill } = useConfigsContext();
+  const { billType, setBillType } = useApp();
+  const checked = billType === value;
+
+  const onClick = () => {
+    setBillType(value);
+    settlePayment(value);
+  };
+
+  return (
+    <div className={allowInnerBill ? 'col-4' : 'col-6'}>
+      <Button
+        className={cn({ active: checked })}
+        variant="slim"
+        onClick={onClick}
+      >
+        <Radio mode={checked && 'checked'} />
+        <b>{children}</b>
+      </Button>
+    </div>
+  );
+};
 
 const Ebarimt = () => {
   const { closeModal } = useUI();
-  const { isOrg, isPrsn, isInner, chooseOrg, choosePrsn, chooseInner } =
-    useBillType();
   const { companyName, billType } = useApp();
   const { allowInnerBill } = useConfigsContext();
+  const { CITIZEN, ENTITY, INNER } = BILL_TYPES;
+  const isOrg = billType === ENTITY;
 
   const showReciept = () => {
     closeModal();
@@ -47,19 +59,24 @@ const Ebarimt = () => {
 
   const { settlePayment, loading } = useSettlePayment(onCompleted);
 
+  const chooseTypeProps = {
+    settlePayment,
+    loading,
+  };
+
   return (
     <div className="ebarimt-root">
       <div className="ebarimt">
         <b>Төлбөрийн баримт авах</b>
         <div className="row">
-          <ChooseType onClick={choosePrsn} checked={isPrsn}>
+          <ChooseType {...chooseTypeProps} value={CITIZEN}>
             Хувь хүн
           </ChooseType>
-          <ChooseType onClick={chooseOrg} checked={isOrg}>
+          <ChooseType {...chooseTypeProps} value={ENTITY}>
             Байгуулга
           </ChooseType>
           {allowInnerBill && (
-            <ChooseType onClick={chooseInner} checked={isInner}>
+            <ChooseType {...chooseTypeProps} value={INNER}>
               Дотоод
             </ChooseType>
           )}
@@ -67,9 +84,7 @@ const Ebarimt = () => {
         <div className={cn('smooth', { active: isOrg })}>
           {isOrg && <CheckRegister />}
         </div>
-        {((isOrg && !!companyName && companyName !== NOT_FOUND) ||
-          isInner ||
-          isPrsn) && (
+        {isOrg && !!companyName && companyName !== NOT_FOUND && (
           <Button
             loading={loading}
             className="print"
