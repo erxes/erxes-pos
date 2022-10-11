@@ -8,7 +8,17 @@ import Motocycle from 'icons/Motocycle';
 import { formatNum } from 'modules/utils';
 
 const CheckoutItem: FC<ICartItem & { type: string }> = (props) => {
-  const { name, count, unitPrice, _id, isTake, status, type } = props;
+  const {
+    name,
+    unitPrice,
+    _id,
+    isTake,
+    status,
+    type,
+    discountAmount,
+    discountPercent,
+    count,
+  } = props;
 
   const { selectItem } = useApp();
   const { paidDate, warning } = useIsEditable();
@@ -34,7 +44,11 @@ const CheckoutItem: FC<ICartItem & { type: string }> = (props) => {
               <span>{name}</span>
               {isTake && <Motocycle />}
             </span>
-            <span className="price">{formatNum(unitPrice)}</span>
+            <span className="price">
+              {formatNum(unitPrice)}
+              {discountPercent && ' (' + discountPercent + '%)'}
+              {discountAmount && ' -' + formatNum(discountAmount) + '₮'}
+            </span>
           </b>
         </div>
       </div>

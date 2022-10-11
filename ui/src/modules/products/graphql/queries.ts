@@ -21,6 +21,7 @@ const products = `
       unitPrice
       type
       description
+      remainder
       attachment {
         duration
         name

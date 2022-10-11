@@ -15,10 +15,13 @@
   .row {
     .-item {
       padding: 1.25rem;
-      h1 {
-      }
       small {
         font-size: 0.5rem;
+      }
+      &.-italic {
+        h1 {
+          font-style: italic;
+        }
       }
     }
   }

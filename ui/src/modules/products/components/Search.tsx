@@ -16,8 +16,10 @@ const Search = ({ open }: IProps) => {
   const active = isActive || open;
 
   useEffect(() => {
-    setIsActive(true);
-    query.searchValue && setSearchValue(query.searchValue.toString());
+    if (query.searchValue) {
+      setIsActive(true);
+      setSearchValue(query.searchValue.toString());
+    }
   }, [query.searchValue]);
 
   const handleKey = useCallback(
