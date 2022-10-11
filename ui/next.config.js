@@ -6,20 +6,12 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: '*',
-        hostname: 'plugin_core_api',
-      },
-      {
         protocol: 'https',
         hostname: '**.amazonaws.com',
       },
       {
-        protocol: 'http',
-        hostname: 'plugin_core_api',
-      },
-      {
         protocol: 'https',
-        hostname: 'test-pos.erxes.io',
+        hostname: '**.erxes.io',
       },
     ],
   },
