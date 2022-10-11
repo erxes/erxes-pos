@@ -1,10 +1,22 @@
-FROM node:16-alpine AS deps
-WORKDIR /baterdene/
-RUN chown -R node:node /baterdene
-COPY --chown=node:node . /baterdene
+ARG BASE_IMAGE
+FROM alpine:3.11
+RUN apk add --no-cache alpine-sdk && \
+    cd /tmp && curl -s -LO https://github.com/jpmens/jo/releases/download/1.3/jo-1.3.tar.gz && \
+    tar xzf jo-1.3.tar.gz && \
+    cd jo-1.3 && \
+    ./configure && \
+    make check && \
+    make install
 
+# nginx current stable 1.18
 
-USER node
-RUN yarn build
-EXPOSE 5300
-CMD [ "yarn", "start" ]
+FROM $BASE_IMAGE
+COPY --from=0 /usr/local/bin/jo /usr/local/bin/jo
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh && \
+    chmod +x /usr/local/bin/jo
+COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+COPY build /usr/share/nginx/html
+ENTRYPOINT [ "sh", "/usr/local/bin/docker-entrypoint.sh" ]
+CMD ["nginx", "-g", "daemon off;"]

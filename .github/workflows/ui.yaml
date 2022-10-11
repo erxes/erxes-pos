@@ -3,13 +3,8 @@ name: POS UI CI
 on:
   push:
     branches:
-      - '**'
-    paths:
-      - 'ui/**'
-      - '.github/workflows/ui.yaml'
-  pull_request:
-    branches:
       - main
+      - xos-ui
     paths:
       - 'ui/**'
       - '.github/workflows/ui.yaml'
@@ -21,29 +16,12 @@ jobs:
     # name: Node ${{ matrix.node-version }}
 
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
       - name: Use Node.js 14.20.x
         uses: actions/setup-node@v1
         with:
           node-version: 14.20.x
 
-      # https://github.com/actions/cache/blob/master/examples.md#node---yarn
-      - name: Get yarn cache directory path
-        id: yarn-cache-dir-path
-        run: echo "::set-output name=dir::$(yarn cache dir)"
-
-      - name: Cache Node.js modules
-        id: yarn-cache # use this to check for `cache-hit` (`steps.yarn-cache.outputs.cache-hit != 'true'`)
-        uses: actions/cache@v2
-        with:
-          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
-          key: ${{ runner.os }}-yarn-ui-${{ hashFiles('yarn.lock', 'ui/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-ui-${{ hashFiles('ui/**/yarn.lock') }}
-            ${{ runner.os }}-yarn-ui-
-            ${{ runner.os }}-yarn-
+      - uses: actions/checkout@v2
 
       - name: Build
         run: |
@@ -53,8 +31,10 @@ jobs:
 
       - name: Build docker image
         if: github.event_name == 'push' && ( github.ref == 'refs/heads/main' || github.ref == 'refs/heads/xos-ui' )
+        env:
+          BASE_IMAGE: erxes/erxes:base-1.18-alpine
         run: |
           cd ui
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          docker build -t erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/} -f Dockerfile.dev .
+          DOCKER_BUILDKIT=1 docker build --build-arg BASE_IMAGE=$BASE_IMAGE -t erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/} -f Dockerfile .
           docker push erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/}
