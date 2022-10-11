@@ -14,8 +14,9 @@ const Waiting = ({ subToOrderStatuses, orders, subToItems }: any) => {
 
   const updatedOrders = orders.filter(
     (order: any) =>
-      order.items.every((item: any) => item.status === ('confirm' || 'new')) ===
-      false
+      order.items.every(
+        (item: any) => item.status === 'confirm' || item.status === 'new'
+      ) === false
   );
 
   return (
