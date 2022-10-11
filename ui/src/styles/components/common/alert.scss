@@ -1,0 +1,16 @@
+.alert {
+  border: 1px solid rgba($color: $success, $alpha: 0.7);
+  background-color: rgba($color: $success, $alpha: 0.15);
+  color: $success;
+  border-radius: 0.5rem;
+  //   text-align: center;
+  &.error {
+    border: 1px solid rgba($color: $error, $alpha: 0.7);
+    background-color: rgba($color: $error, $alpha: 0.15);
+    color: $error;
+  }
+  &.active {
+    width: 100%;
+    padding: 1rem;
+  }
+}

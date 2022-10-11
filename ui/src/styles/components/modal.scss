@@ -1,0 +1,84 @@
+.modal {
+  &-root {
+    position: fixed;
+    background: rgba($color: #000, $alpha: 0.4);
+    inset: 0;
+    z-index: 700;
+    backdrop-filter: blur(0.8px);
+    transition: all 1s ease;
+    &.-dark {
+      background: rgba($color: #fff, $alpha: 0.85);
+      .modal {
+        background: #000;
+        color: #fff;
+        border-radius: 2.5rem;
+        .btn {
+          color: #fff;
+          &.slim {
+            border: $border-white;
+          }
+        }
+        &-close {
+          top: 1.5rem;
+          right: 1.5rem;
+          font-size: 1.25rem;
+        }
+      }
+    }
+    &.wsbar {
+      inset: 0 0 48.25rem;
+    }
+    &.poswsbar {
+      inset: 0 0 21rem;
+    }
+  }
+  background: #fff;
+  border: 1px transparent solid;
+  position: relative;
+  border-radius: 8px;
+
+  &:focus {
+    outline: none;
+  }
+  &-close {
+    transition: all ease-in-out 0.15s;
+    position: absolute;
+    right: 0.75rem;
+    top: 0.75rem;
+    padding: 0.25rem;
+    font-size: 1rem;
+  }
+  &-kiosk {
+    max-width: 58rem;
+    padding: 5rem;
+    text-align: center;
+    width: calc(100vw - 3rem);
+    min-width: 48rem;
+    h2 {
+      margin-bottom: 2rem;
+    }
+    .btn {
+      width: 100%;
+      border-radius: 1.5rem;
+    }
+    &.-payment {
+      max-width: initial;
+      width: auto;
+    }
+  }
+  .back-btn {
+    position: absolute;
+    left: 1.5rem;
+    top: 1.5rem;
+    display: inline-block;
+    width: auto;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    &:hover {
+      background: rgba($color: #fff, $alpha: 0.12);
+    }
+    h6 {
+      display: inline;
+    }
+  }
+}

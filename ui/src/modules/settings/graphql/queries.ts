@@ -1,37 +1,101 @@
-const commonUser = `
+const posCurrentUser = `
+  query posCurrentUser {
+    posCurrentUser {
+      _id
+      createdAt
+      username
+      email
+      isOwner
+
+      details {
+        avatar
+        fullName
+        shortName
+        position
+        description
+        operatorPhone
+      }
+    }
+  }
+`;
+
+const userChanged = `
+	subscription posUserChanged($userId: String) {
+		posUserChanged(userId: $userId)
+  }
+`;
+
+const configFields = `
   _id
+  name
+  description
+  userId
   createdAt
-  username
-  email
-  isOwner
+  productDetails
+  adminIds
+  cashierIds
+  beginNumber
+  maxSkipNumber
+  waitingScreen
+  kioskMachine
+  kitchenScreen
+  token
 
-  details {
-    avatar
-    fullName
-    shortName
-    position
-    description
-    operatorPhone
+  uiOptions {
+    colors
+    bgImage
+    logo
+    favIcon
+    receiptIcon
+    texts
+    kioskHeaderImage
+    mobileAppImage
+    qrCodeImage
   }
-`
 
-const posUsers = `
-  query posUsers($searchValue: String) {
-    posUsers(searchValue: $searchValue) {
-      ${commonUser}
+  ebarimtConfig {
+    companyRD
+    hasVat
+    hasCitytax
+    vatPercent
+    cityTaxPercent
+    companyName
+    ebarimtUrl
+    footerText
+  }
+
+  qpayConfig {
+    url
+    callbackUrl
+    username
+    password
+    invoiceCode
+  }
+  catProdMappings {
+    _id
+    categoryId
+    productId
+  }
+  initialCategoryIds
+  kioskExcludeProductIds
+`;
+
+const currentConfig = `
+  query currentConfig {
+    currentConfig {
+      ${configFields}
     }
   }
 `;
 
-const dailyReport = `
-  query dailyReport($posUserIds: [String], $posNumber: String) {
-    dailyReport(posUserIds: $posUserIds, posNumber: $posNumber) {
-      report
+const configs = `
+  query posclientConfigs {
+    posclientConfigs {
+      ${configFields}
     }
   }
 `;
 
-export default {
-  posUsers,
-  dailyReport,
-};
+const queries = { posCurrentUser, userChanged, currentConfig, configs };
+
+export default queries;

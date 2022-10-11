@@ -1,0 +1,65 @@
+.products {
+  &-category {
+    color: rgba(0, 0, 0, 0.68);
+    padding: 0.75rem 1.5rem;
+    font-size: 0.825rem;
+    font-weight: 600;
+    white-space: nowrap;
+    &.slim {
+      &:hover {
+        background-color: #f5f5f5;
+      }
+      &.active,
+      &:active {
+        background-color: $primary;
+        color: #fff;
+      }
+    }
+  }
+  &-header {
+    background-color: #fff;
+    position: relative;
+    z-index: 1;
+    padding: 1.25rem 0.625rem;
+  }
+
+  &.row {
+    margin: -0.625rem;
+    overflow-y: hidden;
+  }
+  .col {
+    padding: 0.625rem;
+  }
+}
+
+.product {
+  border: $border;
+  border-radius: 0.5rem;
+  padding: 0.75rem;
+  position: relative;
+  .img-wrap {
+    margin-bottom: 0.75rem;
+    aspect-ratio: 16 / 12;
+    img {
+      object-fit: contain;
+    }
+  }
+  &-name,
+  &-price {
+    font-weight: 700;
+    line-height: 1.25rem;
+    text-align: center;
+    letter-spacing: 0.15px;
+  }
+  &-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 2.5rem;
+  }
+  abbr {
+    text-decoration: none;
+  }
+  &-price {
+    margin-top: 0.25rem;
+  }
+}

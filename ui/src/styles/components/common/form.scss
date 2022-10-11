@@ -1,0 +1,17 @@
+form {
+  label {
+    font-size: 0.865rem;
+    font-weight: 500;
+    color: $gray;
+    display: block;
+    padding: 1rem 0.5rem 0.25rem;
+    &:not(:first-child) {
+      padding-top: 1.25rem;
+    }
+  }
+  select,
+  input,
+  label {
+    width: 100%;
+  }
+}

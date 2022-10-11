@@ -1,0 +1,86 @@
+.kitchen {
+  max-height: 100vh;
+  &-order {
+    border: 2px solid rgba($color: #000000, $alpha: 0.22);
+    margin: 1rem 0.5rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+
+    .-header {
+      color: #000;
+      .flex-h-between {
+        padding-bottom: 0.25rem;
+      }
+    }
+
+    .-tag.btn.flat {
+      font-weight: 400;
+      padding: 0.125rem 0.5rem;
+      font-size: 0.865rem;
+      border-radius: 0.25rem;
+      background: $primary;
+      cursor: default;
+      margin-bottom: 0.125rem;
+    }
+    .-timer {
+      margin-top: 0.25rem;
+      font-weight: 600;
+      color: $gray;
+    }
+
+    .-item {
+      padding: 0.75rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+
+      &.checked {
+        background-color: rgba($color: $success, $alpha: 0.12);
+      }
+
+      .-name {
+        color: $gray;
+        & > svg {
+          margin-right: 0.25rem;
+          font-size: 1.25em;
+        }
+      }
+      &:not(:last-child) {
+        border-bottom: $border;
+      }
+      .radio {
+        height: 1.625rem;
+        width: 1.625rem;
+        &.-loading {
+          svg {
+            font-size: 1.625rem;
+            color: $gray;
+          }
+        }
+      }
+    }
+    .btn.slim {
+      padding: 1rem;
+      color: $primary;
+      border-color: $primary;
+      font-weight: 700;
+      margin-left: 1rem;
+    }
+  }
+  .-origin {
+    text-transform: capitalize;
+  }
+  .row {
+    max-height: 100%;
+    overflow-y: auto;
+    padding: 0 0.75rem;
+  }
+  &-number {
+    background-color: $success;
+    padding: 0.5rem 1.25rem;
+    svg {
+      margin-right: 0.25rem;
+      font-size: 1.25rem;
+    }
+  }
+}

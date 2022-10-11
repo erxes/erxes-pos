@@ -1,0 +1,145 @@
+@media print {
+  body {
+    margin: 0;
+    color: #000;
+    background-color: #fff;
+  }
+
+  .subRoot {
+    visibility: hidden;
+  }
+
+  .printDocument {
+    visibility: visible;
+    position: fixed;
+    overflow: auto;
+    top: 0px;
+    left: 0px;
+  }
+
+  .btn-print {
+    display: none;
+  }
+
+  .main-wrapper {
+    padding: 0;
+  }
+}
+
+.printDocument {
+  width: 72mm;
+  padding: 10px;
+  font-size: 11px;
+  font-weight: 500;
+  overflow: hidden;
+  background: #fff;
+  b {
+    font-weight: 600;
+  }
+  &-layout {
+    background: #fafafa;
+    min-height: 100vh;
+  }
+
+  .block {
+    border-bottom: 1px dashed #666;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    &.-sm {
+      padding-bottom: 2px;
+      margin-bottom: 2px;
+    }
+  }
+
+  header {
+    .flex-h-between {
+      div {
+        margin: 0;
+        line-height: 1.1;
+        font-size: 16px;
+        font-weight: 600;
+        &:last-child {
+          padding-left: 25px;
+        }
+      }
+    }
+  }
+  img {
+    object-fit: contain;
+  }
+
+  table {
+    width: 100%;
+    text-align: left;
+
+    td {
+      max-width: 100px;
+      line-height: 12px;
+      padding-right: 4px;
+      font-size: 10px;
+    }
+
+    .totalCount {
+      padding: 0;
+      text-align: right;
+    }
+  }
+
+  footer {
+    .lottery {
+      .qr-code {
+        flex: 0 0 auto;
+        min-width: 140px;
+        width: 140px;
+        height: 140px;
+        position: relative;
+        svg {
+          width: 130px;
+          height: 130px;
+          top: 50%;
+          left: 50%;
+          position: absolute;
+          transform: translate(-50%, -50%);
+        }
+      }
+    }
+    .barcode {
+      position: relative;
+      margin: 1rem 0 0.5rem;
+      aspect-ratio: 5 / 1;
+      overflow: hidden;
+      svg {
+        width: 100%;
+        height: auto;
+        position: absolute;
+        left: 0;
+        bottom: 0mm;
+      }
+    }
+  }
+  &-user {
+    & > .flex-v-center {
+      border-bottom: 1px solid #000;
+    }
+  }
+  .amounts {
+    p {
+      padding-left: 50px;
+    }
+  }
+  .category {
+    border-bottom: 1px dashed #000;
+    margin-top: 3px;
+    padding-left: 50px;
+  }
+  &-product {
+    display: flex;
+  }
+
+  .btn-print {
+    padding-top: 1rem;
+    .btn {
+      background: $primary;
+    }
+  }
+}

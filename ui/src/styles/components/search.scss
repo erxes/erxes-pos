@@ -1,0 +1,28 @@
+.search {
+  height: 2.75rem;
+  width: 2.75rem;
+  background: $background-gray;
+  font-size: 1.25rem;
+  border-radius: 50%;
+  border: $border;
+  .btn {
+    transition: none;
+    padding: 0.75rem;
+    &:hover {
+      background-color: transparent;
+    }
+  }
+  input {
+    width: 24rem;
+    border: 0;
+    background-color: transparent;
+  }
+  &.active {
+    width: auto;
+    border-radius: 0.5rem;
+    overflow: hidden;
+  }
+  svg {
+    font-size: 1.25rem;
+  }
+}

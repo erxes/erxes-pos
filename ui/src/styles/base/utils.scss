@@ -1,0 +1,108 @@
+.flex {
+  &-v-center {
+    display: flex;
+    align-items: center;
+  }
+  &-h-center {
+    display: flex;
+    justify-content: center;
+  }
+  &-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &-0 {
+    flex: 0 0 auto;
+  }
+  &-1 {
+    flex: 1 1 auto;
+    overflow: hidden;
+  }
+  &-col {
+    display: flex;
+    flex-direction: column;
+  }
+  &-h-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+}
+
+.row {
+  display: flex;
+  flex-flow: row wrap;
+  overflow: hidden;
+}
+.col-3 {
+  flex: 1 1 25%;
+  max-width: 25%;
+}
+.col-4 {
+  flex: 1 1 $one-third;
+  max-width: $one-third;
+}
+
+.col-6 {
+  flex: 1 1 50%;
+  max-width: 50%;
+}
+
+.col-12 {
+  flex: 1 1 100%;
+  max-width: 100%;
+}
+
+.h-100vh {
+  height: 100vh;
+}
+.fill {
+  min-height: 100%;
+  min-width: 100%;
+}
+
+.text-center {
+  text-align: center;
+}
+.text-primary {
+  color: $primary;
+}
+.bg-primary {
+  background: $primary !important;
+}
+
+.outline-none {
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+.smooth {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition: max-height 300ms ease, opacity 200ms ease;
+  &.active {
+    max-height: 1000px;
+    opacity: 1;
+    transition: max-height 600ms ease, opacity 200ms ease;
+  }
+  &-h {
+    max-width: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-width 600ms ease, opacity 400ms ease;
+    &.active {
+      max-width: 1000px;
+      opacity: 1;
+      transition: max-width 600ms ease, opacity 400ms ease;
+    }
+  }
+}
+
+.error {
+  color: $error;
+}
+.success {
+  color: $success;
+}

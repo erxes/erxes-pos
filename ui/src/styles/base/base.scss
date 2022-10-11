@@ -1,0 +1,158 @@
+body {
+  color: rgba(0, 0, 0, 0.85);
+  font-family: 'Inter', sans-serif;
+  font-variant: tabular-nums;
+  line-height: 1.5;
+  background-color: #fff;
+  font-feature-settings: 'tnum';
+  overflow: hidden;
+}
+
+html {
+  font-size: 16px;
+  overflow: hidden;
+  @media screen and (max-width: 1400px) {
+    font-size: 14px;
+  }
+  @media screen and (max-width: 1024px) {
+    font-size: 12px;
+  }
+  @media screen and (max-width: 500px) {
+    font-size: 8px;
+  }
+
+  // @media screen and (min-width: 1650px) {
+  //   font-size: 18px;
+  // }
+  @media screen and (min-width: 2000px) {
+    font-size: 20px;
+  }
+  @media screen and (min-width: 2500px) {
+    font-size: 24px;
+  }
+}
+
+h1 {
+  font: 800 4.5rem/5.5rem 'Inter';
+}
+
+h2 {
+  font: 800 3.5rem/4.5rem 'Inter';
+}
+
+h3 {
+  font: 900 2.5rem/3.5rem 'Inter';
+}
+
+h4 {
+  font: 900 2rem/3rem 'Inter';
+}
+
+h5 {
+  font: 800 1.5rem/2rem 'Inter';
+}
+
+h6 {
+  font: 800 1.25rem/1.75rem 'Inter';
+}
+
+.caption {
+  font: 400 0.75rem/1rem 'Inter';
+  letter-spacing: 0.4px;
+}
+
+.img-wrap {
+  position: relative;
+  img {
+    inset: 0;
+  }
+}
+
+.checkbox {
+  display: block;
+  position: relative;
+  height: 1.5rem;
+  width: 1.5rem;
+  cursor: pointer;
+  font-size: 1.5rem;
+  user-select: none;
+  input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+    &:checked ~ .checkmark {
+      background-color: $primary;
+      border-color: $primary;
+      &:after {
+        display: block;
+      }
+    }
+  }
+  .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    border: 2px solid rgba(0, 0, 0, 0.54);
+    border-radius: 2px;
+    transition: $transition;
+    &:after {
+      content: '';
+      position: absolute;
+      display: none;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -55%) rotate(45deg);
+      width: 0.325rem;
+      height: 0.75rem;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transition: inherit;
+    }
+  }
+}
+
+.simplebar-track {
+  overflow: visible;
+  width: 1.75rem !important;
+
+  .simplebar-scrollbar {
+    overflow: visible;
+  }
+
+  &.simplebar-vertical {
+    &:hover,
+    &:active,
+    &:focus {
+      .simplebar-scrollbar {
+        background-color: rgba(0, 0, 0, 0.12);
+      }
+    }
+    .simplebar-scrollbar {
+      width: 1.75rem !important;
+      &:hover {
+        background-color: rgba($color: #000000, $alpha: 0.15);
+        border-radius: 28px;
+      }
+      &::before {
+        opacity: 1;
+        height: 4.5rem;
+        width: 1.7;
+        border-radius: 1.5rem;
+        top: 50%;
+        transform: translate(-4%, -50%);
+        bottom: initial;
+        right: 0;
+        z-index: 100;
+        background-color: $primary;
+        background-image: url('/scroll-v.svg');
+        background-repeat: no-repeat;
+        background-position: 50% 50%;
+        background-size: cover;
+      }
+    }
+  }
+}

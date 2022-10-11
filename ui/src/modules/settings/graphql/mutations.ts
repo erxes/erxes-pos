@@ -16,4 +16,6 @@ const syncConfig = `
   }
 `;
 
-export default { syncConfig, syncOrders, deleteOrders };
+const mutations = { syncConfig, syncOrders, deleteOrders };
+
+export default mutations;

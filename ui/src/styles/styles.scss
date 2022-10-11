@@ -1,0 +1,40 @@
+@import 'abstract/variables';
+
+@import 'base/sanitize';
+@import 'base/base';
+@import 'base/utils';
+
+@import 'components/common/btn';
+@import 'components/common/scrolling-menu';
+@import 'components/common/select';
+@import 'components/common/input';
+@import 'components/common/form';
+@import 'components/common/loading';
+@import 'components/common/radio';
+@import 'components/common/alert';
+@import 'components/common/tag';
+
+@import 'components/empty';
+@import 'components/layout';
+@import 'components/keyboard';
+@import 'components/modal';
+@import 'components/ebarimt';
+@import 'components/search';
+@import 'components/sidebar';
+@import 'components/counter';
+@import 'components/payment';
+@import 'components/qpay';
+@import 'components/print';
+
+@import 'modules/pos';
+@import 'modules/slot';
+@import 'modules/products';
+@import 'modules/customer';
+@import 'modules/login';
+@import 'modules/settings';
+@import 'modules/checkout';
+@import 'modules/kiosk';
+@import 'modules/history';
+@import 'modules/report';
+@import 'modules/waiting';
+@import 'modules/kitchen';

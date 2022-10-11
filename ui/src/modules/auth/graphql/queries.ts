@@ -25,68 +25,78 @@ const userChanged = `
   }
 `;
 
+const configFields = `
+  _id
+  name
+  description
+  userId
+  createdAt
+  productDetails
+  adminIds
+  cashierIds
+  beginNumber
+  maxSkipNumber
+  waitingScreen
+  kioskMachine
+  kitchenScreen
+  token
+
+  uiOptions {
+    colors
+    bgImage
+    logo
+    favIcon
+    receiptIcon
+    texts
+    kioskHeaderImage
+    mobileAppImage
+    qrCodeImage
+  }
+
+  ebarimtConfig {
+    companyRD
+    hasVat
+    hasCitytax
+    vatPercent
+    cityTaxPercent
+    companyName
+    ebarimtUrl
+    footerText
+  }
+
+  qpayConfig {
+    url
+    callbackUrl
+    username
+    password
+    invoiceCode
+  }
+  catProdMappings {
+    _id
+    categoryId
+    productId
+  }
+  permissionConfig
+  initialCategoryIds
+  kioskExcludeProductIds
+`;
+
 const currentConfig = `
   query currentConfig {
     currentConfig {
-      _id
-      name
-      description
-      userId
-      createdAt
-      integrationId
-      productDetails
-      adminIds
-      cashierIds
-      beginNumber
-      maxSkipNumber
-      waitingScreen
-      kioskMachine
-      kitchenScreen
-      formSectionTitle
-      formIntegrationIds
-      brandId
-      token
-
-      uiOptions {
-        colors
-        bgImage
-        logo
-        favIcon
-        receiptIcon
-        texts
-        kioskHeaderImage
-        mobileAppImage
-        qrCodeImage
-      }
-
-      ebarimtConfig {
-        companyRD
-        hasVat
-        hasCitytax
-        vatPercent
-        cityTaxPercent
-        companyName
-        ebarimtUrl
-        footerText
-      }
-
-      qpayConfig {
-        url
-        callbackUrl
-        username
-        password
-        invoiceCode
-      }
-      syncInfo
-      catProdMappings {
-        _id
-        categoryId
-        productId
-      }
-      initialCategoryIds
-      kioskExcludeProductIds
+      ${configFields}
     }
   }
 `;
 
-export default { posCurrentUser, userChanged, currentConfig };
+const configs = `
+  query posclientConfigs {
+    posclientConfigs {
+      ${configFields}
+    }
+  }
+`;
+
+const queries = { posCurrentUser, userChanged, currentConfig, configs };
+
+export default queries;

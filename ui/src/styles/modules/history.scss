@@ -1,0 +1,86 @@
+.history {
+  min-height: 100vh;
+
+  input {
+    width: auto;
+  }
+
+  .-select-statuses {
+    min-width: 10rem;
+    height: 100%;
+  }
+
+  .filter-btn {
+    padding: 0.75rem 1.25rem;
+
+    margin-left: 1rem;
+    svg {
+      font-size: 1.25rem;
+    }
+    &.flat {
+      background: $primary;
+    }
+    &.slim {
+      color: $gray;
+    }
+
+    &:last-child {
+      padding: 0.75rem;
+    }
+  }
+  .row {
+    padding: 1rem;
+  }
+  &-item {
+    border: $border;
+    border-radius: 0.25rem;
+    padding: 0.75rem;
+    margin: 0.5rem;
+    cursor: pointer;
+    position: relative;
+    & > .flex-h-between {
+      &:first-child {
+        margin-bottom: 0.25rem;
+      }
+    }
+    .btn.flat {
+      font-weight: 400;
+      padding: 0.125rem 0.5rem;
+      font-size: 0.75rem;
+      border-radius: 0.25rem;
+      background: $primary;
+    }
+    .caption {
+      color: $gray;
+    }
+  }
+  &-detail {
+    width: 100vw;
+    max-width: 30rem;
+    padding: 1.5rem;
+    .history-item {
+      border: 0;
+    }
+    .-item {
+      padding: 1.25rem;
+      border-bottom: $border;
+      b {
+        display: block;
+      }
+      h6 {
+        font-weight: 400;
+      }
+      .-name {
+        padding-bottom: 0.25rem;
+        color: $gray;
+      }
+    }
+    .btn.slim {
+      padding: 1rem 3rem;
+      color: $primary;
+      border-color: $primary;
+      margin-top: 1.5rem;
+      font-weight: 700;
+    }
+  }
+}

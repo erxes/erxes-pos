@@ -1,0 +1,12 @@
+.tag {
+  padding: 0.25rem 1rem;
+  display: inline-block;
+  border-radius: 1rem;
+  font-weight: 500;
+  &.open,
+  &.warning {
+    color: $warning;
+    background: rgba($color: $warning, $alpha: 0.2);
+    border: 1px solid rgba($color: $warning, $alpha: 0.5);
+  }
+}

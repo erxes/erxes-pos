@@ -1,7 +1,2 @@
-import mutations from "./mutations";
-import queries from "./queries";
-
-export {
-  mutations,
-  queries
-};
+export { default as mutations } from './mutations';
+export { default as queries } from './queries';

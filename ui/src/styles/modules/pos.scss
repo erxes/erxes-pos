@@ -1,0 +1,120 @@
+.pos {
+  &-header {
+    padding: 0.5rem 1.25rem;
+    .logo {
+      padding: 0.25rem 0.75rem;
+      line-height: 1;
+      display: block;
+      .img-wrap {
+        aspect-ratio: 2 / 1;
+        width: 5rem;
+        img {
+          object-fit: contain;
+        }
+      }
+    }
+    border-bottom: $border;
+    .gray-border {
+      border-radius: 0.5rem;
+      background: $background-gray;
+      padding: 0.25rem;
+      margin-right: 2rem;
+      & > * {
+        border-radius: 0.25rem;
+        background: #fff;
+      }
+      &:first-child {
+        margin-right: 1rem;
+      }
+    }
+  }
+  &-dropdown {
+    position: relative;
+    &:hover {
+      .pos-menu {
+        display: inline-block;
+      }
+    }
+    .btn.naked {
+      font-size: 1.25rem;
+      border: 0;
+      padding: 0.75rem;
+    }
+    .pos-menu {
+      display: none;
+      position: absolute;
+      background-color: white;
+      left: 0;
+      top: 100%;
+      padding: 2rem;
+      border-radius: 0.5rem;
+      z-index: 100;
+      box-shadow: 0px 16px 24px rgba(0, 0, 0, 0.06),
+        0px 2px 6px rgba(0, 0, 0, 0.04), 0px 0px 1px rgba(0, 0, 0, 0.04);
+      font-weight: 700;
+      li {
+        white-space: nowrap;
+        margin-bottom: 0.75rem;
+        transition: 0.2s;
+        list-style: none;
+        border-radius: 0.5rem;
+        a {
+          color: #000 !important;
+          display: block;
+          padding: 0.5rem 1rem;
+        }
+        svg {
+          font-size: 1.25rem;
+          margin-right: 0.75rem;
+        }
+        &:hover {
+          cursor: pointer;
+          background: $background-gray;
+        }
+      }
+      .btn.flat {
+        background-color: $primary;
+        padding: 0.75rem 3rem;
+
+        // font-size: ;
+        svg {
+          font-size: 1.5rem;
+          margin-right: 0.5rem;
+        }
+      }
+    }
+  }
+  &-container {
+    display: flex;
+    min-width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    flex-flow: row nowrap;
+  }
+  &-content {
+    max-width: ($one-third * 2);
+    flex: 1 1 ($one-third * 2);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    & > .flex-1 {
+      div {
+        max-height: 100%;
+      }
+      .row {
+        // padding: 0 1.25rem;
+        margin: -0.625rem 0;
+      }
+    }
+  }
+  &-sidebar {
+    flex: 1 1 $one-third;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    border-left: $border;
+    & > *:not(.checkout-cart) {
+      flex: 0 0 auto;
+    }
+  }
+}

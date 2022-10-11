@@ -1,0 +1,69 @@
+button {
+  &.btn {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 600;
+  }
+}
+
+.btn {
+  cursor: pointer;
+  display: inline-flex;
+  padding: 0.5rem 1.5rem;
+  transition: all 0.15s ease-in-out;
+  position: relative;
+  letter-spacing: 0.025em;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  border-radius: 0.5rem;
+  color: rgba(0, 0, 0, 0.95);
+  background: #dcdcdc;
+  overflow: hidden;
+
+  &:focus {
+    outline: none;
+  }
+  &.flat {
+    color: #fff;
+  }
+  &.naked {
+    box-shadow: none !important;
+  }
+  &.slim {
+    border: $border;
+    background-color: transparent;
+    box-shadow: none;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+  &.ghost {
+    box-shadow: none;
+    background: transparent;
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+  big {
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+  }
+  &:disabled,
+  &.disabled {
+    cursor: not-allowed;
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+h4.btn {
+  padding: 2.25rem 0;
+  width: 100%;
+  border-radius: 2rem;
+}

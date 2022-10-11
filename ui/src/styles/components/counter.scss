@@ -1,0 +1,22 @@
+.counter {
+  .btn.minus,
+  .btn.plus {
+    font-size: 1rem;
+    padding: 0.75rem;
+    border: 0;
+  }
+  .count-wrap {
+    width: 3rem;
+  }
+  input.count {
+    border: 0;
+    padding: 0;
+    text-align: center;
+    font: 400 1.25rem/1.5rem 'Inter';
+    &::-webkit-outer-spin-button,
+    &::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  }
+}

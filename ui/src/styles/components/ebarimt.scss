@@ -1,0 +1,126 @@
+.ebarimt {
+  &-root {
+    max-width: 800px;
+    width: calc(100vw - 3rem);
+    min-height: 40vh;
+    padding: 4rem 1.25rem;
+  }
+  max-width: 572px;
+  margin: auto;
+  & > b {
+    display: block;
+    padding-bottom: 0.875rem;
+  }
+  .row {
+    margin: 0 -0.675rem;
+    .col-4,
+    .col-6 {
+      padding: 0.675rem;
+      .btn.slim {
+        width: 100%;
+        padding: 1.5rem 0;
+        transition: all 0.15s ease-in-out;
+        font-size: 1rem;
+        &:hover {
+          background-color: transparent;
+        }
+
+        &.active {
+          border-color: $success;
+          span {
+            border-color: inherit;
+            position: relative;
+            svg {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+  .print {
+    margin-left: auto;
+    display: block;
+    background-color: $primary;
+    padding: 1rem 5rem;
+  }
+  .register {
+    background-color: #000;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    margin-top: 0.675rem;
+    white-space: nowrap;
+    color: $white-gray;
+    position: relative;
+    margin-bottom: 1rem;
+    input {
+      background-color: #000;
+      border: 0;
+      color: #fff;
+      font-weight: 700;
+      padding: 0;
+      max-width: 7rem;
+      &::-webkit-outer-spin-button,
+      &::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+      font-size: 1rem;
+      line-height: 1;
+      font: 700 1rem/1.5rem 'Inter';
+      display: inline-block;
+      width: auto;
+    }
+    .name {
+      color: $success;
+    }
+    .error {
+      position: absolute;
+      top: calc(100% + 0.5rem);
+      left: 2.5rem;
+      z-index: 1;
+    }
+    &.loading {
+      &::after {
+        position: absolute;
+        content: '';
+        background: rgba($color: #fff, $alpha: 0.12);
+        inset: 0;
+        z-index: 1;
+      }
+    }
+    .btn.flat {
+      background: $success;
+    }
+  }
+  &-kiosk {
+    .status {
+      margin-top: 1.5rem;
+    }
+    .btn {
+      border-radius: 1.5rem;
+      &.flat {
+        margin-top: 2rem;
+        h4 {
+          padding: 1.5rem 0;
+        }
+        &:not(.disabled) {
+          background: $primary;
+        }
+      }
+      &.slim {
+        &:first-of-type {
+          margin-bottom: 1.5rem;
+        }
+      }
+    }
+
+    // h3 {
+    //   padding-top: 2rem;
+    // }
+
+    // h4:first-of-type {
+    //   margin: 2.5rem 0 1.5rem;
+    // }
+  }
+}
