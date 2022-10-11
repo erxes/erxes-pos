@@ -43,7 +43,10 @@ const CartView = dynamic(() => import('modules/kiosk/components/Cart'), {
 });
 
 const KeyboardView = dynamic(
-  () => import('modules/checkout/components/KeyBoard')
+  () => import('modules/checkout/components/KeyBoard'),
+  {
+    suspense: true,
+  }
 );
 
 const Sidebar = dynamic(() => import('ui/SideBar'), { suspense: true });

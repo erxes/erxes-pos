@@ -49,7 +49,9 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
         modalView === 'QPAY_LIST_VIEW' ||
         modalView === 'QPAY_VIEW',
     },
-    sidebarPlacement === 'BOTTOM' && (mode === 'pos' ? 'poswsbar' : 'wsbar')
+    displaySidebar &&
+      sidebarPlacement === 'BOTTOM' &&
+      (mode === 'pos' ? 'poswsbar' : 'wsbar')
   );
 
   return (

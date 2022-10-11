@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useAddQuery } from 'lib/useQuery';
 import cn from 'classnames';
 import Magnify from 'modules/common/icons/Magnify';
@@ -19,6 +19,23 @@ const Search = ({ open }: IProps) => {
     setIsActive(true);
     query.searchValue && setSearchValue(query.searchValue.toString());
   }, [query.searchValue]);
+
+  const handleKey = useCallback(
+    (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        return addQuery({ searchValue });
+      }
+    },
+    [addQuery, searchValue]
+  );
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKey);
+
+    return () => {
+      window.removeEventListener('keydown', handleKey);
+    };
+  }, [handleKey]);
 
   return (
     <div

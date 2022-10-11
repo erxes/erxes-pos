@@ -24,7 +24,7 @@ const ChooseType = ({ children, value, settlePayment }: IChooseType) => {
 
   const onClick = () => {
     setBillType(value);
-    settlePayment(value);
+    value !== BILL_TYPES.ENTITY && settlePayment(value);
   };
 
   return (
