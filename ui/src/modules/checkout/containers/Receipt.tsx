@@ -42,12 +42,8 @@ const Receipt = () => {
 
   useEffect(() => {
     window.addEventListener('afterprint', () => {
-      if (mode !== 'kiosk' && putResponse) {
+      if (mode !== 'kiosk' && putResponse && !['kitchen', 'inner'].includes((type || '').toString())) {
         setTimeout(() => {
-          if (type === 'kitchen') {
-            window.close();
-            return;
-          }
           const popup = goToReceipt(_id, 'inner', '__blank');
           if (!popup) {
             prompt(
