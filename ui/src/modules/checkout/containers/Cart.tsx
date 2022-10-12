@@ -23,6 +23,7 @@ const CartContainer = () => {
     setCustomerId,
     setBillType,
     setDescription,
+    setSlotCode,
   } = useApp();
   const { orderId } = router.query;
 
@@ -39,7 +40,7 @@ const CartContainer = () => {
           if (getMode() === 'kiosk' && orderDetail.paidDate) {
             return (window.location.href = '/');
           }
-          const { items, customerId, type, billType, deliveryInfo } =
+          const { items, customerId, type, billType, deliveryInfo, slotCode } =
             orderDetail;
 
           const cart = (items || []).map((item: any) => convertCartItem(item));
@@ -50,6 +51,7 @@ const CartContainer = () => {
           setCustomerId(customerId || '');
           setBillType(billType || '');
           setDescription((deliveryInfo || {}).description || '');
+          setSlotCode(slotCode || '');
         }
       },
       fetchPolicy: 'network-only',

@@ -82,7 +82,7 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
     configs: posclientConfigs,
     currentUser,
     currentConfig,
-    primaryColor: primary,
+    primaryColor: primary || '#4f33af',
     allowReceivable,
     allowInnerBill,
     logoUrl,

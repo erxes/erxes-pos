@@ -31,11 +31,9 @@ export default function Products({ products, onLoadMore }: any) {
     <Scroll>
       <div className="row products" ref={animationParent}>
         {products.map((product: any, key: number) => (
-          <>
-            <ProductContainer {...product} key={key} />
-            <div ref={ref} />
-          </>
+          <ProductContainer {...product} key={key} />
         ))}
+        <div ref={ref} />
       </div>
     </Scroll>
   );
