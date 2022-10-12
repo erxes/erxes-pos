@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - xos-ui
     paths:
       - 'ui/**'
       - '.github/workflows/ui.yaml'
@@ -28,11 +27,9 @@ jobs:
           yarn build
 
       - name: Build docker image
-        if: github.event_name == 'push' && ( github.ref == 'refs/heads/main' || github.ref == 'refs/heads/xos-ui' )
-        env:
-          BASE_IMAGE: erxes/erxes:base-1.18-alpine
+        if: github.event_name == 'push' && ( github.ref == 'refs/heads/main' )
         run: |
           cd ui
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          DOCKER_BUILDKIT=1 docker build --build-arg BASE_IMAGE=$BASE_IMAGE -t erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/} -f Dockerfile .
+          DOCKER_BUILDKIT=1 docker build -t erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/} -f Dockerfile .
           docker push erxes/erxes-pos-ui:${GITHUB_REF#refs/heads/}

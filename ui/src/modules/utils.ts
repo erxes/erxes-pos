@@ -1,19 +1,33 @@
 import type { IEbarimtConfig } from './types';
 import { ORDER_TYPES } from 'modules/constants';
 
+// get env config from process.env or window.env
+export const getEnv = (): any => {
+  const envs: any = {};
+
+  if (typeof window !== 'undefined') {
+    for (const envMap of (window as any).envMaps) {
+      envs[envMap.name] = localStorage.getItem(`pos_env_${envMap.name}`);
+    }
+  }
+
+  return envs;
+};
+
+
 export const formatNum = (num: number | string, splitter?: any): string => {
   const checked = typeof num === 'string' ? Number(num) : num;
 
   return checked
     ? checked
-        .toLocaleString(
-          undefined,
-          splitter && {
-            minimumFractionDigits: 2,
-            maximumFractionDigits: 2,
-          }
-        )
-        .replaceAll(',', splitter ? splitter : ' ')
+      .toLocaleString(
+        undefined,
+        splitter && {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }
+      )
+      .replaceAll(',', splitter ? splitter : ' ')
     : '0';
 };
 

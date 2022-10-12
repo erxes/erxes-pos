@@ -12,13 +12,16 @@ import ConfigsProvider from 'modules/auth/containers/Configs';
 import CheckAuth from 'modules/auth/CheckAuth';
 import { ToastContainer } from 'react-toastify';
 import RestartKiosk from 'modules/kiosk/components/Restart';
+import { getEnv } from 'modules/utils';
 
 const Noop: IComponent = ({ children }) => <>{children}</>;
 
 function App({ Component, pageProps }: AppProps) {
   const Layout = (Component as any).Layout || Noop;
+  const currentEnv = getEnv()
+
   return (
-    <ApolloProvider client={apolloClient}>
+    <ApolloProvider client={apolloClient(currentEnv)}>
       <AppContextProvider>
         <UIProvider>
           <ConfigsProvider>

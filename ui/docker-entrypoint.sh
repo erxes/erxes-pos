@@ -1,4 +1,13 @@
 #!/bin/sh
-echo "window.env = `jo \`env | grep REACT_APP_\``" > /usr/share/nginx/html/js/env.js
-sed -i 's/${NGINX_HOST}/'"$NGINX_HOST"'/' /etc/nginx/conf.d/default.conf
+
+ENV="$(cat <<EOF
+  window.env = {
+      NEXT_PUBLIC_MAIN_API_DOMAIN: "$NEXT_PUBLIC_MAIN_API_DOMAIN",
+      NEXT_PUBLIC_MAIN_SUBS_DOMAIN: "$NEXT_PUBLIC_MAIN_SUBS_DOMAIN",
+  }
+EOF
+)"
+
+echo $ENV > /erxespos/public/js/env.js
+
 exec "$@"
