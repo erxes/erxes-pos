@@ -6,7 +6,6 @@ import { setContext } from '@apollo/client/link/context';
 import fetch from 'isomorphic-unfetch';
 import { getEnv } from 'modules/utils';
 
-// const createApolloClient = () => {
 const env = getEnv();
 
 const httpLink: any = new HttpLink({
@@ -19,7 +18,6 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      // 'erxes-app-token': process.env.NEXT_PUBLIC_ERXES_APP_TOKEN,
       'Access-Control-Allow-Origin': env.NEXT_PUBLIC_MAIN_API_DOMAIN,
     },
   };
