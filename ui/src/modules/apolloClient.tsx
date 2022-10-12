@@ -4,60 +4,61 @@ import { GraphQLWsLink } from '@apollo/client/link/subscriptions';
 import { createClient } from 'graphql-ws';
 import { setContext } from '@apollo/client/link/context';
 import fetch from 'isomorphic-unfetch';
+import { getEnv } from 'modules/utils';
 
-const createApolloClient = (env: any) => {
-  const httpLink: any = new HttpLink({
-    uri: `${env.NEXT_PUBLIC_MAIN_API_DOMAIN || ''}/graphql`,
-    credentials: 'include',
-    fetch,
-  });
+// const createApolloClient = () => {
+const env = getEnv();
 
-  const authLink = setContext((_, { headers }) => {
-    return {
-      headers: {
-        ...headers,
-        // 'erxes-app-token': env.NEXT_PUBLIC_ERXES_APP_TOKEN,
-        'Access-Control-Allow-Origin': `${env.NEXT_PUBLIC_MAIN_API_DOMAIN || ''}`,
-      },
-    };
-  });
+const httpLink: any = new HttpLink({
+  uri: `${env.NEXT_PUBLIC_MAIN_API_DOMAIN}/graphql`,
+  credentials: 'include',
+  fetch,
+});
 
-  const wsLink: any =
-    typeof window !== 'undefined'
-      ? new GraphQLWsLink(
+const authLink = setContext((_, { headers }) => {
+  return {
+    headers: {
+      ...headers,
+      // 'erxes-app-token': process.env.NEXT_PUBLIC_ERXES_APP_TOKEN,
+      'Access-Control-Allow-Origin': env.NEXT_PUBLIC_MAIN_API_DOMAIN,
+    },
+  };
+});
+
+const wsLink: any =
+  typeof window !== 'undefined'
+    ? new GraphQLWsLink(
         createClient({
           url: env.NEXT_PUBLIC_MAIN_SUBS_DOMAIN || '',
         })
       )
-      : null;
+    : null;
 
-  const httpLinkWithMiddleware = authLink.concat(httpLink);
+const httpLinkWithMiddleware = authLink.concat(httpLink);
 
-  type Definintion = {
-    kind: string;
-    operation?: string;
-  };
-  const splitLink =
-    typeof window !== 'undefined'
-      ? split(
+type Definintion = {
+  kind: string;
+  operation?: string;
+};
+const splitLink =
+  typeof window !== 'undefined'
+    ? split(
         ({ query }) => {
           const { kind, operation }: Definintion = getMainDefinition(query);
-          return (
-            kind === 'OperationDefinition' && operation === 'subscription'
-          );
+          return kind === 'OperationDefinition' && operation === 'subscription';
         },
         wsLink,
         httpLinkWithMiddleware
       )
-      : httpLinkWithMiddleware;
+    : httpLinkWithMiddleware;
 
-  const client = new ApolloClient({
-    ssrMode: typeof window !== 'undefined',
-    cache: new InMemoryCache(),
-    link: splitLink,
-  });
+const client = new ApolloClient({
+  ssrMode: typeof window !== 'undefined',
+  cache: new InMemoryCache(),
+  link: splitLink,
+});
 
-  return client;
-};
+// return client;
+// };
 
-export default createApolloClient;
+export default client;
