@@ -14,6 +14,7 @@ export interface State {
   registerNumber: string;
   companyName: string;
   billType: TBillType;
+  slotCode: string;
   customerId: string;
   description: string;
   isChanged: boolean;
@@ -29,6 +30,7 @@ const initialState = {
   customerId: '',
   description: '',
   isChanged: false,
+  slotCode: '',
 };
 
 type TBillType = '' | '1' | '3' | string;
@@ -49,7 +51,8 @@ type Action =
   | { type: 'CHANGE_COUNT'; _id: string; count: number }
   | { type: 'SET_DESCRIPTION'; value: string }
   | { type: 'SET_INITIAL_STATE' }
-  | { type: 'CHANGE_IS_CHANGED'; value: boolean };
+  | { type: 'CHANGE_IS_CHANGED'; value: boolean }
+  | { type: 'SET_SLOT_CODE'; value: string };
 
 export const AppContext = createContext<{} | any>(initialState);
 
@@ -148,6 +151,12 @@ const appReducer = (state: State, action: Action) => {
       return {
         ...state,
         description: action.value,
+      };
+    }
+    case 'SET_SLOT_CODE': {
+      return {
+        ...state,
+        slotCode: action.value,
       };
     }
     case 'SET_INITIAL_STATE': {
@@ -260,6 +269,11 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const setSlotCode = useCallback(
+    (value: string) => dispatch({ type: 'SET_SLOT_CODE', value }),
+    [dispatch]
+  );
+
   const value = useMemo(
     () => ({
       ...state,
@@ -276,6 +290,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
       setDescription,
       setInitialState,
       changeIsChanged,
+      setSlotCode,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]
