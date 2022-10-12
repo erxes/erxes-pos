@@ -10,7 +10,12 @@ const LoginLayout: IComponent = ({ children }) => {
   return (
     <div className="login flex-center">
       <div className="login-content">
-        <Image alt="name" fill src={logoUrl || ''} fallBack={'/logo-dark.png'} />
+        <Image
+          alt="name"
+          fill
+          src={logoUrl || ''}
+          fallBack={'/logo-dark.png'}
+        />
         <h2 className="text-center">{name}</h2>
         {children}
       </div>

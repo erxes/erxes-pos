@@ -9,18 +9,24 @@ export default function Product({
   attachment,
   name,
   unitPrice,
+  remainder,
   riffle = true,
   onClick,
 }: any) {
+  const isKiosk = getMode() === 'kiosk';
   return (
     <div
-      className={cn('product', { 'kiosk-product': getMode() === 'kiosk' })}
+      className={cn('product', { 'kiosk-product': isKiosk })}
       onClick={onClick && onClick}
     >
       <abbr title={name}>
         <Image src={(attachment || {}).url} alt="" />
         <div className="product-name">{name}</div>
-        <div className="product-price">{formatNum(unitPrice)}₮</div>
+        <div className="product-price">
+          {formatNum(unitPrice)}₮{' '}
+          {!isKiosk && !!remainder && '/' + remainder + '/'}
+        </div>
+
         {riffle && <Ink background={false} duration={800} />}
       </abbr>
     </div>

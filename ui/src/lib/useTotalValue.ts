@@ -8,8 +8,20 @@ function useTotalValue() {
   return useCallback(
     () =>
       cart.reduce(
-        (total: number, { unitPrice, count }: ICartItem) =>
-          unitPrice * count + total,
+        (
+          total: number,
+          { unitPrice, count, discountAmount = 0, bonusCount = 0 }: ICartItem
+        ) => {
+          if (!!bonusCount) {
+            if (count > bonusCount) {
+              return (
+                (count * discountAmount) / bonusCount - discountAmount + total
+              );
+            }
+            return total;
+          }
+          return count * unitPrice + total;
+        },
         0
       ),
     [cart]

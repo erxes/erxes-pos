@@ -43,7 +43,7 @@ export const orderItemFields = `
     discountAmount
     discountPercent
     bonusCount
-  
+
 `;
 
 const customerFields = `
@@ -91,7 +91,7 @@ const orderDetail = `
       items {
         ${orderItemFields}
       }
-      
+
       customer {
         firstName
         lastName
@@ -147,6 +147,16 @@ const fullOrders = `
   }
 `;
 
+const slots = `
+  query poscSlots {
+    poscSlots{
+      _id
+      code
+      name
+    }
+  }
+`;
+
 const queries = {
   commonFields,
   orderFields,
@@ -154,6 +164,7 @@ const queries = {
   orderDetail,
   ordersCheckCompany,
   fullOrders,
+  slots,
 };
 
 export default queries;

@@ -17,6 +17,9 @@ export type ICartItem = IProductBase & {
   isTake: boolean;
   status: string;
   productImgUrl: string;
+  discountAmount?: number;
+  discountPercent?: number;
+  bonusCount?: number;
 };
 
 export type IProduct = IProductBase & {

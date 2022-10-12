@@ -10,10 +10,8 @@ on:
       - '.github/workflows/ui.yaml'
 
 jobs:
-  erxes-pos-ui:
+  client-portal:
     runs-on: ubuntu-18.04
-
-    # name: Node ${{ matrix.node-version }}
 
     steps:
       - name: Use Node.js 14.20.x
