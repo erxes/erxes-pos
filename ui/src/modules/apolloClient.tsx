@@ -58,7 +58,4 @@ const client = new ApolloClient({
   link: splitLink,
 });
 
-// return client;
-// };
-
 export default client;
