@@ -1,5 +1,6 @@
 import { useState, FC, memo } from 'react';
 import NextImage, { ImageProps } from 'next/future/image';
+import cls from 'classnames';
 
 const Image: FC<
   ImageProps & {
@@ -7,6 +8,7 @@ const Image: FC<
     alt?: string;
     fallBack?: string;
     noWrap?: boolean;
+    withLoader?: boolean;
   }
 > = (props) => {
   const {
@@ -18,9 +20,12 @@ const Image: FC<
     height,
     fallBack,
     noWrap,
+    withLoader,
     ...rest
   } = props;
+  const [isImageLoading, setIsImageLoading] = useState(withLoader);
   const [srcI, setSrcI] = useState(src || fallBack || '/product.png');
+  const handleComplete = () => setIsImageLoading(false);
 
   const updatedProps = {
     ...rest,
@@ -32,12 +37,23 @@ const Image: FC<
     onError,
   };
 
+  const renderImage = () => (
+    <NextImage
+      {...updatedProps}
+      onLoadingComplete={handleComplete}
+      className={cls(
+        'next-image',
+        isImageLoading
+          ? 'skelton-wave next-image-loading'
+          : 'next-image-completed'
+      )}
+    />
+  );
+
   return noWrap ? (
-    <NextImage {...updatedProps} />
+    renderImage()
   ) : (
-    <div className="img-wrap">
-      <NextImage {...updatedProps} />
-    </div>
+    <div className="img-wrap">{renderImage()}</div>
   );
 };
 

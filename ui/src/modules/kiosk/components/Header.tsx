@@ -14,10 +14,17 @@ const Header = () => {
         alt=""
         sizes="100vw"
         noWrap
+        priority
       />
       <div className="flex-h-between">
         <div>
-          <Image alt="" fallBack="/logo-white.png" src={logoUrl || ''} fill />
+          <Image
+            alt=""
+            fallBack="/logo-white.png"
+            src={logoUrl || ''}
+            fill
+            priority
+          />
         </div>
       </div>
     </header>

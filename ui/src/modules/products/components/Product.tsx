@@ -20,7 +20,7 @@ export default function Product({
       onClick={onClick && onClick}
     >
       <abbr title={name}>
-        <Image src={(attachment || {}).url} alt="" />
+        <Image src={(attachment || {}).url} alt="" withLoader />
         <div className="product-name">{name}</div>
         <div className="product-price">
           {formatNum(unitPrice)}₮{' '}

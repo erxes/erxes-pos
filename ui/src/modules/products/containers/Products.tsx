@@ -10,7 +10,7 @@ const ProductsContainer = () => {
   const router = useRouter();
   const { categoryId, searchValue } = router.query;
   const categoryIdStr = (categoryId || '').toString();
-  const FETCH_MORE_PER_PAGE = 4;
+  const FETCH_MORE_PER_PAGE = 20;
 
   const { data, loading, refetch, fetchMore } = useQuery(
     gql(queries.products),
@@ -52,7 +52,7 @@ const ProductsContainer = () => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
             poscProducts: [
-              ...prev.poscProducts,
+              ...(prev.poscProducts || []),
               ...fetchMoreResult.poscProducts,
             ],
           });
