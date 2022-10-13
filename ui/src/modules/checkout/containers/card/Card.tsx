@@ -48,7 +48,7 @@ const Card = () => {
               service_params: {
                 // special character _ is not accepted
                 db_ref_no: number.replace('_', ''),
-                amount: mode === 'kiosk' ? totalAmount : card,
+                amount: mode === 'kiosk' ? totalAmount.toString() : card.toString(),
                 vatps_bill_type: billType,
               },
             }),
