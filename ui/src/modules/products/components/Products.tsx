@@ -30,7 +30,7 @@ export default function Products({ products, onLoadMore }: any) {
   return (
     <Scroll>
       <div className="row products" ref={animationParent}>
-        {products.map((product: any, key: number) => (
+        {filteredProducts.map((product: any, key: number) => (
           <ProductContainer {...product} key={key} />
         ))}
         <div ref={ref} />
