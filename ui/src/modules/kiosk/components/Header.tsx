@@ -2,13 +2,13 @@ import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Image from 'ui/Image';
 
 const Header = () => {
-  const { bgImage, logoUrl } = useConfigsContext();
+  const { logoUrl, kioskHeaderImage } = useConfigsContext();
 
   return (
     <header>
       <Image
         fallBack="/background.png"
-        src={bgImage || ''}
+        src={kioskHeaderImage || ''}
         fill
         alt=""
         sizes="100vw"

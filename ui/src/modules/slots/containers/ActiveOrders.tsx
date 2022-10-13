@@ -11,8 +11,9 @@ const ActiveOrders = () => {
   const { fullOrders, loading, subToOrderStatuses } = useFullOrders({
     statuses: ALL,
     variables: {
-      sortDirection: -1,
+      sortDirection: 1,
       perPage: 100,
+      sortField: 'createdAt',
     },
     query: queries.fullOrders,
   });
