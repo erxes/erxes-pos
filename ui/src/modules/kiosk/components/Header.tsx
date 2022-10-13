@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-html-link-for-pages */
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Image from 'ui/Image';
 
@@ -15,7 +16,7 @@ const Header = () => {
         noWrap
       />
       <div className="flex-h-between">
-        <div className="img-wrap">
+        <div>
           <Image alt="" fallBack="/logo-white.png" src={logoUrl || ''} fill />
         </div>
       </div>

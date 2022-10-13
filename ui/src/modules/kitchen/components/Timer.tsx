@@ -1,7 +1,7 @@
 import { useTime } from 'react-timer-hook';
 
-const Timer = ({ paidDate }: any) => {
-  const date = new Date(paidDate);
+const Timer = ({ modifiedAt, paidDate }: any) => {
+  const date = new Date(paidDate || modifiedAt);
 
   const pHours = date.getHours();
   const pMinutes = date.getMinutes();

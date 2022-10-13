@@ -7,7 +7,15 @@ import Timer from './Timer';
 import Button from 'ui/Button';
 import { goToReceipt, renderType } from 'modules/utils';
 
-const Order = ({ number, type, items, paidDate, _id, status }: any) => {
+const Order = ({
+  number,
+  type,
+  items,
+  modifiedAt,
+  paidDate,
+  _id,
+  status,
+}: any) => {
   const { DONE, NEW, DOING } = ORDER_STATUSES;
   const [doneItems, setDoneItems] = useState([]);
   const [orderChangeStatus, { loading }] = useMutation(
@@ -50,7 +58,7 @@ const Order = ({ number, type, items, paidDate, _id, status }: any) => {
           <div className="flex-v-center">
             <div className="flex-center flex-col">
               <p className="btn flat -tag">{renderType(type)}</p>
-              <Timer paidDate={paidDate} />
+              <Timer modifiedAt={modifiedAt} paidDate={paidDate} />
             </div>
             <Button
               variant="slim"
