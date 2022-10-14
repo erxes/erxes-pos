@@ -40,7 +40,7 @@ const Checkout = () => {
       </h2>
       <div className="kiosk-review">
         <Scroll>
-          {items.map((data: ICartItem) => (
+          {(items || []).map((data: ICartItem) => (
             <ReviewItem {...data} key={data._id} />
           ))}
         </Scroll>

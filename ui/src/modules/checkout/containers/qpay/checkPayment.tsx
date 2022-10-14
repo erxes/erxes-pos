@@ -14,26 +14,40 @@ const CheckPayment = () => {
   const { changeActivePayment } = useCheckoutContext();
   const [cancelInterval, setCancelInterval] = useState(false);
 
+  const checkInvoice = (data: any) => {
+    const invoice = data.qpayCheckPayment;
+    return (
+      invoice &&
+      invoice.qpayPaymentId &&
+      invoice.paymentDate &&
+      invoice.status === 'PAID'
+    );
+  };
+
   const { orderId, qpayId } = router.query;
   const [check, { loading }] = useMutation(gql(mutations.qpayCheckPayment), {
     variables: {
       orderId,
       id: qpayId,
     },
-    refetchQueries: [{ query: gql(queries.orderDetail) }, 'orderDetail'],
-    onCompleted(data) {
-      const invoice = data.qpayCheckPayment;
 
-      if (
-        invoice &&
-        invoice.qpayPaymentId &&
-        invoice.paymentDate &&
-        invoice.status === 'PAID'
-      ) {
+    refetchQueries(result) {
+      if (checkInvoice((result || {}).data)) {
+        return [{ query: gql(queries.orderDetail) }, 'orderDetail'];
+      }
+      return [];
+    },
+
+    onCompleted(data) {
+      if (checkInvoice(data)) {
         setCancelInterval(false);
+        if (mode === 'kiosk') {
+          return;
+        }
         changeActivePayment('');
       }
     },
+
     onError(error) {
       toast.error(error.message);
     },

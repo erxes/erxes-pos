@@ -42,6 +42,8 @@ mutation QpayCheckPayment($orderId: String!, $id: String) {
   qpayCheckPayment(orderId: $orderId, _id: $id) {
     _id
     status
+    qpayPaymentId
+    paymentDate
   }
 }
 `;
