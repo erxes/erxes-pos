@@ -19,6 +19,7 @@ const DoneOrders = () => {
   if (loading) return <Loading />;
 
   const now = new Date();
+
   const then = new Date(now.setHours(now.getHours() - 3));
 
   const last3Hours = fullOrders.filter(

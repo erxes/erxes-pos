@@ -11,6 +11,11 @@ const Orders = () => {
   const { loading, fullOrders, subToOrderStatuses, subToItems } = useFullOrders(
     {
       statuses: [NEW, DOING, REDOING],
+      variables: {
+        sortDirection: 1,
+        sortField: 'createdAt',
+        perPage: 30,
+      },
     }
   );
 
