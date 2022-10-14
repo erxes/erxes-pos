@@ -16,7 +16,7 @@ const ProductsContainer = () => {
     gql(queries.products),
     {
       variables: {
-        perPage: 16,
+        perPage: FETCH_MORE_PER_PAGE,
         categoryId: categoryIdStr,
         searchValue,
         page: 1,
@@ -43,6 +43,7 @@ const ProductsContainer = () => {
 
   const handleLoadMore = () => {
     if (productsCount > products.length) {
+      console.log(productsCount, products.length);
       fetchMore({
         variables: {
           page: Math.ceil(products.length / FETCH_MORE_PER_PAGE) + 1,
