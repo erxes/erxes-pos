@@ -21,6 +21,8 @@ const FullOrders = () => {
       searchValue,
       startDate,
       endDate,
+      sortDirection: -1,
+      sortField: 'createdAt'
     },
   });
 
