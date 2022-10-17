@@ -1,4 +1,3 @@
-import { memo } from 'react';
 import { useApp } from 'modules/AppContext';
 import type { IProduct } from 'modules/types';
 import Product from '../components/Product';
@@ -29,4 +28,4 @@ const ProductContainer = (props: IProduct) => {
   );
 };
 
-export default memo(ProductContainer);
+export default ProductContainer;

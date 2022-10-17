@@ -1,4 +1,4 @@
-import { useRouter } from 'next/router';
+import { useAddQuery } from 'lib/useQuery';
 import { useMutation, gql } from '@apollo/client';
 import { useCheckoutContext } from 'modules/checkout/context';
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
@@ -6,37 +6,30 @@ import { mutations, queries } from '../../graphql';
 import Image from 'modules/common/ui/Image';
 import { getMode } from 'modules/utils';
 import { useUI } from 'modules/common/ui/context';
+import { useApp } from 'modules/AppContext';
 import { toast } from 'react-toastify';
 
 const Qpay = () => {
-  const router = useRouter();
-  const { orderId } = router.query;
+  const { query, addQuery } = useAddQuery();
+  const { orderId } = query;
   const mode = getMode();
-  const { qpay } = useCheckoutContext();
+  const { qpay, remainder } = useCheckoutContext();
   const { setModalView, openModal } = useUI();
+  const { orderDetail } = useApp();
+  const {} = orderDetail;
 
   const [createInvoice, { loading }] = useMutation(
     gql(mutations.createQpaySimpleInvoice),
     {
       variables: {
-        amount: qpay,
+        amount: mode === 'kiosk' ? remainder : qpay,
         orderId,
       },
       onError(error) {
         toast.error(error.message);
       },
       onCompleted(data) {
-        router.push(
-          {
-            pathname: router.pathname,
-            query: {
-              ...router.query,
-              qpayId: data.poscCreateQpaySimpleInvoice._id,
-            },
-          },
-          undefined,
-          { shallow: true }
-        );
+        addQuery({ qpayId: data.poscCreateQpaySimpleInvoice._id });
         setModalView('QPAY_VIEW');
         openModal();
       },
@@ -44,10 +37,20 @@ const Qpay = () => {
     }
   );
 
+  const handleClick = () => {
+    if (mode === 'kiosk' && (orderDetail.qpayInvoices || []).length > 0) {
+      addQuery({ qpayId: orderDetail.qpayInvoices[0]._id });
+      setModalView('QPAY_VIEW');
+      openModal();
+      return;
+    }
+    return createInvoice();
+  };
+
   return (
     <PaymentMethod
       name="qpay"
-      onClick={() => createInvoice()}
+      onClick={handleClick}
       loading={loading}
       btnText="Нэхэмжлэл үүсгэх"
     >

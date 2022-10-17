@@ -3,6 +3,7 @@ import { mutations } from 'modules/checkout/graphql';
 import { toast } from 'react-toastify';
 import { trimGraphqlError, goToReceipt } from 'modules/utils';
 import { useApp } from 'modules/AppContext';
+import { queries } from 'modules/checkout/graphql';
 
 const useSettlePayment = (onCompleted: any) => {
   const { billType, orderDetail, registerNumber } = useApp();
@@ -22,6 +23,7 @@ const useSettlePayment = (onCompleted: any) => {
       onError(error) {
         toast.error(trimGraphqlError(error.message));
       },
+      refetchQueries: [{ query: gql(queries.orderDetail) }, 'orderDetail'],
     }
   );
 

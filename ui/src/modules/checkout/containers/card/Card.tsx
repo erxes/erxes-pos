@@ -17,8 +17,7 @@ const Card = () => {
   const { card } = useCheckoutContext();
   const { addPayment } = useAddPayment();
 
-  const [loading, setLoading] = useState(true);
-  const [cancelInterval, setCancelInterval] = useState(false);
+  const [loading] = useState(true);
   const mode = getMode();
   const { closeModal, setModalView } = useUI();
 
@@ -36,7 +35,6 @@ const Card = () => {
       .then((res: any) => {
         if (res && res.status_code === 'ok') {
           // ! interval
-          setCancelInterval(true);
           // send transaction upon successful connection
           fetch(PATH, {
             method: 'POST',
@@ -48,7 +46,8 @@ const Card = () => {
               service_params: {
                 // special character _ is not accepted
                 db_ref_no: number.replace('_', ''),
-                amount: mode === 'kiosk' ? totalAmount.toString() : card.toString(),
+                amount:
+                  mode === 'kiosk' ? totalAmount.toString() : card.toString(),
                 vatps_bill_type: billType,
               },
             }),
@@ -62,7 +61,9 @@ const Card = () => {
                   addPayment({
                     _id: orderId,
                     cardInfo: r.response,
-                    cardAmount: mode === 'kiosk' ? totalAmount : card,
+                    cardAmount: parseFloat(
+                      mode === 'kiosk' ? totalAmount : card
+                    ),
                   });
 
                   if (mode === 'kiosk') {
@@ -92,22 +93,6 @@ const Card = () => {
           `${e.message}: Databank-н төлбөрийн програмтай холбогдсонгүй`
         );
       });
-
-    //!!!!!!!!!!!!!!!!!!!!!!
-    // setCancelInterval(true);
-    // addPayment({
-    //   _id: orderId,
-    //   cardInfo: 'ok',
-    //   cardAmount: mode === 'kiosk' ? totalAmount : card,
-    // });
-
-    // if (mode === 'kiosk') {
-    //   setModalView('SUCCESS_VIEW');
-    // }
-    // if (mode === 'pos') {
-    //   closeModal();
-    // }
-    // !
   };
 
   useEffect(() => {

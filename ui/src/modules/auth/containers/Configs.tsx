@@ -17,6 +17,7 @@ interface State {
   receiptIcon: string | null;
   bgImage: string | null;
   primaryColor: string | '';
+  kioskHeaderImage: string | '';
 }
 
 export const ConfigsContext = createContext<State | any>(null);
@@ -37,14 +38,15 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
   const { posclientConfigs } = configs || {};
 
   const { uiOptions } = currentConfig || {};
+  const {
+    colors,
+    logo: logoUrl,
+    bgImage,
+    receiptIcon,
+    kioskHeaderImage,
+  } = uiOptions || {};
 
-  const primary = ((uiOptions || {}).colors || {}).primary;
-
-  const logoUrl = (uiOptions || {}).logo;
-
-  const receiptIcon = (uiOptions || {}).receiptIcon;
-
-  const bgImage = (uiOptions || {}).bgImage;
+  const primary = (colors || {}).primary;
 
   let allowReceivable = false;
   let allowInnerBill = false;
@@ -88,6 +90,7 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
     logoUrl,
     receiptIcon,
     bgImage,
+    kioskHeaderImage,
   };
 
   if (loading || loadingConfig || loadingConfigs)

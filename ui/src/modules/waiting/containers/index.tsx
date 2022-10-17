@@ -9,6 +9,11 @@ const WaitingContainer = () => {
   const { fullOrders, loading, subToOrderStatuses, subToItems } = useFullOrders(
     {
       statuses: [DONE, DOING, REDOING],
+      variables: {
+        sortDirection: -1,
+        sortField: 'modifiedAt',
+        perPage: 30,
+      },
     }
   );
 

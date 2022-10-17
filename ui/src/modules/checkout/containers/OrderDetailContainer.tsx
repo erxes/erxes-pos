@@ -7,8 +7,13 @@ import Loading from 'ui/Loading';
 import NotFound from 'modules/common/Layout/NotFound';
 
 const OrderDetailContainer = ({ handleSuccess, children }: any) => {
-  const { setOrderDetail, orderDetail, setBillType, setRegisterNumber } =
-    useApp();
+  const {
+    setOrderDetail,
+    orderDetail,
+    setBillType,
+    setRegisterNumber,
+    setType,
+  } = useApp();
 
   const router = useRouter();
 
@@ -18,11 +23,12 @@ const OrderDetailContainer = ({ handleSuccess, children }: any) => {
     },
     onCompleted(data) {
       const { orderDetail } = data;
-      const { registerNumber, billType } = orderDetail || {};
+      const { registerNumber, billType, type } = orderDetail || {};
       setOrderDetail(orderDetail ? orderDetail : {});
       billType && setBillType(billType);
       registerNumber && setRegisterNumber(registerNumber);
       handleSuccess && handleSuccess(orderDetail);
+      type && setType(type);
     },
   });
 

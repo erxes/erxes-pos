@@ -1,35 +1,22 @@
 import { useEffect } from 'react';
-import { useTime } from 'react-timer-hook';
-import { useConfigsContext } from 'modules/auth/containers/Configs';
-import { ORDER_STATUSES } from 'modules/constants';
+import { useTimer } from 'react-timer-hook';
 
-const Timer = ({ modifiedAt, editOrder, status }: any) => {
-  const { currentConfig } = useConfigsContext();
-  const { waitingScreen } = currentConfig || {};
-  const { seconds, minutes, hours } = useTime({});
-
-  const time = seconds + minutes * 60 + (hours || 24) * 3600;
-
-  const waitingSec = parseInt((waitingScreen || {}).value || {}) * 60;
-  let date = new Date();
-  if (modifiedAt) {
-    date = new Date(modifiedAt);
-  }
-  const mHours = date.getHours();
-  const mMinutes = date.getMinutes();
-  const mSeconds = date.getSeconds();
-
-  const startTime = mSeconds + mMinutes * 60 + mHours * 3600;
-
-  let diffSeconds = time - startTime;
+const Timer = ({ editOrder, expiryTimestamp }: any) => {
+  const { seconds, minutes, hours, days, start } = useTimer({
+    expiryTimestamp,
+    onExpire: () => editOrder(),
+  });
 
   useEffect(() => {
-    if (diffSeconds > waitingSec && status === ORDER_STATUSES.DONE) {
-      editOrder();
-    }
-  }, [diffSeconds]);
+    start();
+  }, []);
 
-  return <small>{diffSeconds}</small>;
+  return (
+    <small>
+      <span>{days}</span>:<span>{hours}</span>:<span>{minutes}</span>:
+      <span>{seconds}</span>
+    </small>
+  );
 };
 
 export default Timer;

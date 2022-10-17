@@ -5,11 +5,9 @@ import { getMode } from 'modules/utils';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Scroll from 'modules/kiosk/components/Scroll';
 import { useInView } from 'react-intersection-observer';
-import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 export default function Products({ products, onLoadMore }: any) {
   const { currentConfig } = useConfigsContext();
-  const [animationParent] = useAutoAnimate<HTMLDivElement>();
 
   const { ref, inView } = useInView({
     /* Optional options */
@@ -29,9 +27,9 @@ export default function Products({ products, onLoadMore }: any) {
 
   return (
     <Scroll>
-      <div className="row products" ref={animationParent}>
-        {products.map((product: any, key: number) => (
-          <ProductContainer {...product} key={key} />
+      <div className="row products">
+        {filteredProducts.map((product: any) => (
+          <ProductContainer {...product} key={product._id} />
         ))}
         <div ref={ref} />
       </div>

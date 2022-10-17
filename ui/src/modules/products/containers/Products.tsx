@@ -10,13 +10,13 @@ const ProductsContainer = () => {
   const router = useRouter();
   const { categoryId, searchValue } = router.query;
   const categoryIdStr = (categoryId || '').toString();
-  const FETCH_MORE_PER_PAGE = 4;
+  const FETCH_MORE_PER_PAGE = 20;
 
   const { data, loading, refetch, fetchMore } = useQuery(
     gql(queries.products),
     {
       variables: {
-        perPage: 16,
+        perPage: FETCH_MORE_PER_PAGE,
         categoryId: categoryIdStr,
         searchValue,
         page: 1,
@@ -43,6 +43,7 @@ const ProductsContainer = () => {
 
   const handleLoadMore = () => {
     if (productsCount > products.length) {
+      console.log(productsCount, products.length);
       fetchMore({
         variables: {
           page: Math.ceil(products.length / FETCH_MORE_PER_PAGE) + 1,
@@ -52,7 +53,7 @@ const ProductsContainer = () => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
             poscProducts: [
-              ...prev.poscProducts,
+              ...(prev.poscProducts || []),
               ...fetchMoreResult.poscProducts,
             ],
           });

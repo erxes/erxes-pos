@@ -1,4 +1,5 @@
-import { useQuery, gql } from '@apollo/client';
+import { useEffect } from 'react';
+import { useLazyQuery, gql } from '@apollo/client';
 import { queries, subscriptions } from 'modules/checkout/graphql';
 
 type IStatuses = string | string[];
@@ -12,16 +13,14 @@ const useFullOrders = ({
   query,
   variables,
 }: any) => {
-  const { loading, data, subscribeToMore, refetch } = useQuery(
-    gql(query ? query : queries.fullOrders),
-    {
+  const [getFullOrders, { loading, data, subscribeToMore, refetch }] =
+    useLazyQuery(gql(query ? query : queries.fullOrders), {
       variables: {
         statuses: checkIsArray(statuses),
         ...(variables || {}),
       },
       fetchPolicy,
-    }
-  );
+    });
 
   const subToOrderStatuses = (subStatuses: IStatuses, callBack?: any) =>
     subscribeToMore({
@@ -51,6 +50,10 @@ const useFullOrders = ({
         }
       },
     });
+
+  useEffect(() => {
+    statuses && getFullOrders();
+  }, []);
 
   return {
     loading,

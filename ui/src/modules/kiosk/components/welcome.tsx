@@ -32,7 +32,9 @@ const Welcome = () => {
             src={logoUrl || ''}
           />
 
-          <h5>Эрхэс таны бизнесийн хурдасгуур</h5>
+          <h5>
+            Ta төлбөрөө төлсөн бол заавал <br /> баримтаа авна уу
+          </h5>
           <Button onClick={() => handleClick('eat')}>Зааланд</Button>
           <Button onClick={() => handleClick('take')}>Авч явах</Button>
         </div>

@@ -156,3 +156,15 @@ h6 {
     }
   }
 }
+
+.next-image {
+  transition: all 700ms cubic-bezier(0.4, 0, 0.2, 1);
+  &-loading {
+    filter: grayscale(80%) blur(40px);
+    transform: scale(1.1);
+  }
+  &-completed {
+    filter: grayscale(0) blur(0);
+    transform: scale(1);
+  }
+}
