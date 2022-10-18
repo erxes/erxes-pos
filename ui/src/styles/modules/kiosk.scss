@@ -314,4 +314,19 @@
       padding: 1.5rem 3rem;
     }
   }
+  &-cancel {
+    padding: 5rem;
+    width: 100vw;
+    max-width: 600px;
+    & > h4 {
+      padding-bottom: 2.5rem;
+    }
+    big {
+      color: $white-gray;
+    }
+    & > big > h5 {
+      display: inline;
+      color: $error;
+    }
+  }
 }
