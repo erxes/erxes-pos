@@ -15,4 +15,18 @@ module.exports = {
       },
     ],
   },
+
+  webpack: (config) => {
+    config.optimization.splitChunks.cacheGroups = {
+      ...config.optimization.splitChunks.cacheGroups,
+      mergeDuplicateChunks: 'true',
+      '@sentry': {
+        test: /[\\/]node_modules[\\/](@sentry)[\\/]/,
+        name: '@sentry',
+        priority: 10,
+        reuseExistingChunk: false,
+      },
+    };
+    return config;
+  },
 };
