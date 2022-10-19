@@ -9,7 +9,7 @@ on:
       - '.github/workflows/ui.yaml'
 
 jobs:
-  client-portal:
+  pos-ui:
     runs-on: ubuntu-18.04
 
     steps:
