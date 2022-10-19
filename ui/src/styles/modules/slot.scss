@@ -25,34 +25,6 @@
       &::after {
         content: '';
       }
-      &.new {
-        background-color: $gray;
-        svg {
-          color: $gray;
-        }
-      }
-      &.doing,
-      &.reDoing {
-        background: $warning;
-        svg {
-          color: $warning;
-        }
-      }
-      &.done {
-        background: $success;
-        svg {
-          color: $success;
-        }
-      }
-      &.complete {
-        background: rgba($color: $success, $alpha: 0.7);
-        svg {
-          color: rgba($color: $success, $alpha: 0.7);
-        }
-      }
-      &.-paid {
-        font-style: italic;
-      }
     }
     .react-horizontal-scrolling-menu--separator {
       padding: 0 0.5rem;

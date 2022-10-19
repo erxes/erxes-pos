@@ -1,5 +1,6 @@
 .history {
-  min-height: 100vh;
+  height: 100vh;
+  align-items: stretch;
 
   input {
     width: auto;
@@ -7,7 +8,6 @@
 
   .-select-statuses {
     min-width: 10rem;
-    height: 100%;
   }
 
   .filter-btn {
@@ -31,6 +31,17 @@
   .row {
     padding: 1rem;
   }
+  .fill {
+    flex: 1 1 auto;
+  }
+
+  .col-12 {
+    padding: 2rem;
+    .btn.flat {
+      background: $primary;
+    }
+  }
+
   &-item {
     border: $border;
     border-radius: 0.25rem;
@@ -81,6 +92,15 @@
       border-color: $primary;
       margin-top: 1.5rem;
       font-weight: 700;
+    }
+  }
+  .scroll-container {
+    flex: 1 1 auto;
+    overflow: hidden;
+    max-height: 90vh;
+    & > div {
+      display: flex;
+      max-height: 100%;
     }
   }
 }

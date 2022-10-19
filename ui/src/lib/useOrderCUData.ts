@@ -51,7 +51,7 @@ const useOrderCUData = () => {
     slotCode,
     customerId,
     totalAmount,
-    origin: mode === 'kiosk' ? 'kiosk' : '',
+    origin: mode === 'kiosk' ? 'kiosk' : 'pos',
     deliveryInfo: {
       description,
     },

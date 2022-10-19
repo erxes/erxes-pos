@@ -106,3 +106,31 @@
 .success {
   color: $success;
 }
+.new {
+  background-color: $gray !important;
+  svg {
+    color: $gray !important;
+  }
+}
+.doing,
+.reDoing {
+  background: $warning !important;
+  svg {
+    color: $warning !important;
+  }
+}
+.done {
+  background: $success !important;
+  svg {
+    color: $success !important;
+  }
+}
+.complete {
+  background: rgba($color: $success, $alpha: 0.7) !important;
+  svg {
+    color: rgba($color: $success, $alpha: 0.7) !important;
+  }
+}
+.-paid {
+  font-style: italic !important;
+}

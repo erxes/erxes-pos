@@ -14,20 +14,19 @@ export const getEnv = (): any => {
   return envs;
 };
 
-
 export const formatNum = (num: number | string, splitter?: any): string => {
   const checked = typeof num === 'string' ? Number(num) : num;
 
   return checked
     ? checked
-      .toLocaleString(
-        undefined,
-        splitter && {
-          minimumFractionDigits: 2,
-          maximumFractionDigits: 2,
-        }
-      )
-      .replaceAll(',', splitter ? splitter : ' ')
+        .toLocaleString(
+          undefined,
+          splitter && {
+            minimumFractionDigits: 2,
+            maximumFractionDigits: 2,
+          }
+        )
+        .replaceAll(',', splitter ? splitter : ' ')
     : '0';
 };
 
@@ -90,6 +89,3 @@ export const renderType = (type: string) => {
   if (type === ORDER_TYPES.TAKE) return 'Авч явахаар';
   if (type === ORDER_TYPES.DELIVERY) return 'Хүргэлт';
 };
-
-export const convertDate = (date: any) =>
-  date.toISOString().slice(0, 19).replace('T', ' ');

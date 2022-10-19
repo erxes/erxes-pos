@@ -11,16 +11,35 @@ const useFullOrders = ({
   statuses,
   fetchPolicy = 'network-only',
   query,
-  variables,
+  variables: restVariables,
 }: any) => {
-  const [getFullOrders, { loading, data, subscribeToMore, refetch }] =
-    useLazyQuery(gql(query ? query : queries.fullOrders), {
-      variables: {
-        statuses: checkIsArray(statuses),
-        ...(variables || {}),
-      },
+  const variables = {
+    statuses: checkIsArray(statuses),
+    ...(restVariables || {}),
+  };
+
+  const PER_PAGE = 28;
+
+  const [
+    getFullOrders,
+    { loading, data, subscribeToMore, refetch, fetchMore },
+  ] = useLazyQuery(gql(query ? query : queries.fullOrders), {
+    variables: {
+      ...variables,
+      page: 1,
+      perPage: PER_PAGE,
+    },
+    fetchPolicy,
+  });
+
+  const [getOrdersTotalCount, { loading: loadCount, data: countData }] =
+    useLazyQuery(gql(queries.ordersTotalCount), {
+      variables,
       fetchPolicy,
     });
+
+  const fullOrders = (data || {}).fullOrders || [];
+  const totalCount = (countData || {}).ordersTotalCount || 0;
 
   const subToOrderStatuses = (subStatuses: IStatuses, callBack?: any) =>
     subscribeToMore({
@@ -51,16 +70,39 @@ const useFullOrders = ({
       },
     });
 
+  const handleLoadMore = () => {
+    if (totalCount > fullOrders.length) {
+      fetchMore({
+        variables: {
+          page: Math.ceil(fullOrders.length / PER_PAGE) + 1,
+          perPage: PER_PAGE,
+        },
+        updateQuery: (prev, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return Object.assign({}, prev, {
+            fullOrders: [
+              ...(prev.fullOrders || []),
+              ...fetchMoreResult.fullOrders,
+            ],
+          });
+        },
+      });
+    }
+  };
+
   useEffect(() => {
-    statuses && getFullOrders();
+    getFullOrders();
+    getOrdersTotalCount();
   }, []);
 
   return {
-    loading,
-    fullOrders: (data || {}).fullOrders || [],
+    loading: loading || loadCount,
+    fullOrders,
     subToOrderStatuses,
     refetch,
     subToItems,
+    totalCount,
+    handleLoadMore,
   };
 };
 

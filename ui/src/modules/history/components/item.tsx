@@ -9,7 +9,7 @@ import { renderType } from 'modules/utils';
 const HistoryItem = ({ order }: any) => {
   const { setOrderDetail } = useApp();
   const { setModalView, openModal } = useUI();
-  const { totalAmount, paidDate, type, number } = order;
+  const { totalAmount, paidDate, type, number, status } = order;
   const date = dayjs(paidDate).format('DD/MM/YYYY');
 
   const handleClick = () => {
@@ -25,7 +25,9 @@ const HistoryItem = ({ order }: any) => {
         <b>#{number.split('_')[1]}</b>
       </div>
       <div className="flex-h-between">
-        <Button riffle={false}>{renderType(type)}</Button>
+        <Button riffle={false} className={status}>
+          {renderType(type)} - {status}
+        </Button>
         <span className="caption">{paidDate && date}</span>
       </div>
       <Ink />

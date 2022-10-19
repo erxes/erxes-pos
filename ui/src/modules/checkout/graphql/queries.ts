@@ -157,6 +157,30 @@ const slots = `
   }
 `;
 
+const ordersTotalCount = `query ordersTotalCount(
+  $customerId: String
+  $endDate: Date
+  $page: Int
+  $perPage: Int
+  $searchValue: String
+  $sortField: String
+  $sortDirection: Int
+  $startDate: Date
+  $statuses: [String]
+) {
+  ordersTotalCount(
+    customerId: $customerId
+    endDate: $endDate
+    page: $page
+    perPage: $perPage
+    searchValue: $searchValue
+    sortField: $sortField
+    sortDirection: $sortDirection
+    startDate: $startDate
+    statuses: $statuses
+  )
+}`;
+
 const queries = {
   commonFields,
   orderFields,
@@ -165,6 +189,7 @@ const queries = {
   ordersCheckCompany,
   fullOrders,
   slots,
+  ordersTotalCount,
 };
 
 export default queries;
