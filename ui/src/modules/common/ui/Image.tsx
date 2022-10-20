@@ -28,8 +28,6 @@ const Image: FC<
   const [srcI, setSrcI] = useState(src || fallBack || '/product.png');
   const handleComplete = () => setIsImageLoading(false);
 
-  console.log(onError);
-
   const updatedProps = {
     ...rest,
     src: srcI,

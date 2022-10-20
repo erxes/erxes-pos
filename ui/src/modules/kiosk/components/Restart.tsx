@@ -1,10 +1,19 @@
-import { useEffect } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useEffect, Suspense, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
-import { getMode } from '../../utils';
+import { getMode } from 'modules/utils';
+import dynamic from 'next/dynamic';
+import Loading from 'modules/common/ui/Loading';
+import dayjs from 'dayjs';
+
+const Modal = dynamic(() => import('ui/Modal'), { suspense: true });
+const AskCancel = dynamic(() => import('modules/kiosk/components/AskCancel'));
 
 const Restart = () => {
   const { isChanged } = useApp();
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
   const router = useRouter();
   let timeout: NodeJS.Timeout | null = null;
 
@@ -18,7 +27,7 @@ const Restart = () => {
       clearTimeout(timeout);
     }
     timeout = setTimeout(() => {
-      goBackToHome();
+      setIsModalVisible(true);
     }, 60 * 1000);
   };
 
@@ -46,7 +55,19 @@ const Restart = () => {
     };
   }, [router.pathname, isChanged]);
 
-  return <div />;
+  return (
+    <Suspense fallback={<Loading />}>
+      {isModalVisible && (
+        <Modal>
+          <AskCancel
+            goBackToHome={goBackToHome}
+            expiryTimestamp={dayjs().add(15, 'seconds')}
+            setIsModalVisible={setIsModalVisible}
+          />
+        </Modal>
+      )}
+    </Suspense>
+  );
 };
 
 export default Restart;
