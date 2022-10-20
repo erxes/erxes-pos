@@ -43,7 +43,6 @@ const ProductsContainer = () => {
 
   const handleLoadMore = () => {
     if (productsCount > products.length) {
-      console.log(productsCount, products.length);
       fetchMore({
         variables: {
           page: Math.ceil(products.length / FETCH_MORE_PER_PAGE) + 1,

@@ -1,6 +1,7 @@
 import { useState, FC, memo } from 'react';
 import NextImage, { ImageProps } from 'next/future/image';
 import cls from 'classnames';
+import ProductFallback from 'icons/productFallback';
 
 const Image: FC<
   ImageProps & {
@@ -27,6 +28,8 @@ const Image: FC<
   const [srcI, setSrcI] = useState(src || fallBack || '/product.png');
   const handleComplete = () => setIsImageLoading(false);
 
+  console.log(onError);
+
   const updatedProps = {
     ...rest,
     src: srcI,
@@ -49,6 +52,13 @@ const Image: FC<
       )}
     />
   );
+
+  if (srcI === '/product.png')
+    return (
+      <div className="img-wrap">
+        <ProductFallback />
+      </div>
+    );
 
   return noWrap ? (
     renderImage()

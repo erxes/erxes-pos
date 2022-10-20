@@ -5,6 +5,9 @@
     border-radius: 50%;
     overflow: hidden;
     margin-bottom: 0.75rem;
+    img {
+      object-fit: cover;
+    }
   }
   small {
     padding-top: 0.25rem;

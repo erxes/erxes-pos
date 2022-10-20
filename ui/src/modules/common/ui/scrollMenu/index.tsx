@@ -11,12 +11,14 @@ interface Props {
   items: any[];
   ItemComponent: React.FC<any>;
   className?: string;
+  LastComponent?: any;
 }
 
 const HorizontalScroll: React.FC<Props> = ({
   items,
   ItemComponent,
   className,
+  LastComponent,
 }) => {
   const { dragStart, dragStop, dragMove, dragging } = useDrag();
 
@@ -47,6 +49,7 @@ const HorizontalScroll: React.FC<Props> = ({
             <ItemComponent {...item} />
           </Element>
         ))}
+        {LastComponent && <Element itemId={2001}>{LastComponent}</Element>}
       </ScrollMenu>
     </div>
   );

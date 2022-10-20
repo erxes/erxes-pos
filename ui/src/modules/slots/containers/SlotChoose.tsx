@@ -14,6 +14,8 @@ const SlotChoose = () => {
     })
   );
 
+  if (slots.length === 0) return null;
+
   return (
     <div className="slot-choose">
       <Select

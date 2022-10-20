@@ -13,6 +13,7 @@ const initialState = {
   card: 0,
   qpay: 0,
   cash: 0,
+  asCard: 0,
   receivable: 0,
 };
 

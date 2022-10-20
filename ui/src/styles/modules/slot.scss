@@ -26,6 +26,14 @@
         content: '';
       }
     }
+    .-load {
+      color: $primary;
+      white-space: nowrap;
+      border-color: $primary;
+      margin: 0.75rem 0;
+      padding: 0.5rem 1rem;
+      line-height: calc(1.75rem - 2px);
+    }
     .react-horizontal-scrolling-menu--separator {
       padding: 0 0.5rem;
     }

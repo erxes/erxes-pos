@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { gql, useMutation } from '@apollo/client';
 import { mutations, queries } from 'modules/checkout/graphql';
@@ -24,13 +25,16 @@ const useAddPayment = () => {
     },
   });
 
-  const addPayment = (variables: any) =>
-    addPay({
-      variables: {
-        _id: router.query.orderId,
-        ...variables,
-      },
-    });
+  const addPayment = useCallback(
+    (variables: any) =>
+      addPay({
+        variables: {
+          _id: router.query.orderId,
+          ...variables,
+        },
+      }),
+    [addPay, router.query.orderId]
+  );
 
   return { addPayment, loading };
 };

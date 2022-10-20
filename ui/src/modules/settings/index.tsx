@@ -58,8 +58,8 @@ const Settings: IComponent = () => {
           </div>
           <div className="col-6 flex-v-center">
             <div className="-color -paid flex-center">
-              <i>italic</i>
-            </div>
+              <i>iii</i>
+            </div>{' '}
             - Tөлбөр төлөгдсөн
           </div>
         </div>

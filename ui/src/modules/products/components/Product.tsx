@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from 'ui/Image';
 import Ink from 'react-ink';
 import { formatNum } from 'modules/utils';

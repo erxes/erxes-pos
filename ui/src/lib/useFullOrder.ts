@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useCallback } from 'react';
 import { useLazyQuery, gql } from '@apollo/client';
 import { queries, subscriptions } from 'modules/checkout/graphql';
 
@@ -18,7 +18,7 @@ const useFullOrders = ({
     ...(restVariables || {}),
   };
 
-  const PER_PAGE = 28;
+  const PER_PAGE = (restVariables || {}).perPage || 28;
 
   const [
     getFullOrders,
@@ -41,36 +41,42 @@ const useFullOrders = ({
   const fullOrders = (data || {}).fullOrders || [];
   const totalCount = (countData || {}).ordersTotalCount || 0;
 
-  const subToOrderStatuses = (subStatuses: IStatuses, callBack?: any) =>
-    subscribeToMore({
-      document: gql(subscriptions.ordersOrdered),
-      variables: { statuses: checkIsArray(subStatuses) },
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-        const changedOrder = subscriptionData.data.ordersOrdered;
-        if (changedOrder) {
-          refetch();
-          callBack && callBack();
-        }
-        return prev;
-      },
-    });
+  const subToOrderStatuses = useCallback(
+    (subStatuses: IStatuses, callBack?: any) =>
+      subscribeToMore({
+        document: gql(subscriptions.ordersOrdered),
+        variables: { statuses: checkIsArray(subStatuses) },
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev;
+          const changedOrder = subscriptionData.data.ordersOrdered;
+          if (changedOrder) {
+            refetch();
+            callBack && callBack();
+          }
+          return prev;
+        },
+      }),
+    [refetch, subscribeToMore]
+  );
 
-  const subToItems = (subStatuses: IStatuses, callBack?: any) =>
-    subscribeToMore({
-      document: gql(subscriptions.orderItemsOrdered),
-      variables: { statuses: checkIsArray(subStatuses) },
-      updateQuery: (prev, { subscriptionData }) => {
-        if (!subscriptionData.data) return prev;
-        const changedOrderItem = subscriptionData.data.orderItemsOrdered;
-        if (changedOrderItem) {
-          refetch();
-          callBack && callBack();
-        }
-      },
-    });
+  const subToItems = useCallback(
+    (subStatuses: IStatuses, callBack?: any) =>
+      subscribeToMore({
+        document: gql(subscriptions.orderItemsOrdered),
+        variables: { statuses: checkIsArray(subStatuses) },
+        updateQuery: (prev, { subscriptionData }) => {
+          if (!subscriptionData.data) return prev;
+          const changedOrderItem = subscriptionData.data.orderItemsOrdered;
+          if (changedOrderItem) {
+            refetch();
+            callBack && callBack();
+          }
+        },
+      }),
+    [refetch, subscribeToMore]
+  );
 
-  const handleLoadMore = () => {
+  const handleLoadMore = useCallback(() => {
     if (totalCount > fullOrders.length) {
       fetchMore({
         variables: {
@@ -88,7 +94,7 @@ const useFullOrders = ({
         },
       });
     }
-  };
+  }, [PER_PAGE, fetchMore, fullOrders.length, totalCount]);
 
   useEffect(() => {
     getFullOrders();
