@@ -9,6 +9,9 @@ const productCategories = `
   query poscProductCategories($excludeEmpty: Boolean) {
     poscProductCategories(excludeEmpty: $excludeEmpty) {
       ${commonFields}
+      order
+      parentId
+      isRoot
     }
   }
 `;
