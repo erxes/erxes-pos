@@ -1,7 +1,6 @@
 import 'simplebar/dist/simplebar.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import 'styles/styles.min.css';
-import { useEffect } from 'react';
 import { IComponent } from 'modules/types';
 import type { AppProps } from 'next/app';
 import { ApolloProvider } from '@apollo/client';
@@ -13,43 +12,11 @@ import ConfigsProvider from 'modules/auth/containers/Configs';
 import CheckAuth from 'modules/auth/CheckAuth';
 import { ToastContainer } from 'react-toastify';
 import RestartKiosk from 'modules/kiosk/components/Restart';
-import mapTouchEvents from '../../public/js/map-touch-event';
 
 const Noop: IComponent = ({ children }) => <>{children}</>;
 
 function App({ Component, pageProps }: AppProps) {
   const Layout = (Component as any).Layout || Noop;
-
-  useEffect(() => {
-    document.addEventListener(
-      'touchstart',
-      function (e) {
-        mapTouchEvents(e, 'mousedown');
-      },
-      true
-    );
-    document.addEventListener(
-      'touchmove',
-      function (e) {
-        mapTouchEvents(e, 'mousemove');
-      },
-      true
-    );
-    document.addEventListener(
-      'touchend',
-      function (e) {
-        mapTouchEvents(e, 'mouseup');
-      },
-      true
-    );
-    document.addEventListener(
-      'touchcancel',
-      function (e) {
-        mapTouchEvents(e, 'mouseup');
-      },
-      true
-    );
-  }, []);
 
   return (
     <ApolloProvider client={apolloClient}>
