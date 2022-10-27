@@ -11,7 +11,7 @@ import SendData from './containers/SendData';
 const Settings: IComponent = () => {
   const { currentUser, currentConfig } = useConfigsContext();
   const { username, email, details, createdAt } = currentUser;
-  const [avatar, setAvatar] = useState(details.avatar);
+  const [avatar, setAvatar] = useState((details || {}).avatar || '/user.png');
   return (
     <div className="settings flex-center white-tab">
       <div className="img-wrap">
