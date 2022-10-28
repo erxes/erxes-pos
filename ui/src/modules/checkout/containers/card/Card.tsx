@@ -15,7 +15,17 @@ const Card = () => {
   const { orderDetail, billType } = useApp();
   const { number, totalAmount } = orderDetail;
   const { card } = useCheckoutContext();
-  const { addPayment } = useAddPayment();
+
+  const onCompleted = () => {
+    if (mode === 'kiosk') {
+      return setModalView('SUCCESS_VIEW');
+    }
+    if (mode === 'pos') {
+      return closeModal();
+    }
+  };
+
+  const { addPayment } = useAddPayment(onCompleted);
 
   const [loading] = useState(true);
   const mode = getMode();
@@ -57,7 +67,6 @@ const Card = () => {
               if (r && r.status === true && r.response) {
                 if (r.response.response_code === '000') {
                   toast.success('Transaction was successful');
-
                   addPayment({
                     _id: orderId,
                     cardInfo: r.response,
@@ -65,13 +74,6 @@ const Card = () => {
                       mode === 'kiosk' ? totalAmount : card
                     ),
                   });
-
-                  if (mode === 'kiosk') {
-                    setModalView('SUCCESS_VIEW');
-                  }
-                  if (mode === 'pos') {
-                    closeModal();
-                  }
                 } else {
                   handleError(r.response.response_msg);
                 }
