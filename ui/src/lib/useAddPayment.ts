@@ -4,7 +4,7 @@ import { gql, useMutation } from '@apollo/client';
 import { mutations, queries } from 'modules/checkout/graphql';
 import { useCheckoutContext } from 'modules/checkout/context';
 import { toast } from 'react-toastify';
-const useAddPayment = () => {
+const useAddPayment = (onCompleted?: any) => {
   const router = useRouter();
   const { changeActivePayment } = useCheckoutContext();
   const [addPay, { loading }] = useMutation(gql(mutations.ordersAddPayment), {
@@ -22,6 +22,7 @@ const useAddPayment = () => {
     },
     onCompleted() {
       changeActivePayment('');
+      onCompleted && onCompleted();
     },
   });
 
