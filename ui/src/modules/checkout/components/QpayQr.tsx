@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
 import useCancelQpay from 'lib/useCancelQpay';
-import QRCode from 'react-qr-code';
+import { QRCodeSVG } from 'qrcode.react';
 import { getMode } from 'modules/utils';
 import Empty from 'ui/Empty';
 import CheckPayment from '../containers/qpay/checkPayment';
@@ -72,7 +72,7 @@ const QpayQr = () => {
             QR кодыг уншуулна уу.
           </b>
         </p>
-        {invoice && <QRCode value={invoice.qrText} className="qr" />}
+        {invoice && <QRCodeSVG value={invoice.qrText} className="qr" />}
 
         <div className="flex-center">
           <h6>{formatNum(invoice.amount)}₮</h6>

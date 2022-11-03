@@ -6,7 +6,7 @@ import Image from 'ui/Image';
 import dayjs from 'dayjs';
 import { IOrderItem } from '../types';
 import { formatNum, goToReceipt } from 'modules/utils';
-import QRCode from 'react-qr-code';
+import { QRCodeSVG } from 'qrcode.react';
 import BarCode from './barcode';
 import Button from 'ui/Button';
 import Amount from '../components/Amount';
@@ -42,7 +42,11 @@ const Receipt = () => {
 
   useEffect(() => {
     window.addEventListener('afterprint', () => {
-      if (mode !== 'kiosk' && putResponse && !['kitchen', 'inner'].includes((type || '').toString())) {
+      if (
+        mode !== 'kiosk' &&
+        putResponse &&
+        !['kitchen', 'inner'].includes((type || '').toString())
+      ) {
         setTimeout(() => {
           const popup = goToReceipt(_id, 'inner', '__blank');
           if (!popup) {
@@ -157,7 +161,7 @@ const Receipt = () => {
     return (
       qrData && (
         <div className="qr-code">
-          <QRCode value={qrData} size={256} viewBox={`0 0 256 256`} level="L" />
+          <QRCodeSVG value={qrData} />
         </div>
       )
     );
