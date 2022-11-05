@@ -49,6 +49,13 @@ const KeyboardView = dynamic(
   }
 );
 
+const MobileView = dynamic(
+  () => import('modules/checkout/containers/mobile/MobileContainer'),
+  {
+    suspense: true,
+  }
+);
+
 const Sidebar = dynamic(() => import('ui/SideBar'), { suspense: true });
 
 const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
@@ -66,6 +73,7 @@ const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
           {modalView === 'HISTORY_VIEW' && <HistoryView />}
           {modalView === 'VISA_VIEW' && <VisaView />}
           {modalView === 'SUCCESS_VIEW' && <SuccessView />}
+          {modalView === 'MOBILE_VIEW' && <MobileView />}
         </Suspense>
       </Modal>
     </Suspense>

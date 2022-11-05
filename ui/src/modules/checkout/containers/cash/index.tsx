@@ -21,7 +21,7 @@ const Cash = () => {
       btnText="Төлөх"
       loading={loading}
     >
-      <CashIcon />
+      <CashIcon className="-cash" />
       &nbsp;&nbsp;<h6>Бэлнээр</h6>
     </PaymentMethod>
   );

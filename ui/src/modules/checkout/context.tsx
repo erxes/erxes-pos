@@ -15,6 +15,7 @@ const initialState = {
   cash: 0,
   asCard: 0,
   receivable: 0,
+  mobile: 0,
 };
 
 type PAYMENT_TYPES = 'qpay' | 'cash' | 'card' | 'receivable';
@@ -26,7 +27,8 @@ type Action =
       value: string | number;
       name: PAYMENT_TYPES;
       remainder: number;
-    };
+    }
+  | { type: 'SET_INIT' };
 
 export const CheckoutContext = React.createContext<State | any>(initialState);
 
@@ -47,6 +49,9 @@ const checkoutReducer = (state: State, action: Action) => {
         ...state,
         [name]: num >= remainder ? remainder : num,
       };
+    }
+    case 'SET_INIT': {
+      return initialState;
     }
     default:
       return state;
@@ -81,6 +86,9 @@ export const CheckoutContextProvider: IComponent = ({ children }) => {
       dispatch({ type: 'SET_VALUE', value, name, remainder }),
     [dispatch, remainder]
   );
+  const setInit = useCallback(() => {
+    dispatch({ type: 'SET_INIT' });
+  }, [dispatch]);
 
   const value = useMemo(
     () => ({
@@ -88,6 +96,7 @@ export const CheckoutContextProvider: IComponent = ({ children }) => {
       remainder,
       changeActivePayment,
       setValue,
+      setInit,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state, remainder]

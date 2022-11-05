@@ -13,6 +13,10 @@ module.exports = {
         protocol: 'https',
         hostname: '**.erxes.io',
       },
+      {
+        protocol: 'http',
+        hostname: 'plugin_core_api',
+      },
     ],
   },
 

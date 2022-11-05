@@ -3,6 +3,7 @@ import Cash from './cash';
 import Card from './card';
 import Qpay from './qpay';
 import AsCard from './asCard';
+import Mobile from './mobile';
 import Recievable from './recievable';
 import { getMode } from 'modules/utils';
 import { useApp } from 'modules/AppContext';
@@ -11,15 +12,22 @@ const PaymentMethods = () => {
   const { allowReceivable } = useConfigsContext();
   const { type } = useApp();
 
+  if (getMode() === 'pos')
+    return (
+      <div className="row payment-methods">
+        <Cash />
+        <Card />
+        <Qpay />
+        {(allowReceivable || type === 'delivery') && <Recievable />}
+        <AsCard />
+        <Mobile />
+      </div>
+    );
+
   return (
     <div className="row payment-methods">
-      {getMode() === 'pos' && <Cash />}
       <Card />
       <Qpay />
-      {getMode() === 'pos' && (allowReceivable || type === 'delivery') && (
-        <Recievable />
-      )}
-      <AsCard />
     </div>
   );
 };
