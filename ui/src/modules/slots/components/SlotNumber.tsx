@@ -10,12 +10,14 @@ function SlotNumber({
   _id,
   origin,
   paidDate,
+  slotCode,
 }: {
   _id?: string;
   number: string;
   status: string;
   origin: string;
   paidDate: string | null;
+  slotCode?: string;
 }) {
   const { removeQuery } = useRemoveQuery();
   const { query, addQuery } = useAddQuery();
@@ -37,6 +39,7 @@ function SlotNumber({
       }
     >
       {number.split('_')[1]}
+      {!!slotCode && `(${slotCode})`}
       {origin === 'kiosk' && '*'}
       <CheckCircle color={colors[status as keyof typeof colors]} />
     </Button>
