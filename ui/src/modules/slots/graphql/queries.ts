@@ -6,6 +6,7 @@ const fullOrders = `
       status
       paidDate
       origin
+      slotCode
     }
   }`;
 

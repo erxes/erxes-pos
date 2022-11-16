@@ -28,7 +28,7 @@ const Restart = () => {
     }
     timeout = setTimeout(() => {
       setIsModalVisible(true);
-    }, 60 * 1000);
+    }, 30 * 1000);
   };
 
   const onMouseMove = () => {
