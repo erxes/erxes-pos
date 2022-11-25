@@ -22,7 +22,9 @@ export default function Products({ products, onLoadMore }: any) {
   }
 
   useEffect(() => {
-    inView && onLoadMore();
+    if (inView) {
+      onLoadMore();
+    }
   }, [products.length, inView]);
 
   return (
@@ -31,8 +33,8 @@ export default function Products({ products, onLoadMore }: any) {
         {filteredProducts.map((product: any) => (
           <ProductContainer {...product} key={product._id} />
         ))}
-        <div ref={ref} />
       </div>
+      {filteredProducts.length > 20 && <div ref={ref} />}
     </Scroll>
   );
 }

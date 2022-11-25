@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { useAddQuery } from 'lib/useQuery';
 import cn from 'classnames';
 import Magnify from 'modules/common/icons/Magnify';
@@ -12,51 +12,59 @@ interface IProps {
 const Search = ({ open }: IProps) => {
   const [isActive, setIsActive] = useState(false);
   const [searchValue, setSearchValue] = useState('');
+  const [barcode, setBarcode] = useState(false);
   const { addQuery, query } = useAddQuery();
+  const { searchValue: search } = query;
+
   const active = isActive || open;
 
   useEffect(() => {
-    if (query.searchValue) {
+    if (search || search === '') {
       setIsActive(true);
-      setSearchValue(query.searchValue.toString());
+      setSearchValue(search.toString());
     }
-  }, [query.searchValue]);
-
-  const handleKey = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === 'Enter') {
-        return addQuery({ searchValue });
-      }
-    },
-    [addQuery, searchValue]
-  );
+  }, [search]);
 
   useEffect(() => {
-    window.addEventListener('keydown', handleKey);
+    if (query.barcode) {
+      query.barcode === 'true' ? setBarcode(true) : setBarcode(false);
+    }
+  }, [query.barcode]);
 
-    return () => {
-      window.removeEventListener('keydown', handleKey);
-    };
-  }, [handleKey]);
+  const handleChange = (val: string) => {
+    if (val.length - searchValue.length > 1) {
+      setBarcode(true);
+      setSearchValue(val);
+      addQuery({ searchValue: val, barcode: true });
+    } else {
+      setBarcode(false);
+      setSearchValue(val);
+    }
+  };
 
   return (
-    <div
+    <form
       className={cn('search flex-0 flex-center', { active })}
       onClick={() => setIsActive(true)}
       onFocus={() => setIsActive(true)}
       onBlur={() => !searchValue && setIsActive(false)}
+      onSubmit={(e) => {
+        e.preventDefault();
+        addQuery({ searchValue, barcode });
+      }}
     >
       <div className={cn('smooth-h', { active })}>
         <Input
+          name=""
           placeholder="search products"
           value={searchValue}
-          onChange={(val: string) => setSearchValue(val)}
+          onChange={handleChange}
         />
       </div>
-      <Button variant="ghost" onClick={() => addQuery({ searchValue })}>
+      <Button variant="ghost" type="submit">
         <Magnify />
       </Button>
-    </div>
+    </form>
   );
 };
 
