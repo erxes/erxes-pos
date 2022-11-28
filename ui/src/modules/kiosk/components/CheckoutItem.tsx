@@ -1,5 +1,5 @@
 import Image from 'ui/Image';
-import { formatNum } from 'modules/utils';
+import { formatNum, readFile } from 'modules/utils';
 import { FC } from 'react';
 
 const ReviewItem: FC<any> = ({
@@ -11,7 +11,7 @@ const ReviewItem: FC<any> = ({
   return (
     <div className="kiosk-review-item flex-h-between">
       <div className="flex-v-center">
-        <Image src={productImgUrl} alt="" />
+        <Image src={readFile(productImgUrl)} alt="" />
         <h4>{productName}</h4>
       </div>
       <h4 className="text-primary">

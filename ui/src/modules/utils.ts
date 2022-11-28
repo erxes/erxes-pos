@@ -89,3 +89,12 @@ export const renderType = (type: string) => {
   if (type === ORDER_TYPES.TAKE) return 'Авч явахаар';
   if (type === ORDER_TYPES.DELIVERY) return 'Хүргэлт';
 };
+
+export const readFile = (url: string = '') => {
+  const READ_FILE = '/read-file?key=';
+  if (url.includes(READ_FILE)) {
+    const apiUrl = url.split(READ_FILE)[0];
+    return url.replace(apiUrl, getEnv().NEXT_PUBLIC_MAIN_API_DOMAIN);
+  }
+  return url;
+};
