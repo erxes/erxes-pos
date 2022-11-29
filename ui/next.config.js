@@ -15,7 +15,7 @@ module.exports = {
       },
       {
         protocol: 'https',
-        hostname: 'xos.jurur.mn',
+        hostname: '**.jurur.mn',
       },
     ],
   },
