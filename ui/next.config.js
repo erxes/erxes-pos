@@ -13,6 +13,10 @@ module.exports = {
         protocol: 'https',
         hostname: '**.erxes.io',
       },
+      {
+        protocol: 'https',
+        hostname: 'xos.jurur.mn',
+      },
     ],
   },
 
