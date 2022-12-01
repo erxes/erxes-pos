@@ -28,6 +28,12 @@ const PaymentMethods = () => {
     <div className="row payment-methods">
       <Card />
       <Qpay />
+      {getMode() === 'pos' && (allowReceivable || type === 'delivery') && (
+        <>
+          <Recievable />
+          <AsCard />
+        </>
+      )}
     </div>
   );
 };

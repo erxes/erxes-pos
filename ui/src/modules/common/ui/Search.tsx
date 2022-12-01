@@ -21,19 +21,23 @@ export const SearchComp = ({
   onBlur,
   ...rest
 }: any) => (
-  <div
+  <form
     className={cn('search flex-0 flex-center', containerCn, { active })}
     onClick={onClick && onClick}
     onFocus={onFocus && onFocus}
     onBlur={onBlur && onBlur}
+    onSubmit={(e) => {
+      e.preventDefault();
+      onSearch && onSearch(value);
+    }}
   >
     <div className={cn('smooth-h', { active })}>
-      <Input value={value} {...rest} />
+      <Input value={value} {...rest} name="search" />
     </div>
-    <Button variant="ghost" onClick={() => onSearch && onSearch(value)}>
+    <Button variant="ghost" type="submit">
       <Magnify />
     </Button>
-  </div>
+  </form>
 );
 
 const Search = ({ closeable, ...rest }: SearchProps & InputProps) => {

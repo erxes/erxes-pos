@@ -2,6 +2,7 @@ import { useState, FC, memo } from 'react';
 import NextImage, { ImageProps } from 'next/future/image';
 import cls from 'classnames';
 import ProductFallback from 'icons/productFallback';
+import { readFile } from 'modules/utils';
 
 const Image: FC<
   ImageProps & {
@@ -24,8 +25,9 @@ const Image: FC<
     withLoader,
     ...rest
   } = props;
+  const fixedSrc = readFile(src || '');
   const [isImageLoading, setIsImageLoading] = useState(withLoader);
-  const [srcI, setSrcI] = useState(src || fallBack || '/product.png');
+  const [srcI, setSrcI] = useState(fixedSrc || fallBack || '/product.png');
   const handleComplete = () => setIsImageLoading(false);
 
   const updatedProps = {

@@ -14,8 +14,12 @@ module.exports = {
         hostname: '**.erxes.io',
       },
       {
+        protocol: 'https',
+        hostname: '**.jurur.mn',
+      },
+      {
         protocol: 'http',
-        hostname: 'plugin_core_api',
+        hostname: 'localhost',
       },
     ],
   },

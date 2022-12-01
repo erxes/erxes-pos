@@ -1,7 +1,6 @@
 import type { IComponent } from 'modules/types';
-import { useState } from 'react';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
-import Image from 'next/future/image';
+import Image from 'ui/Image';
 import SelectMode from './components/SelectMode';
 import SyncConfig from './containers/SyncConfig';
 import SyncOrders from './containers/SyncOrders';
@@ -11,16 +10,16 @@ import SendData from './containers/SendData';
 const Settings: IComponent = () => {
   const { currentUser, currentConfig } = useConfigsContext();
   const { username, email, details, createdAt } = currentUser;
-  const [avatar, setAvatar] = useState((details || {}).avatar || '/user.png');
+
   return (
     <div className="settings flex-center white-tab">
       <div className="img-wrap">
         <Image
-          src={avatar}
+          src={(details || {}).avatar}
           alt=""
           fill
           quality={100}
-          onError={() => setAvatar('/user.png')}
+          fallBack={'/user.png'}
         />
       </div>
       <b>{username}</b>

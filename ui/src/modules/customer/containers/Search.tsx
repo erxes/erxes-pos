@@ -13,12 +13,13 @@ const CustomerSearch = () => {
   const [searchCustomer, { loading, data, error }] = useLazyQuery(
     gql(queries.poscCustomerDetail),
     {
+      fetchPolicy: 'network-only',
       onError(error) {},
       onCompleted(data) {
         const { poscCustomerDetail: detail } = data || {};
         if (detail) {
           setCustomerId(detail._id);
-          !value && setValue(detail.primaryPhone);
+          setValue(detail.primaryPhone);
         }
       },
     }
@@ -43,7 +44,7 @@ const CustomerSearch = () => {
   };
 
   useEffect(() => {
-    if (customerId && !value) {
+    if (customerId) {
       handleSearch(customerId);
       return;
     }
