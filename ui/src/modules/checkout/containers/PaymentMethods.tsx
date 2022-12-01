@@ -17,9 +17,11 @@ const PaymentMethods = () => {
       <Card />
       <Qpay />
       {getMode() === 'pos' && (allowReceivable || type === 'delivery') && (
-        <Recievable />
+        <>
+          <Recievable />
+          <AsCard />
+        </>
       )}
-      <AsCard />
     </div>
   );
 };
