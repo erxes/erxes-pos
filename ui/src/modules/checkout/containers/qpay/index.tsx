@@ -3,9 +3,9 @@ import { useMutation, gql } from '@apollo/client';
 import { useCheckoutContext } from 'modules/checkout/context';
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
 import { mutations, queries } from '../../graphql';
-import Image from 'modules/common/ui/Image';
+import Image from 'ui/Image';
 import { getMode } from 'modules/utils';
-import { useUI } from 'modules/common/ui/context';
+import { useUI } from 'ui/context';
 import { useApp } from 'modules/AppContext';
 import { toast } from 'react-toastify';
 
