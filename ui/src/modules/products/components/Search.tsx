@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import useFocus from 'lib/useFocus';
 import { useAddQuery } from 'lib/useQuery';
 import cn from 'classnames';
 import Magnify from 'modules/common/icons/Magnify';
@@ -13,7 +14,7 @@ const Search = ({ open }: IProps) => {
   const [isActive, setIsActive] = useState(false);
   const [changeDates, setChangeDates] = useState<number[]>([]);
   const [searchValue, setSearchValue] = useState('');
-
+  const [inputRef, setInputFocus] = useFocus();
   const { addQuery, query } = useAddQuery();
   const { searchValue: search } = query;
 
@@ -49,7 +50,10 @@ const Search = ({ open }: IProps) => {
   return (
     <form
       className={cn('search flex-0 flex-center', { active })}
-      onClick={() => setIsActive(true)}
+      onClick={() => {
+        setIsActive(true);
+        setInputFocus();
+      }}
       onFocus={() => setIsActive(true)}
       onBlur={() => !searchValue && setIsActive(false)}
       onSubmit={handleSubmit}
@@ -60,6 +64,7 @@ const Search = ({ open }: IProps) => {
           placeholder="search products"
           value={searchValue}
           onChange={handleChange}
+          ref={inputRef}
         />
       </div>
       <Button variant="ghost" type="submit">
