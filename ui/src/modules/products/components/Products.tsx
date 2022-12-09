@@ -1,12 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect } from 'react';
+import { useEffect, memo } from 'react';
 import ProductContainer from '../containers/Product';
 import { getMode } from 'modules/utils';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Scroll from 'modules/kiosk/components/Scroll';
 import { useInView } from 'react-intersection-observer';
 
-export default function Products({ products, onLoadMore }: any) {
+function Products({ products, onLoadMore }: any) {
   const { currentConfig } = useConfigsContext();
 
   const { ref, inView } = useInView({
@@ -31,10 +31,16 @@ export default function Products({ products, onLoadMore }: any) {
     <Scroll>
       <div className="row products">
         {filteredProducts.map((product: any) => (
-          <ProductContainer {...product} key={product._id} />
+          <ProductContainer
+            {...product}
+            key={product._id}
+            length={filteredProducts.length}
+          />
         ))}
       </div>
       {filteredProducts.length > 20 && <div ref={ref} />}
     </Scroll>
   );
 }
+
+export default memo(Products);

@@ -11,8 +11,9 @@ interface IProps {
 
 const Search = ({ open }: IProps) => {
   const [isActive, setIsActive] = useState(false);
+  const [changeDates, setChangeDates] = useState<number[]>([]);
   const [searchValue, setSearchValue] = useState('');
-  const [barcode, setBarcode] = useState(false);
+
   const { addQuery, query } = useAddQuery();
   const { searchValue: search } = query;
 
@@ -25,21 +26,24 @@ const Search = ({ open }: IProps) => {
     }
   }, [search]);
 
-  useEffect(() => {
-    if (query.barcode) {
-      query.barcode === 'true' ? setBarcode(true) : setBarcode(false);
-    }
-  }, [query.barcode]);
-
   const handleChange = (val: string) => {
-    if (val.length - searchValue.length > 1) {
-      setBarcode(true);
-      setSearchValue(val);
-      addQuery({ searchValue: val, barcode: true });
-    } else {
-      setBarcode(false);
-      setSearchValue(val);
-    }
+    const date = new Date();
+    !!val
+      ? setChangeDates((current) => [...current, date.getTime()])
+      : setChangeDates([]);
+    setSearchValue(val);
+  };
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    addQuery({
+      searchValue,
+      barcode:
+        (changeDates[changeDates.length - 1] - changeDates[0]) /
+          changeDates.length <
+        50,
+    });
+    setChangeDates([]);
   };
 
   return (
@@ -48,10 +52,7 @@ const Search = ({ open }: IProps) => {
       onClick={() => setIsActive(true)}
       onFocus={() => setIsActive(true)}
       onBlur={() => !searchValue && setIsActive(false)}
-      onSubmit={(e) => {
-        e.preventDefault();
-        addQuery({ searchValue, barcode });
-      }}
+      onSubmit={handleSubmit}
     >
       <div className={cn('smooth-h', { active })}>
         <Input
