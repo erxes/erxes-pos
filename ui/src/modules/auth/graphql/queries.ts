@@ -34,6 +34,7 @@ const configFields = `
   productDetails
   adminIds
   cashierIds
+  paymentIds
   beginNumber
   maxSkipNumber
   waitingScreen

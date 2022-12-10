@@ -12,6 +12,7 @@ import { getMode } from 'modules/utils';
 
 import Empty from 'ui/Empty';
 import Loading from 'ui/Loading';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 
 const MobileContainer = () => {
   const router = useRouter();
@@ -34,6 +35,8 @@ const MobileContainer = () => {
   );
 
   const invoiceUrl = (data || {}).generateInvoiceUrl || '';
+
+  const { currentConfig } = useConfigsContext();
 
   const [getInvoices, { loading: loadingInvoices, data: invoicesData }] =
     useLazyQuery(gql(queries.invoices), {
@@ -64,6 +67,7 @@ const MobileContainer = () => {
             contentTypeId: orderId,
             customerId: customerId ? customerId : 'empty',
             description: orderId + '-' + description,
+            paymentIds: currentConfig.paymentIds
           },
         });
       },
