@@ -7,8 +7,10 @@ import UserInCircle from 'icons/UserInCircle';
 import Loading from 'modules/common/ui/Loading';
 
 const CustomerSearch = () => {
-  const { customerId, setCustomerId } = useApp();
-  const [value, setValue] = useState('');
+  const { customerId, setCustomerId, orderDetail } = useApp();
+  const customer = (orderDetail || {}).customer || {};
+
+  const [value, setValue] = useState(customer.primaryPhone || '');
 
   const [searchCustomer, { loading, data, error }] = useLazyQuery(
     gql(queries.poscCustomerDetail),
@@ -26,7 +28,7 @@ const CustomerSearch = () => {
   );
 
   const { primaryPhone, firstName, primaryEmail } =
-    (data || {}).poscCustomerDetail || {};
+    (data || {}).poscCustomerDetail || customer;
 
   const handleSearch = (val: string) =>
     val &&
@@ -44,12 +46,9 @@ const CustomerSearch = () => {
   };
 
   useEffect(() => {
-    if (customerId) {
-      handleSearch(customerId);
-      return;
-    }
-    !customerId && setValue('');
-  }, [customerId]);
+    setValue(customer.primaryPhone || '');
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [orderDetail]);
 
   const renderResult = () => {
     if (loading) return <Loading />;

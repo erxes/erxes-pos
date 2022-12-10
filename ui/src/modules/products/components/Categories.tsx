@@ -1,13 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { useAddQuery, useRemoveQuery } from 'lib/useQuery';
 import HorizontalScroll from 'modules/common/ui/scrollMenu';
 import Button from 'modules/common/ui/Button';
 import cn from 'classnames';
 
+type ICategory = { name: string; _id?: string; parentId: string };
+type IFindChildren = (parent?: string | string[]) => (ICategory | undefined)[];
+
 export default function Categories({
   categories,
 }: {
-  categories: { name: string; _id?: string }[];
+  categories: ICategory[];
 }) {
   const [renderCats, setRenderCats] = useState<any>([]);
   const { query, addQuery } = useAddQuery();
@@ -17,8 +21,18 @@ export default function Categories({
 
   const rootCat = categories.find(({ order }: any) => !order.includes('/'));
 
-  const findChildren = (parent: any) =>
-    categories.filter(({ parentId }: any) => parentId === parent);
+  const findChildren: IFindChildren = (parent) => {
+    const children = categories.filter(({ parentId }) => parentId === parent);
+
+    const chosenCat = categories.find(({ _id }: any) => parent === _id);
+
+    if (chosenCat && children.length === 0)
+      return findChildren(chosenCat.parentId);
+
+    if (children.length > 0) return [chosenCat, ...children];
+
+    return [];
+  };
 
   const mainCats = categories.filter(
     ({ parentId }: any) => parentId === rootCat?._id
@@ -34,13 +48,8 @@ export default function Categories({
       setRenderCats([rootCat, ...mainCats]);
       return;
     }
-    const childrenCat = findChildren(categoryId);
-
-    if (childrenCat.length > 0) {
-      const chosenCat = categories.find(({ _id }: any) => categoryId === _id);
-      setRenderCats([chosenCat, ...childrenCat]);
-    }
-  }, [categoryId]);
+    setRenderCats(findChildren(categoryId));
+  }, [categories, categoryId]);
 
   const btnClassName = (_id: string) =>
     cn('products-category', { active: categoryId == _id });
