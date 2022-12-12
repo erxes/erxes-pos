@@ -41,6 +41,7 @@ const configFields = `
   kioskMachine
   kitchenScreen
   token
+  erxesAppToken
 
   uiOptions {
     colors

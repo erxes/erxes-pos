@@ -40,6 +40,7 @@ const MobileContainer = () => {
 
   const [getInvoices, { loading: loadingInvoices, data: invoicesData }] =
     useLazyQuery(gql(queries.invoices), {
+      context: { headers: { "erxes-app-token": currentConfig.erxesAppToken } },
       variables: {
         contentType: 'posclient:posclient_orders',
         contentTypeId: orderId,
@@ -51,7 +52,7 @@ const MobileContainer = () => {
         const paidAmount = invoices
           .filter(({ status }: any) => status === 'paid')
           .reduce((total: number, { amount }: any) => total + amount, 0);
-        console.log(paidAmount, mobile);
+
         if (paidAmount > mobileAmount) {
           addPayment({
             _id: orderId,
@@ -85,7 +86,7 @@ const MobileContainer = () => {
 
     getInvoices();
 
-    return removeEventListener('message', () => {});
+    return removeEventListener('message', () => { });
   }, []);
 
   if (loading || loadingInvoices)
