@@ -42,7 +42,7 @@ const MobileContainer = () => {
     useLazyQuery(gql(queries.invoices), {
       context: { headers: { "erxes-app-token": currentConfig.erxesAppToken } },
       variables: {
-        contentType: 'posclient:posclient_orders',
+        contentType: 'pos:orders',
         contentTypeId: orderId,
       },
       fetchPolicy: 'network-only',
@@ -64,7 +64,7 @@ const MobileContainer = () => {
         generateInvoiceUrl({
           variables: {
             amount: mobile,
-            contentType: 'posclient:posclient_orders',
+            contentType: 'pos:orders',
             contentTypeId: orderId,
             customerId: customerId ? customerId : 'empty',
             description: orderId + '-' + description,
