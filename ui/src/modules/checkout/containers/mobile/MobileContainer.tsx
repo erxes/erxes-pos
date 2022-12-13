@@ -13,6 +13,7 @@ import { getMode } from 'modules/utils';
 import Empty from 'ui/Empty';
 import Loading from 'ui/Loading';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
+import clientMain from 'modules/apolloClientMain';
 
 const MobileContainer = () => {
   const router = useRouter();
@@ -28,6 +29,7 @@ const MobileContainer = () => {
   const [generateInvoiceUrl, { loading, data }] = useMutation(
     gql(mutations.generateInvoiceUrl),
     {
+      client: clientMain,
       onError(error) {
         toast.error(error.message);
       },
@@ -41,6 +43,7 @@ const MobileContainer = () => {
   const [getInvoices, { loading: loadingInvoices }] = useLazyQuery(
     gql(queries.invoices),
     {
+      client: clientMain,
       context: { headers: { 'erxes-app-token': currentConfig.erxesAppToken } },
       variables: {
         contentType: 'pos:orders',

@@ -94,7 +94,7 @@ export const readFile = (url: string = '') => {
   const READ_FILE = '/read-file?key=';
   if (url.includes(READ_FILE)) {
     const apiUrl = url.split(READ_FILE)[0];
-    return url.replace(apiUrl, getEnv().NEXT_PUBLIC_MAIN_API_DOMAIN);
+    return url.replace(apiUrl, getEnv().NEXT_PUBLIC_SERVER_API_DOMAIN);
   }
   return url;
 };
