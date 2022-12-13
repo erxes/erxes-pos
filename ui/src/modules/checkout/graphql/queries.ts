@@ -181,6 +181,16 @@ const ordersTotalCount = `query ordersTotalCount(
   )
 }`;
 
+const invoices = `
+  query Invoices($contentType: String, $contentTypeId: String) {
+    invoices(contentType: $contentType, contentTypeId: $contentTypeId) {
+      _id
+      amount
+      status
+    }
+  }
+`;
+
 const queries = {
   commonFields,
   orderFields,
@@ -190,6 +200,7 @@ const queries = {
   fullOrders,
   slots,
   ordersTotalCount,
+  invoices,
 };
 
 export default queries;

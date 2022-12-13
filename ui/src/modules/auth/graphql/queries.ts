@@ -34,12 +34,14 @@ const configFields = `
   productDetails
   adminIds
   cashierIds
+  paymentIds
   beginNumber
   maxSkipNumber
   waitingScreen
   kioskMachine
   kitchenScreen
   token
+  erxesAppToken
 
   uiOptions {
     colors

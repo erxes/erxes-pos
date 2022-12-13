@@ -51,6 +51,7 @@ const PaymentMethod: FC<IProps> = ({
 
   const handleClick = () => {
     if (mode === 'pos') {
+      value > remainder && setValue(remainder, name);
       return changeActivePayment(name);
     }
     return onClick();

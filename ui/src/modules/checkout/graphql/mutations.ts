@@ -55,8 +55,22 @@ mutation QpayCancelInvoice($id: String!) {
 `;
 
 const ordersAddPayment = `
-  mutation ordersAddPayment($_id: String!, $cashAmount: Float, $cardAmount: Float, $cardInfo: JSON, $receivableAmount: Float) {
-    ordersAddPayment(_id: $_id, cashAmount: $cashAmount, cardAmount: $cardAmount, cardInfo: $cardInfo, receivableAmount: $receivableAmount) {
+  mutation ordersAddPayment(
+    $_id: String!
+    $cashAmount: Float
+    $cardAmount: Float
+    $cardInfo: JSON
+    $receivableAmount: Float
+    $mobileAmount: Float
+  ) {
+    ordersAddPayment(
+      _id: $_id
+      cashAmount: $cashAmount
+      cardAmount: $cardAmount
+      cardInfo: $cardInfo
+      receivableAmount: $receivableAmount
+      mobileAmount: $mobileAmount
+    ) {
       _id
     }
   }
@@ -91,6 +105,32 @@ const orderItemChangeStatus = `
   }
 `;
 
+const generateInvoiceUrl = `
+  mutation GenerateInvoiceUrl(
+    $amount: Float!
+    $companyId: String
+    $contentType: String
+    $contentTypeId: String
+    $customerId: String
+    $description: String
+    $email: String
+    $paymentIds: [String]
+    $phone: String
+  ) {
+    generateInvoiceUrl(
+      amount: $amount
+      companyId: $companyId
+      contentType: $contentType
+      contentTypeId: $contentTypeId
+      customerId: $customerId
+      description: $description
+      email: $email
+      paymentIds: $paymentIds
+      phone: $phone
+    )
+  }
+`;
+
 const mutations = {
   ordersAdd,
   ordersEdit,
@@ -101,6 +141,7 @@ const mutations = {
   ordersSettlePayment,
   orderChangeStatus,
   orderItemChangeStatus,
+  generateInvoiceUrl,
 };
 
 export default mutations;

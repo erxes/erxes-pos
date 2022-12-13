@@ -17,19 +17,16 @@
       margin: -0.5rem -0.5rem 1rem;
       .col {
         padding: 0.5rem;
-        &:first-child {
-          svg {
+        svg {
+          font-size: 2rem;
+          &.-card {
+            font-size: 4rem;
+          }
+          &.-cash {
             font-size: 2.5rem;
           }
         }
-        &:last-child {
-          svg {
-            font-size: 2rem;
-          }
-        }
-        svg {
-          font-size: 4rem;
-        }
+
         &-12 {
           &:first-child {
             margin-bottom: 1.5rem;
@@ -156,5 +153,13 @@
         padding: 1rem 0;
       }
     }
+  }
+}
+.mobile {
+  width: 100vw;
+  height: 100vh;
+  iframe {
+    width: 100vw;
+    height: 100vh;
   }
 }

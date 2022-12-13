@@ -67,7 +67,7 @@ const PaymentReport = () => {
           )}
           {!!mobileAmount && (
             <h6 className="flex-h-between description-item">
-              <span>Qpay</span>
+              <span>Цахимаар</span>
               <b>{formatNum(mobileAmount)}₮</b>
             </h6>
           )}
