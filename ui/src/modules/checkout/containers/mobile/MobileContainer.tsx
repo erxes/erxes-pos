@@ -18,7 +18,7 @@ const MobileContainer = () => {
   const router = useRouter();
   const { orderId } = router.query;
   const mode = getMode();
-  const { mobile } = useCheckoutContext();
+  const { mobile, remainder } = useCheckoutContext();
   const { customerId, description, orderDetail } = useApp();
   const { closeModal } = useUI();
   const { totalAmount, mobileAmount } = orderDetail || {};
@@ -38,9 +38,10 @@ const MobileContainer = () => {
 
   const { currentConfig } = useConfigsContext();
 
-  const [getInvoices, { loading: loadingInvoices, data: invoicesData }] =
-    useLazyQuery(gql(queries.invoices), {
-      context: { headers: { "erxes-app-token": currentConfig.erxesAppToken } },
+  const [getInvoices, { loading: loadingInvoices }] = useLazyQuery(
+    gql(queries.invoices),
+    {
+      context: { headers: { 'erxes-app-token': currentConfig.erxesAppToken } },
       variables: {
         contentType: 'pos:orders',
         contentTypeId: orderId,
@@ -63,16 +64,17 @@ const MobileContainer = () => {
         }
         generateInvoiceUrl({
           variables: {
-            amount: mobile,
+            amount: remainder >= mobile ? mobile : remainder,
             contentType: 'pos:orders',
             contentTypeId: orderId,
             customerId: customerId ? customerId : 'empty',
             description: orderId + '-' + description,
-            paymentIds: currentConfig.paymentIds
+            paymentIds: currentConfig.paymentIds,
           },
         });
       },
-    });
+    }
+  );
 
   useEffect(() => {
     window.addEventListener('message', (event) => {
@@ -86,7 +88,7 @@ const MobileContainer = () => {
 
     getInvoices();
 
-    return removeEventListener('message', () => { });
+    return removeEventListener('message', () => {});
   }, []);
 
   if (loading || loadingInvoices)
@@ -95,8 +97,6 @@ const MobileContainer = () => {
         <Loading />
       </div>
     );
-
-  const invoices = (invoicesData || {}).invoices || [];
 
   if (!invoiceUrl)
     return (
