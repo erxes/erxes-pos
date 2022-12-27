@@ -106,7 +106,7 @@ const orderItemChangeStatus = `
 `;
 
 const generateInvoiceUrl = `
-  mutation GenerateInvoiceUrl(
+  mutation generateInvoiceUrl(
     $amount: Float!
     $companyId: String
     $contentType: String
