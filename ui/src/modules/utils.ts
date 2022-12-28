@@ -98,3 +98,6 @@ export const readFile = (url: string = '') => {
   }
   return url;
 };
+
+export const objToBase64 = (obj: object) =>
+  Buffer.from(JSON.stringify(obj)).toString('base64');
