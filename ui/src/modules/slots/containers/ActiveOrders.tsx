@@ -17,6 +17,7 @@ const ActiveOrders = () => {
     handleLoadMore,
   } = useFullOrders({
     statuses: ALL,
+    fetchPolicy: 'cache-first',
     variables: {
       sortDirection: -1,
       sortField: 'createdAt',

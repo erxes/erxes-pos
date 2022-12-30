@@ -6,6 +6,7 @@ import {
   createContext,
 } from 'react';
 import type { IComponent, ICartItem, IProductBase } from './types';
+import { getLocal } from './utils';
 
 export interface State {
   cart: ICartItem[];
@@ -21,7 +22,7 @@ export interface State {
 }
 
 const initialState = {
-  cart: [],
+  cart: getLocal('cart') || [],
   type: 'eat',
   orderDetail: null,
   registerNumber: '',
@@ -38,7 +39,10 @@ type TBillType = '' | '1' | '3' | string;
 type Action =
   | {
       type: 'ADD_ITEM_TO_CART';
-      product: IProductBase & { productImgUrl: string };
+      product: IProductBase & {
+        productImgUrl: string;
+        manufacturedDate?: string;
+      };
     }
   | { type: 'SELECT'; _id: string }
   | { type: 'SET_CART'; cart: ICartItem[] }
@@ -86,6 +90,7 @@ const appReducer = (state: State, action: Action) => {
         };
         currentCart.push(cartItem);
       }
+
       return {
         ...state,
         cart: currentCart,
@@ -160,7 +165,7 @@ const appReducer = (state: State, action: Action) => {
       };
     }
     case 'SET_INITIAL_STATE': {
-      return initialState;
+      return { ...initialState, cart: [] };
     }
     case 'CHANGE_COUNT': {
       const { cart } = state;

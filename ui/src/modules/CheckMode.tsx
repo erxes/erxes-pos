@@ -20,7 +20,7 @@ const CheckMode: FC<IProps> = (props) => {
   };
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<Loading className="h-100vh primary" />}>
       {renderMode('kiosk')}
       {renderMode('pos')}
       {renderMode('waiting')}

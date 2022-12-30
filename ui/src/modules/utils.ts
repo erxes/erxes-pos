@@ -101,3 +101,19 @@ export const readFile = (url: string = '') => {
 
 export const objToBase64 = (obj: object) =>
   Buffer.from(JSON.stringify(obj)).toString('base64');
+
+export const getLocal = (name: string) => {
+  if (typeof window !== 'undefined') {
+    try {
+      return JSON.parse(localStorage.getItem(name) || '');
+    } catch (error) {
+      console.error('error', error);
+    }
+  }
+};
+
+export const setLocal = (name: string, value: any) => {
+  if (typeof window !== 'undefined') {
+    localStorage.setItem(name, JSON.stringify(value));
+  }
+};

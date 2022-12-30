@@ -16,7 +16,6 @@ const CheckoutCart = dynamic(() => import('../components/Cart'), {
 const CartContainer = () => {
   const router = useRouter();
   const {
-    setInitialState,
     setCart,
     setOrderDetail,
     setType,
@@ -101,7 +100,7 @@ const CartContainer = () => {
       subToOrderStatuses();
       return;
     }
-    getMode() === 'pos' && setInitialState();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
 

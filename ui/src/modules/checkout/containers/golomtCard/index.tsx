@@ -37,7 +37,6 @@ const GolomtCard = () => {
       .catch((e) => {
         console.log(e.message);
       });
-    setLoading(false);
   }, []);
 
   if (loading) return null;
