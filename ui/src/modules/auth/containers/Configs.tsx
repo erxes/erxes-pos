@@ -26,9 +26,11 @@ ConfigsContext.displayName = 'ConfigsContext';
 
 const ConfigsProvider: FC<IProps> = ({ children }) => {
   const { data, loading } = useQuery(gql(queries.posCurrentUser));
+
   const { data: config, loading: loadingConfig } = useQuery(
     gql(queries.currentConfig)
   );
+
   const { data: configs, loading: loadingConfigs } = useQuery(
     gql(queries.configs)
   );
@@ -36,8 +38,8 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
   const currentUser = (data || {}).posCurrentUser;
   const currentConfig = (config || {}).currentConfig;
   const { posclientConfigs } = configs || {};
-
   const { uiOptions } = currentConfig || {};
+
   const {
     colors,
     logo: logoUrl,

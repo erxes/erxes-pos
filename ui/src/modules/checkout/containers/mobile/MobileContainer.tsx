@@ -2,14 +2,12 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, gql, useLazyQuery } from '@apollo/client';
 import { toast } from 'react-toastify';
-
 import { mutations, queries } from 'modules/checkout/graphql';
 import { useCheckoutContext } from 'modules/checkout/context';
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
 import useAddPayment from 'lib/useAddPayment';
 import { getMode } from 'modules/utils';
-
 import Empty from 'ui/Empty';
 import Loading from 'ui/Loading';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
