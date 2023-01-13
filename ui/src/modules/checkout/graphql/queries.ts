@@ -187,6 +187,8 @@ const invoices = `
       _id
       amount
       status
+      apiResponse
+      pluginData
     }
   }
 `;
