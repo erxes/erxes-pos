@@ -182,11 +182,13 @@ const ordersTotalCount = `query ordersTotalCount(
 }`;
 
 const invoices = `
-  query Invoices($contentType: String, $contentTypeId: String) {
+  query invoices($contentType: String, $contentTypeId: String) {
     invoices(contentType: $contentType, contentTypeId: $contentTypeId) {
       _id
       amount
       status
+      apiResponse
+      pluginData
     }
   }
 `;

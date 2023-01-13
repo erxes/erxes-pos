@@ -16,6 +16,10 @@ window.envMaps = [
     name: 'NEXT_PUBLIC_MAIN_SUBS_DOMAIN',
     processValue: '%NEXT_PUBLIC_MAIN_SUBS_DOMAIN%'
   },
+  {
+    name: 'NEXT_PUBLIC_SERVER_API_DOMAIN',
+    processValue: '%NEXT_PUBLIC_SERVER_API_DOMAIN%'
+  },
 ];
 
 for (var i = 0; i < window.envMaps.length; i++) {
