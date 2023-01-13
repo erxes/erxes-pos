@@ -8,9 +8,6 @@ const useAddPayment = (onCompleted?: any) => {
   const router = useRouter();
   const { changeActivePayment } = useCheckoutContext();
   const [addPay, { loading }] = useMutation(gql(mutations.ordersAddPayment), {
-    variables: {
-      _id: router.query.orderId,
-    },
     refetchQueries: [
       {
         query: gql(queries.orderDetail),

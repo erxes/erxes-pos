@@ -16,9 +16,16 @@ const initialState = {
   asCard: 0,
   receivable: 0,
   mobile: 0,
+  golomtCard: 0,
 };
 
-type PAYMENT_TYPES = 'qpay' | 'cash' | 'card' | 'receivable';
+type PAYMENT_TYPES =
+  | 'qpay'
+  | 'cash'
+  | 'card'
+  | 'receivable'
+  | 'golomtCard'
+  | 'mobile';
 
 type Action =
   | { type: 'SET_ACTIVE_PAYMENT'; paymentType: State['activePayment'] }

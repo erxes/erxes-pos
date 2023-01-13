@@ -5,6 +5,7 @@ import Qpay from './qpay';
 import AsCard from './asCard';
 import Mobile from './mobile';
 import Recievable from './recievable';
+import GolomtCard from './golomtCard';
 import { getMode } from 'modules/utils';
 import { useApp } from 'modules/AppContext';
 
@@ -21,6 +22,7 @@ const PaymentMethods = () => {
         {(allowReceivable || type === 'delivery') && <Recievable />}
         <AsCard />
         <Mobile />
+        <GolomtCard />
       </div>
     );
 
@@ -28,12 +30,8 @@ const PaymentMethods = () => {
     <div className="row payment-methods">
       <Card />
       <Qpay />
-      {getMode() === 'pos' && (allowReceivable || type === 'delivery') && (
-        <>
-          <Recievable />
-          <AsCard />
-        </>
-      )}
+      <Mobile />
+      <GolomtCard />
     </div>
   );
 };

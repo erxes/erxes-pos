@@ -10,7 +10,7 @@ const ProductContainer = (props: IProduct & { length: number }) => {
   const { addItemToCart } = useApp();
   const { paidDate, warning } = useIsEditable();
   const { addQuery, query } = useAddQuery();
-  const { barcode } = query;
+  const { barcode, manufacturedDate } = query;
 
   const { _id, name, unitPrice, attachment, length } = props;
 
@@ -24,7 +24,7 @@ const ProductContainer = (props: IProduct & { length: number }) => {
   useEffect(() => {
     if (length === 1 && barcode === 'true') {
       if (paidDate) return;
-      addItemToCart(cartItem);
+      addItemToCart({ ...cartItem, manufacturedDate });
       return addQuery({ searchValue: '', barcode: false });
     }
   }, [length, barcode]);

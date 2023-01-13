@@ -13,7 +13,7 @@ interface IProps {
 const Search = ({ open }: IProps) => {
   const [isActive, setIsActive] = useState(false);
   const [changeDates, setChangeDates] = useState<number[]>([]);
-  const [searchValue, setSearchValue] = useState('');
+  const [searchV, setSearch] = useState('');
   const [inputRef, setInputFocus] = useFocus();
   const { addQuery, query } = useAddQuery();
   const { searchValue: search } = query;
@@ -23,7 +23,7 @@ const Search = ({ open }: IProps) => {
   useEffect(() => {
     if (search || search === '') {
       setIsActive(true);
-      setSearchValue(search.toString());
+      setSearch(search.toString());
     }
   }, [search]);
 
@@ -32,17 +32,19 @@ const Search = ({ open }: IProps) => {
     !!val
       ? setChangeDates((current) => [...current, date.getTime()])
       : setChangeDates([]);
-    setSearchValue(val);
+    setSearch(val);
   };
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
     addQuery({
-      searchValue,
+      searchValue: searchV.split('_')[0],
       barcode:
+        searchV.length > 4 &&
         (changeDates[changeDates.length - 1] - changeDates[0]) /
           changeDates.length <
-        50,
+          50,
+      manufacturedDate: searchV.split('_')[1],
     });
     setChangeDates([]);
   };
@@ -55,14 +57,14 @@ const Search = ({ open }: IProps) => {
         setInputFocus();
       }}
       onFocus={() => setIsActive(true)}
-      onBlur={() => !searchValue && setIsActive(false)}
+      onBlur={() => !searchV && setIsActive(false)}
       onSubmit={handleSubmit}
     >
       <div className={cn('smooth-h', { active })}>
         <Input
           name=""
           placeholder="search products"
-          value={searchValue}
+          value={searchV}
           onChange={handleChange}
           ref={inputRef}
         />

@@ -5,6 +5,7 @@ import { getMode } from 'modules/utils';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Scroll from 'modules/kiosk/components/Scroll';
 import { useInView } from 'react-intersection-observer';
+import Loading from 'ui/Loading';
 
 function Products({ products, onLoadMore }: any) {
   const { currentConfig } = useConfigsContext();
@@ -38,7 +39,11 @@ function Products({ products, onLoadMore }: any) {
           />
         ))}
       </div>
-      {filteredProducts.length > 20 && <div ref={ref} />}
+      {filteredProducts.length >= 20 && (
+        <div className="load-products" ref={ref}>
+          <Loading />
+        </div>
+      )}
     </Scroll>
   );
 }

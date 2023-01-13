@@ -5,10 +5,18 @@ import Empty from 'ui/Empty';
 import { ICartItem } from 'modules/types';
 import Scroll from 'modules/kiosk/components/Scroll';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+import { useEffect } from 'react';
+import { setLocal } from 'modules/utils';
 
 const CheckoutCart = () => {
   const { cart, type } = useApp();
   const [animationParent] = useAutoAnimate<HTMLDivElement>();
+
+  useEffect(() => {
+    if (Array.isArray(cart)) {
+      setLocal('cart', cart);
+    }
+  }, [cart]);
   return (
     <>
       <CheckoutTotal />

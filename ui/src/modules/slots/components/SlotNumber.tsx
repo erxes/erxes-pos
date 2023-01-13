@@ -3,6 +3,7 @@ import Button from 'ui/Button';
 import cn from 'classnames';
 import CheckCircle from 'icons/CheckCircle';
 import { useRemoveQuery, useAddQuery } from 'lib/useQuery';
+import { useApp } from 'modules/AppContext';
 
 function SlotNumber({
   number,
@@ -21,9 +22,16 @@ function SlotNumber({
 }) {
   const { removeQuery } = useRemoveQuery();
   const { query, addQuery } = useAddQuery();
+  const { setInitialState } = useApp();
 
   const colors = {
     new: 'rgba(0, 0, 0, 0.65)',
+  };
+
+  const handleClick = () => {
+    if (query.orderId !== _id) return addQuery({ orderId: _id });
+    setInitialState();
+    removeQuery('orderId');
   };
 
   return (
@@ -32,11 +40,7 @@ function SlotNumber({
         active: query.orderId === _id,
         '-paid': !!paidDate,
       })}
-      onClick={() =>
-        query.orderId === _id
-          ? removeQuery('orderId')
-          : addQuery({ orderId: _id })
-      }
+      onClick={handleClick}
     >
       {number.split('_')[1]}
       {!!slotCode && `(${slotCode})`}

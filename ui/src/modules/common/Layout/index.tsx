@@ -30,6 +30,11 @@ const VisaView = dynamic(
   { suspense: true }
 );
 
+const GolomtView = dynamic(
+  () => import('modules/checkout/containers/golomtCard/Golomt'),
+  { suspense: true }
+);
+
 const SuccessView = dynamic(() => import('modules/kiosk/containers/success'), {
   suspense: true,
 });
@@ -74,6 +79,7 @@ const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
           {modalView === 'VISA_VIEW' && <VisaView />}
           {modalView === 'SUCCESS_VIEW' && <SuccessView />}
           {modalView === 'MOBILE_VIEW' && <MobileView />}
+          {modalView === 'GOLOMT_VIEW' && <GolomtView />}
         </Suspense>
       </Modal>
     </Suspense>
