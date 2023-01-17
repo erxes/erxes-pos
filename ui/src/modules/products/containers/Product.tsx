@@ -1,16 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useApp } from 'modules/AppContext';
 import { useEffect } from 'react';
-import { useAddQuery } from 'lib/useQuery';
 import type { IProduct } from 'modules/types';
 import Product from '../components/Product';
 import useIsEditable from 'lib/useIsEditable';
 
 const ProductContainer = (props: IProduct & { length: number }) => {
-  const { addItemToCart } = useApp();
+  const { addItemToCart, isBarcode, searchValue, changeIsBarcode } = useApp();
   const { paidDate, warning } = useIsEditable();
-  const { addQuery, query } = useAddQuery();
-  const { barcode, manufacturedDate } = query;
 
   const { _id, name, unitPrice, attachment, length } = props;
 
@@ -22,12 +19,15 @@ const ProductContainer = (props: IProduct & { length: number }) => {
   };
 
   useEffect(() => {
-    if (length === 1 && barcode === 'true') {
+    if (length === 1 && isBarcode === true) {
       if (paidDate) return;
-      addItemToCart({ ...cartItem, manufacturedDate });
-      return addQuery({ searchValue: '', barcode: false });
+      addItemToCart({
+        ...cartItem,
+        manufacturedDate: searchValue.split('_')[1],
+      });
+      return changeIsBarcode(false);
     }
-  }, [length, barcode]);
+  }, [length, isBarcode]);
 
   const handleClick = () => {
     if (paidDate) return warning();
