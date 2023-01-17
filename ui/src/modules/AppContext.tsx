@@ -19,6 +19,9 @@ export interface State {
   customerId: string;
   description: string;
   isChanged: boolean;
+  searchValue: string;
+  firstItem: ICartItem | null;
+  isBarcode: boolean;
 }
 
 const initialState = {
@@ -32,6 +35,9 @@ const initialState = {
   description: '',
   isChanged: false,
   slotCode: '',
+  searchValue: '',
+  firstItem: null,
+  isBarcode: false,
 };
 
 type TBillType = '' | '1' | '3' | string;
@@ -56,7 +62,10 @@ type Action =
   | { type: 'SET_DESCRIPTION'; value: string }
   | { type: 'SET_INITIAL_STATE' }
   | { type: 'CHANGE_IS_CHANGED'; value: boolean }
-  | { type: 'SET_SLOT_CODE'; value: string };
+  | { type: 'SET_SLOT_CODE'; value: string }
+  | { type: 'SET_SEARCH'; value: string }
+  | { type: 'CHANGE_FIRST_ITEM'; value: ICartItem }
+  | { type: 'CHANGE_IS_BARCODE'; value: boolean };
 
 export const AppContext = createContext<{} | any>(initialState);
 
@@ -64,6 +73,18 @@ AppContext.displayName = 'AppContext';
 
 const appReducer = (state: State, action: Action) => {
   switch (action.type) {
+    case 'CHANGE_IS_BARCODE': {
+      return { ...state, isBarcode: action.value };
+    }
+    case 'CHANGE_FIRST_ITEM': {
+      return { ...state, firstItem: action.value };
+    }
+    case 'SET_SEARCH': {
+      return {
+        ...state,
+        searchValue: action.value,
+      };
+    }
     case 'ADD_ITEM_TO_CART': {
       const { cart } = state;
       const { product } = action;
@@ -186,6 +207,7 @@ const appReducer = (state: State, action: Action) => {
         };
       }
     }
+
     case 'SELECT': {
       const { cart } = state;
       const { _id } = action;
@@ -279,6 +301,21 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const setSearch = useCallback(
+    (value: string) => dispatch({ type: 'SET_SEARCH', value }),
+    [dispatch]
+  );
+
+  const changeFirstItem = useCallback(
+    (value: ICartItem) => dispatch({ type: 'CHANGE_FIRST_ITEM', value }),
+    [dispatch]
+  );
+
+  const changeIsBarcode = useCallback(
+    (value: boolean) => dispatch({ type: 'CHANGE_IS_BARCODE', value }),
+    [dispatch]
+  );
+
   const value = useMemo(
     () => ({
       ...state,
@@ -296,6 +333,9 @@ export const AppContextProvider: IComponent = ({ children }) => {
       setInitialState,
       changeIsChanged,
       setSlotCode,
+      setSearch,
+      changeFirstItem,
+      changeIsBarcode,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]

@@ -4,10 +4,12 @@ import Loading from 'modules/common/ui/Loading';
 import Products from '../components/Products';
 import Empty from 'modules/common/ui/Empty';
 import { useAddQuery } from 'lib/useQuery';
+import { useApp } from 'modules/AppContext';
 
 const ProductsContainer = () => {
   const { query } = useAddQuery();
-  const { categoryId, searchValue } = query;
+  const { categoryId } = query;
+  const { searchValue, changeFirstItem } = useApp();
   const categoryIdStr = (categoryId || '').toString();
   const FETCH_MORE_PER_PAGE = 20;
 
@@ -15,8 +17,12 @@ const ProductsContainer = () => {
     variables: {
       perPage: FETCH_MORE_PER_PAGE,
       categoryId: categoryIdStr,
-      searchValue,
+      searchValue: searchValue.split('_')[0],
       page: 1,
+    },
+    onCompleted(data) {
+      const products = (data || {}).poscProducts || [];
+      changeFirstItem(products[0] || null);
     },
   });
   const productsCountQuery = useQuery(gql(queries.productsCount), {
@@ -54,7 +60,13 @@ const ProductsContainer = () => {
     }
   };
 
-  return <Products products={products} onLoadMore={handleLoadMore} />;
+  return (
+    <Products
+      products={products}
+      onLoadMore={handleLoadMore}
+      productsCount={productsCount}
+    />
+  );
 };
 
 export default ProductsContainer;

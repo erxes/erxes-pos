@@ -4,6 +4,7 @@ import cn from 'classnames';
 import CheckCircle from 'icons/CheckCircle';
 import { useRemoveQuery, useAddQuery } from 'lib/useQuery';
 import { useApp } from 'modules/AppContext';
+import { useRef } from 'react';
 
 function SlotNumber({
   number,
@@ -20,6 +21,7 @@ function SlotNumber({
   paidDate: string | null;
   slotCode?: string;
 }) {
+  const ref = useRef<HTMLButtonElement>({} as HTMLButtonElement);
   const { removeQuery } = useRemoveQuery();
   const { query, addQuery } = useAddQuery();
   const { setInitialState } = useApp();
@@ -29,6 +31,7 @@ function SlotNumber({
   };
 
   const handleClick = () => {
+    ref.current.blur();
     if (query.orderId !== _id) return addQuery({ orderId: _id });
     setInitialState();
     removeQuery('orderId');
@@ -40,6 +43,7 @@ function SlotNumber({
         active: query.orderId === _id,
         '-paid': !!paidDate,
       })}
+      ref={ref}
       onClick={handleClick}
     >
       {number.split('_')[1]}

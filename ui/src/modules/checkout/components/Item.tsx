@@ -45,9 +45,9 @@ const CheckoutItem: FC<ICartItem & { type: string }> = (props) => {
               {isTake && <Motocycle />}
             </span>
             <span className="price">
-              {formatNum(unitPrice)}
-              {discountPercent && ' (' + discountPercent + '%)'}
-              {discountAmount && ' -' + formatNum(discountAmount) + '₮'}
+              {formatNum(unitPrice)}₮{' '}
+              {!!discountPercent && ' (' + discountPercent + '%)'}{' '}
+              {!!discountAmount && ' -' + formatNum(discountAmount) + '₮'}
             </span>
           </b>
         </div>

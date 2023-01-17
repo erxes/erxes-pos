@@ -6,8 +6,15 @@ import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Scroll from 'modules/kiosk/components/Scroll';
 import { useInView } from 'react-intersection-observer';
 import Loading from 'ui/Loading';
+import type { IProduct } from 'modules/types';
 
-function Products({ products, onLoadMore }: any) {
+type IProducts = {
+  products: IProduct[];
+  onLoadMore: () => void;
+  productsCount: number;
+};
+
+function Products({ products, onLoadMore, productsCount }: IProducts) {
   const { currentConfig } = useConfigsContext();
 
   const { ref, inView } = useInView({
@@ -39,7 +46,7 @@ function Products({ products, onLoadMore }: any) {
           />
         ))}
       </div>
-      {filteredProducts.length >= 20 && (
+      {filteredProducts.length >= 20 && products.length < productsCount && (
         <div className="load-products" ref={ref}>
           <Loading />
         </div>
