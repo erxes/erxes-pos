@@ -9,7 +9,9 @@ const Cash = () => {
 
   const handleClick = () => {
     addPayment({
-      cardAmount: asCard,
+      paidAmounts: [
+        { _id: Math.random().toString(), amount: asCard, type: 'cardAmount' },
+      ],
     });
   };
 

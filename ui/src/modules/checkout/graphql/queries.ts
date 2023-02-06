@@ -12,11 +12,8 @@ export const orderFields = `
   number
   status
   paidDate
-  cardAmount
-  mobileAmount
   cashAmount
   totalAmount
-  receivableAmount
   slotCode
   registerNumber
   customerId
@@ -26,6 +23,12 @@ export const orderFields = `
   origin
   type
   deliveryInfo
+  paidAmounts {
+    _id
+    amount
+    info
+    type
+  }
 `;
 
 export const orderItemFields = `
@@ -71,18 +74,6 @@ const putResponseFields = `
   billType
 `;
 
-const qpayInvoiceFields = `
-  _id
-  qrText
-  senderInvoiceNo
-  amount
-  qpayInvoiceId
-  qpayPaymentId
-  status
-  paymentDate
-  createdAt
-`;
-
 const orderDetail = `
   query orderDetail($_id: String) {
     orderDetail(_id: $_id) {
@@ -107,16 +98,6 @@ const orderDetail = `
 
       putResponses {
         ${putResponseFields}
-      }
-
-      qpayInvoices {
-        ${qpayInvoiceFields}
-      }
-
-      cardPayments {
-        _id
-        amount
-        cardInfo
       }
     }
   }

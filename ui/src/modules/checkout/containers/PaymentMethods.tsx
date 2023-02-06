@@ -1,7 +1,6 @@
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Cash from './cash';
 import Card from './card';
-import Qpay from './qpay';
 import AsCard from './asCard';
 import Mobile from './mobile';
 import Recievable from './recievable';
@@ -18,7 +17,6 @@ const PaymentMethods = () => {
       <div className="row payment-methods">
         <Cash />
         <Card />
-        <Qpay />
         {(allowReceivable || type === 'delivery') && <Recievable />}
         <AsCard />
         <Mobile />
@@ -29,7 +27,6 @@ const PaymentMethods = () => {
   return (
     <div className="row payment-methods">
       <Card />
-      <Qpay />
       <Mobile />
       <GolomtCard />
     </div>

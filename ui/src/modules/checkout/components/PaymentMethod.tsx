@@ -15,7 +15,7 @@ type IProps = ButtonProps & {
 };
 
 const PaymentMethod: FC<IProps> = ({
-  name = 'qpay',
+  name = 'mobile',
   onClick,
   loading,
   btnText,

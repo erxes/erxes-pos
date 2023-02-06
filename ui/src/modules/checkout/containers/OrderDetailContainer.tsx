@@ -21,6 +21,7 @@ const OrderDetailContainer = ({ handleSuccess, children }: any) => {
     variables: {
       _id: router.query.orderId,
     },
+    skip: !router.query.orderId,
     onCompleted(data) {
       const { orderDetail } = data;
       const { registerNumber, billType, type } = orderDetail || {};

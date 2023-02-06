@@ -18,58 +18,16 @@ const ordersEdit = `
   }
 `;
 
-const invoiceFields = `
-  _id
-  amount
-  qrText
-  senderInvoiceNo
-  status
-  paymentDate
-  qpayPaymentId
-  status
-`;
-
-const createQpaySimpleInvoice = `
-  mutation poscCreateQpaySimpleInvoice($orderId: String!, $amount: Float) {
-    poscCreateQpaySimpleInvoice(orderId: $orderId, amount: $amount) {
-      ${invoiceFields}
-    }
-  }
-`;
-
-const qpayCheckPayment = `
-mutation QpayCheckPayment($orderId: String!, $id: String) {
-  qpayCheckPayment(orderId: $orderId, _id: $id) {
-    _id
-    status
-    qpayPaymentId
-    paymentDate
-  }
-}
-`;
-
-const qpayCancelInvoice = `
-mutation QpayCancelInvoice($id: String!) {
-  qpayCancelInvoice(_id: $id)
-}
-`;
-
 const ordersAddPayment = `
   mutation ordersAddPayment(
     $_id: String!
     $cashAmount: Float
-    $cardAmount: Float
-    $cardInfo: JSON
-    $receivableAmount: Float
-    $mobileAmount: Float
+    $paidAmounts: [PaidAmountInput]
   ) {
     ordersAddPayment(
       _id: $_id
       cashAmount: $cashAmount
-      cardAmount: $cardAmount
-      cardInfo: $cardInfo
-      receivableAmount: $receivableAmount
-      mobileAmount: $mobileAmount
+      paidAmounts: $paidAmounts
     ) {
       _id
     }
@@ -134,10 +92,7 @@ const generateInvoiceUrl = `
 const mutations = {
   ordersAdd,
   ordersEdit,
-  createQpaySimpleInvoice,
   ordersAddPayment,
-  qpayCheckPayment,
-  qpayCancelInvoice,
   ordersSettlePayment,
   orderChangeStatus,
   orderItemChangeStatus,

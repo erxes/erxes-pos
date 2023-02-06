@@ -11,7 +11,6 @@ export interface State {
 const initialState = {
   activePayment: '',
   card: 0,
-  qpay: 0,
   cash: 0,
   asCard: 0,
   receivable: 0,
@@ -19,13 +18,7 @@ const initialState = {
   golomtCard: 0,
 };
 
-type PAYMENT_TYPES =
-  | 'qpay'
-  | 'cash'
-  | 'card'
-  | 'receivable'
-  | 'golomtCard'
-  | 'mobile';
+type PAYMENT_TYPES = 'cash' | 'card' | 'receivable' | 'golomtCard' | 'mobile';
 
 type Action =
   | { type: 'SET_ACTIVE_PAYMENT'; paymentType: State['activePayment'] }

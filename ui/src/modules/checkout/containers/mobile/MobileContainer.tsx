@@ -58,8 +58,14 @@ const MobileContainer = () => {
         if (paidAmount > mobileAmount) {
           addPayment({
             _id: orderId,
-            mobileAmount:
-              mode === 'kiosk' ? totalAmount : paidAmount - mobileAmount,
+            paidAmounts: [
+              {
+                _id: Math.random().toString(),
+                amount:
+                  mode === 'kiosk' ? totalAmount : paidAmount - mobileAmount,
+                type: 'mobileAmount',
+              },
+            ],
           });
           return closeModal();
         }

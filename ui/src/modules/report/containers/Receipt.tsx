@@ -22,7 +22,7 @@ const Receipt = ({ date, report }: any) => {
           {`Картаар: `} <span>{formatNum(amounts.cardAmount, ',')}₮</span>
         </p>
         <p className="flex-h-between">
-          {`QPay: `} <span>{formatNum(amounts.mobileAmount, ',')}₮</span>
+          {`Цахимаар: `} <span>{formatNum(amounts.mobileAmount, ',')}₮</span>
         </p>
         <p className="flex-h-between">
           {`Нийт: `} <span>{formatNum(amounts.totalAmount, ',')}₮</span>

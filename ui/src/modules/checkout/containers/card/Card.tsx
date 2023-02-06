@@ -69,10 +69,16 @@ const Card = () => {
                   toast.success('Transaction was successful');
                   addPayment({
                     _id: orderId,
-                    cardInfo: r.response,
-                    cardAmount: parseFloat(
-                      mode === 'kiosk' ? totalAmount : card
-                    ),
+                    paidAmounts: [
+                      {
+                        _id: Math.random().toString(),
+                        amount: parseFloat(
+                          mode === 'kiosk' ? totalAmount : card
+                        ),
+                        type: 'cardAmount',
+                        info: r.response,
+                      },
+                    ],
                   });
                 } else {
                   handleError(r.response.response_msg);
