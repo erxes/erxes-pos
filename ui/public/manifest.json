@@ -1,8 +1,8 @@
 {
-  "name": "Next.JS Progressive Web App",
-  "short_name": "Next PWA",
+  "name": "Erxes pos",
+  "short_name": "Erxes pos",
   "theme_color": "#ffffff",
-  "background_color": "#004740",
+  "background_color": "#301D6E",
   "display": "fullscreen",
   "orientation": "portrait",
   "scope": "/",
