@@ -117,3 +117,9 @@ export const setLocal = (name: string, value: any) => {
     localStorage.setItem(name, JSON.stringify(value));
   }
 };
+
+export const sumAmount = (amounts: { amount: number }[]) =>
+  (amounts || []).reduce(
+    (sum: number, i: any) => Number(sum) + Number(i.amount),
+    0
+  );

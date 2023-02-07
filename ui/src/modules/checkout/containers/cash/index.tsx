@@ -11,7 +11,6 @@ const Cash = () => {
   const handleClick = () => {
     addPayment({
       cashAmount: cash,
-      paidAmounts: [],
     });
   };
 

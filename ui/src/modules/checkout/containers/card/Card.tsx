@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { useCheckoutContext } from 'modules/checkout/context';
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
-import { useState } from 'react';
 import useAddPayment from 'lib/useAddPayment';
 import { toast } from 'react-toastify';
 import LottieView from 'ui/Lottie';
@@ -15,6 +14,8 @@ const Card = () => {
   const { orderDetail, billType } = useApp();
   const { number, totalAmount } = orderDetail;
   const { card } = useCheckoutContext();
+  const { closeModal, setModalView } = useUI();
+  const mode = getMode();
 
   const onCompleted = () => {
     if (mode === 'kiosk') {
@@ -26,10 +27,6 @@ const Card = () => {
   };
 
   const { addPayment } = useAddPayment(onCompleted);
-
-  const [loading] = useState(true);
-  const mode = getMode();
-  const { closeModal, setModalView } = useUI();
 
   const PATH = 'http://localhost:27028';
 
@@ -107,19 +104,16 @@ const Card = () => {
     sendTransaction();
   }, []);
 
-  if (loading)
-    return (
-      <div className="card-loading">
-        <h2 className="text-center">
-          Та картаа <br /> уншуулна уу!
-        </h2>
-        <div className="img-wrap">
-          <LottieView path="https://assets6.lottiefiles.com/packages/lf20_6yhhrbk6.json" />
-        </div>
+  return (
+    <div className="card-loading">
+      <h2 className="text-center">
+        Та картаа <br /> уншуулна уу!
+      </h2>
+      <div className="img-wrap">
+        <LottieView path="https://assets6.lottiefiles.com/packages/lf20_6yhhrbk6.json" />
       </div>
-    );
-
-  return null;
+    </div>
+  );
 };
 
 export default Card;

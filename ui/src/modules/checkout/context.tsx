@@ -1,7 +1,7 @@
 import React, { useCallback, useMemo, useReducer } from 'react';
 import { useApp } from 'modules/AppContext';
 import { IComponent } from 'modules/types';
-import { parseNum } from 'modules/utils';
+import { parseNum, sumAmount } from 'modules/utils';
 
 export interface State {
   activePayment: string;
@@ -61,20 +61,10 @@ const checkoutReducer = (state: State, action: Action) => {
 export const CheckoutContextProvider: IComponent = ({ children }) => {
   const [state, dispatch] = useReducer(checkoutReducer, initialState);
   const { orderDetail } = useApp();
-  const {
-    totalAmount,
-    mobileAmount,
-    cashAmount,
-    cardAmount,
-    receivableAmount,
-  } = orderDetail || {};
+  const { totalAmount, paidAmounts, cashAmount } = orderDetail || {};
 
   const remainder =
-    (totalAmount || 0) -
-    (mobileAmount || 0) -
-    (cashAmount || 0) -
-    (cardAmount || 0) -
-    (receivableAmount || 0);
+    (totalAmount || 0) - sumAmount(paidAmounts || []) - (cashAmount || 0);
 
   const changeActivePayment = useCallback(
     (paymentType: State['activePayment']) =>

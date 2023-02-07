@@ -1,25 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useApp } from 'modules/AppContext';
 import LottieView from 'ui/Lottie';
-import { formatNum } from 'modules/utils';
+import { formatNum, sumAmount } from 'modules/utils';
 import cn from 'classnames';
 import Button from 'ui/Button';
 import { useUI } from 'ui/context';
+import { useCheckoutContext } from '../context';
 
 const PaymentReport = () => {
   const { openModal, setModalView } = useUI();
   const { orderDetail } = useApp();
-  const {
-    totalAmount,
-    cashAmount,
-    cardAmount,
-    mobileAmount,
-    receivableAmount,
-    number,
-  } = orderDetail || {};
+  const { totalAmount, cashAmount, number, paidAmounts } = orderDetail || {};
+  const { remainder } = useCheckoutContext();
 
-  const remainder =
-    totalAmount - (cardAmount + cashAmount + mobileAmount + receivableAmount);
+  const filterByType = (type: string) =>
+    sumAmount(paidAmounts.filter((i: any) => i.type === type));
 
   const paid = remainder === 0;
 
@@ -53,22 +49,22 @@ const PaymentReport = () => {
               <b>{formatNum(cashAmount)}₮</b>
             </h6>
           )}
-          {!!receivableAmount && (
+          {!!filterByType('receivableAmount') && (
             <h6 className="flex-h-between description-item">
               <span>Дараа</span>
-              <b>{formatNum(receivableAmount)}₮</b>
+              <b>{formatNum(filterByType('receivableAmount'))}₮</b>
             </h6>
           )}
-          {!!cardAmount && (
+          {!!filterByType('cardAmount') && (
             <h6 className="flex-h-between description-item">
               <span>Картаар</span>
-              <b>{formatNum(cardAmount)}₮</b>
+              <b>{formatNum(filterByType('cardAmount'))}₮</b>
             </h6>
           )}
-          {!!mobileAmount && (
+          {!!filterByType('mobileAmount') && (
             <h6 className="flex-h-between description-item">
               <span>Цахимаар</span>
-              <b>{formatNum(mobileAmount)}₮</b>
+              <b>{formatNum(filterByType('mobileAmount'))}₮</b>
             </h6>
           )}
           <h6 className="flex-h-between description-item">
