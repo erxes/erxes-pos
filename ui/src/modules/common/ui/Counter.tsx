@@ -24,7 +24,7 @@ const Counter = ({
   const { paidDate, checkStatus } = useIsEditable();
 
   const handleChange = (value: string) => {
-    changeItemCount(_id, parseInt(value));
+    changeItemCount(_id, parseFloat(value));
   };
 
   const handleStepChange = (plus?: boolean) => {
