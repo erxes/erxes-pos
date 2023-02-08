@@ -45,4 +45,25 @@ export interface IEbarimtConfig {
   footerText: string;
 }
 
+export interface PaymentType {
+  _id: string;
+  type: string;
+  title: string;
+  icon: string;
+}
+
+export interface ConfigsState {
+  currentUser: any;
+  currentConfig: any;
+  configs: [any];
+  allowReceivable: boolean;
+  allowInnerBill: boolean;
+  logoUrl: string | null;
+  receiptIcon: string | null;
+  bgImage: string | null;
+  primaryColor: string | '';
+  paymentTypes: PaymentType[];
+  kioskHeaderImage: string | '';
+}
+
 export type IRadio = 'checked' | 'error' | 'loading' | '' | false;

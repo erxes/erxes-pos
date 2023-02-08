@@ -4,6 +4,8 @@ import { useUI } from 'ui/context';
 import { useState, useEffect } from 'react';
 import { objToBase64 } from 'modules/utils';
 
+export const GOLOMT_CARD = 'golomtCard';
+
 const GolomtCard = () => {
   const { setModalView, openModal } = useUI();
   const [loading, setLoading] = useState(true);
@@ -43,7 +45,7 @@ const GolomtCard = () => {
 
   return (
     <PaymentMethod
-      name="golomtCard"
+      name={GOLOMT_CARD}
       onClick={() => {
         setModalView('GOLOMT_VIEW');
         openModal();

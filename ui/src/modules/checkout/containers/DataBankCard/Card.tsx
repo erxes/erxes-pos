@@ -7,13 +7,15 @@ import useAddPayment from 'lib/useAddPayment';
 import { toast } from 'react-toastify';
 import LottieView from 'ui/Lottie';
 import { getMode } from 'modules/utils';
+import { DATA_BANK_CARD } from '.';
 
 const Card = () => {
   const router = useRouter();
   const { orderId } = router.query;
   const { orderDetail, billType } = useApp();
   const { number, totalAmount } = orderDetail;
-  const { card } = useCheckoutContext();
+  const { amounts } = useCheckoutContext();
+  const card = amounts[DATA_BANK_CARD] || 0;
   const { closeModal, setModalView } = useUI();
   const mode = getMode();
 

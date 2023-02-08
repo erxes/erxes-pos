@@ -22,10 +22,10 @@ const PaymentMethod: FC<IProps> = ({
   ...restProps
 }) => {
   const mode = getMode();
-  const { activePayment, changeActivePayment, setValue, remainder, ...rest } =
+  const { activePayment, changeActivePayment, setValue, remainder, amounts } =
     useCheckoutContext();
   const { latestClickedKey, changeKey } = useUI();
-  const value = rest[name];
+  const value = amounts[name] || 0;
 
   useEffect(() => {
     if (latestClickedKey && activePayment === name) {
@@ -41,7 +41,7 @@ const PaymentMethod: FC<IProps> = ({
 
   useEffect(() => {
     if (activePayment === name) {
-      value === 0 && remainder >= 0 && setValue(remainder, name);
+      remainder >= 0 && setValue(remainder, name);
     }
   }, [activePayment, remainder]);
 
@@ -51,7 +51,6 @@ const PaymentMethod: FC<IProps> = ({
 
   const handleClick = () => {
     if (mode === 'pos') {
-      value > remainder && setValue(remainder, name);
       return changeActivePayment(name);
     }
     return onClick();

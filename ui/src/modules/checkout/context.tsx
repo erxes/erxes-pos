@@ -5,27 +5,20 @@ import { parseNum, sumAmount } from 'modules/utils';
 
 export interface State {
   activePayment: string;
-  card: number;
+  amounts: object;
 }
 
 const initialState = {
   activePayment: '',
-  card: 0,
-  cash: 0,
-  asCard: 0,
-  receivable: 0,
-  mobile: 0,
-  golomtCard: 0,
+  amounts: {},
 };
-
-type PAYMENT_TYPES = 'cash' | 'card' | 'receivable' | 'golomtCard' | 'mobile';
 
 type Action =
   | { type: 'SET_ACTIVE_PAYMENT'; paymentType: State['activePayment'] }
   | {
       type: 'SET_VALUE';
       value: string | number;
-      name: PAYMENT_TYPES;
+      name: string;
       remainder: number;
     }
   | { type: 'SET_INIT' };
@@ -47,7 +40,10 @@ const checkoutReducer = (state: State, action: Action) => {
       const num = parseNum(value);
       return {
         ...state,
-        [name]: num >= remainder ? remainder : num,
+        amounts: {
+          ...state.amounts,
+          [name]: num >= remainder ? remainder : num,
+        },
       };
     }
     case 'SET_INIT': {
@@ -61,21 +57,26 @@ const checkoutReducer = (state: State, action: Action) => {
 export const CheckoutContextProvider: IComponent = ({ children }) => {
   const [state, dispatch] = useReducer(checkoutReducer, initialState);
   const { orderDetail } = useApp();
-  const { totalAmount, paidAmounts, cashAmount } = orderDetail || {};
+  const { totalAmount, paidAmounts, cashAmount, mobileAmount } =
+    orderDetail || {};
 
   const remainder =
-    (totalAmount || 0) - sumAmount(paidAmounts || []) - (cashAmount || 0);
+    (totalAmount || 0) -
+    sumAmount(paidAmounts || []) -
+    (cashAmount || 0) -
+    (mobileAmount || 0);
 
   const changeActivePayment = useCallback(
-    (paymentType: State['activePayment']) =>
+    (paymentType: string) =>
       dispatch({ type: 'SET_ACTIVE_PAYMENT', paymentType }),
     [dispatch]
   );
   const setValue = useCallback(
-    (value: string | number, name: PAYMENT_TYPES) =>
+    (value: string | number, name: string) =>
       dispatch({ type: 'SET_VALUE', value, name, remainder }),
     [dispatch, remainder]
   );
+
   const setInit = useCallback(() => {
     dispatch({ type: 'SET_INIT' });
   }, [dispatch]);

@@ -17,7 +17,8 @@ const MobileContainer = () => {
   const router = useRouter();
   const { orderId } = router.query;
   const mode = getMode();
-  const { mobile, remainder } = useCheckoutContext();
+  const { amounts, remainder } = useCheckoutContext();
+  const mobile = amounts['mobile'] || 0;
   const { customerId, description, orderDetail } = useApp();
   const { closeModal } = useUI();
   const { totalAmount, mobileAmount } = orderDetail || {};
@@ -58,14 +59,8 @@ const MobileContainer = () => {
         if (paidAmount > mobileAmount) {
           addPayment({
             _id: orderId,
-            paidAmounts: [
-              {
-                _id: Math.random().toString(),
-                amount:
-                  mode === 'kiosk' ? totalAmount : paidAmount - mobileAmount,
-                type: 'mobileAmount',
-              },
-            ],
+            mobileAmount:
+              mode === 'kiosk' ? totalAmount : paidAmount - mobileAmount,
           });
           return closeModal();
         }

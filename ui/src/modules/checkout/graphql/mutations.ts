@@ -21,11 +21,13 @@ const ordersEdit = `
 const ordersAddPayment = `
   mutation ordersAddPayment(
     $_id: String!
-    $cashAmount: Float
+    $cashAmount: Float,
+    $mobileAmount: Float,
     $paidAmounts: [PaidAmountInput]
   ) {
     ordersAddPayment(
       _id: $_id
+      mobileAmount: $mobileAmount
       cashAmount: $cashAmount
       paidAmounts: $paidAmounts
     ) {

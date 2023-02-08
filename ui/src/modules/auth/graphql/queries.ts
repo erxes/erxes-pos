@@ -42,6 +42,7 @@ const configFields = `
   kitchenScreen
   token
   erxesAppToken
+  paymentTypes
 
   uiOptions {
     colors

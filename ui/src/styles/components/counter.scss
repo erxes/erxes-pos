@@ -6,7 +6,12 @@
     border: 0;
   }
   .count-wrap {
-    width: 5.5rem;
+    width: 8.5rem;
+    text-align: right;
+    &.shrink {
+      width: 3.5rem;
+      text-align: center;
+    }
   }
   input.count {
     border: 0;
@@ -17,6 +22,16 @@
     &::-webkit-inner-spin-button {
       -webkit-appearance: none;
       margin: 0;
+    }
+    &:focus {
+      outline: 2px solid rgba($color: #000, $alpha: 0.2);
+    }
+  }
+  .btn-holder {
+    width: 2.5rem;
+    transition: all 0.3s ease;
+    &.shrink {
+      width: 0;
     }
   }
 }

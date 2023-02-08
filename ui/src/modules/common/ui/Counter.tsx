@@ -5,6 +5,7 @@ import useIsEditable from 'lib/useIsEditable';
 import Input from './Input';
 import Minus from 'modules/common/icons/Minus';
 import Plus from 'modules/common/icons/Plus';
+import cn from 'classnames';
 
 interface IProps extends ICartItem {
   btnVariant?: ButtonProps['variant'];
@@ -44,17 +45,21 @@ const Counter = ({
 
   const disabled = !!paidDate || checkStatus(status);
 
+  const showButton = count.toString().length < 3;
+
   return (
     <div className="counter flex-v-center">
-      <Button
-        variant={btnVariant}
-        className="minus"
-        onClick={() => handleStepChange()}
-        disabled={disabled}
-      >
-        <Minus />
-      </Button>
-      <div className="count-wrap">
+      {showButton && (
+        <Button
+          variant={btnVariant}
+          className="minus"
+          onClick={() => handleStepChange()}
+          disabled={disabled}
+        >
+          <Minus />
+        </Button>
+      )}
+      <div className={cn('count-wrap', { shrink: showButton })}>
         <Input
           className="count"
           type="number"
@@ -63,14 +68,18 @@ const Counter = ({
           disabled={disabled}
         />
       </div>
-      <Button
-        variant={btnVariant}
-        className="plus"
-        onClick={() => handleStepChange(true)}
-        disabled={!!paidDate}
-      >
-        <Plus />
-      </Button>
+      <span className={cn('btn-holder', { shrink: !showButton })}>
+        {showButton && (
+          <Button
+            variant={btnVariant}
+            className="plus"
+            onClick={() => handleStepChange(true)}
+            disabled={!!paidDate}
+          >
+            <Plus />
+          </Button>
+        )}
+      </span>
     </div>
   );
 };
