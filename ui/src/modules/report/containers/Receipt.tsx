@@ -5,11 +5,13 @@ import dayjs from 'dayjs';
 import Button from 'ui/Button';
 
 const Receipt = ({ date, report }: any) => {
-  const { currentConfig } = useConfigsContext();
+  const { currentConfig, paymentTypes } = useConfigsContext();
   const { receiptIcon: logo, name, ebarimtConfig } = currentConfig;
   const { footerText } = ebarimtConfig || {};
 
   if (!report) return null;
+
+  const excludeTypes = ['_id', 'cashAmount', 'cardAmount', 'mobileAmount', 'count', 'totalAmount', 'receivableAmount'];
 
   const renderAmounts = (amounts: any) => {
     return (
@@ -19,11 +21,27 @@ const Receipt = ({ date, report }: any) => {
           <span>{formatNum(amounts.cashAmount, ',')}₮</span>
         </p>
         <p className="flex-h-between">
-          {`Картаар: `} <span>{formatNum(amounts.cardAmount, ',')}₮</span>
-        </p>
-        <p className="flex-h-between">
           {`Цахимаар: `} <span>{formatNum(amounts.mobileAmount, ',')}₮</span>
         </p>
+        {
+          amounts.cardAmount && (
+            <p className="flex-h-between">
+              {`Картаар: `} <span>{formatNum(amounts.cardAmount, ',')}₮</span>
+            </p>
+          ) || ''
+        }
+
+        {
+          (Object.keys(amounts) || [])
+            .filter(key => !excludeTypes.includes(key))
+            .map(type => (
+              <p className="flex-h-between">
+                {`${(paymentTypes.find(t => t.type === type) || { title: type }).title}: `}
+                <span>{formatNum(amounts[type], ',')}₮</span>
+              </p>
+            ))
+        }
+
         <p className="flex-h-between">
           {`Нийт: `} <span>{formatNum(amounts.totalAmount, ',')}₮</span>
         </p>
