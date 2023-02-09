@@ -30,6 +30,13 @@ const Receipt = ({ date, report }: any) => {
             </p>
           ) || ''
         }
+        {
+          amounts.receivableAmount && (
+            <p className="flex-h-between">
+              {`Картаар: `} <span>{formatNum(amounts.receivableAmount, ',')}₮</span>
+            </p>
+          ) || ''
+        }
 
         {
           (Object.keys(amounts) || [])
