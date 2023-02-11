@@ -1,4 +1,4 @@
-import { formatNum, calcTaxAmount } from 'modules/utils';
+import { formatNum, calcTaxAmount, getSumsOfAmount } from 'modules/utils';
 import { useApp } from 'modules/AppContext';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { useRouter } from 'next/router';
@@ -6,15 +6,9 @@ import cn from 'classnames';
 
 const Amount = () => {
   const router = useRouter();
-  const { currentConfig } = useConfigsContext();
+  const { currentConfig, paymentTypes } = useConfigsContext();
   const { orderDetail } = useApp();
-  const {
-    totalAmount,
-    cashAmount,
-    cardAmount,
-    mobileAmount,
-    receivableAmount,
-  } = orderDetail;
+  const { totalAmount, cashAmount, mobileAmount, paidAmounts } = orderDetail;
 
   const taxAmount = calcTaxAmount(
     totalAmount,
@@ -39,9 +33,12 @@ const Amount = () => {
         <Field text="НӨАТ" val={taxAmount.vatAmount} />
         <Field text="НХАТ" val={taxAmount.cityTaxAmount} />
         <Field text="Бэлнээр" val={cashAmount} />
-        <Field text="Картаар" val={cardAmount} />
         <Field text="Мобайл" val={mobileAmount} />
-        <Field text="Дараах" val={receivableAmount} />
+        {Object.values(getSumsOfAmount(paidAmounts, paymentTypes)).map(
+          (i: any) => (
+            <Field text={i.title.substring(0, 9)} val={i.value} key={i.title} />
+          )
+        )}
       </div>
     </div>
   );

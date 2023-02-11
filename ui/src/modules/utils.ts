@@ -117,3 +117,27 @@ export const setLocal = (name: string, value: any) => {
     localStorage.setItem(name, JSON.stringify(value));
   }
 };
+
+export const sumAmount = (amounts: { amount: number }[]) =>
+  (amounts || []).reduce(
+    (sum: number, i: any) => Number(sum) + Number(i.amount),
+    0
+  );
+
+export const getSumsOfAmount = (paidAmounts: any, paymentTypes: any) => {
+  const result: any = {};
+
+  for (const amount of paidAmounts || []) {
+    if (!Object.keys(result).includes(amount.type)) {
+      result[amount.type] = {
+        title:
+          paymentTypes.find((i: any) => i.type === amount.type)?.title ||
+          'Unknown',
+        value: 0,
+      };
+    }
+    result[amount.type].value += amount.amount;
+  }
+
+  return result;
+};

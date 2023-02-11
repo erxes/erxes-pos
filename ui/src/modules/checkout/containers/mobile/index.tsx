@@ -6,11 +6,12 @@ import OnlinePayment from 'icons/OnlinePayment';
 import { toast } from 'react-toastify';
 
 const Mobile = () => {
-  const { mobile } = useCheckoutContext();
+  const { amounts } = useCheckoutContext();
+  const mobile = amounts['mobile'] || 0;
   const { setModalView, openModal } = useUI();
 
   const handleClick = () => {
-    if ((mobile || 0) >= 10) {
+    if (mobile >= 10) {
       setModalView('MOBILE_VIEW');
       openModal();
       return;

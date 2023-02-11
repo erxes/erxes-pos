@@ -13,20 +13,12 @@ const PaymentView = dynamic(() => import('modules/kiosk/components/Payment'), {
   suspense: true,
 });
 
-const Qpaylist = dynamic(() => import('modules/checkout/components/Qpaylist'), {
-  suspense: true,
-});
-
-const QpayView = dynamic(() => import('modules/checkout/components/QpayQr'), {
-  suspense: true,
-});
-
 const HistoryView = dynamic(() => import('modules/history/components/Detail'), {
   suspense: true,
 });
 
 const VisaView = dynamic(
-  () => import('modules/checkout/containers/card/Card'),
+  () => import('modules/checkout/containers/DataBankCard/Card'),
   { suspense: true }
 );
 
@@ -73,8 +65,6 @@ const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
         <Suspense fallback={<Loading />}>
           {modalView === 'EBARIMT_VIEW' && <EbarimtView />}
           {modalView === 'PAYMENT_VIEW' && <PaymentView />}
-          {modalView === 'QPAY_LIST_VIEW' && <Qpaylist />}
-          {modalView === 'QPAY_VIEW' && <QpayView />}
           {modalView === 'HISTORY_VIEW' && <HistoryView />}
           {modalView === 'VISA_VIEW' && <VisaView />}
           {modalView === 'SUCCESS_VIEW' && <SuccessView />}

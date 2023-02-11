@@ -8,13 +8,15 @@ import useAddPayment from 'lib/useAddPayment';
 import { toast } from 'react-toastify';
 import LottieView from 'ui/Lottie';
 import { getMode, objToBase64 } from 'modules/utils';
+import { GOLOMT_CARD } from '.';
 
 const Card = () => {
   const router = useRouter();
   const { orderId } = router.query;
-  const { orderDetail, billType } = useApp();
-  const { number, totalAmount } = orderDetail;
-  const { golomtCard } = useCheckoutContext();
+  const { orderDetail } = useApp();
+  const { totalAmount } = orderDetail;
+  const { amounts } = useCheckoutContext();
+  const golomtCard = amounts[GOLOMT_CARD] || 0;
 
   const onCompleted = () => {
     if (mode === 'kiosk') {
@@ -79,10 +81,16 @@ const Card = () => {
                   toast.success('Transaction was successful');
                   addPayment({
                     _id: orderId,
-                    cardInfo: r.data,
-                    cardAmount: parseFloat(
-                      mode === 'kiosk' ? totalAmount : golomtCard
-                    ),
+                    paidAmounts: [
+                      {
+                        _id: Math.random().toString(),
+                        amount: parseFloat(
+                          mode === 'kiosk' ? totalAmount : golomtCard
+                        ),
+                        type: 'cardAmount',
+                        info: r.data,
+                      },
+                    ],
                   });
                 } else {
                   handleError(r.responseDesc);
