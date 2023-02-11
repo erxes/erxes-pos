@@ -6,7 +6,7 @@ const AdditionalPayments = () => {
   console.log(paymentTypes);
   return (
     <>
-      {(paymentTypes || []).map((payment) => (
+      {(paymentTypes || []).filter(pt => !['khaanCard', 'golomtCard'].includes(pt.type)).map((payment) => (
         <Payment key={payment._id} {...payment} />
       ))}
     </>

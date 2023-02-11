@@ -74,7 +74,7 @@ const Card = () => {
                         amount: parseFloat(
                           mode === 'kiosk' ? totalAmount : card
                         ),
-                        type: 'cardAmount',
+                        type: 'khaanCard',
                         info: r.response,
                       },
                     ],

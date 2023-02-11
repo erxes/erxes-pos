@@ -1,13 +1,19 @@
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
 import Visa from 'icons/Visa';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
+import { useEffect, useState } from 'react';
 import { useUI } from 'ui/context';
-import { useState, useEffect } from 'react';
 
 export const DATA_BANK_CARD = 'dataBankCard';
 
 const Card = () => {
   const { setModalView, openModal } = useUI();
   const [loading, setLoading] = useState(true);
+  const { paymentTypes } = useConfigsContext();
+
+  if (!paymentTypes.find(pt => pt.type === 'khaanCard')) {
+    return null;
+  }
 
   const PATH = 'http://localhost:27028';
 

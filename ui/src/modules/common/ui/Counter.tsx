@@ -45,7 +45,7 @@ const Counter = ({
 
   const disabled = !!paidDate || checkStatus(status);
 
-  const showButton = count.toString().length < 3;
+  const showButton = count.toString().length < 4;
 
   return (
     <div className="counter flex-v-center">
