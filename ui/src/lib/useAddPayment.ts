@@ -23,8 +23,6 @@ const useAddPayment = (onCompleted?: any) => {
     },
   });
 
-  console.log(router.query.orderId);
-
   const addPayment = useCallback(
     (variables: any) =>
       addPay({
