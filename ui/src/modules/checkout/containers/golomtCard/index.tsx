@@ -1,7 +1,6 @@
 import Golomt from 'icons/Golomt';
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
 import { objToBase64 } from 'modules/utils';
-import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { useEffect, useState } from 'react';
 import { useUI } from 'ui/context';
 
@@ -10,11 +9,6 @@ export const GOLOMT_CARD = 'golomtCard';
 const GolomtCard = () => {
   const { setModalView, openModal } = useUI();
   const [loading, setLoading] = useState(true);
-  const { paymentTypes } = useConfigsContext();
-
-  if (!paymentTypes.find(pt => pt.type === 'golomtCard')) {
-    return null;
-  }
 
   const PATH = 'http://localhost:8500';
 

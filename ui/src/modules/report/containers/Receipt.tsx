@@ -42,7 +42,7 @@ const Receipt = ({ date, report }: any) => {
           (Object.keys(amounts) || [])
             .filter(key => !excludeTypes.includes(key))
             .map(type => (
-              <p className="flex-h-between">
+              <p className="flex-h-between" key={type}>
                 {`${(paymentTypes.find(t => t.type === type) || { title: type }).title}: `}
                 <span>{formatNum(amounts[type], ',')}₮</span>
               </p>
