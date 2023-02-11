@@ -195,16 +195,16 @@ const appReducer = (state: State, action: Action) => {
 
       const foundItem = currentCart.find((item) => item._id === _id);
       if (foundItem) {
-        if (count > 0) {
-          foundItem.count = count;
-          return { ...state, cart: currentCart };
+        if (count < 0) {
+          const index = currentCart.indexOf(foundItem);
+          currentCart.splice(index, 1);
+          return {
+            ...state,
+            cart: currentCart,
+          };
         }
-        const index = currentCart.indexOf(foundItem);
-        currentCart.splice(index, 1);
-        return {
-          ...state,
-          cart: currentCart,
-        };
+        foundItem.count = count;
+        return { ...state, cart: currentCart };
       }
     }
 

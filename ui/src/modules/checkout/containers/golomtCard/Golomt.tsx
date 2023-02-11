@@ -87,7 +87,7 @@ const Card = () => {
                         amount: parseFloat(
                           mode === 'kiosk' ? totalAmount : golomtCard
                         ),
-                        type: 'cardAmount',
+                        type: 'golomtCard',
                         info: r.data,
                       },
                     ],

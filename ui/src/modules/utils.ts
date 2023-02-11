@@ -132,7 +132,7 @@ export const getSumsOfAmount = (paidAmounts: any, paymentTypes: any) => {
       result[amount.type] = {
         title:
           paymentTypes.find((i: any) => i.type === amount.type)?.title ||
-          'Unknown',
+          amount.type,
         value: 0,
       };
     }
