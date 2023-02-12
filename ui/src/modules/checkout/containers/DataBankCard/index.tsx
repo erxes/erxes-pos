@@ -3,7 +3,7 @@ import Visa from 'icons/Visa';
 import { useEffect, useState } from 'react';
 import { useUI } from 'ui/context';
 
-export const DATA_BANK_CARD = 'dataBankCard';
+export const KHANBANK_CARD = 'khaanCard';
 
 const Card = () => {
   const { setModalView, openModal } = useUI();
@@ -26,7 +26,7 @@ const Card = () => {
 
   return (
     <PaymentMethod
-      name={DATA_BANK_CARD}
+      name={KHANBANK_CARD}
       onClick={() => {
         setModalView('VISA_VIEW');
         openModal();

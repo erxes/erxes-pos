@@ -1,14 +1,20 @@
 import Button, { ButtonProps } from 'modules/common/ui/Button';
 import { useApp } from 'modules/AppContext';
-import type { ICartItem } from 'modules/types';
 import useIsEditable from 'lib/useIsEditable';
 import Input from './Input';
 import Minus from 'modules/common/icons/Minus';
 import Plus from 'modules/common/icons/Plus';
 import cn from 'classnames';
 
-interface IProps extends ICartItem {
+interface IProps {
   btnVariant?: ButtonProps['variant'];
+  count: number;
+  productId?: string;
+  _id: string;
+  name?: string;
+  productImgUrl?: string;
+  unitPrice?: number;
+  status?: string;
 }
 
 const Counter = ({
@@ -20,16 +26,16 @@ const Counter = ({
   productImgUrl,
   unitPrice,
   status,
-}: any) => {
+}: IProps) => {
   const { changeItemCount, addItemToCart } = useApp();
-  const { paidDate, checkStatus } = useIsEditable();
+  const { paidDate, isDone } = useIsEditable();
 
   const handleChange = (value: string) => {
-    changeItemCount(_id, parseFloat(value));
+    changeItemCount(_id, parseFloat(value) || 0);
   };
 
   const handleStepChange = (plus?: boolean) => {
-    if (plus && checkStatus(status)) {
+    if (plus && isDone(status)) {
       return addItemToCart({
         _id: productId,
         name,
@@ -43,9 +49,9 @@ const Counter = ({
       : changeItemCount(_id, count - 1);
   };
 
-  const disabled = !!paidDate || checkStatus(status);
+  const disabled = !!paidDate || isDone(status);
 
-  const showButton = count.toString().length < 4;
+  const showButton = (count || '').toString().length < 4;
 
   return (
     <div className="counter flex-v-center">

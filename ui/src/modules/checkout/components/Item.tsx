@@ -17,7 +17,6 @@ const CheckoutItem: FC<ICartItem & { type: string }> = (props) => {
     type,
     discountAmount,
     discountPercent,
-    count,
   } = props;
 
   const { selectItem } = useApp();
