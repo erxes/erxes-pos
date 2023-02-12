@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useCallback } from 'react';
 import { useLazyQuery, gql } from '@apollo/client';
 import { queries, subscriptions } from 'modules/checkout/graphql';

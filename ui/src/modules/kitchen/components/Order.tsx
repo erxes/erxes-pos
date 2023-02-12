@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import { useMutation, gql } from '@apollo/client';
 import { mutations } from 'modules/checkout/graphql';

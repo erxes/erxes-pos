@@ -18,7 +18,7 @@ const HistoryView = dynamic(() => import('modules/history/components/Detail'), {
 });
 
 const VisaView = dynamic(
-  () => import('modules/checkout/containers/DataBankCard/Card'),
+  () => import('modules/checkout/containers/KhanbankCard/Card'),
   { suspense: true }
 );
 

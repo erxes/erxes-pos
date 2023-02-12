@@ -1,5 +1,5 @@
 import Cash from './cash';
-import DataBankCard from './DataBankCard';
+import KhanBankCard from './KhanbankCard';
 import Mobile from './mobile';
 import GolomtCard from './golomtCard';
 import { getMode } from 'modules/utils';
@@ -8,7 +8,7 @@ import AdditionalPayments from './additionalPayments';
 const PaymentMethods = () => {
   return (
     <div className="row payment-methods">
-      <DataBankCard />
+      <KhanBankCard />
       <GolomtCard />
       <Mobile />
       {getMode() === 'pos' && (

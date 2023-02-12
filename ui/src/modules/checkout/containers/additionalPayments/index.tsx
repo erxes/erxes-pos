@@ -1,6 +1,6 @@
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Payment from './Payment';
-import { KHANBANK_CARD } from '../DataBankCard';
+import { KHANBANK_CARD } from '../KhanbankCard';
 import { GOLOMT_CARD } from '../golomtCard';
 
 const AdditionalPayments = () => {
