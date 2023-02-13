@@ -131,7 +131,7 @@ export const getSumsOfAmount = (paidAmounts: any, paymentTypes: any) => {
     if (!Object.keys(result).includes(amount.type)) {
       result[amount.type] = {
         title:
-          paymentTypes.find((i: any) => i.type === amount.type)?.title ||
+          (paymentTypes ||[]).find((i: any) => i.type === amount.type)?.title ||
           amount.type,
         value: 0,
       };
