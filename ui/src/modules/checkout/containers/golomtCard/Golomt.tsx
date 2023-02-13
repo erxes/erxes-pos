@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from 'modules/checkout/context';
@@ -87,7 +88,7 @@ const Card = () => {
                         amount: parseFloat(
                           mode === 'kiosk' ? totalAmount : golomtCard
                         ),
-                        type: 'golomtCard',
+                        type: GOLOMT_CARD,
                         info: r.data,
                       },
                     ],

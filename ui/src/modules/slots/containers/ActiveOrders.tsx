@@ -1,7 +1,6 @@
 import useFullOrders from 'lib/useFullOrder';
 import SlotsHeader from '../components/SlotHeader';
 import { queries } from '../graphql';
-import Loading from 'ui/Loading';
 import { ORDER_STATUSES } from 'modules/constants';
 import SlotNumber from '../components/SlotNumber';
 import Button from 'ui/Button';
@@ -24,11 +23,9 @@ const ActiveOrders = () => {
     query: queries.fullOrders,
   });
 
-  const orders = fullOrders.filter(
+  const orders = (fullOrders || []).filter(
     ({ status, paidDate }: any) => status !== COMPLETE || !paidDate
   );
-
-  if (loading) return <Loading />;
 
   return (
     <SlotsHeader

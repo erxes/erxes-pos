@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { useApp } from 'modules/AppContext';
 import { useEffect } from 'react';

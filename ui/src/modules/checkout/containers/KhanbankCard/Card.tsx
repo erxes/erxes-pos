@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from 'modules/checkout/context';
@@ -7,7 +8,7 @@ import useAddPayment from 'lib/useAddPayment';
 import { toast } from 'react-toastify';
 import LottieView from 'ui/Lottie';
 import { getMode } from 'modules/utils';
-import { DATA_BANK_CARD } from '.';
+import { KHANBANK_CARD } from '.';
 
 const Card = () => {
   const router = useRouter();
@@ -15,7 +16,7 @@ const Card = () => {
   const { orderDetail, billType } = useApp();
   const { number, totalAmount } = orderDetail;
   const { amounts } = useCheckoutContext();
-  const card = amounts[DATA_BANK_CARD] || 0;
+  const card = amounts[KHANBANK_CARD] || 0;
   const { closeModal, setModalView } = useUI();
   const mode = getMode();
 
@@ -74,7 +75,7 @@ const Card = () => {
                         amount: parseFloat(
                           mode === 'kiosk' ? totalAmount : card
                         ),
-                        type: 'khaanCard',
+                        type: KHANBANK_CARD,
                         info: r.response,
                       },
                     ],

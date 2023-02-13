@@ -46,7 +46,7 @@ function SlotNumber({
       ref={ref}
       onClick={handleClick}
     >
-      {number.split('_')[1]}
+      {(number || '').split('_')[1]}
       {!!slotCode && `(${slotCode})`}
       {origin === 'kiosk' && '*'}
       <CheckCircle color={colors[status as keyof typeof colors]} />
