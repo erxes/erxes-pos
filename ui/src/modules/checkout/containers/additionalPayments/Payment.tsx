@@ -3,7 +3,7 @@ import PaymentMethod from 'modules/checkout/components/PaymentMethod';
 import { useCheckoutContext } from 'modules/checkout/context';
 import type { ConfigsState } from 'modules/types';
 
-const Payment = ({ type, title }: ConfigsState['paymentTypes'][0]) => {
+const Payment = ({ type, title, icon }: ConfigsState['paymentTypes'][0]) => {
   const { amounts } = useCheckoutContext();
   const amount = amounts[type] || 0;
   const { addPayment, loading } = useAddPayment();
@@ -21,7 +21,10 @@ const Payment = ({ type, title }: ConfigsState['paymentTypes'][0]) => {
       btnText={title}
       loading={loading}
     >
-      <h6>{title}</h6>
+      <h6 className="flex-v-center">
+        <h4 className={`icon-${icon}`}></h4>
+        <span>{title}</span>
+      </h6>
     </PaymentMethod>
   );
 };
