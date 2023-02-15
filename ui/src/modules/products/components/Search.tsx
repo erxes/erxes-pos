@@ -12,7 +12,7 @@ interface IProps {
 
 const Search = ({ open }: IProps) => {
   const [isActive, setIsActive] = useState(false);
-  const { searchValue, setSearch, addItemToCart, firstItem } = useApp();
+  const { searchValue, setSearch, addItemToCart, foundItem } = useApp();
   const [search, setSearchC] = useState(searchValue);
   const [inputRef, setInputFocus] = useFocus();
 
@@ -33,7 +33,11 @@ const Search = ({ open }: IProps) => {
 
   const handleSubmit = (e: any) => {
     e.preventDefault();
-    !!searchValue && !!firstItem && addItemToCart(firstItem);
+    if (searchValue && foundItem) {
+      addItemToCart(foundItem);
+      setSearch('');
+      setSearchC('');
+    }
   };
 
   return (

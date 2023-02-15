@@ -19,13 +19,13 @@ const ProductContainer = (props: IProduct & { length: number }) => {
   };
 
   useEffect(() => {
-    if (length === 1 && isBarcode === true) {
+    if (length === 1 && isBarcode) {
       if (paidDate) return;
       addItemToCart({
         ...cartItem,
         manufacturedDate: searchValue.split('_')[1],
       });
-      return changeIsBarcode(false);
+      changeIsBarcode(false);
     }
   }, [length, isBarcode]);
 
