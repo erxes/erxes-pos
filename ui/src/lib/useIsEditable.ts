@@ -11,9 +11,9 @@ const useIsEditable = () => {
     toast.warning('Төлбөр төлөгдсөн байна');
   };
 
-  const checkStatus = (status: string) => status === ORDER_ITEM_STATUSES.DONE;
+  const isDone = (status?: string) => status === ORDER_ITEM_STATUSES.DONE;
 
-  return { paidDate, warning, checkStatus };
+  return { paidDate, warning, isDone };
 };
 
 export default useIsEditable;

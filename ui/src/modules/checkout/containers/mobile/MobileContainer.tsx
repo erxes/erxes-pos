@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useMutation, gql, useLazyQuery } from '@apollo/client';
@@ -17,7 +18,8 @@ const MobileContainer = () => {
   const router = useRouter();
   const { orderId } = router.query;
   const mode = getMode();
-  const { mobile, remainder } = useCheckoutContext();
+  const { amounts, remainder } = useCheckoutContext();
+  const mobile = amounts['mobile'] || 0;
   const { customerId, description, orderDetail } = useApp();
   const { closeModal } = useUI();
   const { totalAmount, mobileAmount } = orderDetail || {};

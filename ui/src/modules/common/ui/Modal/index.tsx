@@ -44,10 +44,7 @@ const Modal: FC<ModalProps> = ({ children, onClose }) => {
   const rootCn = cn(
     'modal-root flex-center',
     {
-      '-dark':
-        mode === 'kiosk' ||
-        modalView === 'QPAY_LIST_VIEW' ||
-        modalView === 'QPAY_VIEW',
+      '-dark': mode === 'kiosk',
     },
     displaySidebar &&
       sidebarPlacement === 'BOTTOM' &&

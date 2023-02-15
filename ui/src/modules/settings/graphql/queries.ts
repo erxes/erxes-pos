@@ -64,13 +64,6 @@ const configFields = `
     footerText
   }
 
-  qpayConfig {
-    url
-    callbackUrl
-    username
-    password
-    invoiceCode
-  }
   catProdMappings {
     _id
     categoryId

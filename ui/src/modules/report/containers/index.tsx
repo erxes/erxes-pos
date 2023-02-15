@@ -62,7 +62,7 @@ const ReportContainer = () => {
   if (!posUsers) return null;
 
   return (
-    <div className="row">
+    <div className="row flex-1">
       <div className="report-inner col-4">
         <h6>Өдрийн Тайлан</h6>
         <form onSubmit={handleSubmit}>
@@ -98,7 +98,9 @@ const ReportContainer = () => {
           </Button>
         </form>
       </div>
-      <Receipt date={date} report={dailyReport} />
+      <div className="report-reciept flex-1">
+        <Receipt date={date} report={dailyReport} />
+      </div>
     </div>
   );
 };

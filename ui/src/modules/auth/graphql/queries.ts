@@ -42,6 +42,7 @@ const configFields = `
   kitchenScreen
   token
   erxesAppToken
+  paymentTypes
 
   uiOptions {
     colors
@@ -64,14 +65,6 @@ const configFields = `
     companyName
     ebarimtUrl
     footerText
-  }
-
-  qpayConfig {
-    url
-    callbackUrl
-    username
-    password
-    invoiceCode
   }
   catProdMappings {
     _id

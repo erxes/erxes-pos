@@ -51,8 +51,6 @@ type Action =
 type MODAL_VIEWS =
   | 'EBARIMT_VIEW'
   | 'PAYMENT_VIEW'
-  | 'QPAY_LIST_VIEW'
-  | 'QPAY_VIEW'
   | 'HISTORY_VIEW'
   | 'VISA_VIEW'
   | 'SUCCESS_VIEW'

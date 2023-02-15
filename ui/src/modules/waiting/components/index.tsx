@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { ORDER_STATUSES, ORDER_ITEM_STATUSES } from 'modules/constants';
 import OrderItem from './OrderItem';

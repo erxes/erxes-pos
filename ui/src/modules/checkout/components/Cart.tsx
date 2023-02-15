@@ -9,14 +9,18 @@ import { useEffect } from 'react';
 import { setLocal } from 'modules/utils';
 
 const CheckoutCart = () => {
-  const { cart, type } = useApp();
+  const { cart, type, orderDetail } = useApp();
   const [animationParent] = useAutoAnimate<HTMLDivElement>();
 
   useEffect(() => {
+    if (orderDetail) {
+      setLocal('cart', []);
+      return;
+    }
     if (Array.isArray(cart)) {
       setLocal('cart', cart);
     }
-  }, [cart]);
+  }, [cart, orderDetail]);
   return (
     <>
       <CheckoutTotal />

@@ -1,25 +1,21 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useApp } from 'modules/AppContext';
 import LottieView from 'ui/Lottie';
-import { formatNum } from 'modules/utils';
+import { formatNum, getSumsOfAmount } from 'modules/utils';
 import cn from 'classnames';
 import Button from 'ui/Button';
 import { useUI } from 'ui/context';
+import { useCheckoutContext } from '../context';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 
 const PaymentReport = () => {
+  const { paymentTypes } = useConfigsContext();
   const { openModal, setModalView } = useUI();
   const { orderDetail } = useApp();
-  const {
-    totalAmount,
-    cashAmount,
-    cardAmount,
-    mobileAmount,
-    receivableAmount,
-    number,
-  } = orderDetail || {};
-
-  const remainder =
-    totalAmount - (cardAmount + cashAmount + mobileAmount + receivableAmount);
+  const { totalAmount, cashAmount, number, paidAmounts, mobileAmount } =
+    orderDetail || {};
+  const { remainder } = useCheckoutContext();
 
   const paid = remainder === 0;
 
@@ -53,23 +49,19 @@ const PaymentReport = () => {
               <b>{formatNum(cashAmount)}₮</b>
             </h6>
           )}
-          {!!receivableAmount && (
-            <h6 className="flex-h-between description-item">
-              <span>Дараа</span>
-              <b>{formatNum(receivableAmount)}₮</b>
-            </h6>
-          )}
-          {!!cardAmount && (
-            <h6 className="flex-h-between description-item">
-              <span>Картаар</span>
-              <b>{formatNum(cardAmount)}₮</b>
-            </h6>
-          )}
           {!!mobileAmount && (
             <h6 className="flex-h-between description-item">
               <span>Цахимаар</span>
               <b>{formatNum(mobileAmount)}₮</b>
             </h6>
+          )}
+          {Object.values(getSumsOfAmount(paidAmounts, paymentTypes)).map(
+            (i: any) => (
+              <h6 className="flex-h-between description-item" key={i.title}>
+                <span>{i.title}</span>
+                <b>{formatNum(i.value)}₮</b>
+              </h6>
+            )
           )}
           <h6 className="flex-h-between description-item">
             <span>Үлдэгдэл дүн</span>

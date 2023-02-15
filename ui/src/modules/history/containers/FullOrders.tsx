@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import useFullOrders from 'lib/useFullOrder';
 import { useAddQuery } from 'lib/useQuery';
