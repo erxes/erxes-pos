@@ -1,10 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import useFocus from 'lib/useFocus';
 import cn from 'classnames';
 import Magnify from 'modules/common/icons/Magnify';
 import Input from 'modules/common/ui/Input';
 import Button from 'modules/common/ui/Button';
 import { useApp } from 'modules/AppContext';
+import useIsEditable from 'lib/useIsEditable';
 
 interface IProps {
   open?: boolean;
@@ -12,9 +13,17 @@ interface IProps {
 
 const Search = ({ open }: IProps) => {
   const [isActive, setIsActive] = useState(false);
-  const { searchValue, setSearch, addItemToCart, foundItem } = useApp();
+  const {
+    searchValue,
+    setSearch,
+    addItemToCart,
+    foundItem,
+    isBarcode,
+    changeIsBarcode,
+  } = useApp();
   const [search, setSearchC] = useState(searchValue);
   const [inputRef, setInputFocus] = useFocus();
+  const { paidDate, warning } = useIsEditable();
 
   const active = isActive || open;
 
@@ -23,21 +32,38 @@ const Search = ({ open }: IProps) => {
     return () => clearTimeout(timeOutId);
   }, [search, setSearch]);
 
-  useEffect(() => {
-    setSearchC(searchValue);
-  }, [searchValue]);
-
   const handleChange = (val: string) => {
     setSearchC(val);
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+  const handleAdd = useCallback(() => {
+    if (paidDate) return warning();
     if (searchValue && foundItem) {
       addItemToCart(foundItem);
+      changeIsBarcode(false);
       setSearch('');
       setSearchC('');
     }
+  }, [
+    addItemToCart,
+    changeIsBarcode,
+    foundItem,
+    searchValue,
+    setSearch,
+    paidDate,
+    warning,
+  ]);
+
+  useEffect(() => {
+    if (isBarcode) {
+      setSearchC(search);
+      handleAdd();
+    }
+  }, [isBarcode, search, handleAdd]);
+
+  const handleSubmit = (e: any) => {
+    e.preventDefault();
+    !isBarcode && handleAdd();
   };
 
   return (
