@@ -7,6 +7,16 @@ import TDBLogo from 'icons/TDBLogo';
 
 export const TDB_CARD = 'TDBCard';
 
+export const objToString = (details:any) => {
+  const formBody = [];
+  for (var property in details) {
+    var encodedKey = encodeURIComponent(property);
+    var encodedValue = encodeURIComponent(details[property]);
+    formBody.push(encodedKey + '=' + encodedValue);
+  }
+  return formBody.join('&');
+}
+
 const TDBCard = () => {
   const { setModalView, openModal } = useUI();
   const [loading, setLoading] = useState(true);
@@ -22,30 +32,22 @@ const TDBCard = () => {
         ecrRefNo: 0
       };
 
-      const formBody = [];
-      for (var property in details) {
-        var encodedKey = encodeURIComponent(property);
-        var encodedValue = encodeURIComponent(details[property]);
-        formBody.push(encodedKey + '=' + encodedValue);
-      }
-      const formBodyStr = formBody.join('&');
+      
 
       fetch(`${PATH}/ecrt1000`, {
         method: 'POST',
-        mode: 'no-cors',
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
         },
-        body: formBodyStr,
+        body: objToString(details),
       })
         .then((res) => res.json())
         .then((res: any) => {
-          console.log(res, "---");
           if (res && res.ecrResult && res.ecrResult.RespCode === '00') {
             setLoading(false);
           }
         })
-        .catch((e) => console.log(e, 'errorr'));
+        .catch((e) => console.log(e.message));
     }
   }, []);
 
