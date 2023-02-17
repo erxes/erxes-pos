@@ -6,8 +6,9 @@ import { useConfigsContext } from 'modules/auth/containers/Configs';
 import TDBLogo from 'icons/TDBLogo';
 
 export const TDB_CARD = 'TDBCard';
+const PATH = 'http://localhost:8088';
 
-export const objToString = (details:any) => {
+export const objToString = (details: any) => {
   const formBody = [];
   for (var property in details) {
     var encodedKey = encodeURIComponent(property);
@@ -15,24 +16,20 @@ export const objToString = (details:any) => {
     formBody.push(encodedKey + '=' + encodedValue);
   }
   return formBody.join('&');
-}
+};
 
 const TDBCard = () => {
   const { setModalView, openModal } = useUI();
   const [loading, setLoading] = useState(true);
   const { paymentTypes } = useConfigsContext();
 
-  const PATH = 'http://localhost:8088';
-
   useEffect(() => {
     if (paymentTypes.find((pt) => pt.type === TDB_CARD)) {
       const details: any = {
         operation: 'Logon',
         hostIndex: 0,
-        ecrRefNo: 0
+        ecrRefNo: 0,
       };
-
-      
 
       fetch(`${PATH}/ecrt1000`, {
         method: 'POST',
@@ -57,7 +54,7 @@ const TDBCard = () => {
     <PaymentMethod
       name={TDB_CARD}
       onClick={() => {
-        setModalView('_VIEW');
+        setModalView('TDB_VIEW');
         openModal();
       }}
       btnText="Гүйлгээ хийх"
