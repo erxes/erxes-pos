@@ -141,3 +141,6 @@ export const getSumsOfAmount = (paidAmounts: any, paymentTypes: any) => {
 
   return result;
 };
+
+
+
