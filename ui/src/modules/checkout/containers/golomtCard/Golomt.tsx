@@ -37,11 +37,10 @@ const Card = () => {
   const PATH = 'http://localhost:8500';
 
   const data = {
-    portNo: '7',
-    requestID: '789',
+    portNo: '4',
+    requestID: orderId,
     terminalID: '13152634',
-    operationCode: '26',
-    amount: '0',
+    operationCode: '1',
     bandwidth: '115200',
     timeout: '540000',
     currencyCode: '496',
@@ -59,26 +58,20 @@ const Card = () => {
   };
 
   const sendTransaction = async () => {
-    fetch(`${PATH}/requestToPos/message?data=${objToBase64(data)}`)
-      .then((res) => res.json())
-      .then((res: any) => {
-        if (res.responseCode === '00') {
-          // ! interval
-          // send transaction upon successful connection
+
           fetch(
             `${PATH}/requestToPos/message?data=${objToBase64({
               ...data,
-              operationCode: '1',
               amount:
-                mode === 'kiosk'
-                  ? totalAmount.toString()
-                  : golomtCard.toString(),
+                ((mode === 'kiosk'
+                  ? totalAmount
+                  : golomtCard) * 100).toString(),
             })}`
           )
             .then((res) => res.json())
             .then((r) => {
-              if (r && r.data && r.responseDesc) {
-                if (r.responseCode === '00') {
+              const posResult = JSON.parse(r?.PosResult)
+              if (posResult?.responseCode === '00') {
                   toast.success('Transaction was successful');
                   addPayment({
                     _id: orderId,
@@ -89,32 +82,23 @@ const Card = () => {
                           mode === 'kiosk' ? totalAmount : golomtCard
                         ),
                         type: GOLOMT_CARD,
-                        info: r.data,
+                        info: decodeURIComponent(atob(posResult.responseDesc)),
                       },
                     ],
                   });
-                } else {
+              } else {
                   handleError(r.responseDesc);
-                }
               }
 
-              if (!r.responseCode && r.data) {
-                const { Exception = { ErrorMessage: '' } } = r.response;
-
-                handleError(`${Exception.ErrorMessage}`);
+              if (posResult?.responseCode && posResult.responseDesc) {
+                handleError(`${posResult.responseDesc}`);
               }
             })
             .catch((e) => {
               handleError(e.message);
             });
         }
-      })
-      .catch((e) => {
-        handleError(
-          `${e.message}: Голомт-н төлбөрийн програмтай холбогдсонгүй`
-        );
-      });
-  };
+
 
   useEffect(() => {
     sendTransaction();

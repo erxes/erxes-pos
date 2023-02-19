@@ -16,7 +16,7 @@ const GolomtCard = () => {
   const PATH = 'http://localhost:8500';
 
   const data = {
-    portNo: '7',
+    portNo: '4',
     requestID: '789',
     terminalID: '13152634',
     operationCode: '26',
@@ -34,9 +34,10 @@ const GolomtCard = () => {
   useEffect(() => {
     paymentTypes.find((pt) => pt.type === GOLOMT_CARD) &&
       fetch(`${PATH}/requestToPos/message?data=${objToBase64(data)}`)
-        .then((res) => res.json())
-        .then((res: any) => {
-          if (res?.responseCode === '00') {
+        .then((res:any) => res.json())
+        .then((r: any) => {
+          const posResult = JSON.parse(r?.PosResult)
+          if (posResult?.responseCode === '00') {
             setLoading(false);
           }
         })
