@@ -7,6 +7,7 @@ import cn from 'classnames';
 export default function Product({
   attachment,
   name,
+  code,
   unitPrice,
   remainder,
   riffle = true,
@@ -18,7 +19,7 @@ export default function Product({
       className={cn('product', { 'kiosk-product': isKiosk })}
       onClick={onClick && onClick}
     >
-      <abbr title={name}>
+      <abbr title={`${code} - ${name}`}>
         <Image
           src={(attachment || {}).url || ''}
           alt=""

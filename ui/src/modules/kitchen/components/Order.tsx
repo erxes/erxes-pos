@@ -6,7 +6,7 @@ import { ORDER_STATUSES } from 'modules/constants';
 import OrderItem from '../containers/OrderItem';
 import Timer from './Timer';
 import Button from 'ui/Button';
-import { goToReceipt, renderType } from 'modules/utils';
+import { goToKitchenReceipt, renderType } from 'modules/utils';
 
 const Order = ({
   number,
@@ -29,7 +29,7 @@ const Order = ({
       onCompleted() {
         if (status === DONE) {
           setDoneItems(items.map((item: any) => item._id));
-          goToReceipt(_id, 'kitchen');
+          goToKitchenReceipt(_id);
         }
       },
     });
