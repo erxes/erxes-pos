@@ -231,7 +231,7 @@ const Receipt = () => {
         {renderCustomer()}
       </header>
       {(putResponses || [] as any[]).map((putResponse: any, index: number) => (
-        <div id={`taxtype-${putResponse.taxType}`}>
+        <div key={`taxtype-${putResponse.taxType}`} id={`taxtype-${putResponse.taxType}`}>
           {index > 0 && (<div className="receipt-splitter"></div>)}
 
           <div className="block">
