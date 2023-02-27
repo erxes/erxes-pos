@@ -20,19 +20,18 @@ const initialData = {
 
 const useGolomt = () => {
   const { paymentTypes } = useConfigsContext();
-  const golomtInfo = paymentTypes.find((pt) => pt.type === GOLOMT_CARD)
+  const golomtInfo = paymentTypes.find((pt) => pt.type === GOLOMT_CARD);
 
-  const {port, ...restConfig} = strToObj((golomtInfo || {}).config) || {} 
+  const { port, ...restConfig } = strToObj((golomtInfo || {}).config) || {};
 
-  const path = port ? `http://localhost:${port}` : GOLOMT_DEFAULT_PATH
+  const path = port ? `http://localhost:${port}` : GOLOMT_DEFAULT_PATH;
 
   const endPoint = (data: object) =>
     `${path}/requestToPos/message?data=${objToBase64(data)}`;
 
+  const sendData = { ...initialData, ...restConfig };
 
-  const sendData = {...initialData, ...restConfig}
-  
-  return {golomtInfo, endPoint, sendData};
+  return { golomtInfo, endPoint, sendData, GOLOMT_CARD };
 };
 
 export default useGolomt;

@@ -9,7 +9,6 @@ import useAddPayment from 'lib/useAddPayment';
 import { toast } from 'react-toastify';
 import LottieView from 'ui/Lottie';
 import { getMode } from 'modules/utils';
-import { GOLOMT_CARD } from '.';
 import useGolomt from './useGolomt';
 
 const Card = () => {
@@ -18,8 +17,9 @@ const Card = () => {
   const { orderDetail } = useApp();
   const { totalAmount } = orderDetail;
   const { amounts } = useCheckoutContext();
+  const { sendData, endPoint, GOLOMT_CARD } = useGolomt();
   const golomtCard = amounts[GOLOMT_CARD] || 0;
-  const { sendData, endPoint, golomtInfo } = useGolomt();
+  
 
   const onCompleted = () => {
     if (mode === 'kiosk') {

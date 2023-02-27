@@ -5,13 +5,11 @@ import { useEffect, useState } from 'react';
 import { useUI } from 'ui/context';
 import useGolomt from './useGolomt';
 
-export const GOLOMT_CARD = 'golomtCard';
-
 const GolomtCard = () => {
   const { setModalView, openModal } = useUI();
   const [loading, setLoading] = useState(true);
 
-  const { golomtInfo, endPoint, sendData } = useGolomt();
+  const { golomtInfo, endPoint, sendData, GOLOMT_CARD } = useGolomt();
 
   useEffect(() => {
     if (golomtInfo) {
