@@ -2,40 +2,27 @@
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
 import { useEffect, useState } from 'react';
 import { useUI } from 'ui/context';
-import { useConfigsContext } from 'modules/auth/containers/Configs';
 import TDBLogo from 'icons/TDBLogo';
-
-export const TDB_CARD = 'TDBCard';
-const PATH = 'http://localhost:8088';
-
-export const objToString = (details: any) => {
-  const formBody = [];
-  for (var property in details) {
-    var encodedKey = encodeURIComponent(property);
-    var encodedValue = encodeURIComponent(details[property]);
-    formBody.push(encodedKey + '=' + encodedValue);
-  }
-  return formBody.join('&');
-};
+import useTDB from './useTDB';
 
 const TDBCard = () => {
   const { setModalView, openModal } = useUI();
   const [loading, setLoading] = useState(true);
-  const { paymentTypes } = useConfigsContext();
+
+  const { tdbCardInfo, endPoint, objToString, method, headers, TDB_CARD } =
+    useTDB();
 
   useEffect(() => {
-    if (paymentTypes.find((pt) => pt.type === TDB_CARD)) {
+    if (tdbCardInfo) {
       const details: any = {
         operation: 'Logon',
         hostIndex: 0,
         ecrRefNo: 0,
       };
 
-      fetch(`${PATH}/ecrt1000`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-        },
+      fetch(endPoint, {
+        method,
+        headers,
         body: objToString(details),
       })
         .then((res) => res.json())
