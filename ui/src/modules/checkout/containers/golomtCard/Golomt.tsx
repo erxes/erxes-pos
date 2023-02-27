@@ -8,8 +8,9 @@ import { useState } from 'react';
 import useAddPayment from 'lib/useAddPayment';
 import { toast } from 'react-toastify';
 import LottieView from 'ui/Lottie';
-import { getMode, objToBase64 } from 'modules/utils';
+import { getMode } from 'modules/utils';
 import { GOLOMT_CARD } from '.';
+import useGolomt from './useGolomt';
 
 const Card = () => {
   const router = useRouter();
@@ -18,6 +19,7 @@ const Card = () => {
   const { totalAmount } = orderDetail;
   const { amounts } = useCheckoutContext();
   const golomtCard = amounts[GOLOMT_CARD] || 0;
+  const { sendData, endPoint, golomtInfo } = useGolomt();
 
   const onCompleted = () => {
     if (mode === 'kiosk') {
@@ -33,24 +35,6 @@ const Card = () => {
   const [loading] = useState(true);
   const mode = getMode();
   const { closeModal, setModalView } = useUI();
-
-  const PATH = 'http://localhost:8500';
-
-  const data = {
-    portNo: '4',
-    requestID: orderId,
-    terminalID: '13152634',
-    operationCode: '1',
-    bandwidth: '115200',
-    timeout: '540000',
-    currencyCode: '496',
-    cMode: '',
-    cMode2: '',
-    additionalData: '',
-    cardEntryMode: '',
-    fileData: '',
-  };
-
   const handleError = (msg: string) => {
     mode === 'kiosk' ? setModalView('PAYMENT_VIEW') : closeModal();
     toast.dismiss();
@@ -58,47 +42,44 @@ const Card = () => {
   };
 
   const sendTransaction = async () => {
-
-          fetch(
-            `${PATH}/requestToPos/message?data=${objToBase64({
-              ...data,
-              amount:
-                ((mode === 'kiosk'
-                  ? totalAmount
-                  : golomtCard) * 100).toString(),
-            })}`
-          )
-            .then((res) => res.json())
-            .then((r) => {
-              const posResult = JSON.parse(r?.PosResult)
-              if (posResult?.responseCode === '00') {
-                  toast.success('Transaction was successful');
-                  addPayment({
-                    _id: orderId,
-                    paidAmounts: [
-                      {
-                        _id: Math.random().toString(),
-                        amount: parseFloat(
-                          mode === 'kiosk' ? totalAmount : golomtCard
-                        ),
-                        type: GOLOMT_CARD,
-                        info: decodeURIComponent(atob(posResult.responseDesc)),
-                      },
-                    ],
-                  });
-              } else {
-                  handleError(r.responseDesc);
-              }
-
-              if (posResult?.responseCode && posResult.responseDesc) {
-                handleError(`${posResult.responseDesc}`);
-              }
-            })
-            .catch((e) => {
-              handleError(e.message);
-            });
+    fetch(
+      endPoint({
+        ...sendData,
+        requestID: orderId,
+        operationCode: '1',
+        amount: (
+          (mode === 'kiosk' ? totalAmount : golomtCard) * 100
+        ).toString(),
+      })
+    )
+      .then((res) => res.json())
+      .then((r) => {
+        const posResult = JSON.parse(r?.PosResult);
+        if (posResult?.responseCode === '00') {
+          toast.success('Transaction was successful');
+          addPayment({
+            _id: orderId,
+            paidAmounts: [
+              {
+                _id: Math.random().toString(),
+                amount: parseFloat(mode === 'kiosk' ? totalAmount : golomtCard),
+                type: GOLOMT_CARD,
+                info: decodeURIComponent(atob(posResult.responseDesc)),
+              },
+            ],
+          });
+        } else {
+          handleError(r.responseDesc);
         }
 
+        if (posResult?.responseCode && posResult.responseDesc) {
+          handleError(`${posResult.responseDesc}`);
+        }
+      })
+      .catch((e) => {
+        handleError(e.message);
+      });
+  };
 
   useEffect(() => {
     sendTransaction();

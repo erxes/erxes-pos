@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { TDB_CARD, objToString } from '.';
 import { useApp } from 'modules/AppContext';
 import { useCheckoutContext } from 'modules/checkout/context';
 import LottieView from 'modules/common/ui/Lottie';
@@ -8,6 +7,7 @@ import { useUI } from 'modules/common/ui/context';
 import { toast } from 'react-toastify';
 import useAddPayment from 'lib/useAddPayment';
 import { useEffect } from 'react';
+import useTDB from './useTDB';
 
 function TDB() {
   const router = useRouter();
@@ -15,10 +15,10 @@ function TDB() {
   const { orderDetail } = useApp();
   const { totalAmount } = orderDetail;
   const { amounts } = useCheckoutContext();
+  const {TDB_CARD, endPoint, objToString, method, headers} = useTDB()
   const tdbCard = amounts[TDB_CARD] || 0;
   const mode = getMode();
   const { closeModal, setModalView } = useUI();
-  const PATH = 'http://localhost:8088';
 
   const onCompleted = () => {
     if (mode === 'kiosk') {
@@ -35,13 +35,12 @@ function TDB() {
     toast.dismiss();
     toast.error(msg);
   };
+  
 
   const sendTransaction = async () => {
-    fetch(`${PATH}/ecrt1000`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      },
+    fetch(endPoint, {
+      method,
+      headers,
       body: objToString({
         operation: 'Sale',
         ecrRefNo: orderId,

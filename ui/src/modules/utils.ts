@@ -131,8 +131,8 @@ export const getSumsOfAmount = (paidAmounts: any, paymentTypes: any) => {
     if (!Object.keys(result).includes(amount.type)) {
       result[amount.type] = {
         title:
-          (paymentTypes ||[]).find((i: any) => i.type === amount.type)?.title ||
-          amount.type,
+          (paymentTypes || []).find((i: any) => i.type === amount.type)
+            ?.title || amount.type,
         value: 0,
       };
     }
@@ -142,5 +142,7 @@ export const getSumsOfAmount = (paidAmounts: any, paymentTypes: any) => {
   return result;
 };
 
-
-
+export function strToObj(str?: string) {
+  let obj = new Function('return' + (str || ''));
+  return obj();
+}
