@@ -50,7 +50,7 @@ export interface PaymentType {
   type: string;
   title: string;
   icon: string;
-  config: string;
+  config?:string;
 }
 
 export interface ConfigsState {

@@ -1,48 +1,30 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import Golomt from 'icons/Golomt';
-import { useConfigsContext } from 'modules/auth/containers/Configs';
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
-import { objToBase64 } from 'modules/utils';
 import { useEffect, useState } from 'react';
 import { useUI } from 'ui/context';
-
-export const GOLOMT_CARD = 'golomtCard';
+import useGolomt from './useGolomt';
 
 const GolomtCard = () => {
   const { setModalView, openModal } = useUI();
   const [loading, setLoading] = useState(true);
-  const { paymentTypes } = useConfigsContext();
 
-  const PATH = 'http://localhost:8500';
-
-  const data = {
-    portNo: '7',
-    requestID: '789',
-    terminalID: '13152634',
-    operationCode: '26',
-    amount: '0',
-    bandwidth: '115200',
-    timeout: '540000',
-    currencyCode: '496',
-    cMode: '',
-    cMode2: '',
-    additionalData: '',
-    cardEntryMode: '',
-    fileData: '',
-  };
+  const { golomtInfo, endPoint, sendData, GOLOMT_CARD } = useGolomt();
 
   useEffect(() => {
-    paymentTypes.find((pt) => pt.type === GOLOMT_CARD) &&
-      fetch(`${PATH}/requestToPos/message?data=${objToBase64(data)}`)
-        .then((res) => res.json())
-        .then((res: any) => {
-          if (res?.responseCode === '00') {
+    if (golomtInfo) {
+      fetch(endPoint(sendData))
+        .then((res: any) => res.json())
+        .then((r: any) => {
+          const posResult = JSON.parse(r?.PosResult);
+          if (posResult?.responseCode === '00') {
             setLoading(false);
           }
         })
         .catch((e) => {
           console.log(e.message);
         });
+    }
   }, []);
 
   if (loading) return null;
