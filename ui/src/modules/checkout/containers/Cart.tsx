@@ -24,6 +24,7 @@ const CartContainer = () => {
     setDescription,
     setSlotCode,
     setInitialState,
+    orderDetail
   } = useApp();
   const { orderId } = router.query;
 
@@ -97,7 +98,7 @@ const CartContainer = () => {
     });
 
   useEffect(() => {
-    if (!orderId) {
+    if (!orderId && orderDetail) {
       setInitialState();
       return;
     }
