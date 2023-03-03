@@ -61,6 +61,7 @@ const Counter = ({
           className="minus"
           onClick={() => handleStepChange()}
           disabled={disabled}
+          Component="div"
         >
           <Minus />
         </Button>
@@ -81,6 +82,7 @@ const Counter = ({
             className="plus"
             onClick={() => handleStepChange(true)}
             disabled={!!paidDate}
+            Component="div"
           >
             <Plus />
           </Button>
