@@ -32,7 +32,7 @@ const GolomtCard = () => {
   };
 
   useEffect(() => {
-    paymentTypes.find((pt) => pt.type === GOLOMT_CARD) &&
+    (paymentTypes || []).find((pt) => pt.type === GOLOMT_CARD) &&
       fetch(`${PATH}/requestToPos/message?data=${objToBase64(data)}`)
         .then((res) => res.json())
         .then((res: any) => {
