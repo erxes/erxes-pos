@@ -1,20 +1,24 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useCheckoutContext } from 'modules/checkout/context';
 import { useApp } from 'modules/AppContext';
 import { useUI } from 'ui/context';
-import { useState } from 'react';
 import useAddPayment from 'lib/useAddPayment';
 import { toast } from 'react-toastify';
 import LottieView from 'ui/Lottie';
 import { getMode } from 'modules/utils';
+import { KHANBANK_CARD } from '.';
 
 const Card = () => {
   const router = useRouter();
   const { orderId } = router.query;
   const { orderDetail, billType } = useApp();
   const { number, totalAmount } = orderDetail;
-  const { card } = useCheckoutContext();
+  const { amounts } = useCheckoutContext();
+  const card = amounts[KHANBANK_CARD] || 0;
+  const { closeModal, setModalView } = useUI();
+  const mode = getMode();
 
   const onCompleted = () => {
     if (mode === 'kiosk') {
@@ -26,10 +30,6 @@ const Card = () => {
   };
 
   const { addPayment } = useAddPayment(onCompleted);
-
-  const [loading] = useState(true);
-  const mode = getMode();
-  const { closeModal, setModalView } = useUI();
 
   const PATH = 'http://localhost:27028';
 
@@ -69,10 +69,16 @@ const Card = () => {
                   toast.success('Transaction was successful');
                   addPayment({
                     _id: orderId,
-                    cardInfo: r.response,
-                    cardAmount: parseFloat(
-                      mode === 'kiosk' ? totalAmount : card
-                    ),
+                    paidAmounts: [
+                      {
+                        _id: Math.random().toString(),
+                        amount: parseFloat(
+                          mode === 'kiosk' ? totalAmount : card
+                        ),
+                        type: KHANBANK_CARD,
+                        info: r.response,
+                      },
+                    ],
                   });
                 } else {
                   handleError(r.response.response_msg);
@@ -101,19 +107,16 @@ const Card = () => {
     sendTransaction();
   }, []);
 
-  if (loading)
-    return (
-      <div className="card-loading">
-        <h2 className="text-center">
-          Та картаа <br /> уншуулна уу!
-        </h2>
-        <div className="img-wrap">
-          <LottieView path="https://assets6.lottiefiles.com/packages/lf20_6yhhrbk6.json" />
-        </div>
+  return (
+    <div className="card-loading">
+      <h2 className="text-center">
+        Та картаа <br /> уншуулна уу!
+      </h2>
+      <div className="img-wrap">
+        <LottieView path="https://assets6.lottiefiles.com/packages/lf20_6yhhrbk6.json" />
       </div>
-    );
-
-  return null;
+    </div>
+  );
 };
 
 export default Card;

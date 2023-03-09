@@ -23,6 +23,8 @@ const CartContainer = () => {
     setBillType,
     setDescription,
     setSlotCode,
+    setInitialState,
+    orderDetail
   } = useApp();
   const { orderId } = router.query;
 
@@ -31,8 +33,9 @@ const CartContainer = () => {
     name: item.productName,
   });
 
-  const [getSelectedOrder, { loading, subscribeToMore, refetch }] =
-    useLazyQuery(gql(queries.orderDetail), {
+  const [getSelectedOrder, { subscribeToMore, refetch }] = useLazyQuery(
+    gql(queries.orderDetail),
+    {
       onCompleted(data) {
         const { orderDetail } = data || {};
         if (orderDetail) {
@@ -57,7 +60,8 @@ const CartContainer = () => {
       onError(error) {
         toast.error(error.message);
       },
-    });
+    }
+  );
 
   const subToItems = () =>
     subscribeToMore({
@@ -94,17 +98,16 @@ const CartContainer = () => {
     });
 
   useEffect(() => {
-    if (orderId) {
-      getSelectedOrder({ variables: { _id: orderId } });
-      subToItems();
-      subToOrderStatuses();
+    if (!orderId && orderDetail) {
+      setInitialState();
       return;
     }
+    getSelectedOrder({ variables: { _id: orderId } });
+    subToItems();
+    subToOrderStatuses();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [orderId]);
-
-  if (loading) return <div className="checkout-cart"></div>;
 
   return <CheckMode pos={<CheckoutCart />} kiosk={<></>} />;
 };

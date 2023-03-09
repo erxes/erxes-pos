@@ -136,6 +136,11 @@
     display: flex;
   }
 
+  .receipt-splitter {
+    width: 100%;
+    border-bottom: 3px #444 double
+  }
+
   .btn-print {
     padding-top: 1rem;
     .btn {

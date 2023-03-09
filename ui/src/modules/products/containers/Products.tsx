@@ -9,7 +9,7 @@ import { useApp } from 'modules/AppContext';
 const ProductsContainer = () => {
   const { query } = useAddQuery();
   const { categoryId } = query;
-  const { searchValue, changeFirstItem } = useApp();
+  const { searchValue, changeFoundItem } = useApp();
   const categoryIdStr = (categoryId || '').toString();
   const FETCH_MORE_PER_PAGE = 20;
 
@@ -22,7 +22,7 @@ const ProductsContainer = () => {
     },
     onCompleted(data) {
       const products = (data || {}).poscProducts || [];
-      changeFirstItem(products[0] || null);
+      changeFoundItem(products.length === 1 ? products[0] : null);
     },
   });
   const productsCountQuery = useQuery(gql(queries.productsCount), {

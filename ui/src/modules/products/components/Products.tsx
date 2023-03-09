@@ -39,11 +39,7 @@ function Products({ products, onLoadMore, productsCount }: IProducts) {
     <Scroll>
       <div className="row products">
         {filteredProducts.map((product: any) => (
-          <ProductContainer
-            {...product}
-            key={product._id}
-            length={filteredProducts.length}
-          />
+          <ProductContainer {...product} key={product._id} />
         ))}
       </div>
       {filteredProducts.length >= 20 && products.length < productsCount && (

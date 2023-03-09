@@ -20,7 +20,7 @@ export interface State {
   description: string;
   isChanged: boolean;
   searchValue: string;
-  firstItem: ICartItem | null;
+  foundItem: ICartItem | null;
   isBarcode: boolean;
 }
 
@@ -36,7 +36,7 @@ const initialState = {
   isChanged: false,
   slotCode: '',
   searchValue: '',
-  firstItem: null,
+  foundItem: null,
   isBarcode: false,
 };
 
@@ -64,7 +64,7 @@ type Action =
   | { type: 'CHANGE_IS_CHANGED'; value: boolean }
   | { type: 'SET_SLOT_CODE'; value: string }
   | { type: 'SET_SEARCH'; value: string }
-  | { type: 'CHANGE_FIRST_ITEM'; value: ICartItem }
+  | { type: 'CHANGE_FOUND_ITEM'; value: ICartItem }
   | { type: 'CHANGE_IS_BARCODE'; value: boolean };
 
 export const AppContext = createContext<{} | any>(initialState);
@@ -76,8 +76,8 @@ const appReducer = (state: State, action: Action) => {
     case 'CHANGE_IS_BARCODE': {
       return { ...state, isBarcode: action.value };
     }
-    case 'CHANGE_FIRST_ITEM': {
-      return { ...state, firstItem: action.value };
+    case 'CHANGE_FOUND_ITEM': {
+      return { ...state, foundItem: action.value };
     }
     case 'SET_SEARCH': {
       return {
@@ -195,16 +195,16 @@ const appReducer = (state: State, action: Action) => {
 
       const foundItem = currentCart.find((item) => item._id === _id);
       if (foundItem) {
-        if (count > 0) {
-          foundItem.count = count;
-          return { ...state, cart: currentCart };
+        if (count < 0) {
+          const index = currentCart.indexOf(foundItem);
+          currentCart.splice(index, 1);
+          return {
+            ...state,
+            cart: currentCart,
+          };
         }
-        const index = currentCart.indexOf(foundItem);
-        currentCart.splice(index, 1);
-        return {
-          ...state,
-          cart: currentCart,
-        };
+        foundItem.count = count;
+        return { ...state, cart: currentCart };
       }
     }
 
@@ -228,8 +228,12 @@ export const AppContextProvider: IComponent = ({ children }) => {
   const [state, dispatch] = useReducer(appReducer, initialState);
 
   const addItemToCart = useCallback(
-    (product: IProductBase & { productImgUrl: string }) =>
-      dispatch({ type: 'ADD_ITEM_TO_CART', product }),
+    (
+      product: IProductBase & {
+        productImgUrl: string;
+        manufacturedDate?: string;
+      }
+    ) => dispatch({ type: 'ADD_ITEM_TO_CART', product }),
     [dispatch]
   );
 
@@ -306,8 +310,8 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
-  const changeFirstItem = useCallback(
-    (value: ICartItem) => dispatch({ type: 'CHANGE_FIRST_ITEM', value }),
+  const changeFoundItem = useCallback(
+    (value: ICartItem) => dispatch({ type: 'CHANGE_FOUND_ITEM', value }),
     [dispatch]
   );
 
@@ -334,7 +338,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
       changeIsChanged,
       setSlotCode,
       setSearch,
-      changeFirstItem,
+      changeFoundItem,
       changeIsBarcode,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps

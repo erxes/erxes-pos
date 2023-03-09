@@ -84,6 +84,11 @@ export const goToReceipt = (
   blank: string = '_black'
 ) => window.open(`/order-receipt/${_id}?type=${type}`, '_blank');
 
+export const goToKitchenReceipt = (
+  _id: string,
+  blank: string = '_black'
+) => window.open(`/kitchen-receipt/${_id}`, '_blank');
+
 export const renderType = (type: string) => {
   if (type === ORDER_TYPES.EAT) return 'Зааланд';
   if (type === ORDER_TYPES.TAKE) return 'Авч явахаар';
@@ -116,4 +121,28 @@ export const setLocal = (name: string, value: any) => {
   if (typeof window !== 'undefined') {
     localStorage.setItem(name, JSON.stringify(value));
   }
+};
+
+export const sumAmount = (amounts: { amount: number }[]) =>
+  (amounts || []).reduce(
+    (sum: number, i: any) => Number(sum) + Number(i.amount),
+    0
+  );
+
+export const getSumsOfAmount = (paidAmounts: any, paymentTypes: any) => {
+  const result: any = {};
+
+  for (const amount of paidAmounts || []) {
+    if (!Object.keys(result).includes(amount.type)) {
+      result[amount.type] = {
+        title:
+          (paymentTypes ||[]).find((i: any) => i.type === amount.type)?.title ||
+          amount.type,
+        value: 0,
+      };
+    }
+    result[amount.type].value += amount.amount;
+  }
+
+  return result;
 };

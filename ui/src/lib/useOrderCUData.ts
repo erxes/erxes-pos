@@ -32,15 +32,14 @@ const useOrderCUData = () => {
     status: item.status ? item.status : 'new',
   });
 
-  const getItems = () => {
-    const items = (orderDetail || {}).items || [];
-    const filtered = items.filter(
-      ({ isPackage }: { isPackage: boolean }) => !isPackage
-    );
-    return filtered.map(mapElement);
-  };
+  const orderDetailItems = (orderDetail || {}).items || [];
 
-  const items = orderId && !cart.length ? getItems() : cart.map(mapElement);
+  const filterItems = (rawItems: ICartItem[]) =>
+    rawItems
+      .filter(({ isPackage, count }) => !isPackage && count > 0)
+      .map(mapElement);
+
+  const items = filterItems(orderId && !cart.length ? orderDetailItems : cart);
 
   return {
     items,

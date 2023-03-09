@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { useApp } from 'modules/AppContext';
 import { useEffect } from 'react';
@@ -27,14 +28,10 @@ const Receipt = () => {
     paidDate,
     worker,
     customer,
-    items,
     putResponses,
     registerNumber,
-    _id,
-    type: orderType,
-    deliveryInfo,
+    _id
   } = orderDetail;
-  const putResponse = putResponses[0];
 
   const number = (orderDetail.number || []).split('_')[1];
 
@@ -44,8 +41,8 @@ const Receipt = () => {
     window.addEventListener('afterprint', () => {
       if (
         mode !== 'kiosk' &&
-        putResponse &&
-        !['kitchen', 'inner'].includes((type || '').toString())
+        putResponses.length &&
+        !['inner'].includes((type || '').toString())
       ) {
         setTimeout(() => {
           const popup = goToReceipt(_id, 'inner', '__blank');
@@ -64,7 +61,7 @@ const Receipt = () => {
     setTimeout(() => {
       window.print();
     }, 20);
-    return () => window.removeEventListener('afterprint', () => {});
+    return () => window.removeEventListener('afterprint', () => { });
   }, []);
 
   const renderWorker = () => {
@@ -93,16 +90,6 @@ const Receipt = () => {
   };
 
   const renderHeader = () => {
-    if (type === 'kitchen')
-      return (
-        <thead>
-          <tr className="detail-row">
-            <th>Бараа</th>
-            <th>Тоо</th>
-          </tr>
-        </thead>
-      );
-
     return (
       <thead>
         <tr className="detail-row">
@@ -114,33 +101,23 @@ const Receipt = () => {
     );
   };
 
-  const renderItem = (item: IOrderItem, idx: number) => {
-    const { unitPrice, count, productName } = item;
-    const total = unitPrice * (count || 0);
-
-    if (type === 'kitchen')
-      return (
-        <tr key={idx}>
-          <td>{productName}</td>
-          <td>{count}</td>
-        </tr>
-      );
-
+  const renderItem = (item: any, idx: number) => {
+    const { unitPrice, totalAmount, name, qty } = item;
     return (
       <tr key={idx}>
-        <td>{productName}</td>
+        <td>{name}</td>
         <td>
-          {formatNum(unitPrice)}₮ x{count}
+          {formatNum(unitPrice)}₮ x{formatNum(qty)}
         </td>
         <td className="totalCount">
           {' '}
-          = <b>{formatNum(total)}₮</b>
+          = <b>{formatNum(totalAmount)}₮</b>
         </td>
       </tr>
     );
   };
 
-  const renderError = () => {
+  const renderError = (putResponse: any) => {
     if (!putResponse) return null;
 
     const { errorCode, lotteryWarningMsg, message } = putResponse;
@@ -153,7 +130,7 @@ const Receipt = () => {
       );
   };
 
-  const renderQr = () => {
+  const renderQr = (putResponse: any) => {
     if (!putResponse || !!type) return null;
 
     const { qrData } = putResponse;
@@ -167,7 +144,7 @@ const Receipt = () => {
     );
   };
 
-  const renderLotteryCode = () => {
+  const renderLotteryCode = (putResponse: any) => {
     if (!putResponse || !!type) return null;
 
     if (putResponse.billType === '3') {
@@ -196,14 +173,28 @@ const Receipt = () => {
     ) : null;
   };
 
-  const renderSignature = () => {
-    if (type === 'kitchen')
-      return orderType === 'delivery' ? (
-        <p>
-          <b>Хүргэлтийн мэдээлэл:</b> {(deliveryInfo || {}).description}
-        </p>
-      ) : null;
+  const renderAmount = (putResponse: any) => {
+    const Field = ({ text, val }: { text: string; val: number }) => {
+      if (!val) return null;
 
+      return (
+        <div className="field">
+          <b>{text}:</b>
+          {formatNum(val, ',')}₮
+        </div>
+      );
+    };
+
+    return (
+      <div className={cn('-sm', { block: !router.query.type })}>
+        <Field text="НӨАТ" val={Number(putResponse.vat)} />
+        <Field text="НХАТ" val={Number(putResponse.cityTax)} />
+        <Field text="Дүн" val={Number(putResponse.amount)} />
+      </div>
+    )
+  }
+
+  const renderSignature = () => {
     return footerText ? (
       <div className="text-center signature">
         <label>{footerText}</label>
@@ -239,35 +230,42 @@ const Receipt = () => {
         {renderWorker()}
         {renderCustomer()}
       </header>
-      <div className="block">
-        <table>
-          {renderHeader()}
-          <tbody>
-            {items.map((item: IOrderItem, idx: number) =>
-              renderItem(item, idx)
-            )}
-          </tbody>
-        </table>
-      </div>
-      <footer>
-        {renderError()}
-        <div
-          className={cn('lottery flex-h-between', {
-            block: type !== 'kitchen',
-          })}
-        >
-          {renderQr()}
-          <div>
-            {type !== 'kitchen' && <Amount />}
-            {renderLotteryCode()}
+      {(putResponses || [] as any[]).map((putResponse: any, index: number) => (
+        <div key={`taxtype-${putResponse.taxType}`} id={`taxtype-${putResponse.taxType}`}>
+          {index > 0 && (<div className="receipt-splitter"></div>)}
+
+          <div className="block">
+            <table>
+              {renderHeader()}
+              <tbody>
+                {(putResponse.stocks || []).map((item: IOrderItem, idx: number) =>
+                  renderItem(item, idx)
+                )}
+              </tbody>
+            </table>
           </div>
+          <footer>
+            {renderError(putResponse)}
+            <div
+              className={cn('lottery flex-h-between', {
+                block: true,
+              })}
+            >
+              {renderQr(putResponse)}
+              <div>
+                {renderAmount(putResponse)}
+                {renderLotteryCode(putResponse)}
+              </div>
+            </div>
+            {!type && <BarCode putResponse={putResponse} />}
+          </footer>
         </div>
-        {!type && <BarCode putResponse={putResponse} />}
-        {renderSignature()}
-        <div className="text-center btn-print">
-          <Button onClick={() => window.print()}>Хэвлэх</Button>
-        </div>
-      </footer>
+      ))}
+      {<Amount />}
+      {renderSignature()}
+      <div className="text-center btn-print">
+        <Button onClick={() => window.print()}>Хэвлэх</Button>
+      </div>
     </div>
   );
 };

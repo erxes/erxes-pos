@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useApp } from 'modules/AppContext';
 import { gql, useQuery } from '@apollo/client';
@@ -21,6 +20,7 @@ const OrderDetailContainer = ({ handleSuccess, children }: any) => {
     variables: {
       _id: router.query.orderId,
     },
+    skip: !router.query.orderId,
     onCompleted(data) {
       const { orderDetail } = data;
       const { registerNumber, billType, type } = orderDetail || {};
@@ -31,8 +31,6 @@ const OrderDetailContainer = ({ handleSuccess, children }: any) => {
       type && setType(type);
     },
   });
-
-  useEffect(() => {}, []);
 
   if (loading || !orderDetail) return <Loading />;
 

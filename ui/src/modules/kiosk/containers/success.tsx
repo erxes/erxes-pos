@@ -8,10 +8,11 @@ const Success = () => {
 
   const onCompleted = () => {};
 
-  const { settlePayment, loading } = useSettlePayment(onCompleted);
+  const { settlePayment } = useSettlePayment(onCompleted);
 
   useEffect(() => {
     settlePayment();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

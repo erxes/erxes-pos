@@ -1,37 +1,22 @@
-import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Cash from './cash';
-import Card from './card';
-import Qpay from './qpay';
-import AsCard from './asCard';
+import KhanBankCard from './KhanbankCard';
 import Mobile from './mobile';
-import Recievable from './recievable';
 import GolomtCard from './golomtCard';
 import { getMode } from 'modules/utils';
-import { useApp } from 'modules/AppContext';
+import AdditionalPayments from './additionalPayments';
 
 const PaymentMethods = () => {
-  const { allowReceivable } = useConfigsContext();
-  const { type } = useApp();
-
-  if (getMode() === 'pos')
-    return (
-      <div className="row payment-methods">
-        <Cash />
-        <Card />
-        <Qpay />
-        {(allowReceivable || type === 'delivery') && <Recievable />}
-        <AsCard />
-        <Mobile />
-        <GolomtCard />
-      </div>
-    );
-
   return (
     <div className="row payment-methods">
-      <Card />
-      <Qpay />
-      <Mobile />
+      <KhanBankCard />
       <GolomtCard />
+      <Mobile />
+      {getMode() === 'pos' && (
+        <>
+          <Cash />
+          <AdditionalPayments />
+        </>
+      )}
     </div>
   );
 };

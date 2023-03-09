@@ -51,6 +51,10 @@
       aspect-ratio: 2 / 1;
       width: 5.375rem;
     }
+    h4 {
+      line-height: 1;
+      display: inline;
+    }
     &.-kiosk {
       svg {
         font-size: 5rem !important;
