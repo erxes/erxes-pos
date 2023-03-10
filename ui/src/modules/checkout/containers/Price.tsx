@@ -1,30 +1,34 @@
 import { useLazyQuery, gql } from '@apollo/client';
 import { queries } from '../../products/graphql';
-import Price from '../components/Price';
+import { formatNum } from 'modules/utils';
+import Button from 'ui/Button';
 
-const PriceInfoContainer = (props: { price: number, productId: string }) => {
+const PriceInfoContainer = ({
+  price,
+  productId,
+}: {
+  price: number;
+  productId: string;
+}) => {
   let result = '';
 
   const [getPriceInfo, { loading }] = useLazyQuery(gql(queries.getPriceInfo), {
     variables: {
-      productId: props.productId
+      productId: productId,
     },
     onCompleted(data) {
       result = (data || {}).getPriceInfo || '';
     },
   });
 
-
   const handleClick = () => {
     getPriceInfo();
   };
 
   return (
-    <Price
-      onClick={handleClick}
-      result={result}
-      price={props.price}
-    />
+    <Button onClick={handleClick} title={result} variant='ghost' Component={"abbr"} loading={loading} >  
+      {formatNum(price)}₮ 
+    </Button>
   );
 };
 
