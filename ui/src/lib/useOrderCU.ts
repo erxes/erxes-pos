@@ -36,7 +36,7 @@ const useOrderCU = (onCompleted?: any) => {
 
   if (orderData._id) {
     const checkRemainder =
-      orderData.totalAmount > (paidAmount || 0)
+      orderData.totalAmount >= (paidAmount || 0)
         ? ordersEdit
         : () => toast.error('Нийт дүн төлөгдсөн дүнгээс бага байна.');
 
