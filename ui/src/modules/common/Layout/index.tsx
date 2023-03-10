@@ -27,6 +27,12 @@ const GolomtView = dynamic(
   { suspense: true }
 );
 
+const TDBView = dynamic(
+  () => import('modules/checkout/containers/TDBCard/TDB'),
+  { suspense: true }
+);
+
+
 const SuccessView = dynamic(() => import('modules/kiosk/containers/success'), {
   suspense: true,
 });
@@ -70,6 +76,7 @@ const ModalView: React.FC<{ modalView: string; closeModal: any }> = ({
           {modalView === 'SUCCESS_VIEW' && <SuccessView />}
           {modalView === 'MOBILE_VIEW' && <MobileView />}
           {modalView === 'GOLOMT_VIEW' && <GolomtView />}
+          {modalView === 'TDB_VIEW' && <TDBView/>}
         </Suspense>
       </Modal>
     </Suspense>

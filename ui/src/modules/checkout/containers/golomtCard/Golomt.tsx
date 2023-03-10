@@ -8,8 +8,8 @@ import { useState } from 'react';
 import useAddPayment from 'lib/useAddPayment';
 import { toast } from 'react-toastify';
 import LottieView from 'ui/Lottie';
-import { getMode, objToBase64 } from 'modules/utils';
-import { GOLOMT_CARD } from '.';
+import { getMode } from 'modules/utils';
+import useGolomt from './useGolomt';
 
 const Card = () => {
   const router = useRouter();
@@ -17,8 +17,9 @@ const Card = () => {
   const { orderDetail } = useApp();
   const { totalAmount } = orderDetail;
   const { amounts } = useCheckoutContext();
+  const { sendData, endPoint, GOLOMT_CARD } = useGolomt();
   const golomtCard = amounts[GOLOMT_CARD] || 0;
-
+  
   const onCompleted = () => {
     if (mode === 'kiosk') {
       return setModalView('SUCCESS_VIEW');
@@ -33,25 +34,6 @@ const Card = () => {
   const [loading] = useState(true);
   const mode = getMode();
   const { closeModal, setModalView } = useUI();
-
-  const PATH = 'http://localhost:8500';
-
-  const data = {
-    portNo: '7',
-    requestID: '789',
-    terminalID: '13152634',
-    operationCode: '26',
-    amount: '0',
-    bandwidth: '115200',
-    timeout: '540000',
-    currencyCode: '496',
-    cMode: '',
-    cMode2: '',
-    additionalData: '',
-    cardEntryMode: '',
-    fileData: '',
-  };
-
   const handleError = (msg: string) => {
     mode === 'kiosk' ? setModalView('PAYMENT_VIEW') : closeModal();
     toast.dismiss();
@@ -59,60 +41,38 @@ const Card = () => {
   };
 
   const sendTransaction = async () => {
-    fetch(`${PATH}/requestToPos/message?data=${objToBase64(data)}`)
+    fetch(
+      endPoint({
+        ...sendData,
+        requestID: orderId,
+        operationCode: '1',
+        amount: (
+          (mode === 'kiosk' ? totalAmount : golomtCard) * 100
+        ).toString(),
+      })
+    )
       .then((res) => res.json())
-      .then((res: any) => {
-        if (res.responseCode === '00') {
-          // ! interval
-          // send transaction upon successful connection
-          fetch(
-            `${PATH}/requestToPos/message?data=${objToBase64({
-              ...data,
-              operationCode: '1',
-              amount:
-                mode === 'kiosk'
-                  ? totalAmount.toString()
-                  : golomtCard.toString(),
-            })}`
-          )
-            .then((res) => res.json())
-            .then((r) => {
-              if (r && r.data && r.responseDesc) {
-                if (r.responseCode === '00') {
-                  toast.success('Transaction was successful');
-                  addPayment({
-                    _id: orderId,
-                    paidAmounts: [
-                      {
-                        _id: Math.random().toString(),
-                        amount: parseFloat(
-                          mode === 'kiosk' ? totalAmount : golomtCard
-                        ),
-                        type: GOLOMT_CARD,
-                        info: r.data,
-                      },
-                    ],
-                  });
-                } else {
-                  handleError(r.responseDesc);
-                }
-              }
-
-              if (!r.responseCode && r.data) {
-                const { Exception = { ErrorMessage: '' } } = r.response;
-
-                handleError(`${Exception.ErrorMessage}`);
-              }
-            })
-            .catch((e) => {
-              handleError(e.message);
-            });
+      .then((r) => {
+        const posResult = JSON.parse(r?.PosResult);
+        if (posResult?.responseCode === '00') {
+          toast.success('Transaction was successful');
+          addPayment({
+            _id: orderId,
+            paidAmounts: [
+              {
+                _id: Math.random().toString(),
+                amount: parseFloat(mode === 'kiosk' ? totalAmount : golomtCard),
+                type: GOLOMT_CARD,
+                info: decodeURIComponent(atob(posResult.responseDesc)),
+              },
+            ],
+          });
+        } else {
+          handleError(posResult.responseDesc);
         }
       })
       .catch((e) => {
-        handleError(
-          `${e.message}: Голомт-н төлбөрийн програмтай холбогдсонгүй`
-        );
+        handleError(e.message);
       });
   };
 

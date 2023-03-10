@@ -21,10 +21,10 @@ const Payment = ({ type, title, icon }: PaymentType) => {
       btnText={title}
       loading={loading}
     >
-      <h6 className="flex-v-center">
+      <span className="flex-v-center">
         <h4 className={`icon-${icon}`}></h4>
-        <span>{title}</span>
-      </h6>
+        <h6>{title}</h6>
+      </span>
     </PaymentMethod>
   );
 };
