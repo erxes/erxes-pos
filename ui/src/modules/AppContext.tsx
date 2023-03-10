@@ -44,12 +44,12 @@ type TBillType = '' | '1' | '3' | string;
 
 type Action =
   | {
-      type: 'ADD_ITEM_TO_CART';
-      product: IProductBase & {
-        productImgUrl: string;
-        manufacturedDate?: string;
-      };
-    }
+    type: 'ADD_ITEM_TO_CART';
+    product: IProductBase & {
+      productImgUrl: string;
+      manufacturedDate?: string;
+    };
+  }
   | { type: 'SELECT'; _id: string }
   | { type: 'SET_CART'; cart: ICartItem[] }
   | { type: 'SET_TYPE'; value: string }
@@ -109,7 +109,7 @@ const appReducer = (state: State, action: Action) => {
           count: 1,
           status: 'new',
         };
-        currentCart.push(cartItem);
+        currentCart.unshift(cartItem);
       }
 
       return {

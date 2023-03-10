@@ -84,6 +84,11 @@ export const goToReceipt = (
   blank: string = '_black'
 ) => window.open(`/order-receipt/${_id}?type=${type}`, '_blank');
 
+export const goToKitchenReceipt = (
+  _id: string,
+  blank: string = '_black'
+) => window.open(`/kitchen-receipt/${_id}`, '_blank');
+
 export const renderType = (type: string) => {
   if (type === ORDER_TYPES.EAT) return 'Зааланд';
   if (type === ORDER_TYPES.TAKE) return 'Авч явахаар';

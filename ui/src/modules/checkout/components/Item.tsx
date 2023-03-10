@@ -6,6 +6,7 @@ import Checkbox from 'ui/Checkbox';
 import Counter from 'ui/Counter';
 import Motocycle from 'icons/Motocycle';
 import { formatNum } from 'modules/utils';
+import PriceInfoContainer from '../containers/Price';
 
 const CheckoutItem: FC<ICartItem & { type: string }> = (props) => {
   const {
@@ -17,6 +18,7 @@ const CheckoutItem: FC<ICartItem & { type: string }> = (props) => {
     type,
     discountAmount,
     discountPercent,
+    productId
   } = props;
 
   const { selectItem } = useApp();
@@ -44,7 +46,10 @@ const CheckoutItem: FC<ICartItem & { type: string }> = (props) => {
               {isTake && <Motocycle />}
             </span>
             <span className="price">
-              {formatNum(unitPrice)}₮{' '}
+              <PriceInfoContainer
+                productId={productId}
+                price={unitPrice}
+              />
               {!!discountPercent && ' (' + discountPercent + '%)'}{' '}
               {!!discountAmount && ' -' + formatNum(discountAmount) + '₮'}
             </span>
@@ -52,7 +57,7 @@ const CheckoutItem: FC<ICartItem & { type: string }> = (props) => {
         </div>
       </div>
       <Counter btnVariant="naked" {...props} />
-    </div>
+    </div >
   );
 };
 

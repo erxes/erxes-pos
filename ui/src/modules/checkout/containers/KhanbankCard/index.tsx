@@ -15,7 +15,7 @@ const Card = () => {
   const PATH = 'http://localhost:27028';
 
   useEffect(() => {
-    paymentTypes.find((pt) => pt.type === KHANBANK_CARD) &&
+    (paymentTypes || []).find((pt) => pt.type === KHANBANK_CARD) &&
       fetch(`${PATH}/ajax/get-status-info`)
         .then((res) => res.json())
         .then((res: any) => {

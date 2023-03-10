@@ -5,7 +5,7 @@ import Product from '../components/Product';
 import useIsEditable from 'lib/useIsEditable';
 
 const ProductContainer = (props: IProduct) => {
-  const { addItemToCart } = useApp();
+  const { addItemToCart, changeFoundItem } = useApp();
   const { paidDate, warning } = useIsEditable();
 
   const { _id, name, unitPrice, attachment } = props;
@@ -19,6 +19,7 @@ const ProductContainer = (props: IProduct) => {
 
   const handleClick = () => {
     if (paidDate) return warning();
+    changeFoundItem(null)
     return addItemToCart(cartItem);
   };
 

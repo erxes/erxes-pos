@@ -72,6 +72,9 @@ const putResponseFields = `
   getInformation
   returnBillId
   billType
+  taxType
+  stocks
+  amount
 `;
 
 const orderDetail = `

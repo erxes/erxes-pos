@@ -63,7 +63,7 @@ export interface ConfigsState {
   receiptIcon: string | null;
   bgImage: string | null;
   primaryColor: string | '';
-  paymentTypes: PaymentType[];
+  paymentTypes: PaymentType[] | null;
   kioskHeaderImage: string | '';
 }
 
