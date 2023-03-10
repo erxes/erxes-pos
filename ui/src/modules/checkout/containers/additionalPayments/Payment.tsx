@@ -1,9 +1,9 @@
 import useAddPayment from 'lib/useAddPayment';
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
 import { useCheckoutContext } from 'modules/checkout/context';
-import type { ConfigsState } from 'modules/types';
+import type { PaymentType } from 'modules/types';
 
-const Payment = ({ type, title, icon }: ConfigsState['paymentTypes'][0]) => {
+const Payment = ({ type, title, icon }: PaymentType) => {
   const { amounts } = useCheckoutContext();
   const amount = amounts[type] || 0;
   const { addPayment, loading } = useAddPayment();

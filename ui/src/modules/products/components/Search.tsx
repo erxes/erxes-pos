@@ -20,6 +20,7 @@ const Search = ({ open }: IProps) => {
     foundItem,
     isBarcode,
     changeIsBarcode,
+    changeFoundItem,
   } = useApp();
   const [search, setSearchC] = useState(searchValue);
   const [inputRef, setInputFocus] = useFocus();
@@ -43,15 +44,17 @@ const Search = ({ open }: IProps) => {
       changeIsBarcode(false);
       setSearch('');
       setSearchC('');
+      changeFoundItem(null);
     }
   }, [
-    addItemToCart,
-    changeIsBarcode,
-    foundItem,
-    searchValue,
-    setSearch,
     paidDate,
     warning,
+    searchValue,
+    foundItem,
+    addItemToCart,
+    changeIsBarcode,
+    setSearch,
+    changeFoundItem,
   ]);
 
   useEffect(() => {

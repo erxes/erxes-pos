@@ -3,7 +3,7 @@ import useIsDisabled from 'lib/useIsDisabled';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAddQuery } from 'lib/useQuery';
-import { formatNum, goToReceipt } from 'modules/utils';
+import { formatNum, goToReceipt, setLocal } from 'modules/utils';
 import Input from 'ui/Input';
 import useOrderCU from 'lib/useOrderCU';
 import useTotalValue from 'lib/useTotalValue';
@@ -21,7 +21,10 @@ const OrderCU = () => {
   const disabled = useIsDisabled();
 
   const onCompleted = (_id: string) => {
-    if (buttonType === 'pay') return router.push(`/checkout/${_id}`);
+    if (buttonType === 'pay') {
+      setLocal('cart', []);
+      return router.push(`/checkout/${_id}`);
+    }
     return addQuery({ orderId: _id });
   };
 

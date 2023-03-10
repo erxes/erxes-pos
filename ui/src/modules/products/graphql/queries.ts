@@ -37,10 +37,17 @@ const products = `
 `;
 
 const productsCount = `
-  query productsCount($categoryId: String, $type: String, $searchValue:   String) {
+  query productsCount($categoryId: String, $type: String, $searchValue: String) {
     poscProductsTotalCount(categoryId: $categoryId, type: $type, searchValue: $searchValue)
   }
 `;
 
-const queries = { productCategories, products, productsCount };
+
+const getPriceInfo = `
+  query getPriceInfo($productId: String!) {
+    getPriceInfo(productId: $productId)
+  }
+`;
+
+const queries = { productCategories, products, productsCount, getPriceInfo };
 export default queries;
