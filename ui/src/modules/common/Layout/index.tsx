@@ -1,6 +1,7 @@
 import type { IComponent } from 'modules/types';
 import dynamic from 'next/dynamic';
-import { Suspense } from 'react';
+import { useRouter } from 'next/router';
+import { Suspense, useEffect } from 'react';
 import Loading from 'ui/Loading';
 import { useUI } from 'ui/context';
 
@@ -114,6 +115,11 @@ const SidebarUI: React.FC = () => {
 };
 
 const MainLayout: IComponent = ({ children }) => {
+  const router = useRouter();
+  const { setInit } = useUI();
+  useEffect(() => {
+    setInit()
+  }, [router.asPath, setInit]);
   return (
     <>
       {children}

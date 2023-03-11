@@ -7,7 +7,7 @@ import Xmark from 'modules/common/icons/Xmark';
 const PaymentInput = ({ children, setValue, value }: any) => {
   const { changeActivePayment, remainder } = useCheckoutContext();
 
-  const handleClick = () => {
+  const handleClose = () => {
     changeActivePayment('');
   };
 
@@ -24,7 +24,7 @@ const PaymentInput = ({ children, setValue, value }: any) => {
       </div>
       <div className="flex-v-center">
         {children}
-        <Button variant="ghost" onClick={handleClick}>
+        <Button variant="ghost" onClick={handleClose}>
           <Xmark />
         </Button>
       </div>

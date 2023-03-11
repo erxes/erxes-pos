@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
+const withPWA = require('next-pwa')({
+  dest: 'public',
+});
+const runtimeCaching = require('next-pwa/cache');
 
-module.exports = {
-  swcMinify: true,
+module.exports = withPWA({
+  pwa: {
+    runtimeCaching,
+  },
 
   images: {
     remotePatterns: [
@@ -36,4 +42,4 @@ module.exports = {
     };
     return config;
   },
-};
+});

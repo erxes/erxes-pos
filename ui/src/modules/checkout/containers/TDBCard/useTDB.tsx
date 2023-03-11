@@ -1,5 +1,6 @@
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { strToObj } from 'modules/utils';
+import { TDB_CARD } from 'modules/constants';
 
 export const objToString = (details: any) => {
   const formBody = [];
@@ -11,7 +12,6 @@ export const objToString = (details: any) => {
   return formBody.join('&');
 };
 
-export const TDB_CARD = 'TDBCard';
 export const TDB_DEFAULT_PATH = 'http://localhost:8088';
 
 const useTDB = () => {
@@ -32,7 +32,7 @@ const useTDB = () => {
     headers,
     endPoint,
     tdbCardInfo,
-    TDB_CARD
+    TDB_CARD,
   };
 };
 

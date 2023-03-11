@@ -46,7 +46,10 @@ type Action =
   | {
       type: 'CHANGE_KEY';
       value: string;
-    };
+    }
+  | {
+      type: "SET_INIT"
+  };
 
 type MODAL_VIEWS =
   | 'EBARIMT_VIEW'
@@ -116,6 +119,9 @@ function uiReducer(state: State, action: Action) {
         ...state,
         latestClickedKey: action.value,
       };
+    case 'SET_INIT': {
+      return initialState;
+    }
 
     default:
       throw new Error();
@@ -161,8 +167,10 @@ const UIProvider: IComponent = (props) => {
 
   const changeKey = useCallback(
     (value: string) => dispatch({ type: 'CHANGE_KEY', value }),
-    []
+    [dispatch]
   );
+
+  const setInit = useCallback(() => dispatch({ type: 'SET_INIT' }), [dispatch]);
 
   const value = useMemo(
     () => ({
@@ -175,6 +183,7 @@ const UIProvider: IComponent = (props) => {
       closeModal,
       setModalView,
       changeKey,
+      setInit
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]

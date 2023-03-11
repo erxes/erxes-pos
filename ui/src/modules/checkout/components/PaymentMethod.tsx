@@ -40,8 +40,8 @@ const PaymentMethod: FC<IProps> = ({
   }, [latestClickedKey]);
 
   useEffect(() => {
-    if (activePayment === name) {
-      remainder >= 0 && setValue(remainder, name);
+    if (activePayment === name && remainder) {
+      setValue(remainder, name);
     }
   }, [activePayment, remainder]);
 
@@ -66,7 +66,6 @@ const PaymentMethod: FC<IProps> = ({
         <Button
           onClick={onClick}
           loading={loading}
-          disabled={value === 0 || remainder <= 0}
         >
           {btnText}
         </Button>

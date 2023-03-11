@@ -15,7 +15,7 @@ const PaymentReport = () => {
   const { orderDetail } = useApp();
   const { totalAmount, cashAmount, number, paidAmounts, mobileAmount } =
     orderDetail || {};
-  const { remainder } = useCheckoutContext();
+  const { remainder, oddMoney } = useCheckoutContext();
 
   const paid = remainder === 0;
 
@@ -67,6 +67,10 @@ const PaymentReport = () => {
             <span>Үлдэгдэл дүн</span>
             <b>{formatNum(remainder)}₮</b>
           </h6>
+          {!!oddMoney && <h6 className="flex-h-between description-item">
+            <span>Хариулт дүн</span>
+            <b>{formatNum(oddMoney)}₮</b>
+          </h6>}
         </div>
         <Button onClick={handleClick} disabled={!paid}>
           <big>Баримт хэвлэх</big>
