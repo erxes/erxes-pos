@@ -8,7 +8,7 @@ import useAddPayment from 'lib/useAddPayment';
 import { toast } from 'react-toastify';
 import LottieView from 'ui/Lottie';
 import { getMode } from 'modules/utils';
-import { KHANBANK_CARD } from '.';
+import { KHANBANK_CARD } from 'modules/constants';
 
 const Card = () => {
   const router = useRouter();
