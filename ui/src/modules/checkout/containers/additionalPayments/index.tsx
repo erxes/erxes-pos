@@ -1,15 +1,13 @@
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Payment from './Payment';
-import { KHANBANK_CARD } from '../KhanbankCard';
-import { GOLOMT_CARD } from '../golomtCard/useGolomt';
-import { TDB_CARD } from '../TDBCard/useTDB';
+import { BANK_CARDS } from 'modules/constants';
 
 const AdditionalPayments = () => {
   const { paymentTypes } = useConfigsContext();
   return (
     <>
       {(paymentTypes || [])
-        .filter((pt) => ![KHANBANK_CARD, GOLOMT_CARD, TDB_CARD].includes(pt.type))
+        .filter((pt) => !BANK_CARDS.includes(pt.type))
         .map((payment) => (
           <Payment key={payment._id} {...payment} />
         ))}

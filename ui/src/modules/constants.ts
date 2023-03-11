@@ -45,4 +45,12 @@ export const PAYMENT_TYPES = {
   REGISTER: 'registerNumber',
 };
 
+export const GOLOMT_CARD = 'golomtCard';
+export const KHANBANK_CARD = 'khaanCard';
+export const TDB_CARD = 'TDBCard';
+export const MOBILE= 'mobileAmount'
+
+export const BANK_CARDS = [GOLOMT_CARD, KHANBANK_CARD, TDB_CARD]
+
+
 export const NOT_FOUND = '$notFound';

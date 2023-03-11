@@ -1,27 +1,28 @@
 import React, { useCallback, useMemo, useReducer } from 'react';
 import { IComponent } from 'modules/types';
-import { parseNum } from 'modules/utils';
 import useAmounts from 'lib/useAmounts';
 
 export interface State {
   activePayment: string;
   amounts: object;
+  oddMoney: number;
 }
 
 const initialState = {
   activePayment: '',
   amounts: {},
+  oddMoney: 0,
 };
 
 type Action =
   | { type: 'SET_ACTIVE_PAYMENT'; paymentType: State['activePayment'] }
   | {
       type: 'SET_VALUE';
-      value: string | number;
+      value: number;
       name: string;
-      remainder: number;
     }
-  | { type: 'SET_INIT' };
+  | { type: 'SET_INIT' }
+  | { type: 'SET_ODD_MONEY'; oddMoney: number };
 
 export const CheckoutContext = React.createContext<State | any>(initialState);
 
@@ -36,18 +37,23 @@ const checkoutReducer = (state: State, action: Action) => {
       };
     }
     case 'SET_VALUE': {
-      const { name, value, remainder } = action;
-      const num = parseNum(value);
+      const { name, value } = action;
       return {
         ...state,
         amounts: {
           ...state.amounts,
-          [name]: num >= remainder ? remainder : num,
+          [name]: value,
         },
       };
     }
     case 'SET_INIT': {
       return initialState;
+    }
+    case 'SET_ODD_MONEY': {
+      return {
+        ...state,
+        oddMoney: action.oddMoney,
+      };
     }
     default:
       return state;
@@ -56,7 +62,7 @@ const checkoutReducer = (state: State, action: Action) => {
 
 export const CheckoutContextProvider: IComponent = ({ children }) => {
   const [state, dispatch] = useReducer(checkoutReducer, initialState);
-  const { remainder } = useAmounts();
+  const { remainder, validateAmount } = useAmounts();
 
   const changeActivePayment = useCallback(
     (paymentType: string) =>
@@ -65,8 +71,17 @@ export const CheckoutContextProvider: IComponent = ({ children }) => {
   );
   const setValue = useCallback(
     (value: string | number, name: string) =>
-      dispatch({ type: 'SET_VALUE', value, name, remainder }),
-    [dispatch, remainder]
+      dispatch({
+        type: 'SET_VALUE',
+        value: validateAmount(value, name),
+        name,
+      }),
+    [dispatch, validateAmount]
+  );
+
+  const setOddMoney = useCallback(
+    (oddMoney: number) => dispatch({ type: 'SET_ODD_MONEY', oddMoney }),
+    [dispatch]
   );
 
   const setInit = useCallback(() => {
@@ -80,6 +95,7 @@ export const CheckoutContextProvider: IComponent = ({ children }) => {
       changeActivePayment,
       setValue,
       setInit,
+      setOddMoney,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state, remainder]

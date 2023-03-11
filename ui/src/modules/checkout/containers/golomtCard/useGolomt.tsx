@@ -1,7 +1,7 @@
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { objToBase64, strToObj } from 'modules/utils';
+import { GOLOMT_CARD } from 'modules/constants';
 
-export const GOLOMT_CARD = 'golomtCard';
 const GOLOMT_DEFAULT_PATH = 'http://localhost:8500';
 
 const initialData = {
@@ -20,7 +20,7 @@ const initialData = {
 
 const useGolomt = () => {
   const { paymentTypes } = useConfigsContext();
-  const golomtInfo = paymentTypes.find((pt) => pt.type === GOLOMT_CARD);
+  const golomtInfo = (paymentTypes || []).find((pt) => pt.type === GOLOMT_CARD);
 
   const { port, ...restConfig } = strToObj((golomtInfo || {}).config) || {};
 

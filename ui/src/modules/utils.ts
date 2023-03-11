@@ -129,6 +129,17 @@ export const sumAmount = (amounts: { amount: number }[]) =>
     0
   );
 
+export const flatAmounts = (amounts: { amount: number; type: string }[]) => {
+  let amountsObj = {} as any;
+  (amounts || []).map(({ amount, type }) => {
+    if (amountsObj[type]) {
+      amountsObj[type] += amount;
+    }
+    amountsObj[type] = amount;
+  });
+  return amountsObj;
+};
+
 export const getSumsOfAmount = (paidAmounts: any, paymentTypes: any) => {
   const result: any = {};
 

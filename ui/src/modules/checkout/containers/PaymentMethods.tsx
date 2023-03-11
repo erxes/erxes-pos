@@ -5,14 +5,21 @@ import GolomtCard from './golomtCard';
 import { getMode } from 'modules/utils';
 import AdditionalPayments from './additionalPayments';
 import TDBCard from './TDBCard';
+import useAmounts from 'lib/useAmounts';
 
 const PaymentMethods = () => {
+  const { remainder } = useAmounts();
+
   return (
     <div className="row payment-methods">
-      <KhanBankCard />
-      <GolomtCard />
-      <TDBCard />
-      <Mobile />
+      {remainder >= 0 && (
+        <>
+          <KhanBankCard />
+          <GolomtCard />
+          <TDBCard />
+          <Mobile />
+        </>
+      )}
       {getMode() === 'pos' && (
         <>
           <Cash />

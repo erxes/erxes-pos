@@ -2,15 +2,22 @@ import { useCheckoutContext } from 'modules/checkout/context';
 import PaymentMethod from 'modules/checkout/components/PaymentMethod';
 import CashIcon from 'modules/common/icons/🤑';
 import useAddPayment from 'lib/useAddPayment';
+import { PAYMENT_TYPES } from 'modules/constants';
 
 const Cash = () => {
-  const { amounts } = useCheckoutContext();
+  const { amounts, remainder, setOddMoney, setValue } = useCheckoutContext();
 
-  const { addPayment, loading } = useAddPayment();
+  const { addPayment, loading } = useAddPayment(() => setValue(0, PAYMENT_TYPES.CASH));
 
   const handleClick = () => {
-    addPayment({
-      cashAmount: amounts['cashAmount'] || 0,
+    if (amounts[PAYMENT_TYPES.CASH] > remainder) {
+      setOddMoney(amounts[PAYMENT_TYPES.CASH] - remainder);
+      return addPayment({
+        cashAmount: remainder,
+      });
+    }
+    return addPayment({
+      cashAmount: amounts[PAYMENT_TYPES.CASH],
     });
   };
 

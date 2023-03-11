@@ -4,8 +4,8 @@ import Visa from 'icons/Visa';
 import { useEffect, useState } from 'react';
 import { useUI } from 'ui/context';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
+import { KHANBANK_CARD } from 'modules/constants';
 
-export const KHANBANK_CARD = 'khaanCard';
 
 const Card = () => {
   const { setModalView, openModal } = useUI();
