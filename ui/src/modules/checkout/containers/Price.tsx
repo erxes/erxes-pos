@@ -2,6 +2,7 @@ import { useLazyQuery, gql } from '@apollo/client';
 import { queries } from '../../products/graphql';
 import { formatNum } from 'modules/utils';
 import Button from 'ui/Button';
+import { useState } from 'react';
 
 const PriceInfoContainer = ({
   price,
@@ -10,24 +11,35 @@ const PriceInfoContainer = ({
   price: number;
   productId: string;
 }) => {
-  let result = '';
+  const [showDiscount, setShowDiscount] = useState(false);
 
-  const [getPriceInfo, { loading }] = useLazyQuery(gql(queries.getPriceInfo), {
-    variables: {
-      productId: productId,
-    },
-    onCompleted(data) {
-      result = (data || {}).getPriceInfo || '';
-    },
-  });
+  const [getPriceInfo, { loading, data }] = useLazyQuery(
+    gql(queries.getPriceInfo),
+    {
+      variables: {
+        productId: productId,
+      },
+    }
+  );
 
   const handleClick = () => {
     getPriceInfo();
   };
 
+  const { priceInfo } = data || {};
+  const { price: discountPrice, value } = priceInfo || {};
+
+  const show = showDiscount && discountPrice && value;
+
   return (
-    <Button onClick={handleClick} title={result} variant='ghost' Component={"abbr"} loading={loading} >  
-      {formatNum(price)}₮ 
+    <Button
+      onClick={handleClick}
+      variant="ghost"
+      loading={loading}
+      onMouseEnter={() => setShowDiscount(true)}
+      onMouseLeave={() => setShowDiscount(false)}
+    >
+      {formatNum(show ? discountPrice : price)}₮{show && '/' + value}{' '}
     </Button>
   );
 };
