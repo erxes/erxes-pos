@@ -26,10 +26,12 @@ const PriceInfoContainer = ({
     getPriceInfo();
   };
 
-  const { priceInfo } = data || {};
-  const { price: discountPrice, value } = priceInfo || {};
+  const obj = (data || {}).getPriceInfo;
+  const info = !!obj && JSON.parse(obj);
 
-  const show = showDiscount && discountPrice && value;
+  const { value, price: discountPrice } = (info || {})[productId]|| info || {};
+  
+  const show = showDiscount && !!discountPrice;
 
   return (
     <Button
@@ -39,7 +41,7 @@ const PriceInfoContainer = ({
       onMouseEnter={() => setShowDiscount(true)}
       onMouseLeave={() => setShowDiscount(false)}
     >
-      {formatNum(show ? discountPrice : price)}₮{show && '/' + value}{' '}
+      {formatNum(show ? discountPrice : price)}₮{show && ('/' + value)}{' '}
     </Button>
   );
 };
