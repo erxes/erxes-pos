@@ -30,7 +30,7 @@ const PriceInfoContainer = ({
   const info = !!obj && JSON.parse(obj);
 
   const { value, price: discountPrice } = (info || {})[productId]|| info || {};
-  
+
   const show = showDiscount && !!discountPrice;
 
   return (
