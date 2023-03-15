@@ -32,6 +32,7 @@ const Settings: IComponent = () => {
       <div className="controls row">
         <SyncConfig configType="config">Resync config</SyncConfig>
         <SyncConfig configType="products">Resync products</SyncConfig>
+        <SyncConfig configType="slots">Resync slots</SyncConfig>
         <SyncOrders />
         <DeleteOrders />
         <SendData />
