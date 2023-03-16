@@ -52,6 +52,7 @@ const useOrderCUData = () => {
     totalAmount,
     origin: mode === 'kiosk' ? 'kiosk' : 'pos',
     deliveryInfo: {
+      ...((orderDetail || {}).deliveryInfo || {}),
       description,
     },
   };
