@@ -14,6 +14,7 @@ export const orderFields = `
   paidDate
   cashAmount
   totalAmount
+  mobileAmount
   slotCode
   registerNumber
   customerId
