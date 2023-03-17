@@ -30,6 +30,17 @@
 }
 @media print {
   .report {
+    overflow: initial !important;
+    .flex-1 {
+      overflow: initial !important;
+    }
+    .row {
+      overflow: visible;
+      height: 0 !important;
+      flex: initial !important;
+      max-height: initial !important;
+      height: initial !important;
+    }
     .pos-header {
       display: none;
     }
@@ -37,7 +48,7 @@
       display: none;
     }
     &-reciept {
-      overflow-y: visible;
+      overflow-y: initial !important;
     }
   }
 }
