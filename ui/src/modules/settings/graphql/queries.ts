@@ -71,6 +71,7 @@ const configFields = `
   }
   initialCategoryIds
   kioskExcludeProductIds
+  allowTypes
 `;
 
 const currentConfig = `

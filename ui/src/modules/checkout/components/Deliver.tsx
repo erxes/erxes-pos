@@ -1,8 +1,9 @@
 import Button from 'ui/Button';
 import { useApp } from 'modules/AppContext';
 import useIsDisabled from 'lib/useIsDisabled';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 
-const typeText: any = {
+const typeTextDef: any = {
   eat: 'Зааланд',
   take: 'Авч явах',
   delivery: 'Хүргэлтээр',
@@ -10,15 +11,21 @@ const typeText: any = {
 
 const Deliver = () => {
   const { type, setType } = useApp();
+  const { currentConfig } = useConfigsContext();
   const disabled = useIsDisabled();
+  const typeText: any = {};
+
+  const allowTypes = (currentConfig || {}).allowTypes
+  for (const type of allowTypes) {
+    typeText[type] = typeTextDef[type]
+  }
 
   const handleClick = () => {
-    const arr = Object.keys(typeText);
-    const idx = arr.indexOf(type);
-    if (idx === 2) {
-      return setType(arr[0]);
+    const idx = allowTypes.indexOf(type);
+    if (idx >= allowTypes.length - 1) {
+      return setType(allowTypes[0]);
     }
-    return setType(arr[idx + 1]);
+    return setType(allowTypes[idx + 1]);
   };
   return (
     <Button className="take" onClick={handleClick} disabled={disabled}>

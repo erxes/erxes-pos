@@ -26,7 +26,7 @@ export interface State {
 
 const initialState = {
   cart: getLocal('cart') || [],
-  type: 'eat',
+  type: getLocal('defaultType'),
   orderDetail: null,
   registerNumber: '',
   companyName: '',
