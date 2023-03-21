@@ -69,6 +69,8 @@ const configFields = `
   catProdMappings {
     _id
     categoryId
+    code
+    name
     productId
   }
   permissionConfig
