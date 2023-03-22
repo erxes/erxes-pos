@@ -73,6 +73,7 @@ const configFields = `
   }
   permissionConfig
   initialCategoryIds
+  kioskExcludeCategoryIds
   kioskExcludeProductIds
   allowTypes
 `;

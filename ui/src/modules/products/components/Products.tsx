@@ -26,7 +26,8 @@ function Products({ products, onLoadMore, productsCount }: IProducts) {
 
   if (getMode() === 'kiosk') {
     const excludeIds = currentConfig.kioskExcludeProductIds || [];
-    filteredProducts = products.filter((p: any) => !excludeIds.includes(p._id));
+    const excludeCatIds = currentConfig.kioskExcludeCategoryIds || [];
+    filteredProducts = products.filter((p: any) => !excludeIds.includes(p._id) && !excludeCatIds.includes(p.categoryId));
   }
 
   useEffect(() => {
