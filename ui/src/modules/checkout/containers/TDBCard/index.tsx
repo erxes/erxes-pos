@@ -17,8 +17,8 @@ const TDBCard = () => {
   useEffect(() => {
     if (tdbCardInfo) {
       const token = getLocal('tdbToken');
-      
-      if (dayjs().diff(dayjs(token), 'hours') <= 24) {
+
+      if (token && dayjs().diff(dayjs(token), 'hours') <= 24) {
         setLoading(false);
         return;
       }
