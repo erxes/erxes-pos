@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 import { useUI } from 'ui/context';
 import TDBLogo from 'icons/TDBLogo';
 import useTDB from './useTDB';
+import dayjs from 'dayjs';
+import { setLocal, getLocal } from 'modules/utils';
 
 const TDBCard = () => {
   const { setModalView, openModal } = useUI();
@@ -14,6 +16,13 @@ const TDBCard = () => {
 
   useEffect(() => {
     if (tdbCardInfo) {
+      const token = getLocal('tdbToken');
+      
+      if (dayjs().diff(dayjs(token), 'hours') <= 24) {
+        setLoading(false);
+        return;
+      }
+
       const details: any = {
         operation: 'Logon',
         hostIndex: 0,
@@ -29,6 +38,7 @@ const TDBCard = () => {
         .then((res: any) => {
           if (res && res.ecrResult && res.ecrResult.RespCode === '00') {
             setLoading(false);
+            setLocal('tdbToken', dayjs().format('YYYY-MM-DD HH:mm'));
           }
         })
         .catch((e) => console.log(e.message));
