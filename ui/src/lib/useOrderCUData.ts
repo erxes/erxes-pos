@@ -11,6 +11,7 @@ const useOrderCUData = () => {
     type,
     registerNumber,
     customerId,
+    customerType,
     orderDetail,
     billType,
     description,
@@ -49,6 +50,7 @@ const useOrderCUData = () => {
     billType: billType ? billType : null,
     slotCode,
     customerId,
+    customerType,
     totalAmount,
     origin: mode === 'kiosk' ? 'kiosk' : 'pos',
     deliveryInfo: {

@@ -18,6 +18,7 @@ export const orderFields = `
   slotCode
   registerNumber
   customerId
+  customerType
   printedEbarimt
   billType
   billId
@@ -90,12 +91,11 @@ const orderDetail = `
       customer {
         firstName
         lastName
-        middleName
         primaryEmail
         primaryPhone
         code
       }
-
+      customerType
       user {
         ${customerFields}
       }
@@ -113,8 +113,8 @@ export const ordersCheckCompany = `
 `;
 
 const fullOrders = `
-  query fullOrders($searchValue: String, $statuses: [String], $customerId: String, $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
-    fullOrders(searchValue: $searchValue, statuses: $statuses, customerId: $customerId, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
+  query fullOrders($searchValue: String, $statuses: [String], $customerId: String, $customerType: String, $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
+    fullOrders(searchValue: $searchValue, statuses: $statuses, customerId: $customerId, customerType: $customerType, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
       ${orderFields}
 
       items {
@@ -144,6 +144,7 @@ const slots = `
 
 const ordersTotalCount = `query ordersTotalCount(
   $customerId: String
+  $customerType: String
   $endDate: Date
   $page: Int
   $perPage: Int
@@ -155,6 +156,7 @@ const ordersTotalCount = `query ordersTotalCount(
 ) {
   ordersTotalCount(
     customerId: $customerId
+    customerType: $customerType
     endDate: $endDate
     page: $page
     perPage: $perPage

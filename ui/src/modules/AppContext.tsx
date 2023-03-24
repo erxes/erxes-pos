@@ -17,6 +17,7 @@ export interface State {
   billType: TBillType;
   slotCode: string;
   customerId: string;
+  customerType: string;
   description: string;
   isChanged: boolean;
   searchValue: string;
@@ -32,6 +33,7 @@ const initialState = {
   companyName: '',
   billType: '',
   customerId: '',
+  customerType: '',
   description: '',
   isChanged: false,
   slotCode: '',
@@ -58,6 +60,7 @@ type Action =
   | { type: 'SET_COMPANY_NAME'; value: string }
   | { type: 'SET_BILL_TYPE'; value: TBillType }
   | { type: 'SET_CUSTOMER_ID'; value: string }
+  | { type: 'SET_CUSTOMER_TYPE'; value: string }
   | { type: 'CHANGE_COUNT'; _id: string; count: number }
   | { type: 'SET_DESCRIPTION'; value: string }
   | { type: 'SET_INITIAL_STATE' }
@@ -173,6 +176,12 @@ const appReducer = (state: State, action: Action) => {
         customerId: action.value,
       };
     }
+    case 'SET_CUSTOMER_TYPE': {
+      return {
+        ...state,
+        customerType: action.value,
+      };
+    }
     case 'SET_DESCRIPTION': {
       return {
         ...state,
@@ -285,6 +294,11 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const setCustomerType = useCallback(
+    (value: string) => dispatch({ type: 'SET_CUSTOMER_TYPE', value }),
+    [dispatch]
+  );
+
   const setDescription = useCallback(
     (value: string) => dispatch({ type: 'SET_DESCRIPTION', value }),
     [dispatch]
@@ -333,6 +347,7 @@ export const AppContextProvider: IComponent = ({ children }) => {
       setCompanyName,
       setBillType,
       setCustomerId,
+      setCustomerType,
       setDescription,
       setInitialState,
       changeIsChanged,

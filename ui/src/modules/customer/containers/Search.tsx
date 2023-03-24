@@ -7,7 +7,7 @@ import UserInCircle from 'icons/UserInCircle';
 import Loading from 'modules/common/ui/Loading';
 
 const CustomerSearch = () => {
-  const { customerId, setCustomerId, orderDetail } = useApp();
+  const { customerId, setCustomerId, customerType, setCustomerType, orderDetail } = useApp();
   const customer = (orderDetail || {}).customer || {};
 
   const [value, setValue] = useState(customer.primaryPhone || '');
@@ -16,7 +16,7 @@ const CustomerSearch = () => {
     gql(queries.poscCustomerDetail),
     {
       fetchPolicy: 'network-only',
-      onError(error) {},
+      onError(error) { },
       onCompleted(data) {
         const { poscCustomerDetail: detail } = data || {};
         if (detail) {
@@ -35,6 +35,7 @@ const CustomerSearch = () => {
     searchCustomer({
       variables: {
         _id: val,
+        type: customerType
       },
     });
 
@@ -43,6 +44,18 @@ const CustomerSearch = () => {
       setValue(value);
       setCustomerId('');
     }
+  };
+
+  const changeType = () => {
+    if (customerType === 'company') {
+      setCustomerType('user')
+      return;
+    }
+    if (customerType === 'user') {
+      setCustomerType('')
+      return;
+    }
+    setCustomerType('company')
   };
 
   useEffect(() => {
@@ -73,12 +86,13 @@ const CustomerSearch = () => {
   return (
     <div className="customer-search -pos">
       <div className="flex-v-center">
-        <UserInCircle />
+        <UserInCircle type={customerType} onClick={() => { changeType() }} />
         <Search
-          placeholder="Хэрэглэгч хайх"
+          placeholder={`${customerType === 'company' ? 'Байгууллага' : customerType === 'user' ? 'Гишүүн' : 'Хэрэглэгч'} хайх`}
           onSearch={handleSearch}
           onChange={handleChange}
           // type="number"
+          icon='user-2'
           value={value}
         />
         {renderResult()}
