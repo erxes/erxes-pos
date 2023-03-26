@@ -15,6 +15,7 @@ const CheckoutCart = dynamic(() => import('../components/Cart'), {
 
 const CartContainer = () => {
   const router = useRouter();
+  
   const {
     setCart,
     setOrderDetail,
@@ -27,6 +28,7 @@ const CartContainer = () => {
     setInitialState,
     orderDetail
   } = useApp();
+
   const { orderId } = router.query;
 
   const convertCartItem = (item: any) => ({

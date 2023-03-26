@@ -47,7 +47,7 @@ const useOrderCUData = () => {
     _id: orderId,
     type,
     registerNumber: registerNumber && isOrg ? registerNumber : null,
-    billType: billType ? billType : null,
+    billType: billType || null,
     slotCode,
     customerId,
     customerType,

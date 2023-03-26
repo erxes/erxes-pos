@@ -4,10 +4,17 @@ import { gql, useLazyQuery } from '@apollo/client';
 import { queries } from '../graphql';
 import { SearchComp as Search } from 'ui/Search';
 import UserInCircle from 'icons/UserInCircle';
-import Loading from 'modules/common/ui/Loading';
+import Loading from 'ui/Loading';
+import Button from 'ui/Button';
 
 const CustomerSearch = () => {
-  const { customerId, setCustomerId, customerType, setCustomerType, orderDetail } = useApp();
+  const {
+    customerId,
+    setCustomerId,
+    customerType,
+    setCustomerType,
+    orderDetail
+  } = useApp();
   const customer = (orderDetail || {}).customer || {};
 
   const [value, setValue] = useState(customer.primaryPhone || '');
@@ -16,7 +23,6 @@ const CustomerSearch = () => {
     gql(queries.poscCustomerDetail),
     {
       fetchPolicy: 'network-only',
-      onError(error) { },
       onCompleted(data) {
         const { poscCustomerDetail: detail } = data || {};
         if (detail) {
@@ -47,15 +53,10 @@ const CustomerSearch = () => {
   };
 
   const changeType = () => {
-    if (customerType === 'company') {
-      setCustomerType('user')
-      return;
-    }
-    if (customerType === 'user') {
-      setCustomerType('')
-      return;
-    }
-    setCustomerType('company')
+    setCustomerId('');
+    if (customerType === 'company') return setCustomerType('user');
+    if (customerType === 'user') return setCustomerType('');
+    setCustomerType('company');
   };
 
   useEffect(() => {
@@ -86,13 +87,19 @@ const CustomerSearch = () => {
   return (
     <div className="customer-search -pos">
       <div className="flex-v-center">
-        <UserInCircle type={customerType} onClick={() => { changeType() }} />
+        <Button variant="ghost" onClick={changeType}>
+          <UserInCircle type={customerType}  />
+        </Button>
         <Search
-          placeholder={`${customerType === 'company' ? 'Байгууллага' : customerType === 'user' ? 'Гишүүн' : 'Хэрэглэгч'} хайх`}
+          placeholder={`${
+            customerType === 'company'
+              ? 'Байгууллага'
+              : customerType === 'user'
+              ? 'Гишүүн'
+              : 'Хэрэглэгч'
+          } хайх`}
           onSearch={handleSearch}
           onChange={handleChange}
-          // type="number"
-          icon='user-2'
           value={value}
         />
         {renderResult()}
