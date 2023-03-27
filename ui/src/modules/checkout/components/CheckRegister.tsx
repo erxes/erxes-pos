@@ -22,7 +22,7 @@ const CheckRegister = () => {
     }
   };
   const formatRegister = (registerNumber: string) => {
-    if (registerNumber.length < 5) {
+    if ((registerNumber || '').length < 5) {
       return registerNumber;
     }
     const arr = registerNumber.split('').reverse();

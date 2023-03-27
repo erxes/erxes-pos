@@ -32,17 +32,15 @@ const ChooseType = ({ children, value, settlePayment }: IChooseType) => {
   const onClick = () => {
     setBillType(value);
 
-    if (
-      value === BILL_TYPES.ENTITY &&
-      !registerNumber &&
-      customerType === 'company'
-    ) {
+    if (value !== BILL_TYPES.ENTITY) {
+      setRegisterNumber(null);
+      return settlePayment(value);
+    }
+
+    if (!registerNumber && customerType === 'company') {
       const code = orderDetail?.customer?.code;
       return code && setRegisterNumber(code);
     }
-
-    setRegisterNumber(null);
-    return settlePayment(value);
   };
 
   return (
