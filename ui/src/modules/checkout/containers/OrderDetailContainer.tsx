@@ -26,7 +26,11 @@ const OrderDetailContainer = ({ handleSuccess, children }: any) => {
       const { registerNumber, billType, type, customer } = orderDetail || {};
       setOrderDetail(orderDetail ? orderDetail : {});
       billType && setBillType(billType);
-      registerNumber ? setRegisterNumber(registerNumber) : customer?.code && setRegisterNumber(customer?.code)
+      registerNumber
+        ? setRegisterNumber(registerNumber)
+        : customer?.code &&
+          billType === '3' &&
+          setRegisterNumber(customer?.code);
       handleSuccess && handleSuccess(orderDetail);
       type && setType(type);
     },
