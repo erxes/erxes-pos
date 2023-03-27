@@ -72,7 +72,6 @@ const generateInvoiceUrl = `
     $contentType: String
     $contentTypeId: String
     $customerId: String
-    $customerType: String
     $description: String
     $email: String
     $paymentIds: [String]
@@ -84,7 +83,6 @@ const generateInvoiceUrl = `
       contentType: $contentType
       contentTypeId: $contentTypeId
       customerId: $customerId
-      customerType: $customerType
       description: $description
       email: $email
       paymentIds: $paymentIds
