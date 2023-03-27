@@ -1,7 +1,8 @@
 const poscCustomerDetail = `
-query poscCustomerDetail($_id: String!) {
-  poscCustomerDetail(_id: $_id) {
+query poscCustomerDetail($_id: String!, $type: String) {
+  poscCustomerDetail(_id: $_id, type: $type) {
     _id
+    code
     primaryPhone
     firstName
     primaryEmail

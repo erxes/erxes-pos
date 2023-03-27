@@ -23,10 +23,14 @@ const OrderDetailContainer = ({ handleSuccess, children }: any) => {
     skip: !router.query.orderId,
     onCompleted(data) {
       const { orderDetail } = data;
-      const { registerNumber, billType, type } = orderDetail || {};
+      const { registerNumber, billType, type, customer } = orderDetail || {};
       setOrderDetail(orderDetail ? orderDetail : {});
       billType && setBillType(billType);
-      registerNumber && setRegisterNumber(registerNumber);
+      registerNumber
+        ? setRegisterNumber(registerNumber)
+        : customer?.code &&
+          billType === '3' &&
+          setRegisterNumber(customer?.code);
       handleSuccess && handleSuccess(orderDetail);
       type && setType(type);
     },

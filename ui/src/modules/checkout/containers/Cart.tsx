@@ -15,17 +15,20 @@ const CheckoutCart = dynamic(() => import('../components/Cart'), {
 
 const CartContainer = () => {
   const router = useRouter();
+  
   const {
     setCart,
     setOrderDetail,
     setType,
     setCustomerId,
+    setCustomerType,
     setBillType,
     setDescription,
     setSlotCode,
     setInitialState,
     orderDetail
   } = useApp();
+
   const { orderId } = router.query;
 
   const convertCartItem = (item: any) => ({
@@ -42,7 +45,7 @@ const CartContainer = () => {
           if (getMode() === 'kiosk' && orderDetail.paidDate) {
             return (window.location.href = '/');
           }
-          const { items, customerId, type, billType, deliveryInfo, slotCode } =
+          const { items, customerId, customerType, type, billType, deliveryInfo, slotCode } =
             orderDetail;
 
           const cart = (items || []).map((item: any) => convertCartItem(item));
@@ -51,6 +54,7 @@ const CartContainer = () => {
           setType(type);
           setCart(cart);
           setCustomerId(customerId || '');
+          setCustomerType(customerType || '');
           setBillType(billType || '');
           setDescription((deliveryInfo || {}).description || '');
           setSlotCode(slotCode || '');

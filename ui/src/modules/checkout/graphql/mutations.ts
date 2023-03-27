@@ -1,5 +1,5 @@
-const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String, $slotCode: String, $registerNumber: String, $billType: String, $origin: String, $deliveryInfo: JSON`;
-const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId, slotCode: $slotCode, registerNumber: $registerNumber, billType: $billType, origin: $origin, deliveryInfo: $deliveryInfo`;
+const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String, $customerType: String, $slotCode: String, $registerNumber: String, $billType: String, $origin: String, $deliveryInfo: JSON`;
+const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId, customerType: $customerType, slotCode: $slotCode, registerNumber: $registerNumber, billType: $billType, origin: $origin, deliveryInfo: $deliveryInfo`;
 
 const ordersAdd = `
   mutation ordersAdd(${addEditParamDefs}) {
@@ -72,6 +72,7 @@ const generateInvoiceUrl = `
     $contentType: String
     $contentTypeId: String
     $customerId: String
+    $customerType: String
     $description: String
     $email: String
     $paymentIds: [String]
@@ -83,6 +84,7 @@ const generateInvoiceUrl = `
       contentType: $contentType
       contentTypeId: $contentTypeId
       customerId: $customerId
+      customerType: $customerType
       description: $description
       email: $email
       paymentIds: $paymentIds

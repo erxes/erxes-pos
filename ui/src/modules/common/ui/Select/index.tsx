@@ -9,7 +9,14 @@ export interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
 }
 
-const Select = ({ onChange, children, loading, label }: SelectProps) => {
+const Select = ({
+  onChange,
+  children,
+  loading,
+  label,
+  disabled,
+  ...rest
+}: SelectProps) => {
   const handleOnChange = (e: any) => {
     if (onChange) {
       onChange(e.target.value);
@@ -19,7 +26,11 @@ const Select = ({ onChange, children, loading, label }: SelectProps) => {
   return (
     <div className="select-wrap">
       {label && <small>{label}</small>}
-      <select onChange={handleOnChange} disabled={loading}>
+      <select
+        onChange={handleOnChange}
+        disabled={loading || disabled}
+        {...rest}
+      >
         {children}
       </select>
       <ChevronDown />

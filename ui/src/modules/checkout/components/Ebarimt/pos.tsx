@@ -19,12 +19,30 @@ interface IChooseType {
 
 const ChooseType = ({ children, value, settlePayment }: IChooseType) => {
   const { allowInnerBill } = useConfigsContext();
-  const { billType, setBillType } = useApp();
+  const {
+    billType,
+    setBillType,
+    setRegisterNumber,
+    registerNumber,
+    orderDetail,
+    customerType,
+  } = useApp();
   const checked = billType === value;
 
   const onClick = () => {
     setBillType(value);
-    value !== BILL_TYPES.ENTITY && settlePayment(value);
+
+    if (
+      value === BILL_TYPES.ENTITY &&
+      !registerNumber &&
+      customerType === 'company'
+    ) {
+      const code = orderDetail?.customer?.code;
+      return code && setRegisterNumber(code);
+    }
+
+    setRegisterNumber(null);
+    return settlePayment(value);
   };
 
   return (

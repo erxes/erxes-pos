@@ -20,7 +20,7 @@ const MobileContainer = () => {
   const mode = getMode();
   const { amounts, remainder } = useCheckoutContext();
   const mobile = amounts['mobile'] || 0;
-  const { customerId, description, orderDetail } = useApp();
+  const { customerId, customerType, description, orderDetail } = useApp();
   const { closeModal } = useUI();
   const { totalAmount, mobileAmount } = orderDetail || {};
 
@@ -71,6 +71,7 @@ const MobileContainer = () => {
             contentType: 'pos:orders',
             contentTypeId: orderId,
             customerId: customerId ? customerId : 'empty',
+            customerType: customerType || '',
             description: orderId + '-' + description,
             paymentIds: currentConfig.paymentIds,
           },
