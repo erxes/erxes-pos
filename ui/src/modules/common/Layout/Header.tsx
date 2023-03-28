@@ -30,6 +30,7 @@ const PosHeader: IComponent = ({ children }) => {
                 priority
                 alt="Erxes"
                 fallBack={'/logo-dark.png'}
+                onError={(error: any) => console.log(error.message)}
               />
             </div>
           </a>
