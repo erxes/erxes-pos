@@ -71,7 +71,7 @@ const MobileContainer = () => {
             contentType: 'pos:orders',
             contentTypeId: orderId,
             customerId: customerId ? customerId : 'empty',
-            customerType: customerType || '',
+            customerType: customerType || 'customer',
             description: orderId + '-' + description,
             paymentIds: currentConfig.paymentIds,
           },
