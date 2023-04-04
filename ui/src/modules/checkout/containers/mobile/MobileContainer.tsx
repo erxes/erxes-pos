@@ -70,7 +70,7 @@ const MobileContainer = () => {
             amount: remainder >= mobile ? mobile : remainder,
             contentType: 'pos:orders',
             contentTypeId: orderId,
-            customerId: customerId ? customerId : 'empty',
+            customerId: customerId || 'empty',
             customerType: customerType || 'customer',
             description: orderId + '-' + description,
             paymentIds: currentConfig.paymentIds,

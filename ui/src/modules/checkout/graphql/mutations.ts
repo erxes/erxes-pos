@@ -66,12 +66,12 @@ const orderItemChangeStatus = `
 `;
 
 const generateInvoiceUrl = `
-  mutation generateInvoiceUrl(
+  mutation GenerateInvoiceUrl(
     $amount: Float!
-    $companyId: String
     $contentType: String
     $contentTypeId: String
     $customerId: String
+    $customerType: String
     $description: String
     $email: String
     $paymentIds: [String]
@@ -79,10 +79,10 @@ const generateInvoiceUrl = `
   ) {
     generateInvoiceUrl(
       amount: $amount
-      companyId: $companyId
       contentType: $contentType
       contentTypeId: $contentTypeId
       customerId: $customerId
+      customerType: $customerType
       description: $description
       email: $email
       paymentIds: $paymentIds
