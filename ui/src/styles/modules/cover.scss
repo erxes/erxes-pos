@@ -1,0 +1,54 @@
+.cover {
+  padding: 1rem 1.5rem;
+  overflow-y: auto;
+  &-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+  }
+  .-subtitle {
+    padding-top: 1rem;
+  }
+  .add-note {
+    margin-bottom: 1.5rem;
+  }
+  &-create {
+    background: $primary;
+    svg {
+      margin: 0 0.5rem 0 -0.25rem;
+    }
+  }
+
+  &-submit {
+    background: $primary;
+    width: 100%;
+    margin-top: 1.5rem;
+  }
+
+  .btn-full {
+    width: 100%;
+  }
+  .btn.flat {
+    background: $primary;
+  }
+
+  label {
+    padding: 0.75rem 0.25rem 0.25rem;
+  }
+  input {
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    &.text-right {
+      text-align: right;
+    }
+  }
+
+  .row {
+    margin: 0 -0.5rem;
+  }
+  .col-4,
+  .col-2,
+  .col-6 {
+    padding: 0 0.5rem;
+  }
+}

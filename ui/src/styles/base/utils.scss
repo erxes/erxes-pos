@@ -35,6 +35,10 @@
   flex-flow: row wrap;
   overflow: hidden;
 }
+.col-2 {
+  flex: 1 1 16.66666%;
+  max-width: 16.66666%;
+}
 .col-3 {
   flex: 1 1 25%;
   max-width: 25%;
