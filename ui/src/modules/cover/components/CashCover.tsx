@@ -1,5 +1,6 @@
 import Input from 'ui/Input';
 import { formatNum } from 'modules/utils';
+import { useCoverContext } from '../coverContext';
 
 type INote = {
   kindOfVal: number;
@@ -8,15 +9,16 @@ type INote = {
 
 type IProps = {
   cash: {
-    paymentType: string;
+    paidType: string;
     paidSummary: INote[];
   };
   setCash: (detail: any) => void;
 };
 
-const CashCover = ({ cash, setCash }: IProps) => {
+const CashCover = () => {
+  const { cash, setCash } = useCoverContext();
   const handleValueChange = (value: string, idx: number) => {
-    const removeLeadZero = value.replace(/^0+/, '');
+    const removeLeadZero = value.toString().replace(/^0+/, '');
     const num = Number(removeLeadZero);
     const newValue = (num >= 0 && num) || 0;
     setCash((prev: any) => ({
@@ -49,7 +51,7 @@ const CashCover = ({ cash, setCash }: IProps) => {
           <label htmlFor="amount">Дүн</label>
         </div>
       </div>
-      {(cash.paidSummary || []).map((note, idx) => (
+      {(cash.paidSummary || []).map((note: INote, idx: number) => (
         <div className="row" key={idx}>
           <div className="col-4">
             <Input

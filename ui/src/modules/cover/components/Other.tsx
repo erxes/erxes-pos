@@ -1,18 +1,16 @@
 import Input from 'ui/Input';
 import { handlePaymentChange, getValueOfPayment } from '../utils';
+import { useCoverContext } from '../coverContext';
 
 const CoverTemplates = ({
   payment,
-  setDetails,
-  getDetail,
 }: {
   payment: {
     type: string;
     title: string;
   };
-  setDetails: (detail: any) => void;
-  getDetail: any;
 }) => {
+  const { getDetail, setDetails } = useCoverContext();
   const detail = getDetail(payment.type);
 
   const handleChange = (value: string) =>

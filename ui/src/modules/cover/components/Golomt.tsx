@@ -4,8 +4,11 @@ import { toast } from 'react-toastify';
 import Button from 'ui/Button';
 import Input from 'ui/Input';
 import { handlePaymentChange, handleMap, getValueOfPayment } from '../utils';
+import { useCoverContext } from '../coverContext';
 
-const GolomtCover = ({ getDetail, setDetails }: any) => {
+const GolomtCover = () => {
+  const { getDetail, setDetails } = useCoverContext();
+  
   const { endPoint, sendData, GOLOMT_CARD } = useGolomt();
   const [loading, setLoading] = useState(false);
   const detail = getDetail(GOLOMT_CARD);

@@ -51,4 +51,38 @@
   .col-6 {
     padding: 0 0.5rem;
   }
+  &s {
+    label {
+      font-weight: 500;
+      color: $gray;
+      padding: 1rem 0.5rem 0.5rem;
+      display: block;
+    }
+  }
+  &-item {
+    color: #000000;
+    padding: 1rem 0.5rem;
+    border: $border-hr;
+    border-radius: 0.5rem;
+    margin-bottom: 0.5rem !important;
+    &-createdAt {
+      font-size: 0.87rem;
+      color: $gray;
+      font-weight: 600;
+    }
+    &-actions {
+      justify-content: flex-end;
+      & > * {
+        &:first-child {
+          margin-right: 0.25rem;
+        }
+        &:last-child {
+          margin-left: 0.25rem;
+        }
+      }
+      &-label {
+        text-align: right;
+      }
+    }
+  }
 }

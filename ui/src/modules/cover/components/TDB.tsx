@@ -4,8 +4,10 @@ import Button from 'ui/Button';
 import { useState } from 'react';
 import { handlePaymentChange, handleMap, getValueOfPayment } from '../utils';
 import { toast } from 'react-toastify';
+import { useCoverContext } from '../coverContext';
 
-const TDBCover = ({ getDetail, setDetails }: any) => {
+const TDBCover = () => {
+  const { getDetail, setDetails } = useCoverContext();
   const [loading, setLoading] = useState(false);
   const { endPoint, method, headers, objToString, TDB_CARD } = useTDB();
   const detail = getDetail(TDB_CARD);
