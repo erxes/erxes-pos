@@ -45,7 +45,7 @@
   &-item {
     border: $border;
     border-radius: 0.25rem;
-    padding: 0.75rem;
+    padding: 0.5rem;
     margin: 0.5rem;
     cursor: pointer;
     position: relative;
@@ -73,7 +73,7 @@
       border: 0;
     }
     .-item {
-      padding: 1.25rem;
+      padding: 0.5rem;
       border-bottom: $border;
       b {
         display: block;
@@ -92,6 +92,10 @@
       border-color: $primary;
       margin-top: 1.5rem;
       font-weight: 700;
+    }
+    &-items {
+      max-height: 75vh;
+      overflow: auto;
     }
   }
   .scroll-container {

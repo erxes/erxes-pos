@@ -9,15 +9,17 @@ const Detail = () => {
   return (
     <div className="history-detail">
       <HistoryItem order={orderDetail} />
-      {items.map((item: any) => (
-        <div className="flex-h-between -item" key={item._id}>
-          <div>
-            <b className="-name">{item.productName}</b>
-            <b>{formatNum(item.unitPrice)}₮</b>
+      <div className="history-detail-items">
+        {items.map((item: any) => (
+          <div className="flex-h-between -item" key={item._id}>
+            <div>
+              <b className="-name">{item.productName}</b>
+              <b>{formatNum(item.unitPrice)}₮</b>
+            </div>
+            <h6>{item.count}ш</h6>
           </div>
-          <h6>1ш</h6>
-        </div>
-      ))}
+        ))}
+      </div>
       <a
         href={`/order-receipt/${_id}`}
         target="_blank"
