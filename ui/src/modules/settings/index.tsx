@@ -6,6 +6,7 @@ import SyncConfig from './containers/SyncConfig';
 import SyncOrders from './containers/SyncOrders';
 import DeleteOrders from './containers/DeleteOrders';
 import SendData from './containers/SendData';
+import ToSafeRemainder from './containers/ToSafeRemainder';
 
 const Settings: IComponent = () => {
   const { currentUser, currentConfig } = useConfigsContext();
@@ -36,6 +37,7 @@ const Settings: IComponent = () => {
         <SyncOrders />
         <DeleteOrders />
         <SendData />
+        <ToSafeRemainder />
       </div>
 
       <div className="status-description">
