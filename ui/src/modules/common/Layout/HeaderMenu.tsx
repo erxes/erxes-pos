@@ -7,6 +7,7 @@ import Setting from 'icons/Settings';
 import Logout from 'modules/auth/containers/Logout';
 import Clock from 'icons/Clock';
 import Chef from 'icons/Chef';
+import Cover from 'icons/Cover';
 import Button from 'ui/Button';
 
 interface HeaderMenuProps {}
@@ -22,6 +23,14 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
           <Link href="/history" prefetch={false}>
             <a>
               <Swap /> Захиалгын түүх
+            </a>
+          </Link>
+        </li>
+
+        <li>
+          <Link href="/cover" prefetch={false}>
+            <a>
+              <Cover /> Хаалт
             </a>
           </Link>
         </li>
