@@ -1,12 +1,11 @@
 import { FC, useState } from 'react';
 import type { ButtonProps } from 'ui/Button';
-import { useConfigsContext } from 'modules/auth/containers/Configs';
 import SettingsButton from '../components/SettingsButton';
 import { getEnv } from 'modules/utils';
 
-const ToSafeRemainder: FC<ButtonProps> = (props) => {
+const ToErxesLink: FC<ButtonProps & { title: string, currentLink: string }> = (props) => {
   const [loading] = useState(false);
-  const { currentConfig } = useConfigsContext();
+  const { title, currentLink } = props
 
   const handleClick = async () => {
     const env = getEnv();
@@ -16,14 +15,14 @@ const ToSafeRemainder: FC<ButtonProps> = (props) => {
       return alert('Not found domain')
     }
 
-    window.open(`${domain}/inventories/safe-remainders?branchId=${currentConfig.branchId}&departmentId=${currentConfig.departmentId}`, '_blank');
+    window.open(`${domain}${currentLink}`, '_blank');
   };
 
   return (
     <SettingsButton {...props} disabled={loading} onClick={handleClick}>
-      Safe Remainder
+      {title}
     </SettingsButton>
   );
 };
 
-export default ToSafeRemainder;
+export default ToErxesLink;

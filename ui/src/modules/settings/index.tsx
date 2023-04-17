@@ -6,7 +6,7 @@ import SyncConfig from './containers/SyncConfig';
 import SyncOrders from './containers/SyncOrders';
 import DeleteOrders from './containers/DeleteOrders';
 import SendData from './containers/SendData';
-import ToSafeRemainder from './containers/ToSafeRemainder';
+import ToErxesLink from './containers/ToErxesLink';
 
 const Settings: IComponent = () => {
   const { currentUser, currentConfig } = useConfigsContext();
@@ -37,7 +37,11 @@ const Settings: IComponent = () => {
         <SyncOrders />
         <DeleteOrders />
         <SendData />
-        <ToSafeRemainder />
+        <ToErxesLink title={'Safe Remainder'} currentLink={`/inventories/safe-remainders?branchId=${currentConfig.branchId}&departmentId=${currentConfig.departmentId}`} />
+        <ToErxesLink title={'Live Remainder'} currentLink={`/inventories/remainders?branchId=${currentConfig.branchId}&departmentId=${currentConfig.departmentId}`} />
+        <ToErxesLink title={'Performances'} currentLink={
+          `/processes/performanceList?inBranchId=${currentConfig.branchId}&inDepartmentId=${currentConfig.departmentId}&outBranchId=${currentConfig.branchId}&outDepartmentId=${currentConfig.departmentId}`
+        } />
       </div>
 
       <div className="status-description">
