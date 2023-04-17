@@ -78,6 +78,8 @@ const configFields = `
   kioskExcludeCategoryIds
   kioskExcludeProductIds
   allowTypes
+  branchId
+  departmentId
 `;
 
 const currentConfig = `
