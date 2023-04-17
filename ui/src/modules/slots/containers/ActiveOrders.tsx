@@ -15,7 +15,7 @@ const ActiveOrders = () => {
     totalCount,
     handleLoadMore,
   } = useFullOrders({
-    statuses: ALL,
+    statuses: ALL.filter(a => a !== COMPLETE),
     variables: {
       sortDirection: -1,
       sortField: 'createdAt',
@@ -24,7 +24,7 @@ const ActiveOrders = () => {
   });
 
   const orders = (fullOrders || []).filter(
-    ({ status, paidDate }: any) => status !== COMPLETE || !paidDate
+    ({ paidDate }: any) => !paidDate
   );
 
   return (
