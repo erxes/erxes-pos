@@ -16,7 +16,7 @@ const ToSafeRemainder: FC<ButtonProps> = (props) => {
       return alert('Not found domain')
     }
 
-    window.open(`${env.NEXT_PUBLIC_SERVER_DOMAIN}/inventories/safe-remainders?branchId=${currentConfig.branchId}&departmentId=${currentConfig.departmentId}`, '_blank');
+    window.open(`${domain}/inventories/safe-remainders?branchId=${currentConfig.branchId}&departmentId=${currentConfig.departmentId}`, '_blank');
   };
 
   return (
