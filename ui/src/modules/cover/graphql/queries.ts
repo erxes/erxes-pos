@@ -24,6 +24,7 @@ const covers = gql`
         email
         username
       }
+      status
       description
       endDate
       modifiedAt

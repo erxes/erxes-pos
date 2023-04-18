@@ -65,7 +65,7 @@
     border: $border-hr;
     border-radius: 0.5rem;
     margin-bottom: 0.5rem !important;
-    &-createdAt {
+    &-date {
       font-size: 0.87rem;
       color: $gray;
       font-weight: 600;
@@ -82,6 +82,27 @@
       }
       &-label {
         text-align: right;
+      }
+    }
+    &-status {
+      display: inline-block;
+      padding: 0.5rem 0.75rem;
+      font-weight: 600;
+      margin-top: 0.5rem;
+      border: 1px solid;
+      border-radius: 0.25rem;
+      line-height: 1;
+
+      &.new {
+        color: $warning;
+        border-color: $warning;
+        background: rgba($color: $warning, $alpha: 0.12) !important;
+      }
+
+      &.confirm {
+        color: $success;
+        border-color: $success;
+        background: rgba($color: $success, $alpha: 0.12) !important;
       }
     }
   }

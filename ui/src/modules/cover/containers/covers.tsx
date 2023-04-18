@@ -17,11 +17,12 @@ export interface ICoverItem {
     username?: string;
   };
   modifiedAt?: string;
+  status: string;
 }
 
 const Covers = () => {
   const { data, loading } = useQuery(queries.covers);
-  
+
   if (loading) return <Loading />;
 
   const { covers } = data || {};
