@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Button from 'ui/Button';
 import { mutations, queries } from '../graphql';
-import cn from 'classnames';
+import c from 'classnames';
 import { toast } from 'react-toastify';
 
 const CoverItem = ({
@@ -39,7 +39,7 @@ const CoverItem = ({
         <div className="cover-item-date">
           {formatDate(beginDate)} - {formatDate(endDate)}
         </div>
-        <div className={cn('cover-item-status', status)}>{status}</div>
+        <div className={c('cover-item-status', status)}>{status}</div>
       </div>
       <div className="col-3">
         <p className="cover-item-date">{formatDate(createdAt)}</p>
