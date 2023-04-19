@@ -20,6 +20,7 @@ export type ICartItem = IProductBase & {
   discountAmount?: number;
   discountPercent?: number;
   bonusCount?: number;
+  manufacturedDate?: string;
 };
 
 export type IProduct = IProductBase & {

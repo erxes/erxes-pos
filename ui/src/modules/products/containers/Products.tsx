@@ -22,7 +22,7 @@ const ProductsContainer = () => {
     },
     onCompleted(data) {
       const products = (data || {}).poscProducts || [];
-      changeFoundItem(products.length === 1 ? products[0] : null);
+      changeFoundItem(products.length === 1 ? { ...products[0], manufacturedDate: searchValue.split('_')[1] } : null);
     },
   });
   const productsCountQuery = useQuery(gql(queries.productsCount), {

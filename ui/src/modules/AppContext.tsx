@@ -95,7 +95,7 @@ const appReducer = (state: State, action: Action) => {
       const currentCart = cart.slice();
 
       const foundItem = currentCart.find((i) => {
-        if (i.productId === product._id && i.status === 'new') {
+        if (i.productId === product._id && i.status === 'new' && i.manufacturedDate === product.manufacturedDate) {
           if (state.type === ('take' || 'delivery')) return true;
           if (!i.isTake) return true;
         }

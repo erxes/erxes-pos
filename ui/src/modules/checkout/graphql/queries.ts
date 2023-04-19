@@ -48,6 +48,7 @@ export const orderItemFields = `
     discountAmount
     discountPercent
     bonusCount
+    manufacturedDate
 
 `;
 

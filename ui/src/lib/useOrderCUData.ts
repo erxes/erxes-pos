@@ -31,6 +31,7 @@ const useOrderCUData = () => {
     isPackage: item.isPackage,
     isTake: item.isTake,
     status: item.status ? item.status : 'new',
+    manufacturedDate: item.manufacturedDate,
   });
 
   const orderDetailItems = (orderDetail || {}).items || [];
