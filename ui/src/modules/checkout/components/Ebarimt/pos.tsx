@@ -17,7 +17,12 @@ interface IChooseType {
   loading: boolean;
 }
 
-const ChooseType = ({ children, value, settlePayment }: IChooseType) => {
+const ChooseType = ({
+  children,
+  value,
+  settlePayment,
+  loading,
+}: IChooseType) => {
   const { allowInnerBill } = useConfigsContext();
   const {
     billType,
@@ -49,6 +54,7 @@ const ChooseType = ({ children, value, settlePayment }: IChooseType) => {
         className={cn({ active: checked })}
         variant="slim"
         onClick={onClick}
+        loading={loading}
       >
         <Radio mode={checked && 'checked'} />
         <b>{children}</b>
@@ -85,14 +91,14 @@ const Ebarimt = () => {
       <div className="ebarimt">
         <b>Төлбөрийн баримт авах</b>
         <div className="row">
-          <ChooseType {...chooseTypeProps} value={CITIZEN}>
+          <ChooseType {...chooseTypeProps} value={CITIZEN} loading={loading}>
             Хувь хүн
           </ChooseType>
-          <ChooseType {...chooseTypeProps} value={ENTITY}>
+          <ChooseType {...chooseTypeProps} value={ENTITY} loading={loading}>
             Байгуулга
           </ChooseType>
           {allowInnerBill && (
-            <ChooseType {...chooseTypeProps} value={INNER}>
+            <ChooseType {...chooseTypeProps} value={INNER} loading={loading}>
               Дотоод
             </ChooseType>
           )}
