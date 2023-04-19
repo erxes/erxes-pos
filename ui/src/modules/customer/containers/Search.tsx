@@ -46,10 +46,8 @@ const CustomerSearch = () => {
     });
 
   const handleChange = (value: string) => {
-    if (!isNaN(Number(value))) {
-      setValue(value);
-      setCustomerId('');
-    }
+    setValue(value);
+    setCustomerId('');
   };
 
   const changeType = () => {
@@ -88,16 +86,15 @@ const CustomerSearch = () => {
     <div className="customer-search -pos">
       <div className="flex-v-center">
         <Button variant="ghost" onClick={changeType}>
-          <UserInCircle type={customerType}  />
+          <UserInCircle type={customerType} />
         </Button>
         <Search
-          placeholder={`${
-            customerType === 'company'
+          placeholder={`${customerType === 'company'
               ? 'Байгууллага'
               : customerType === 'user'
-              ? 'Гишүүн'
-              : 'Хэрэглэгч'
-          } хайх`}
+                ? 'Ажилтан'
+                : 'Харилцагч'
+            } хайх`}
           onSearch={handleSearch}
           onChange={handleChange}
           value={value}
