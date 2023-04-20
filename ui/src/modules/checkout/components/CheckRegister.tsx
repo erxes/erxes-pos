@@ -83,7 +83,9 @@ const CheckRegister = () => {
             </div>
           </div>
         </div>
-        <Button onClick={checkRegister}>Шалгах</Button>
+        <Button onClick={checkRegister} disabled={loading}>
+          Шалгах
+        </Button>
         {error && <span className="error caption">{error.message}</span>}
         {name === NOT_FOUND && (
           <span className="error caption">РД буруу байна</span>

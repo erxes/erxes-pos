@@ -55,7 +55,7 @@ const FullOrders = () => {
           ))}
           {totalCount > fullOrders.length && (
             <div className="col-12 text-center">
-              <Button onClick={handleLoadMore}>
+              <Button onClick={handleLoadMore} disabled={loading}>
                 Цааш үзэх {fullOrders.length} / {totalCount}
               </Button>
             </div>
