@@ -9,7 +9,7 @@ import { useApp } from 'modules/AppContext';
 const ProductsContainer = () => {
   const { query } = useAddQuery();
   const { categoryId } = query;
-  const { searchValue, changeFoundItem } = useApp();
+  const { searchValue, changeFoundItem, isBarcode } = useApp();
   const categoryIdStr = (categoryId || '').toString();
   const FETCH_MORE_PER_PAGE = 20;
 
@@ -20,9 +20,14 @@ const ProductsContainer = () => {
       searchValue: searchValue.split('_')[0],
       page: 1,
     },
+    skip: isBarcode && categoryIdStr,
     onCompleted(data) {
       const products = (data || {}).poscProducts || [];
-      changeFoundItem(products.length === 1 ? { ...products[0], manufacturedDate: searchValue.split('_')[1] } : null);
+      changeFoundItem(
+        products.length === 1
+          ? { ...products[0], manufacturedDate: searchValue.split('_')[1] }
+          : null
+      );
     },
   });
   const productsCountQuery = useQuery(gql(queries.productsCount), {
@@ -30,12 +35,14 @@ const ProductsContainer = () => {
       categoryId: categoryIdStr,
       searchValue,
     },
+    skip: isBarcode && categoryIdStr,
   });
 
   if (loading || productsCountQuery.loading) return <Loading />;
 
   const products = (data || {}).poscProducts || [];
-  const productsCount = productsCountQuery.data.poscProductsTotalCount || 0;
+  const productsCount =
+    (productsCountQuery.data || {}).poscProductsTotalCount || 0;
 
   if (!products.length || !productsCount)
     return <Empty text="Бүтээгдэхүүн олдсонгүй" />;

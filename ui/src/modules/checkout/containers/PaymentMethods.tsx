@@ -6,9 +6,11 @@ import { getMode } from 'modules/utils';
 import AdditionalPayments from './additionalPayments';
 import TDBCard from './TDBCard';
 import useAmounts from 'lib/useAmounts';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 
 const PaymentMethods = () => {
   const { remainder } = useAmounts();
+  const { currentConfig } = useConfigsContext();
 
   return (
     <div className="row payment-methods">
@@ -17,7 +19,7 @@ const PaymentMethods = () => {
           <KhanBankCard />
           <GolomtCard />
           <TDBCard />
-          <Mobile />
+          {!!(currentConfig.paymentIds || []).length && <Mobile />}
         </>
       )}
       {getMode() === 'pos' && (
