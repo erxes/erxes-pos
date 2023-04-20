@@ -18,7 +18,7 @@ const KeyListener = ({
   const handleKeyDown = useCallback(
     ({ key }: { key: string }) => {
       const date = new Date().getTime();
-      const difference = date - changeDate < 1000;
+      const difference = date - changeDate < 30;
 
       if (key.length === 1) {
         setSearchC((prev) => (difference ? prev + key : key.toString()));
