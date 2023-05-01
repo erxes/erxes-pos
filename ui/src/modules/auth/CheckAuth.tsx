@@ -5,8 +5,24 @@ import { useRouter } from 'next/router';
 import Loading from 'modules/common/ui/Loading/index';
 import Empty from 'modules/common/ui/Empty';
 
+const checkValidAuth = (currentUser: any, currentConfig: any) => {
+  if (!(currentUser && currentUser._id)) {
+    return false;
+  }
+
+  if (!(currentConfig && currentConfig._id)) {
+    return false;
+  }
+
+  if (![...currentConfig.cashierIds, ...currentConfig.adminIds].includes(currentUser._id)) {
+    return false;
+  }
+
+  return true;
+}
+
 const CheckAuth = ({ children }: any) => {
-  const { currentUser, configs } = useConfigsContext();
+  const { currentUser, configs, currentConfig } = useConfigsContext();
   const router = useRouter();
   const LOGIN = '/login';
 
@@ -19,11 +35,14 @@ const CheckAuth = ({ children }: any) => {
         router.push({ pathname: '/init' });
       }
     } else {
-      if (!currentUser && router.pathname !== LOGIN) {
+      const checkValid = checkValidAuth(currentUser, currentConfig);
+
+      if (!checkValid && router.pathname !== LOGIN) {
         router.push(LOGIN);
         return;
       }
-      if (currentUser && router.pathname === LOGIN) {
+
+      if (checkValid && router.pathname === LOGIN) {
         router.push('/');
       }
 
@@ -31,7 +50,7 @@ const CheckAuth = ({ children }: any) => {
         router.push('/');
       }
     }
-  }, [currentUser, router.pathname, checkConfigs]);
+  }, [currentUser, router.pathname, checkConfigs, currentConfig]);
 
   if (!Array.isArray(configs))
     return (
@@ -44,8 +63,10 @@ const CheckAuth = ({ children }: any) => {
 
   if (!checkConfigs) return checkConfigsPath ? null : children;
 
-  if (currentUser && router.pathname === LOGIN) return null;
-  if (currentUser || router.pathname === LOGIN) return <>{children}</>;
+  const checkValid = checkValidAuth(currentUser, currentConfig)
+
+  if (checkValid && router.pathname === LOGIN) return null;
+  if (checkValid || router.pathname === LOGIN) return <>{children}</>;
 
   return <Loading className="h-100vh primary" />;
 };
