@@ -1,6 +1,6 @@
-const CheckCircle = ({ color = 'currentColor' }) => {
+const CheckCircle = ({ color = 'currentColor', ...rest }) => {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" {...rest}>
       <g clipPath="url(#clip0_11411_43500)">
         <rect width="24" height="24" rx="12" fill="white" />
         <path

@@ -7,6 +7,7 @@ import SyncOrders from './containers/SyncOrders';
 import DeleteOrders from './containers/DeleteOrders';
 import SendData from './containers/SendData';
 import ToErxesLink from './containers/ToErxesLink';
+import Hourglass from 'icons/Hourglass';
 
 const Settings: IComponent = () => {
   const { currentUser, currentConfig } = useConfigsContext();
@@ -37,11 +38,18 @@ const Settings: IComponent = () => {
         <SyncOrders />
         <DeleteOrders />
         <SendData />
-        <ToErxesLink title={'Safe Remainder'} currentLink={`/inventories/safe-remainders?branchId=${currentConfig.branchId}&departmentId=${currentConfig.departmentId}`} />
-        <ToErxesLink title={'Live Remainder'} currentLink={`/inventories/remainders?branchId=${currentConfig.branchId}&departmentId=${currentConfig.departmentId}`} />
-        <ToErxesLink title={'Performances'} currentLink={
-          `/processes/performanceList?inBranchId=${currentConfig.branchId}&inDepartmentId=${currentConfig.departmentId}&outBranchId=${currentConfig.branchId}&outDepartmentId=${currentConfig.departmentId}`
-        } />
+        <ToErxesLink
+          title={'Safe Remainder'}
+          currentLink={`/inventories/safe-remainders?branchId=${currentConfig.branchId}&departmentId=${currentConfig.departmentId}`}
+        />
+        <ToErxesLink
+          title={'Live Remainder'}
+          currentLink={`/inventories/remainders?branchId=${currentConfig.branchId}&departmentId=${currentConfig.departmentId}`}
+        />
+        <ToErxesLink
+          title={'Performances'}
+          currentLink={`/processes/performanceList?inBranchId=${currentConfig.branchId}&inDepartmentId=${currentConfig.departmentId}&outBranchId=${currentConfig.branchId}&outDepartmentId=${currentConfig.departmentId}`}
+        />
       </div>
 
       <div className="status-description">
@@ -52,6 +60,12 @@ const Settings: IComponent = () => {
           </div>
           <div className="col-6 flex-v-center">
             <div className="-color -doing"></div>- Doing / Redoing
+          </div>
+          <div className="col-6 flex-v-center">
+            <div className="-color -doing flex-center">
+              <Hourglass />
+            </div>
+            - Pending
           </div>
           <div className="col-6 flex-v-center">
             <div className="-color -new"></div>- New

@@ -7,11 +7,11 @@ import Order from '../components/Order';
 import Grid from 'ui/Grid';
 
 const Orders = () => {
-  const { NEW, DOING, ALL, REDOING } = ORDER_STATUSES;
+  const { NEW, DOING, ALL, REDOING, PENDING } = ORDER_STATUSES;
 
   const { loading, fullOrders, subToOrderStatuses, subToItems } = useFullOrders(
     {
-      statuses: [NEW, DOING, REDOING],
+      statuses: [NEW, DOING, REDOING, PENDING],
       variables: {
         sortDirection: 1,
         sortField: 'createdAt',

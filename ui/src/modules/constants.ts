@@ -11,8 +11,8 @@ export const ORDER_STATUSES = {
   REDOING: 'reDoing',
   DONE: 'done',
   COMPLETE: 'complete',
-
-  ALL: ['new', 'doing', 'done', 'complete', 'reDoing'],
+  PENDING: 'pending',
+  ALL: ['new', 'doing', 'done', 'complete', 'reDoing', 'pending'],
   DISABLED: ['done', 'complete'],
 };
 

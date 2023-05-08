@@ -117,7 +117,8 @@
   }
 }
 .doing,
-.reDoing {
+.reDoing,
+.pending {
   background: $warning !important;
   svg {
     color: $warning !important;

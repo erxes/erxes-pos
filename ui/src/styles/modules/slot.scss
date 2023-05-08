@@ -8,7 +8,7 @@
       margin: 0.75rem 0;
       overflow: visible;
       white-space: nowrap;
-      svg {
+      .check-circle {
         opacity: 0;
         transition: 0.2s;
         position: absolute;
@@ -21,6 +21,12 @@
         svg {
           opacity: 1;
         }
+      }
+
+      svg.-hourglass {
+        color: #fff !important;
+        font-size: 1rem;
+        margin: -1px -0.25rem 0 0.25rem
       }
 
       &::after {

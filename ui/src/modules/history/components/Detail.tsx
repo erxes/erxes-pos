@@ -11,12 +11,16 @@ const Detail = () => {
       <HistoryItem order={orderDetail} />
       <div className="history-detail-items">
         {items.map((item: any) => (
-          <div className="flex-h-between -item" key={item._id}>
-            <div>
-              <b className="-name">{item.productName}</b>
-              <b>{formatNum(item.unitPrice)}₮</b>
+          <div className=" -item" key={item._id}>
+            <b className="-name">{item.productName}</b>
+            <div className="flex-h-between">
+              <p>
+                {item.unitPrice}₮ x {item.count}ш
+              </p>
+              <h6>
+                <b>{formatNum(item.unitPrice * item.count)}₮ </b>
+              </h6>
             </div>
-            <h6>{item.count}ш</h6>
           </div>
         ))}
       </div>
