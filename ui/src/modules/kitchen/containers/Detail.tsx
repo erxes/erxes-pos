@@ -43,7 +43,7 @@ const Detail = ({ _id }: { _id: string }) => {
         <span className="-label">Due date:</span>
         <b>{dueDate || '-'}</b>
       </div>
-      {Object.keys(address).map((key) => (
+      {Object.keys(address || {}).map((key) => (
         <div className="flex-v-center -desc" key={key}>
           <span className="-label">{key}:</span>
           <b>{address[key as keyof typeof userInfo] || '-'}</b>
