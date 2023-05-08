@@ -84,11 +84,9 @@ const orderDetail = `
   query orderDetail($_id: String) {
     orderDetail(_id: $_id) {
       ${orderFields}
-
       items {
         ${orderItemFields}
       }
-
       customer {
         firstName
         lastName
@@ -100,7 +98,6 @@ const orderDetail = `
       user {
         ${customerFields}
       }
-
       putResponses {
         ${putResponseFields}
       }

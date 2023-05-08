@@ -21,6 +21,38 @@
   }
 }
 
+.spin {
+  opacity: 1;
+  width: 1.25rem;
+  height: 1.25rem;
+  color: #fff;
+  animation-name: spin;
+  animation-duration: 700ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  &.-absolute {
+    animation-name: spinAbsolute;
+  }
+}
+
+@keyframes spinAbsolute {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 @keyframes blink {
   0% {
     opacity: 0.2;

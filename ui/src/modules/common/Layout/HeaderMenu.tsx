@@ -6,9 +6,9 @@ import PieChart from 'icons/PieChart';
 import Setting from 'icons/Settings';
 import Logout from 'modules/auth/containers/Logout';
 import Clock from 'icons/Clock';
-import Chef from 'icons/Chef';
 import Cover from 'icons/Cover';
 import Button from 'ui/Button';
+import Progress from 'icons/Progress';
 
 interface HeaderMenuProps {}
 
@@ -65,8 +65,8 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
         <li>
           <Link href="/kitchen" prefetch={false}>
             <a>
-              <Chef />
-              Гал тогоо
+              <Progress />
+              Бэлтгэл
             </a>
           </Link>
         </li>

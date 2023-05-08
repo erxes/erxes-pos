@@ -8,7 +8,7 @@ const Radio = ({ mode }: { mode?: IRadio }) => (
   <span className={cn('radio', '-' + mode)}>
     {mode === 'checked' && <Check />}
     {mode === 'error' && <Xmark />}
-    {mode === 'loading' && <SpinnerThird />}
+    {mode === 'loading' && <SpinnerThird className="-absolute" />}
   </span>
 );
 

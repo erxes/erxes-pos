@@ -6,7 +6,8 @@ import { ORDER_STATUSES } from 'modules/constants';
 import OrderItem from '../containers/OrderItem';
 import Timer from './Timer';
 import Button from 'ui/Button';
-import { goToKitchenReceipt, renderType } from 'modules/utils';
+import { goToKitchenReceipt } from 'modules/utils';
+import DetailModal from './DetailModal';
 
 const Order = ({
   number,
@@ -58,7 +59,7 @@ const Order = ({
           <h5>#{number.split('_')[1]}</h5>
           <div className="flex-v-center">
             <div className="flex-center flex-col">
-              <p className="btn flat -tag">{renderType(type)}</p>
+              <DetailModal type={type} status={status} _id={_id} />
               <Timer modifiedAt={modifiedAt} paidDate={paidDate} />
             </div>
             <Button

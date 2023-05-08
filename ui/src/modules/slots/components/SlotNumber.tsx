@@ -5,6 +5,8 @@ import CheckCircle from 'icons/CheckCircle';
 import { useRemoveQuery, useAddQuery } from 'lib/useQuery';
 import { useApp } from 'modules/AppContext';
 import { useRef } from 'react';
+import { ORDER_STATUSES } from '../../constants';
+import Hourglass from 'icons/Hourglass';
 
 function SlotNumber({
   number,
@@ -49,7 +51,13 @@ function SlotNumber({
       {(number || '').split('_')[1]}
       {!!slotCode && `(${slotCode})`}
       {origin === 'kiosk' && '*'}
-      <CheckCircle color={colors[status as keyof typeof colors]} />
+      {status === ORDER_STATUSES.PENDING && (
+        <Hourglass className="-hourglass" />
+      )}
+      <CheckCircle
+        color={colors[status as keyof typeof colors]}
+        className="check-circle"
+      />
     </Button>
   );
 }
