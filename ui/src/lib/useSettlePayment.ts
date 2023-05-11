@@ -7,9 +7,7 @@ import { queries } from 'modules/checkout/graphql';
 
 const useSettlePayment = (onCompleted: any) => {
   const { billType, orderDetail, registerNumber } = useApp();
-  const { _id, putResponses } = orderDetail;
-
-  const putResponse = putResponses[0];
+  const { _id } = orderDetail;
 
   const updatedOnCompleted = () => {
     goToReceipt(_id);
@@ -28,7 +26,7 @@ const useSettlePayment = (onCompleted: any) => {
   );
 
   const handleSettlePayment = (val?: string) => {
-    if ((putResponse || {}).success === 'true') return updatedOnCompleted();
+    if (orderDetail.paidDate) return updatedOnCompleted();
 
     return settlePayment({
       variables: {

@@ -94,7 +94,7 @@ const Receipt = () => {
       <thead>
         <tr className="detail-row">
           <th>Бараа</th>
-          <th>Үнэ/Тоо</th>
+          <th className="totalCount">Үнэ/Тоо</th>
           <th className="totalCount">Нийт дүн</th>
         </tr>
       </thead>
@@ -106,7 +106,7 @@ const Receipt = () => {
     return (
       <tr key={idx}>
         <td>{name}</td>
-        <td>
+        <td className="totalCount">
           {formatNum(unitPrice)}₮ x{formatNum(qty)}
         </td>
         <td className="totalCount">
