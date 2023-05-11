@@ -103,6 +103,8 @@ const appReducer = (state: State, action: Action) => {
 
       if (foundItem) {
         foundItem.count += 1;
+        currentCart.splice(currentCart.indexOf(foundItem), 1)
+        currentCart.unshift(foundItem)
       } else {
         const cartItem = {
           ...product,
