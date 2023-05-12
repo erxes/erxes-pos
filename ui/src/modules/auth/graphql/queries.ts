@@ -65,6 +65,7 @@ const configFields = `
     companyName
     ebarimtUrl
     footerText
+    hasCopy
   }
   catProdMappings {
     _id

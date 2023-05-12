@@ -20,7 +20,7 @@ const Receipt = () => {
   const { currentConfig } = useConfigsContext();
   const { uiOptions, name, ebarimtConfig } = currentConfig;
   const { receiptIcon: logo } = uiOptions;
-  const { footerText } = ebarimtConfig || {};
+  const { footerText, hasCopy } = ebarimtConfig || {};
   const mode = getMode();
   const { orderDetail } = useApp();
 
@@ -41,6 +41,7 @@ const Receipt = () => {
     window.addEventListener('afterprint', () => {
       if (
         mode !== 'kiosk' &&
+        hasCopy &&
         putResponses.length &&
         !['inner'].includes((type || '').toString())
       ) {
