@@ -13,7 +13,7 @@ const Waiting = () => {
             <Image alt="" src={logoUrl || ''} />
           </a>
         </Link>
-        <h4 className="text-center flex-1">
+        <h4 className="text-center flex-1 overflow-hidden">
           Дугаар бүхий хэрэглэгчид хоолоо авна уу.
         </h4>
       </header>

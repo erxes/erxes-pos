@@ -14,7 +14,7 @@ const Empty = ({ text = 'There is no data!', dark, fill = true }: IProps) => {
     <div
       className={cn('flex-center empty text-center', {
         dark,
-        'fill flex-1': fill,
+        'fill flex-1 overflow-hidden': fill,
       })}
     >
       <div>

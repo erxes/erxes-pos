@@ -2,6 +2,7 @@ import 'simplebar/dist/simplebar.min.css';
 import 'react-toastify/dist/ReactToastify.css';
 import '../../public/icon.min.css';
 import 'styles/styles.min.css';
+import 'styles/globals.css';
 import { IComponent } from 'modules/types';
 import type { AppProps } from 'next/app';
 import { ApolloProvider } from '@apollo/client';

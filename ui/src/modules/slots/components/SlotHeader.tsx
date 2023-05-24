@@ -22,7 +22,7 @@ function SlotsHeader({
 
   return (
     <>
-      <div className="slot-header flex-v-center flex-1">
+      <div className="slot-header flex-v-center flex-1 overflow-hidden">
         <HorizontalScroll
           items={items}
           ItemComponent={ItemComponent}

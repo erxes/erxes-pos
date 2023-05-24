@@ -17,6 +17,7 @@
     "incremental": true,
     "useUnknownInCatchVariables": false,
     "paths": {
+      "components/*": ["components/*"],
       "styles/*": ["styles/*"],
       "modules/*": ["modules/*"],
       "icons/*": ["modules/common/icons/*"],

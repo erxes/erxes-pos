@@ -7,7 +7,7 @@ const Settings = dynamic(() => import('modules/settings'), {
 });
 
 const SettingsS = () => {
-  return <CheckMode pos={<Settings />} />;
+  return <CheckMode pos={<Settings />} superMarket={<Settings />} />;
 };
 
 SettingsS.Layout = BlackLayout;

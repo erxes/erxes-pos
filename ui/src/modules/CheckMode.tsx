@@ -8,12 +8,15 @@ interface IProps {
   pos?: ReactNode;
   waiting?: ReactNode;
   kitchen?: ReactNode;
+  superMarket?: ReactNode;
 }
 
 const CheckMode: FC<IProps> = (props) => {
   const mode = getMode();
 
-  const renderMode = (currentMode: 'kiosk' | 'pos' | 'waiting' | 'kitchen') => {
+  const renderMode = (
+    currentMode: 'kiosk' | 'pos' | 'waiting' | 'kitchen' | 'superMarket'
+  ) => {
     if (mode === currentMode) {
       return props[currentMode] ? props[currentMode] : <NotFound />;
     }
@@ -25,6 +28,7 @@ const CheckMode: FC<IProps> = (props) => {
       {renderMode('pos')}
       {renderMode('waiting')}
       {renderMode('kitchen')}
+      {renderMode('superMarket')}
     </Suspense>
   );
 };

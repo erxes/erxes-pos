@@ -8,7 +8,7 @@ const Kitchen = () => {
       <Header>
         <DoneOrders />
       </Header>
-      <div className="flex-1">
+      <div className="flex-1 overflow-hidden">
         <Orders />
       </div>
     </div>

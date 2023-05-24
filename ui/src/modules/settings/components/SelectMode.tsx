@@ -11,6 +11,9 @@ const SelectMode = () => {
       <option value="pos" selected={getMode() === 'pos'}>
         POS and fullmode
       </option>
+      <option value="superMarket" selected={getMode() === 'superMarket'}>
+        Supermarket
+      </option>
       <option value="kiosk" selected={getMode() === 'kiosk'}>
         Kiosk
       </option>

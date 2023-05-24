@@ -44,7 +44,7 @@ const Cover = () => {
   };
 
   return (
-    <div className="flex-1 cover">
+    <div className="flex-1 overflow-hidden cover">
       <h6>Хаалт</h6>
 
       <form onSubmit={handleSubmit}>

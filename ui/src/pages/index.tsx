@@ -10,6 +10,10 @@ const Waiting = dynamic(() => import('modules/waiting'), { suspense: true });
 
 const Kitchen = dynamic(() => import('modules/kitchen'), { suspense: true });
 
+const Supermarket = dynamic(() => import('modules/supermarket'), {
+  suspense: true,
+});
+
 const Home: NextPage = () => {
   return (
     <CheckMode
@@ -17,6 +21,7 @@ const Home: NextPage = () => {
       kiosk={<Kiosk />}
       waiting={<Waiting />}
       kitchen={<Kitchen />}
+      superMarket={<Supermarket />}
     />
   );
 };

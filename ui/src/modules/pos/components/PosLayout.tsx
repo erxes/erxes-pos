@@ -16,7 +16,7 @@ function PosLayout({ children }: Props) {
   return (
     <KeyListener className="flex flex-col h-100vh">
       <PosHeader />
-      <main className="pos-container flex-1">
+      <main className="pos-container flex-1 overflow-hidden">
         {children}
         <div className="pos-sidebar">
           <CustomerSearch />
