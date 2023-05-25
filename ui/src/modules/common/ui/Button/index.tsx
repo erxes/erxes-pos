@@ -10,7 +10,6 @@ import { LoadingDots } from 'modules/common/ui/Loading';
 import Ink from 'react-ink';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  href?: string;
   className?: string;
   variant?: 'flat' | 'slim' | 'ghost' | 'naked';
   active?: boolean;
@@ -21,6 +20,7 @@ export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   disabled?: boolean;
   riffle?: boolean;
   ref?: any;
+  href?: any;
 }
 // eslint-disable-next-line react/display-name
 const Button: React.FC<ButtonProps> = forwardRef((props, buttonRef) => {

@@ -51,7 +51,12 @@ export interface PaymentType {
   type: string;
   title: string;
   icon: string;
-  config?:string;
+  config?: {
+    port?: string;
+    skipEbarimt?: boolean;
+    mustCustomer?: boolean;
+    notSplit?: boolean;
+  };
 }
 
 export interface ConfigsState {

@@ -1,14 +1,16 @@
 import { useApp } from 'modules/AppContext';
 import { BANK_CARDS, MOBILE, PAYMENT_TYPES } from 'modules/constants';
-import { sumAmount, flatAmounts } from 'modules/utils';
+import { sumAmount, flatAmounts, checkElementsIncluded } from 'modules/utils';
 import { useCallback } from 'react';
 import { useMemo } from 'react';
 import { parseNum } from '../modules/utils';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 
 const useAmounts = () => {
   const { orderDetail } = useApp();
   const { totalAmount, paidAmounts, cashAmount, mobileAmount } =
     orderDetail || {};
+  const { paymentTypes } = useConfigsContext();
 
   const paidAmount =
     sumAmount(paidAmounts || []) + (cashAmount || 0) + (mobileAmount || 0);
@@ -50,6 +52,15 @@ const useAmounts = () => {
     return num;
   };
 
+  const checkNotSplitIncluded = () => {
+    const paidTypes = (paidAmounts || []).map((pa: any) => pa?.type);
+    if (!paidTypes.length) return false;
+    const notSplit = (
+      paymentTypes?.filter((pt) => pt?.config?.notSplit) || []
+    ).map((pt) => pt?.type);
+    return checkElementsIncluded(paidTypes, notSplit);
+  };
+
   return {
     paidAmount,
     remainder,
@@ -59,6 +70,8 @@ const useAmounts = () => {
     getMaxMemo,
     getMinMemo,
     validateAmount,
+    paidAmounts,
+    checkNotSplitIncluded,
   };
 };
 

@@ -1,5 +1,5 @@
 import { useState, FC, memo } from 'react';
-import NextImage, { ImageProps } from 'next/future/image';
+import NextImage, { ImageProps } from 'next/image';
 import cls from 'classnames';
 import ProductFallback from 'icons/productFallback';
 import { readFile } from 'modules/utils';

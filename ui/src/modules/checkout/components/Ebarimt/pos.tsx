@@ -9,6 +9,7 @@ import useSettlePayment from 'lib/useSettlePayment';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { NOT_FOUND } from 'modules/constants';
 import { BILL_TYPES } from 'modules/constants';
+import { checkElementsIncluded } from 'modules/utils';
 
 interface IChooseType {
   children: ReactNode;
@@ -65,8 +66,8 @@ const ChooseType = ({
 
 const Ebarimt = () => {
   const { closeModal } = useUI();
-  const { companyName, billType } = useApp();
-  const { allowInnerBill } = useConfigsContext();
+  const { companyName, billType, orderDetail } = useApp();
+  const { allowInnerBill, paymentTypes } = useConfigsContext();
   const { CITIZEN, ENTITY, INNER } = BILL_TYPES;
   const isOrg = billType === ENTITY;
 
@@ -86,18 +87,35 @@ const Ebarimt = () => {
     loading,
   };
 
+  const checkSkipEbarimt = () => {
+    const { paidAmounts } = orderDetail;
+    const skipEbarimt = (
+      paymentTypes?.filter((pt) => pt?.config?.skipEbarimt) || []
+    ).map((pt) => pt.type);
+    const paidTypes = (paidAmounts || []).map((pa: any) => pa?.type);
+    return checkElementsIncluded(paidTypes, skipEbarimt);
+  };
+
   return (
     <div className="ebarimt-root">
       <div className="ebarimt">
         <b>Төлбөрийн баримт авах</b>
         <div className="row">
-          <ChooseType {...chooseTypeProps} value={CITIZEN} loading={loading}>
-            Хувь хүн
-          </ChooseType>
-          <ChooseType {...chooseTypeProps} value={ENTITY} loading={loading}>
-            Байгуулга
-          </ChooseType>
-          {allowInnerBill && (
+          {!checkSkipEbarimt() && (
+            <>
+              <ChooseType
+                {...chooseTypeProps}
+                value={CITIZEN}
+                loading={loading}
+              >
+                Хувь хүн
+              </ChooseType>
+              <ChooseType {...chooseTypeProps} value={ENTITY} loading={loading}>
+                Байгуулга
+              </ChooseType>
+            </>
+          )}
+          {(allowInnerBill || checkSkipEbarimt()) && (
             <ChooseType {...chooseTypeProps} value={INNER} loading={loading}>
               Дотоод
             </ChooseType>

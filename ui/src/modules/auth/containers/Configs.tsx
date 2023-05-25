@@ -4,7 +4,7 @@ import { useQuery, gql } from '@apollo/client';
 import { FC, ReactNode, createContext, useContext } from 'react';
 import Loading from 'modules/common/ui/Loading';
 import type { ConfigsState } from 'modules/types';
-import { setLocal } from 'modules/utils';
+import { setLocal, strToObj } from 'modules/utils';
 
 interface IProps {
   children: ReactNode | [ReactNode];
@@ -59,7 +59,7 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
   }
 
   if (currentConfig && currentConfig.allowTypes && currentConfig.allowTypes.length) {
-    setLocal('defaultType', (currentConfig.allowTypes[0]));
+    setLocal('defaultType', currentConfig.allowTypes[0]);
   }
 
   useEffect(() => {
@@ -70,7 +70,10 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
 
   const value = {
     configs: posclientConfigs,
-    paymentTypes,
+    paymentTypes: (paymentTypes || []).map((pt: any) => ({
+      ...(pt || {}),
+      config: strToObj(pt?.config || ''),
+    })),
     currentUser,
     currentConfig,
     primaryColor: primary || '#4f33af',

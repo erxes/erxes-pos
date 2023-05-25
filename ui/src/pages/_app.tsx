@@ -53,7 +53,7 @@ function App({ Component, pageProps }: AppProps) {
           </ConfigsProvider>
         </UIProvider>
       </AppContextProvider>
-      <ToastContainer theme="dark" position="top-center" limit={1} />
+      <ToastContainer theme="dark" position="top-center" />
     </ApolloProvider>
   );
 }
