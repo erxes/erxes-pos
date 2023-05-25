@@ -26,8 +26,8 @@ const ChooseConfig: IComponent = () => {
         loading={loading}
       >
         <option value=''>
-            Сонгоно уу.
-          </option>
+          Сонгоно уу.
+        </option>
         {(configs || []).map(({ token, name }: any) => (
           <option key={token} value={token}>
             {name} - {token}
