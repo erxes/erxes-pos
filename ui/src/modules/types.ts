@@ -66,6 +66,7 @@ export interface ConfigsState {
   primaryColor: string | '';
   paymentTypes: PaymentType[] | null;
   kioskHeaderImage: string | '';
+  showWaiting?: boolean;
 }
 
 export type IRadio = 'checked' | 'error' | 'loading' | '' | false;

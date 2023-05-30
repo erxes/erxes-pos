@@ -12,11 +12,11 @@ const PosLayout = dynamic(() => import('modules/pos/components/PosLayout'), {
 });
 
 const Waiting = () => {
-  const { waitingScreen } = useConfigsContext()?.configs;
+  const { showWaiting } = useConfigsContext();
   return (
     <CheckMode
       pos={
-        waitingScreen ? (
+        showWaiting ? (
           <WaitingC />
         ) : (
           <PosLayout>

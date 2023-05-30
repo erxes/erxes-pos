@@ -14,7 +14,7 @@ import { useConfigsContext } from '../../auth/containers/Configs';
 interface HeaderMenuProps {}
 
 const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
-  const { waitingScreen } = useConfigsContext()?.configs;
+  const { showWaiting } = useConfigsContext();
 
   return (
     <div className="gray-border pos-dropdown">
@@ -56,7 +56,7 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
           </Link>
         </li>
 
-        {!!waitingScreen && (
+        {!!showWaiting && (
           <li>
             <Link href="/waiting" prefetch={false}>
               <a>

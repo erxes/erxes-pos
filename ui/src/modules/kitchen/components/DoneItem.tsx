@@ -7,7 +7,7 @@ import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Xmark from 'modules/common/icons/Xmark';
 
 const DoneItem = ({ number, _id, items }: any) => {
-  const { waitingScreen } = useConfigsContext()?.configs || {};
+  const { showWaiting } = useConfigsContext();
   const [changeStatus, { loading }] = useMutation(
     gql(mutations.orderChangeStatus)
   );
@@ -30,7 +30,7 @@ const DoneItem = ({ number, _id, items }: any) => {
     });
   };
 
-  if (waitingScreen)
+  if (showWaiting)
     return (
       <Button
         className="kitchen-number"
@@ -48,7 +48,13 @@ const DoneItem = ({ number, _id, items }: any) => {
         <ArrowDown />
       </Button>
       {number.split('_')[1]}
-      <Button variant="ghost" className="-close" disabled={loading} onClick={handleClose} title='Complete'>
+      <Button
+        variant="ghost"
+        className="-close"
+        disabled={loading}
+        onClick={handleClose}
+        title="Complete"
+      >
         <Xmark />
       </Button>
     </Button>

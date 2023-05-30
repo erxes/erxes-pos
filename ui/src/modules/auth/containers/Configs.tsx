@@ -59,7 +59,7 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
   }
 
   if (currentConfig && currentConfig.allowTypes && currentConfig.allowTypes.length) {
-    setLocal('defaultType', (currentConfig.allowTypes[0]));
+    setLocal('defaultType', currentConfig.allowTypes[0]);
   }
 
   useEffect(() => {
@@ -79,6 +79,7 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
     receiptIcon,
     bgImage,
     kioskHeaderImage,
+    showWaiting: currentConfig?.waitingScreen?.isActive,
   };
 
   if (loading || loadingConfig || loadingConfigs)
