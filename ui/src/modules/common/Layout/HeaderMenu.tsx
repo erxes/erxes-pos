@@ -24,42 +24,55 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
       <ul className="pos-menu">
         <li>
           <Link href="/history" prefetch={false}>
-            <Swap /> Захиалгын түүх
+            <a>
+              <Swap /> Захиалгын түүх
+            </a>
           </Link>
         </li>
 
         <li>
           <Link href="/cover" prefetch={false}>
-            <Cover /> Хаалт
+            <a>
+              <Cover /> Хаалт
+            </a>
           </Link>
         </li>
 
         <li>
           <Link href="/report" prefetch={false}>
-            <PieChart />
-            Тайлан
+            <a>
+              <PieChart />
+              Тайлан
+            </a>
           </Link>
         </li>
 
         <li>
           <Link href="/settings" prefetch={false}>
-            <Setting />
-            Тохиргоо
+            <a>
+              <Setting />
+              Тохиргоо
+            </a>
           </Link>
         </li>
-        {waitingScreen && (
+
+        {!!waitingScreen && (
           <li>
             <Link href="/waiting" prefetch={false}>
-              <Clock />
-              Хүлээлгэ
+              <a>
+                <Clock />
+                Хүлээлгэ
+              </a>
             </Link>
           </li>
         )}
 
         <li>
           <Link href="/kitchen" prefetch={false}>
-            <Progress />
-            Бэлтгэл
+            <a>
+              <Progress />
+              Бэлтгэл
+            </a>
           </Link>
         </li>
 
