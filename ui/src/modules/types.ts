@@ -51,13 +51,13 @@ export interface PaymentType {
   type: string;
   title: string;
   icon: string;
-  config?:string;
+  config?: string;
 }
 
 export interface ConfigsState {
   currentUser: any;
   currentConfig: any;
-  configs: [any];
+  configs: any;
   allowReceivable: boolean;
   allowInnerBill: boolean;
   logoUrl: string | null;

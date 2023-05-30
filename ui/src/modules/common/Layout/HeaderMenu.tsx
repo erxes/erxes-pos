@@ -9,10 +9,13 @@ import Clock from 'icons/Clock';
 import Cover from 'icons/Cover';
 import Button from 'ui/Button';
 import Progress from 'icons/Progress';
+import { useConfigsContext } from '../../auth/containers/Configs';
 
 interface HeaderMenuProps {}
 
 const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
+  const { waitingScreen } = useConfigsContext()?.configs;
+
   return (
     <div className="gray-border pos-dropdown">
       <Button variant="naked">
@@ -21,53 +24,42 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
       <ul className="pos-menu">
         <li>
           <Link href="/history" prefetch={false}>
-            <a>
-              <Swap /> Захиалгын түүх
-            </a>
+            <Swap /> Захиалгын түүх
           </Link>
         </li>
 
         <li>
           <Link href="/cover" prefetch={false}>
-            <a>
-              <Cover /> Хаалт
-            </a>
+            <Cover /> Хаалт
           </Link>
         </li>
 
         <li>
           <Link href="/report" prefetch={false}>
-            <a>
-              <PieChart />
-              Тайлан
-            </a>
+            <PieChart />
+            Тайлан
           </Link>
         </li>
 
         <li>
           <Link href="/settings" prefetch={false}>
-            <a>
-              <Setting />
-              Тохиргоо
-            </a>
+            <Setting />
+            Тохиргоо
           </Link>
         </li>
-
-        <li>
-          <Link href="/waiting" prefetch={false}>
-            <a>
+        {waitingScreen && (
+          <li>
+            <Link href="/waiting" prefetch={false}>
               <Clock />
               Хүлээлгэ
-            </a>
-          </Link>
-        </li>
+            </Link>
+          </li>
+        )}
 
         <li>
           <Link href="/kitchen" prefetch={false}>
-            <a>
-              <Progress />
-              Бэлтгэл
-            </a>
+            <Progress />
+            Бэлтгэл
           </Link>
         </li>
 
