@@ -6,10 +6,12 @@ const Header = () => {
   return (
     <div className="flex-h-between">
       <h6>Хаалтууд</h6>
-      <Link href="/cover/create" className="btn flat cover-create">
-        <Plus />
-        Нэмэх
-        <Ink />
+      <Link href="/cover/create">
+        <a className="btn flat cover-create">
+          <Plus />
+          Нэмэх
+          <Ink />
+        </a>
       </Link>
     </div>
   );
