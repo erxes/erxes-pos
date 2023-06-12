@@ -111,8 +111,8 @@ export const ordersCheckCompany = `
 `;
 
 const fullOrders = `
-  query fullOrders($searchValue: String, $statuses: [String], $customerId: String, $customerType: String, $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
-    fullOrders(searchValue: $searchValue, statuses: $statuses, customerId: $customerId, customerType: $customerType, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
+  query fullOrders($isPaid: Boolean, $searchValue: String, $statuses: [String], $customerId: String, $customerType: String, $startDate: Date, $endDate: Date, $dateType: String, $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
+    fullOrders(isPaid: $isPaid, searchValue: $searchValue, statuses: $statuses, customerId: $customerId, customerType: $customerType, startDate: $startDate, endDate: $endDate, dateType: $dateType, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
       ${orderFields}
 
       items {
