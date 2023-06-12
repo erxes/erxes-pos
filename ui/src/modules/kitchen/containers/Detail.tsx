@@ -21,13 +21,15 @@ const Detail = ({ _id }: { _id: string }) => {
 
   const { firstName, lastName, primaryEmail, primaryPhone } = customer || {};
 
-  const { address, description, marker } = deliveryInfo || {};
+  const { address, description, marker, phone, email } = deliveryInfo || {};
 
   const userInfo = {
     firstName,
     lastName,
     primaryEmail,
     primaryPhone,
+    phone,
+    email,
   };
   return (
     <div className="kitchen-detail">
