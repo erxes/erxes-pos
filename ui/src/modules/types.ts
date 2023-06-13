@@ -62,7 +62,7 @@ export interface PaymentType {
 export interface ConfigsState {
   currentUser: any;
   currentConfig: any;
-  configs: [any];
+  configs: any;
   allowReceivable: boolean;
   allowInnerBill: boolean;
   logoUrl: string | null;
@@ -71,6 +71,7 @@ export interface ConfigsState {
   primaryColor: string | '';
   paymentTypes: PaymentType[] | null;
   kioskHeaderImage: string | '';
+  showWaiting?: boolean;
 }
 
 export type IRadio = 'checked' | 'error' | 'loading' | '' | false;

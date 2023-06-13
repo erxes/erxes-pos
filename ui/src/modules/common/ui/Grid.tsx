@@ -14,7 +14,7 @@ const Col = ({ idx, data, Component, constant }: any) => {
   );
 };
 
-const Grid = ({ data, Component }: any) => {
+const Grid = ({ data, Component, children }: any) => {
   const constant = 3;
 
   return (
@@ -28,6 +28,7 @@ const Grid = ({ data, Component }: any) => {
           constant={constant}
         />
       ))}
+      {children}
     </div>
   );
 };

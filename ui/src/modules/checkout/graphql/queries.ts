@@ -111,8 +111,8 @@ export const ordersCheckCompany = `
 `;
 
 const fullOrders = `
-  query fullOrders($searchValue: String, $statuses: [String], $customerId: String, $customerType: String, $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
-    fullOrders(searchValue: $searchValue, statuses: $statuses, customerId: $customerId, customerType: $customerType, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
+  query fullOrders($isPaid: Boolean, $searchValue: String, $statuses: [String], $customerId: String, $customerType: String, $startDate: Date, $endDate: Date, $dateType: String, $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
+    fullOrders(isPaid: $isPaid, searchValue: $searchValue, statuses: $statuses, customerId: $customerId, customerType: $customerType, startDate: $startDate, endDate: $endDate, dateType: $dateType, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
       ${orderFields}
 
       items {
@@ -140,31 +140,37 @@ const slots = `
   }
 `;
 
-const ordersTotalCount = `query ordersTotalCount(
-  $customerId: String
-  $customerType: String
-  $endDate: Date
-  $page: Int
-  $perPage: Int
-  $searchValue: String
-  $sortField: String
-  $sortDirection: Int
-  $startDate: Date
-  $statuses: [String]
-) {
-  ordersTotalCount(
-    customerId: $customerId
-    customerType: $customerType
-    endDate: $endDate
-    page: $page
-    perPage: $perPage
-    searchValue: $searchValue
-    sortField: $sortField
-    sortDirection: $sortDirection
-    startDate: $startDate
-    statuses: $statuses
-  )
-}`;
+const ordersTotalCount = `
+  query OrdersTotalCount(
+    $searchValue: String
+    $statuses: [String]
+    $customerId: String
+    $customerType: String
+    $startDate: Date
+    $endDate: Date
+    $dateType: String
+    $isPaid: Boolean
+    $page: Int
+    $perPage: Int
+    $sortField: String
+    $sortDirection: Int
+  ) {
+    ordersTotalCount(
+      searchValue: $searchValue
+      statuses: $statuses
+      customerId: $customerId
+      customerType: $customerType
+      startDate: $startDate
+      endDate: $endDate
+      dateType: $dateType
+      isPaid: $isPaid
+      page: $page
+      perPage: $perPage
+      sortField: $sortField
+      sortDirection: $sortDirection
+    )
+  }
+`;
 
 const invoices = `
   query invoices($contentType: String, $contentTypeId: String) {

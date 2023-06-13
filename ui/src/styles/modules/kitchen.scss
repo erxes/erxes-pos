@@ -70,6 +70,9 @@
       margin-left: 1rem;
     }
   }
+  &-load-more.btn {
+    background: $primary;
+  }
   &-detail {
     .-title {
       padding: 1rem 0 0.25rem;
@@ -95,9 +98,48 @@
   &-number {
     background-color: $success;
     padding: 0.5rem 1.25rem;
+    &.-extra {
+      padding: 0.25rem;
+    }
+    align-items: center;
+    font-weight: 700;
+    font-size: 0.875rem;
+    .btn.ghost {
+      padding: 0.5rem;
+      color: #fff;
+    }
+
     svg {
-      margin-right: 0.25rem;
       font-size: 1.25rem;
+    }
+    .-close {
+      svg {
+        font-size: 1rem;
+        margin: 0.125rem;
+      }
+    }
+    &:not(.-extra) {
+      svg {
+        margin-right: 0.25rem;
+      }
+    }
+  }
+  &-filter {
+    padding: 0.75rem 1.5rem;
+    &-form {
+      gap: 1rem;
+      &-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        label {
+          white-space: nowrap;
+          padding: 0;
+        }
+      }
+      button.btn {
+        background: $primary;
+      }
     }
   }
 }

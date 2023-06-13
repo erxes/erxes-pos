@@ -1,6 +1,5 @@
 import { gql, useMutation } from '@apollo/client';
 import { mutations } from 'modules/checkout/graphql';
-import ForkKnife from 'icons/ForkKnife';
 import Motocycle from 'icons/Motocycle';
 import Radio from 'ui/Radio';
 import Ink from 'react-ink';
@@ -47,7 +46,7 @@ const OrderItem = ({
     >
       <b className="col flex-v-center -name">
         <Radio mode={mode} />
-        {isTake ? <Motocycle /> : <ForkKnife />}
+        {isTake && <Motocycle />}
         <span className="-name">{productName}</span>
       </b>
       <big className="col">x{count}</big>

@@ -9,10 +9,13 @@ import Clock from 'icons/Clock';
 import Cover from 'icons/Cover';
 import Button from 'ui/Button';
 import Progress from 'icons/Progress';
+import { useConfigsContext } from '../../auth/containers/Configs';
 
 interface HeaderMenuProps {}
 
 const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
+  const { showWaiting } = useConfigsContext();
+
   return (
     <div className="gray-border pos-dropdown">
       <Button variant="naked">
@@ -53,14 +56,16 @@ const HeaderMenu: FC<HeaderMenuProps> = ({}) => {
           </Link>
         </li>
 
-        <li>
-          <Link href="/waiting" prefetch={false}>
-            <a>
-              <Clock />
-              Хүлээлгэ
-            </a>
-          </Link>
-        </li>
+        {!!showWaiting && (
+          <li>
+            <Link href="/waiting" prefetch={false}>
+              <a>
+                <Clock />
+                Хүлээлгэ
+              </a>
+            </Link>
+          </li>
+        )}
 
         <li>
           <Link href="/kitchen" prefetch={false}>

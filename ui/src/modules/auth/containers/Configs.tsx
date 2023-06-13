@@ -82,6 +82,7 @@ const ConfigsProvider: FC<IProps> = ({ children }) => {
     receiptIcon,
     bgImage,
     kioskHeaderImage,
+    showWaiting: currentConfig?.waitingScreen?.isActive,
   };
 
   if (loading || loadingConfig || loadingConfigs)
