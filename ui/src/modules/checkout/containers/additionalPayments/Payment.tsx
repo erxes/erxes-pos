@@ -12,19 +12,13 @@ const Payment = ({ type, title, icon, config }: PaymentType) => {
   const { addPayment, loading } = useAddPayment();
   const { orderDetail } = useApp();
   const { customerId } = orderDetail || {};
-  const {
-    cashAmount,
-    mobileAmount,
-    paidAmounts,
-    checkNotSplitIncluded,
-  } = useAmounts();
+  const { cashAmount, mobileAmount, paidAmounts, checkNotSplitIncluded } =
+    useAmounts();
 
   const { mustCustomer, notSplit } = config || ({} as any);
 
-  if (
-       (mustCustomer && !customerId) || 
-       (!notSplit && checkNotSplitIncluded())
-     ) return null;
+  if ((mustCustomer && !customerId) || (!notSplit && checkNotSplitIncluded()))
+    return null;
 
   const checkHide = () => {
     if (cashAmount || mobileAmount) return true;
@@ -50,6 +44,7 @@ const Payment = ({ type, title, icon, config }: PaymentType) => {
       onClick={handleClick}
       btnText={title}
       loading={loading}
+      disabled={notSplit}
     >
       <span className="flex-v-center">
         <h4 className={`icon-${icon}`}></h4>

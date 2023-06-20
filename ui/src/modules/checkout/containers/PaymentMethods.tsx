@@ -14,7 +14,7 @@ const PaymentMethods = () => {
 
   return (
     <div className="row payment-methods">
-      {(!checkNotSplitIncluded() || remainder >= 0) && (
+      {(!checkNotSplitIncluded() || remainder > 0) && (
         <>
           <KhanBankCard />
           <GolomtCard />

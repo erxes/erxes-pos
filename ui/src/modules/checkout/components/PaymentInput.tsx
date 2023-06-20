@@ -4,7 +4,7 @@ import { formatNum } from 'modules/utils';
 import Button from 'modules/common/ui/Button';
 import Xmark from 'modules/common/icons/Xmark';
 
-const PaymentInput = ({ children, setValue, value }: any) => {
+const PaymentInput = ({ children, setValue, value, disabled }: any) => {
   const { changeActivePayment, remainder } = useCheckoutContext();
 
   const handleClose = () => {
@@ -15,7 +15,12 @@ const PaymentInput = ({ children, setValue, value }: any) => {
     <div className="flex-h-between payment-input">
       <div>
         <div className="flex-v-center">
-          ₮ <Input value={formatNum(value)} onChange={setValue} />
+          ₮
+          <Input
+            value={formatNum(value)}
+            onChange={setValue}
+            disabled={disabled}
+          />
         </div>
 
         <span className="caption">
