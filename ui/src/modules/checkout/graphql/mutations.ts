@@ -91,6 +91,10 @@ const generateInvoiceUrl = `
   }
 `;
 
+const ordersFinish = `mutation OrdersFinish($id: String!) {
+  ordersFinish(_id: $id)
+}`;
+
 const mutations = {
   ordersAdd,
   ordersEdit,
@@ -99,6 +103,7 @@ const mutations = {
   orderChangeStatus,
   orderItemChangeStatus,
   generateInvoiceUrl,
+  ordersFinish,
 };
 
 export default mutations;

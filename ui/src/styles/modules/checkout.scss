@@ -61,6 +61,11 @@
     input {
       margin-bottom: 1rem;
     }
+    .select-wrap {
+      min-height: 100%;
+      display: flex;
+      align-items: stretch;
+    }
     .btn {
       width: 100%;
       font: 700 1.125rem/1.5rem 'Inter';
@@ -108,4 +113,9 @@
       }
     }
   }
+}
+
+.order-type {
+  width: 100%;
+  min-height: 100%;
 }

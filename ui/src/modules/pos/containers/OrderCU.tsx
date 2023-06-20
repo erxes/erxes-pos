@@ -11,6 +11,7 @@ import Button from 'ui/Button';
 import Deliver from '../../checkout/components/Deliver';
 import useIsEditable from 'lib/useIsEditable';
 import { ORDER_TYPES } from 'modules/constants';
+import OrderFinish from './OrderFinish';
 
 const OrderCU = () => {
   const { type, orderDetail, description, setDescription } = useApp();
@@ -29,7 +30,7 @@ const OrderCU = () => {
 
     if (buttonType === 'finish') {
       setLocal('cart', []);
-      return router.push(`/`)
+      return router.push(`/`);
     }
 
     return addQuery({ orderId: _id });
@@ -54,9 +55,9 @@ const OrderCU = () => {
 
   return (
     <div className="checkout-controls">
-      {['delivery', 'loss', 'spend', 'reject'].includes(type) && (
+      {[...ORDER_TYPES.OUT, 'delivery'].includes(type) && (
         <Input
-          placeholder="Хүргэлтийн мэдээлэл"
+          placeholder={type === 'delivery' ? 'Хүргэлтийн мэдээлэл' : 'Mэдээлэл'}
           value={description}
           onChange={(val: string) => setDescription(val)}
         />
@@ -68,7 +69,7 @@ const OrderCU = () => {
         <div className="col-6">
           <Button
             className="order"
-            disabled={disabled}
+            disabled={disabled || ORDER_TYPES.OUT.includes(type)}
             onClick={() => handleClick('order')}
             loading={buttonType === 'order' && loading}
           >
@@ -76,7 +77,7 @@ const OrderCU = () => {
           </Button>
         </div>
       </div>
-      {ORDER_TYPES.SALES.includes(type) && (
+      {ORDER_TYPES.SALES.includes(type) ? (
         <Button
           className="pay"
           disabled={!total}
@@ -85,14 +86,8 @@ const OrderCU = () => {
         >
           Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
         </Button>
-      ) || (
-        <Button
-          className="pay"
-          onClick={() => handleClick('finish')}
-          loading={buttonType === 'finish' && loading}
-        >
-          Дуусгах
-        </Button>
+      ) : (
+        <OrderFinish />
       )}
     </div>
   );
