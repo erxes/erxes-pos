@@ -7,6 +7,9 @@ const typeTextDef: any = {
   eat: 'Зааланд',
   take: 'Авч явах',
   delivery: 'Хүргэлтээр',
+  loss: 'Хорогдол',
+  spend: 'Зарлагадсан',
+  reject: 'Гологдол',
 };
 
 const Deliver = () => {

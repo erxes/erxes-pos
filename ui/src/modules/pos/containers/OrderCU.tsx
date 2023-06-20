@@ -10,6 +10,7 @@ import useTotalValue from 'lib/useTotalValue';
 import Button from 'ui/Button';
 import Deliver from '../../checkout/components/Deliver';
 import useIsEditable from 'lib/useIsEditable';
+import { ORDER_TYPES } from 'modules/constants';
 
 const OrderCU = () => {
   const { type, orderDetail, description, setDescription } = useApp();
@@ -25,6 +26,12 @@ const OrderCU = () => {
       setLocal('cart', []);
       return router.push(`/checkout/${_id}`);
     }
+
+    if (buttonType === 'finish') {
+      setLocal('cart', []);
+      return router.push(`/`)
+    }
+
     return addQuery({ orderId: _id });
   };
 
@@ -47,7 +54,7 @@ const OrderCU = () => {
 
   return (
     <div className="checkout-controls">
-      {type === 'delivery' && (
+      {['delivery', 'loss', 'spend', 'reject'].includes(type) && (
         <Input
           placeholder="Хүргэлтийн мэдээлэл"
           value={description}
@@ -69,14 +76,24 @@ const OrderCU = () => {
           </Button>
         </div>
       </div>
-      <Button
-        className="pay"
-        disabled={!total}
-        onClick={() => handleClick('pay')}
-        loading={buttonType === 'pay' && loading}
-      >
-        Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
-      </Button>
+      {ORDER_TYPES.SALES.includes(type) && (
+        <Button
+          className="pay"
+          disabled={!total}
+          onClick={() => handleClick('pay')}
+          loading={buttonType === 'pay' && loading}
+        >
+          Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
+        </Button>
+      ) || (
+        <Button
+          className="pay"
+          onClick={() => handleClick('finish')}
+          loading={buttonType === 'finish' && loading}
+        >
+          Дуусгах
+        </Button>
+      )}
     </div>
   );
 };
