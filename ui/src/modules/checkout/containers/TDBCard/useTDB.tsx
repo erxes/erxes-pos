@@ -1,5 +1,4 @@
 import { useConfigsContext } from 'modules/auth/containers/Configs';
-import { strToObj } from 'modules/utils';
 import { TDB_CARD } from 'modules/constants';
 
 export const objToString = (details: any) => {
@@ -21,7 +20,7 @@ const useTDB = () => {
     'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
   };
   const tdbCardInfo = (paymentTypes || []).find((pt) => pt.type === TDB_CARD);
-  const port = (strToObj(tdbCardInfo?.config) || {}).port;
+  const port = tdbCardInfo?.config?.port;
   const path = port ? `http://localhost:${port}` : TDB_DEFAULT_PATH;
 
   const endPoint = `${path}/ecrt1000`;

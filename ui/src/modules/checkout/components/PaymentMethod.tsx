@@ -19,6 +19,7 @@ const PaymentMethod: FC<IProps> = ({
   onClick,
   loading,
   btnText,
+  disabled,
   ...restProps
 }) => {
   const mode = getMode();
@@ -62,11 +63,9 @@ const PaymentMethod: FC<IProps> = ({
         onClick={() => changeActivePayment('')}
         setValue={(val: any) => setValue(val, name)}
         value={value}
+        disabled={disabled}
       >
-        <Button
-          onClick={onClick}
-          loading={loading}
-        >
+        <Button onClick={onClick} loading={loading}>
           {btnText}
         </Button>
       </PaymentInput>

@@ -1,3 +1,4 @@
+import { toast } from 'react-toastify';
 import type { IEbarimtConfig } from './types';
 import { ORDER_TYPES } from 'modules/constants';
 
@@ -84,10 +85,8 @@ export const goToReceipt = (
   blank: string = '_black'
 ) => window.open(`/order-receipt/${_id}?type=${type}`, '_blank');
 
-export const goToKitchenReceipt = (
-  _id: string,
-  blank: string = '_black'
-) => window.open(`/kitchen-receipt/${_id}`, '_blank');
+export const goToKitchenReceipt = (_id: string) =>
+  window.open(`/kitchen-receipt/${_id}`, '_blank');
 
 export const renderType = (type: string) => {
   if (type === ORDER_TYPES.EAT) return 'Зааланд';
@@ -159,6 +158,16 @@ export const getSumsOfAmount = (paidAmounts: any, paymentTypes: any) => {
 };
 
 export function strToObj(str?: string) {
-  let obj = new Function('return' + (str || ''));
-  return obj();
+  if (!str) return {};
+  try {
+    const obj = eval('(' + str + ')');
+    return obj;
+  } catch (error) {
+    toast.error('Invalid payment config', error);
+    return {};
+  }
+}
+
+export function checkElementsIncluded(array1: string[], array2: string[]) {
+  return array1.some((element1) => array2.includes(element1));
 }

@@ -69,7 +69,9 @@ const CoverItem = ({
               </>
             ) : (
               <>
-                <Link
+                <Button
+                  variant="slim"
+                  Component={Link}
                   href={{
                     pathname: '/cover/[id]',
                     query: {
@@ -77,8 +79,8 @@ const CoverItem = ({
                     },
                   }}
                 >
-                  <Button variant="slim">Өөрчлөх</Button>
-                </Link>
+                  Өөрчлөх
+                </Button>
                 <Button
                   className="confirm-btn"
                   onClick={() => setConfirm(true)}

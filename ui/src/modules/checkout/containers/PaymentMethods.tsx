@@ -9,12 +9,12 @@ import useAmounts from 'lib/useAmounts';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 
 const PaymentMethods = () => {
-  const { remainder } = useAmounts();
+  const { remainder, checkNotSplitIncluded } = useAmounts();
   const { currentConfig } = useConfigsContext();
 
   return (
     <div className="row payment-methods">
-      {remainder >= 0 && (
+      {(!checkNotSplitIncluded() || remainder > 0) && (
         <>
           <KhanBankCard />
           <GolomtCard />
@@ -24,7 +24,7 @@ const PaymentMethods = () => {
       )}
       {getMode() === 'pos' && (
         <>
-          <Cash />
+          {!checkNotSplitIncluded() && <Cash />}
           <AdditionalPayments />
         </>
       )}
