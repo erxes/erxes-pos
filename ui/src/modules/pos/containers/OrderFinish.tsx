@@ -1,21 +1,27 @@
-import Button from 'modules/common/ui/Button';
-import useOrderCUData from 'lib/useOrderCUData';
 import { gql, useMutation } from '@apollo/client';
+import useOrderCUData from 'lib/useOrderCUData';
+import { useApp } from 'modules/AppContext';
 import { mutations } from 'modules/checkout/graphql';
+import Button from 'modules/common/ui/Button';
+import { setLocal } from 'modules/utils';
+import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
-const OrderFinish = ({
-  onCompleted,
-}: {
-  onCompleted: (_id: string) => void;
-}) => {
+const OrderFinish = () => {
+  const router = useRouter();
+  const { setInitialState } = useApp();
   const data = useOrderCUData();
   const [finishOrder, { loading }] = useMutation(gql(mutations.ordersFinish), {
-    onCompleted: (data) => onCompleted(data.ordersFinish._id),
+    onCompleted: (data) => {
+      setLocal('cart', []);
+      setInitialState();
+      return router.push(`/`);
+    },
     onError(error) {
       toast.error(error.message);
     },
   });
+
   return (
     <Button
       className="pay"

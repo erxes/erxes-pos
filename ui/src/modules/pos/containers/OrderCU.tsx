@@ -28,10 +28,6 @@ const OrderCU = () => {
       return router.push(`/checkout/${_id}`);
     }
 
-    if (buttonType === 'finish') {
-      setLocal('cart', []);
-    }
-
     return addQuery({ orderId: _id });
   };
 
@@ -68,7 +64,7 @@ const OrderCU = () => {
         <div className="col-6">
           <Button
             className="order"
-            disabled={disabled || ORDER_TYPES.OUT.includes(type)}
+            disabled={ORDER_TYPES.OUT.includes(type) ? false : disabled }
             onClick={() => handleClick('order')}
             loading={buttonType === 'order' && loading}
           >
@@ -86,7 +82,7 @@ const OrderCU = () => {
           Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
         </Button>
       ) : (
-        <OrderFinish onCompleted={onCompleted}/>
+        <OrderFinish/>
       )}
     </div>
   );
