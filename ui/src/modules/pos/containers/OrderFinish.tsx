@@ -4,9 +4,14 @@ import { gql, useMutation } from '@apollo/client';
 import { mutations } from 'modules/checkout/graphql';
 import { toast } from 'react-toastify';
 
-const OrderFinish = () => {
-  const { _id } = useOrderCUData();
+const OrderFinish = ({
+  onCompleted,
+}: {
+  onCompleted: (_id: string) => void;
+}) => {
+  const data = useOrderCUData();
   const [finishOrder, { loading }] = useMutation(gql(mutations.ordersFinish), {
+    onCompleted: (data) => onCompleted(data.ordersFinish._id),
     onError(error) {
       toast.error(error.message);
     },
@@ -14,7 +19,8 @@ const OrderFinish = () => {
   return (
     <Button
       className="pay"
-      onClick={() => _id && finishOrder({ variables: { id: _id } })}
+      loading={loading}
+      onClick={() => finishOrder({ variables: data })}
     >
       Дуусгах
     </Button>

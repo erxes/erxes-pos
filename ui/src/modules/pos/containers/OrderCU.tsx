@@ -30,7 +30,6 @@ const OrderCU = () => {
 
     if (buttonType === 'finish') {
       setLocal('cart', []);
-      return router.push(`/`);
     }
 
     return addQuery({ orderId: _id });
@@ -87,7 +86,7 @@ const OrderCU = () => {
           Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
         </Button>
       ) : (
-        <OrderFinish />
+        <OrderFinish onCompleted={onCompleted}/>
       )}
     </div>
   );
