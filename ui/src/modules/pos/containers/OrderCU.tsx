@@ -10,6 +10,8 @@ import useTotalValue from 'lib/useTotalValue';
 import Button from 'ui/Button';
 import Deliver from '../../checkout/components/Deliver';
 import useIsEditable from 'lib/useIsEditable';
+import { ORDER_TYPES } from 'modules/constants';
+import OrderFinish from './OrderFinish';
 
 const OrderCU = () => {
   const { type, orderDetail, description, setDescription } = useApp();
@@ -25,6 +27,7 @@ const OrderCU = () => {
       setLocal('cart', []);
       return router.push(`/checkout/${_id}`);
     }
+
     return addQuery({ orderId: _id });
   };
 
@@ -47,9 +50,9 @@ const OrderCU = () => {
 
   return (
     <div className="checkout-controls">
-      {type === 'delivery' && (
+      {[...ORDER_TYPES.OUT, 'delivery'].includes(type) && (
         <Input
-          placeholder="Хүргэлтийн мэдээлэл"
+          placeholder={type === 'delivery' ? 'Хүргэлтийн мэдээлэл' : 'Mэдээлэл'}
           value={description}
           onChange={(val: string) => setDescription(val)}
         />
@@ -61,7 +64,7 @@ const OrderCU = () => {
         <div className="col-6">
           <Button
             className="order"
-            disabled={disabled}
+            disabled={ORDER_TYPES.OUT.includes(type) ? false : disabled }
             onClick={() => handleClick('order')}
             loading={buttonType === 'order' && loading}
           >
@@ -69,14 +72,18 @@ const OrderCU = () => {
           </Button>
         </div>
       </div>
-      <Button
-        className="pay"
-        disabled={!total}
-        onClick={() => handleClick('pay')}
-        loading={buttonType === 'pay' && loading}
-      >
-        Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
-      </Button>
+      {ORDER_TYPES.SALES.includes(type) ? (
+        <Button
+          className="pay"
+          disabled={!total}
+          onClick={() => handleClick('pay')}
+          loading={buttonType === 'pay' && loading}
+        >
+          Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
+        </Button>
+      ) : (
+        <OrderFinish/>
+      )}
     </div>
   );
 };
