@@ -7,9 +7,11 @@ const Header = () => {
     <div className="flex-h-between">
       <h6>Хаалтууд</h6>
       <Link href="/cover/create" className="btn flat cover-create">
-        <Plus />
-        Нэмэх
-        <Ink />
+        <a>
+          <Plus />
+          Нэмэх
+          <Ink />
+        </a>
       </Link>
     </div>
   );
