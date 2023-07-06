@@ -7,6 +7,7 @@ import Button from 'ui/Button';
 import Receipt from './Receipt';
 import Loading from 'ui/Loading';
 import { toast } from 'react-toastify';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 
 const ReportContainer = () => {
   const format = (date: any) => dayjs(date).format('YYYY-MM-DD');
@@ -15,6 +16,7 @@ const ReportContainer = () => {
   const [date, setDate] = useState(format(today));
   const [dailyReport, setDailyReport] = useState();
   const [reportUserIds, setReportUserIds] = useState([]);
+  const { currentConfig, currentUser } = useConfigsContext();
 
   const { data, loading } = useQuery(gql(queries.posUsers), {
     onError(error) {
@@ -93,7 +95,7 @@ const ReportContainer = () => {
               },
             })}
           />
-          <Button loading={loadingReport} type="submit">
+          <Button loading={loadingReport} type="submit" disabled={!currentConfig.adminIds.includes(currentUser._id)}>
             Report
           </Button>
         </form>
