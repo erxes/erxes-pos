@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { ICoverItem } from './covers';
 import dayjs from 'dayjs';
-import Link from 'next/link';
+// import Link from 'next/link';
 import { useState } from 'react';
 import Button from 'ui/Button';
 import { mutations, queries } from '../graphql';
@@ -71,7 +71,8 @@ const CoverItem = ({
               <>
                 <Button
                   variant="slim"
-                  Component={Link}
+                  className="confirm-btn"
+                  // Component={Link}
                   href={{
                     pathname: '/cover/[id]',
                     query: {
