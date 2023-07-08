@@ -2,7 +2,12 @@ export const ORDER_TYPES = {
   TAKE: 'take',
   EAT: 'eat',
   DELIVERY: 'delivery',
-  ALL: ['take', 'eat', 'delivery'],
+  LOSS: 'loss',
+  SPEND: 'spend',
+  REJECT: 'reject',
+  ALL: ['take', 'eat', 'delivery', 'loss', 'spend', 'reject'],
+  SALES: ['take', 'eat', 'delivery'],
+  OUT: ['loss', 'spend', 'reject']
 };
 
 export const ORDER_STATUSES = {
@@ -48,7 +53,7 @@ export const PAYMENT_TYPES = {
 export const GOLOMT_CARD = 'golomtCard';
 export const KHANBANK_CARD = 'khaanCard';
 export const TDB_CARD = 'TDBCard';
-export const MOBILE= 'mobileAmount'
+export const MOBILE = 'mobileAmount'
 
 export const BANK_CARDS = [GOLOMT_CARD, KHANBANK_CARD, TDB_CARD]
 

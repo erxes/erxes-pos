@@ -92,6 +92,9 @@ export const renderType = (type: string) => {
   if (type === ORDER_TYPES.EAT) return 'Зааланд';
   if (type === ORDER_TYPES.TAKE) return 'Авч явахаар';
   if (type === ORDER_TYPES.DELIVERY) return 'Хүргэлт';
+  if (type === ORDER_TYPES.SPEND) return 'Зарлага';
+  if (type === ORDER_TYPES.LOSS) return 'Хорогдол';
+  if (type === ORDER_TYPES.REJECT) return 'Гологдол';
 };
 
 export const readFile = (url: string = '') => {
