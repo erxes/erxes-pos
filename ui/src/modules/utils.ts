@@ -95,6 +95,7 @@ export const renderType = (type: string) => {
   if (type === ORDER_TYPES.SPEND) return 'Зарлага';
   if (type === ORDER_TYPES.LOSS) return 'Хорогдол';
   if (type === ORDER_TYPES.REJECT) return 'Гологдол';
+  if (type === ORDER_TYPES.BEFORE) return 'Урьдчилсан';
 };
 
 export const readFile = (url: string = '') => {
