@@ -111,7 +111,6 @@ const Receipt = () => {
           {formatNum(unitPrice)}₮ x{formatNum(qty)}
         </td>
         <td className="totalCount">
-          {' '}
           = <b>{formatNum(totalAmount)}₮</b>
         </td>
       </tr>
@@ -234,7 +233,6 @@ const Receipt = () => {
       {(putResponses || [] as any[]).map((putResponse: any, index: number) => (
         <div key={`taxtype-${putResponse.taxType}`} id={`taxtype-${putResponse.taxType}`}>
           {index > 0 && (<div className="receipt-splitter"></div>)}
-
           <div className="block">
             <table>
               {renderHeader()}

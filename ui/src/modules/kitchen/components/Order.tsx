@@ -15,6 +15,7 @@ const Order = ({
   items,
   modifiedAt,
   paidDate,
+  dueDate,
   _id,
   status,
 }: any) => {
@@ -60,7 +61,7 @@ const Order = ({
           <div className="flex-v-center">
             <div className="flex-center flex-col">
               <DetailModal type={type} status={status} _id={_id} />
-              <Timer modifiedAt={modifiedAt} paidDate={paidDate} />
+              <Timer modifiedAt={modifiedAt} paidDate={paidDate} dueDate={dueDate}/>
             </div>
             <Button
               variant="slim"

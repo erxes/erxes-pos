@@ -14,7 +14,14 @@ import { ORDER_TYPES } from 'modules/constants';
 import OrderFinish from './OrderFinish';
 
 const OrderCU = () => {
-  const { type, orderDetail, description, setDescription } = useApp();
+  const {
+    type,
+    orderDetail,
+    description,
+    setDescription,
+    dueDate,
+    setDueDate,
+  } = useApp();
   const [buttonType, setButtonType] = useState('');
   const { paidDate } = useIsEditable();
   const { addQuery } = useAddQuery();
@@ -57,6 +64,13 @@ const OrderCU = () => {
           onChange={(val: string) => setDescription(val)}
         />
       )}
+      {(type === 'pre-order' || type === 'delivery') && (
+        <Input
+          type="datetime-local"
+          value={dueDate}
+          onChange={(val) => setDueDate(val)}
+        />
+      )}
       <div className="row">
         <div className="col-6">
           <Deliver />
@@ -64,7 +78,7 @@ const OrderCU = () => {
         <div className="col-6">
           <Button
             className="order"
-            disabled={ORDER_TYPES.OUT.includes(type) ? false : disabled }
+            disabled={ORDER_TYPES.OUT.includes(type) ? false : disabled}
             onClick={() => handleClick('order')}
             loading={buttonType === 'order' && loading}
           >
@@ -82,7 +96,7 @@ const OrderCU = () => {
           Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
         </Button>
       ) : (
-        <OrderFinish/>
+        <OrderFinish />
       )}
     </div>
   );

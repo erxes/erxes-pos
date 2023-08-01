@@ -1,5 +1,5 @@
-const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String, $customerType: String, $slotCode: String, $registerNumber: String, $billType: String, $origin: String, $deliveryInfo: JSON`;
-const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId, customerType: $customerType, slotCode: $slotCode, registerNumber: $registerNumber, billType: $billType, origin: $origin, deliveryInfo: $deliveryInfo`;
+const addEditParamDefs = `$items: [OrderItemInput], $totalAmount: Float!, $type: String!, $customerId: String, $customerType: String, $slotCode: String, $registerNumber: String, $billType: String, $origin: String, $deliveryInfo: JSON, $dueDate: Date`;
+const addEditParams = `items: $items, totalAmount: $totalAmount, type: $type, customerId: $customerId, customerType: $customerType, slotCode: $slotCode, registerNumber: $registerNumber, billType: $billType, origin: $origin, deliveryInfo: $deliveryInfo, dueDate: $dueDate`;
 
 const ordersAdd = `
   mutation ordersAdd(${addEditParamDefs}) {

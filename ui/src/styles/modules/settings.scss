@@ -91,4 +91,19 @@
       }
     }
   }
+  .golomt-config {
+    display: flex;
+    align-items: flex-end;
+    width: 100%;
+    gap: 0.5rem;
+    &__item {
+      flex: 1 1 auto;
+    }
+    &__submit {
+      padding: 1rem;
+      margin-bottom: 1px;
+      border: 1px solid transparent;
+      background: #000
+    }
+  }
 }

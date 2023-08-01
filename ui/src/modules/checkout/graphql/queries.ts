@@ -2,7 +2,6 @@ const commonFields = `
   _id
   name
   code
-
 `;
 
 export const orderFields = `
@@ -31,10 +30,10 @@ export const orderFields = `
     info
     type
   }
+  dueDate
 `;
 
 export const orderItemFields = `
-
     _id
     unitPrice
     orderId

@@ -11,7 +11,7 @@ const KeyListener = ({
 }) => {
   const [search, setSearchC] = useState('');
   const [changeDate, setChangeDate] = useState<number>(0);
-  const { setSearch, changeIsBarcode } = useApp();
+  const { setSearch, changeIsBarcode, blockBarcode } = useApp();
   const router = useRouter();
   const { categoryId, ...rest } = router.query;
 
@@ -36,11 +36,12 @@ const KeyListener = ({
   );
 
   useEffect(() => {
+    if (blockBarcode) return;
     window.addEventListener('keydown', handleKeyDown);
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [changeDate, search, handleKeyDown]);
+  }, [changeDate, search, handleKeyDown, blockBarcode]);
 
   return <div className={className}>{children}</div>;
 };

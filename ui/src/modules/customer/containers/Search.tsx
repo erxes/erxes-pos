@@ -13,7 +13,8 @@ const CustomerSearch = () => {
     setCustomerId,
     customerType,
     setCustomerType,
-    orderDetail
+    orderDetail,
+    changeBlockBarcode,
   } = useApp();
   const customer = (orderDetail || {}).customer || {};
 
@@ -41,7 +42,7 @@ const CustomerSearch = () => {
     searchCustomer({
       variables: {
         _id: val,
-        type: customerType
+        type: customerType,
       },
     });
 
@@ -89,14 +90,17 @@ const CustomerSearch = () => {
           <UserInCircle type={customerType} />
         </Button>
         <Search
-          placeholder={`${customerType === 'company'
+          placeholder={`${
+            customerType === 'company'
               ? 'Байгууллага'
               : customerType === 'user'
-                ? 'Ажилтан'
-                : 'Харилцагч'
-            } хайх`}
+              ? 'Ажилтан'
+              : 'Харилцагч'
+          } хайх`}
           onSearch={handleSearch}
           onChange={handleChange}
+          onFocus={() => changeBlockBarcode(true)}
+          onBlur={() => changeBlockBarcode(false)}
           value={value}
         />
         {renderResult()}

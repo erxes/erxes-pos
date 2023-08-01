@@ -11,6 +11,7 @@ const typeTextDef: any = {
   loss: 'Хорогдол',
   spend: 'Зарлагадсан',
   reject: 'Гологдол',
+  'pre-order': 'Урьдчилсан',
 };
 
 const Deliver = () => {
@@ -19,7 +20,7 @@ const Deliver = () => {
   const disabled = useIsDisabled();
   const typeText: any = {};
 
-  const allowTypes = (currentConfig || {}).allowTypes;
+  const allowTypes = [...(currentConfig || {}).allowTypes, 'pre-order'];
   for (const type of allowTypes) {
     typeText[type] = typeTextDef[type];
   }

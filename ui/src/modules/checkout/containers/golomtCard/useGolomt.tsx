@@ -1,5 +1,5 @@
 import { useConfigsContext } from 'modules/auth/containers/Configs';
-import { objToBase64 } from 'modules/utils';
+import { getLocal, objToBase64 } from 'modules/utils';
 import { GOLOMT_CARD } from 'modules/constants';
 
 const GOLOMT_DEFAULT_PATH = 'http://localhost:8500';
@@ -21,6 +21,7 @@ const initialData = {
 const useGolomt = () => {
   const { paymentTypes } = useConfigsContext();
   const golomtInfo = (paymentTypes || []).find((pt) => pt.type === GOLOMT_CARD);
+  const terminalID = getLocal('golomtId');
 
   const { port, ...restConfig } = golomtInfo?.config || ({} as any);
 
@@ -29,7 +30,7 @@ const useGolomt = () => {
   const endPoint = (data: object) =>
     `${path}/requestToPos/message?data=${objToBase64(data)}`;
 
-  const sendData = { ...initialData, ...restConfig };
+  const sendData = { ...initialData, ...restConfig, terminalID };
 
   return { golomtInfo, endPoint, sendData, GOLOMT_CARD };
 };
