@@ -2,6 +2,7 @@ import { useTime, useTimer } from 'react-timer-hook';
 import dayjs from 'dayjs';
 import cn from 'classnames';
 import Clock from 'modules/common/icons/Clock';
+import SireOn from 'modules/common/icons/SireOn';
 
 const Timer = ({ modifiedAt, paidDate, dueDate }: any) => {
   const date = new Date(dueDate || paidDate || modifiedAt);
@@ -43,7 +44,7 @@ const Timer = ({ modifiedAt, paidDate, dueDate }: any) => {
 
   return (
     <small className={cn('flex-center -timer', dueDate && '-expired')}>
-      {!!dueDate && <Clock />}
+      {!!dueDate && <SireOn />}
       <span>{diffHours}</span>:
       <span>{diffMinutes < 10 ? '0' + diffMinutes : diffMinutes}</span>:
       <span>{diffSeconds < 10 ? '0' + diffSeconds : diffSeconds || '00'}</span>

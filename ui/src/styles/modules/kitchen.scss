@@ -29,6 +29,16 @@
       margin-top: 0.25rem;
       font-weight: 600;
       color: $gray;
+      svg {
+        margin-right: 0.25rem;
+        font-size: 1.15rem;
+      }
+      &.-expired {
+        color: $error;
+        svg {
+          font-size: 1.5rem;
+        }
+      }
     }
 
     .-item {

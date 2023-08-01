@@ -10,7 +10,7 @@ import { getLocal } from './utils';
 
 export interface State {
   cart: ICartItem[];
-  type: 'delivery' | 'eat' | 'take' | string;
+  type: string;
   orderDetail: object | null;
   registerNumber: string;
   companyName: string;
@@ -24,7 +24,7 @@ export interface State {
   foundItem: ICartItem | null;
   isBarcode: boolean;
   blockBarcode: boolean;
-  dueDate: string;
+  dueDate: string | null;
 }
 
 const initialState = {
@@ -43,7 +43,7 @@ const initialState = {
   foundItem: null,
   isBarcode: false,
   blockBarcode: false,
-  dueDate: '',
+  dueDate: null,
 };
 
 type TBillType = '' | '1' | '3' | string;

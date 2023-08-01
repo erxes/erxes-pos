@@ -20,7 +20,7 @@ const Deliver = () => {
   const disabled = useIsDisabled();
   const typeText: any = {};
 
-  const allowTypes = [...(currentConfig || {}).allowTypes, 'pre-order'];
+  const allowTypes = [...(currentConfig || {}).allowTypes];
   for (const type of allowTypes) {
     typeText[type] = typeTextDef[type];
   }

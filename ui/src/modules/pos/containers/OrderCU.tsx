@@ -57,14 +57,16 @@ const OrderCU = () => {
 
   return (
     <div className="checkout-controls">
-      {[...ORDER_TYPES.OUT, 'delivery'].includes(type) && (
+      {[...ORDER_TYPES.OUT, ORDER_TYPES.DELIVERY].includes(type) && (
         <Input
-          placeholder={type === 'delivery' ? 'Хүргэлтийн мэдээлэл' : 'Mэдээлэл'}
+          placeholder={
+            type === ORDER_TYPES.DELIVERY ? 'Хүргэлтийн мэдээлэл' : 'Mэдээлэл'
+          }
           value={description}
           onChange={(val: string) => setDescription(val)}
         />
       )}
-      {(type === 'pre-order' || type === 'delivery') && (
+      {type === ORDER_TYPES.BEFORE && (
         <Input
           type="datetime-local"
           value={dueDate}

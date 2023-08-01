@@ -7,6 +7,7 @@ import Button from 'ui/Button';
 import { mutations, queries } from '../graphql';
 import c from 'classnames';
 import { toast } from 'react-toastify';
+import Link from 'next/link';
 
 const CoverItem = ({
   _id,
@@ -69,10 +70,7 @@ const CoverItem = ({
               </>
             ) : (
               <>
-                <Button
-                  variant="slim"
-                  className="confirm-btn"
-                  // Component={Link}
+                <Link
                   href={{
                     pathname: '/cover/[id]',
                     query: {
@@ -80,8 +78,8 @@ const CoverItem = ({
                     },
                   }}
                 >
-                  Өөрчлөх
-                </Button>
+                  <a className="btn slim">Өөрчлөх</a>
+                </Link>
                 <Button
                   className="confirm-btn"
                   onClick={() => setConfirm(true)}
