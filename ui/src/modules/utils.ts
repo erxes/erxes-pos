@@ -95,6 +95,7 @@ export const renderType = (type: string) => {
   if (type === ORDER_TYPES.SPEND) return 'Зарлага';
   if (type === ORDER_TYPES.LOSS) return 'Хорогдол';
   if (type === ORDER_TYPES.REJECT) return 'Гологдол';
+  if (type === ORDER_TYPES.BEFORE) return 'Урьдчилсан';
 };
 
 export const readFile = (url: string = '') => {
@@ -108,6 +109,11 @@ export const readFile = (url: string = '') => {
 
 export const objToBase64 = (obj: object) =>
   Buffer.from(JSON.stringify(obj)).toString('base64');
+
+export const base64ToObj = (str: string) => {
+ const json = Buffer.from(str, "base64").toString();
+ return JSON.parse(json);
+}
 
 export const getLocal = (name: string) => {
   if (typeof window !== 'undefined') {

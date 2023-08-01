@@ -2,6 +2,7 @@ import useGolomt from 'modules/checkout/containers/golomtCard/useGolomt';
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import Button from 'ui/Button';
+import { base64ToObj } from 'modules/utils';
 import Input from 'ui/Input';
 import { handlePaymentChange, handleMap, getValueOfPayment } from '../utils';
 import { useCoverContext } from '../coverContext';
@@ -25,9 +26,11 @@ const GolomtCover = () => {
       .then((r) => {
         const posResult = JSON.parse(r?.PosResult);
         if (posResult?.responseCode === '00') {
+          const receiptData = base64ToObj(posResult?.data);
+          
           setDetails((prev: any) =>
             handleMap(prev, GOLOMT_CARD, {
-              paidDetail: posResult?.ReceiptData,
+              paidDetail: receiptData,
             })
           );
         } else {

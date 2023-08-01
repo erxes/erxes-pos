@@ -11,7 +11,7 @@ const typeTextDef: any = {
   loss: 'Хорогдол',
   spend: 'Зарлагадсан',
   reject: 'Гологдол',
-  'pre-order': 'Урьдчилсан',
+  before: 'Урьдчилсан',
 };
 
 const Deliver = () => {

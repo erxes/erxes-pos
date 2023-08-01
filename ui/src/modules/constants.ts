@@ -5,8 +5,9 @@ export const ORDER_TYPES = {
   LOSS: 'loss',
   SPEND: 'spend',
   REJECT: 'reject',
-  ALL: ['take', 'eat', 'delivery', 'loss', 'spend', 'reject'],
-  SALES: ['take', 'eat', 'delivery'],
+  BEFORE: 'before',
+  ALL: ['take', 'eat', 'delivery', 'loss', 'spend', 'reject', 'before'],
+  SALES: ['take', 'eat', 'delivery', 'before'],
   OUT: ['loss', 'spend', 'reject']
 };
 
