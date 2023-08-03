@@ -16,7 +16,7 @@ const CoverContextProvider = ({ children }: { children: React.ReactNode }) => {
   const { id } = router.query;
 
   const [totalCash, setTotalCash] = useState(0);
-  const [totalMobile, setTotalMobile] = useState(0);
+  const [calcAmounts, setCalcAmounts] = useState(null);
   const [beginDate, setBeginDate] = useState<string | null>(null);
   const [endDate, setEndDate] = useState<string>(
     dayjs().format('YYYY-MM-DDTHH:mm')
@@ -98,13 +98,13 @@ const CoverContextProvider = ({ children }: { children: React.ReactNode }) => {
         getDetail,
         setDetails,
         totalCash,
-        totalMobile,
         cash,
         setCash,
         handleStartDate,
         handleEndDate,
         setTotalCash,
-        setTotalMobile,
+        calcAmounts,
+        setCalcAmounts,
       }}
     >
       {children}

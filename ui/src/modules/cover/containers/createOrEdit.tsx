@@ -10,11 +10,12 @@ import { useCoverContext } from '../coverContext';
 import useCoverCU from '../useCoverCU';
 import { useRouter } from 'next/router';
 import { queries } from '../graphql';
+import { addPaidDetail } from '../utils';
 
 const Cover = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { cash, beginDate, endDate, details } =
+  const { cash, beginDate, endDate, details, totalCash, calcAmounts } =
     useCoverContext();
   const { paymentTypes, currentUser } = useConfigsContext();
 
@@ -36,12 +37,24 @@ const Cover = () => {
         endDate,
         status: 'new',
         userId: (currentUser || {})._id,
-        details: [...details, { ...cash, paidSummary: filteredCash }],
+        details: [
+          ...(id === 'create' ? addPaidDetail(calcAmounts, details) : details),
+          {
+            ...cash,
+            paidSummary: filteredCash,
+            paidDetail: id === 'create' ? totalCash : cash.paidDetail,
+          },
+        ],
       },
       onCompleted: () => {
         router.push('/cover');
       },
-      refetchQueries: [{ query: queries.covers }, 'Covers', {query: queries.coverDetail}, 'CoverDetail'],
+      refetchQueries: [
+        { query: queries.covers },
+        'Covers',
+        { query: queries.coverDetail },
+        'CoverDetail',
+      ],
     });
   };
 

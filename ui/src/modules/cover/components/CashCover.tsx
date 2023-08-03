@@ -1,6 +1,7 @@
 import Input, { InputProps } from 'ui/Input';
 import { formatNum } from 'modules/utils';
 import { useCoverContext } from '../coverContext';
+import { useRouter } from 'next/router';
 
 type INote = {
   kindOfVal: number;
@@ -13,6 +14,8 @@ const CashInput = ({ value, ...rest }: InputProps) => (
 
 const CashCover = () => {
   const { cash, setCash, totalCash } = useCoverContext();
+  const router = useRouter();
+  const { id } = router.query;
   const handleValueChange = (value: string, idx: number) => {
     const removeLeadZero = value.toString().replace(/^0+/, '');
     const num = Number(removeLeadZero);
@@ -42,7 +45,7 @@ const CashCover = () => {
   return (
     <div className="cover-cash">
       <p className="-subtitle">
-        <b>Бэлнээр ({formatNum(totalCash)}₮)</b>
+        <b>Бэлнээр ({formatNum(id === 'create' ? totalCash : cash.paidDetail)}₮)</b>
       </p>
       <div className="row">
         <div className="col-4">

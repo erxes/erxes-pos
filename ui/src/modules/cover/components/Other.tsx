@@ -12,7 +12,7 @@ const CoverTemplates = ({
     title: string;
   };
 }) => {
-  const { getDetail, setDetails, totalMobile } = useCoverContext();
+  const { getDetail, setDetails, calcAmounts } = useCoverContext();
   const detail = getDetail(payment.type);
   const router = useRouter();
   const { id } = router.query;
@@ -25,9 +25,9 @@ const CoverTemplates = ({
       <p className="-subtitle">
         <b>
           {payment.title}
-          {id === 'create' &&
-            payment.type === 'mobileAmount' &&
-            `(${formatNum(totalMobile)}₮)`}
+          {`(${formatNum(
+            id === 'create' ? calcAmounts[payment.type] : detail.paidDetail || 0
+          )}₮)`}
         </b>
       </p>
       <div className="row">

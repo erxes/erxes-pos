@@ -2,6 +2,8 @@ import { useState } from 'react';
 import Button from 'ui/Button';
 import { IFilter } from '../containers/Orders';
 import { setLocal } from 'modules/utils';
+// import Select from 'react-select';
+// import { ORDER_STATUSES } from 'modules/constants';
 const Filter = ({
   setFilter,
   filter,
@@ -18,8 +20,9 @@ const Filter = ({
       isPaid,
       sortField: sortBy,
       sortDirection: sort,
+      
     };
-    setFilter(value);
+    // setFilter(value);
     // save to local storage
     setLocal('kitchen-filter', JSON.stringify(value));
   };
@@ -27,6 +30,9 @@ const Filter = ({
   const handleIsPaid = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = e.target;
     setIsPaid(value === 'true' ? true : value === 'false' ? false : undefined);
+  };
+  const handleSelectStatus = (values: any) => {
+    console.log(values);
   };
 
   return (
@@ -36,6 +42,31 @@ const Filter = ({
         className="flex-v-center kitchen-filter-form"
         onSubmit={handleSubmit}
       >
+        <div className="kitchen-filter-form-item">
+          <label htmlFor="isPaid">Төлөв:</label>
+          {/* <Select
+            isMulti
+            className="react-select"
+            onChange={handleSelectStatus}
+            options={ ORDER_STATUSES.ACTIVE.map((status) => ({
+              value: status,
+              label: status,
+            }))}
+            value={(filter.statuses || []).map((status) => ({
+              value: status,
+              label: status,
+            }))}
+            theme={(theme) => ({
+              ...theme,
+              borderRadius: 0,
+              colors: {
+                ...theme.colors,
+                primary25: 'gray',
+                primary: 'black',
+              },
+            })}
+          /> */}
+        </div>
         <div className="kitchen-filter-form-item">
           <label htmlFor="isPaid">Төлбөр төлсөн эсэх:</label>
           <select

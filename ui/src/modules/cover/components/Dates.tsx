@@ -15,8 +15,8 @@ const Dates = () => {
     handleStartDate,
     handleEndDate,
     setTotalCash,
-    setTotalMobile,
     setDetails,
+    setCalcAmounts,
   } = useCoverContext();
 
   const router = useRouter();
@@ -33,7 +33,7 @@ const Dates = () => {
       if (id === 'create') {
         handleStartDate(startDate);
         !!cashAmount && setTotalCash(cashAmount);
-        !!rest.mobileAmount && setTotalMobile(rest.mobileAmount);
+        setCalcAmounts(rest);
         Object.keys(rest).map((key) =>
           handlePaymentChange(rest[key], key, setDetails)
         );
