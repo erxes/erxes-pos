@@ -1,11 +1,11 @@
-import { useLazyQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { queries } from './graphql';
 import { createContext, useContext, useEffect, useState } from 'react';
-import dayjs from 'dayjs';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Loading from 'ui/Loading';
 import { formatDate } from './utils';
+import dayjs from 'dayjs';
 
 // create a context
 export const CoverContext = createContext({} as any);
@@ -14,17 +14,13 @@ const CoverContextProvider = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { paymentTypes } = useConfigsContext();
   const { id } = router.query;
-  const [getCoverDetail, { data, loading }] = useLazyQuery(
-    queries.coverDetail,
-    {
-      variables: { id },
-      fetchPolicy: 'network-only',
-    }
-  );
-  const [beginDate, setBeginDate] = useState(
+
+  const [totalCash, setTotalCash] = useState(0);
+  const [totalMobile, setTotalMobile] = useState(0);
+  const [beginDate, setBeginDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string>(
     dayjs().format('YYYY-MM-DDTHH:mm')
   );
-  const [endDate, setEndDate] = useState(dayjs().format('YYYY-MM-DDTHH:mm'));
   const [details, setDetails] = useState<object[]>([]);
   const [cash, setCash] = useState({
     _id: Math.random(),
@@ -32,45 +28,40 @@ const CoverContextProvider = ({ children }: { children: React.ReactNode }) => {
     paidSummary: initial,
   });
 
-  const { coverDetail } = data || {};
-
-  const isCreate = id === 'create';
+  const { loading } = useQuery(queries.coverDetail, {
+    variables: { id },
+    fetchPolicy: 'network-only',
+    skip: !id || id === 'create',
+    onCompleted({ coverDetail }) {
+      const { beginDate, endDate, details } = coverDetail || {};
+      setBeginDate(formatDate(beginDate));
+      setEndDate(formatDate(endDate));
+      const cashData =
+        (details || []).find(
+          (detail: any) => detail.paidType === 'cashAmount'
+        ) || {};
+      const cashDataSyncWithInitial = {
+        ...cashData,
+        paidSummary: initial.map((item) => ({
+          ...item,
+          value:
+            (
+              (cashData.paidSummary || []).find(
+                (paid: any) => paid.kindOfVal === item.kindOfVal
+              ) || {}
+            ).value || 0,
+        })),
+      };
+      const exceptCash = (details || []).filter(
+        (detail: any) => detail.paidType !== 'cashAmount'
+      );
+      setCash(cashDataSyncWithInitial || initial);
+      setDetails(exceptCash);
+    },
+  });
 
   useEffect(() => {
-    if (id && !isCreate) {
-      getCoverDetail();
-    }
-  }, [getCoverDetail, id, isCreate]);
-
-  useEffect(() => {
-    if (id && !isCreate) {
-      if (!loading) {
-        const { beginDate, endDate, details } = coverDetail || {};
-        setBeginDate(formatDate(beginDate));
-        setEndDate(formatDate(endDate));
-        const cashData =
-          (details || []).find(
-            (detail: any) => detail.paidType === 'cashAmount'
-          ) || {};
-        const cashDataSyncWithInitial = {
-          ...cashData,
-          paidSummary: initial.map((item) => ({
-            ...item,
-            value:
-              (
-                (cashData.paidSummary || []).find(
-                  (paid: any) => paid.kindOfVal === item.kindOfVal
-                ) || {}
-              ).value || 0,
-          })),
-        };
-        const exceptCash = (details || []).filter(
-          (detail: any) => detail.paidType !== 'cashAmount'
-        );
-        setCash(cashDataSyncWithInitial || initial);
-        setDetails(exceptCash);
-      }
-    } else {
+    if (!id || id === 'create') {
       const additional = (paymentTypes || []).map((payment) => ({
         _id: Math.random(),
         paidType: payment.type,
@@ -85,9 +76,11 @@ const CoverContextProvider = ({ children }: { children: React.ReactNode }) => {
         },
       ]);
     }
-  }, [loading, id, coverDetail, paymentTypes, isCreate]);
+  }, [id, paymentTypes]);
 
-  const handleStartDate = (value: string) => setBeginDate(formatDate(value));
+  const handleStartDate = (value: string) => {
+    setBeginDate(formatDate(value));
+  };
 
   const handleEndDate = (value: any) => setEndDate(formatDate(value));
 
@@ -104,10 +97,14 @@ const CoverContextProvider = ({ children }: { children: React.ReactNode }) => {
         details,
         getDetail,
         setDetails,
+        totalCash,
+        totalMobile,
         cash,
         setCash,
         handleStartDate,
         handleEndDate,
+        setTotalCash,
+        setTotalMobile,
       }}
     >
       {children}

@@ -1,4 +1,4 @@
-import Input from 'ui/Input';
+import Input, { InputProps } from 'ui/Input';
 import { formatNum } from 'modules/utils';
 import { useCoverContext } from '../coverContext';
 
@@ -7,16 +7,12 @@ type INote = {
   value: number;
 };
 
-type IProps = {
-  cash: {
-    paidType: string;
-    paidSummary: INote[];
-  };
-  setCash: (detail: any) => void;
-};
+const CashInput = ({ value, ...rest }: InputProps) => (
+  <Input {...rest} value={formatNum(Number(value)) + ' ₮'} />
+);
 
 const CashCover = () => {
-  const { cash, setCash } = useCoverContext();
+  const { cash, setCash, totalCash } = useCoverContext();
   const handleValueChange = (value: string, idx: number) => {
     const removeLeadZero = value.toString().replace(/^0+/, '');
     const num = Number(removeLeadZero);
@@ -35,10 +31,18 @@ const CashCover = () => {
       }),
     }));
   };
+
+  const totalAmount = (cash.paidSummary || []).reduce(
+    (total: number, { kindOfVal, value }: INote) => {
+      return total + kindOfVal * value;
+    },
+    0
+  );
+
   return (
     <div className="cover-cash">
       <p className="-subtitle">
-        <b>Бэлнээр</b>
+        <b>Бэлнээр ({formatNum(totalCash)}₮)</b>
       </p>
       <div className="row">
         <div className="col-4">
@@ -54,9 +58,9 @@ const CashCover = () => {
       {(cash.paidSummary || []).map((note: INote, idx: number) => (
         <div className="row" key={idx}>
           <div className="col-4">
-            <Input
+            <CashInput
               name="kindOfVal"
-              value={formatNum(note.kindOfVal) + ' ₮'}
+              value={note.kindOfVal}
               disabled
               className="text-right"
             />
@@ -70,15 +74,26 @@ const CashCover = () => {
             />
           </div>
           <div className="col-4">
-            <Input
+            <CashInput
               name="amount"
-              value={formatNum(note.kindOfVal * note.value) + ' ₮'}
+              value={note.kindOfVal * note.value}
               disabled
               className="text-right"
             />
           </div>
         </div>
       ))}
+      <div className="row">
+        <div className="col-4"></div>
+        <div className="col-4"> </div>
+        <b className="col-4 text-right">
+          <div className="flex-v-center total-cash">
+            <p>Нийт:</p>
+            <CashInput disabled className="text-right" value={totalAmount} />
+          </div>
+          <div className="text-right">Зөрүү: {totalCash - totalAmount}</div>
+        </b>
+      </div>
     </div>
   );
 };

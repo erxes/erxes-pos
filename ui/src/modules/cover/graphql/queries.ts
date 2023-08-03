@@ -61,6 +61,12 @@ const coverDetail = gql`
   }
 `;
 
-const queries = { covers, coverDetail };
+const coverAmounts = gql`
+  query CoverAmounts($id: String, $endDate: Date) {
+    coverAmounts(_id: $id, endDate: $endDate)
+  }
+`;
+
+const queries = { covers, coverDetail, coverAmounts };
 
 export default queries;

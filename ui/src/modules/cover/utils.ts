@@ -35,6 +35,5 @@ export const handleMap = (arr: any, type: string, value: any) =>
     return el;
   });
 
-export const formatDate = (date: string) => dayjs(date).format('YYYY-MM-DDTHH:mm');
-
-
+export const formatDate = (date: string) =>
+  dayjs(date).format('YYYY-MM-DDTHH:mm');

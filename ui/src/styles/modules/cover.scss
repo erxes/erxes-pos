@@ -38,11 +38,11 @@
   input {
     padding: 0.5rem;
     margin-bottom: 1rem;
-    &.text-right {
-      text-align: right;
-    }
+    
   }
-
+  .text-right {
+    text-align: right;
+  }
   .row {
     margin: 0 -0.5rem;
   }
@@ -50,6 +50,9 @@
   .col-2,
   .col-6 {
     padding: 0 0.5rem;
+    .transparent {
+      color: white;
+    }
   }
   &s {
     label {
@@ -109,5 +112,14 @@
         background: rgba($color: $success, $alpha: 0.12) !important;
       }
     }
+  }
+  .col-4.end-date,
+  .total-cash {
+    input {
+      margin-bottom: 4px;
+    }
+  }
+  .total-cash {
+    gap: 4px;
   }
 }

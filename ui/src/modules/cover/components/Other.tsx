@@ -1,6 +1,8 @@
 import Input from 'ui/Input';
 import { handlePaymentChange, getValueOfPayment } from '../utils';
 import { useCoverContext } from '../coverContext';
+import { formatNum } from 'modules/utils';
+import { useRouter } from 'next/router';
 
 const CoverTemplates = ({
   payment,
@@ -10,8 +12,10 @@ const CoverTemplates = ({
     title: string;
   };
 }) => {
-  const { getDetail, setDetails } = useCoverContext();
+  const { getDetail, setDetails, totalMobile } = useCoverContext();
   const detail = getDetail(payment.type);
+  const router = useRouter();
+  const { id } = router.query;
 
   const handleChange = (value: string) =>
     handlePaymentChange(value, payment.type, setDetails);
@@ -19,7 +23,12 @@ const CoverTemplates = ({
   return (
     <div className="cover-templates">
       <p className="-subtitle">
-        <b>{payment.title}</b>
+        <b>
+          {payment.title}
+          {id === 'create' &&
+            payment.type === 'mobileAmount' &&
+            `(${formatNum(totalMobile)}₮)`}
+        </b>
       </p>
       <div className="row">
         <div className="col-4">

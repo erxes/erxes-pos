@@ -14,8 +14,10 @@ import { queries } from '../graphql';
 const Cover = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { cash, beginDate, endDate, details } = useCoverContext();
+  const { cash, beginDate, endDate, details } =
+    useCoverContext();
   const { paymentTypes, currentUser } = useConfigsContext();
+
   const { coverCU, loading } = useCoverCU();
 
   const cards = [KHANBANK_CARD, TDB_CARD, GOLOMT_CARD];
@@ -39,7 +41,7 @@ const Cover = () => {
       onCompleted: () => {
         router.push('/cover');
       },
-      refetchQueries: [{ query: queries.covers }, 'Covers'],
+      refetchQueries: [{ query: queries.covers }, 'Covers', {query: queries.coverDetail}, 'CoverDetail'],
     });
   };
 
@@ -49,22 +51,32 @@ const Cover = () => {
 
       <form onSubmit={handleSubmit}>
         <Dates />
-        <CashCover />
-        {[
-          ...(additionalPayments || []),
-          { type: 'mobileAmount', title: 'Цахимаар' },
-        ].map((payment, idx) => (
-          <Other payment={payment} key={idx} />
-        ))}
-        {paymentTypes?.find((pt) => pt.type === GOLOMT_CARD) && <GolomtCover />}
-        {paymentTypes?.find((pt) => pt.type === TDB_CARD) && <TDBCover />}
-        <div className="row">
-          <div className="col-4">
-            <Button loading={loading} type="submit" className="cover-submit">
-              Хааx
-            </Button>
-          </div>
-        </div>
+        {!!beginDate && (
+          <>
+            <CashCover />
+            {[
+              ...(additionalPayments || []),
+              { type: 'mobileAmount', title: 'Цахимаар' },
+            ].map((payment, idx) => (
+              <Other payment={payment} key={idx} />
+            ))}
+            {paymentTypes?.find((pt) => pt.type === GOLOMT_CARD) && (
+              <GolomtCover />
+            )}
+            {paymentTypes?.find((pt) => pt.type === TDB_CARD) && <TDBCover />}
+            <div className="row">
+              <div className="col-4">
+                <Button
+                  loading={loading}
+                  type="submit"
+                  className="cover-submit"
+                >
+                  Хааx
+                </Button>
+              </div>
+            </div>
+          </>
+        )}
       </form>
     </div>
   );
