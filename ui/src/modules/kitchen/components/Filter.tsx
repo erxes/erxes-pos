@@ -20,9 +20,8 @@ const Filter = ({
       isPaid,
       sortField: sortBy,
       sortDirection: sort,
-      
     };
-    // setFilter(value);
+    setFilter(value);
     // save to local storage
     setLocal('kitchen-filter', JSON.stringify(value));
   };
