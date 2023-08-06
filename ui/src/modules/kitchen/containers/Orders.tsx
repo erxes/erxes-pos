@@ -13,7 +13,6 @@ export interface IFilter {
   isPaid: boolean | undefined;
   sortDirection: number;
   sortField: string;
-  statuses: string[];
 }
 
 const Orders = () => {
