@@ -24,6 +24,13 @@ export const handlePaymentChange = (
   );
 };
 
+export const addPaidDetail = (calcAmounts: object[], details: any) => {
+  return details.map((detail: any) => ({
+    ...detail,
+    paidDetail: calcAmounts[detail.paidType],
+  }));
+};
+
 export const handleMap = (arr: any, type: string, value: any) =>
   arr.map((el: any) => {
     if (el.paidType === type) {
@@ -35,6 +42,5 @@ export const handleMap = (arr: any, type: string, value: any) =>
     return el;
   });
 
-export const formatDate = (date: string) => dayjs(date).format('YYYY-MM-DDTHH:mm');
-
-
+export const formatDate = (date: string) =>
+  dayjs(date).format('YYYY-MM-DDTHH:mm');

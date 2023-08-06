@@ -6,7 +6,7 @@ import SlotNumber from '../components/SlotNumber';
 import Button from 'ui/Button';
 
 const ActiveOrders = () => {
-  const { ALL, COMPLETE } = ORDER_STATUSES;
+  const { ALL } = ORDER_STATUSES;
 
   const {
     fullOrders,
@@ -15,17 +15,16 @@ const ActiveOrders = () => {
     totalCount,
     handleLoadMore,
   } = useFullOrders({
-    statuses: ALL.filter(a => a !== COMPLETE),
+    statuses: ALL,
     variables: {
+      isPaid: false,
       sortDirection: -1,
       sortField: 'createdAt',
     },
     query: queries.fullOrders,
   });
 
-  const orders = (fullOrders || []).filter(
-    ({ paidDate }: any) => !paidDate
-  );
+  const orders = (fullOrders || []);
 
   return (
     <SlotsHeader

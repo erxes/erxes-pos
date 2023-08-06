@@ -1,6 +1,5 @@
 import { useApp } from 'modules/AppContext';
 import useIsDisabled from 'lib/useIsDisabled';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAddQuery } from 'lib/useQuery';
 import { formatNum, goToReceipt, setLocal } from 'modules/utils';
@@ -12,18 +11,28 @@ import Deliver from '../../checkout/components/Deliver';
 import useIsEditable from 'lib/useIsEditable';
 import { ORDER_TYPES } from 'modules/constants';
 import OrderFinish from './OrderFinish';
+import { useEffect, useState } from 'react';
 
 const OrderCU = () => {
-  const { type, orderDetail, description, setDescription } = useApp();
-  const [buttonType, setButtonType] = useState('');
+  const {
+    type,
+    orderDetail,
+    description,
+    setDescription,
+    dueDate,
+    setDueDate,
+    buttonType,
+    setButtonType,
+  } = useApp();
   const { paidDate } = useIsEditable();
   const { addQuery } = useAddQuery();
   const router = useRouter();
   const total = useTotalValue();
   const disabled = useIsDisabled();
+  const [clicked, setClicked] = useState(false);
 
   const onCompleted = (_id: string) => {
-    if (buttonType === 'pay') {
+    if (buttonType !== 'order') {
       setLocal('cart', []);
       return router.push(`/checkout/${_id}`);
     }
@@ -34,9 +43,16 @@ const OrderCU = () => {
   const { loading, orderCU } = useOrderCU(onCompleted);
 
   const handleClick = (val: string) => {
+    setClicked(true);
     setButtonType(val);
-    orderCU();
   };
+
+  useEffect(() => {
+    if (clicked) {
+      orderCU();
+      setClicked(false);
+    }
+  }, [clicked, orderCU]);
 
   if (paidDate) {
     return (
@@ -50,11 +66,22 @@ const OrderCU = () => {
 
   return (
     <div className="checkout-controls">
-      {[...ORDER_TYPES.OUT, 'delivery'].includes(type) && (
+      {[...ORDER_TYPES.OUT, ORDER_TYPES.DELIVERY, ORDER_TYPES.BEFORE].includes(
+        type
+      ) && (
         <Input
-          placeholder={type === 'delivery' ? 'Хүргэлтийн мэдээлэл' : 'Mэдээлэл'}
+          placeholder={
+            type === ORDER_TYPES.DELIVERY ? 'Хүргэлтийн мэдээлэл' : 'Mэдээлэл'
+          }
           value={description}
           onChange={(val: string) => setDescription(val)}
+        />
+      )}
+      {[ORDER_TYPES.BEFORE, ORDER_TYPES.DELIVERY].includes(type) && (
+        <Input
+          type="datetime-local"
+          value={dueDate}
+          onChange={(val) => setDueDate(val)}
         />
       )}
       <div className="row">
@@ -64,7 +91,7 @@ const OrderCU = () => {
         <div className="col-6">
           <Button
             className="order"
-            disabled={ORDER_TYPES.OUT.includes(type) ? false : disabled }
+            disabled={ORDER_TYPES.OUT.includes(type) ? false : disabled}
             onClick={() => handleClick('order')}
             loading={buttonType === 'order' && loading}
           >
@@ -82,7 +109,7 @@ const OrderCU = () => {
           Төлбөр төлөх {total ? formatNum(total) + '₮' : ''}
         </Button>
       ) : (
-        <OrderFinish/>
+        <OrderFinish />
       )}
     </div>
   );

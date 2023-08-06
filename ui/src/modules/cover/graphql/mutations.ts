@@ -1,21 +1,29 @@
 import { gql } from '@apollo/client';
 
-const coversAdd = gql`
-  mutation CoversAdd(
+const addEditParamDefs = `
     $beginDate: Date
-    $description: Date
+    $description: String
     $details: JSON
     $endDate: Date
     $status: String
     $userId: String
+`;
+
+const addEditParams = `
+    beginDate: $beginDate
+    description: $description
+    details: $details
+    endDate: $endDate
+    status: $status
+    userId: $userId
+`;
+
+const coversAdd = gql`
+  mutation CoversAdd(
+    ${addEditParamDefs}
   ) {
     coversAdd(
-      beginDate: $beginDate
-      description: $description
-      details: $details
-      endDate: $endDate
-      status: $status
-      userId: $userId
+     ${addEditParams}
     ) {
       _id
     }
@@ -25,21 +33,11 @@ const coversAdd = gql`
 const coversEdit = gql`
   mutation CoversEdit(
     $id: String!
-    $userId: String
-    $status: String
-    $endDate: Date
-    $details: JSON
-    $description: Date
-    $beginDate: Date
+    ${addEditParamDefs}
   ) {
     coversEdit(
       _id: $id
-      userId: $userId
-      status: $status
-      endDate: $endDate
-      details: $details
-      description: $description
-      beginDate: $beginDate
+      ${addEditParams}
     ) {
       _id
     }
@@ -54,6 +52,12 @@ const coversConfirm = gql`
   }
 `;
 
-const mutations = { coversAdd, coversEdit, coversConfirm };
+const coversDelete = gql`
+  mutation CoversRemove($id: String!) {
+    coversRemove(_id: $id)
+  }
+`;
+
+const mutations = { coversAdd, coversEdit, coversConfirm, coversDelete };
 
 export default mutations;

@@ -8,7 +8,7 @@ export const ORDER_TYPES = {
   BEFORE: 'before',
   ALL: ['take', 'eat', 'delivery', 'loss', 'spend', 'reject', 'before'],
   SALES: ['take', 'eat', 'delivery', 'before'],
-  OUT: ['loss', 'spend', 'reject']
+  OUT: ['loss', 'spend', 'reject'],
 };
 
 export const ORDER_STATUSES = {
@@ -19,6 +19,7 @@ export const ORDER_STATUSES = {
   COMPLETE: 'complete',
   PENDING: 'pending',
   ALL: ['new', 'doing', 'done', 'complete', 'reDoing', 'pending'],
+  ACTIVE: ['new', 'doing', 'reDoing'],
   DISABLED: ['done', 'complete'],
 };
 
@@ -54,9 +55,8 @@ export const PAYMENT_TYPES = {
 export const GOLOMT_CARD = 'golomtCard';
 export const KHANBANK_CARD = 'khaanCard';
 export const TDB_CARD = 'TDBCard';
-export const MOBILE = 'mobileAmount'
+export const MOBILE = 'mobileAmount';
 
-export const BANK_CARDS = [GOLOMT_CARD, KHANBANK_CARD, TDB_CARD]
-
+export const BANK_CARDS = [GOLOMT_CARD, KHANBANK_CARD, TDB_CARD];
 
 export const NOT_FOUND = '$notFound';

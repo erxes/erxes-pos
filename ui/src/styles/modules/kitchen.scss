@@ -29,6 +29,16 @@
       margin-top: 0.25rem;
       font-weight: 600;
       color: $gray;
+      svg {
+        margin-right: 0.25rem;
+        font-size: 1.15rem;
+      }
+      &.-expired {
+        color: $error;
+        svg {
+          font-size: 1.5rem;
+        }
+      }
     }
 
     .-item {
@@ -129,12 +139,15 @@
     &-form {
       gap: 1rem;
       &-item {
-        display: flex;
-        align-items: center;
+        // display: flex;
+        // align-items: center;
         gap: 0.5rem;
         label {
           white-space: nowrap;
           padding: 0;
+        }
+        .react-select, select {
+          min-width: 12rem;
         }
       }
       button.btn {

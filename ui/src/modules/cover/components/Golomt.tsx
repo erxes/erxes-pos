@@ -9,7 +9,7 @@ import { useCoverContext } from '../coverContext';
 
 const GolomtCover = () => {
   const { getDetail, setDetails } = useCoverContext();
-  
+
   const { endPoint, sendData, GOLOMT_CARD } = useGolomt();
   const [loading, setLoading] = useState(false);
   const detail = getDetail(GOLOMT_CARD);
@@ -27,7 +27,7 @@ const GolomtCover = () => {
         const posResult = JSON.parse(r?.PosResult);
         if (posResult?.responseCode === '00') {
           const receiptData = base64ToObj(posResult?.data);
-          
+
           setDetails((prev: any) =>
             handleMap(prev, GOLOMT_CARD, {
               paidDetail: receiptData,
@@ -77,6 +77,7 @@ const GolomtCover = () => {
         <div className="col-6">
           <textarea
             value={detail.paidDetail ? JSON.stringify(detail.paidDetail) : ''}
+            disabled
           />
         </div>
       </div>

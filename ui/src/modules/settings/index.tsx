@@ -8,6 +8,7 @@ import DeleteOrders from './containers/DeleteOrders';
 import SendData from './containers/SendData';
 import ToErxesLink from './containers/ToErxesLink';
 import Hourglass from 'icons/Hourglass';
+import GolomtConfig from './components/GolomtConfig';
 
 const Settings: IComponent = () => {
   const { currentUser, currentConfig } = useConfigsContext();
@@ -51,6 +52,8 @@ const Settings: IComponent = () => {
           currentLink={`/processes/performanceList?inBranchId=${currentConfig.branchId}&inDepartmentId=${currentConfig.departmentId}&outBranchId=${currentConfig.branchId}&outDepartmentId=${currentConfig.departmentId}`}
         />
       </div>
+
+      <GolomtConfig />
 
       <div className="status-description">
         <b className="text-center">Захиалгын төлөвүүд</b>

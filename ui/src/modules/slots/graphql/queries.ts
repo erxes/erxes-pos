@@ -1,6 +1,8 @@
+import { queryParamsDefs, queryParamsValues } from "modules/checkout/graphql/queries";
+
 const fullOrders = `
-  query fullOrders($searchValue: String, $statuses: [String], $customerId: String, $customerType: String, $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
-    fullOrders(searchValue: $searchValue, statuses: $statuses, customerId: $customerId, customerType: $customerType, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
+  query fullOrders(${queryParamsDefs}) {
+    fullOrders(${queryParamsValues}) {
       _id
       number
       status

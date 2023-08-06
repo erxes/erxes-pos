@@ -21,8 +21,7 @@ const initialData = {
 const useGolomt = () => {
   const { paymentTypes } = useConfigsContext();
   const golomtInfo = (paymentTypes || []).find((pt) => pt.type === GOLOMT_CARD);
-  const terminalID = getLocal('golomtTerminalID')
-  const portNo = getLocal('golomtPortNo')
+  const terminalID = getLocal('golomtId');
 
   const { port, ...restConfig } = golomtInfo?.config || ({} as any);
 
@@ -31,7 +30,7 @@ const useGolomt = () => {
   const endPoint = (data: object) =>
     `${path}/requestToPos/message?data=${objToBase64(data)}`;
 
-  const sendData = { ...initialData, ...restConfig, terminalID, portNo };
+  const sendData = { ...initialData, ...restConfig, terminalID };
 
   return { golomtInfo, endPoint, sendData, GOLOMT_CARD };
 };

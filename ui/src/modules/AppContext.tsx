@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import {
   useCallback,
   useMemo,
@@ -10,7 +11,7 @@ import { getLocal } from './utils';
 
 export interface State {
   cart: ICartItem[];
-  type: 'delivery' | 'eat' | 'take' | string;
+  type: string;
   orderDetail: object | null;
   registerNumber: string;
   companyName: string;
@@ -23,6 +24,8 @@ export interface State {
   searchValue: string;
   foundItem: ICartItem | null;
   isBarcode: boolean;
+  blockBarcode: boolean;
+  dueDate: string | null;
 }
 
 const initialState = {
@@ -40,18 +43,21 @@ const initialState = {
   searchValue: '',
   foundItem: null,
   isBarcode: false,
+  blockBarcode: false,
+  dueDate: null,
+  buttonType: '',
 };
 
 type TBillType = '' | '1' | '3' | string;
 
 type Action =
   | {
-    type: 'ADD_ITEM_TO_CART';
-    product: IProductBase & {
-      productImgUrl: string;
-      manufacturedDate?: string;
-    };
-  }
+      type: 'ADD_ITEM_TO_CART';
+      product: IProductBase & {
+        productImgUrl: string;
+        manufacturedDate?: string;
+      };
+    }
   | { type: 'SELECT'; _id: string }
   | { type: 'SET_CART'; cart: ICartItem[] }
   | { type: 'SET_TYPE'; value: string }
@@ -68,7 +74,13 @@ type Action =
   | { type: 'SET_SLOT_CODE'; value: string }
   | { type: 'SET_SEARCH'; value: string }
   | { type: 'CHANGE_FOUND_ITEM'; value: ICartItem }
-  | { type: 'CHANGE_IS_BARCODE'; value: boolean };
+  | { type: 'CHANGE_IS_BARCODE'; value: boolean }
+  | { type: 'SET_BLOCK_BARCODE'; value: boolean }
+  | { type: 'SET_DUE_DATE'; value: string }
+  | {
+      type: 'SET_BUTTON_TYPE';
+      value: string;
+    };
 
 export const AppContext = createContext<{} | any>(initialState);
 
@@ -76,6 +88,29 @@ AppContext.displayName = 'AppContext';
 
 const appReducer = (state: State, action: Action) => {
   switch (action.type) {
+    case 'SET_BUTTON_TYPE': {
+      return {
+        ...state,
+        buttonType: action.value,
+      };
+    }
+
+    case 'SET_DUE_DATE': {
+      if (!dayjs(action.value).isValid()) {
+        return { ...state };
+      }
+
+      return {
+        ...state,
+        dueDate: dayjs(action.value).format('YYYY-MM-DDTHH:mm'),
+      };
+    }
+    case 'SET_BLOCK_BARCODE': {
+      return {
+        ...state,
+        blockBarcode: action.value,
+      };
+    }
     case 'CHANGE_IS_BARCODE': {
       return { ...state, isBarcode: action.value };
     }
@@ -95,7 +130,11 @@ const appReducer = (state: State, action: Action) => {
       const currentCart = cart.slice();
 
       const foundItem = currentCart.find((i) => {
-        if (i.productId === product._id && i.status === 'new' && i.manufacturedDate === product.manufacturedDate) {
+        if (
+          i.productId === product._id &&
+          i.status === 'new' &&
+          i.manufacturedDate === product.manufacturedDate
+        ) {
           if (state.type === ('take' || 'delivery')) return true;
           if (!i.isTake) return true;
         }
@@ -103,8 +142,8 @@ const appReducer = (state: State, action: Action) => {
 
       if (foundItem) {
         foundItem.count += 1;
-        currentCart.splice(currentCart.indexOf(foundItem), 1)
-        currentCart.unshift(foundItem)
+        currentCart.splice(currentCart.indexOf(foundItem), 1);
+        currentCart.unshift(foundItem);
       } else {
         const cartItem = {
           ...product,
@@ -336,6 +375,21 @@ export const AppContextProvider: IComponent = ({ children }) => {
     [dispatch]
   );
 
+  const changeBlockBarcode = useCallback(
+    (value: boolean) => dispatch({ type: 'SET_BLOCK_BARCODE', value }),
+    [dispatch]
+  );
+
+  const setDueDate = useCallback(
+    (value: string) => dispatch({ type: 'SET_DUE_DATE', value }),
+    [dispatch]
+  );
+
+  const setButtonType = useCallback(
+    (value: string) => dispatch({ type: 'SET_BUTTON_TYPE', value }),
+    [dispatch]
+  );
+
   const value = useMemo(
     () => ({
       ...state,
@@ -357,6 +411,9 @@ export const AppContextProvider: IComponent = ({ children }) => {
       setSearch,
       changeFoundItem,
       changeIsBarcode,
+      changeBlockBarcode,
+      setDueDate,
+      setButtonType,
     }),
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [state]

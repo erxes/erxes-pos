@@ -8,15 +8,18 @@ import Grid from 'ui/Grid';
 import Filter from '../components/Filter';
 import { getLocal } from 'modules/utils';
 import Button from 'ui/Button';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 
 export interface IFilter {
   isPaid: boolean | undefined;
   sortDirection: number;
   sortField: string;
+  statuses: string[];
 }
 
 const Orders = () => {
-  const { NEW, DOING, ALL, REDOING, PENDING } = ORDER_STATUSES;
+  const { ALL } = ORDER_STATUSES;
+
   const [filter, setFilter] = useState<IFilter>(
     !!getLocal('kitchen-filter')
       ? JSON.parse(getLocal('kitchen-filter'))
@@ -24,6 +27,10 @@ const Orders = () => {
           isPaid: undefined,
           sortDirection: 1,
           sortField: 'createdAt',
+          statuses: ORDER_STATUSES.ACTIVE.map((status) => ({
+            value: status,
+            label: status,
+          })),
         }
   );
 
@@ -35,7 +42,7 @@ const Orders = () => {
     totalCount,
     handleLoadMore,
   } = useFullOrders({
-    statuses: [NEW, DOING, REDOING, PENDING],
+    statuses: ORDER_STATUSES.ACTIVE,
     variables: {
       ...filter,
       perPage: 30,
