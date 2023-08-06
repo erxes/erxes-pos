@@ -67,10 +67,10 @@ const ChooseType = ({
 const Ebarimt = () => {
   const { closeModal } = useUI();
   const { companyName, billType, orderDetail } = useApp();
-    const { allowInnerBill, paymentTypes } = useConfigsContext();
+  const { allowInnerBill, paymentTypes } = useConfigsContext();
   const { CITIZEN, ENTITY, INNER } = BILL_TYPES;
   const isOrg = billType === ENTITY;
-  
+
   const showReciept = () => {
     closeModal();
     window.location.href = '/';

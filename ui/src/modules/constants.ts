@@ -19,7 +19,7 @@ export const ORDER_STATUSES = {
   COMPLETE: 'complete',
   PENDING: 'pending',
   ALL: ['new', 'doing', 'done', 'complete', 'reDoing', 'pending'],
-  ACTIVE: ['new', 'doing', 'reDoing', 'pending'],
+  ACTIVE: ['new', 'doing', 'reDoing'],
   DISABLED: ['done', 'complete'],
 };
 

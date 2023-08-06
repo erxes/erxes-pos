@@ -14,19 +14,17 @@ export interface IFilter {
   isPaid: boolean | undefined;
   sortDirection: number;
   sortField: string;
-  // statuses: string[];
+  statuses: string[];
 }
 
 const Orders = () => {
   const { ALL } = ORDER_STATUSES;
-  const { currentConfig } = useConfigsContext();
-  const { showType } = (currentConfig || {}).kitchenScreen || {};
 
   const [filter, setFilter] = useState<IFilter>(
     !!getLocal('kitchen-filter')
       ? JSON.parse(getLocal('kitchen-filter'))
       : {
-          isPaid: showType === 'paid' ? true : undefined,
+          isPaid: undefined,
           sortDirection: 1,
           sortField: 'createdAt',
           statuses: ORDER_STATUSES.ACTIVE.map((status) => ({
