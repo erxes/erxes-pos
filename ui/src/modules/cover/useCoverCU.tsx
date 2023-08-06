@@ -7,7 +7,11 @@ const useCoverCU = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const [createCover, { loading }] = useMutation(mutations.coversAdd);
+  const [createCover, { loading }] = useMutation(mutations.coversAdd, {
+    onError(error) {
+      toast.error(error.message);
+    },
+  });
 
   const [editCover, { loading: loadingEdit }] = useMutation(
     mutations.coversEdit,

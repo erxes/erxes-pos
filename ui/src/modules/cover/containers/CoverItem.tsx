@@ -27,7 +27,9 @@ const CoverItem = ({
       id: _id,
     },
     onCompleted() {
+      action === 'delete' && toast.success('Амжилттай устлаа');
       setAction('');
+
     },
     onError(error: ApolloError) {
       toast.error(error.message);
