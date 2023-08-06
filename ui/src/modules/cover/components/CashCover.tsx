@@ -41,11 +41,12 @@ const CashCover = () => {
     },
     0
   );
+  const calcAmount = id === 'create' ? totalCash : cash.paidDetail;
 
   return (
     <div className="cover-cash">
       <p className="-subtitle">
-        <b>Бэлнээр ({formatNum(id === 'create' ? totalCash : cash.paidDetail)}₮)</b>
+        <b>Бэлнээр ({formatNum(calcAmount)}₮)</b>
       </p>
       <div className="row">
         <div className="col-4">
@@ -94,7 +95,9 @@ const CashCover = () => {
             <p>Нийт:</p>
             <CashInput disabled className="text-right" value={totalAmount} />
           </div>
-          <div className="text-right">Зөрүү: {totalCash - totalAmount}</div>
+          <div className="text-right">
+            Зөрүү: {formatNum(calcAmount - totalAmount) + ' ₮'}
+          </div>
         </b>
       </div>
     </div>

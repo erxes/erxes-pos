@@ -20,14 +20,20 @@ const CoverTemplates = ({
   const handleChange = (value: string) =>
     handlePaymentChange(value, payment.type, setDetails);
 
+  const calcAmount =
+    id === 'create' ? calcAmounts[payment.type] : detail.paidDetail || 0;
+
+  const value = getValueOfPayment(detail);
+
+  const odd = calcAmount - value;
+
   return (
     <div className="cover-templates">
       <p className="-subtitle">
         <b>
           {payment.title}
-          {`(${formatNum(
-            id === 'create' ? calcAmounts[payment.type] : detail.paidDetail || 0
-          )}₮)`}
+          {`(${formatNum(calcAmount)})`}
+          {!!odd && ` (${odd}₮)`}
         </b>
       </p>
       <div className="row">
@@ -35,7 +41,7 @@ const CoverTemplates = ({
           <label htmlFor="kindOfVal">Дүн</label>
           <Input
             name="amount"
-            value={getValueOfPayment(detail)}
+            value={value}
             onChange={handleChange}
             type="number"
           />
