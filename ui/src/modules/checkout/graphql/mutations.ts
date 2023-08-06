@@ -11,6 +11,7 @@ const addEditParamDefs = `
   $deliveryInfo: JSON,
   $dueDate: Date,
   $status: String,
+  $buttonType: String
 `;
 
 const addEditParams = `
@@ -26,6 +27,7 @@ const addEditParams = `
   deliveryInfo: $deliveryInfo,
   dueDate: $dueDate,
   status: $status
+  buttonType: $buttonType
 `;
 
 const ordersAdd = `

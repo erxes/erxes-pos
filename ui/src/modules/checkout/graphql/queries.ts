@@ -109,9 +109,39 @@ export const ordersCheckCompany = `
   }
 `;
 
+export const queryParamsDefs = `
+  $searchValue: String,
+  $statuses: [String],
+  $customerId: String,
+  $customerType: String,
+  $startDate: Date,
+  $endDate: Date,
+  $dateType: String,
+  $isPaid: Boolean,
+  $page: Int,
+  $perPage: Int,
+  $sortField: String,
+  $sortDirection: Int
+`;
+
+export const queryParamsValues = `
+  searchValue: $searchValue,
+  statuses: $statuses,
+  customerId: $customerId,
+  customerType: $customerType,
+  startDate: $startDate,
+  endDate: $endDate,
+  dateType: $dateType,
+  isPaid: $isPaid,
+  page: $page,
+  perPage: $perPage,
+  sortField: $sortField,
+  sortDirection: $sortDirection,
+`;
+
 const fullOrders = `
-  query fullOrders($isPaid: Boolean, $searchValue: String, $statuses: [String], $customerId: String, $customerType: String, $startDate: Date, $endDate: Date, $dateType: String, $page: Int, $perPage: Int, $sortField: String, $sortDirection: Int) {
-    fullOrders(isPaid: $isPaid, searchValue: $searchValue, statuses: $statuses, customerId: $customerId, customerType: $customerType, startDate: $startDate, endDate: $endDate, dateType: $dateType, page: $page, perPage: $perPage, sortField: $sortField, sortDirection: $sortDirection) {
+  query fullOrders(${queryParamsDefs}) {
+    fullOrders(${queryParamsValues}) {
       ${orderFields}
 
       items {
@@ -141,32 +171,10 @@ const slots = `
 
 const ordersTotalCount = `
   query OrdersTotalCount(
-    $searchValue: String
-    $statuses: [String]
-    $customerId: String
-    $customerType: String
-    $startDate: Date
-    $endDate: Date
-    $dateType: String
-    $isPaid: Boolean
-    $page: Int
-    $perPage: Int
-    $sortField: String
-    $sortDirection: Int
+    ${queryParamsDefs}
   ) {
     ordersTotalCount(
-      searchValue: $searchValue
-      statuses: $statuses
-      customerId: $customerId
-      customerType: $customerType
-      startDate: $startDate
-      endDate: $endDate
-      dateType: $dateType
-      isPaid: $isPaid
-      page: $page
-      perPage: $perPage
-      sortField: $sortField
-      sortDirection: $sortDirection
+      ${queryParamsValues}
     )
   }
 `;

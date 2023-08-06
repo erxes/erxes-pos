@@ -84,9 +84,13 @@ AppContext.displayName = 'AppContext';
 const appReducer = (state: State, action: Action) => {
   switch (action.type) {
     case 'SET_DUE_DATE': {
+      if (!dayjs(action.value).isValid()) {
+        return { ...state }
+      }
+
       return {
         ...state,
-        dueDate: dayjs(action.value).format('YYYY-MM-DDTHH:mm'),
+        dueDate: dayjs(action.value).format('YYYY-MM-DDTHH:mm')
       };
     }
     case 'SET_BLOCK_BARCODE': {
