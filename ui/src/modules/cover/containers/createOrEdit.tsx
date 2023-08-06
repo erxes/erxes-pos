@@ -11,11 +11,12 @@ import useCoverCU from '../useCoverCU';
 import { useRouter } from 'next/router';
 import { queries } from '../graphql';
 import { addPaidDetail } from '../utils';
+import Description from '../components/Description';
 
 const Cover = () => {
   const router = useRouter();
   const { id } = router.query;
-  const { cash, beginDate, endDate, details, totalCash, calcAmounts } =
+  const { cash, beginDate, endDate, details, totalCash, calcAmounts, description } =
     useCoverContext();
   const { paymentTypes, currentUser } = useConfigsContext();
 
@@ -37,6 +38,7 @@ const Cover = () => {
         endDate,
         status: 'new',
         userId: (currentUser || {})._id,
+        description,
         details: [
           ...(id === 'create' ? addPaidDetail(calcAmounts, details) : details),
           {
@@ -77,6 +79,7 @@ const Cover = () => {
               <GolomtCover />
             )}
             {paymentTypes?.find((pt) => pt.type === TDB_CARD) && <TDBCover />}
+            <Description />
             <div className="row">
               <div className="col-4">
                 <Button

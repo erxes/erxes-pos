@@ -27,13 +27,19 @@ const CoverContextProvider = ({ children }: { children: React.ReactNode }) => {
     paidType: 'cashAmount',
     paidSummary: initial,
   });
+  const [description, setDescription] = useState('');
 
   const { loading } = useQuery(queries.coverDetail, {
     variables: { id },
     fetchPolicy: 'network-only',
     skip: !id || id === 'create',
     onCompleted({ coverDetail }) {
-      const { beginDate, endDate, details } = coverDetail || {};
+      const {
+        beginDate,
+        endDate,
+        details,
+        description: desc,
+      } = coverDetail || {};
       setBeginDate(formatDate(beginDate));
       setEndDate(formatDate(endDate));
       const cashData =
@@ -57,6 +63,7 @@ const CoverContextProvider = ({ children }: { children: React.ReactNode }) => {
       );
       setCash(cashDataSyncWithInitial || initial);
       setDetails(exceptCash);
+      setDescription(desc);
     },
   });
 
@@ -99,7 +106,9 @@ const CoverContextProvider = ({ children }: { children: React.ReactNode }) => {
         setDetails,
         totalCash,
         cash,
+        description,
         setCash,
+        setDescription,
         handleStartDate,
         handleEndDate,
         setTotalCash,

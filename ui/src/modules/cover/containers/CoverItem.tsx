@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { useMutation, ApolloError } from '@apollo/client';
 import { ICoverItem } from './covers';
 import dayjs from 'dayjs';
 // import Link from 'next/link';
@@ -19,20 +19,76 @@ const CoverItem = ({
   modifiedAt,
   status,
 }: ICoverItem) => {
-  const [confirm, setConfirm] = useState(false);
+  const [action, setAction] = useState('');
   const formatDate = (date: string) => dayjs(date).format('DD/MM/YYYY HH:mm');
-  const [coversConfirm, { loading }] = useMutation(mutations.coversConfirm, {
+  
+  const options = {
     variables: {
       id: _id,
     },
     onCompleted() {
-      setConfirm(false);
+      setAction('');
     },
-    onError(error) {
+    onError(error: ApolloError) {
       toast.error(error.message);
     },
     refetchQueries: [{ query: queries.covers }, 'covers'],
-  });
+  };
+
+  const [coversConfirm, { loading }] = useMutation(
+    mutations.coversConfirm,
+    options
+  );
+  const [coversDelete, { loading: loadingDelete }] = useMutation(
+    mutations.coversDelete,
+    options
+  );
+
+  const renderActions = () => {
+    if (status === 'confirm') return null;
+
+    if (!!action)
+      return (
+        <>
+          <Button
+            onClick={() =>
+              action === 'delete' ? coversDelete() : coversConfirm()
+            }
+            className={action === 'delete' ? 'cover-item-delete' : ''}
+            loading={loading || loadingDelete}
+          >
+            Тийм
+          </Button>
+          <Button variant="slim" onClick={() => setAction('')}>
+            Үгүй
+          </Button>
+        </>
+      );
+    return (
+      <>
+        <Button
+          className="cover-item-delete"
+          onClick={() => setAction('delete')}
+        >
+          Устгах
+        </Button>
+
+        <Link
+          href={{
+            pathname: '/cover/[id]',
+            query: {
+              id: _id,
+            },
+          }}
+        >
+          <a className="btn slim">Өөрчлөх</a>
+        </Link>
+        <Button className="confirm-btn" onClick={() => setAction('confirm')}>
+          Баталгаажуулах
+        </Button>
+      </>
+    );
+  };
 
   return (
     <div className="cover-item row flex-v-center">
@@ -57,39 +113,9 @@ const CoverItem = ({
         )}
       </div>
       <div className="col-3">
-        {status === 'new' && (
-          <div className="flex-v-center cover-item-actions">
-            {confirm ? (
-              <>
-                <Button onClick={() => coversConfirm()} loading={loading}>
-                  Тийм
-                </Button>
-                <Button variant="slim" onClick={() => setConfirm(false)}>
-                  Үгүй
-                </Button>
-              </>
-            ) : (
-              <>
-                <Link
-                  href={{
-                    pathname: '/cover/[id]',
-                    query: {
-                      id: _id,
-                    },
-                  }}
-                >
-                  <a className="btn slim">Өөрчлөх</a>
-                </Link>
-                <Button
-                  className="confirm-btn"
-                  onClick={() => setConfirm(true)}
-                >
-                  Баталгаажуулах
-                </Button>
-              </>
-            )}
-          </div>
-        )}
+        <div className="flex-v-center cover-item-actions">
+          {renderActions()}
+        </div>
       </div>
     </div>
   );

@@ -38,7 +38,6 @@
   input {
     padding: 0.5rem;
     margin-bottom: 1rem;
-    
   }
   .text-right {
     text-align: right;
@@ -86,6 +85,9 @@
       &-label {
         text-align: right;
       }
+    }
+    &-delete.btn.flat {
+      background: $error;
     }
     a.btn.slim {
       font-weight: 600;

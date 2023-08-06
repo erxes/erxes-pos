@@ -44,6 +44,7 @@ const coverDetail = gql`
       _id
       beginDate
       createdAt
+      description
       details {
         _id
         paidDetail
