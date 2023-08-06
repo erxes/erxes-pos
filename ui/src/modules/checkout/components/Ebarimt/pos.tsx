@@ -10,7 +10,6 @@ import { useConfigsContext } from 'modules/auth/containers/Configs';
 import { NOT_FOUND } from 'modules/constants';
 import { BILL_TYPES } from 'modules/constants';
 import { checkElementsIncluded } from 'modules/utils';
-import useChangeStatus from 'lib/useChangeStatus';
 
 interface IChooseType {
   children: ReactNode;
@@ -68,26 +67,16 @@ const ChooseType = ({
 const Ebarimt = () => {
   const { closeModal } = useUI();
   const { companyName, billType, orderDetail } = useApp();
-  const { paidAmounts, _id } = orderDetail;
-  const { allowInnerBill, paymentTypes, currentConfig } = useConfigsContext();
+    const { allowInnerBill, paymentTypes } = useConfigsContext();
   const { CITIZEN, ENTITY, INNER } = BILL_TYPES;
   const isOrg = billType === ENTITY;
-  const { showType } = (currentConfig || {}).kitchenScreen || {};
-  const {
-    handleChangeStatus,
-    loading: loadingChangeStatus,
-    ORDER_STATUSES,
-  } = useChangeStatus();
-
+  
   const showReciept = () => {
     closeModal();
     window.location.href = '/';
   };
 
   const onCompleted = () => {
-    if (showType === 'click') {
-      handleChangeStatus({ _id, status: ORDER_STATUSES.COMPLETE });
-    }
     return showReciept();
   };
 
@@ -99,6 +88,7 @@ const Ebarimt = () => {
   };
 
   const checkSkipEbarimt = () => {
+    const { paidAmounts } = orderDetail;
     const skipEbarimt = (
       paymentTypes?.filter((pt) => pt?.config?.skipEbarimt) || []
     ).map((pt) => pt.type);
@@ -136,7 +126,7 @@ const Ebarimt = () => {
         </div>
         {isOrg && !!companyName && companyName !== NOT_FOUND && (
           <Button
-            loading={loading || loadingChangeStatus}
+            loading={loading}
             className="print"
             onClick={() => settlePayment()}
           >
