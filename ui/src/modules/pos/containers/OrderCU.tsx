@@ -1,6 +1,5 @@
 import { useApp } from 'modules/AppContext';
 import useIsDisabled from 'lib/useIsDisabled';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useAddQuery } from 'lib/useQuery';
 import { formatNum, goToReceipt, setLocal } from 'modules/utils';
@@ -12,6 +11,7 @@ import Deliver from '../../checkout/components/Deliver';
 import useIsEditable from 'lib/useIsEditable';
 import { ORDER_TYPES } from 'modules/constants';
 import OrderFinish from './OrderFinish';
+import { useEffect, useState } from 'react';
 
 const OrderCU = () => {
   const {
@@ -21,16 +21,18 @@ const OrderCU = () => {
     setDescription,
     dueDate,
     setDueDate,
+    buttonType,
+    setButtonType,
   } = useApp();
-  const [buttonType, setButtonType] = useState('');
   const { paidDate } = useIsEditable();
   const { addQuery } = useAddQuery();
   const router = useRouter();
   const total = useTotalValue();
   const disabled = useIsDisabled();
+  const [clicked, setClicked] = useState(false);
 
   const onCompleted = (_id: string) => {
-    if (buttonType === 'pay') {
+    if (buttonType !== 'order') {
       setLocal('cart', []);
       return router.push(`/checkout/${_id}`);
     }
@@ -41,9 +43,16 @@ const OrderCU = () => {
   const { loading, orderCU } = useOrderCU(onCompleted);
 
   const handleClick = (val: string) => {
+    setClicked(true);
     setButtonType(val);
-    orderCU();
   };
+
+  useEffect(() => {
+    if (clicked) {
+      orderCU();
+      setClicked(false);
+    }
+  }, [clicked, orderCU]);
 
   if (paidDate) {
     return (
@@ -57,7 +66,9 @@ const OrderCU = () => {
 
   return (
     <div className="checkout-controls">
-      {[...ORDER_TYPES.OUT, ORDER_TYPES.DELIVERY, ORDER_TYPES.BEFORE].includes(type) && (
+      {[...ORDER_TYPES.OUT, ORDER_TYPES.DELIVERY, ORDER_TYPES.BEFORE].includes(
+        type
+      ) && (
         <Input
           placeholder={
             type === ORDER_TYPES.DELIVERY ? 'Хүргэлтийн мэдээлэл' : 'Mэдээлэл'

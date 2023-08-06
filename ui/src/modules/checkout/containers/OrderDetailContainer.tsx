@@ -24,17 +24,18 @@ const OrderDetailContainer = ({ handleSuccess, children }: any) => {
     skip: !router.query.orderId,
     onCompleted(data) {
       const { orderDetail } = data;
-      const { registerNumber, billType, type, customer, dueDate } = orderDetail || {};
+      const { registerNumber, billType, type, customer, dueDate } =
+        orderDetail || {};
       setOrderDetail(orderDetail ? orderDetail : {});
       billType && setBillType(billType);
       registerNumber
         ? setRegisterNumber(registerNumber)
         : customer?.code &&
-        billType === '3' &&
-        setRegisterNumber(customer?.code);
+          billType === '3' &&
+          setRegisterNumber(customer?.code);
       handleSuccess && handleSuccess(orderDetail);
       type && setType(type);
-      dueDate && setDueDate(dueDate)
+      dueDate && setDueDate(dueDate);
     },
   });
 

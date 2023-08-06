@@ -17,6 +17,7 @@ const useOrderCUData = () => {
     description,
     slotCode,
     dueDate,
+    buttonType,
   } = useApp();
   const { isOrg } = useBillType();
   const router = useRouter();
@@ -56,6 +57,7 @@ const useOrderCUData = () => {
     totalAmount,
     origin: mode === 'kiosk' ? 'kiosk' : 'pos',
     dueDate,
+    buttonType,
     deliveryInfo: {
       ...((orderDetail || {}).deliveryInfo || {}),
       description,

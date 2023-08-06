@@ -27,7 +27,8 @@ const CartContainer = () => {
     setSlotCode,
     setInitialState,
     orderDetail,
-    setDueDate
+    setDueDate,
+    setButtonType,
   } = useApp();
 
   const { orderId } = router.query;
@@ -46,8 +47,17 @@ const CartContainer = () => {
           if (getMode() === 'kiosk' && orderDetail.paidDate) {
             return (window.location.href = '/');
           }
-          const { items, customerId, customerType, type, billType, deliveryInfo, slotCode, dueDate } =
-            orderDetail;
+          const {
+            items,
+            customerId,
+            customerType,
+            type,
+            billType,
+            deliveryInfo,
+            slotCode,
+            dueDate,
+            buttonType,
+          } = orderDetail;
 
           const cart = (items || []).map((item: any) => convertCartItem(item));
 
@@ -60,6 +70,7 @@ const CartContainer = () => {
           setDescription((deliveryInfo || {}).description || '');
           setSlotCode(slotCode || '');
           setDueDate(dueDate || '');
+          setButtonType(buttonType || '');
         }
       },
       fetchPolicy: 'network-only',
