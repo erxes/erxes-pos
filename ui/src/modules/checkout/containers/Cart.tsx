@@ -15,7 +15,7 @@ const CheckoutCart = dynamic(() => import('../components/Cart'), {
 
 const CartContainer = () => {
   const router = useRouter();
-  
+
   const {
     setCart,
     setOrderDetail,
@@ -26,7 +26,8 @@ const CartContainer = () => {
     setDescription,
     setSlotCode,
     setInitialState,
-    orderDetail
+    orderDetail,
+    setDueDate
   } = useApp();
 
   const { orderId } = router.query;
@@ -45,7 +46,7 @@ const CartContainer = () => {
           if (getMode() === 'kiosk' && orderDetail.paidDate) {
             return (window.location.href = '/');
           }
-          const { items, customerId, customerType, type, billType, deliveryInfo, slotCode } =
+          const { items, customerId, customerType, type, billType, deliveryInfo, slotCode, dueDate } =
             orderDetail;
 
           const cart = (items || []).map((item: any) => convertCartItem(item));
@@ -58,6 +59,7 @@ const CartContainer = () => {
           setBillType(billType || '');
           setDescription((deliveryInfo || {}).description || '');
           setSlotCode(slotCode || '');
+          setDueDate(dueDate || '');
         }
       },
       fetchPolicy: 'network-only',

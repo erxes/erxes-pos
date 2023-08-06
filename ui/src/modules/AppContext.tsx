@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import {
   useCallback,
   useMemo,
@@ -50,12 +51,12 @@ type TBillType = '' | '1' | '3' | string;
 
 type Action =
   | {
-      type: 'ADD_ITEM_TO_CART';
-      product: IProductBase & {
-        productImgUrl: string;
-        manufacturedDate?: string;
-      };
-    }
+    type: 'ADD_ITEM_TO_CART';
+    product: IProductBase & {
+      productImgUrl: string;
+      manufacturedDate?: string;
+    };
+  }
   | { type: 'SELECT'; _id: string }
   | { type: 'SET_CART'; cart: ICartItem[] }
   | { type: 'SET_TYPE'; value: string }
@@ -85,7 +86,7 @@ const appReducer = (state: State, action: Action) => {
     case 'SET_DUE_DATE': {
       return {
         ...state,
-        dueDate: action.value,
+        dueDate: dayjs(action.value).format('YYYY-MM-DDTHH:mm'),
       };
     }
     case 'SET_BLOCK_BARCODE': {
