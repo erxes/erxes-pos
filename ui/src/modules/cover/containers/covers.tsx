@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { queries } from '../graphql';
 import Loading from 'ui/Loading';
 import CoverItem from './CoverItem';
+import { toast } from 'react-toastify';
 
 export interface ICoverItem {
   _id: string;
@@ -21,7 +22,11 @@ export interface ICoverItem {
 }
 
 const Covers = () => {
-  const { data, loading } = useQuery(queries.covers);
+  const { data, loading } = useQuery(queries.covers, {
+    onError(error) {
+      toast.error(error.message);
+    },
+  });
 
   if (loading) return <Loading />;
 
