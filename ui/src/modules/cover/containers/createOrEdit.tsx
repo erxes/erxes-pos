@@ -22,7 +22,8 @@ const Cover = () => {
 
   const { coverCU, loading } = useCoverCU();
 
-  const cards = [KHANBANK_CARD, TDB_CARD, GOLOMT_CARD];
+  // const cards = [KHANBANK_CARD, TDB_CARD, GOLOMT_CARD];
+  const cards = [TDB_CARD, GOLOMT_CARD];
 
   const additionalPayments = paymentTypes?.filter(
     (pt) => !cards.includes(pt.type)
@@ -78,6 +79,7 @@ const Cover = () => {
             {paymentTypes?.find((pt) => pt.type === GOLOMT_CARD) && (
               <GolomtCover />
             )}
+            
             {paymentTypes?.find((pt) => pt.type === TDB_CARD) && <TDBCover />}
             <Description />
             <div className="row">
