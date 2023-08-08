@@ -2,7 +2,7 @@ import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Button from 'ui/Button';
 import CashCover from 'modules/cover/components/CashCover';
 import Other from 'modules/cover/components/Other';
-import { KHANBANK_CARD, GOLOMT_CARD, TDB_CARD } from 'modules/constants';
+import { GOLOMT_CARD, TDB_CARD } from 'modules/constants';
 import GolomtCover from '../components/Golomt';
 import TDBCover from '../components/TDB';
 import Dates from '../components/Dates';
