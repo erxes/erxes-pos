@@ -8,7 +8,7 @@ import TDBCard from './TDBCard';
 import useAmounts from 'lib/useAmounts';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 
-const PaymentMethods = () => {
+const  PaymentMethods = () => {
   const { remainder, checkNotSplitIncluded } = useAmounts();
   const { currentConfig } = useConfigsContext();
 
