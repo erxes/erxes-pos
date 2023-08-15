@@ -26,6 +26,10 @@ module.exports = withPWA({
         protocol: 'https',
         hostname: '**.techstore.mn',
       },
+      {
+        protocol: 'https',
+        hostname: 'https://**.zulzagandul.mn',
+      },
     ],
   },
 
