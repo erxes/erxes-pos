@@ -3,16 +3,7 @@ import { useApp } from 'modules/AppContext';
 import useIsDisabled from 'lib/useIsDisabled';
 import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Select from 'ui/Select';
-
-const typeTextDef: any = {
-  eat: 'Зааланд',
-  take: 'Авч явах',
-  delivery: 'Хүргэлтээр',
-  loss: 'Хорогдол',
-  spend: 'Зарлагадсан',
-  reject: 'Гологдол',
-  before: 'Урьдчилсан',
-};
+import { typeTextDef } from 'modules/constants';
 
 const Deliver = () => {
   const { type, setType } = useApp();
