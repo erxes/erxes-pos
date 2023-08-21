@@ -8,11 +8,13 @@ import Grid from 'ui/Grid';
 import Filter from '../components/Filter';
 import { getLocal } from 'modules/utils';
 import Button from 'ui/Button';
+import { useConfigsContext } from 'modules/auth/containers/Configs';
 
 export interface IFilter {
   isPaid: boolean | undefined;
   sortDirection: number;
   sortField: string;
+  statuses: string[];
 }
 
 const Orders = () => {

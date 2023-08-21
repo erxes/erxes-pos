@@ -7,6 +7,7 @@ import { queries } from '../graphql';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { handlePaymentChange } from '../utils';
+import { toast } from 'react-toastify';
 
 const Dates = () => {
   const {
@@ -38,6 +39,9 @@ const Dates = () => {
           handlePaymentChange(rest[key], key, setDetails)
         );
       }
+    },
+    onError(error) {
+      toast.error(error.message);
     },
   });
 

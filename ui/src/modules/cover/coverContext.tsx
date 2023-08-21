@@ -6,6 +6,7 @@ import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Loading from 'ui/Loading';
 import { formatDate } from './utils';
 import dayjs from 'dayjs';
+import { toast } from 'react-toastify';
 
 // create a context
 export const CoverContext = createContext({} as any);
@@ -64,6 +65,9 @@ const CoverContextProvider = ({ children }: { children: React.ReactNode }) => {
       setCash(cashDataSyncWithInitial || initial);
       setDetails(exceptCash);
       setDescription(desc);
+    },
+    onError(error) {
+      toast.error(error.message);
     },
   });
 
