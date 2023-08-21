@@ -2,7 +2,7 @@ import { useConfigsContext } from 'modules/auth/containers/Configs';
 import Button from 'ui/Button';
 import CashCover from 'modules/cover/components/CashCover';
 import Other from 'modules/cover/components/Other';
-import { KHANBANK_CARD, GOLOMT_CARD, TDB_CARD } from 'modules/constants';
+import { GOLOMT_CARD, TDB_CARD } from 'modules/constants';
 import GolomtCover from '../components/Golomt';
 import TDBCover from '../components/TDB';
 import Dates from '../components/Dates';
@@ -22,7 +22,8 @@ const Cover = () => {
 
   const { coverCU, loading } = useCoverCU();
 
-  const cards = [KHANBANK_CARD, TDB_CARD, GOLOMT_CARD];
+  // const cards = [KHANBANK_CARD, TDB_CARD, GOLOMT_CARD];
+  const cards = [TDB_CARD, GOLOMT_CARD];
 
   const additionalPayments = paymentTypes?.filter(
     (pt) => !cards.includes(pt.type)
@@ -78,6 +79,7 @@ const Cover = () => {
             {paymentTypes?.find((pt) => pt.type === GOLOMT_CARD) && (
               <GolomtCover />
             )}
+            
             {paymentTypes?.find((pt) => pt.type === TDB_CARD) && <TDBCover />}
             <Description />
             <div className="row">

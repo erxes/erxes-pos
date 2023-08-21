@@ -8,7 +8,9 @@ export type IProductBase = {
   _id: string;
   name: string;
   unitPrice: number;
+  isCheckRem: boolean;
   isPackage?: boolean;
+  remainder?: number;
 };
 
 export type ICartItem = IProductBase & {

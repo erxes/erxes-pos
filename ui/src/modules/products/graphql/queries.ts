@@ -23,6 +23,7 @@ const products = `
       categoryId
       unitPrice
       type
+      isCheckRem
       description
       remainder
       attachment {

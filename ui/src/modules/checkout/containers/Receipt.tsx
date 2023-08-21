@@ -13,12 +13,13 @@ import Button from 'ui/Button';
 import Amount from '../components/Amount';
 import { getMode } from 'modules/utils';
 import cn from 'classnames';
+import { typeTextDef } from 'modules/constants';
 
 const Receipt = () => {
   const router = useRouter();
   const { type } = router.query;
   const { currentConfig } = useConfigsContext();
-  const { uiOptions, name, ebarimtConfig } = currentConfig;
+  const { uiOptions, name, ebarimtConfig, allowTypes } = currentConfig;
   const { receiptIcon: logo } = uiOptions;
   const { footerText, hasCopy } = ebarimtConfig || {};
   const mode = getMode();
@@ -30,6 +31,7 @@ const Receipt = () => {
     customer,
     putResponses,
     registerNumber,
+    deliveryInfo,
     _id
   } = orderDetail;
 
@@ -194,6 +196,14 @@ const Receipt = () => {
     )
   }
 
+  const renderDescription = () => {
+    return (
+      <p className="signature">
+        <label>{deliveryInfo?.description || ''}</label>
+      </p>
+    )
+  }
+
   const renderSignature = () => {
     return footerText ? (
       <div className="text-center signature">
@@ -226,6 +236,13 @@ const Receipt = () => {
         </div>
         <p>
           <b>Огноо:</b> <span>{date}</span>
+          <span>
+            {
+              allowTypes.indexOf(orderDetail.type) > 0
+                ? `(${typeTextDef[orderDetail.type]})`
+                : ''
+            }
+          </span>
         </p>
         {renderWorker()}
         {renderCustomer()}
@@ -261,6 +278,7 @@ const Receipt = () => {
         </div>
       ))}
       {<Amount />}
+      {renderDescription()}
       {renderSignature()}
       <div className="text-center btn-print">
         <Button onClick={() => window.print()}>Хэвлэх</Button>

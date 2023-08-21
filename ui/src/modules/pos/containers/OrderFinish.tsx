@@ -3,7 +3,7 @@ import useOrderCUData from 'lib/useOrderCUData';
 import { useApp } from 'modules/AppContext';
 import { mutations } from 'modules/checkout/graphql';
 import Button from 'modules/common/ui/Button';
-import { setLocal } from 'modules/utils';
+import { goToReceipt, setLocal } from 'modules/utils';
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
 
@@ -15,6 +15,7 @@ const OrderFinish = () => {
     onCompleted: (data) => {
       setLocal('cart', []);
       setInitialState();
+      goToReceipt(data.ordersFinish?._id)
       return router.push(`/`);
     },
     onError(error) {

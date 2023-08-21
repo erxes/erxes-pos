@@ -26,7 +26,7 @@ export default function Product({
           withLoader
           sizes="17vw"
         />
-        <div className="product-name">{name}</div>
+        <div className="product-name">{code} - {name}</div>
         <div className="product-price">
           {formatNum(unitPrice)}₮{' '}
           {!isKiosk && !!remainder && '/' + remainder + '/'}

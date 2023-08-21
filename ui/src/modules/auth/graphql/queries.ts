@@ -81,6 +81,8 @@ const configFields = `
   allowTypes
   branchId
   departmentId
+  isCheckRemainder
+  checkExcludeCategoryIds
 `;
 
 const currentConfig = `
