@@ -65,6 +65,23 @@ const ordersAddPayment = `
   }
 `;
 
+const ordersReturn = `
+  mutation ordersReturn(
+    $_id: String!
+    $cashAmount: Float,
+    $paidAmounts: [PaidAmountInput]
+  ) {
+    ordersReturn(
+      _id: $_id
+      cashAmount: $cashAmount
+      paidAmounts: $paidAmounts
+    ) {
+      _id
+      status
+    }
+  }
+`;
+
 const ordersSettlePayment = `
   mutation ordersSettlePayment($_id: String!, $billType: String!, $registerNumber: String) {
     ordersSettlePayment(_id: $_id, billType: $billType, registerNumber: $registerNumber) {
@@ -165,6 +182,7 @@ const mutations = {
   orderItemChangeStatus,
   generateInvoiceUrl,
   ordersFinish,
+  ordersReturn
 };
 
 export default mutations;
