@@ -25,7 +25,7 @@ const Detail = () => {
     }) || []).reduce((sum, cur) => sum + Number(cur), 0);
 
     setDiffAmount(orderDetail.totalAmount - total - cashAmount)
-  }, [paidAmounts, cashAmount]);
+  }, [paidAmounts, cashAmount, orderDetail]);
 
   const onChangePaid = (type: string, value: string) => {
     const numVal = Number(value.replace(/ /g, ''));
