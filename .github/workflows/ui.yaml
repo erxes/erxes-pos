@@ -27,7 +27,7 @@ jobs:
           yarn build
 
       - name: Build docker image
-        if: github.event_name == 'push' && ( github.ref == 'refs/heads/improvements' )
+        if: github.event_name == 'push' && ( github.ref == 'refs/heads/main' )
         run: |
           cd ui
           echo ${{ secrets.DOCKERHUB_TOKEN }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
