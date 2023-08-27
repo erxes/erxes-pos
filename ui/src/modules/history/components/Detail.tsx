@@ -65,12 +65,12 @@ const Detail = () => {
     }
   );
 
-  const renderReturnForm = () => {
+  const { paymentTypes } = useConfigsContext();
+
+  const RenderReturnForm = () => {
     if (!showReturn) {
       return <></>;
     }
-
-    const { paymentTypes } = useConfigsContext();
 
     return (
       <div>
@@ -172,7 +172,7 @@ const Detail = () => {
         </div>
       )}
 
-      {renderReturnForm()}
+      {RenderReturnForm()}
     </div>
   );
 };
