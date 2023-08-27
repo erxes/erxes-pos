@@ -3,7 +3,7 @@ import Button from 'ui/Button';
 import { IFilter } from '../containers/Orders';
 import { setLocal } from 'modules/utils';
 // import Select from 'react-select';
-// import { ORDER_STATUSES } from 'modules/constants';
+import { ORDER_STATUSES } from 'modules/constants';
 const Filter = ({
   setFilter,
   filter,
@@ -18,6 +18,7 @@ const Filter = ({
     e.preventDefault();
     const value = {
       isPaid,
+      statuses: [ORDER_STATUSES.DOING, ORDER_STATUSES.REDOING, ORDER_STATUSES.NEW, ORDER_STATUSES.PENDING],
       sortField: sortBy,
       sortDirection: sort,
     };
