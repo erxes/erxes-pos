@@ -58,6 +58,7 @@ export interface PaymentType {
     skipEbarimt?: boolean;
     mustCustomer?: boolean;
     notSplit?: boolean;
+    preTax?: boolean;
   };
 }
 
